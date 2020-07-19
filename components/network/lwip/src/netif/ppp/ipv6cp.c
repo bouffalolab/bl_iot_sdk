@@ -440,7 +440,7 @@ static void ipv6cp_init(ppp_pcb *pcb) {
     memset(ao, 0, sizeof(*ao));
 #endif /* 0 */
 
-    wo->accept_local = 1;
+    wo->accept_local = 0;
     wo->neg_ifaceid = 1;
     ao->neg_ifaceid = 1;
 
@@ -515,6 +515,7 @@ static void ipv6cp_resetci(fsm *f) {
     wo->req_ifaceid = wo->neg_ifaceid && ao->neg_ifaceid;
     
     if (!wo->opt_local) {
+	wo->accept_local = 1;
 	eui64_magic_nz(wo->ourid);
     }
     
