@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+<title>Karatsuba Multiplication - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Multiplication-Algorithms.html#Multiplication-Algorithms" title="Multiplication Algorithms">
+<link rel="prev" href="Basecase-Multiplication.html#Basecase-Multiplication" title="Basecase Multiplication">
+<link rel="next" href="Toom-3_002dWay-Multiplication.html#Toom-3_002dWay-Multiplication" title="Toom 3-Way Multiplication">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Karatsuba-Multiplication"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Toom-3_002dWay-Multiplication.html#Toom-3_002dWay-Multiplication">Toom 3-Way Multiplication</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basecase-Multiplication.html#Basecase-Multiplication">Basecase Multiplication</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.1.2 Karatsuba Multiplication</h4>
+
+<p><a name="index-Karatsuba-multiplication-902"></a>
+The Karatsuba multiplication algorithm is described in Knuth section 4.3.3
+part A, and various other textbooks.  A brief description is given here.
+
+   <p>The inputs x and y are treated as each split into two parts of
+equal length (or the most significant part one limb shorter if N is odd).
+
+<pre class="example">      high              low
+     +----------+----------+
+     |    x1    |    x0    |
+     +----------+----------+
+     
+     +----------+----------+
+     |    y1    |    y0    |
+     +----------+----------+
+</pre>
+   <p>Let b be the power of 2 where the split occurs, i.e. if x0 is
+k limbs (y0 the same) then
+b=2^(k*mp_bits_per_limb). 
+With that x=x1*b+x0 and y=y1*b+y0, and the
+following holds,
+
+<pre class="display">     x*y = (b^2+b)*x1*y1 - b*(x1-x0)*(y1-y0) + (b+1)*x0*y0
+</pre>
+   <p>This formula means doing only three multiplies of (N/2)x(N/2) limbs,
+whereas a basecase multiply of NxN limbs is equivalent to four
+multiplies of (N/2)x(N/2).  The factors (b^2+b) etc represent
+the positions where the three products must be added.
+
+<pre class="example">      high                              low
+     +--------+--------+ +--------+--------+
+     |      x1*y1      | |      x0*y0      |
+     +--------+--------+ +--------+--------+
+               +--------+--------+
+           add |      x1*y1      |
+               +--------+--------+
+               +--------+--------+
+           add |      x0*y0      |
+               +--------+--------+
+               +--------+--------+
+           sub | (x1-x0)*(y1-y0) |
+               +--------+--------+
+</pre>
+   <p>The term (x1-x0)*(y1-y0) is best calculated as an
+absolute value, and the sign used to choose to add or subtract.  Notice the
+sum high(x0*y0)+low(x1*y1) occurs twice, so it's possible to do 5*k limb
+additions, rather than 6*k, but in GMP extra function call overheads
+outweigh the saving.
+
+   <p>Squaring is similar to multiplying, but with x=y the formula reduces to
+an equivalent with three squares,
+
+<pre class="display">     x^2 = (b^2+b)*x1^2 - b*(x1-x0)^2 + (b+1)*x0^2
+</pre>
+   <p>The final result is accumulated from those three squares the same way as for
+the three multiplies above.  The middle term (x1-x0)^2 is now
+always positive.
+
+   <p>A similar formula for both multiplying and squaring can be constructed with a
+middle term (x1+x0)*(y1+y0).  But those sums can exceed
+k limbs, leading to more carry handling and additions than the form
+above.
+
+   <p>Karatsuba multiplication is asymptotically an O(N^1.585<!-- /@w -->) algorithm,
+the exponent being log(3)/log(2), representing 3 multiplies
+each 1/2 the size of the inputs.  This is a big improvement over the
+basecase multiply at O(N^2) and the advantage soon overcomes the extra
+additions Karatsuba performs.  <code>MUL_TOOM22_THRESHOLD</code> can be as little
+as 10 limbs.  The <code>SQR</code> threshold is usually about twice the <code>MUL</code>.
+
+   <p>The basecase algorithm will take a time of the form M(N) = a*N^2 + b*N + c and the Karatsuba algorithm K(N) = 3*M(N/2) + d*N + e, which expands to K(N) = 3/4*a*N^2 + 3/2*b*N + 3*c + d*N + e.  The
+factor 3/4 for a means per-crossproduct speedups in the
+basecase code will increase the threshold since they benefit M(N) more
+than K(N).  And conversely the 3/2 for b means
+linear style speedups of b will increase the threshold since they
+benefit K(N) more than M(N).  The latter can be seen for
+instance when adding an optimized <code>mpn_sqr_diagonal</code> to
+<code>mpn_sqr_basecase</code>.  Of course all speedups reduce total time, and in
+that sense the algorithm thresholds are merely of academic interest.
+
+   </body></html>
+

@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+<title>API Compatibility - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="next" href="Contributors.html#Contributors" title="Contributors">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="API-Compatibility"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Contributors.html#Contributors">Contributors</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">6 API Compatibility</h2>
+
+<p>The goal of this section is to describe some API changes that occurred
+from one version of MPFR to another, and how to write code that can be compiled
+and run with older MPFR versions.  The minimum MPFR version that is
+considered here is 2.2.0 (released on 20 September 2005).
+
+   <p>API changes can only occur between major or minor versions.  Thus the
+patchlevel (the third number in the MPFR version) will be ignored in
+the following.  If a program does not use MPFR internals, changes in
+the behavior between two versions differing only by the patchlevel
+should only result from what was regarded as a bug or unspecified behavior. 
+<!-- This includes undefined behavior. -->
+
+   <p>As a general rule, a program written for some MPFR version should work
+with later versions, possibly except at a new major version, where
+some features (described as obsolete for some time) can be removed. 
+In such a case, a failure should occur during compilation or linking. 
+If a result becomes incorrect because of such a change, please look
+at the various changes below (they are minimal, and most software
+should be unaffected), at the FAQ and at the MPFR web page for your
+version (a bug could have been introduced and be already fixed);
+and if the problem is not mentioned, please send us a bug report
+(see <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>).
+
+   <p>However, a program written for the current MPFR version (as documented
+by this manual) may not necessarily work with previous versions of
+MPFR.  This section should help developers to write portable code.
+
+   <p>Note: Information given here may be incomplete.  API changes are
+also described in the NEWS file (for each version, instead of being
+classified like here), together with other changes.
+
+<ul class="menu">
+<li><a accesskey="1" href="Type-and-Macro-Changes.html#Type-and-Macro-Changes">Type and Macro Changes</a>
+<li><a accesskey="2" href="Added-Functions.html#Added-Functions">Added Functions</a>
+<li><a accesskey="3" href="Changed-Functions.html#Changed-Functions">Changed Functions</a>
+<li><a accesskey="4" href="Removed-Functions.html#Removed-Functions">Removed Functions</a>
+<li><a accesskey="5" href="Other-Changes.html#Other-Changes">Other Changes</a>
+</ul>
+
+   </body></html>
+

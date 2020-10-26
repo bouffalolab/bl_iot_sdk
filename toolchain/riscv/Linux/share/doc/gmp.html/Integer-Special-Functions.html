@@ -1,0 +1,162 @@
+<html lang="en">
+<head>
+<title>Integer Special Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" title="Miscellaneous Integer Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Integer-Special-Functions"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions">Miscellaneous Integer Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.16 Special Functions</h3>
+
+<p><a name="index-Special-integer-functions-475"></a><a name="index-Integer-special-functions-476"></a>
+The functions in this section are for various special purposes.  Most
+applications will not need them.
+
+<div class="defun">
+&mdash; Function: void <b>mpz_array_init</b> (<var>mpz_t integer_array, mp_size_t array_size, mp_size_t&nbsp;fixed_num_bits<!-- /@w --></var>)<var><a name="index-mpz_005farray_005finit-477"></a></var><br>
+<blockquote><p><strong>This is an obsolete function.  Do not use it.</strong>
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void * <b>_mpz_realloc</b> (<var>mpz_t integer, mp_size_t new_alloc</var>)<var><a name="index-g_t_005fmpz_005frealloc-478"></a></var><br>
+<blockquote><p>Change the space for <var>integer</var> to <var>new_alloc</var> limbs.  The value in
+<var>integer</var> is preserved if it fits, or is set to 0 if not.  The return
+value is not useful to applications and should be ignored.
+
+        <p><code>mpz_realloc2</code> is the preferred way to accomplish allocation changes like
+this.  <code>mpz_realloc2</code> and <code>_mpz_realloc</code> are the same except that
+<code>_mpz_realloc</code> takes its size in limbs. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_limb_t <b>mpz_getlimbn</b> (<var>const mpz_t op, mp_size_t n</var>)<var><a name="index-mpz_005fgetlimbn-479"></a></var><br>
+<blockquote><p>Return limb number <var>n</var> from <var>op</var>.  The sign of <var>op</var> is ignored,
+just the absolute value is used.  The least significant limb is number 0.
+
+        <p><code>mpz_size</code> can be used to find how many limbs make up <var>op</var>. 
+<code>mpz_getlimbn</code> returns zero if <var>n</var> is outside the range 0 to
+<code>mpz_size(</code><var>op</var><code>)-1</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpz_size</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fsize-480"></a></var><br>
+<blockquote><p>Return the size of <var>op</var> measured in number of limbs.  If <var>op</var> is zero,
+the returned value will be zero. 
+<!-- (@xref{Nomenclature}, for an explanation of the concept @dfn{limb}.) -->
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: const mp_limb_t * <b>mpz_limbs_read</b> (<var>const mpz_t x</var>)<var><a name="index-mpz_005flimbs_005fread-481"></a></var><br>
+<blockquote><p>Return a pointer to the limb array representing the absolute value of <var>x</var>. 
+The size of the array is <code>mpz_size(</code><var>x</var><code>)</code>. Intended for read access
+only. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_limb_t * <b>mpz_limbs_write</b> (<var>mpz_t x, mp_size_t n</var>)<var><a name="index-mpz_005flimbs_005fwrite-482"></a></var><br>
+&mdash; Function: mp_limb_t * <b>mpz_limbs_modify</b> (<var>mpz_t x, mp_size_t n</var>)<var><a name="index-mpz_005flimbs_005fmodify-483"></a></var><br>
+<blockquote><p>Return a pointer to the limb array, intended for write access. The array is
+reallocated as needed, to make room for <var>n</var> limbs. Requires <var>n</var>
+&gt; 0. The <code>mpz_limbs_modify</code> function returns an array that holds the old
+absolute value of <var>x</var>, while <code>mpz_limbs_write</code> may destroy the old
+value and return an array with unspecified contents. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_limbs_finish</b> (<var>mpz_t x, mp_size_t s</var>)<var><a name="index-mpz_005flimbs_005ffinish-484"></a></var><br>
+<blockquote><p>Updates the internal size field of <var>x</var>. Used after writing to the limb
+array pointer returned by <code>mpz_limbs_write</code> or <code>mpz_limbs_modify</code> is
+completed. The array should contain abs(<var>s</var>) valid limbs,
+representing the new absolute value for <var>x</var>, and the sign of <var>x</var> is
+taken from the sign of <var>s</var>. This function never reallocates <var>x</var>, so
+the limb pointer remains valid. 
+</p></blockquote></div>
+
+<!-- FIXME: Some more useful and less silly example? -->
+<pre class="example">     void foo (mpz_t x)
+     {
+       mp_size_t n, i;
+       mp_limb_t *xp;
+     
+       n = mpz_size (x);
+       xp = mpz_limbs_modify (x, 2*n);
+       for (i = 0; i &lt; n; i++)
+         xp[n+i] = xp[n-1-i];
+       mpz_limbs_finish (x, mpz_sgn (x) &lt; 0 ? - 2*n : 2*n);
+     }
+</pre>
+   <div class="defun">
+&mdash; Function: mpz_srcptr <b>mpz_roinit_n</b> (<var>mpz_t x, const mp_limb_t *xp, mp_size_t xs</var>)<var><a name="index-mpz_005froinit_005fn-485"></a></var><br>
+<blockquote><p>Special initialization of <var>x</var>, using the given limb array and size. 
+<var>x</var> should be treated as read-only: it can be passed safely as input to
+any mpz function, but not as an output. The array <var>xp</var> must point to at
+least a readable limb, its size is
+abs(<var>xs</var>), and the sign of <var>x</var> is the sign of <var>xs</var>. For
+convenience, the function returns <var>x</var>, but cast to a const pointer type. 
+</p></blockquote></div>
+
+<pre class="example">     void foo (mpz_t x)
+     {
+       static const mp_limb_t y[3] = { 0x1, 0x2, 0x3 };
+       mpz_t tmp;
+       mpz_add (x, x, mpz_roinit_n (tmp, y, 3));
+     }
+</pre>
+   <div class="defun">
+&mdash; Macro: mpz_t <b>MPZ_ROINIT_N</b> (<var>mp_limb_t *xp, mp_size_t xs</var>)<var><a name="index-MPZ_005fROINIT_005fN-486"></a></var><br>
+<blockquote><p>This macro expands to an initializer which can be assigned to an mpz_t
+variable. The limb array <var>xp</var> must point to at least a readable limb,
+moreover, unlike the <code>mpz_roinit_n</code> function, the array must be
+normalized: if <var>xs</var> is non-zero, then
+<var>xp</var><code>[abs(</code><var>xs</var><code>)-1]</code> must be non-zero. Intended
+primarily for constant values. Using it for non-constant values requires a C
+compiler supporting C99. 
+</p></blockquote></div>
+
+<pre class="example">     void foo (mpz_t x)
+     {
+       static const mp_limb_t ya[3] = { 0x1, 0x2, 0x3 };
+       static const mpz_t y = MPZ_ROINIT_N ((mp_limb_t *) ya, 3);
+     
+       mpz_add (x, x, y);
+     }
+</pre>
+   </body></html>
+

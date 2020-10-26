@@ -1,0 +1,117 @@
+<html lang="en">
+<head>
+<title>ARM - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Embedded-Processors.html#Embedded-Processors" title="Embedded Processors">
+<link rel="prev" href="ARC.html#ARC" title="ARC">
+<link rel="next" href="M68K.html#M68K" title="M68K">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ARM"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="M68K.html#M68K">M68K</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ARC.html#ARC">ARC</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Embedded-Processors.html#Embedded-Processors">Embedded Processors</a>
+<hr>
+</div>
+
+<h4 class="subsection">21.3.2 ARM</h4>
+
+<p><span class="sc">gdb</span> provides the following ARM-specific commands:
+
+     <dl>
+<dt><code>set arm disassembler</code><dd><a name="index-set-arm-1578"></a>This commands selects from a list of disassembly styles.  The
+<code>"std"</code> style is the standard style.
+
+     <br><dt><code>show arm disassembler</code><dd><a name="index-show-arm-1579"></a>Show the current disassembly style.
+
+     <br><dt><code>set arm apcs32</code><dd><a name="index-ARM-32_002dbit-mode-1580"></a>This command toggles ARM operation mode between 32-bit and 26-bit.
+
+     <br><dt><code>show arm apcs32</code><dd>Display the current usage of the ARM 32-bit mode.
+
+     <br><dt><code>set arm fpu </code><var>fputype</var><dd>This command sets the ARM floating-point unit (FPU) type.  The
+argument <var>fputype</var> can be one of these:
+
+          <dl>
+<dt><code>auto</code><dd>Determine the FPU type by querying the OS ABI. 
+<br><dt><code>softfpa</code><dd>Software FPU, with mixed-endian doubles on little-endian ARM
+processors. 
+<br><dt><code>fpa</code><dd>GCC-compiled FPA co-processor. 
+<br><dt><code>softvfp</code><dd>Software FPU with pure-endian doubles. 
+<br><dt><code>vfp</code><dd>VFP co-processor. 
+</dl>
+
+     <br><dt><code>show arm fpu</code><dd>Show the current type of the FPU.
+
+     <br><dt><code>set arm abi</code><dd>This command forces <span class="sc">gdb</span> to use the specified ABI.
+
+     <br><dt><code>show arm abi</code><dd>Show the currently used ABI.
+
+     <br><dt><code>set arm fallback-mode (arm|thumb|auto)</code><dd><span class="sc">gdb</span> uses the symbol table, when available, to determine
+whether instructions are ARM or Thumb.  This command controls
+<span class="sc">gdb</span>'s default behavior when the symbol table is not
+available.  The default is &lsquo;<samp><span class="samp">auto</span></samp>&rsquo;, which causes <span class="sc">gdb</span> to
+use the current execution mode (from the <code>T</code> bit in the <code>CPSR</code>
+register).
+
+     <br><dt><code>show arm fallback-mode</code><dd>Show the current fallback instruction mode.
+
+     <br><dt><code>set arm force-mode (arm|thumb|auto)</code><dd>This command overrides use of the symbol table to determine whether
+instructions are ARM or Thumb.  The default is &lsquo;<samp><span class="samp">auto</span></samp>&rsquo;, which
+causes <span class="sc">gdb</span> to use the symbol table and then the setting
+of &lsquo;<samp><span class="samp">set arm fallback-mode</span></samp>&rsquo;.
+
+     <br><dt><code>show arm force-mode</code><dd>Show the current forced instruction mode.
+
+     <br><dt><code>set debug arm</code><dd>Toggle whether to display ARM-specific debugging messages from the ARM
+target support subsystem.
+
+     <br><dt><code>show debug arm</code><dd>Show whether ARM-specific debugging messages are enabled. 
+</dl>
+
+     <dl>
+<dt><code>target sim </code><span class="roman">[</span><var>simargs</var><span class="roman">]</span><code> ...</code><dd>The <span class="sc">gdb</span> ARM simulator accepts the following optional arguments.
+
+          <dl>
+<dt><code>--swi-support=</code><var>type</var><dd>Tell the simulator which SWI interfaces to support.  The argument
+<var>type</var> may be a comma separated list of the following values. 
+The default value is <code>all</code>.
+
+               <dl>
+<dt><code>none</code><br><dt><code>demon</code><br><dt><code>angel</code><br><dt><code>redboot</code><br><dt><code>all</code><dd></dl>
+          </dl>
+     </dl>
+
+   </body></html>
+

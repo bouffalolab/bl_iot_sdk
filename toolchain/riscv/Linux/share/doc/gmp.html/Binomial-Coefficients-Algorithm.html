@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+<title>Binomial Coefficients Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="prev" href="Factorial-Algorithm.html#Factorial-Algorithm" title="Factorial Algorithm">
+<link rel="next" href="Fibonacci-Numbers-Algorithm.html#Fibonacci-Numbers-Algorithm" title="Fibonacci Numbers Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Binomial-Coefficients-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Fibonacci-Numbers-Algorithm.html#Fibonacci-Numbers-Algorithm">Fibonacci Numbers Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Factorial-Algorithm.html#Factorial-Algorithm">Factorial Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.7.3 Binomial Coefficients</h4>
+
+<p><a name="index-Binomial-coefficient-algorithm-928"></a>
+Binomial coefficients C(n,k) are calculated
+by first arranging k &lt;= n/2 using C(n,k) = C(n,n-k) if necessary, and then
+evaluating the following product simply from i=2 to i=k.
+
+<pre class="example">                           k  (n-k+i)
+     C(n,k) =  (n-k+1) * prod -------
+                          i=2    i
+</pre>
+   <p>It's easy to show that each denominator i will divide the product so
+far, so the exact division algorithm is used (see <a href="Exact-Division.html#Exact-Division">Exact Division</a>).
+
+   <p>The numerators n-k+i and denominators i are first accumulated
+into as many fit a limb, to save multi-precision operations, though for
+<code>mpz_bin_ui</code> this applies only to the divisors, since n is an
+<code>mpz_t</code> and n-k+i in general won't fit in a limb at all.
+
+   </body></html>
+

@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+<title>Integer Exponentiation - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Division.html#Integer-Division" title="Integer Division">
+<link rel="next" href="Integer-Roots.html#Integer-Roots" title="Integer Roots">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Integer-Exponentiation"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Integer-Roots.html#Integer-Roots">Integer Roots</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Division.html#Integer-Division">Integer Division</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.7 Exponentiation Functions</h3>
+
+<p><a name="index-Integer-exponentiation-functions-342"></a><a name="index-Exponentiation-functions-343"></a><a name="index-Powering-functions-344"></a>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_powm</b> (<var>mpz_t rop, const mpz_t base, const mpz_t exp, const mpz_t mod</var>)<var><a name="index-mpz_005fpowm-345"></a></var><br>
+&mdash; Function: void <b>mpz_powm_ui</b> (<var>mpz_t rop, const mpz_t base, unsigned long int exp, const mpz_t mod</var>)<var><a name="index-mpz_005fpowm_005fui-346"></a></var><br>
+<blockquote><p>Set <var>rop</var> to (<var>base</var> raised to <var>exp</var>)
+modulo <var>mod</var>.
+
+        <p>Negative <var>exp</var> is supported if an inverse <var>base</var>^-1<!-- /@w --> mod
+<var>mod</var> exists (see <code>mpz_invert</code> in <a href="Number-Theoretic-Functions.html#Number-Theoretic-Functions">Number Theoretic Functions</a>). 
+If an inverse doesn't exist then a divide by zero is raised. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_powm_sec</b> (<var>mpz_t rop, const mpz_t base, const mpz_t exp, const mpz_t mod</var>)<var><a name="index-mpz_005fpowm_005fsec-347"></a></var><br>
+<blockquote><p>Set <var>rop</var> to (<var>base</var> raised to <var>exp</var>)
+modulo <var>mod</var>.
+
+        <p>It is required that <var>exp</var> &gt; 0 and that <var>mod</var> is odd.
+
+        <p>This function is designed to take the same time and have the same cache access
+patterns for any two same-size arguments, assuming that function arguments are
+placed at the same position and that the machine state is identical upon
+function entry.  This function is intended for cryptographic purposes, where
+resilience to side-channel attacks is desired. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_pow_ui</b> (<var>mpz_t rop, const mpz_t base, unsigned long int exp</var>)<var><a name="index-mpz_005fpow_005fui-348"></a></var><br>
+&mdash; Function: void <b>mpz_ui_pow_ui</b> (<var>mpz_t rop, unsigned long int base, unsigned long int exp</var>)<var><a name="index-mpz_005fui_005fpow_005fui-349"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>base</var> raised to <var>exp</var>.  The case
+0^0 yields 1. 
+</p></blockquote></div>
+
+   </body></html>
+

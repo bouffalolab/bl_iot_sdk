@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+<title>Object Size Checking - Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Overflow-Protection.html#Overflow-Protection" title="Overflow Protection">
+<link rel="prev" href="Stack-Smashing-Protection.html#Stack-Smashing-Protection" title="Stack Smashing Protection">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Object-Size-Checking"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack-Smashing-Protection.html#Stack-Smashing-Protection">Stack Smashing Protection</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Overflow-Protection.html#Overflow-Protection">Overflow Protection</a>
+<hr>
+</div>
+
+<h3 class="section">12.2 Object Size Checking</h3>
+
+<p>Object Size Checking is a feature which wraps certain functions with checks
+to prevent buffer overflows.  These are enabled when compiling with
+optimization (<code>-O1</code> and higher) and <code>_FORTIFY_SOURCE</code> defined
+to 1, or for stricter checks, to 2.
+
+   <p><a name="index-list-of-overflow-protected-functions-584"></a>The following functions use object size checking to detect buffer overflows
+when enabled:
+
+<pre class="example"><br><em>String functions:</em><br>
+     bcopy           memmove         strcpy
+     bzero           mempcpy         strcat
+     explicit_bzero  memset          strncat
+     memcpy          stpcpy          strncpy
+     
+<br><em>Wide Character String functions:</em><br>
+     fgetws          wcrtomb         wcsrtombs
+     fgetws_unlocked wcscat          wmemcpy
+     mbsnrtowcs      wcscpy          wmemmove
+     mbsrtowcs       wcsncat         wmempcpy
+     wcpcpy          wcsncpy         wmemset
+     wcpncpy         wcsnrtombs
+     
+<br><em>Stdio functions:</em><br>
+     fgets           fread_unlocked  sprintf
+     fgets_unlocked  gets            vsnprintf
+     fread           snprintf        vsprintf
+     
+<br><em>Stdlib functions:</em><br>
+     mbstowcs        wcstombs        wctomb
+     
+<br><em>System functions:</em><br>
+     getcwd          read            ttyname_r
+     pread           readlink
+     
+</pre>
+   <!-- *- Texinfo -*- -->
+   </body></html>
+

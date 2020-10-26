@@ -1,0 +1,117 @@
+<html lang="en">
+<head>
+<title>Explicit Locations - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Specify-Location.html#Specify-Location" title="Specify Location">
+<link rel="prev" href="Linespec-Locations.html#Linespec-Locations" title="Linespec Locations">
+<link rel="next" href="Address-Locations.html#Address-Locations" title="Address Locations">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Explicit-Locations"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Address-Locations.html#Address-Locations">Address Locations</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Linespec-Locations.html#Linespec-Locations">Linespec Locations</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Specify-Location.html#Specify-Location">Specify Location</a>
+<hr>
+</div>
+
+<h4 class="subsection">9.2.2 Explicit Locations</h4>
+
+<p><a name="index-explicit-locations-565"></a>
+<dfn>Explicit locations</dfn> allow the user to directly specify the source
+location's parameters using option-value pairs.
+
+   <p>Explicit locations are useful when several functions, labels, or
+file names have the same name (base name for files) in the program's
+sources.  In these cases, explicit locations point to the source
+line you meant more accurately and unambiguously.  Also, using
+explicit locations might be faster in large programs.
+
+   <p>For example, the linespec &lsquo;<samp><span class="samp">foo:bar</span></samp>&rsquo; may refer to a function <code>bar</code>
+defined in the file named <samp><span class="file">foo</span></samp> or the label <code>bar</code> in a function
+named <code>foo</code>.  <span class="sc">gdb</span> must search either the file system or
+the symbol table to know.
+
+   <p>The list of valid explicit location options is summarized in the
+following table:
+
+     <dl>
+<dt><code>-source </code><var>filename</var><dd>The value specifies the source file name.  To differentiate between
+files with the same base name, prepend as many directories as is necessary
+to uniquely identify the desired file, e.g., <samp><span class="file">foo/bar/baz.c</span></samp>.  Otherwise
+<span class="sc">gdb</span> will use the first file it finds with the given base
+name.   This option requires the use of either <code>-function</code> or <code>-line</code>.
+
+     <br><dt><code>-function </code><var>function</var><dd>The value specifies the name of a function.  Operations
+on function locations unmodified by other options (such as <code>-label</code>
+or <code>-line</code>) refer to the line that begins the body of the function. 
+In C, for example, this is the line with the open brace.
+
+     <p>By default, in C<tt>++</tt> and Ada, <var>function</var> is interpreted as
+specifying all functions named <var>function</var> in all scopes.  For
+C<tt>++</tt>, this means in all namespaces and classes.  For Ada, this
+means in all packages.
+
+     <p>For example, assuming a program with C<tt>++</tt> symbols named
+<code>A::B::func</code> and <code>B::func</code>, both commands <kbd>break&nbsp;-function&nbsp;func</kbd><!-- /@w --> and <kbd>break&nbsp;-function&nbsp;B::func</kbd><!-- /@w --> set a
+breakpoint on both symbols.
+
+     <p>You can use the <kbd>-qualified</kbd> flag to override this (see below).
+
+     <br><dt><code>-qualified</code><dd>
+This flag makes <span class="sc">gdb</span> interpret a function name specified with
+<kbd>-function</kbd> as a complete fully-qualified name.
+
+     <p>For example, assuming a C<tt>++</tt> program with symbols named
+<code>A::B::func</code> and <code>B::func</code>, the <kbd>break&nbsp;-qualified&nbsp;-function&nbsp;B::func</kbd><!-- /@w --> command sets a breakpoint on <code>B::func</code>, only.
+
+     <p>(Note: the <kbd>-qualified</kbd> option can precede a linespec as well
+(see <a href="Linespec-Locations.html#Linespec-Locations">Linespec Locations</a>), so the particular example above could be
+simplified as <kbd>break&nbsp;-qualified&nbsp;B::func</kbd><!-- /@w -->.)
+
+     <br><dt><code>-label </code><var>label</var><dd>The value specifies the name of a label.  When the function
+name is not specified, the label is searched in the function of the currently
+selected stack frame.
+
+     <br><dt><code>-line </code><var>number</var><dd>The value specifies a line offset for the location.  The offset may either
+be absolute (<code>-line 3</code>) or relative (<code>-line +3</code>), depending on
+the command.  When specified without any other options, the line offset is
+relative to the current line. 
+</dl>
+
+   <p>Explicit location options may be abbreviated by omitting any non-unique
+trailing characters from the option name, e.g., <kbd>break&nbsp;-s&nbsp;main.c&nbsp;-li&nbsp;3</kbd><!-- /@w -->.
+
+   </body></html>
+

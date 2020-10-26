@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+<title>Performance optimization - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Installing-GMP.html#Installing-GMP" title="Installing GMP">
+<link rel="prev" href="Known-Build-Problems.html#Known-Build-Problems" title="Known Build Problems">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Performance-optimization"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Known-Build-Problems.html#Known-Build-Problems">Known Build Problems</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Installing-GMP.html#Installing-GMP">Installing GMP</a>
+<hr>
+</div>
+
+<h3 class="section">2.6 Performance optimization</h3>
+
+<p><a name="index-Optimizing-performance-134"></a>
+<!-- At some point, this should perhaps move to a separate chapter on optimizing -->
+<!-- performance. -->
+
+   <p>For optimal performance, build GMP for the exact CPU type of the target
+computer, see <a href="Build-Options.html#Build-Options">Build Options</a>.
+
+   <p>Unlike what is the case for most other programs, the compiler typically
+doesn't matter much, since GMP uses assembly language for the most critical
+operation.
+
+   <p>In particular for long-running GMP applications, and applications demanding
+extremely large numbers, building and running the <code>tuneup</code> program in the
+<samp><span class="file">tune</span></samp> subdirectory, can be important.  For example,
+
+<pre class="example">     cd tune
+     make tuneup
+     ./tuneup
+</pre>
+   <p>will generate better contents for the <samp><span class="file">gmp-mparam.h</span></samp> parameter file.
+
+   <p>To use the results, put the output in the file indicated in the
+&lsquo;<samp><span class="samp">Parameters for ...</span></samp>&rsquo; header.  Then recompile from scratch.
+
+   <p>The <code>tuneup</code> program takes one useful parameter, &lsquo;<samp><span class="samp">-f NNN</span></samp>&rsquo;, which
+instructs the program how long to check FFT multiply parameters.  If you're
+going to use GMP for extremely large numbers, you may want to run <code>tuneup</code>
+with a large NNN value.
+
+   </body></html>
+

@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Assigning Integers - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Initializing-Integers.html#Initializing-Integers" title="Initializing Integers">
+<link rel="next" href="Simultaneous-Integer-Init-_0026-Assign.html#Simultaneous-Integer-Init-_0026-Assign" title="Simultaneous Integer Init &amp; Assign">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Assigning-Integers"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Simultaneous-Integer-Init-_0026-Assign.html#Simultaneous-Integer-Init-_0026-Assign">Simultaneous Integer Init &amp; Assign</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Initializing-Integers.html#Initializing-Integers">Initializing Integers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.2 Assignment Functions</h3>
+
+<p><a name="index-Integer-assignment-functions-253"></a><a name="index-Assignment-functions-254"></a>
+These functions assign new values to already initialized integers
+(see <a href="Initializing-Integers.html#Initializing-Integers">Initializing Integers</a>).
+
+<div class="defun">
+&mdash; Function: void <b>mpz_set</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fset-255"></a></var><br>
+&mdash; Function: void <b>mpz_set_ui</b> (<var>mpz_t rop, unsigned long int op</var>)<var><a name="index-mpz_005fset_005fui-256"></a></var><br>
+&mdash; Function: void <b>mpz_set_si</b> (<var>mpz_t rop, signed long int op</var>)<var><a name="index-mpz_005fset_005fsi-257"></a></var><br>
+&mdash; Function: void <b>mpz_set_d</b> (<var>mpz_t rop, double op</var>)<var><a name="index-mpz_005fset_005fd-258"></a></var><br>
+&mdash; Function: void <b>mpz_set_q</b> (<var>mpz_t rop, const mpq_t op</var>)<var><a name="index-mpz_005fset_005fq-259"></a></var><br>
+&mdash; Function: void <b>mpz_set_f</b> (<var>mpz_t rop, const mpf_t op</var>)<var><a name="index-mpz_005fset_005ff-260"></a></var><br>
+<blockquote><p>Set the value of <var>rop</var> from <var>op</var>.
+
+        <p><code>mpz_set_d</code>, <code>mpz_set_q</code> and <code>mpz_set_f</code> truncate <var>op</var> to
+make it an integer. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_set_str</b> (<var>mpz_t rop, const char *str, int base</var>)<var><a name="index-mpz_005fset_005fstr-261"></a></var><br>
+<blockquote><p>Set the value of <var>rop</var> from <var>str</var>, a null-terminated C string in base
+<var>base</var>.  White space is allowed in the string, and is simply ignored.
+
+        <p>The <var>base</var> may vary from 2 to 62, or if <var>base</var> is 0, then the leading
+characters are used: <code>0x</code> and <code>0X</code> for hexadecimal, <code>0b</code> and
+<code>0B</code> for binary, <code>0</code> for octal, or decimal otherwise.
+
+        <p>For bases up to 36, case is ignored; upper-case and lower-case letters have
+the same value.  For bases 37 to 62, upper-case letter represent the usual
+10..35 while lower-case letter represent 36..61.
+
+        <p>This function returns 0 if the entire string is a valid number in base
+<var>base</var>.  Otherwise it returns &minus;1. 
+<!-- It turns out that it is not entirely true that this function ignores -->
+<!-- white-space.  It does ignore it between digits, but not after a minus sign -->
+<!-- or within or after ``0x''.  Some thought was given to disallowing all -->
+<!-- whitespace, but that would be an incompatible change, whitespace has been -->
+<!-- documented as ignored ever since GMP 1. -->
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_swap</b> (<var>mpz_t rop1, mpz_t rop2</var>)<var><a name="index-mpz_005fswap-262"></a></var><br>
+<blockquote><p>Swap the values <var>rop1</var> and <var>rop2</var> efficiently. 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+<title>Debugging - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libc.html#Libc" title="Libc">
+<link rel="prev" href="Misc-Support.html#Misc-Support" title="Misc Support">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Debugging"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Misc-Support.html#Misc-Support">Misc Support</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libc.html#Libc">Libc</a>
+<hr>
+</div>
+
+<h4 class="subsection">3.4.4 Useful debugging functions</h4>
+
+<p>There are always a few useful functions for debugging your project in
+progress. I typically implement a simple <code>print()</code> routine that
+runs standalone in liblgoss, with no <code>newlib</code> support. The I/O
+function <code>outbyte()</code> can also be used for low level debugging. Many
+times print will work when there are problems that cause <code>printf()</code> to
+cause an exception. <code>putnum()</code> is just to print out values in hex
+so they are easier to read.
+
+<pre class="smallexample">     /*
+      * print -- do a raw print of a string
+      */
+     int
+     print(ptr)
+     char *ptr;
+     {
+       while (*ptr) {
+         outbyte (*ptr++);
+       }
+     }
+     
+     /*
+      * putnum -- print a 32 bit number in hex
+      */
+     int
+     putnum (num)
+     unsigned int num;
+     {
+       char  buffer[9];
+       int   count;
+       char  *bufptr = buffer;
+       int   digit;
+     
+       for (count = 7 ; count &gt;= 0 ; count--) {
+         digit = (num &gt;&gt; (count * 4)) &amp; 0xf;
+     
+         if (digit &lt;= 9)
+           *bufptr++ = (char) ('0' + digit);
+         else
+           *bufptr++ = (char) ('a' - 10 + digit);
+       }
+     
+       *bufptr = (char) 0;
+       print (buffer);
+       return;
+     }
+</pre>
+   <p>If there are LEDs on the board, they can also be put to use for
+debugging when the serial I/O code is being written. I usually implement
+a <code>zylons()</code> function, which strobes the LEDS (if there is more
+than one) in sequence, creating a rotating effect. This is convenient
+between I/O to see if the target is still alive. Another useful LED
+function is <code>led_putnum()</code>, which takes a digit and displays it as
+a bit pattern or number. These usually have to be written in assembler
+for each target board. Here are a number of C based routines that may be
+useful.
+
+   <p><code>led_putnum()</code> puts a number on a single digit segmented
+LED display. This LED is set by setting a bit mask to an address, where
+1 turns the segment off, and 0 turns it on. There is also a little
+decimal point on the LED display, so it gets the leftmost bit. The other
+bits specify the segment location. The bits look like:
+
+<pre class="smallexample">             [d.p | g | f | e | d | c | b | a ] is the byte.
+</pre>
+   <p>The locations are set up as:
+
+<pre class="smallexample">                  a
+                -----
+             f |     | b
+               |  g  |
+                -----
+               |     |
+             e |     | c
+                -----
+                  d
+</pre>
+   <p>This takes a number that's already been converted to a string, and
+prints it.
+
+<pre class="smallexample">     #define LED_ADDR	0xd00003
+     
+     void
+     led_putnum ( num )
+     char num;
+     {
+         static unsigned char *leds = (unsigned char *)LED_ADDR;
+         static unsigned char num_bits [18] = {
+           0xff,						/* clear all */
+           0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x98, /* numbers 0-9 */
+           0x98, 0x20, 0x3, 0x27, 0x21, 0x4, 0xe 		/* letters a-f */
+         };
+     
+         if (num &gt;= '0' &amp;&amp; num &lt;= '9')
+           num = (num - '0') + 1;
+     
+         if (num &gt;= 'a' &amp;&amp; num &lt;= 'f')
+           num = (num - 'a') + 12;
+     
+         if (num == ' ')
+           num = 0;
+     
+         *leds = num_bits[num];
+     }
+     
+     /*
+      * zylons -- draw a rotating pattern. NOTE: this function never returns.
+      */
+     void
+     zylons()
+     {
+       unsigned char *leds 	= (unsigned char *)LED_ADDR;
+       unsigned char curled = 0xfe;
+     
+       while (1)
+         {
+           *leds = curled;
+           curled = (curled &gt;&gt; 1) | (curled &lt;&lt; 7);
+           delay ( 200 );
+         }
+     }
+</pre>
+   </body></html>
+

@@ -1,0 +1,240 @@
+<html lang="en">
+<head>
+<title>Number Theoretic Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Roots.html#Integer-Roots" title="Integer Roots">
+<link rel="next" href="Integer-Comparisons.html#Integer-Comparisons" title="Integer Comparisons">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Number-Theoretic-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Integer-Comparisons.html#Integer-Comparisons">Integer Comparisons</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Roots.html#Integer-Roots">Integer Roots</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.9 Number Theoretic Functions</h3>
+
+<p><a name="index-Number-theoretic-functions-362"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_probab_prime_p</b> (<var>const mpz_t n, int reps</var>)<var><a name="index-mpz_005fprobab_005fprime_005fp-363"></a></var><br>
+<blockquote><p><a name="index-Prime-testing-functions-364"></a><a name="index-Probable-prime-testing-functions-365"></a>Determine whether <var>n</var> is prime.  Return 2 if <var>n</var> is definitely prime,
+return 1 if <var>n</var> is probably prime (without being certain), or return 0 if
+<var>n</var> is definitely non-prime.
+
+        <p>This function performs some trial divisions, then <var>reps</var> Miller-Rabin
+probabilistic primality tests.  A higher <var>reps</var> value will reduce the
+chances of a non-prime being identified as &ldquo;probably prime&rdquo;.  A composite
+number will be identified as a prime with a probability of less than
+4^(-<var>reps</var>).  Reasonable values of <var>reps</var> are between 15
+and 50. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_nextprime</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fnextprime-366"></a></var><br>
+<blockquote><p><a name="index-Next-prime-function-367"></a>Set <var>rop</var> to the next prime greater than <var>op</var>.
+
+        <p>This function uses a probabilistic algorithm to identify primes.  For
+practical purposes it's adequate, the chance of a composite passing will be
+extremely small. 
+</p></blockquote></div>
+
+<!-- mpz_prime_p not implemented as of gmp 3.0. -->
+<!-- @deftypefun int mpz_prime_p (const mpz_t @var{n}) -->
+<!-- Return non-zero if @var{n} is prime and zero if @var{n} is a non-prime. -->
+<!-- This function is far slower than @code{mpz_probab_prime_p}, but then it -->
+<!-- never returns non-zero for composite numbers. -->
+<!-- (For practical purposes, using @code{mpz_probab_prime_p} is adequate. -->
+<!-- The likelihood of a programming error or hardware malfunction is orders -->
+<!-- of magnitudes greater than the likelihood for a composite to pass as a -->
+<!-- prime, if the @var{reps} argument is in the suggested range.) -->
+<!-- @end deftypefun -->
+<div class="defun">
+&mdash; Function: void <b>mpz_gcd</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fgcd-368"></a></var><br>
+<blockquote><p><a name="index-Greatest-common-divisor-functions-369"></a><a name="index-GCD-functions-370"></a>Set <var>rop</var> to the greatest common divisor of <var>op1</var> and <var>op2</var>.  The
+result is always positive even if one or both input operands are negative. 
+Except if both inputs are zero; then this function defines gcd(0,0) = 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: unsigned long int <b>mpz_gcd_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005fgcd_005fui-371"></a></var><br>
+<blockquote><p>Compute the greatest common divisor of <var>op1</var> and <var>op2</var>.  If
+<var>rop</var> is not <code>NULL</code>, store the result there.
+
+        <p>If the result is small enough to fit in an <code>unsigned long int</code>, it is
+returned.  If the result does not fit, 0 is returned, and the result is equal
+to the argument <var>op1</var>.  Note that the result will always fit if <var>op2</var>
+is non-zero. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_gcdext</b> (<var>mpz_t g, mpz_t s, mpz_t t, const mpz_t a, const mpz_t b</var>)<var><a name="index-mpz_005fgcdext-372"></a></var><br>
+<blockquote><p><a name="index-Extended-GCD-373"></a><a name="index-GCD-extended-374"></a>Set <var>g</var> to the greatest common divisor of <var>a</var> and <var>b</var>, and in
+addition set <var>s</var> and <var>t</var> to coefficients satisfying
+<var>a</var>*<var>s</var> + <var>b</var>*<var>t</var> = <var>g</var>. 
+The value in <var>g</var> is always positive, even if one or both of <var>a</var> and
+<var>b</var> are negative (or zero if both inputs are zero).  The values in <var>s</var>
+and <var>t</var> are chosen such that normally, abs(<var>s</var>) &lt;
+abs(<var>b</var>) / (2 <var>g</var>) and abs(<var>t</var>) &lt; abs(<var>a</var>)
+/ (2 <var>g</var>), and these relations define <var>s</var> and <var>t</var> uniquely.  There
+are a few exceptional cases:
+
+        <p>If abs(<var>a</var>) = abs(<var>b</var>), then <var>s</var> = 0,
+<var>t</var> = sgn(<var>b</var>).
+
+        <p>Otherwise, <var>s</var> = sgn(<var>a</var>) if <var>b</var> = 0 or
+abs(<var>b</var>) = 2 <var>g</var>, and <var>t</var> = sgn(<var>b</var>) if
+<var>a</var> = 0 or abs(<var>a</var>) = 2 <var>g</var>.
+
+        <p>In all cases, <var>s</var> = 0 if and only if <var>g</var> =
+abs(<var>b</var>), i.e., if <var>b</var> divides <var>a</var> or <var>a</var> = <var>b</var>
+= 0.
+
+        <p>If <var>t</var> is <code>NULL</code> then that value is not computed. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_lcm</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005flcm-375"></a></var><br>
+&mdash; Function: void <b>mpz_lcm_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long op2</var>)<var><a name="index-mpz_005flcm_005fui-376"></a></var><br>
+<blockquote><p><a name="index-Least-common-multiple-functions-377"></a><a name="index-LCM-functions-378"></a>Set <var>rop</var> to the least common multiple of <var>op1</var> and <var>op2</var>. 
+<var>rop</var> is always positive, irrespective of the signs of <var>op1</var> and
+<var>op2</var>.  <var>rop</var> will be zero if either <var>op1</var> or <var>op2</var> is zero. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_invert</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005finvert-379"></a></var><br>
+<blockquote><p><a name="index-Modular-inverse-functions-380"></a><a name="index-Inverse-modulo-functions-381"></a>Compute the inverse of <var>op1</var> modulo <var>op2</var> and put the result in
+<var>rop</var>.  If the inverse exists, the return value is non-zero and <var>rop</var>
+will satisfy 0 &lt;= <var>rop</var> &lt; abs(<var>op2</var>) (with <var>rop</var>
+= 0 possible only when abs(<var>op2</var>) = 1, i.e., in the
+somewhat degenerate zero ring).  If an inverse doesn't
+exist the return value is zero and <var>rop</var> is undefined.  The behaviour of
+this function is undefined when <var>op2</var> is zero. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_jacobi</b> (<var>const mpz_t a, const mpz_t b</var>)<var><a name="index-mpz_005fjacobi-382"></a></var><br>
+<blockquote><p><a name="index-Jacobi-symbol-functions-383"></a>Calculate the Jacobi symbol (<var>a</var>/<var>b</var>).  This is defined only for <var>b</var> odd. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_legendre</b> (<var>const mpz_t a, const mpz_t p</var>)<var><a name="index-mpz_005flegendre-384"></a></var><br>
+<blockquote><p><a name="index-Legendre-symbol-functions-385"></a>Calculate the Legendre symbol (<var>a</var>/<var>p</var>).  This is defined only for <var>p</var> an odd positive
+prime, and for such <var>p</var> it's identical to the Jacobi symbol. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_kronecker</b> (<var>const mpz_t a, const mpz_t b</var>)<var><a name="index-mpz_005fkronecker-386"></a></var><br>
+&mdash; Function: int <b>mpz_kronecker_si</b> (<var>const mpz_t a, long b</var>)<var><a name="index-mpz_005fkronecker_005fsi-387"></a></var><br>
+&mdash; Function: int <b>mpz_kronecker_ui</b> (<var>const mpz_t a, unsigned long b</var>)<var><a name="index-mpz_005fkronecker_005fui-388"></a></var><br>
+&mdash; Function: int <b>mpz_si_kronecker</b> (<var>long a, const mpz_t b</var>)<var><a name="index-mpz_005fsi_005fkronecker-389"></a></var><br>
+&mdash; Function: int <b>mpz_ui_kronecker</b> (<var>unsigned long a, const mpz_t b</var>)<var><a name="index-mpz_005fui_005fkronecker-390"></a></var><br>
+<blockquote><p><a name="index-Kronecker-symbol-functions-391"></a>Calculate the Jacobi symbol (<var>a</var>/<var>b</var>) with the Kronecker extension (a/2)=(2/a) when a odd, or
+(a/2)=0 when a even.
+
+        <p>When <var>b</var> is odd the Jacobi symbol and Kronecker symbol are
+identical, so <code>mpz_kronecker_ui</code> etc can be used for mixed
+precision Jacobi symbols too.
+
+        <p>For more information see Henri Cohen section 1.4.2 (see <a href="References.html#References">References</a>),
+or any number theory textbook.  See also the example program
+<samp><span class="file">demos/qcn.c</span></samp> which uses <code>mpz_kronecker_ui</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_bitcnt_t <b>mpz_remove</b> (<var>mpz_t rop, const mpz_t op, const mpz_t f</var>)<var><a name="index-mpz_005fremove-392"></a></var><br>
+<blockquote><p><a name="index-Remove-factor-functions-393"></a><a name="index-Factor-removal-functions-394"></a>Remove all occurrences of the factor <var>f</var> from <var>op</var> and store the
+result in <var>rop</var>.  The return value is how many such occurrences were
+removed. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_fac_ui</b> (<var>mpz_t rop, unsigned long int n</var>)<var><a name="index-mpz_005ffac_005fui-395"></a></var><br>
+&mdash; Function: void <b>mpz_2fac_ui</b> (<var>mpz_t rop, unsigned long int n</var>)<var><a name="index-mpz_005f2fac_005fui-396"></a></var><br>
+&mdash; Function: void <b>mpz_mfac_uiui</b> (<var>mpz_t rop, unsigned long int n, unsigned long int m</var>)<var><a name="index-mpz_005fmfac_005fuiui-397"></a></var><br>
+<blockquote><p><a name="index-Factorial-functions-398"></a>Set <var>rop</var> to the factorial of <var>n</var>: <code>mpz_fac_ui</code> computes the plain factorial <var>n</var>!,
+<code>mpz_2fac_ui</code> computes the double-factorial <var>n</var>!!, and <code>mpz_mfac_uiui</code> the
+<var>m</var>-multi-factorial <var>n</var>!^(<var>m</var>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_primorial_ui</b> (<var>mpz_t rop, unsigned long int n</var>)<var><a name="index-mpz_005fprimorial_005fui-399"></a></var><br>
+<blockquote><p><a name="index-Primorial-functions-400"></a>Set <var>rop</var> to the primorial of <var>n</var>, i.e. the product of all positive
+prime numbers &lt;=<var>n</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_bin_ui</b> (<var>mpz_t rop, const mpz_t n, unsigned long int k</var>)<var><a name="index-mpz_005fbin_005fui-401"></a></var><br>
+&mdash; Function: void <b>mpz_bin_uiui</b> (<var>mpz_t rop, unsigned long int n, unsigned&nbsp;long&nbsp;int&nbsp;k<!-- /@w --></var>)<var><a name="index-mpz_005fbin_005fuiui-402"></a></var><br>
+<blockquote><p><a name="index-Binomial-coefficient-functions-403"></a>Compute the binomial coefficient <var>n</var> over
+<var>k</var> and store the result in <var>rop</var>.  Negative values of <var>n</var> are
+supported by <code>mpz_bin_ui</code>, using the identity
+bin(-n,k) = (-1)^k * bin(n+k-1,k), see Knuth volume 1 section 1.2.6
+part G. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_fib_ui</b> (<var>mpz_t fn, unsigned long int n</var>)<var><a name="index-mpz_005ffib_005fui-404"></a></var><br>
+&mdash; Function: void <b>mpz_fib2_ui</b> (<var>mpz_t fn, mpz_t fnsub1, unsigned long int n</var>)<var><a name="index-mpz_005ffib2_005fui-405"></a></var><br>
+<blockquote><p><a name="index-Fibonacci-sequence-functions-406"></a><code>mpz_fib_ui</code> sets <var>fn</var> to to F[n], the <var>n</var>'th Fibonacci
+number.  <code>mpz_fib2_ui</code> sets <var>fn</var> to F[n], and <var>fnsub1</var> to
+F[n-1].
+
+        <p>These functions are designed for calculating isolated Fibonacci numbers.  When
+a sequence of values is wanted it's best to start with <code>mpz_fib2_ui</code> and
+iterate the defining F[n+1]=F[n]+F[n-1] or
+similar. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_lucnum_ui</b> (<var>mpz_t ln, unsigned long int n</var>)<var><a name="index-mpz_005flucnum_005fui-407"></a></var><br>
+&mdash; Function: void <b>mpz_lucnum2_ui</b> (<var>mpz_t ln, mpz_t lnsub1, unsigned long int n</var>)<var><a name="index-mpz_005flucnum2_005fui-408"></a></var><br>
+<blockquote><p><a name="index-Lucas-number-functions-409"></a><code>mpz_lucnum_ui</code> sets <var>ln</var> to to L[n], the <var>n</var>'th Lucas
+number.  <code>mpz_lucnum2_ui</code> sets <var>ln</var> to L[n], and <var>lnsub1</var>
+to L[n-1].
+
+        <p>These functions are designed for calculating isolated Lucas numbers.  When a
+sequence of values is wanted it's best to start with <code>mpz_lucnum2_ui</code> and
+iterate the defining L[n+1]=L[n]+L[n-1] or
+similar.
+
+        <p>The Fibonacci numbers and Lucas numbers are related sequences, so it's never
+necessary to call both <code>mpz_fib2_ui</code> and <code>mpz_lucnum2_ui</code>.  The
+formulas for going from Fibonacci to Lucas can be found in <a href="Lucas-Numbers-Algorithm.html#Lucas-Numbers-Algorithm">Lucas Numbers Algorithm</a>, the reverse is straightforward too. 
+</p></blockquote></div>
+
+   </body></html>
+

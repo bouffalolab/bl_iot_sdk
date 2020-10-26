@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+<title>Memory Handling - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Basics.html#MPFR-Basics" title="MPFR Basics">
+<link rel="prev" href="Exceptions.html#Exceptions" title="Exceptions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Memory-Handling"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Exceptions.html#Exceptions">Exceptions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Basics.html#MPFR-Basics">MPFR Basics</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.7 Memory Handling</h3>
+
+<p>MPFR functions may create caches, e.g., when computing constants such
+as Pi, either because the user has called a function like
+<code>mpfr_const_pi</code> directly or because such a function was called
+internally by the MPFR library itself to compute some other function.
+
+   <p>At any time, the user can free the various caches with
+<code>mpfr_free_cache</code>. It is strongly advised to do that before
+terminating a thread, or before exiting when using tools like
+&lsquo;<samp><span class="samp">valgrind</span></samp>&rsquo; (to avoid memory leaks being reported).
+
+   <p>MPFR internal data such as flags, the exponent range, the default
+precision and rounding mode, and caches (i.e., data that are not
+accessed via parameters) are either global (if MPFR has not been
+compiled as thread safe) or per-thread (thread local storage, TLS). 
+The initial values of TLS data after a thread is created entirely
+depend on the compiler and thread implementation (MPFR simply does
+a conventional variable initialization, the variables being declared
+with an implementation-defined TLS specifier). 
+<!-- References to TLS specification or documentation can be given here. -->
+<!-- Concerning some thread implementations under Unix, POSIX specifies -->
+<!-- the thread interface only; TLS variables (with the __thread specifier) -->
+<!-- is just a GCC extension. There is currently no clear documentation -->
+<!-- about TLS variable initialization. -->
+
+   </body></html>
+

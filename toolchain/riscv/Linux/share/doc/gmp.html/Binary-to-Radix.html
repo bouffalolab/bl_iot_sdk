@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+<title>Binary to Radix - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" title="Radix Conversion Algorithms">
+<link rel="prev" href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" title="Radix Conversion Algorithms">
+<link rel="next" href="Radix-to-Binary.html#Radix-to-Binary" title="Radix to Binary">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Binary-to-Radix"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Radix-to-Binary.html#Radix-to-Binary">Radix to Binary</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms">Radix Conversion Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms">Radix Conversion Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.6.1 Binary to Radix</h4>
+
+<p>Conversions from binary to a power-of-2 radix use a simple and fast
+O(N) bit extraction algorithm.
+
+   <p>Conversions from binary to other radices use one of two algorithms.  Sizes
+below <code>GET_STR_PRECOMPUTE_THRESHOLD</code> use a basic O(N^2) method. 
+Repeated divisions by b^n are made, where b is the radix and
+n is the biggest power that fits in a limb.  But instead of simply
+using the remainder r from such divisions, an extra divide step is done
+to give a fractional limb representing r/b^n.  The digits of r
+can then be extracted using multiplications by b rather than divisions. 
+Special case code is provided for decimal, allowing multiplications by 10 to
+optimize to shifts and adds.
+
+   <p>Above <code>GET_STR_PRECOMPUTE_THRESHOLD</code> a sub-quadratic algorithm is used. 
+For an input t, powers b^(n*2^i) of the radix are
+calculated, until a power between t and sqrt(t) is
+reached.  t is then divided by that largest power, giving a quotient
+which is the digits above that power, and a remainder which is those below. 
+These two parts are in turn divided by the second highest power, and so on
+recursively.  When a piece has been divided down to less than
+<code>GET_STR_DC_THRESHOLD</code> limbs, the basecase algorithm described above is
+used.
+
+   <p>The advantage of this algorithm is that big divisions can make use of the
+sub-quadratic divide and conquer division (see <a href="Divide-and-Conquer-Division.html#Divide-and-Conquer-Division">Divide and Conquer Division</a>), and big divisions tend to have less overheads than lots of
+separate single limb divisions anyway.  But in any case the cost of
+calculating the powers b^(n*2^i) must first be overcome.
+
+   <p><code>GET_STR_PRECOMPUTE_THRESHOLD</code> and <code>GET_STR_DC_THRESHOLD</code> represent
+the same basic thing, the point where it becomes worth doing a big division to
+cut the input in half.  <code>GET_STR_PRECOMPUTE_THRESHOLD</code> includes the cost
+of calculating the radix power required, whereas <code>GET_STR_DC_THRESHOLD</code>
+assumes that's already available, which is the case when recursing.
+
+   <p>Since the base case produces digits from least to most significant but they
+want to be stored from most to least, it's necessary to calculate in advance
+how many digits there will be, or at least be sure not to underestimate that. 
+For GMP the number of input bits is multiplied by <code>chars_per_bit_exactly</code>
+from <code>mp_bases</code>, rounding up.  The result is either correct or one too
+big.
+
+   <p>Examining some of the high bits of the input could increase the chance of
+getting the exact number of digits, but an exact result every time would not
+be practical, since in general the difference between numbers 100<small class="dots">...</small> and
+99<small class="dots">...</small> is only in the last few bits and the work to identify 99<small class="dots">...</small>
+might well be almost as much as a full conversion.
+
+   <p>The r/b^n scheme described above for using multiplications to bring out
+digits might be useful for more than a single limb.  Some brief experiments
+with it on the base case when recursing didn't give a noticeable improvement,
+but perhaps that was only due to the implementation.  Something similar would
+work for the sub-quadratic divisions too, though there would be the cost of
+calculating a bigger radix power.
+
+   <p>Another possible improvement for the sub-quadratic part would be to arrange
+for radix powers that balanced the sizes of quotient and remainder produced,
+i.e. the highest power would be an b^(n*k) approximately equal to
+sqrt(t), not restricted to a 2^i factor.  That ought to
+smooth out a graph of times against sizes, but may or may not be a net
+speedup.
+
+   </body></html>
+

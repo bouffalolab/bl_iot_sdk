@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Integer Roots - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Exponentiation.html#Integer-Exponentiation" title="Integer Exponentiation">
+<link rel="next" href="Number-Theoretic-Functions.html#Number-Theoretic-Functions" title="Number Theoretic Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Integer-Roots"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Number-Theoretic-Functions.html#Number-Theoretic-Functions">Number Theoretic Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Exponentiation.html#Integer-Exponentiation">Integer Exponentiation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.8 Root Extraction Functions</h3>
+
+<p><a name="index-Integer-root-functions-350"></a><a name="index-Root-extraction-functions-351"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_root</b> (<var>mpz_t rop, const mpz_t op, unsigned long int n</var>)<var><a name="index-mpz_005froot-352"></a></var><br>
+<blockquote><p>Set <var>rop</var> to  the truncated integer
+part of the <var>n</var>th root of <var>op</var>.  Return non-zero if the computation
+was exact, i.e., if <var>op</var> is <var>rop</var> to the <var>n</var>th power. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_rootrem</b> (<var>mpz_t root, mpz_t rem, const mpz_t u, unsigned long int n</var>)<var><a name="index-mpz_005frootrem-353"></a></var><br>
+<blockquote><p>Set <var>root</var> to  the truncated
+integer part of the <var>n</var>th root of <var>u</var>.  Set <var>rem</var> to the
+remainder, <var>u</var>&minus;<var>root</var>**<var>n</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_sqrt</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fsqrt-354"></a></var><br>
+<blockquote><p>Set <var>rop</var> to  the truncated
+integer part of the square root of <var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_sqrtrem</b> (<var>mpz_t rop1, mpz_t rop2, const mpz_t op</var>)<var><a name="index-mpz_005fsqrtrem-355"></a></var><br>
+<blockquote><p>Set <var>rop1</var> to the truncated integer part
+of the square root of <var>op</var>, like <code>mpz_sqrt</code>.  Set <var>rop2</var> to the
+remainder <var>op</var>&minus;<var>rop1</var>*<var>rop1</var>, which will be zero if <var>op</var> is a
+perfect square.
+
+        <p>If <var>rop1</var> and <var>rop2</var> are the same variable, the results are
+undefined. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_perfect_power_p</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fperfect_005fpower_005fp-356"></a></var><br>
+<blockquote><p><a name="index-Perfect-power-functions-357"></a><a name="index-Root-testing-functions-358"></a>Return non-zero if <var>op</var> is a perfect power, i.e., if there exist integers
+<var>a</var> and <var>b</var>, with <var>b</var>&gt;1, such that
+<var>op</var> equals <var>a</var> raised to the power <var>b</var>.
+
+        <p>Under this definition both 0 and 1 are considered to be perfect powers. 
+Negative values of <var>op</var> are accepted, but of course can only be odd
+perfect powers. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_perfect_square_p</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fperfect_005fsquare_005fp-359"></a></var><br>
+<blockquote><p><a name="index-Perfect-square-functions-360"></a><a name="index-Root-testing-functions-361"></a>Return non-zero if <var>op</var> is a perfect square, i.e., if the square root of
+<var>op</var> is an integer.  Under this definition both 0 and 1 are considered to
+be perfect squares. 
+</p></blockquote></div>
+
+   </body></html>
+

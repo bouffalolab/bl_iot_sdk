@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+<title>RISC-V-Directives - Using as</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using as">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="RISC_002dV_002dDependent.html#RISC_002dV_002dDependent" title="RISC-V-Dependent">
+<link rel="prev" href="RISC_002dV_002dOptions.html#RISC_002dV_002dOptions" title="RISC-V-Options">
+<link rel="next" href="RISC_002dV_002dFormats.html#RISC_002dV_002dFormats" title="RISC-V-Formats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This file documents the GNU Assembler "as".
+
+Copyright (C) 1991-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="RISC-V-Directives"></a>
+<a name="RISC_002dV_002dDirectives"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="RISC_002dV_002dFormats.html#RISC_002dV_002dFormats">RISC-V-Formats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="RISC_002dV_002dOptions.html#RISC_002dV_002dOptions">RISC-V-Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="RISC_002dV_002dDependent.html#RISC_002dV_002dDependent">RISC-V-Dependent</a>
+<hr>
+</div>
+
+<h4 class="subsection">9.37.2 RISC-V Directives</h4>
+
+<p><a name="index-machine-directives_002c-RISC_002dV-1965"></a><a name="index-RISC_002dV-machine-directives-1966"></a>
+The following table lists all available RISC-V specific directives.
+
+     
+<a name="index-g_t_0040code_007balign_007d-directive-1967"></a>
+<dl><dt><code>.align </code><var>size-log-2</var><dd>Align to the given boundary, with the size given as log2 the number of bytes to
+align to.
+
+     <p><a name="index-Data-directives-1968"></a><br><dt><code>.half </code><var>value</var><dt><code>.word </code><var>value</var><dt><code>.dword </code><var>value</var><dd>Emits a half-word, word, or double-word value at the current position.
+
+     <p><a name="index-DTP_002drelative-data-directives-1969"></a><br><dt><code>.dtprelword </code><var>value</var><dt><code>.dtpreldword </code><var>value</var><dd>Emits a DTP-relative word (or double-word) at the current position.  This is
+meant to be used by the compiler in shared libraries for DWARF debug info for
+thread local variables.
+
+     <p><a name="index-BSS-directive-1970"></a><br><dt><code>.bss</code><dd>Sets the current section to the BSS section.
+
+     <p><a name="index-LEB128-directives-1971"></a><br><dt><code>.uleb128 </code><var>value</var><dt><code>.sleb128 </code><var>value</var><dd>Emits a signed or unsigned LEB128 value at the current position.  This only
+accepts constant expressions, because symbol addresses can change with
+relaxation, and we don't support relocations to modify LEB128 values at link
+time.
+
+     <p><a name="index-Option-directive-1972"></a><a name="index-g_t_0040code_007boption_007d-directive-1973"></a><br><dt><code>.option </code><var>argument</var><dd>Modifies RISC-V specific assembler options inline with the assembly code. 
+This is used when particular instruction sequences must be assembled with a
+specific set of options.  For example, since we relax addressing sequences to
+shorter GP-relative sequences when possible the initial load of GP must not be
+relaxed and should be emitted as something like
+
+     <pre class="smallexample">          	.option push
+          	.option norelax
+          	la gp, __global_pointer$
+          	.option pop
+</pre>
+     <p>in order to produce after linker relaxation the expected
+
+     <pre class="smallexample">          	auipc gp, %pcrel_hi(__global_pointer$)
+          	addi gp, gp, %pcrel_lo(__global_pointer$)
+</pre>
+     <p>instead of just
+
+     <pre class="smallexample">          	addi gp, gp, 0
+</pre>
+     <p>It's not expected that options are changed in this manner during regular use,
+but there are a handful of esoteric cases like the one above where users need
+to disable particular features of the assembler for particular code sequences. 
+The complete list of option arguments is shown below:
+
+          <dl>
+<dt><code>push</code><dt><code>pop</code><dd>Pushes or pops the current option stack.  These should be used whenever
+changing an option in line with assembly code in order to ensure the user's
+command-line options are respected for the bulk of the file being assembled.
+
+          <br><dt><code>rvc</code><dt><code>norvc</code><dd>Enables or disables the generation of compressed instructions.  Instructions
+are opportunistically compressed by the RISC-V assembler when possible, but
+sometimes this behavior is not desirable.
+
+          <br><dt><code>pic</code><dt><code>nopic</code><dd>Enables or disables position-independent code generation.  Unless you really
+know what you're doing, this should only be at the top of a file.
+
+          <br><dt><code>relax</code><dt><code>norelax</code><dd>Enables or disables relaxation.  The RISC-V assembler and linker
+opportunistically relax some code sequences, but sometimes this behavior is not
+desirable. 
+</dl>
+
+     <p><a name="index-INSN-directives-1974"></a><br><dt><code>.insn </code><var>value</var><dt><code>.insn </code><var>value</var><dd>This directive permits the numeric representation of an instructions
+and makes the assembler insert the operands according to one of the
+instruction formats for &lsquo;<samp><span class="samp">.insn</span></samp>&rsquo; (<a href="RISC_002dV_002dFormats.html#RISC_002dV_002dFormats">RISC-V-Formats</a>). 
+For example, the instruction &lsquo;<samp><span class="samp">add a0, a1, a2</span></samp>&rsquo; could be written as
+&lsquo;<samp><span class="samp">.insn r 0x33, 0, 0, a0, a1, a2</span></samp>&rsquo;.
+
+     <p><a name="index-g_t_0040code_007b_002eattribute_007d-directive_002c-RISC_002dV-1975"></a><br><dt><code>.attribute </code><var>tag</var><code>, </code><var>value</var><dd>Set the object attribute <var>tag</var> to <var>value</var>.
+
+     <p>The <var>tag</var> is either an attribute number, or one of the following:
+<code>Tag_RISCV_arch</code>, <code>Tag_RISCV_stack_align</code>,
+<code>Tag_RISCV_unaligned_access</code>, <code>Tag_RISCV_priv_spec</code>,
+<code>Tag_RISCV_priv_spec_minor</code>, <code>Tag_RISCV_priv_spec_revision</code>.
+
+   </dl>
+
+   </body></html>
+

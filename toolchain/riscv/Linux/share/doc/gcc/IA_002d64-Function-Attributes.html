@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+<title>IA-64 Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="H8_002f300-Function-Attributes.html#H8_002f300-Function-Attributes" title="H8/300 Function Attributes">
+<link rel="next" href="M32C-Function-Attributes.html#M32C-Function-Attributes" title="M32C Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="IA-64-Function-Attributes"></a>
+<a name="IA_002d64-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="M32C-Function-Attributes.html#M32C-Function-Attributes">M32C Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="H8_002f300-Function-Attributes.html#H8_002f300-Function-Attributes">H8/300 Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.10 IA-64 Function Attributes</h4>
+
+<p>These function attributes are supported on IA-64 targets:
+
+     <dl>
+<dt><code>syscall_linkage</code><dd><a name="index-g_t_0040code_007bsyscall_005flinkage_007d-function-attribute_002c-IA_002d64-3609"></a>This attribute is used to modify the IA-64 calling convention by marking
+all input registers as live at all function exits.  This makes it possible
+to restart a system call after an interrupt without having to save/restore
+the input registers.  This also prevents kernel data from leaking into
+application code.
+
+     <br><dt><code>version_id</code><dd><a name="index-g_t_0040code_007bversion_005fid_007d-function-attribute_002c-IA_002d64-3610"></a>This IA-64 HP-UX attribute, attached to a global variable or function, renames a
+symbol to contain a version string, thus allowing for function level
+versioning.  HP-UX system header files may use function level versioning
+for some system calls.
+
+     <pre class="smallexample">          extern int foo () __attribute__((version_id ("20040821")));
+</pre>
+     <p class="noindent">Calls to <code>foo</code> are mapped to calls to <code>foo{20040821}</code>. 
+</dl>
+
+ </body></html>
+

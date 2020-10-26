@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+<title>Misc Support - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libc.html#Libc" title="Libc">
+<link rel="prev" href="Memory-Support.html#Memory-Support" title="Memory Support">
+<link rel="next" href="Debugging.html#Debugging" title="Debugging">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Misc-Support"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Debugging.html#Debugging">Debugging</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory-Support.html#Memory-Support">Memory Support</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libc.html#Libc">Libc</a>
+<hr>
+</div>
+
+<h4 class="subsection">3.4.3 Misc support routines</h4>
+
+<p>These are called by <code>newlib</code> but don't apply to the embedded
+environment. <code>isatty()</code> is self explanatory. <code>kill()</code> doesn't
+apply either in an environment withno process control, so it justs
+exits, which is a similar enough behavior. <code>getpid()</code> can safely
+return any value greater than 1. The value doesn't effect anything in
+<code>newlib</code> because once again there is no process control.
+
+<pre class="smallexample">     /*
+      * isatty -- returns 1 if connected to a terminal device,
+      *           returns 0 if not. Since we're hooked up to a
+      *           serial port, we'll say yes and return a 1.
+      */
+     int
+     isatty(fd)
+          int fd;
+     {
+       return (1);
+     }
+     
+     /*
+      * getpid -- only one process, so just return 1.
+      */
+     #define __MYPID 1
+     int
+     getpid()
+     {
+       return __MYPID;
+     }
+     
+     /*
+      * kill -- go out via exit...
+      */
+     int
+     kill(pid, sig)
+          int pid;
+          int sig;
+     {
+       if(pid == __MYPID)
+         _exit(sig);
+       return 0;
+     }
+</pre>
+   </body></html>
+

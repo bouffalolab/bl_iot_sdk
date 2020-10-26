@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+<title>Float Arithmetic - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link rel="prev" href="Converting-Floats.html#Converting-Floats" title="Converting Floats">
+<link rel="next" href="Float-Comparison.html#Float-Comparison" title="Float Comparison">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Float-Arithmetic"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Float-Comparison.html#Float-Comparison">Float Comparison</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Converting-Floats.html#Converting-Floats">Converting Floats</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">7.5 Arithmetic Functions</h3>
+
+<p><a name="index-Float-arithmetic-functions-588"></a><a name="index-Arithmetic-functions-589"></a>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_add</b> (<var>mpf_t rop, const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005fadd-590"></a></var><br>
+&mdash; Function: void <b>mpf_add_ui</b> (<var>mpf_t rop, const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fadd_005fui-591"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> + <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_sub</b> (<var>mpf_t rop, const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005fsub-592"></a></var><br>
+&mdash; Function: void <b>mpf_ui_sub</b> (<var>mpf_t rop, unsigned long int op1, const mpf_t op2</var>)<var><a name="index-mpf_005fui_005fsub-593"></a></var><br>
+&mdash; Function: void <b>mpf_sub_ui</b> (<var>mpf_t rop, const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fsub_005fui-594"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> &minus; <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_mul</b> (<var>mpf_t rop, const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005fmul-595"></a></var><br>
+&mdash; Function: void <b>mpf_mul_ui</b> (<var>mpf_t rop, const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fmul_005fui-596"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times <var>op2</var>. 
+</p></blockquote></div>
+
+   <p>Division is undefined if the divisor is zero, and passing a zero divisor to the
+divide functions will make these functions intentionally divide by zero.  This
+lets the user handle arithmetic exceptions in these functions in the same
+manner as other arithmetic exceptions.
+
+<div class="defun">
+&mdash; Function: void <b>mpf_div</b> (<var>mpf_t rop, const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005fdiv-597"></a></var><br>
+&mdash; Function: void <b>mpf_ui_div</b> (<var>mpf_t rop, unsigned long int op1, const mpf_t op2</var>)<var><a name="index-mpf_005fui_005fdiv-598"></a></var><br>
+&mdash; Function: void <b>mpf_div_ui</b> (<var>mpf_t rop, const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fdiv_005fui-599"></a></var><br>
+<blockquote><p><a name="index-Division-functions-600"></a>Set <var>rop</var> to <var>op1</var>/<var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_sqrt</b> (<var>mpf_t rop, const mpf_t op</var>)<var><a name="index-mpf_005fsqrt-601"></a></var><br>
+&mdash; Function: void <b>mpf_sqrt_ui</b> (<var>mpf_t rop, unsigned long int op</var>)<var><a name="index-mpf_005fsqrt_005fui-602"></a></var><br>
+<blockquote><p><a name="index-Root-extraction-functions-603"></a>Set <var>rop</var> to the square root of <var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_pow_ui</b> (<var>mpf_t rop, const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fpow_005fui-604"></a></var><br>
+<blockquote><p><a name="index-Exponentiation-functions-605"></a><a name="index-Powering-functions-606"></a>Set <var>rop</var> to <var>op1</var> raised to the power <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_neg</b> (<var>mpf_t rop, const mpf_t op</var>)<var><a name="index-mpf_005fneg-607"></a></var><br>
+<blockquote><p>Set <var>rop</var> to &minus;<var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_abs</b> (<var>mpf_t rop, const mpf_t op</var>)<var><a name="index-mpf_005fabs-608"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the absolute value of <var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_mul_2exp</b> (<var>mpf_t rop, const mpf_t op1, mp_bitcnt_t op2</var>)<var><a name="index-mpf_005fmul_005f2exp-609"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times 2 raised to
+<var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_div_2exp</b> (<var>mpf_t rop, const mpf_t op1, mp_bitcnt_t op2</var>)<var><a name="index-mpf_005fdiv_005f2exp-610"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> divided by 2 raised to
+<var>op2</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

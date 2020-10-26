@@ -1,0 +1,176 @@
+<html lang="en">
+<head>
+<title>AArch64 Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="Common-Function-Attributes.html#Common-Function-Attributes" title="Common Function Attributes">
+<link rel="next" href="ARC-Function-Attributes.html#ARC-Function-Attributes" title="ARC Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="AArch64-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="ARC-Function-Attributes.html#ARC-Function-Attributes">ARC Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Common-Function-Attributes.html#Common-Function-Attributes">Common Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.2 AArch64 Function Attributes</h4>
+
+<p>The following target-specific function attributes are available for the
+AArch64 target.  For the most part, these options mirror the behavior of
+similar command-line options (see <a href="AArch64-Options.html#AArch64-Options">AArch64 Options</a>), but on a
+per-function basis.
+
+     <dl>
+<dt><code>general-regs-only</code><dd><a name="index-g_t_0040code_007bgeneral_002dregs_002donly_007d-function-attribute_002c-AArch64-3546"></a>Indicates that no floating-point or Advanced SIMD registers should be
+used when generating code for this function.  If the function explicitly
+uses floating-point code, then the compiler gives an error.  This is
+the same behavior as that of the command-line option
+<samp><span class="option">-mgeneral-regs-only</span></samp>.
+
+     <br><dt><code>fix-cortex-a53-835769</code><dd><a name="index-g_t_0040code_007bfix_002dcortex_002da53_002d835769_007d-function-attribute_002c-AArch64-3547"></a>Indicates that the workaround for the Cortex-A53 erratum 835769 should be
+applied to this function.  To explicitly disable the workaround for this
+function specify the negated form: <code>no-fix-cortex-a53-835769</code>. 
+This corresponds to the behavior of the command line options
+<samp><span class="option">-mfix-cortex-a53-835769</span></samp> and <samp><span class="option">-mno-fix-cortex-a53-835769</span></samp>.
+
+     <br><dt><code>cmodel=</code><dd><a name="index-g_t_0040code_007bcmodel_003d_007d-function-attribute_002c-AArch64-3548"></a>Indicates that code should be generated for a particular code model for
+this function.  The behavior and permissible arguments are the same as
+for the command line option <samp><span class="option">-mcmodel=</span></samp>.
+
+     <br><dt><code>strict-align</code><dd><a name="index-g_t_0040code_007bstrict_002dalign_007d-function-attribute_002c-AArch64-3549"></a>Indicates that the compiler should not assume that unaligned memory references
+are handled by the system.  The behavior is the same as for the command-line
+option <samp><span class="option">-mstrict-align</span></samp>.
+
+     <br><dt><code>omit-leaf-frame-pointer</code><dd><a name="index-g_t_0040code_007bomit_002dleaf_002dframe_002dpointer_007d-function-attribute_002c-AArch64-3550"></a>Indicates that the frame pointer should be omitted for a leaf function call. 
+To keep the frame pointer, the inverse attribute
+<code>no-omit-leaf-frame-pointer</code> can be specified.  These attributes have
+the same behavior as the command-line options <samp><span class="option">-momit-leaf-frame-pointer</span></samp>
+and <samp><span class="option">-mno-omit-leaf-frame-pointer</span></samp>.
+
+     <br><dt><code>tls-dialect=</code><dd><a name="index-g_t_0040code_007btls_002ddialect_003d_007d-function-attribute_002c-AArch64-3551"></a>Specifies the TLS dialect to use for this function.  The behavior and
+permissible arguments are the same as for the command-line option
+<samp><span class="option">-mtls-dialect=</span></samp>.
+
+     <br><dt><code>arch=</code><dd><a name="index-g_t_0040code_007barch_003d_007d-function-attribute_002c-AArch64-3552"></a>Specifies the architecture version and architectural extensions to use
+for this function.  The behavior and permissible arguments are the same as
+for the <samp><span class="option">-march=</span></samp> command-line option.
+
+     <br><dt><code>tune=</code><dd><a name="index-g_t_0040code_007btune_003d_007d-function-attribute_002c-AArch64-3553"></a>Specifies the core for which to tune the performance of this function. 
+The behavior and permissible arguments are the same as for the <samp><span class="option">-mtune=</span></samp>
+command-line option.
+
+     <br><dt><code>cpu=</code><dd><a name="index-g_t_0040code_007bcpu_003d_007d-function-attribute_002c-AArch64-3554"></a>Specifies the core for which to tune the performance of this function and also
+whose architectural features to use.  The behavior and valid arguments are the
+same as for the <samp><span class="option">-mcpu=</span></samp> command-line option.
+
+     <br><dt><code>sign-return-address</code><dd><a name="index-g_t_0040code_007bsign_002dreturn_002daddress_007d-function-attribute_002c-AArch64-3555"></a>Select the function scope on which return address signing will be applied.  The
+behavior and permissible arguments are the same as for the command-line option
+<samp><span class="option">-msign-return-address=</span></samp>.  The default value is <code>none</code>.
+
+ </dl>
+
+ <p>The above target attributes can be specified as follows:
+
+<pre class="smallexample">     __attribute__((target("<var>attr-string</var>")))
+     int
+     f (int a)
+     {
+       return a + 5;
+     }
+</pre>
+ <p>where <var>attr-string</var> is one of the attribute strings specified above.
+
+ <p>Additionally, the architectural extension string may be specified on its
+own.  This can be used to turn on and off particular architectural extensions
+without having to specify a particular architecture version or core.  Example:
+
+<pre class="smallexample">     __attribute__((target("+crc+nocrypto")))
+     int
+     foo (int a)
+     {
+       return a + 5;
+     }
+</pre>
+ <p>In this example <code>target("+crc+nocrypto")</code> enables the <code>crc</code>
+extension and disables the <code>crypto</code> extension for the function <code>foo</code>
+without modifying an existing <samp><span class="option">-march=</span></samp> or <samp><span class="option">-mcpu</span></samp> option.
+
+ <p>Multiple target function attributes can be specified by separating them with
+a comma.  For example:
+<pre class="smallexample">     __attribute__((target("arch=armv8-a+crc+crypto,tune=cortex-a53")))
+     int
+     foo (int a)
+     {
+       return a + 5;
+     }
+</pre>
+ <p>is valid and compiles function <code>foo</code> for ARMv8-A with <code>crc</code>
+and <code>crypto</code> extensions and tunes it for <code>cortex-a53</code>.
+
+<h5 class="subsubsection">6.31.2.1 Inlining rules</h5>
+
+<p>Specifying target attributes on individual functions or performing link-time
+optimization across translation units compiled with different target options
+can affect function inlining rules:
+
+ <p>In particular, a caller function can inline a callee function only if the
+architectural features available to the callee are a subset of the features
+available to the caller. 
+For example: A function <code>foo</code> compiled with <samp><span class="option">-march=armv8-a+crc</span></samp>,
+or tagged with the equivalent <code>arch=armv8-a+crc</code> attribute,
+can inline a function <code>bar</code> compiled with <samp><span class="option">-march=armv8-a+nocrc</span></samp>
+because the all the architectural features that function <code>bar</code> requires
+are available to function <code>foo</code>.  Conversely, function <code>bar</code> cannot
+inline function <code>foo</code>.
+
+ <p>Additionally inlining a function compiled with <samp><span class="option">-mstrict-align</span></samp> into a
+function compiled without <code>-mstrict-align</code> is not allowed. 
+However, inlining a function compiled without <samp><span class="option">-mstrict-align</span></samp> into a
+function compiled with <samp><span class="option">-mstrict-align</span></samp> is allowed.
+
+ <p>Note that CPU tuning options and attributes such as the <samp><span class="option">-mcpu=</span></samp>,
+<samp><span class="option">-mtune=</span></samp> do not inhibit inlining unless the CPU specified by the
+<samp><span class="option">-mcpu=</span></samp> option or the <code>cpu=</code> attribute conflicts with the
+architectural feature rules specified above.
+
+ </body></html>
+

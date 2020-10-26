@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Basecase Multiplication - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Multiplication-Algorithms.html#Multiplication-Algorithms" title="Multiplication Algorithms">
+<link rel="prev" href="Multiplication-Algorithms.html#Multiplication-Algorithms" title="Multiplication Algorithms">
+<link rel="next" href="Karatsuba-Multiplication.html#Karatsuba-Multiplication" title="Karatsuba Multiplication">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Basecase-Multiplication"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Karatsuba-Multiplication.html#Karatsuba-Multiplication">Karatsuba Multiplication</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.1.1 Basecase Multiplication</h4>
+
+<p>Basecase NxM multiplication is a straightforward rectangular set of
+cross-products, the same as long multiplication done by hand and for that
+reason sometimes known as the schoolbook or grammar school method.  This is an
+O(N*M) algorithm.  See Knuth section 4.3.1 algorithm M
+(see <a href="References.html#References">References</a>), and the <samp><span class="file">mpn/generic/mul_basecase.c</span></samp> code.
+
+   <p>Assembly implementations of <code>mpn_mul_basecase</code> are essentially the same
+as the generic C code, but have all the usual assembly tricks and
+obscurities introduced for speed.
+
+   <p>A square can be done in roughly half the time of a multiply, by using the fact
+that the cross products above and below the diagonal are the same.  A triangle
+of products below the diagonal is formed, doubled (left shift by one bit), and
+then the products on the diagonal added.  This can be seen in
+<samp><span class="file">mpn/generic/sqr_basecase.c</span></samp>.  Again the assembly implementations take
+essentially the same approach.
+
+<pre class="example">          u0  u1  u2  u3  u4
+        +---+---+---+---+---+
+     u0 | d |   |   |   |   |
+        +---+---+---+---+---+
+     u1 |   | d |   |   |   |
+        +---+---+---+---+---+
+     u2 |   |   | d |   |   |
+        +---+---+---+---+---+
+     u3 |   |   |   | d |   |
+        +---+---+---+---+---+
+     u4 |   |   |   |   | d |
+        +---+---+---+---+---+
+</pre>
+   <p>In practice squaring isn't a full 2x faster than multiplying, it's
+usually around 1.5x.  Less than 1.5x probably indicates
+<code>mpn_sqr_basecase</code> wants improving on that CPU.
+
+   <p>On some CPUs <code>mpn_mul_basecase</code> can be faster than the generic C
+<code>mpn_sqr_basecase</code> on some small sizes.  <code>SQR_BASECASE_THRESHOLD</code> is
+the size at which to use <code>mpn_sqr_basecase</code>, this will be zero if that
+routine should be used always.
+
+   </body></html>
+

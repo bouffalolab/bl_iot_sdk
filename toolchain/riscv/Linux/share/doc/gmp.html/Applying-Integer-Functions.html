@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+<title>Applying Integer Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Rational-Number-Functions.html#Rational-Number-Functions" title="Rational Number Functions">
+<link rel="prev" href="Comparing-Rationals.html#Comparing-Rationals" title="Comparing Rationals">
+<link rel="next" href="I_002fO-of-Rationals.html#I_002fO-of-Rationals" title="I/O of Rationals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Applying-Integer-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="I_002fO-of-Rationals.html#I_002fO-of-Rationals">I/O of Rationals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Comparing-Rationals.html#Comparing-Rationals">Comparing Rationals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">6.5 Applying Integer Functions to Rationals</h3>
+
+<p><a name="index-Rational-numerator-and-denominator-531"></a><a name="index-Numerator-and-denominator-532"></a>
+The set of <code>mpq</code> functions is quite small.  In particular, there are few
+functions for either input or output.  The following functions give direct
+access to the numerator and denominator of an <code>mpq_t</code>.
+
+   <p>Note that if an assignment to the numerator and/or denominator could take an
+<code>mpq_t</code> out of the canonical form described at the start of this chapter
+(see <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>) then <code>mpq_canonicalize</code> must be
+called before any other <code>mpq</code> functions are applied to that <code>mpq_t</code>.
+
+<div class="defun">
+&mdash; Macro: mpz_t <b>mpq_numref</b> (<var>const mpq_t op</var>)<var><a name="index-mpq_005fnumref-533"></a></var><br>
+&mdash; Macro: mpz_t <b>mpq_denref</b> (<var>const mpq_t op</var>)<var><a name="index-mpq_005fdenref-534"></a></var><br>
+<blockquote><p>Return a reference to the numerator and denominator of <var>op</var>, respectively. 
+The <code>mpz</code> functions can be used on the result of these macros. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_get_num</b> (<var>mpz_t numerator, const mpq_t rational</var>)<var><a name="index-mpq_005fget_005fnum-535"></a></var><br>
+&mdash; Function: void <b>mpq_get_den</b> (<var>mpz_t denominator, const mpq_t rational</var>)<var><a name="index-mpq_005fget_005fden-536"></a></var><br>
+&mdash; Function: void <b>mpq_set_num</b> (<var>mpq_t rational, const mpz_t numerator</var>)<var><a name="index-mpq_005fset_005fnum-537"></a></var><br>
+&mdash; Function: void <b>mpq_set_den</b> (<var>mpq_t rational, const mpz_t denominator</var>)<var><a name="index-mpq_005fset_005fden-538"></a></var><br>
+<blockquote><p>Get or set the numerator or denominator of a rational.  These functions are
+equivalent to calling <code>mpz_set</code> with an appropriate <code>mpq_numref</code> or
+<code>mpq_denref</code>.  Direct use of <code>mpq_numref</code> or <code>mpq_denref</code> is
+recommended instead of these functions. 
+</p></blockquote></div>
+
+   </body></html>
+

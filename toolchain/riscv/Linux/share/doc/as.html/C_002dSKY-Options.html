@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+<title>C-SKY Options - Using as</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using as">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C_002dSKY_002dDependent.html#C_002dSKY_002dDependent" title="C-SKY-Dependent">
+<link rel="next" href="C_002dSKY-Syntax.html#C_002dSKY-Syntax" title="C-SKY Syntax">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This file documents the GNU Assembler "as".
+
+Copyright (C) 1991-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C-SKY-Options"></a>
+<a name="C_002dSKY-Options"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002dSKY-Syntax.html#C_002dSKY-Syntax">C-SKY Syntax</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C_002dSKY_002dDependent.html#C_002dSKY_002dDependent">C-SKY-Dependent</a>
+<hr>
+</div>
+
+<h4 class="subsection">9.9.1 Options</h4>
+
+<p><a name="index-C_002dSKY-options-911"></a><a name="index-options-for-C_002dSKY-912"></a>
+<!-- man begin OPTIONS -->
+     
+<a name="index-g_t_0040code_007bmarch_007d-command_002dline-option_002c-C_002dSKY-913"></a>
+<dl><dt><code>-march=</code><var>archname</var><dd>Assemble for architecture <var>archname</var>.  The <samp><span class="option">--help</span></samp> option
+lists valid values for <var>archname</var>.
+
+     <p><a name="index-g_t_0040code_007bmcpu_007d-command_002dline-option_002c-C_002dSKY-914"></a><br><dt><code>-mcpu=</code><var>cpuname</var><dd>Assemble for architecture <var>cpuname</var>.  The <samp><span class="option">--help</span></samp> option
+lists valid values for <var>cpuname</var>.
+
+     <p><a name="index-g_t_0040code_007bEL_007d-command_002dline-option_002c-C_002dSKY-915"></a><a name="index-g_t_0040code_007bmlittle_002dendian_007d-command_002dline-option_002c-C_002dSKY-916"></a><br><dt><code>-EL</code><dt><code>-mlittle-endian</code><dd>Generate little-endian output.
+
+     <p><a name="index-g_t_0040code_007bEB_007d-command_002dline-option_002c-C_002dSKY-917"></a><a name="index-g_t_0040code_007bmbig_002dendian_007d-command_002dline-option_002c-C_002dSKY-918"></a><br><dt><code>-EB</code><dt><code>-mbig-endian</code><dd>Generate big-endian output.
+
+     <p><a name="index-g_t_0040code_007bfpic_007d-command_002dline-option_002c-C_002dSKY-919"></a><a name="index-g_t_0040code_007bpic_007d-command_002dline-option_002c-C_002dSKY-920"></a><br><dt><code>-fpic</code><dt><code>-pic</code><dd>Generate position-independent code.
+
+     <p><a name="index-g_t_0040code_007bmljump_007d-command_002dline-option_002c-C_002dSKY-921"></a><a name="index-g_t_0040code_007bmno_002dljump_007d-command_002dline-option_002c-C_002dSKY-922"></a><br><dt><code>-mljump</code><dt><code>-mno-ljump</code><dd>Enable/disable transformation of the short branch instructions
+<code>jbf</code>, <code>jbt</code>, and <code>jbr</code> to <code>jmpi</code>. 
+This option is for V2 processors only. 
+It is ignored on CK801 and CK802 targets, which do not support the <code>jmpi</code>
+instruction, and is enabled by default for other processors.
+
+     <p><a name="index-g_t_0040code_007bmbranch_002dstub_007d-command_002dline-option_002c-C_002dSKY-923"></a><a name="index-g_t_0040code_007bmno_002dbranch_002dstub_007d-command_002dline-option_002c-C_002dSKY-924"></a><br><dt><code>-mbranch-stub</code><dt><code>-mno-branch-stub</code><dd>Pass through <code>R_CKCORE_PCREL_IMM26BY2</code> relocations for <code>bsr</code>
+instructions to the linker.
+
+     <p>This option is only available for bare-metal C-SKY V2 ELF targets,
+where it is enabled by default.  It cannot be used in code that will be
+dynamically linked against shared libraries.
+
+     <p><a name="index-g_t_0040code_007bforce2bsr_007d-command_002dline-option_002c-C_002dSKY-925"></a><a name="index-g_t_0040code_007bmforce2bsr_007d-command_002dline-option_002c-C_002dSKY-926"></a><a name="index-g_t_0040code_007bno_002dforce2bsr_007d-command_002dline-option_002c-C_002dSKY-927"></a><a name="index-g_t_0040code_007bmno_002dforce2bsr_007d-command_002dline-option_002c-C_002dSKY-928"></a><br><dt><code>-force2bsr</code><dt><code>-mforce2bsr</code><dt><code>-no-force2bsr</code><dt><code>-mno-force2bsr</code><dd>Enable/disable transformation of <code>jbsr</code> instructions to <code>bsr</code>. 
+This option is always enabled (and <samp><span class="option">-mno-force2bsr</span></samp> is ignored)
+for CK801/CK802 targets.  It is also always enabled when
+<samp><span class="option">-mbranch-stub</span></samp> is in effect.
+
+     <p><a name="index-g_t_0040code_007bjsri2bsr_007d-command_002dline-option_002c-C_002dSKY-929"></a><a name="index-g_t_0040code_007bmjsri2bsr_007d-command_002dline-option_002c-C_002dSKY-930"></a><a name="index-g_t_0040code_007bno_002djsri2bsr_007d-command_002dline-option_002c-C_002dSKY-931"></a><a name="index-g_t_0040code_007bmno_002djsri2bsr_007d-command_002dline-option_002c-C_002dSKY-932"></a><br><dt><code>-jsri2bsr</code><dt><code>-mjsri2bsr</code><dt><code>-no-jsri2bsr</code><dt><code>-mno-jsri2bsr</code><dd>Enable/disable transformation of <code>jsri</code> instructions to <code>bsr</code>. 
+This option is enabled by default.
+
+     <p><a name="index-g_t_0040code_007bmnolrw_007d-command_002dline-option_002c-C_002dSKY-933"></a><a name="index-g_t_0040code_007bmno_002dlrw_007d-command_002dline-option_002c-C_002dSKY-934"></a><br><dt><code>-mnolrw</code><dt><code>-mno-lrw</code><dd>Enable/disable transformation of <code>lrw</code> instructions into a
+<code>movih</code>/<code>ori</code> pair.
+
+     <p><a name="index-g_t_0040code_007bmelrw_007d-command_002dline-option_002c-C_002dSKY-935"></a><a name="index-g_t_0040code_007bmno_002delrw_007d-command_002dline-option_002c-C_002dSKY-936"></a><br><dt><code>-melrw</code><dt><code>-mno-elrw</code><dd>Enable/disable extended <code>lrw</code> instructions. 
+This option is enabled by default for CK800-series processors.
+
+     <p><a name="index-g_t_0040code_007bmlaf_007d-command_002dline-option_002c-C_002dSKY-937"></a><a name="index-g_t_0040code_007bmliterals_002dafter_002dfunc_007d-command_002dline-option_002c-C_002dSKY-938"></a><a name="index-g_t_0040code_007bmno_002dlaf_007d-command_002dline-option_002c-C_002dSKY-939"></a><a name="index-g_t_0040code_007bmno_002dliterals_002dafter_002dfunc_007d-command_002dline-option_002c-C_002dSKY-940"></a><br><dt><code>-mlaf</code><dt><code>-mliterals-after-func</code><dt><code>-mno-laf</code><dt><code>-mno-literals-after-func</code><dd>Enable/disable placement of literal pools after each function.
+
+     <p><a name="index-g_t_0040code_007bmlabr_007d-command_002dline-option_002c-C_002dSKY-941"></a><a name="index-g_t_0040code_007bmliterals_002dafter_002dbr_007d-command_002dline-option_002c-C_002dSKY-942"></a><a name="index-g_t_0040code_007bmno_002dlabr_007d-command_002dline-option_002c-C_002dSKY-943"></a><a name="index-g_t_0040code_007bmnoliterals_002dafter_002dbr_007d-command_002dline-option_002c-C_002dSKY-944"></a><br><dt><code>-mlabr</code><dt><code>-mliterals-after-br</code><dt><code>-mno-labr</code><dt><code>-mnoliterals-after-br</code><dd>Enable/disable placement of literal pools after unconditional branches. 
+This option is enabled by default.
+
+     <p><a name="index-g_t_0040code_007bmistack_007d-command_002dline-option_002c-C_002dSKY-945"></a><a name="index-g_t_0040code_007bmno_002distack_007d-command_002dline-option_002c-C_002dSKY-946"></a><br><dt><code>-mistack</code><dt><code>-mno-istack</code><dd>Enable/disable interrupt stack instructions.  This option is enabled by
+default on CK801, CK802, and CK802 processors.
+
+   </dl>
+
+   <p>The following options explicitly enable certain optional instructions. 
+These features are also enabled implicitly by using <code>-mcpu=</code> to specify
+a processor that supports it.
+
+     
+<a name="index-g_t_0040code_007bmhard_002dfloat_007d-command_002dline-option_002c-C_002dSKY-947"></a>
+<dl><dt><code>-mhard-float</code><dd>Enable hard float instructions.
+
+     <p><a name="index-g_t_0040code_007bmmp_007d-command_002dline-option_002c-C_002dSKY-948"></a><br><dt><code>-mmp</code><dd>Enable multiprocessor instructions.
+
+     <p><a name="index-g_t_0040code_007bmcp_007d-command_002dline-option_002c-C_002dSKY-949"></a><br><dt><code>-mcp</code><dd>Enable coprocessor instructions.
+
+     <p><a name="index-g_t_0040code_007bmcache_007d-command_002dline-option_002c-C_002dSKY-950"></a><br><dt><code>-mcache</code><dd>Enable cache prefetch instruction.
+
+     <p><a name="index-g_t_0040code_007bmsecurity_007d-command_002dline-option_002c-C_002dSKY-951"></a><br><dt><code>-msecurity</code><dd>Enable C-SKY security instructions.
+
+     <p><a name="index-g_t_0040code_007bmtrust_007d-command_002dline-option_002c-C_002dSKY-952"></a><br><dt><code>-mtrust</code><dd>Enable C-SKY trust instructions.
+
+     <p><a name="index-g_t_0040code_007bmdsp_007d-command_002dline-option_002c-C_002dSKY-953"></a><br><dt><code>-mdsp</code><dd>Enable DSP instructions.
+
+     <p><a name="index-g_t_0040code_007bmedsp_007d-command_002dline-option_002c-C_002dSKY-954"></a><br><dt><code>-medsp</code><dd>Enable enhanced DSP instructions.
+
+     <p><a name="index-g_t_0040code_007bmvdsp_007d-command_002dline-option_002c-C_002dSKY-955"></a><br><dt><code>-mvdsp</code><dd>Enable vector DSP instructions.
+
+   </dl>
+   <!-- man end -->
+
+   </body></html>
+

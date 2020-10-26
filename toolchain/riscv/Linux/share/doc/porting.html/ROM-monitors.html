@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+<title>ROM monitors - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GDB.html#GDB" title="GDB">
+<link rel="prev" href="Exception-handler.html#Exception-handler" title="Exception handler">
+<link rel="next" href="Other-remote-protocols.html#Other-remote-protocols" title="Other remote protocols">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ROM-monitors"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Other-remote-protocols.html#Other-remote-protocols">Other remote protocols</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Exception-handler.html#Exception-handler">Exception handler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GDB.html#GDB">GDB</a>
+<hr>
+</div>
+
+<h3 class="section">4.3 Using a ROM monitor as a backend</h3>
+
+<p>GDB also can mimic a human user and use a ROM monitors normal debug
+commands as a backend. This consists mostly of sending and parsing
+<code>ASCII</code> strings. All the ROM monitor interfaces share a common set
+of routines in <code>gdb/monitor.c</code>. This supports adding new ROM
+monitor interfaces by filling in a structure with the common commands
+GDB needs. GDb already supports several command ROM monitors, including
+Motorola's <code>Bug</code> monitor for their VME boards, and the Rom68k
+monitor by Integrated Systems, Inc. for various m68k based boards. GDB
+also supports the custom ROM monitors on the WinBond and Oki PA based
+targets. There is builtin support for loading files to ROM monitors
+specifically. GDB can convert a binary into an srecord and then load it
+as an ascii file, or using <code>xmodem</code>.
+
+<!-- FIXME: do I need trademark somethings here ? Is Integrated the right -->
+<!-- company? -->
+   </body></html>
+

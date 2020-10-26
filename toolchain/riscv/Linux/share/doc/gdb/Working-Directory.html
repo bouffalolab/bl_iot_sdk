@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>Working Directory - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Running.html#Running" title="Running">
+<link rel="prev" href="Environment.html#Environment" title="Environment">
+<link rel="next" href="Input_002fOutput.html#Input_002fOutput" title="Input/Output">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Working-Directory"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Input_002fOutput.html#Input_002fOutput">Input/Output</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Environment.html#Environment">Environment</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Running.html#Running">Running</a>
+<hr>
+</div>
+
+<h3 class="section">4.5 Your Program's Working Directory</h3>
+
+<p><a name="index-working-directory-_0028of-your-program_0029-135"></a>Each time you start your program with <code>run</code>, the inferior will be
+initialized with the current working directory specified by the
+<kbd>set cwd</kbd> command.  If no directory has been specified by this
+command, then the inferior will inherit <span class="sc">gdb</span>'s current working
+directory as its working directory if native debugging, or it will
+inherit the remote server's current working directory if remote
+debugging.
+
+     
+<a name="index-set-cwd-136"></a>
+<a name="index-change-inferior_0027s-working-directory-137"></a>
+<dl><a name="set-cwd-command"></a><dt><code>set cwd </code><span class="roman">[</span><var>directory</var><span class="roman">]</span><dd>Set the inferior's working directory to <var>directory</var>, which will be
+<code>glob</code>-expanded in order to resolve tildes (<samp><span class="file">~</span></samp>).  If no
+argument has been specified, the command clears the setting and resets
+it to an empty state.  This setting has no effect on <span class="sc">gdb</span>'s
+working directory, and it only takes effect the next time you start
+the inferior.  The <samp><span class="file">~</span></samp> in <var>directory</var> is a short for the
+<dfn>home directory</dfn>, usually pointed to by the <samp><span class="env">HOME</span></samp> environment
+variable.  On MS-Windows, if <samp><span class="env">HOME</span></samp> is not defined, <span class="sc">gdb</span>
+uses the concatenation of <samp><span class="env">HOMEDRIVE</span></samp> and <samp><span class="env">HOMEPATH</span></samp> as
+fallback.
+
+     <p>You can also change <span class="sc">gdb</span>'s current working directory by using
+the <code>cd</code> command. 
+See <a href="cd-command.html#cd-command">cd command</a>.
+
+     <p><a name="index-show-cwd-138"></a><a name="index-show-inferior_0027s-working-directory-139"></a><br><dt><code>show cwd</code><dd>Show the inferior's working directory.  If no directory has been
+specified by <kbd>set cwd</kbd>, then the default inferior's working
+directory is the same as <span class="sc">gdb</span>'s working directory.
+
+     <p><a name="index-cd-140"></a><a name="index-change-_0040value_007bGDBN_007d_0027s-working-directory-141"></a><a name="cd-command"></a><br><dt><code>cd </code><span class="roman">[</span><var>directory</var><span class="roman">]</span><dd>Set the <span class="sc">gdb</span> working directory to <var>directory</var>.  If not
+given, <var>directory</var> uses <samp><span class="file">'~'</span></samp>.
+
+     <p>The <span class="sc">gdb</span> working directory serves as a default for the
+commands that specify files for <span class="sc">gdb</span> to operate on. 
+See <a href="Files.html#Files">Commands to Specify Files</a>. 
+See <a href="set-cwd-command.html#set-cwd-command">set cwd command</a>.
+
+     <p><a name="index-pwd-142"></a><br><dt><code>pwd</code><dd>Print the <span class="sc">gdb</span> working directory. 
+</dl>
+
+   <p>It is generally impossible to find the current working directory of
+the process being debugged (since a program can change its directory
+during its run).  If you work on a system where <span class="sc">gdb</span> supports
+the <code>info proc</code> command (see <a href="Process-Information.html#Process-Information">Process Information</a>), you can
+use the <code>info proc</code> command to find out the
+current working directory of the debuggee.
+
+   </body></html>
+

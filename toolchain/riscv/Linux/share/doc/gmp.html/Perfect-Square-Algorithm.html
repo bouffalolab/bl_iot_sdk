@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Perfect Square Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms" title="Root Extraction Algorithms">
+<link rel="prev" href="Nth-Root-Algorithm.html#Nth-Root-Algorithm" title="Nth Root Algorithm">
+<link rel="next" href="Perfect-Power-Algorithm.html#Perfect-Power-Algorithm" title="Perfect Power Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Perfect-Square-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Perfect-Power-Algorithm.html#Perfect-Power-Algorithm">Perfect Power Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Nth-Root-Algorithm.html#Nth-Root-Algorithm">Nth Root Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms">Root Extraction Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.5.3 Perfect Square</h4>
+
+<p><a name="index-Perfect-square-algorithm-923"></a>
+A significant fraction of non-squares can be quickly identified by checking
+whether the input is a quadratic residue modulo small integers.
+
+   <p><code>mpz_perfect_square_p</code> first tests the input mod 256, which means just
+examining the low byte.  Only 44 different values occur for squares mod 256,
+so 82.8% of inputs can be immediately identified as non-squares.
+
+   <p>On a 32-bit system similar tests are done mod 9, 5, 7, 13 and 17, for a total
+99.25% of inputs identified as non-squares.  On a 64-bit system 97 is tested
+too, for a total 99.62%.
+
+   <p>These moduli are chosen because they're factors of 2^24<!-- /@w -->-1 (or
+2^48<!-- /@w -->-1 for 64-bits), and such a remainder can be quickly taken just
+using additions (see <code>mpn_mod_34lsub1</code>).
+
+   <p>When nails are in use moduli are instead selected by the <samp><span class="file">gen-psqr.c</span></samp>
+program and applied with an <code>mpn_mod_1</code>.  The same 2^24<!-- /@w -->-1 or
+2^48<!-- /@w -->-1 could be done with nails using some extra bit shifts, but
+this is not currently implemented.
+
+   <p>In any case each modulus is applied to the <code>mpn_mod_34lsub1</code> or
+<code>mpn_mod_1</code> remainder and a table lookup identifies non-squares.  By
+using a &ldquo;modexact&rdquo; style calculation, and suitably permuted tables, just one
+multiply each is required, see the code for details.  Moduli are also combined
+to save operations, so long as the lookup tables don't become too big. 
+<samp><span class="file">gen-psqr.c</span></samp> does all the pre-calculations.
+
+   <p>A square root must still be taken for any value that passes these tests, to
+verify it's really a square and not one of the small fraction of non-squares
+that get through (i.e. a pseudo-square to all the tested bases).
+
+   <p>Clearly more residue tests could be done, <code>mpz_perfect_square_p</code> only
+uses a compact and efficient set.  Big inputs would probably benefit from more
+residue testing, small inputs might be better off with less.  The assumed
+distribution of squares versus non-squares in the input would affect such
+considerations.
+
+   </body></html>
+

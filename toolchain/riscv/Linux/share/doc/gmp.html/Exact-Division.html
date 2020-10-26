@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+<title>Exact Division - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Division-Algorithms.html#Division-Algorithms" title="Division Algorithms">
+<link rel="prev" href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division" title="Block-Wise Barrett Division">
+<link rel="next" href="Exact-Remainder.html#Exact-Remainder" title="Exact Remainder">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Exact-Division"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exact-Remainder.html#Exact-Remainder">Exact Remainder</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division">Block-Wise Barrett Division</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Division-Algorithms.html#Division-Algorithms">Division Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.2.5 Exact Division</h4>
+
+<p>A so-called exact division is when the dividend is known to be an exact
+multiple of the divisor.  Jebelean's exact division algorithm uses this
+knowledge to make some significant optimizations (see <a href="References.html#References">References</a>).
+
+   <p>The idea can be illustrated in decimal for example with 368154 divided by
+543.  Because the low digit of the dividend is 4, the low digit of the
+quotient must be 8.  This is arrived at from 4*7 mod 10, using the fact 7 is the modular inverse of 3 (the low digit of
+the divisor), since 3*7
+== 1 mod 10.  So 8*543=4344 can be
+subtracted from the dividend leaving 363810.  Notice the low digit has become
+zero.
+
+   <p>The procedure is repeated at the second digit, with the next quotient digit 7
+(7 == 1*7 mod 10), subtracting
+7*543=3801, leaving 325800.  And finally at
+the third digit with quotient digit 6 (8*7
+mod 10), subtracting 6*543=3258 leaving 0. 
+So the quotient is 678.
+
+   <p>Notice however that the multiplies and subtractions don't need to extend past
+the low three digits of the dividend, since that's enough to determine the
+three quotient digits.  For the last quotient digit no subtraction is needed
+at all.  On a 2NxN division like this one, only about half the work of
+a normal basecase division is necessary.
+
+   <p>For an NxM exact division producing Q=N&minus;M quotient limbs, the
+saving over a normal basecase division is in two parts.  Firstly, each of the
+Q quotient limbs needs only one multiply, not a 2x1 divide and
+multiply.  Secondly, the crossproducts are reduced when Q&gt;M to
+Q*M-M*(M+1)/2, or when Q&lt;=M to Q*(Q-1)/2.  Notice the savings are complementary.  If Q is big then many
+divisions are saved, or if Q is small then the crossproducts reduce to a small
+number.
+
+   <p>The modular inverse used is calculated efficiently by <code>binvert_limb</code> in
+<samp><span class="file">gmp-impl.h</span></samp>.  This does four multiplies for a 32-bit limb, or six for a
+64-bit limb.  <samp><span class="file">tune/modlinv.c</span></samp> has some alternate implementations that
+might suit processors better at bit twiddling than multiplying.
+
+   <p>The sub-quadratic exact division described by Jebelean in &ldquo;Exact Division
+with Karatsuba Complexity&rdquo; is not currently implemented.  It uses a
+rearrangement similar to the divide and conquer for normal division
+(see <a href="Divide-and-Conquer-Division.html#Divide-and-Conquer-Division">Divide and Conquer Division</a>), but operating from low to high.  A
+further possibility not currently implemented is &ldquo;Bidirectional Exact Integer
+Division&rdquo; by Krandick and Jebelean which forms quotient limbs from both the
+high and low ends of the dividend, and can halve once more the number of
+crossproducts needed in a 2NxN division.
+
+   <p>A special case exact division by 3 exists in <code>mpn_divexact_by3</code>,
+supporting Toom-3 multiplication and <code>mpq</code> canonicalizations.  It forms
+quotient digits with a multiply by the modular inverse of 3 (which is
+<code>0xAA..AAB</code>) and uses two comparisons to determine a borrow for the next
+limb.  The multiplications don't need to be on the dependent chain, as long as
+the effect of the borrows is applied, which can help chips with pipelined
+multipliers.
+
+   </body></html>
+

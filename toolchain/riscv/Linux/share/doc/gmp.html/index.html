@@ -1,0 +1,156 @@
+<html lang="en">
+<head>
+<title>GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="../index.html#dir" title="(dir)">
+<link rel="prev" href="../index.html#dir" title="(dir)">
+<link rel="next" href="Copying.html#Copying" title="Copying">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Top"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Copying.html#Copying">Copying</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="../index.html#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
+<hr>
+</div>
+
+<h2 class="unnumbered">GNU MP</h2>
+
+   <p>This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+   <p>Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+   <p>Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being &ldquo;A GNU Manual&rdquo;, and with the Back-Cover
+Texts being &ldquo;You have freedom to copy and modify this GNU Manual, like GNU
+software&rdquo;.  A copy of the license is included in
+<a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">GNU Free Documentation License</a>.
+   <pre class="sp">
+
+</pre>
+
+<!-- Don't bother with contents for html, the menus seem adequate. -->
+<ul class="menu">
+<li><a accesskey="1" href="Copying.html#Copying">Copying</a>:                     GMP Copying Conditions (LGPL). 
+<li><a accesskey="2" href="Introduction-to-GMP.html#Introduction-to-GMP">Introduction to GMP</a>:         Brief introduction to GNU MP. 
+<li><a accesskey="3" href="Installing-GMP.html#Installing-GMP">Installing GMP</a>:              How to configure and compile the GMP library. 
+<li><a accesskey="4" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>:                  What every GMP user should know. 
+<li><a accesskey="5" href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>:              How to usefully report bugs. 
+<li><a accesskey="6" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>:           Functions for arithmetic on signed integers. 
+<li><a accesskey="7" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>:   Functions for arithmetic on rational numbers. 
+<li><a accesskey="8" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>:    Functions for arithmetic on floats. 
+<li><a accesskey="9" href="Low_002dlevel-Functions.html#Low_002dlevel-Functions">Low-level Functions</a>:         Fast functions for natural numbers. 
+<li><a href="Random-Number-Functions.html#Random-Number-Functions">Random Number Functions</a>:     Functions for generating random numbers. 
+<li><a href="Formatted-Output.html#Formatted-Output">Formatted Output</a>:            <code>printf</code> style output. 
+<li><a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>:             <code>scanf</code> style input. 
+<li><a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface">C++ Class Interface</a>:         Class wrappers around GMP types. 
+<li><a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>:           How to customize the internal allocation. 
+<li><a href="Language-Bindings.html#Language-Bindings">Language Bindings</a>:           Using GMP from other languages. 
+<li><a href="Algorithms.html#Algorithms">Algorithms</a>:                  What happens behind the scenes. 
+<li><a href="Internals.html#Internals">Internals</a>:                   How values are represented behind the scenes.
+
+<li><a href="Contributors.html#Contributors">Contributors</a>:                Who brings you this library? 
+<li><a href="References.html#References">References</a>:                  Some useful papers and books to read. 
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">GNU Free Documentation License</a>
+<li><a href="Concept-Index.html#Concept-Index">Concept Index</a>
+<li><a href="Function-Index.html#Function-Index">Function Index</a>
+</ul>
+
+<!-- @m{T,N} is $T$ in tex or @math{N} otherwise.  This is an easy way to give -->
+<!-- different forms for math in tex and info.  Commas in N or T don't work, -->
+<!-- but @C{} can be used instead.  \, works in info but not in tex. -->
+<!-- @ms{V,N} is $V_N$ in tex or just vn otherwise.  This suits simple -->
+<!-- subscripts like @ms{x,0}. -->
+<!-- @nicode{S} is plain S in info, or @code{S} elsewhere.  This can be used -->
+<!-- when the quotes that @code{} gives in info aren't wanted, but the -->
+<!-- fontification in tex or html is wanted.  Doesn't work as @nicode{'\\0'} -->
+<!-- though (gives two backslashes in tex). -->
+<!-- @nisamp{S} is plain S in info, or @samp{S} elsewhere.  This can be used -->
+<!-- when the quotes that @samp{} gives in info aren't wanted, but the -->
+<!-- fontification in tex or html is wanted. -->
+<!-- Usage: @GMPtimes{} -->
+<!-- Give either \times or the word "times". -->
+<!-- Usage: @GMPmultiply{} -->
+<!-- Give * in info, or nothing in tex. -->
+<!-- Usage: @GMPabs{x} -->
+<!-- Give either |x| in tex, or abs(x) in info or html. -->
+<!-- Usage: @GMPfloor{x} -->
+<!-- Give either \lfloor x\rfloor in tex, or floor(x) in info or html. -->
+<!-- Usage: @GMPceil{x} -->
+<!-- Give either \lceil x\rceil in tex, or ceil(x) in info or html. -->
+<!-- Math operators already available in tex, made available in info too. -->
+<!-- For example @bmod{} can be used in both tex and info. -->
+<!-- New math operators. -->
+<!-- @abs{} can be used in both tex and info, or just \abs in tex. -->
+<!-- @cross{} is a \times symbol in tex, or an "x" in info.  In tex it works -->
+<!-- inside or outside $ $. -->
+<!-- @times{} made available as a "*" in info and html (already works in tex). -->
+<!-- Usage: @W{text} -->
+<!-- Like @w{} but working in math mode too. -->
+<!-- Usage: \GMPdisplay{text} -->
+<!-- Put the given text in an @display style indent, but without turning off -->
+<!-- paragraph reflow etc. -->
+<!-- Usage: \GMPhat -->
+<!-- A new \hat that will work in math mode, unlike the texinfo redefined -->
+<!-- version. -->
+<!-- Usage: \GMPraise{text} -->
+<!-- For use in a $ $ math expression as an alternative to "^".  This is good -->
+<!-- for @code{} in an exponent, since there seems to be no superscript font -->
+<!-- for that. -->
+<!-- Usage: @texlinebreak{} -->
+<!-- A line break as per @*, but only in tex. -->
+<!-- Usage: @maybepagebreak -->
+<!-- Allow tex to insert a page break, if it feels the urge. -->
+<!-- Normally blocks of @deftypefun/funx are kept together, which can lead to -->
+<!-- some poor page break positioning if it's a big block, like the sets of -->
+<!-- division functions etc. -->
+<!-- Usage: @GMPreftop{info,title} -->
+<!-- Usage: @GMPpxreftop{info,title} -->
+<!-- Like @ref{} and @pxref{}, but designed for a reference to the top of a -->
+<!-- document, not a particular section.  The TeX output for plain @ref insists -->
+<!-- on printing a particular section, GMPreftop gives just the title. -->
+<!-- The texinfo manual recommends putting a likely section name in references -->
+<!-- like this, eg. "Introduction", but it seems better to just give the title. -->
+   </body></html>
+
+<!--
+
+Local Variables:
+coding: iso-8859-1
+End:
+
+-->

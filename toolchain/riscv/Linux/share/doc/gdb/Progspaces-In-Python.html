@@ -1,0 +1,200 @@
+<html lang="en">
+<head>
+<title>Progspaces In Python - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Python-API.html#Python-API" title="Python API">
+<link rel="prev" href="Functions-In-Python.html#Functions-In-Python" title="Functions In Python">
+<link rel="next" href="Objfiles-In-Python.html#Objfiles-In-Python" title="Objfiles In Python">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Progspaces-In-Python"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Functions-In-Python.html#Functions-In-Python">Functions In Python</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Python-API.html#Python-API">Python API</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">23.2.2.23 Program Spaces In Python</h5>
+
+<p><a name="index-progspaces-in-python-2224"></a><a name="index-gdb_002eProgspace-2225"></a><a name="index-Progspace-2226"></a>A program space, or <dfn>progspace</dfn>, represents a symbolic view
+of an address space. 
+It consists of all of the objfiles of the program. 
+See <a href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>. 
+See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">program spaces</a>, for more details
+about program spaces.
+
+   <p>The following progspace-related functions are available in the
+<code>gdb</code> module:
+
+   <p><a name="index-gdb_002ecurrent_005fprogspace-2227"></a>
+
+<div class="defun">
+&mdash; Function: <b>gdb.current_progspace</b> ()<var><a name="index-gdb_002ecurrent_005fprogspace-2228"></a></var><br>
+<blockquote><p>This function returns the program space of the currently selected inferior. 
+See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Inferiors and Programs</a>.  This is identical to
+<code>gdb.selected_inferior().progspace</code> (see <a href="Inferiors-In-Python.html#Inferiors-In-Python">Inferiors In Python</a>) and is
+included for historical compatibility. 
+</p></blockquote></div>
+
+   <p><a name="index-gdb_002eprogspaces-2229"></a>
+
+<div class="defun">
+&mdash; Function: <b>gdb.progspaces</b> ()<var><a name="index-gdb_002eprogspaces-2230"></a></var><br>
+<blockquote><p>Return a sequence of all the progspaces currently known to <span class="sc">gdb</span>. 
+</p></blockquote></div>
+
+   <p>Each progspace is represented by an instance of the <code>gdb.Progspace</code>
+class.
+
+<div class="defun">
+&mdash; Variable: <b>Progspace.filename</b><var><a name="index-Progspace_002efilename-2231"></a></var><br>
+<blockquote><p>The file name of the progspace as a string. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Progspace.pretty_printers</b><var><a name="index-Progspace_002epretty_005fprinters-2232"></a></var><br>
+<blockquote><p>The <code>pretty_printers</code> attribute is a list of functions.  It is
+used to look up pretty-printers.  A <code>Value</code> is passed to each
+function in order; if the function returns <code>None</code>, then the
+search continues.  Otherwise, the return value should be an object
+which is used to format the value.  See <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>, for more
+information. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Progspace.type_printers</b><var><a name="index-Progspace_002etype_005fprinters-2233"></a></var><br>
+<blockquote><p>The <code>type_printers</code> attribute is a list of type printer objects. 
+See <a href="Type-Printing-API.html#Type-Printing-API">Type Printing API</a>, for more information. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Progspace.frame_filters</b><var><a name="index-Progspace_002eframe_005ffilters-2234"></a></var><br>
+<blockquote><p>The <code>frame_filters</code> attribute is a dictionary of frame filter
+objects.  See <a href="Frame-Filter-API.html#Frame-Filter-API">Frame Filter API</a>, for more information. 
+</p></blockquote></div>
+
+   <p>A program space has the following methods:
+
+   <p><a name="index-Progspace_002eblock_005ffor_005fpc-2235"></a>
+
+<div class="defun">
+&mdash; Function: <b>Progspace.block_for_pc</b> (<var>pc</var>)<var><a name="index-Progspace_002eblock_005ffor_005fpc-2236"></a></var><br>
+<blockquote><p>Return the innermost <code>gdb.Block</code> containing the given <var>pc</var>
+value.  If the block cannot be found for the <var>pc</var> value specified,
+the function will return <code>None</code>. 
+</p></blockquote></div>
+
+   <p><a name="index-Progspace_002efind_005fpc_005fline-2237"></a>
+
+<div class="defun">
+&mdash; Function: <b>Progspace.find_pc_line</b> (<var>pc</var>)<var><a name="index-Progspace_002efind_005fpc_005fline-2238"></a></var><br>
+<blockquote><p>Return the <code>gdb.Symtab_and_line</code> object corresponding to the
+<var>pc</var> value.  See <a href="Symbol-Tables-In-Python.html#Symbol-Tables-In-Python">Symbol Tables In Python</a>.  If an invalid value
+of <var>pc</var> is passed as an argument, then the <code>symtab</code> and
+<code>line</code> attributes of the returned <code>gdb.Symtab_and_line</code>
+object will be <code>None</code> and 0 respectively. 
+</p></blockquote></div>
+
+   <p><a name="index-Progspace_002eis_005fvalid-2239"></a>
+
+<div class="defun">
+&mdash; Function: <b>Progspace.is_valid</b> ()<var><a name="index-Progspace_002eis_005fvalid-2240"></a></var><br>
+<blockquote><p>Returns <code>True</code> if the <code>gdb.Progspace</code> object is valid,
+<code>False</code> if not.  A <code>gdb.Progspace</code> object can become invalid
+if the program space file it refers to is not referenced by any
+inferior.  All other <code>gdb.Progspace</code> methods will throw an
+exception if it is invalid at the time the method is called. 
+</p></blockquote></div>
+
+   <p><a name="index-Progspace_002eobjfiles-2241"></a>
+
+<div class="defun">
+&mdash; Function: <b>Progspace.objfiles</b> ()<var><a name="index-Progspace_002eobjfiles-2242"></a></var><br>
+<blockquote><p>Return a sequence of all the objfiles referenced by this program
+space.  See <a href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>. 
+</p></blockquote></div>
+
+   <p><a name="index-Progspace_002esolib_005fname-2243"></a>
+
+<div class="defun">
+&mdash; Function: <b>Progspace.solib_name</b> (<var>address</var>)<var><a name="index-Progspace_002esolib_005fname-2244"></a></var><br>
+<blockquote><p>Return the name of the shared library holding the given <var>address</var>
+as a string, or <code>None</code>. 
+</p></blockquote></div>
+
+   <p>One may add arbitrary attributes to <code>gdb.Progspace</code> objects
+in the usual Python way. 
+This is useful if, for example, one needs to do some extra record keeping
+associated with the program space.
+
+   <p>In this contrived example, we want to perform some processing when
+an objfile with a certain symbol is loaded, but we only want to do
+this once because it is expensive.  To achieve this we record the results
+with the program space because we can't predict when the desired objfile
+will be loaded.
+
+<pre class="smallexample">     (gdb) python
+     def clear_objfiles_handler(event):
+         event.progspace.expensive_computation = None
+     def expensive(symbol):
+         """A mock routine to perform an "expensive" computation on symbol."""
+         print "Computing the answer to the ultimate question ..."
+         return 42
+     def new_objfile_handler(event):
+         objfile = event.new_objfile
+         progspace = objfile.progspace
+         if not hasattr(progspace, 'expensive_computation') or \
+                 progspace.expensive_computation is None:
+             # We use 'main' for the symbol to keep the example simple.
+             # Note: There's no current way to constrain the lookup
+             # to one objfile.
+             symbol = gdb.lookup_global_symbol('main')
+             if symbol is not None:
+                 progspace.expensive_computation = expensive(symbol)
+     gdb.events.clear_objfiles.connect(clear_objfiles_handler)
+     gdb.events.new_objfile.connect(new_objfile_handler)
+     end
+     (gdb) file /tmp/hello
+     Reading symbols from /tmp/hello...done.
+     Computing the answer to the ultimate question ...
+     (gdb) python print gdb.current_progspace().expensive_computation
+     42
+     (gdb) run
+     Starting program: /tmp/hello
+     Hello.
+     [Inferior 1 (process 4242) exited normally]
+</pre>
+   </body></html>
+

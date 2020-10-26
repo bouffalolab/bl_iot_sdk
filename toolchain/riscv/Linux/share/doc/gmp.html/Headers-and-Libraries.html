@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>Headers and Libraries - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="prev" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="next" href="Nomenclature-and-Types.html#Nomenclature-and-Types" title="Nomenclature and Types">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Headers-and-Libraries"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Nomenclature-and-Types.html#Nomenclature-and-Types">Nomenclature and Types</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>
+<hr>
+</div>
+
+<h3 class="section">3.1 Headers and Libraries</h3>
+
+<p><a name="index-Headers-136"></a>
+<a name="index-g_t_0040file_007bgmp_002eh_007d-137"></a><a name="index-Include-files-138"></a><a name="index-g_t_0040code_007b_0023include_007d-139"></a>All declarations needed to use GMP are collected in the include file
+<samp><span class="file">gmp.h</span></samp>.  It is designed to work with both C and C++ compilers.
+
+<pre class="example">     #include &lt;gmp.h&gt;
+</pre>
+   <p><a name="index-g_t_0040code_007bstdio_002eh_007d-140"></a>Note however that prototypes for GMP functions with <code>FILE *</code> parameters
+are only provided if <code>&lt;stdio.h&gt;</code> is included too.
+
+<pre class="example">     #include &lt;stdio.h&gt;
+     #include &lt;gmp.h&gt;
+</pre>
+   <p><a name="index-g_t_0040code_007bstdarg_002eh_007d-141"></a>Likewise <code>&lt;stdarg.h&gt;</code> is required for prototypes with <code>va_list</code>
+parameters, such as <code>gmp_vprintf</code>.  And <code>&lt;obstack.h&gt;</code> for prototypes
+with <code>struct obstack</code> parameters, such as <code>gmp_obstack_printf</code>, when
+available.
+
+   <p><a name="index-Libraries-142"></a><a name="index-Linking-143"></a><a name="index-g_t_0040code_007blibgmp_007d-144"></a>All programs using GMP must link against the <samp><span class="file">libgmp</span></samp> library.  On a
+typical Unix-like system this can be done with &lsquo;<samp><span class="samp">-lgmp</span></samp>&rsquo;, for example
+
+<pre class="example">     gcc myprogram.c -lgmp
+</pre>
+   <p><a name="index-g_t_0040code_007blibgmpxx_007d-145"></a>GMP C++ functions are in a separate <samp><span class="file">libgmpxx</span></samp> library.  This is built
+and installed if C++ support has been enabled (see <a href="Build-Options.html#Build-Options">Build Options</a>).  For
+example,
+
+<pre class="example">     g++ mycxxprog.cc -lgmpxx -lgmp
+</pre>
+   <p><a name="index-Libtool-146"></a>GMP is built using Libtool and an application can use that to link if desired,
+see <a href="../libtool/index.html#Top">GNU Libtool</a>.
+
+   <p>If GMP has been installed to a non-standard location then it may be necessary
+to use &lsquo;<samp><span class="samp">-I</span></samp>&rsquo; and &lsquo;<samp><span class="samp">-L</span></samp>&rsquo; compiler options to point to the right
+directories, and some sort of run-time path for a shared library.
+
+   </body></html>
+

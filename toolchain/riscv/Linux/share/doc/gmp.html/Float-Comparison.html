@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Float Comparison - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link rel="prev" href="Float-Arithmetic.html#Float-Arithmetic" title="Float Arithmetic">
+<link rel="next" href="I_002fO-of-Floats.html#I_002fO-of-Floats" title="I/O of Floats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Float-Comparison"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="I_002fO-of-Floats.html#I_002fO-of-Floats">I/O of Floats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Float-Arithmetic.html#Float-Arithmetic">Float Arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">7.6 Comparison Functions</h3>
+
+<p><a name="index-Float-comparison-functions-611"></a><a name="index-Comparison-functions-612"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpf_cmp</b> (<var>const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005fcmp-613"></a></var><br>
+&mdash; Function: int <b>mpf_cmp_z</b> (<var>const mpf_t op1, const mpz_t op2</var>)<var><a name="index-mpf_005fcmp_005fz-614"></a></var><br>
+&mdash; Function: int <b>mpf_cmp_d</b> (<var>const mpf_t op1, double op2</var>)<var><a name="index-mpf_005fcmp_005fd-615"></a></var><br>
+&mdash; Function: int <b>mpf_cmp_ui</b> (<var>const mpf_t op1, unsigned long int op2</var>)<var><a name="index-mpf_005fcmp_005fui-616"></a></var><br>
+&mdash; Function: int <b>mpf_cmp_si</b> (<var>const mpf_t op1, signed long int op2</var>)<var><a name="index-mpf_005fcmp_005fsi-617"></a></var><br>
+<blockquote><p>Compare <var>op1</var> and <var>op2</var>.  Return a positive value if <var>op1</var> &gt;
+<var>op2</var>, zero if <var>op1</var> = <var>op2</var>, and a negative value if
+<var>op1</var> &lt; <var>op2</var>.
+
+        <p><code>mpf_cmp_d</code> can be called with an infinity, but results are undefined for
+a NaN. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpf_eq</b> (<var>const mpf_t op1, const mpf_t op2, mp_bitcnt_t op3</var>)<var><a name="index-mpf_005feq-618"></a></var><br>
+<blockquote><p><strong>This function is mathematically ill-defined and should not be used.</strong>
+
+        <p>Return non-zero if the first <var>op3</var> bits of <var>op1</var> and <var>op2</var> are
+equal, zero otherwise.  Note that numbers like e.g., 256 (binary 100000000) and
+255 (binary 11111111) will never be equal by this function's measure, and
+furthermore that 0 will only be equal to itself. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpf_reldiff</b> (<var>mpf_t rop, const mpf_t op1, const mpf_t op2</var>)<var><a name="index-mpf_005freldiff-619"></a></var><br>
+<blockquote><p>Compute the relative difference between <var>op1</var> and <var>op2</var> and store the
+result in <var>rop</var>.  This is abs(<var>op1</var>-<var>op2</var>)/<var>op1</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Macro: int <b>mpf_sgn</b> (<var>const mpf_t op</var>)<var><a name="index-mpf_005fsgn-620"></a></var><br>
+<blockquote><p><a name="index-Sign-tests-621"></a><a name="index-Float-sign-tests-622"></a>Return +1 if <var>op</var> &gt; 0, 0 if <var>op</var> = 0, and
+-1 if <var>op</var> &lt; 0.
+
+        <p>This function is actually implemented as a macro.  It evaluates its argument
+multiple times. 
+</p></blockquote></div>
+
+   </body></html>
+

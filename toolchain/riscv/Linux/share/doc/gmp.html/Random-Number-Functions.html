@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+<title>Random Number Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Low_002dlevel-Functions.html#Low_002dlevel-Functions" title="Low-level Functions">
+<link rel="next" href="Formatted-Output.html#Formatted-Output" title="Formatted Output">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Random-Number-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Formatted-Output.html#Formatted-Output">Formatted Output</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Low_002dlevel-Functions.html#Low_002dlevel-Functions">Low-level Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">9 Random Number Functions</h2>
+
+<p><a name="index-Random-number-functions-727"></a>
+Sequences of pseudo-random numbers in GMP are generated using a variable of
+type <code>gmp_randstate_t</code>, which holds an algorithm selection and a current
+state.  Such a variable must be initialized by a call to one of the
+<code>gmp_randinit</code> functions, and can be seeded with one of the
+<code>gmp_randseed</code> functions.
+
+   <p>The functions actually generating random numbers are described in <a href="Integer-Random-Numbers.html#Integer-Random-Numbers">Integer Random Numbers</a>, and <a href="Miscellaneous-Float-Functions.html#Miscellaneous-Float-Functions">Miscellaneous Float Functions</a>.
+
+   <p>The older style random number functions don't accept a <code>gmp_randstate_t</code>
+parameter but instead share a global variable of that type.  They use a
+default algorithm and are currently not seeded (though perhaps that will
+change in the future).  The new functions accepting a <code>gmp_randstate_t</code>
+are recommended for applications that care about randomness.
+
+<ul class="menu">
+<li><a accesskey="1" href="Random-State-Initialization.html#Random-State-Initialization">Random State Initialization</a>
+<li><a accesskey="2" href="Random-State-Seeding.html#Random-State-Seeding">Random State Seeding</a>
+<li><a accesskey="3" href="Random-State-Miscellaneous.html#Random-State-Miscellaneous">Random State Miscellaneous</a>
+</ul>
+
+   </body></html>
+

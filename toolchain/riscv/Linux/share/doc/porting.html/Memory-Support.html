@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+<title>Memory Support - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libc.html#Libc" title="Libc">
+<link rel="prev" href="I_002fO-Support.html#I_002fO-Support" title="I/O Support">
+<link rel="next" href="Misc-Support.html#Misc-Support" title="Misc Support">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Memory-Support"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Misc-Support.html#Misc-Support">Misc Support</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="I_002fO-Support.html#I_002fO-Support">I/O Support</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libc.html#Libc">Libc</a>
+<hr>
+</div>
+
+<h4 class="subsection">3.4.2 Routines for dynamic memory allocation</h4>
+
+<p>To support using any of the memory functions, you need to implement
+sbrk(). <code>malloc()</code>, <code>calloc()</code>, and <code>realloc()</code> all call
+<code>sbrk()</code> at there lowest level. <code>caddr_t</code> is defined elsewhere
+as <code>char *</code>. <code>RAMSIZE</code> is presently a compile time option. All
+this does is move a pointer to heap memory and check for the upper
+limit. <a href="glue_002ec.html#glue_002ec">Example libc support code</a>. <code>sbrk()</code> returns a
+pointer to the previous value before more memory was allocated.
+
+<pre class="smallexample">     /* _end is set in the linker command file *
+     extern caddr_t _end;/
+     
+     /* just in case, most boards have at least some memory */
+     #ifndef RAMSIZE
+     #  define RAMSIZE             (caddr_t)0x100000
+     #endif
+     
+     /*
+      * sbrk -- changes heap size size. Get nbytes more
+      *         RAM. We just increment a pointer in what's
+      *         left of memory on the board.
+      */
+     caddr_t
+     sbrk(nbytes)
+          int nbytes;
+     {
+       static caddr_t heap_ptr = NULL;
+       caddr_t        base;
+     
+       if (heap_ptr == NULL) {
+         heap_ptr = (caddr_t)&amp;_end;
+       }
+     
+       if ((RAMSIZE - heap_ptr) &gt;= 0) {
+         base = heap_ptr;
+         heap_ptr += nbytes;
+         return (base);
+       } else {
+         errno = ENOMEM;
+         return ((caddr_t)-1);
+       }
+     }
+</pre>
+   </body></html>
+

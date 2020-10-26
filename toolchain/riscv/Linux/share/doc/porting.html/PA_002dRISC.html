@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+<title>PA-RISC - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Supported-targets.html#Supported-targets" title="Supported targets">
+<link rel="prev" href="Mips.html#Mips" title="Mips">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="PA-RISC"></a>
+<a name="PA_002dRISC"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Mips.html#Mips">Mips</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Supported-targets.html#Supported-targets">Supported targets</a>
+<hr>
+</div>
+
+<h4 class="subsection">1.1.4 PA-RISC Targets Supported</h4>
+
+<p>This supports the various boards manufactured by the HP-PRO consortium. 
+This is a group of companies all making variations on the PA-RISC
+processor. Currently supported are ports to the WinBond &lsquo;<samp><span class="samp">Cougar</span></samp>&rsquo;
+board based around their w89k version of the PA. Also supported is the
+Oki op50n processor.
+
+   <p>There is also included, but never built an unfinished port to the HP 743
+board. This board is the main CPU board for the HP700 line of industrial
+computers. This target isn't exactly an embedded system, in fact it's
+really only designed to load and run HP-UX. Still, the crt0.S and I/O
+code are fully working. It is included mostly because their is a barely
+functioning exception handler GDB debug stub, and I hope somebody could
+use it. The other PRO targets all use GDB's ability to talk to ROM
+monitors directly, so it doesn't need a debug stub. There is also a
+utility that will produce a bootable file by HP's ROM monitor. This is
+all included in the hopes somebody else will finish it. :-)
+
+   <p>Both the WinBond board and the Oki board download srecords. The WinBond
+board also has support for loading the SOM files as produced by the
+native compiler on HP-UX. WinBond supplies a set of DOS programs that
+will allow the loading of files via a bidirectional parallel port. This
+has never been tested with the output of GNU SOM, as this manual is
+mostly for Unix based systems.
+
+   </body></html>
+

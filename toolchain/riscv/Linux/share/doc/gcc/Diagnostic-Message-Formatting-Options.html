@@ -1,0 +1,254 @@
+<html lang="en">
+<head>
+<title>Diagnostic Message Formatting Options - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Invoking-GCC.html#Invoking-GCC" title="Invoking GCC">
+<link rel="prev" href="Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options.html#Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options" title="Objective-C and Objective-C++ Dialect Options">
+<link rel="next" href="Warning-Options.html#Warning-Options" title="Warning Options">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Diagnostic-Message-Formatting-Options"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Warning-Options.html#Warning-Options">Warning Options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options.html#Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options">Objective-C and Objective-C++ Dialect Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Invoking-GCC.html#Invoking-GCC">Invoking GCC</a>
+<hr>
+</div>
+
+<h3 class="section">3.7 Options to Control Diagnostic Messages Formatting</h3>
+
+<p><a name="index-options-to-control-diagnostics-formatting-278"></a><a name="index-diagnostic-messages-279"></a><a name="index-message-formatting-280"></a>
+Traditionally, diagnostic messages have been formatted irrespective of
+the output device's aspect (e.g. its width, <small class="dots">...</small>).  You can use the
+options described below
+to control the formatting algorithm for diagnostic messages,
+e.g. how many characters per line, how often source location
+information should be reported.  Note that some language front ends may not
+honor these options.
+
+     <dl>
+<dt><code>-fmessage-length=</code><var>n</var><dd><a name="index-fmessage_002dlength-281"></a>Try to format error messages so that they fit on lines of about
+<var>n</var> characters.  If <var>n</var> is zero, then no line-wrapping is
+done; each error message appears on a single line.  This is the
+default for all front ends.
+
+     <br><dt><code>-fdiagnostics-show-location=once</code><dd><a name="index-fdiagnostics_002dshow_002dlocation-282"></a>Only meaningful in line-wrapping mode.  Instructs the diagnostic messages
+reporter to emit source location information <em>once</em>; that is, in
+case the message is too long to fit on a single physical line and has to
+be wrapped, the source location won't be emitted (as prefix) again,
+over and over, in subsequent continuation lines.  This is the default
+behavior.
+
+     <br><dt><code>-fdiagnostics-show-location=every-line</code><dd>Only meaningful in line-wrapping mode.  Instructs the diagnostic
+messages reporter to emit the same source location information (as
+prefix) for physical lines that result from the process of breaking
+a message which is too long to fit on a single line.
+
+     <br><dt><code>-fdiagnostics-color[=</code><var>WHEN</var><code>]</code><dt><code>-fno-diagnostics-color</code><dd><a name="index-fdiagnostics_002dcolor-283"></a><a name="index-highlight_002c-color-284"></a><a name="index-GCC_005fCOLORS-_0040r_007benvironment-variable_007d-285"></a>Use color in diagnostics.  <var>WHEN</var> is &lsquo;<samp><span class="samp">never</span></samp>&rsquo;, &lsquo;<samp><span class="samp">always</span></samp>&rsquo;,
+or &lsquo;<samp><span class="samp">auto</span></samp>&rsquo;.  The default depends on how the compiler has been configured,
+it can be any of the above <var>WHEN</var> options or also &lsquo;<samp><span class="samp">never</span></samp>&rsquo;
+if <samp><span class="env">GCC_COLORS</span></samp> environment variable isn't present in the environment,
+and &lsquo;<samp><span class="samp">auto</span></samp>&rsquo; otherwise. 
+&lsquo;<samp><span class="samp">auto</span></samp>&rsquo; means to use color only when the standard error is a terminal. 
+The forms <samp><span class="option">-fdiagnostics-color</span></samp> and <samp><span class="option">-fno-diagnostics-color</span></samp> are
+aliases for <samp><span class="option">-fdiagnostics-color=always</span></samp> and
+<samp><span class="option">-fdiagnostics-color=never</span></samp>, respectively.
+
+     <p>The colors are defined by the environment variable <samp><span class="env">GCC_COLORS</span></samp>. 
+Its value is a colon-separated list of capabilities and Select Graphic
+Rendition (SGR) substrings. SGR commands are interpreted by the
+terminal or terminal emulator.  (See the section in the documentation
+of your text terminal for permitted values and their meanings as
+character attributes.)  These substring values are integers in decimal
+representation and can be concatenated with semicolons. 
+Common values to concatenate include
+&lsquo;<samp><span class="samp">1</span></samp>&rsquo; for bold,
+&lsquo;<samp><span class="samp">4</span></samp>&rsquo; for underline,
+&lsquo;<samp><span class="samp">5</span></samp>&rsquo; for blink,
+&lsquo;<samp><span class="samp">7</span></samp>&rsquo; for inverse,
+&lsquo;<samp><span class="samp">39</span></samp>&rsquo; for default foreground color,
+&lsquo;<samp><span class="samp">30</span></samp>&rsquo; to &lsquo;<samp><span class="samp">37</span></samp>&rsquo; for foreground colors,
+&lsquo;<samp><span class="samp">90</span></samp>&rsquo; to &lsquo;<samp><span class="samp">97</span></samp>&rsquo; for 16-color mode foreground colors,
+&lsquo;<samp><span class="samp">38;5;0</span></samp>&rsquo; to &lsquo;<samp><span class="samp">38;5;255</span></samp>&rsquo;
+for 88-color and 256-color modes foreground colors,
+&lsquo;<samp><span class="samp">49</span></samp>&rsquo; for default background color,
+&lsquo;<samp><span class="samp">40</span></samp>&rsquo; to &lsquo;<samp><span class="samp">47</span></samp>&rsquo; for background colors,
+&lsquo;<samp><span class="samp">100</span></samp>&rsquo; to &lsquo;<samp><span class="samp">107</span></samp>&rsquo; for 16-color mode background colors,
+and &lsquo;<samp><span class="samp">48;5;0</span></samp>&rsquo; to &lsquo;<samp><span class="samp">48;5;255</span></samp>&rsquo;
+for 88-color and 256-color modes background colors.
+
+     <p>The default <samp><span class="env">GCC_COLORS</span></samp> is
+     <pre class="smallexample">          error=01;31:warning=01;35:note=01;36:range1=32:range2=34:locus=01:\
+          quote=01:fixit-insert=32:fixit-delete=31:\
+          diff-filename=01:diff-hunk=32:diff-delete=31:diff-insert=32:\
+          type-diff=01;32
+</pre>
+     <p class="noindent">where &lsquo;<samp><span class="samp">01;31</span></samp>&rsquo; is bold red, &lsquo;<samp><span class="samp">01;35</span></samp>&rsquo; is bold magenta,
+&lsquo;<samp><span class="samp">01;36</span></samp>&rsquo; is bold cyan, &lsquo;<samp><span class="samp">32</span></samp>&rsquo; is green, &lsquo;<samp><span class="samp">34</span></samp>&rsquo; is blue,
+&lsquo;<samp><span class="samp">01</span></samp>&rsquo; is bold, and &lsquo;<samp><span class="samp">31</span></samp>&rsquo; is red. 
+Setting <samp><span class="env">GCC_COLORS</span></samp> to the empty string disables colors. 
+Supported capabilities are as follows.
+
+          <dl>
+<dt><code>error=</code><dd><a name="index-error-GCC_005fCOLORS-_0040r_007bcapability_007d-286"></a>SGR substring for error: markers.
+
+          <br><dt><code>warning=</code><dd><a name="index-warning-GCC_005fCOLORS-_0040r_007bcapability_007d-287"></a>SGR substring for warning: markers.
+
+          <br><dt><code>note=</code><dd><a name="index-note-GCC_005fCOLORS-_0040r_007bcapability_007d-288"></a>SGR substring for note: markers.
+
+          <br><dt><code>range1=</code><dd><a name="index-range1-GCC_005fCOLORS-_0040r_007bcapability_007d-289"></a>SGR substring for first additional range.
+
+          <br><dt><code>range2=</code><dd><a name="index-range2-GCC_005fCOLORS-_0040r_007bcapability_007d-290"></a>SGR substring for second additional range.
+
+          <br><dt><code>locus=</code><dd><a name="index-locus-GCC_005fCOLORS-_0040r_007bcapability_007d-291"></a>SGR substring for location information, &lsquo;<samp><span class="samp">file:line</span></samp>&rsquo; or
+&lsquo;<samp><span class="samp">file:line:column</span></samp>&rsquo; etc.
+
+          <br><dt><code>quote=</code><dd><a name="index-quote-GCC_005fCOLORS-_0040r_007bcapability_007d-292"></a>SGR substring for information printed within quotes.
+
+          <br><dt><code>fixit-insert=</code><dd><a name="index-fixit_002dinsert-GCC_005fCOLORS-_0040r_007bcapability_007d-293"></a>SGR substring for fix-it hints suggesting text to
+be inserted or replaced.
+
+          <br><dt><code>fixit-delete=</code><dd><a name="index-fixit_002ddelete-GCC_005fCOLORS-_0040r_007bcapability_007d-294"></a>SGR substring for fix-it hints suggesting text to
+be deleted.
+
+          <br><dt><code>diff-filename=</code><dd><a name="index-diff_002dfilename-GCC_005fCOLORS-_0040r_007bcapability_007d-295"></a>SGR substring for filename headers within generated patches.
+
+          <br><dt><code>diff-hunk=</code><dd><a name="index-diff_002dhunk-GCC_005fCOLORS-_0040r_007bcapability_007d-296"></a>SGR substring for the starts of hunks within generated patches.
+
+          <br><dt><code>diff-delete=</code><dd><a name="index-diff_002ddelete-GCC_005fCOLORS-_0040r_007bcapability_007d-297"></a>SGR substring for deleted lines within generated patches.
+
+          <br><dt><code>diff-insert=</code><dd><a name="index-diff_002dinsert-GCC_005fCOLORS-_0040r_007bcapability_007d-298"></a>SGR substring for inserted lines within generated patches.
+
+          <br><dt><code>type-diff=</code><dd><a name="index-type_002ddiff-GCC_005fCOLORS-_0040r_007bcapability_007d-299"></a>SGR substring for highlighting mismatching types within template
+arguments in the C++ frontend. 
+</dl>
+
+     <br><dt><code>-fno-diagnostics-show-option</code><dd><a name="index-fno_002ddiagnostics_002dshow_002doption-300"></a><a name="index-fdiagnostics_002dshow_002doption-301"></a>By default, each diagnostic emitted includes text indicating the
+command-line option that directly controls the diagnostic (if such an
+option is known to the diagnostic machinery).  Specifying the
+<samp><span class="option">-fno-diagnostics-show-option</span></samp> flag suppresses that behavior.
+
+     <br><dt><code>-fno-diagnostics-show-caret</code><dd><a name="index-fno_002ddiagnostics_002dshow_002dcaret-302"></a><a name="index-fdiagnostics_002dshow_002dcaret-303"></a>By default, each diagnostic emitted includes the original source line
+and a caret &lsquo;<samp><span class="samp">^</span></samp>&rsquo; indicating the column.  This option suppresses this
+information.  The source line is truncated to <var>n</var> characters, if
+the <samp><span class="option">-fmessage-length=n</span></samp> option is given.  When the output is done
+to the terminal, the width is limited to the width given by the
+<samp><span class="env">COLUMNS</span></samp> environment variable or, if not set, to the terminal width.
+
+     <br><dt><code>-fdiagnostics-parseable-fixits</code><dd><a name="index-fdiagnostics_002dparseable_002dfixits-304"></a>Emit fix-it hints in a machine-parseable format, suitable for consumption
+by IDEs.  For each fix-it, a line will be printed after the relevant
+diagnostic, starting with the string &ldquo;fix-it:&rdquo;.  For example:
+
+     <pre class="smallexample">          fix-it:"test.c":{45:3-45:21}:"gtk_widget_show_all"
+</pre>
+     <p>The location is expressed as a half-open range, expressed as a count of
+bytes, starting at byte 1 for the initial column.  In the above example,
+bytes 3 through 20 of line 45 of &ldquo;test.c&rdquo; are to be replaced with the
+given string:
+
+     <pre class="smallexample">          00000000011111111112222222222
+          12345678901234567890123456789
+            gtk_widget_showall (dlg);
+            ^^^^^^^^^^^^^^^^^^
+            gtk_widget_show_all
+</pre>
+     <p>The filename and replacement string escape backslash as &ldquo;\\", tab as &ldquo;\t&rdquo;,
+newline as &ldquo;\n&rdquo;, double quotes as &ldquo;\"&rdquo;, non-printable characters as octal
+(e.g. vertical tab as &ldquo;\013&rdquo;).
+
+     <p>An empty replacement string indicates that the given range is to be removed. 
+An empty range (e.g. &ldquo;45:3-45:3&rdquo;) indicates that the string is to
+be inserted at the given position.
+
+     <br><dt><code>-fdiagnostics-generate-patch</code><dd><a name="index-fdiagnostics_002dgenerate_002dpatch-305"></a>Print fix-it hints to stderr in unified diff format, after any diagnostics
+are printed.  For example:
+
+     <pre class="smallexample">          --- test.c
+          +++ test.c
+          @ -42,5 +42,5 @
+          
+           void show_cb(GtkDialog *dlg)
+           {
+          -  gtk_widget_showall(dlg);
+          +  gtk_widget_show_all(dlg);
+           }
+          
+</pre>
+     <p>The diff may or may not be colorized, following the same rules
+as for diagnostics (see <samp><span class="option">-fdiagnostics-color</span></samp>).
+
+     <br><dt><code>-fdiagnostics-show-template-tree</code><dd><a name="index-fdiagnostics_002dshow_002dtemplate_002dtree-306"></a>
+In the C++ frontend, when printing diagnostics showing mismatching
+template types, such as:
+
+     <pre class="smallexample">            could not convert 'std::map&lt;int, std::vector&lt;double&gt; &gt;()'
+              from 'map&lt;[...],vector&lt;double&gt;&gt;' to 'map&lt;[...],vector&lt;float&gt;&gt;
+</pre>
+     <p>the <samp><span class="option">-fdiagnostics-show-template-tree</span></samp> flag enables printing a
+tree-like structure showing the common and differing parts of the types,
+such as:
+
+     <pre class="smallexample">            map&lt;
+              [...],
+              vector&lt;
+                [double != float]&gt;&gt;
+</pre>
+     <p>The parts that differ are highlighted with color (&ldquo;double&rdquo; and
+&ldquo;float&rdquo; in this case).
+
+     <br><dt><code>-fno-elide-type</code><dd><a name="index-fno_002delide_002dtype-307"></a><a name="index-felide_002dtype-308"></a>By default when the C++ frontend prints diagnostics showing mismatching
+template types, common parts of the types are printed as &ldquo;[...]&rdquo; to
+simplify the error message.  For example:
+
+     <pre class="smallexample">            could not convert 'std::map&lt;int, std::vector&lt;double&gt; &gt;()'
+              from 'map&lt;[...],vector&lt;double&gt;&gt;' to 'map&lt;[...],vector&lt;float&gt;&gt;
+</pre>
+     <p>Specifying the <samp><span class="option">-fno-elide-type</span></samp> flag suppresses that behavior. 
+This flag also affects the output of the
+<samp><span class="option">-fdiagnostics-show-template-tree</span></samp> flag.
+
+     <br><dt><code>-fno-show-column</code><dd><a name="index-fno_002dshow_002dcolumn-309"></a>Do not print column numbers in diagnostics.  This may be necessary if
+diagnostics are being scanned by a program that does not understand the
+column numbers, such as <samp><span class="command">dejagnu</span></samp>.
+
+ </dl>
+
+ </body></html>
+

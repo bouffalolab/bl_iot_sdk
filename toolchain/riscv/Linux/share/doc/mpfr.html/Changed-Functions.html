@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+<title>Changed Functions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="API-Compatibility.html#API-Compatibility" title="API Compatibility">
+<link rel="prev" href="Added-Functions.html#Added-Functions" title="Added Functions">
+<link rel="next" href="Removed-Functions.html#Removed-Functions" title="Removed Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Changed-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Removed-Functions.html#Removed-Functions">Removed Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Added-Functions.html#Added-Functions">Added Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="API-Compatibility.html#API-Compatibility">API Compatibility</a>
+<hr>
+</div>
+
+<h3 class="section">6.3 Changed Functions</h3>
+
+<p>The following functions have changed after MPFR 2.2. Changes can affect
+the behavior of code written for some MPFR version when built and run
+against another MPFR version (older or newer), as described below.
+
+     <ul>
+<li><code>mpfr_check_range</code> changed in MPFR 2.3.2 and MPFR 2.4. 
+If the value is an inexact infinity, the overflow flag is now set
+(in case it was lost), while it was previously left unchanged. 
+This is really what is expected in practice (and what the MPFR code
+was expecting), so that the previous behavior was regarded as a bug. 
+Hence the change in MPFR 2.3.2.
+
+     <li><code>mpfr_get_f</code> changed in MPFR 3.0. 
+This function was returning zero, except for NaN and Inf, which do not
+exist in MPF. The <em>erange</em> flag is now set in these cases,
+and <code>mpfr_get_f</code> now returns the usual ternary value.
+
+     <li><code>mpfr_get_si</code>, <code>mpfr_get_sj</code>, <code>mpfr_get_ui</code>
+and <code>mpfr_get_uj</code> changed in MPFR 3.0. 
+In previous MPFR versions, the cases where the <em>erange</em> flag
+is set were unspecified.
+
+     <li><code>mpfr_get_z</code> changed in MPFR 3.0. 
+The return type was <code>void</code>; it is now <code>int</code>, and the usual
+ternary value is returned.  Thus programs that need to work with both
+MPFR 2.x and 3.x must not use the return value.  Even in this case,
+C code using <code>mpfr_get_z</code> as the second or third term of
+a conditional operator may also be affected. For instance, the
+following is correct with MPFR 3.0, but not with MPFR 2.x:
+     <pre class="example">            bool ? mpfr_get_z(...) : mpfr_add(...);
+</pre>
+     <p>On the other hand, the following is correct with MPFR 2.x, but not
+with MPFR 3.0:
+     <pre class="example">            bool ? mpfr_get_z(...) : (void) mpfr_add(...);
+</pre>
+     <p>Portable code should cast <code>mpfr_get_z(...)</code> to <code>void</code> to
+use the type <code>void</code> for both terms of the conditional operator,
+as in:
+     <pre class="example">            bool ? (void) mpfr_get_z(...) : (void) mpfr_add(...);
+</pre>
+     <p>Alternatively, <code>if ... else</code> can be used instead of the
+conditional operator.
+
+     <p>Moreover the cases where the <em>erange</em> flag is set were unspecified
+in MPFR 2.x.
+
+     <li><code>mpfr_get_z_exp</code> changed in MPFR 3.0. 
+In previous MPFR versions, the cases where the <em>erange</em> flag
+is set were unspecified. 
+Note: this function has been renamed to <code>mpfr_get_z_2exp</code>
+in MPFR 3.0, but <code>mpfr_get_z_exp</code> is still available for
+compatibility reasons.
+
+     <li><code>mpfr_strtofr</code> changed in MPFR 2.3.1 and MPFR 2.4. 
+This was actually a bug fix since the code and the documentation did
+not match.  But both were changed in order to have a more consistent
+and useful behavior.  The main changes in the code are as follows. 
+The binary exponent is now accepted even without the <code>0b</code> or
+<code>0x</code> prefix.  Data corresponding to NaN can now have an optional
+sign (such data were previously invalid).
+
+     <li><code>mpfr_strtofr</code> changed in MPFR 3.0. 
+This function now accepts bases from 37 to 62 (no changes for the other
+bases).  Note: if an unsupported base is provided to this function,
+the behavior is undefined; more precisely, in MPFR 2.3.1 and later,
+providing an unsupported base yields an assertion failure (this
+behavior may change in the future).
+
+     <li><code>mpfr_subnormalize</code> changed in MPFR 3.1. 
+This was actually regarded as a bug fix. The <code>mpfr_subnormalize</code>
+implementation up to MPFR 3.0.0 did not change the flags. In particular,
+it did not follow the generic rule concerning the inexact flag (and no
+special behavior was specified). The case of the underflow flag was more
+a lack of specification.
+
+     <li><code>mpfr_urandom</code> and <code>mpfr_urandomb</code> changed in MPFR 3.1. 
+Their behavior no longer depends on the platform (assuming this is also true
+for GMP's random generator, which is not the case between GMP 4.1 and 4.2 if
+<code>gmp_randinit_default</code> is used).  As a consequence, the returned values
+can be different between MPFR 3.1 and previous MPFR versions. 
+Note: as the reproducibility of these functions was not specified
+before MPFR 3.1, the MPFR 3.1 behavior is <em>not</em> regarded as
+backward incompatible with previous versions.
+
+   </ul>
+
+   </body></html>
+

@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+<title>iswgraph - Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Ctype.html#Ctype" title="Ctype">
+<link rel="prev" href="iswdigit.html#iswdigit" title="iswdigit">
+<link rel="next" href="iswlower.html#iswlower" title="iswlower">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="iswgraph"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="iswlower.html#iswlower">iswlower</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="iswdigit.html#iswdigit">iswdigit</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Ctype.html#Ctype">Ctype</a>
+<hr>
+</div>
+
+<h3 class="section">3.21 <code>iswgraph</code>, <code>iswgraph_l</code>&mdash;graphic wide character test</h3>
+
+<p><a name="index-iswgraph-174"></a><a name="index-iswgraph_005fl-175"></a><strong>Synopsis</strong>
+<pre class="example">     #include &lt;wctype.h&gt;
+     int iswgraph(wint_t <var>c</var>);
+     
+     #include &lt;wctype.h&gt;
+     int iswgraph_l(wint_t <var>c</var>, locale_t <var>locale</var>);
+     
+</pre>
+   <p><strong>Description</strong><br>
+<code>iswgraph</code> is a function which classifies wide-character values that
+are graphic.
+
+   <p><code>iswgraph_l</code> is like <code>iswgraph</code> but performs the check based on the
+locale specified by the locale object locale.  If <var>locale</var> is
+LC_GLOBAL_LOCALE or not a valid locale object, the behaviour is undefined.
+
+   <pre class="sp">
+
+</pre>
+<strong>Returns</strong><br>
+<code>iswgraph</code>, <code>iswgraph_l</code> return non-zero if <var>c</var> is a graphic wide character.
+
+   <pre class="sp">
+
+</pre>
+<strong>Portability</strong><br>
+<code>iswgraph</code> is C99. 
+<code>iswgraph_l</code> is POSIX-1.2008.
+
+   <p>No supporting OS subroutines are required.
+
+   <pre class="sp">
+
+</pre>
+
+   </body></html>
+

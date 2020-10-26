@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Power Functions and Logarithm - GNU MPC 1.0.3</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU MPC 1.0.3">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Complex-Functions.html#Complex-Functions" title="Complex Functions">
+<link rel="prev" href="Basic-Arithmetic.html#Basic-Arithmetic" title="Basic Arithmetic">
+<link rel="next" href="Trigonometric-Functions.html#Trigonometric-Functions" title="Trigonometric Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for GNU MPC, a library for multiple precision complex arithmetic,
+version 1.0.3 of February 2015.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 INRIA
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections. A copy of the license is
+     included in the section entitled ``GNU Free Documentation
+     License.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Power-Functions-and-Logarithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Trigonometric-Functions.html#Trigonometric-Functions">Trigonometric Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-Arithmetic.html#Basic-Arithmetic">Basic Arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Complex-Functions.html#Complex-Functions">Complex Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.8 Power Functions and Logarithm</h3>
+
+<p><a name="index-Power-functions-99"></a><a name="index-Logarithm-100"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sqrt</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsqrt-101"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the square root of <var>op</var> rounded according to <var>rnd</var>. 
+The returned value <var>rop</var> has a non-negative real part, and if its real
+part is zero, a non-negative imaginary part. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_pow</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow-102"></a></var><br>
+&mdash; Function: int <b>mpc_pow_d</b> (<var>mpc_t rop, mpc_t op1, double op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005fd-103"></a></var><br>
+&mdash; Function: int <b>mpc_pow_ld</b> (<var>mpc_t rop, mpc_t op1, long double op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005fld-104"></a></var><br>
+&mdash; Function: int <b>mpc_pow_si</b> (<var>mpc_t rop, mpc_t op1, long op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005fsi-105"></a></var><br>
+&mdash; Function: int <b>mpc_pow_ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005fui-106"></a></var><br>
+&mdash; Function: int <b>mpc_pow_z</b> (<var>mpc_t rop, mpc_t op1, mpz_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005fz-107"></a></var><br>
+&mdash; Function: int <b>mpc_pow_fr</b> (<var>mpc_t rop, mpc_t op1, mpfr_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fpow_005ffr-108"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> raised to the power <var>op2</var>, rounded according
+to <var>rnd</var>. 
+For <code>mpc_pow_d</code>, <code>mpc_pow_ld</code>, <code>mpc_pow_si</code>, <code>mpc_pow_ui</code>,
+<code>mpc_pow_z</code> and <code>mpc_pow_fr</code>,
+the imaginary part of <var>op2</var> is considered as +0. 
+When both <var>op1</var> and <var>op2</var> are zero, the result has real part 1,
+and imaginary part 0, with sign being the opposite of that of <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_exp</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fexp-109"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the exponential of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_log</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005flog-110"></a></var><br>
+&mdash; Function: int <b>mpc_log10</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005flog10-111"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the natural and base-10 logarithm of <var>op</var> respectively,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+The principal branch is chosen, with the branch cut on the negative real axis,
+so that the imaginary part of the result lies in
+]-\pi , \pi] and ]-\pi/log(10) , \pi/log(10)] respectively. 
+</p></blockquote></div>
+
+   </body></html>
+

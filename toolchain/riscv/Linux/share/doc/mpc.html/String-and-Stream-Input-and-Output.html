@@ -1,0 +1,176 @@
+<html lang="en">
+<head>
+<title>String and Stream Input and Output - GNU MPC 1.0.3</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU MPC 1.0.3">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Complex-Functions.html#Complex-Functions" title="Complex Functions">
+<link rel="prev" href="Converting-Complex-Numbers.html#Converting-Complex-Numbers" title="Converting Complex Numbers">
+<link rel="next" href="Complex-Comparison.html#Complex-Comparison" title="Complex Comparison">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for GNU MPC, a library for multiple precision complex arithmetic,
+version 1.0.3 of February 2015.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 INRIA
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections. A copy of the license is
+     included in the section entitled ``GNU Free Documentation
+     License.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="String-and-Stream-Input-and-Output"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Complex-Comparison.html#Complex-Comparison">Complex Comparison</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Converting-Complex-Numbers.html#Converting-Complex-Numbers">Converting Complex Numbers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Complex-Functions.html#Complex-Functions">Complex Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.4 String and Stream Input and Output</h3>
+
+<p><a name="index-String-and-stream-input-and-output-49"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_strtoc</b> (<var>mpc_t rop, const char *nptr, char **endptr, int base, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fstrtoc-50"></a></var><br>
+<blockquote><p>Read a complex number from a string <var>nptr</var> in base <var>base</var>, rounded to
+the precision of <var>rop</var> with the given rounding mode <var>rnd</var>. 
+The <var>base</var> must be either 0 or a number from 2 to 36 (otherwise the
+behaviour is undefined). 
+If <var>nptr</var> starts with valid data, the result is stored in <var>rop</var>,
+the usual inexact value is returned (see <a href="return_002dvalue.html#return_002dvalue">Return Value</a>) and, if <var>endptr</var> is not the null pointer,
+<var>*endptr</var> points to the character just after the valid data. 
+Otherwise, <var>rop</var> is set to <code>NaN + i * NaN</code>, -1 is returned and,
+if <var>endptr</var> is not the null pointer,
+the value of <var>nptr</var> is stored in the location referenced by
+<var>endptr</var>.
+
+        <p>The expected form of a complex number string is either a real number (an
+optional leading whitespace, an optional sign followed by a floating-point
+number), or a pair of real numbers in parentheses separated by whitespace. If
+a real number is read, the missing imaginary part is set to +0. 
+The form of a floating-point number depends on the base and is described
+in the documentation of <code>mpfr_strtofr</code>
+in the GNU MPFR manual. 
+For instance, <code>"3.1415926"</code>, <code>"(1.25e+7 +.17)"</code>, <code>"(@nan@
+2)"</code> and <code>"(-0 -7)"</code> are valid strings for <var>base</var> = 10. 
+If <var>base</var> = 0, then a prefix may be used to indicate the base in which the
+floating-point number is written. Use prefix '0b' for binary numbers, prefix
+'0x' for hexadecimal numbers, and no prefix for decimal numbers. 
+The real and imaginary part may then be written in different bases. 
+For instance, <code>"(1.024e+3 +2.05e+3)"</code> and <code>"(0b1p+10 +0x802)"</code> are
+valid strings for <code>base</code>=0 and represent the same value. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_set_str</b> (<var>mpc_t rop, const char *s, int base, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fset_005fstr-51"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the value of the string <var>s</var> in base <var>base</var>, rounded
+to the precision of <var>rop</var> with the given rounding mode <var>rnd</var>. 
+See the documentation of <code>mpc_strtoc</code> for a detailed description of the
+valid string formats. 
+Contrarily to <code>mpc_strtoc</code>, <code>mpc_set_str</code> requires the <em>whole</em>
+string to represent a valid complex number (potentially followed by
+additional white space). 
+This function returns the usual inexact value (see <a href="return_002dvalue.html#return_002dvalue">Return Value</a>) if the entire string up to the final null character is a valid number
+in base <var>base</var>; otherwise it returns &minus;1, and <var>rop</var> is set to
+NaN+i*NaN. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>mpc_get_str</b> (<var>int b, size_t n, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fget_005fstr-52"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a string containing its real and imaginary parts,
+separated by a space and enclosed in a pair of parentheses. 
+The numbers are written in base <var>b</var> (which may vary from 2 to 36) and
+rounded according to <var>rnd</var>. The number of significant digits, at least 2,
+is given by <var>n</var>. It is also possible to let
+<var>n</var> be zero, in which case the number of digits is chosen large
+enough so that re-reading the printed value with the same precision, assuming
+both output and input use rounding to nearest, will recover the original value
+of <var>op</var>. 
+Note that <code>mpc_get_str</code> uses the decimal point of the current locale
+if available, and &lsquo;<samp><span class="samp">.</span></samp>&rsquo; otherwise.
+
+        <p>The string is generated using the current memory allocation function
+(<code>malloc</code> by default, unless it has been modified using the custom
+memory allocation interface of <code>gmp</code>); once it is not needed any more,
+it should be freed by calling <code>mpc_free_str</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpc_free_str</b> (<var>char *str</var>)<var><a name="index-mpc_005ffree_005fstr-53"></a></var><br>
+<blockquote><p>Free the string <var>str</var>, which needs to have been allocated by
+a call to <code>mpc_get_str</code>. 
+</p></blockquote></div>
+
+   <p>The following two functions read numbers from input streams and write
+them to output streams. 
+When using any of these functions, you need to include <samp><span class="file">stdio.h</span></samp>
+<em>before</em> <samp><span class="file">mpc.h</span></samp>.
+
+<div class="defun">
+&mdash; Function: int <b>mpc_inp_str</b> (<var>mpc_t rop, FILE *stream, size_t *read, int base, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005finp_005fstr-54"></a></var><br>
+<blockquote><p>Input a string in base <var>base</var> in the same format as for <code>mpc_strtoc</code>
+from stdio stream <var>stream</var>, rounded according to <var>rnd</var>, and put the
+read complex number into <var>rop</var>. 
+If <var>stream</var> is the null pointer, <var>rop</var> is read from <code>stdin</code>. 
+Return the usual inexact value; if an error occurs, set <var>rop</var> to <code>NaN
++ i * NaN</code> and return -1. 
+If <var>read</var> is not the null pointer, it is set to the number of read
+characters.
+
+        <p>Unlike <code>mpc_strtoc</code>, the function <code>mpc_inp_str</code> does not possess
+perfect knowledge of the string to transform and has to read it
+character by character, so it behaves slightly differently: It tries
+to read a string describing a complex number and processes this string
+through a call to <code>mpc_set_str</code>. Precisely, after skipping optional
+whitespace, a minimal string is read according to the regular expression
+<code>mpfr | '(' \s* mpfr \s+ mpfr \s* ')'</code>, where <code>\s</code> denotes a whitespace,
+and <code>mpfr</code> is either a string containing neither whitespaces nor
+parentheses, or <code>nan(n-char-sequence)</code> or <code>@nan@(n-char-sequence)</code>
+(regardless of capitalisation) with <code>n-char-sequence</code> a string
+of ascii letters, digits or <code>'_'</code>.
+
+        <p>For instance, upon input of <code>"nan(13 1)"</code>, the function
+<code>mpc_inp_str</code> starts to recognise a value of NaN followed by an
+n-char-sequence indicated by the opening parenthesis; as soon as the
+space is reached, it becocmes clear that the expression in parentheses
+is not an n-char-sequence, and the error flag -1 is returned after 6
+characters have been consumed from the stream (the whitespace itself
+remaining in the stream). 
+The function <code>mpc_strtoc</code>, on the other hand, may track back
+when reaching the whitespace; it treats the string as the two successive
+complex numbers <code>NaN + i * 0</code> and <code>13 + i</code>. 
+It is thus recommended to have a whitespace follow each floating point number
+to avoid this problem. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpc_out_str</b> (<var>FILE *stream, int base, size_t n_digits, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fout_005fstr-55"></a></var><br>
+<blockquote><p>Output <var>op</var> on stdio stream <var>stream</var> in
+base <var>base</var>, rounded according to <var>rnd</var>, in the same format
+as for <code>mpc_strtoc</code>
+If <var>stream</var> is the null pointer, <var>rop</var> is written to <code>stdout</code>.
+
+        <p>Return the number of characters written. 
+</p></blockquote></div>
+
+   </body></html>
+

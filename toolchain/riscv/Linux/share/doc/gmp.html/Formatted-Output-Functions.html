@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+<title>Formatted Output Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Formatted-Output.html#Formatted-Output" title="Formatted Output">
+<link rel="prev" href="Formatted-Output-Strings.html#Formatted-Output-Strings" title="Formatted Output Strings">
+<link rel="next" href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output" title="C++ Formatted Output">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Formatted-Output-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output">C++ Formatted Output</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Formatted-Output-Strings.html#Formatted-Output-Strings">Formatted Output Strings</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Formatted-Output.html#Formatted-Output">Formatted Output</a>
+<hr>
+</div>
+
+<h3 class="section">10.2 Functions</h3>
+
+<p><a name="index-Output-functions-753"></a>
+Each of the following functions is similar to the corresponding C library
+function.  The basic <code>printf</code> forms take a variable argument list.  The
+<code>vprintf</code> forms take an argument pointer, see <a href="../libc/Variadic-Functions.html#Variadic-Functions">Variadic Functions</a>, or &lsquo;<samp><span class="samp">man 3
+va_start</span></samp>&rsquo;.
+
+   <p>It should be emphasised that if a format string is invalid, or the arguments
+don't match what the format specifies, then the behaviour of any of these
+functions will be unpredictable.  GCC format string checking is not available,
+since it doesn't recognise the GMP extensions.
+
+   <p>The file based functions <code>gmp_printf</code> and <code>gmp_fprintf</code> will return
+-1 to indicate a write error.  Output is not &ldquo;atomic&rdquo;, so partial
+output may be produced if a write error occurs.  All the functions can return
+-1 if the C library <code>printf</code> variant in use returns -1, but
+this shouldn't normally occur.
+
+<div class="defun">
+&mdash; Function: int <b>gmp_printf</b> (<var>const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005fprintf-754"></a></var><br>
+&mdash; Function: int <b>gmp_vprintf</b> (<var>const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fvprintf-755"></a></var><br>
+<blockquote><p>Print to the standard output <code>stdout</code>.  Return the number of characters
+written, or -1 if an error occurred. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gmp_fprintf</b> (<var>FILE *fp, const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005ffprintf-756"></a></var><br>
+&mdash; Function: int <b>gmp_vfprintf</b> (<var>FILE *fp, const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fvfprintf-757"></a></var><br>
+<blockquote><p>Print to the stream <var>fp</var>.  Return the number of characters written, or
+-1 if an error occurred. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gmp_sprintf</b> (<var>char *buf, const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005fsprintf-758"></a></var><br>
+&mdash; Function: int <b>gmp_vsprintf</b> (<var>char *buf, const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fvsprintf-759"></a></var><br>
+<blockquote><p>Form a null-terminated string in <var>buf</var>.  Return the number of characters
+written, excluding the terminating null.
+
+        <p>No overlap is permitted between the space at <var>buf</var> and the string
+<var>fmt</var>.
+
+        <p>These functions are not recommended, since there's no protection against
+exceeding the space available at <var>buf</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gmp_snprintf</b> (<var>char *buf, size_t size, const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005fsnprintf-760"></a></var><br>
+&mdash; Function: int <b>gmp_vsnprintf</b> (<var>char *buf, size_t size, const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fvsnprintf-761"></a></var><br>
+<blockquote><p>Form a null-terminated string in <var>buf</var>.  No more than <var>size</var> bytes
+will be written.  To get the full output, <var>size</var> must be enough for the
+string and null-terminator.
+
+        <p>The return value is the total number of characters which ought to have been
+produced, excluding the terminating null.  If <var>retval</var> &gt;=
+<var>size</var> then the actual output has been truncated to the first
+<var>size</var>-1 characters, and a null appended.
+
+        <p>No overlap is permitted between the region {<var>buf</var>,<var>size</var>} and the
+<var>fmt</var> string.
+
+        <p>Notice the return value is in ISO C99 <code>snprintf</code> style.  This is so even
+if the C library <code>vsnprintf</code> is the older GLIBC 2.0.x style. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gmp_asprintf</b> (<var>char **pp, const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005fasprintf-762"></a></var><br>
+&mdash; Function: int <b>gmp_vasprintf</b> (<var>char **pp, const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fvasprintf-763"></a></var><br>
+<blockquote><p>Form a null-terminated string in a block of memory obtained from the current
+memory allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be the
+size of the string and null-terminator.  The address of the block in stored to
+*<var>pp</var>.  The return value is the number of characters produced, excluding
+the null-terminator.
+
+        <p>Unlike the C library <code>asprintf</code>, <code>gmp_asprintf</code> doesn't return
+-1 if there's no more memory available, it lets the current allocation
+function handle that. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>gmp_obstack_printf</b> (<var>struct obstack *ob, const char *fmt, <small class="dots">...</small></var>)<var><a name="index-gmp_005fobstack_005fprintf-764"></a></var><br>
+&mdash; Function: int <b>gmp_obstack_vprintf</b> (<var>struct obstack *ob, const char *fmt, va_list ap</var>)<var><a name="index-gmp_005fobstack_005fvprintf-765"></a></var><br>
+<blockquote><p><a name="index-g_t_0040code_007bobstack_007d-output-766"></a>Append to the current object in <var>ob</var>.  The return value is the number of
+characters written.  A null-terminator is not written.
+
+        <p><var>fmt</var> cannot be within the current object in <var>ob</var>, since that object
+might move as it grows.
+
+        <p>These functions are available only when the C library provides the obstack
+feature, which probably means only on GNU systems, see <a href="../libc/Obstacks.html#Obstacks">Obstacks</a>. 
+</p></blockquote></div>
+
+   </body></html>
+

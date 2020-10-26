@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+<title>Checking for a @code{poly_int} marker value - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Comparisons-involving-_0040code_007bpoly_005fint_007d.html#Comparisons-involving-_0040code_007bpoly_005fint_007d" title="Comparisons involving @code{poly_int}">
+<link rel="prev" href="Comparing-ordered-_0040code_007bpoly_005fint_007ds.html#Comparing-ordered-_0040code_007bpoly_005fint_007ds" title="Comparing ordered @code{poly_int}s">
+<link rel="next" href="Range-checks-on-_0040code_007bpoly_005fint_007ds.html#Range-checks-on-_0040code_007bpoly_005fint_007ds" title="Range checks on @code{poly_int}s">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Checking-for-a-%3ccode%3epoly_int%3c%2fcode%3e-marker-value"></a>
+<a name="Checking-for-a-_003ccode_003epoly_005fint_003c_002fcode_003e-marker-value"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Range-checks-on-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Range-checks-on-_003ccode_003epoly_005fint_003c_002fcode_003es">Range checks on &lt;code&gt;poly_int&lt;/code&gt;s</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Comparing-ordered-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Comparing-ordered-_003ccode_003epoly_005fint_003c_002fcode_003es">Comparing ordered &lt;code&gt;poly_int&lt;/code&gt;s</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparisons involving &lt;code&gt;poly_int&lt;/code&gt;</a>
+<hr>
+</div>
+
+<h4 class="subsection">10.3.5 Checking for a <code>poly_int</code> marker value</h4>
+
+<p>It is sometimes useful to have a special &ldquo;marker value&rdquo; that is not
+meant to be taken literally.  For example, some code uses a size
+of -1 to represent an unknown size, rather than having to carry around
+a separate boolean to say whether the size is known.
+
+ <p>The best way of checking whether something is a marker value is
+<code>known_eq</code>.  Conversely the best way of checking whether something
+is <em>not</em> a marker value is <code>maybe_ne</code>.
+
+ <p>Thus in the size example just mentioned, &lsquo;<samp><span class="samp">known_eq (size, -1)</span></samp>&rsquo; would
+check for an unknown size and &lsquo;<samp><span class="samp">maybe_ne (size, -1)</span></samp>&rsquo; would check for a
+known size.
+
+ </body></html>
+

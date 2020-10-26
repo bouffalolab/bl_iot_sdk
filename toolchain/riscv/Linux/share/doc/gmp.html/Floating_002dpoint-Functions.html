@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+<title>Floating-point Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Rational-Number-Functions.html#Rational-Number-Functions" title="Rational Number Functions">
+<link rel="next" href="Low_002dlevel-Functions.html#Low_002dlevel-Functions" title="Low-level Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Floating-point-Functions"></a>
+<a name="Floating_002dpoint-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Low_002dlevel-Functions.html#Low_002dlevel-Functions">Low-level Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">7 Floating-point Functions</h2>
+
+<p><a name="index-Floating_002dpoint-functions-545"></a><a name="index-Float-functions-546"></a><a name="index-User_002ddefined-precision-547"></a><a name="index-Precision-of-floats-548"></a>
+GMP floating point numbers are stored in objects of type <code>mpf_t</code> and
+functions operating on them have an <code>mpf_</code> prefix.
+
+   <p>The mantissa of each float has a user-selectable precision, in practice only
+limited by available memory.  Each variable has its own precision, and that can
+be increased or decreased at any time.  This selectable precision is a minimum
+value, GMP rounds it up to a whole limb.
+
+   <p>The accuracy of a calculation is determined by the priorly set precision of the
+destination variable and the numeric values of the input variables.  Input
+variables' set precisions do not affect calculations (except indirectly as
+their values might have been affected when they were assigned).
+
+   <p>The exponent of each float has fixed precision, one machine word on most
+systems.  In the current implementation the exponent is a count of limbs, so
+for example on a 32-bit system this means a range of roughly
+2^-68719476768<!-- /@w --> to 2^68719476736<!-- /@w -->, or on a 64-bit system
+this will be much greater.  Note however that <code>mpf_get_str</code> can only
+return an exponent which fits an <code>mp_exp_t</code> and currently
+<code>mpf_set_str</code> doesn't accept exponents bigger than a <code>long</code>.
+
+   <p>Each variable keeps track of the mantissa data actually in use.  This means
+that if a float is exactly represented in only a few bits then only those bits
+will be used in a calculation, even if the variable's selected precision is
+high.  This is a performance optimization; it does not affect the numeric
+results.
+
+   <p>Internally, GMP sometimes calculates with higher precision than that of the
+destination variable in order to limit errors.  Final results are always
+truncated to the destination variable's precision.
+
+   <p>The mantissa is stored in binary.  One consequence of this is that decimal
+fractions like 0.1 cannot be represented exactly.  The same is true of
+plain IEEE <code>double</code> floats.  This makes both highly unsuitable for
+calculations involving money or other values that should be exact decimal
+fractions.  (Suitably scaled integers, or perhaps rationals, are better
+choices.)
+
+   <p>The <code>mpf</code> functions and variables have no special notion of infinity or
+not-a-number, and applications must take care not to overflow the exponent or
+results will be unpredictable.
+
+   <p>Note that the <code>mpf</code> functions are <em>not</em> intended as a smooth
+extension to IEEE P754 arithmetic.  In particular results obtained on one
+computer often differ from the results on a computer with a different word
+size.
+
+   <p>New projects should consider using the GMP extension library MPFR
+(<a href="http://mpfr.org">http://mpfr.org</a>) instead.  MPFR provides well-defined precision and
+accurate rounding, and thereby naturally extends IEEE P754.
+
+<ul class="menu">
+<li><a accesskey="1" href="Initializing-Floats.html#Initializing-Floats">Initializing Floats</a>
+<li><a accesskey="2" href="Assigning-Floats.html#Assigning-Floats">Assigning Floats</a>
+<li><a accesskey="3" href="Simultaneous-Float-Init-_0026-Assign.html#Simultaneous-Float-Init-_0026-Assign">Simultaneous Float Init &amp; Assign</a>
+<li><a accesskey="4" href="Converting-Floats.html#Converting-Floats">Converting Floats</a>
+<li><a accesskey="5" href="Float-Arithmetic.html#Float-Arithmetic">Float Arithmetic</a>
+<li><a accesskey="6" href="Float-Comparison.html#Float-Comparison">Float Comparison</a>
+<li><a accesskey="7" href="I_002fO-of-Floats.html#I_002fO-of-Floats">I/O of Floats</a>
+<li><a accesskey="8" href="Miscellaneous-Float-Functions.html#Miscellaneous-Float-Functions">Miscellaneous Float Functions</a>
+</ul>
+
+   </body></html>
+

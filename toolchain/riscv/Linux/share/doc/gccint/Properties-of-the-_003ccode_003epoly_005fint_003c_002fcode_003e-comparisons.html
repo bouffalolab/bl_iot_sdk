@@ -1,0 +1,125 @@
+<html lang="en">
+<head>
+<title>Properties of the @code{poly_int} comparisons - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Comparisons-involving-_0040code_007bpoly_005fint_007d.html#Comparisons-involving-_0040code_007bpoly_005fint_007d" title="Comparisons involving @code{poly_int}">
+<link rel="prev" href="Comparison-functions-for-_0040code_007bpoly_005fint_007d.html#Comparison-functions-for-_0040code_007bpoly_005fint_007d" title="Comparison functions for @code{poly_int}">
+<link rel="next" href="Comparing-potentially_002dunordered-_0040code_007bpoly_005fint_007ds.html#Comparing-potentially_002dunordered-_0040code_007bpoly_005fint_007ds" title="Comparing potentially-unordered @code{poly_int}s">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Properties-of-the-%3ccode%3epoly_int%3c%2fcode%3e-comparisons"></a>
+<a name="Properties-of-the-_003ccode_003epoly_005fint_003c_002fcode_003e-comparisons"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Comparing-potentially_002dunordered-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Comparing-potentially_002dunordered-_003ccode_003epoly_005fint_003c_002fcode_003es">Comparing potentially-unordered &lt;code&gt;poly_int&lt;/code&gt;s</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Comparison-functions-for-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparison-functions-for-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparison functions for &lt;code&gt;poly_int&lt;/code&gt;</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparisons involving &lt;code&gt;poly_int&lt;/code&gt;</a>
+<hr>
+</div>
+
+<h4 class="subsection">10.3.2 Properties of the <code>poly_int</code> comparisons</h4>
+
+<p>All &ldquo;maybe&rdquo; relations except <code>maybe_ne</code> are transitive, so for example:
+
+<pre class="smallexample">     maybe_lt (<var>a</var>, <var>b</var>) &amp;&amp; maybe_lt (<var>b</var>, <var>c</var>) implies maybe_lt (<var>a</var>, <var>c</var>)
+</pre>
+ <p>for all <var>a</var>, <var>b</var> and <var>c</var>.  <code>maybe_lt</code>, <code>maybe_gt</code>
+and <code>maybe_ne</code> are irreflexive, so for example:
+
+<pre class="smallexample">     !maybe_lt (<var>a</var>, <var>a</var>)
+</pre>
+ <p>is true for all <var>a</var>.  <code>maybe_le</code>, <code>maybe_eq</code> and <code>maybe_ge</code>
+are reflexive, so for example:
+
+<pre class="smallexample">     maybe_le (<var>a</var>, <var>a</var>)
+</pre>
+ <p>is true for all <var>a</var>.  <code>maybe_eq</code> and <code>maybe_ne</code> are symmetric, so:
+
+<pre class="smallexample">     maybe_eq (<var>a</var>, <var>b</var>) == maybe_eq (<var>b</var>, <var>a</var>)
+     maybe_ne (<var>a</var>, <var>b</var>) == maybe_ne (<var>b</var>, <var>a</var>)
+</pre>
+ <p>for all <var>a</var> and <var>b</var>.  In addition:
+
+<pre class="smallexample">     maybe_le (<var>a</var>, <var>b</var>) == maybe_lt (<var>a</var>, <var>b</var>) || maybe_eq (<var>a</var>, <var>b</var>)
+     maybe_ge (<var>a</var>, <var>b</var>) == maybe_gt (<var>a</var>, <var>b</var>) || maybe_eq (<var>a</var>, <var>b</var>)
+     maybe_lt (<var>a</var>, <var>b</var>) == maybe_gt (<var>b</var>, <var>a</var>)
+     maybe_le (<var>a</var>, <var>b</var>) == maybe_ge (<var>b</var>, <var>a</var>)
+</pre>
+ <p>However:
+
+<pre class="smallexample">     maybe_le (<var>a</var>, <var>b</var>) &amp;&amp; maybe_le (<var>b</var>, <var>a</var>) does not imply !maybe_ne (<var>a</var>, <var>b</var>) [== known_eq (<var>a</var>, <var>b</var>)]
+     maybe_ge (<var>a</var>, <var>b</var>) &amp;&amp; maybe_ge (<var>b</var>, <var>a</var>) does not imply !maybe_ne (<var>a</var>, <var>b</var>) [== known_eq (<var>a</var>, <var>b</var>)]
+</pre>
+ <p>One example is again &lsquo;<samp><var>a</var><span class="samp"> == 3 + 4</span><var>x</var></samp>&rsquo;
+and &lsquo;<samp><var>b</var><span class="samp"> == 1 + 5</span><var>x</var></samp>&rsquo;, where &lsquo;<samp><span class="samp">maybe_le (</span><var>a</var><span class="samp">, </span><var>b</var><span class="samp">)</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">maybe_ge (</span><var>a</var><span class="samp">, </span><var>b</var><span class="samp">)</span></samp>&rsquo; and &lsquo;<samp><span class="samp">maybe_ne (</span><var>a</var><span class="samp">, </span><var>b</var><span class="samp">)</span></samp>&rsquo;
+all hold.  <code>maybe_le</code> and <code>maybe_ge</code> are therefore not antisymetric
+and do not form a partial order.
+
+ <p>From the above, it follows that:
+
+     <ul>
+<li>All &ldquo;known&rdquo; relations except <code>known_ne</code> are transitive.
+
+     <li><code>known_lt</code>, <code>known_ne</code> and <code>known_gt</code> are irreflexive.
+
+     <li><code>known_le</code>, <code>known_eq</code> and <code>known_ge</code> are reflexive. 
+</ul>
+
+ <p>Also:
+
+<pre class="smallexample">     known_lt (<var>a</var>, <var>b</var>) == known_gt (<var>b</var>, <var>a</var>)
+     known_le (<var>a</var>, <var>b</var>) == known_ge (<var>b</var>, <var>a</var>)
+     known_lt (<var>a</var>, <var>b</var>) implies !known_lt (<var>b</var>, <var>a</var>)  [asymmetry]
+     known_gt (<var>a</var>, <var>b</var>) implies !known_gt (<var>b</var>, <var>a</var>)
+     known_le (<var>a</var>, <var>b</var>) &amp;&amp; known_le (<var>b</var>, <var>a</var>) == known_eq (<var>a</var>, <var>b</var>) [== !maybe_ne (<var>a</var>, <var>b</var>)]
+     known_ge (<var>a</var>, <var>b</var>) &amp;&amp; known_ge (<var>b</var>, <var>a</var>) == known_eq (<var>a</var>, <var>b</var>) [== !maybe_ne (<var>a</var>, <var>b</var>)]
+</pre>
+ <p><code>known_le</code> and <code>known_ge</code> are therefore antisymmetric and are
+partial orders.  However:
+
+<pre class="smallexample">     known_le (<var>a</var>, <var>b</var>) does not imply known_lt (<var>a</var>, <var>b</var>) || known_eq (<var>a</var>, <var>b</var>)
+     known_ge (<var>a</var>, <var>b</var>) does not imply known_gt (<var>a</var>, <var>b</var>) || known_eq (<var>a</var>, <var>b</var>)
+</pre>
+ <p>For example, &lsquo;<samp><span class="samp">known_le (4, 4 + 4</span><var>x</var><span class="samp">)</span></samp>&rsquo; holds because the runtime
+indeterminate <var>x</var> is a nonnegative integer, but neither
+<code>known_lt (4, 4 + 4</code><var>x</var><code>)</code> nor <code>known_eq (4, 4 + 4</code><var>x</var><code>)</code> hold.
+
+ </body></html>
+

@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>Shrink-wrapping separate components - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack-and-Calling.html#Stack-and-Calling" title="Stack and Calling">
+<link rel="prev" href="Tail-Calls.html#Tail-Calls" title="Tail Calls">
+<link rel="next" href="Stack-Smashing-Protection.html#Stack-Smashing-Protection" title="Stack Smashing Protection">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Shrink-wrapping-separate-components"></a>
+<a name="Shrink_002dwrapping-separate-components"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stack-Smashing-Protection.html#Stack-Smashing-Protection">Stack Smashing Protection</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Tail-Calls.html#Tail-Calls">Tail Calls</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack-and-Calling.html#Stack-and-Calling">Stack and Calling</a>
+<hr>
+</div>
+
+<h4 class="subsection">18.9.14 Shrink-wrapping separate components</h4>
+
+<p><a name="index-shrink_002dwrapping-separate-components-4427"></a>
+The prologue may perform a variety of target dependent tasks such as
+saving callee-saved registers, saving the return address, aligning the
+stack, creating a stack frame, initializing the PIC register, setting
+up the static chain, etc.
+
+ <p>On some targets some of these tasks may be independent of others and
+thus may be shrink-wrapped separately.  These independent tasks are
+referred to as components and are handled generically by the target
+independent parts of GCC.
+
+ <p>Using the following hooks those prologue or epilogue components can be
+shrink-wrapped separately, so that the initialization (and possibly
+teardown) those components do is not done as frequently on execution
+paths where this would unnecessary.
+
+ <p>What exactly those components are is up to the target code; the generic
+code treats them abstractly, as a bit in an <code>sbitmap</code>.  These
+<code>sbitmap</code>s are allocated by the <code>shrink_wrap.get_separate_components</code>
+and <code>shrink_wrap.components_for_bb</code> hooks, and deallocated by the
+generic code.
+
+<div class="defun">
+&mdash; Target Hook: sbitmap <b>TARGET_SHRINK_WRAP_GET_SEPARATE_COMPONENTS</b> (<var>void</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fGET_005fSEPARATE_005fCOMPONENTS-4428"></a></var><br>
+<blockquote><p>This hook should return an <code>sbitmap</code> with the bits set for those
+components that can be separately shrink-wrapped in the current function. 
+Return <code>NULL</code> if the current function should not get any separate
+shrink-wrapping. 
+Don't define this hook if it would always return <code>NULL</code>. 
+If it is defined, the other hooks in this group have to be defined as well. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Target Hook: sbitmap <b>TARGET_SHRINK_WRAP_COMPONENTS_FOR_BB</b> (<var>basic_block</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fCOMPONENTS_005fFOR_005fBB-4429"></a></var><br>
+<blockquote><p>This hook should return an <code>sbitmap</code> with the bits set for those
+components where either the prologue component has to be executed before
+the <code>basic_block</code>, or the epilogue component after it, or both. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Target Hook: void <b>TARGET_SHRINK_WRAP_DISQUALIFY_COMPONENTS</b> (<var>sbitmap components, edge e, sbitmap edge_components, bool is_prologue</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fDISQUALIFY_005fCOMPONENTS-4430"></a></var><br>
+<blockquote><p>This hook should clear the bits in the <var>components</var> bitmap for those
+components in <var>edge_components</var> that the target cannot handle on edge
+<var>e</var>, where <var>is_prologue</var> says if this is for a prologue or an
+epilogue instead. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Target Hook: void <b>TARGET_SHRINK_WRAP_EMIT_PROLOGUE_COMPONENTS</b> (<var>sbitmap</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fEMIT_005fPROLOGUE_005fCOMPONENTS-4431"></a></var><br>
+<blockquote><p>Emit prologue insns for the components indicated by the parameter. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Target Hook: void <b>TARGET_SHRINK_WRAP_EMIT_EPILOGUE_COMPONENTS</b> (<var>sbitmap</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fEMIT_005fEPILOGUE_005fCOMPONENTS-4432"></a></var><br>
+<blockquote><p>Emit epilogue insns for the components indicated by the parameter. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Target Hook: void <b>TARGET_SHRINK_WRAP_SET_HANDLED_COMPONENTS</b> (<var>sbitmap</var>)<var><a name="index-TARGET_005fSHRINK_005fWRAP_005fSET_005fHANDLED_005fCOMPONENTS-4433"></a></var><br>
+<blockquote><p>Mark the components in the parameter as handled, so that the
+<code>prologue</code> and <code>epilogue</code> named patterns know to ignore those
+components.  The target code should not hang on to the <code>sbitmap</code>, it
+will be deleted after this call. 
+</p></blockquote></div>
+
+ </body></html>
+

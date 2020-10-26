@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+<title>Integer Logic and Bit Fiddling - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Comparisons.html#Integer-Comparisons" title="Integer Comparisons">
+<link rel="next" href="I_002fO-of-Integers.html#I_002fO-of-Integers" title="I/O of Integers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Integer-Logic-and-Bit-Fiddling"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="I_002fO-of-Integers.html#I_002fO-of-Integers">I/O of Integers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Comparisons.html#Integer-Comparisons">Integer Comparisons</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.11 Logical and Bit Manipulation Functions</h3>
+
+<p><a name="index-Logical-functions-422"></a><a name="index-Bit-manipulation-functions-423"></a><a name="index-Integer-logical-functions-424"></a><a name="index-Integer-bit-manipulation-functions-425"></a>
+These functions behave as if twos complement arithmetic were used (although
+sign-magnitude is the actual implementation).  The least significant bit is
+number 0.
+
+<div class="defun">
+&mdash; Function: void <b>mpz_and</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fand-426"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> bitwise-and <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_ior</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fior-427"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> bitwise inclusive-or <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_xor</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fxor-428"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> bitwise exclusive-or <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_com</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fcom-429"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the one's complement of <var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_bitcnt_t <b>mpz_popcount</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fpopcount-430"></a></var><br>
+<blockquote><p>If <var>op</var>&gt;=0, return the population count of <var>op</var>, which is the
+number of 1 bits in the binary representation.  If <var>op</var>&lt;0, the
+number of 1s is infinite, and the return value is the largest possible
+<code>mp_bitcnt_t</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_bitcnt_t <b>mpz_hamdist</b> (<var>const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fhamdist-431"></a></var><br>
+<blockquote><p>If <var>op1</var> and <var>op2</var> are both &gt;=0 or both &lt;0, return the
+hamming distance between the two operands, which is the number of bit positions
+where <var>op1</var> and <var>op2</var> have different bit values.  If one operand is
+&gt;=0 and the other &lt;0 then the number of bits different is
+infinite, and the return value is the largest possible <code>mp_bitcnt_t</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_bitcnt_t <b>mpz_scan0</b> (<var>const mpz_t op, mp_bitcnt_t starting_bit</var>)<var><a name="index-mpz_005fscan0-432"></a></var><br>
+&mdash; Function: mp_bitcnt_t <b>mpz_scan1</b> (<var>const mpz_t op, mp_bitcnt_t starting_bit</var>)<var><a name="index-mpz_005fscan1-433"></a></var><br>
+<blockquote><p><a name="index-Bit-scanning-functions-434"></a><a name="index-Scan-bit-functions-435"></a>Scan <var>op</var>, starting from bit <var>starting_bit</var>, towards more significant
+bits, until the first 0 or 1 bit (respectively) is found.  Return the index of
+the found bit.
+
+        <p>If the bit at <var>starting_bit</var> is already what's sought, then
+<var>starting_bit</var> is returned.
+
+        <p>If there's no bit found, then the largest possible <code>mp_bitcnt_t</code> is
+returned.  This will happen in <code>mpz_scan0</code> past the end of a negative
+number, or <code>mpz_scan1</code> past the end of a nonnegative number. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_setbit</b> (<var>mpz_t rop, mp_bitcnt_t bit_index</var>)<var><a name="index-mpz_005fsetbit-436"></a></var><br>
+<blockquote><p>Set bit <var>bit_index</var> in <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_clrbit</b> (<var>mpz_t rop, mp_bitcnt_t bit_index</var>)<var><a name="index-mpz_005fclrbit-437"></a></var><br>
+<blockquote><p>Clear bit <var>bit_index</var> in <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_combit</b> (<var>mpz_t rop, mp_bitcnt_t bit_index</var>)<var><a name="index-mpz_005fcombit-438"></a></var><br>
+<blockquote><p>Complement bit <var>bit_index</var> in <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpz_tstbit</b> (<var>const mpz_t op, mp_bitcnt_t bit_index</var>)<var><a name="index-mpz_005ftstbit-439"></a></var><br>
+<blockquote><p>Test bit <var>bit_index</var> in <var>op</var> and return 0 or 1 accordingly. 
+</p></blockquote></div>
+
+   </body></html>
+

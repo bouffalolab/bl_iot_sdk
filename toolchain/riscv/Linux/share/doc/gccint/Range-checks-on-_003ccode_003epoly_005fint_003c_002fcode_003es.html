@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Range checks on @code{poly_int}s - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Comparisons-involving-_0040code_007bpoly_005fint_007d.html#Comparisons-involving-_0040code_007bpoly_005fint_007d" title="Comparisons involving @code{poly_int}">
+<link rel="prev" href="Checking-for-a-_0040code_007bpoly_005fint_007d-marker-value.html#Checking-for-a-_0040code_007bpoly_005fint_007d-marker-value" title="Checking for a @code{poly_int} marker value">
+<link rel="next" href="Sorting-_0040code_007bpoly_005fint_007ds.html#Sorting-_0040code_007bpoly_005fint_007ds" title="Sorting @code{poly_int}s">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Range-checks-on-%3ccode%3epoly_int%3c%2fcode%3es"></a>
+<a name="Range-checks-on-_003ccode_003epoly_005fint_003c_002fcode_003es"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Sorting-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Sorting-_003ccode_003epoly_005fint_003c_002fcode_003es">Sorting &lt;code&gt;poly_int&lt;/code&gt;s</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Checking-for-a-_003ccode_003epoly_005fint_003c_002fcode_003e-marker-value.html#Checking-for-a-_003ccode_003epoly_005fint_003c_002fcode_003e-marker-value">Checking for a &lt;code&gt;poly_int&lt;/code&gt; marker value</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparisons involving &lt;code&gt;poly_int&lt;/code&gt;</a>
+<hr>
+</div>
+
+<h4 class="subsection">10.3.6 Range checks on <code>poly_int</code>s</h4>
+
+<p>As well as the core comparisons
+(see <a href="Comparison-functions-for-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparison-functions-for-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparison functions for <code>poly_int</code></a>), <code>poly_int</code> provides
+utilities for various kinds of range check.  In each case the range
+is represented by a start position and a size rather than a start
+position and an end position; this is because the former is used
+much more often than the latter in GCC.  Also, the sizes can be
+-1 (or all ones for unsigned sizes) to indicate a range with a known
+start position but an unknown size.  All other sizes must be nonnegative. 
+A range of size 0 does not contain anything or overlap anything.
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">known_size_p (</span><var>size</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if <var>size</var> represents a known range size, false if it
+is -1 or all ones (for signed and unsigned types respectively).
+
+     <br><dt>&lsquo;<samp><span class="samp">ranges_maybe_overlap_p (</span><var>pos1</var><span class="samp">, </span><var>size1</var><span class="samp">, </span><var>pos2</var><span class="samp">, </span><var>size2</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if the range described by <var>pos1</var> and <var>size1</var> <em>might</em>
+overlap the range described by <var>pos2</var> and <var>size2</var> (in other words,
+return true if we cannot prove that the ranges are disjoint).
+
+     <br><dt>&lsquo;<samp><span class="samp">ranges_known_overlap_p (</span><var>pos1</var><span class="samp">, </span><var>size1</var><span class="samp">, </span><var>pos2</var><span class="samp">, </span><var>size2</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if the range described by <var>pos1</var> and <var>size1</var> is known to
+overlap the range described by <var>pos2</var> and <var>size2</var>.
+
+     <br><dt>&lsquo;<samp><span class="samp">known_subrange_p (</span><var>pos1</var><span class="samp">, </span><var>size1</var><span class="samp">, </span><var>pos2</var><span class="samp">, </span><var>size2</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if the range described by <var>pos1</var> and <var>size1</var> is known to
+be contained in the range described by <var>pos2</var> and <var>size2</var>.
+
+     <br><dt>&lsquo;<samp><span class="samp">maybe_in_range_p (</span><var>value</var><span class="samp">, </span><var>pos</var><span class="samp">, </span><var>size</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if <var>value</var> <em>might</em> be in the range described by
+<var>pos</var> and <var>size</var> (in other words, return true if we cannot
+prove that <var>value</var> is outside that range).
+
+     <br><dt>&lsquo;<samp><span class="samp">known_in_range_p (</span><var>value</var><span class="samp">, </span><var>pos</var><span class="samp">, </span><var>size</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if <var>value</var> is known to be in the range described
+by <var>pos</var> and <var>size</var>.
+
+     <br><dt>&lsquo;<samp><span class="samp">endpoint_representable_p (</span><var>pos</var><span class="samp">, </span><var>size</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if the range described by <var>pos</var> and <var>size</var> is
+open-ended or if the endpoint (<var>pos</var> + <var>size</var>) is representable
+in the same type as <var>pos</var> and <var>size</var>.  The function returns false
+if adding <var>size</var> to <var>pos</var> makes conceptual sense but could overflow. 
+</dl>
+
+ <p>There is also a <code>poly_int</code> version of the <code>IN_RANGE_P</code> macro:
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">coeffs_in_range_p (</span><var>x</var><span class="samp">, </span><var>lower</var><span class="samp">, </span><var>upper</var><span class="samp">)</span></samp>&rsquo;<dd>Return true if every coefficient of <var>x</var> is in the inclusive range
+[<var>lower</var>, <var>upper</var>].  This function can be useful when testing
+whether an operation would cause the values of coefficients to
+overflow.
+
+     <p>Note that the function does not indicate whether <var>x</var> itself is in the
+given range.  <var>x</var> can be either a constant or a <code>poly_int</code>. 
+</dl>
+
+ </body></html>
+

@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+<title>Nops - Using as</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using as">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Pseudo-Ops.html#Pseudo-Ops" title="Pseudo Ops">
+<link rel="prev" href="Nolist.html#Nolist" title="Nolist">
+<link rel="next" href="Octa.html#Octa" title="Octa">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This file documents the GNU Assembler "as".
+
+Copyright (C) 1991-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Nops"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Octa.html#Octa">Octa</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Nolist.html#Nolist">Nolist</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Pseudo-Ops.html#Pseudo-Ops">Pseudo Ops</a>
+<hr>
+</div>
+
+<h3 class="section">7.65 <code>.nops </code><var>size</var><code>[, </code><var>control</var><code>]</code></h3>
+
+<p><a name="index-g_t_0040code_007bnops_007d-directive-421"></a><a name="index-filling-memory-with-no_002dop-instructions-422"></a>This directive emits <var>size</var> bytes filled with no-op instructions. 
+<var>size</var> is absolute expression, which must be a positve value. 
+<var>control</var> controls how no-op instructions should be generated.  If
+the comma and <var>control</var> are omitted, <var>control</var> is assumed to be
+zero.
+
+   <p>Note: For Intel 80386 and AMD x86-64 targets, <var>control</var> specifies
+the size limit of a no-op instruction.  The valid values of <var>control</var>
+are between 0 and 4 in 16-bit mode, between 0 and 7 when tuning for
+older processors in 32-bit mode, between 0 and 11 in 64-bit mode or when
+tuning for newer processors in 32-bit mode.  When 0 is used, the no-op
+instruction size limit is set to the maximum supported size.
+
+   </body></html>
+

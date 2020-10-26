@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Demonstration Programs - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="prev" href="Compatibility-with-older-versions.html#Compatibility-with-older-versions" title="Compatibility with older versions">
+<link rel="next" href="Efficiency.html#Efficiency" title="Efficiency">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Demonstration-Programs"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Efficiency.html#Efficiency">Efficiency</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Compatibility-with-older-versions.html#Compatibility-with-older-versions">Compatibility with older versions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>
+<hr>
+</div>
+
+<h3 class="section">3.10 Demonstration programs</h3>
+
+<p><a name="index-Demonstration-programs-189"></a><a name="index-Example-programs-190"></a><a name="index-Sample-programs-191"></a>The <samp><span class="file">demos</span></samp> subdirectory has some sample programs using GMP.  These
+aren't built or installed, but there's a <samp><span class="file">Makefile</span></samp> with rules for them. 
+For instance,
+
+<pre class="example">     make pexpr
+     ./pexpr 68^975+10
+</pre>
+   <p class="noindent">The following programs are provided
+
+     <ul>
+<li><a name="index-Expression-parsing-demo-192"></a><a name="index-Parsing-expressions-demo-193"></a>&lsquo;<samp><span class="samp">pexpr</span></samp>&rsquo; is an expression evaluator, the program used on the GMP web page. 
+<li><a name="index-Expression-parsing-demo-194"></a><a name="index-Parsing-expressions-demo-195"></a>The &lsquo;<samp><span class="samp">calc</span></samp>&rsquo; subdirectory has a similar but simpler evaluator using
+<samp><span class="command">lex</span></samp> and <samp><span class="command">yacc</span></samp>. 
+<li><a name="index-Expression-parsing-demo-196"></a><a name="index-Parsing-expressions-demo-197"></a>The &lsquo;<samp><span class="samp">expr</span></samp>&rsquo; subdirectory is yet another expression evaluator, a library
+designed for ease of use within a C program.  See <samp><span class="file">demos/expr/README</span></samp> for
+more information. 
+<li><a name="index-Factorization-demo-198"></a>&lsquo;<samp><span class="samp">factorize</span></samp>&rsquo; is a Pollard-Rho factorization program. 
+<li>&lsquo;<samp><span class="samp">isprime</span></samp>&rsquo; is a command-line interface to the <code>mpz_probab_prime_p</code>
+function. 
+<li>&lsquo;<samp><span class="samp">primes</span></samp>&rsquo; counts or lists primes in an interval, using a sieve. 
+<li>&lsquo;<samp><span class="samp">qcn</span></samp>&rsquo; is an example use of <code>mpz_kronecker_ui</code> to estimate quadratic
+class numbers. 
+<li><a name="index-g_t_0040code_007bperl_007d-199"></a><a name="index-GMP-Perl-module-200"></a><a name="index-Perl-module-201"></a>The &lsquo;<samp><span class="samp">perl</span></samp>&rsquo; subdirectory is a comprehensive perl interface to GMP.  See
+<samp><span class="file">demos/perl/INSTALL</span></samp> for more information.  Documentation is in POD
+format in <samp><span class="file">demos/perl/GMP.pm</span></samp>. 
+</ul>
+
+   <p>As an aside, consideration has been given at various times to some sort of
+expression evaluation within the main GMP library.  Going beyond something
+minimal quickly leads to matters like user-defined functions, looping, fixnums
+for control variables, etc, which are considered outside the scope of GMP
+(much closer to language interpreters or compilers, See <a href="Language-Bindings.html#Language-Bindings">Language Bindings</a>.) 
+Something simple for program input convenience may yet be a possibility, a
+combination of the <samp><span class="file">expr</span></samp> demo and the <samp><span class="file">pexpr</span></samp> tree back-end
+perhaps.  But for now the above evaluators are offered as illustrations.
+
+   </body></html>
+

@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+<title>Extended GCD - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" title="Greatest Common Divisor Algorithms">
+<link rel="prev" href="Subquadratic-GCD.html#Subquadratic-GCD" title="Subquadratic GCD">
+<link rel="next" href="Jacobi-Symbol.html#Jacobi-Symbol" title="Jacobi Symbol">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Extended-GCD"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Jacobi-Symbol.html#Jacobi-Symbol">Jacobi Symbol</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Subquadratic-GCD.html#Subquadratic-GCD">Subquadratic GCD</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms">Greatest Common Divisor Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.3.4 Extended GCD</h4>
+
+<p>The extended GCD function, or GCDEXT, calculates gcd(a,b) and also
+cofactors x and y satisfying a*x+b*y=gcd(a,b). All the algorithms used for plain GCD are extended to
+handle this case. The binary algorithm is used only for single-limb GCDEXT. 
+Lehmer's algorithm is used for sizes up to <code>GCDEXT_DC_THRESHOLD</code>. Above
+this threshold, GCDEXT is implemented as a loop around HGCD, but with more
+book-keeping to keep track of the cofactors. This gives the same asymptotic
+running time as for GCD and HGCD, O(M(N)*log(N))
+
+   <p>One difference to plain GCD is that while the inputs a and b are
+reduced as the algorithm proceeds, the cofactors x and y grow in
+size. This makes the tuning of the chopping-point more difficult. The current
+code chops off the most significant half of the inputs for the call to HGCD in
+the first iteration, and the most significant two thirds for the remaining
+calls. This strategy could surely be improved. Also the stop condition for the
+loop, where Lehmer's algorithm is invoked once the inputs are reduced below
+<code>GCDEXT_DC_THRESHOLD</code>, could maybe be improved by taking into account the
+current size of the cofactors.
+
+   </body></html>
+

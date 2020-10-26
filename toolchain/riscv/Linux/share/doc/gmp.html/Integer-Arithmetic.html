@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+<title>Integer Arithmetic - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Converting-Integers.html#Converting-Integers" title="Converting Integers">
+<link rel="next" href="Integer-Division.html#Integer-Division" title="Integer Division">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Integer-Arithmetic"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Integer-Division.html#Integer-Division">Integer Division</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Converting-Integers.html#Converting-Integers">Converting Integers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.5 Arithmetic Functions</h3>
+
+<p><a name="index-Integer-arithmetic-functions-280"></a><a name="index-Arithmetic-functions-281"></a>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_add</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fadd-282"></a></var><br>
+&mdash; Function: void <b>mpz_add_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005fadd_005fui-283"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> + <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_sub</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fsub-284"></a></var><br>
+&mdash; Function: void <b>mpz_sub_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005fsub_005fui-285"></a></var><br>
+&mdash; Function: void <b>mpz_ui_sub</b> (<var>mpz_t rop, unsigned long int op1, const mpz_t op2</var>)<var><a name="index-mpz_005fui_005fsub-286"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> &minus; <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_mul</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fmul-287"></a></var><br>
+&mdash; Function: void <b>mpz_mul_si</b> (<var>mpz_t rop, const mpz_t op1, long int op2</var>)<var><a name="index-mpz_005fmul_005fsi-288"></a></var><br>
+&mdash; Function: void <b>mpz_mul_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005fmul_005fui-289"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_addmul</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005faddmul-290"></a></var><br>
+&mdash; Function: void <b>mpz_addmul_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005faddmul_005fui-291"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>rop</var> + <var>op1</var> times <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_submul</b> (<var>mpz_t rop, const mpz_t op1, const mpz_t op2</var>)<var><a name="index-mpz_005fsubmul-292"></a></var><br>
+&mdash; Function: void <b>mpz_submul_ui</b> (<var>mpz_t rop, const mpz_t op1, unsigned long int op2</var>)<var><a name="index-mpz_005fsubmul_005fui-293"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>rop</var> - <var>op1</var> times <var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_mul_2exp</b> (<var>mpz_t rop, const mpz_t op1, mp_bitcnt_t op2</var>)<var><a name="index-mpz_005fmul_005f2exp-294"></a></var><br>
+<blockquote><p><a name="index-Bit-shift-left-295"></a>Set <var>rop</var> to <var>op1</var> times 2 raised to
+<var>op2</var>.  This operation can also be defined as a left shift by <var>op2</var>
+bits. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_neg</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fneg-296"></a></var><br>
+<blockquote><p>Set <var>rop</var> to &minus;<var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_abs</b> (<var>mpz_t rop, const mpz_t op</var>)<var><a name="index-mpz_005fabs-297"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the absolute value of <var>op</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

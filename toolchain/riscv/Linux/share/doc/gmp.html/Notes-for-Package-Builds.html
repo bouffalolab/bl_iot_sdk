@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+<title>Notes for Package Builds - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Installing-GMP.html#Installing-GMP" title="Installing GMP">
+<link rel="prev" href="ABI-and-ISA.html#ABI-and-ISA" title="ABI and ISA">
+<link rel="next" href="Notes-for-Particular-Systems.html#Notes-for-Particular-Systems" title="Notes for Particular Systems">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Notes-for-Package-Builds"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Notes-for-Particular-Systems.html#Notes-for-Particular-Systems">Notes for Particular Systems</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ABI-and-ISA.html#ABI-and-ISA">ABI and ISA</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Installing-GMP.html#Installing-GMP">Installing GMP</a>
+<hr>
+</div>
+
+<h3 class="section">2.3 Notes for Package Builds</h3>
+
+<p><a name="index-Build-notes-for-binary-packaging-81"></a><a name="index-Packaged-builds-82"></a>
+GMP should present no great difficulties for packaging in a binary
+distribution.
+
+   <p><a name="index-Libtool-versioning-83"></a><a name="index-Shared-library-versioning-84"></a>Libtool is used to build the library and &lsquo;<samp><span class="samp">-version-info</span></samp>&rsquo; is set
+appropriately, having started from &lsquo;<samp><span class="samp">3:0:0</span></samp>&rsquo; in GMP 3.0 (see <a href="../libtool/Versioning.html#Versioning">Library interface versions</a>).
+
+   <p>The GMP 4 series will be upwardly binary compatible in each release and will
+be upwardly binary compatible with all of the GMP 3 series.  Additional
+function interfaces may be added in each release, so on systems where libtool
+versioning is not fully checked by the loader an auxiliary mechanism may be
+needed to express that a dynamic linked application depends on a new enough
+GMP.
+
+   <p>An auxiliary mechanism may also be needed to express that <samp><span class="file">libgmpxx.la</span></samp>
+(from <samp><span class="option">--enable-cxx</span></samp>, see <a href="Build-Options.html#Build-Options">Build Options</a>) requires <samp><span class="file">libgmp.la</span></samp>
+from the same GMP version, since this is not done by the libtool versioning,
+nor otherwise.  A mismatch will result in unresolved symbols from the linker,
+or perhaps the loader.
+
+   <p>When building a package for a CPU family, care should be taken to use
+&lsquo;<samp><span class="samp">--host</span></samp>&rsquo; (or &lsquo;<samp><span class="samp">--build</span></samp>&rsquo;) to choose the least common denominator among
+the CPUs which might use the package.  For example this might mean plain
+&lsquo;<samp><span class="samp">sparc</span></samp>&rsquo; (meaning V7) for SPARCs.
+
+   <p>For x86s, <samp><span class="option">--enable-fat</span></samp> sets things up for a fat binary build, making a
+runtime selection of optimized low level routines.  This is a good choice for
+packaging to run on a range of x86 chips.
+
+   <p>Users who care about speed will want GMP built for their exact CPU type, to
+make best use of the available optimizations.  Providing a way to suitably
+rebuild a package may be useful.  This could be as simple as making it
+possible for a user to omit &lsquo;<samp><span class="samp">--build</span></samp>&rsquo; (and &lsquo;<samp><span class="samp">--host</span></samp>&rsquo;) so
+&lsquo;<samp><span class="samp">./config.guess</span></samp>&rsquo; will detect the CPU.  But a way to manually specify a
+&lsquo;<samp><span class="samp">--build</span></samp>&rsquo; will be wanted for systems where &lsquo;<samp><span class="samp">./config.guess</span></samp>&rsquo; is
+inexact.
+
+   <p>On systems with multiple ABIs, a packaged build will need to decide which
+among the choices is to be provided, see <a href="ABI-and-ISA.html#ABI-and-ISA">ABI and ISA</a>.  A given run of
+&lsquo;<samp><span class="samp">./configure</span></samp>&rsquo; etc will only build one ABI.  If a second ABI is also
+required then a second run of &lsquo;<samp><span class="samp">./configure</span></samp>&rsquo; etc must be made, starting
+from a clean directory tree (&lsquo;<samp><span class="samp">make distclean</span></samp>&rsquo;).
+
+   <p>As noted under &ldquo;ABI and ISA&rdquo;, currently no attempt is made to follow system
+conventions for install locations that vary with ABI, such as
+<samp><span class="file">/usr/lib/sparcv9</span></samp> for &lsquo;<samp><span class="samp">ABI=64</span></samp>&rsquo; as opposed to <samp><span class="file">/usr/lib</span></samp> for
+&lsquo;<samp><span class="samp">ABI=32</span></samp>&rsquo;.  A package build can override &lsquo;<samp><span class="samp">libdir</span></samp>&rsquo; and other standard
+variables as necessary.
+
+   <p>Note that <samp><span class="file">gmp.h</span></samp> is a generated file, and will be architecture and ABI
+dependent.  When attempting to install two ABIs simultaneously it will be
+important that an application compile gets the correct <samp><span class="file">gmp.h</span></samp> for its
+desired ABI.  If compiler include paths don't vary with ABI options then it
+might be necessary to create a <samp><span class="file">/usr/include/gmp.h</span></samp> which tests
+preprocessor symbols and chooses the correct actual <samp><span class="file">gmp.h</span></samp>.
+
+   </body></html>
+

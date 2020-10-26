@@ -1,0 +1,151 @@
+<html lang="en">
+<head>
+<title>FFT Multiplication - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Multiplication-Algorithms.html#Multiplication-Algorithms" title="Multiplication Algorithms">
+<link rel="prev" href="Higher-degree-Toom_0027n_0027half.html#Higher-degree-Toom_0027n_0027half" title="Higher degree Toom'n'half">
+<link rel="next" href="Other-Multiplication.html#Other-Multiplication" title="Other Multiplication">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="FFT-Multiplication"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Other-Multiplication.html#Other-Multiplication">Other Multiplication</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Higher-degree-Toom_0027n_0027half.html#Higher-degree-Toom_0027n_0027half">Higher degree Toom'n'half</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.1.6 FFT Multiplication</h4>
+
+<p><a name="index-FFT-multiplication-906"></a><a name="index-Fast-Fourier-Transform-907"></a>
+At large to very large sizes a Fermat style FFT multiplication is used,
+following Sch&ouml;nhage and Strassen (see <a href="References.html#References">References</a>).  Descriptions of FFTs
+in various forms can be found in many textbooks, for instance Knuth section
+4.3.3 part C or Lipson chapter IX.  A brief description of the form used in
+GMP is given here.
+
+   <p>The multiplication done is x*y mod 2^N+1, for a given
+N.  A full product x*y is obtained by choosing N&gt;=bits(x)+bits(y) and padding
+x and y with high zero limbs.  The modular product is the native
+form for the algorithm, so padding to get a full product is unavoidable.
+
+   <p>The algorithm follows a split, evaluate, pointwise multiply, interpolate and
+combine similar to that described above for Karatsuba and Toom-3.  A k
+parameter controls the split, with an FFT-k splitting into 2^k
+pieces of M=N/2^k bits each.  N must be a multiple of
+(2^k)*<code>mp_bits_per_limb</code> so
+the split falls on limb boundaries, avoiding bit shifts in the split and
+combine stages.
+
+   <p>The evaluations, pointwise multiplications, and interpolation, are all done
+modulo 2^N'+1 where N' is 2M+k+3 rounded up to a
+multiple of 2^k and of <code>mp_bits_per_limb</code>.  The results of
+interpolation will be the following negacyclic convolution of the input
+pieces, and the choice of N' ensures these sums aren't truncated.
+
+<pre class="example">                ---
+                \         b
+     w[n] =     /     (-1) * x[i] * y[j]
+                ---
+            i+j==b*2^k+n
+               b=0,1
+</pre>
+   <p>The points used for the evaluation are g^i for i=0 to
+2^k-1 where g=2^(2N'/2^k).  g is a
+2^k'th root of unity mod 2^N'+1, which produces necessary
+cancellations at the interpolation stage, and it's also a power of 2 so the
+fast Fourier transforms used for the evaluation and interpolation do only
+shifts, adds and negations.
+
+   <p>The pointwise multiplications are done modulo 2^N'+1 and either
+recurse into a further FFT or use a plain multiplication (Toom-3, Karatsuba or
+basecase), whichever is optimal at the size N'.  The interpolation is
+an inverse fast Fourier transform.  The resulting set of sums of x[i]*y[j] are added at appropriate offsets to give the final result.
+
+   <p>Squaring is the same, but x is the only input so it's one transform at
+the evaluate stage and the pointwise multiplies are squares.  The
+interpolation is the same.
+
+   <p>For a mod 2^N+1 product, an FFT-k is an O(N^(k/(k-1))) algorithm, the exponent representing 2^k recursed
+modular multiplies each 1/2^(k-1) the size of the original. 
+Each successive k is an asymptotic improvement, but overheads mean each
+is only faster at bigger and bigger sizes.  In the code, <code>MUL_FFT_TABLE</code>
+and <code>SQR_FFT_TABLE</code> are the thresholds where each k is used.  Each
+new k effectively swaps some multiplying for some shifts, adds and
+overheads.
+
+   <p>A mod 2^N+1 product can be formed with a normal
+NxN-&gt;2N bit multiply plus a subtraction, so an FFT
+and Toom-3 etc can be compared directly.  A k=4 FFT at
+O(N^1.333<!-- /@w -->) can be expected to be the first faster than Toom-3 at
+O(N^1.465<!-- /@w -->).  In practice this is what's found, with
+<code>MUL_FFT_MODF_THRESHOLD</code> and <code>SQR_FFT_MODF_THRESHOLD</code> being between
+300 and 1000 limbs, depending on the CPU.  So far it's been found that only
+very large FFTs recurse into pointwise multiplies above these sizes.
+
+   <p>When an FFT is to give a full product, the change of N to 2N
+doesn't alter the theoretical complexity for a given k, but for the
+purposes of considering where an FFT might be first used it can be assumed
+that the FFT is recursing into a normal multiply and that on that basis it's
+doing 2^k recursed multiplies each 1/2^(k-2) the size of
+the inputs, making it O(N^(k/(k-2))).  This would mean
+k=7 at O(N^1.4<!-- /@w -->) would be the first FFT faster than Toom-3. 
+In practice <code>MUL_FFT_THRESHOLD</code> and <code>SQR_FFT_THRESHOLD</code> have been
+found to be in the k=8 range, somewhere between 3000 and 10000 limbs.
+
+   <p>The way N is split into 2^k pieces and then 2M+k+3 is
+rounded up to a multiple of 2^k and <code>mp_bits_per_limb</code> means that
+when 2^k&gt;=<code>mp_bits_per_limb</code> the effective N is a
+multiple of 2^(2k-1) bits.  The +k+3 means some values of
+N just under such a multiple will be rounded to the next.  The
+complexity calculations above assume that a favourable size is used, meaning
+one which isn't padded through rounding, and it's also assumed that the extra
++k+3 bits are negligible at typical FFT sizes.
+
+   <p>The practical effect of the 2^(2k-1) constraint is to introduce a
+step-effect into measured speeds.  For example k=8 will round N
+up to a multiple of 32768 bits, so for a 32-bit limb there'll be 512 limb
+groups of sizes for which <code>mpn_mul_n</code> runs at the same speed.  Or for
+k=9 groups of 2048 limbs, k=10 groups of 8192 limbs, etc.  In
+practice it's been found each k is used at quite small multiples of its
+size constraint and so the step effect is quite noticeable in a time versus
+size graph.
+
+   <p>The threshold determinations currently measure at the mid-points of size
+steps, but this is sub-optimal since at the start of a new step it can happen
+that it's better to go back to the previous k for a while.  Something
+more sophisticated for <code>MUL_FFT_TABLE</code> and <code>SQR_FFT_TABLE</code> will be
+needed.
+
+   </body></html>
+

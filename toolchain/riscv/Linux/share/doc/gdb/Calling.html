@@ -1,0 +1,159 @@
+<html lang="en">
+<head>
+<title>Calling - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Altering.html#Altering" title="Altering">
+<link rel="prev" href="Returning.html#Returning" title="Returning">
+<link rel="next" href="Patching.html#Patching" title="Patching">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Calling"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Patching.html#Patching">Patching</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Returning.html#Returning">Returning</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Altering.html#Altering">Altering</a>
+<hr>
+</div>
+
+<h3 class="section">17.5 Calling Program Functions</h3>
+
+     
+<a name="index-calling-functions-1175"></a>
+<a name="index-inferior-functions_002c-calling-1176"></a>
+<dl><dt><code>print </code><var>expr</var><dd>Evaluate the expression <var>expr</var> and display the resulting value. 
+The expression may include calls to functions in the program being
+debugged.
+
+     <p><a name="index-call-1177"></a><br><dt><code>call </code><var>expr</var><dd>Evaluate the expression <var>expr</var> without displaying <code>void</code>
+returned values.
+
+     <p>You can use this variant of the <code>print</code> command if you want to
+execute a function from your program that does not return anything
+(a.k.a. <dfn>a void function</dfn>), but without cluttering the output
+with <code>void</code> returned values that <span class="sc">gdb</span> will otherwise
+print.  If the result is not void, it is printed and saved in the
+value history. 
+</dl>
+
+   <p>It is possible for the function you call via the <code>print</code> or
+<code>call</code> command to generate a signal (e.g., if there's a bug in
+the function, or if you passed it incorrect arguments).  What happens
+in that case is controlled by the <code>set unwindonsignal</code> command.
+
+   <p>Similarly, with a C<tt>++</tt> program it is possible for the function you
+call via the <code>print</code> or <code>call</code> command to generate an
+exception that is not handled due to the constraints of the dummy
+frame.  In this case, any exception that is raised in the frame, but has
+an out-of-frame exception handler will not be found.  GDB builds a
+dummy-frame for the inferior function call, and the unwinder cannot
+seek for exception handlers outside of this dummy-frame.  What happens
+in that case is controlled by the
+<code>set unwind-on-terminating-exception</code> command.
+
+     <dl>
+<dt><code>set unwindonsignal</code><dd><a name="index-set-unwindonsignal-1178"></a><a name="index-unwind-stack-in-called-functions-1179"></a><a name="index-call-dummy-stack-unwinding-1180"></a>Set unwinding of the stack if a signal is received while in a function
+that <span class="sc">gdb</span> called in the program being debugged.  If set to on,
+<span class="sc">gdb</span> unwinds the stack it created for the call and restores
+the context to what it was before the call.  If set to off (the
+default), <span class="sc">gdb</span> stops in the frame where the signal was
+received.
+
+     <br><dt><code>show unwindonsignal</code><dd><a name="index-show-unwindonsignal-1181"></a>Show the current setting of stack unwinding in the functions called by
+<span class="sc">gdb</span>.
+
+     <br><dt><code>set unwind-on-terminating-exception</code><dd><a name="index-set-unwind_002don_002dterminating_002dexception-1182"></a><a name="index-unwind-stack-in-called-functions-with-unhandled-exceptions-1183"></a><a name="index-call-dummy-stack-unwinding-on-unhandled-exception_002e-1184"></a>Set unwinding of the stack if a C<tt>++</tt> exception is raised, but left
+unhandled while in a function that <span class="sc">gdb</span> called in the program being
+debugged.  If set to on (the default), <span class="sc">gdb</span> unwinds the stack
+it created for the call and restores the context to what it was before
+the call.  If set to off, <span class="sc">gdb</span> the exception is delivered to
+the default C<tt>++</tt> exception handler and the inferior terminated.
+
+     <br><dt><code>show unwind-on-terminating-exception</code><dd><a name="index-show-unwind_002don_002dterminating_002dexception-1185"></a>Show the current setting of stack unwinding in the functions called by
+<span class="sc">gdb</span>.
+
+   </dl>
+
+<h4 class="subsection">17.5.1 Calling functions with no debug info</h4>
+
+<p><a name="index-no-debug-info-functions-1186"></a>Sometimes, a function you wish to call is missing debug information. 
+In such case, <span class="sc">gdb</span> does not know the type of the function,
+including the types of the function's parameters.  To avoid calling
+the inferior function incorrectly, which could result in the called
+function functioning erroneously and even crash, <span class="sc">gdb</span> refuses
+to call the function unless you tell it the type of the function.
+
+   <p>For prototyped (i.e. ANSI/ISO style) functions, there are two ways
+to do that.  The simplest is to cast the call to the function's
+declared return type.  For example:
+
+<pre class="smallexample">     (gdb) p getenv ("PATH")
+     'getenv' has unknown return type; cast the call to its declared return type
+     (gdb) p (char *) getenv ("PATH")
+     $1 = 0x7fffffffe7ba "/usr/local/bin:/"...
+</pre>
+   <p>Casting the return type of a no-debug function is equivalent to
+casting the function to a pointer to a prototyped function that has a
+prototype that matches the types of the passed-in arguments, and
+calling that.  I.e., the call above is equivalent to:
+
+<pre class="smallexample">     (gdb) p ((char * (*) (const char *)) getenv) ("PATH")
+</pre>
+   <p class="noindent">and given this prototyped C or C++ function with float parameters:
+
+<pre class="smallexample">     float multiply (float v1, float v2) { return v1 * v2; }
+</pre>
+   <p class="noindent">these calls are equivalent:
+
+<pre class="smallexample">     (gdb) p (float) multiply (2.0f, 3.0f)
+     (gdb) p ((float (*) (float, float)) multiply) (2.0f, 3.0f)
+</pre>
+   <p>If the function you wish to call is declared as unprototyped (i.e. 
+old K&amp;R style), you must use the cast-to-function-pointer syntax, so
+that <span class="sc">gdb</span> knows that it needs to apply default argument
+promotions (promote float arguments to double).  See <a href="ABI.html#ABI">float promotion</a>.  For example, given this unprototyped C function with
+float parameters, and no debug info:
+
+<pre class="smallexample">     float
+     multiply_noproto (v1, v2)
+       float v1, v2;
+     {
+       return v1 * v2;
+     }
+</pre>
+   <p class="noindent">you call it like this:
+
+<pre class="smallexample">       (gdb) p ((float (*) ()) multiply_noproto) (2.0f, 3.0f)
+</pre>
+   </body></html>
+

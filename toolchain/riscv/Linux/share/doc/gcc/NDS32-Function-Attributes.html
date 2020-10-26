@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>NDS32 Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="MSP430-Function-Attributes.html#MSP430-Function-Attributes" title="MSP430 Function Attributes">
+<link rel="next" href="Nios-II-Function-Attributes.html#Nios-II-Function-Attributes" title="Nios II Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="NDS32-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Nios-II-Function-Attributes.html#Nios-II-Function-Attributes">Nios II Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="MSP430-Function-Attributes.html#MSP430-Function-Attributes">MSP430 Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.20 NDS32 Function Attributes</h4>
+
+<p>These function attributes are supported by the NDS32 back end:
+
+     <dl>
+<dt><code>exception</code><dd><a name="index-g_t_0040code_007bexception_007d-function-attribute-3658"></a><a name="index-exception-handler-functions_002c-NDS32-3659"></a>Use this attribute on the NDS32 target to indicate that the specified function
+is an exception handler.  The compiler will generate corresponding sections
+for use in an exception handler.
+
+     <br><dt><code>interrupt</code><dd><a name="index-g_t_0040code_007binterrupt_007d-function-attribute_002c-NDS32-3660"></a>On NDS32 target, this attribute indicates that the specified function
+is an interrupt handler.  The compiler generates corresponding sections
+for use in an interrupt handler.  You can use the following attributes
+to modify the behavior:
+          <dl>
+<dt><code>nested</code><dd><a name="index-g_t_0040code_007bnested_007d-function-attribute_002c-NDS32-3661"></a>This interrupt service routine is interruptible. 
+<br><dt><code>not_nested</code><dd><a name="index-g_t_0040code_007bnot_005fnested_007d-function-attribute_002c-NDS32-3662"></a>This interrupt service routine is not interruptible. 
+<br><dt><code>nested_ready</code><dd><a name="index-g_t_0040code_007bnested_005fready_007d-function-attribute_002c-NDS32-3663"></a>This interrupt service routine is interruptible after <code>PSW.GIE</code>
+(global interrupt enable) is set.  This allows interrupt service routine to
+finish some short critical code before enabling interrupts. 
+<br><dt><code>save_all</code><dd><a name="index-g_t_0040code_007bsave_005fall_007d-function-attribute_002c-NDS32-3664"></a>The system will help save all registers into stack before entering
+interrupt handler. 
+<br><dt><code>partial_save</code><dd><a name="index-g_t_0040code_007bpartial_005fsave_007d-function-attribute_002c-NDS32-3665"></a>The system will help save caller registers into stack before entering
+interrupt handler. 
+</dl>
+
+     <br><dt><code>naked</code><dd><a name="index-g_t_0040code_007bnaked_007d-function-attribute_002c-NDS32-3666"></a>This attribute allows the compiler to construct the
+requisite function declaration, while allowing the body of the
+function to be assembly code. The specified function will not have
+prologue/epilogue sequences generated by the compiler. Only basic
+<code>asm</code> statements can safely be included in naked functions
+(see <a href="Basic-Asm.html#Basic-Asm">Basic Asm</a>). While using extended <code>asm</code> or a mixture of
+basic <code>asm</code> and C code may appear to work, they cannot be
+depended upon to work reliably and are not supported.
+
+     <br><dt><code>reset</code><dd><a name="index-g_t_0040code_007breset_007d-function-attribute_002c-NDS32-3667"></a><a name="index-reset-handler-functions-3668"></a>Use this attribute on the NDS32 target to indicate that the specified function
+is a reset handler.  The compiler will generate corresponding sections
+for use in a reset handler.  You can use the following attributes
+to provide extra exception handling:
+          <dl>
+<dt><code>nmi</code><dd><a name="index-g_t_0040code_007bnmi_007d-function-attribute_002c-NDS32-3669"></a>Provide a user-defined function to handle NMI exception. 
+<br><dt><code>warm</code><dd><a name="index-g_t_0040code_007bwarm_007d-function-attribute_002c-NDS32-3670"></a>Provide a user-defined function to handle warm reset exception. 
+</dl>
+     </dl>
+
+ </body></html>
+

@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+<title>Assembly Code Organisation - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembly-Coding.html#Assembly-Coding" title="Assembly Coding">
+<link rel="prev" href="Assembly-Coding.html#Assembly-Coding" title="Assembly Coding">
+<link rel="next" href="Assembly-Basics.html#Assembly-Basics" title="Assembly Basics">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Assembly-Code-Organisation"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Assembly-Basics.html#Assembly-Basics">Assembly Basics</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assembly-Coding.html#Assembly-Coding">Assembly Coding</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembly-Coding.html#Assembly-Coding">Assembly Coding</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.8.1 Code Organisation</h4>
+
+<p><a name="index-Assembly-code-organisation-935"></a><a name="index-Code-organisation-936"></a>
+The various <samp><span class="file">mpn</span></samp> subdirectories contain machine-dependent code, written
+in C or assembly.  The <samp><span class="file">mpn/generic</span></samp> subdirectory contains default code,
+used when there's no machine-specific version of a particular file.
+
+   <p>Each <samp><span class="file">mpn</span></samp> subdirectory is for an ISA family.  Generally 32-bit and
+64-bit variants in a family cannot share code and have separate directories. 
+Within a family further subdirectories may exist for CPU variants.
+
+   <p>In each directory a <samp><span class="file">nails</span></samp> subdirectory may exist, holding code with
+nails support for that CPU variant.  A <code>NAILS_SUPPORT</code> directive in each
+file indicates the nails values the code handles.  Nails code only exists
+where it's faster, or promises to be faster, than plain code.  There's no
+effort put into nails if they're not going to enhance a given CPU.
+
+   </body></html>
+

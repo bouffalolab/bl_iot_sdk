@@ -1,0 +1,153 @@
+<html lang="en">
+<head>
+<title>C++ Interface Rationals - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" title="C++ Class Interface">
+<link rel="prev" href="C_002b_002b-Interface-Integers.html#C_002b_002b-Interface-Integers" title="C++ Interface Integers">
+<link rel="next" href="C_002b_002b-Interface-Floats.html#C_002b_002b-Interface-Floats" title="C++ Interface Floats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C++-Interface-Rationals"></a>
+<a name="C_002b_002b-Interface-Rationals"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002b_002b-Interface-Floats.html#C_002b_002b-Interface-Floats">C++ Interface Floats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C_002b_002b-Interface-Integers.html#C_002b_002b-Interface-Integers">C++ Interface Integers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface">C++ Class Interface</a>
+<hr>
+</div>
+
+<h3 class="section">12.3 C++ Interface Rationals</h3>
+
+<p>In all the following constructors, if a fraction is given then it should be in
+canonical form, or if not then <code>mpq_class::canonicalize</code> called.
+
+<div class="defun">
+&mdash; Function:  <b>mpq_class::mpq_class</b> (<var>type op</var>)<var><a name="index-mpq_005fclass_003a_003ampq_005fclass-822"></a></var><br>
+&mdash; Function:  <b>mpq_class::mpq_class</b> (<var>integer num, integer den</var>)<var><a name="index-mpq_005fclass_003a_003ampq_005fclass-823"></a></var><br>
+<blockquote><p>Construct an <code>mpq_class</code>.  The initial value can be a single value of any
+type (conversion from <code>mpf_class</code> is <code>explicit</code>), or a pair of
+integers (<code>mpz_class</code> or standard C++ integer types) representing a
+fraction, except that <code>long long</code> and <code>long double</code> are not
+supported.  For example,
+
+     <pre class="example">          mpq_class q (99);
+          mpq_class q (1.75);
+          mpq_class q (1, 3);
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: explicit <b>mpq_class::mpq_class</b> (<var>const mpq_t q</var>)<var><a name="index-mpq_005fclass_003a_003ampq_005fclass-824"></a></var><br>
+<blockquote><p>Construct an <code>mpq_class</code> from an <code>mpq_t</code>.  The value in <var>q</var> is
+copied into the new <code>mpq_class</code>, there won't be any permanent association
+between it and <var>q</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: explicit <b>mpq_class::mpq_class</b> (<var>const char *s, int base = 0</var>)<var><a name="index-mpq_005fclass_003a_003ampq_005fclass-825"></a></var><br>
+&mdash; Function: explicit <b>mpq_class::mpq_class</b> (<var>const string&amp; s, int base = 0</var>)<var><a name="index-mpq_005fclass_003a_003ampq_005fclass-826"></a></var><br>
+<blockquote><p>Construct an <code>mpq_class</code> converted from a string using <code>mpq_set_str</code>
+(see <a href="Initializing-Rationals.html#Initializing-Rationals">Initializing Rationals</a>).
+
+        <p>If the string is not a valid rational, an <code>std::invalid_argument</code>
+exception is thrown.  The same applies to <code>operator=</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpq_class <b>operator""</b><var> _mpq </var>(<var>const char *str</var>)<var><a name="index-operator_0022_0022-827"></a></var><br>
+<blockquote><p>With C++11 compilers, integral rationals can be constructed with the syntax
+<code>123_mpq</code> which is equivalent to <code>mpq_class(123_mpz)</code>. Other
+rationals can be built as <code>-1_mpq/2</code> or <code>0xb_mpq/123456_mpz</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_class::canonicalize</b> ()<var><a name="index-mpq_005fclass_003a_003acanonicalize-828"></a></var><br>
+<blockquote><p>Put an <code>mpq_class</code> into canonical form, as per <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>.  All arithmetic operators require their operands in canonical
+form, and will return results in canonical form. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpq_class <b>abs</b> (<var>mpq_class op</var>)<var><a name="index-abs-829"></a></var><br>
+&mdash; Function: int <b>cmp</b> (<var>mpq_class op1, type op2</var>)<var><a name="index-cmp-830"></a></var><br>
+&mdash; Function: int <b>cmp</b> (<var>type op1, mpq_class op2</var>)<var><a name="index-cmp-831"></a></var><br>
+
+   &mdash; Function: double <b>mpq_class::get_d</b> (<var>void</var>)<var><a name="index-mpq_005fclass_003a_003aget_005fd-832"></a></var><br>
+&mdash; Function: string <b>mpq_class::get_str</b> (<var>int base = 10</var>)<var><a name="index-mpq_005fclass_003a_003aget_005fstr-833"></a></var><br>
+
+   &mdash; Function: int <b>mpq_class::set_str</b> (<var>const char *str, int base</var>)<var><a name="index-mpq_005fclass_003a_003aset_005fstr-834"></a></var><br>
+&mdash; Function: int <b>mpq_class::set_str</b> (<var>const string&amp; str, int base</var>)<var><a name="index-mpq_005fclass_003a_003aset_005fstr-835"></a></var><br>
+&mdash; Function: int <b>sgn</b> (<var>mpq_class op</var>)<var><a name="index-sgn-836"></a></var><br>
+
+   &mdash; Function: void <b>mpq_class::swap</b> (<var>mpq_class&amp; op</var>)<var><a name="index-mpq_005fclass_003a_003aswap-837"></a></var><br>
+&mdash; Function: void <b>swap</b> (<var>mpq_class&amp; op1, mpq_class&amp; op2</var>)<var><a name="index-swap-838"></a></var><br>
+<blockquote><p>These functions provide a C++ class interface to the corresponding GMP C
+routines.
+
+        <p><code>cmp</code> can be used with any of the classes or the standard C++ types,
+except <code>long long</code> and <code>long double</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpz_class&amp; <b>mpq_class::get_num</b> ()<var><a name="index-mpq_005fclass_003a_003aget_005fnum-839"></a></var><br>
+&mdash; Function: mpz_class&amp; <b>mpq_class::get_den</b> ()<var><a name="index-mpq_005fclass_003a_003aget_005fden-840"></a></var><br>
+<blockquote><p>Get a reference to an <code>mpz_class</code> which is the numerator or denominator
+of an <code>mpq_class</code>.  This can be used both for read and write access.  If
+the object returned is modified, it modifies the original <code>mpq_class</code>.
+
+        <p>If direct manipulation might produce a non-canonical value, then
+<code>mpq_class::canonicalize</code> must be called before further operations. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpz_t <b>mpq_class::get_num_mpz_t</b> ()<var><a name="index-mpq_005fclass_003a_003aget_005fnum_005fmpz_005ft-841"></a></var><br>
+&mdash; Function: mpz_t <b>mpq_class::get_den_mpz_t</b> ()<var><a name="index-mpq_005fclass_003a_003aget_005fden_005fmpz_005ft-842"></a></var><br>
+<blockquote><p>Get a reference to the underlying <code>mpz_t</code> numerator or denominator of an
+<code>mpq_class</code>.  This can be passed to C functions expecting an
+<code>mpz_t</code>.  Any modifications made to the <code>mpz_t</code> will modify the
+original <code>mpq_class</code>.
+
+        <p>If direct manipulation might produce a non-canonical value, then
+<code>mpq_class::canonicalize</code> must be called before further operations. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: istream&amp; <b>operator&gt;&gt;</b> (<var>istream&amp; stream, mpq_class&amp; rop</var>)<var>;<a name="index-operator_003e_003e-843"></a></var><br>
+<blockquote><p>Read <var>rop</var> from <var>stream</var>, using its <code>ios</code> formatting settings,
+the same as <code>mpq_t operator&gt;&gt;</code> (see <a href="C_002b_002b-Formatted-Input.html#C_002b_002b-Formatted-Input">C++ Formatted Input</a>).
+
+        <p>If the <var>rop</var> read might not be in canonical form then
+<code>mpq_class::canonicalize</code> must be called. 
+</p></blockquote></div>
+
+   </body></html>
+

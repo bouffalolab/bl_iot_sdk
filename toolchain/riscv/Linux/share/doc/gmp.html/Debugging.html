@@ -1,0 +1,176 @@
+<html lang="en">
+<head>
+<title>Debugging - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="prev" href="Efficiency.html#Efficiency" title="Efficiency">
+<link rel="next" href="Profiling.html#Profiling" title="Profiling">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Debugging"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Profiling.html#Profiling">Profiling</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Efficiency.html#Efficiency">Efficiency</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>
+<hr>
+</div>
+
+<h3 class="section">3.12 Debugging</h3>
+
+<p><a name="index-Debugging-214"></a>
+     <dl>
+<dt>Stack Overflow<dd><a name="index-Stack-overflow-215"></a><a name="index-Segmentation-violation-216"></a><a name="index-Bus-error-217"></a>Depending on the system, a segmentation violation or bus error might be the
+only indication of stack overflow.  See &lsquo;<samp><span class="samp">--enable-alloca</span></samp>&rsquo; choices in
+<a href="Build-Options.html#Build-Options">Build Options</a>, for how to address this.
+
+     <p>In new enough versions of GCC, &lsquo;<samp><span class="samp">-fstack-check</span></samp>&rsquo; may be able to ensure an
+overflow is recognised by the system before too much damage is done, or
+&lsquo;<samp><span class="samp">-fstack-limit-symbol</span></samp>&rsquo; or &lsquo;<samp><span class="samp">-fstack-limit-register</span></samp>&rsquo; may be able to
+add checking if the system itself doesn't do any (see <a href="../gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation</a>). 
+These options must be added to the &lsquo;<samp><span class="samp">CFLAGS</span></samp>&rsquo; used in the GMP build
+(see <a href="Build-Options.html#Build-Options">Build Options</a>), adding them just to an application will have no
+effect.  Note also they're a slowdown, adding overhead to each function call
+and each stack allocation.
+
+     <br><dt>Heap Problems<dd><a name="index-Heap-problems-218"></a><a name="index-Malloc-problems-219"></a>The most likely cause of application problems with GMP is heap corruption. 
+Failing to <code>init</code> GMP variables will have unpredictable effects, and
+corruption arising elsewhere in a program may well affect GMP.  Initializing
+GMP variables more than once or failing to clear them will cause memory leaks.
+
+     <p><a name="index-Malloc-debugger-220"></a>In all such cases a <code>malloc</code> debugger is recommended.  On a GNU or BSD
+system the standard C library <code>malloc</code> has some diagnostic facilities,
+see <a href="../libc/Allocation-Debugging.html#Allocation-Debugging">Allocation Debugging</a>, or &lsquo;<samp><span class="samp">man 3 malloc</span></samp>&rsquo;.  Other possibilities, in no
+particular order, include
+
+     <pre class="display">          <a href="http://www.inf.ethz.ch/personal/biere/projects/ccmalloc/">http://www.inf.ethz.ch/personal/biere/projects/ccmalloc/</a>
+          <a href="http://dmalloc.com/">http://dmalloc.com/</a>
+          <a href="http://www.perens.com/FreeSoftware/">http://www.perens.com/FreeSoftware/</a>  (electric fence)
+          <a href="http://packages.debian.org/stable/devel/fda">http://packages.debian.org/stable/devel/fda</a>
+          <a href="http://www.gnupdate.org/components/leakbug/">http://www.gnupdate.org/components/leakbug/</a>
+          <a href="http://people.redhat.com/~otaylor/memprof/">http://people.redhat.com/~otaylor/memprof/</a>
+          <a href="http://www.cbmamiga.demon.co.uk/mpatrol/">http://www.cbmamiga.demon.co.uk/mpatrol/</a>
+</pre>
+     <p>The GMP default allocation routines in <samp><span class="file">memory.c</span></samp> also have a simple
+sentinel scheme which can be enabled with <code>#define DEBUG</code> in that file. 
+This is mainly designed for detecting buffer overruns during GMP development,
+but might find other uses.
+
+     <br><dt>Stack Backtraces<dd><a name="index-Stack-backtrace-221"></a>On some systems the compiler options GMP uses by default can interfere with
+debugging.  In particular on x86 and 68k systems &lsquo;<samp><span class="samp">-fomit-frame-pointer</span></samp>&rsquo;
+is used and this generally inhibits stack backtracing.  Recompiling without
+such options may help while debugging, though the usual caveats about it
+potentially moving a memory problem or hiding a compiler bug will apply.
+
+     <br><dt>GDB, the GNU Debugger<dd><a name="index-GDB-222"></a><a name="index-GNU-Debugger-223"></a>A sample <samp><span class="file">.gdbinit</span></samp> is included in the distribution, showing how to call
+some undocumented dump functions to print GMP variables from within GDB.  Note
+that these functions shouldn't be used in final application code since they're
+undocumented and may be subject to incompatible changes in future versions of
+GMP.
+
+     <br><dt>Source File Paths<dd>GMP has multiple source files with the same name, in different directories. 
+For example <samp><span class="file">mpz</span></samp>, <samp><span class="file">mpq</span></samp> and <samp><span class="file">mpf</span></samp> each have an
+<samp><span class="file">init.c</span></samp>.  If the debugger can't already determine the right one it may
+help to build with absolute paths on each C file.  One way to do that is to
+use a separate object directory with an absolute path to the source directory.
+
+     <pre class="example">          cd /my/build/dir
+          /my/source/dir/gmp-6.1.0/configure
+</pre>
+     <p>This works via <code>VPATH</code>, and might require GNU <samp><span class="command">make</span></samp>. 
+Alternately it might be possible to change the <code>.c.lo</code> rules
+appropriately.
+
+     <br><dt>Assertion Checking<dd><a name="index-Assertion-checking-224"></a>The build option <samp><span class="option">--enable-assert</span></samp> is available to add some consistency
+checks to the library (see <a href="Build-Options.html#Build-Options">Build Options</a>).  These are likely to be of
+limited value to most applications.  Assertion failures are just as likely to
+indicate memory corruption as a library or compiler bug.
+
+     <p>Applications using the low-level <code>mpn</code> functions, however, will benefit
+from <samp><span class="option">--enable-assert</span></samp> since it adds checks on the parameters of most
+such functions, many of which have subtle restrictions on their usage.  Note
+however that only the generic C code has checks, not the assembly code, so
+<samp><span class="option">--disable-assembly</span></samp> should be used for maximum checking.
+
+     <br><dt>Temporary Memory Checking<dd>The build option <samp><span class="option">--enable-alloca=debug</span></samp> arranges that each block of
+temporary memory in GMP is allocated with a separate call to <code>malloc</code> (or
+the allocation function set with <code>mp_set_memory_functions</code>).
+
+     <p>This can help a malloc debugger detect accesses outside the intended bounds,
+or detect memory not released.  In a normal build, on the other hand,
+temporary memory is allocated in blocks which GMP divides up for its own use,
+or may be allocated with a compiler builtin <code>alloca</code> which will go
+nowhere near any malloc debugger hooks.
+
+     <br><dt>Maximum Debuggability<dd>To summarize the above, a GMP build for maximum debuggability would be
+
+     <pre class="example">          ./configure --disable-shared --enable-assert \
+            --enable-alloca=debug --disable-assembly CFLAGS=-g
+</pre>
+     <p>For C++, add &lsquo;<samp><span class="samp">--enable-cxx CXXFLAGS=-g</span></samp>&rsquo;.
+
+     <br><dt>Checker<dd><a name="index-Checker-225"></a><a name="index-GCC-Checker-226"></a>The GCC checker (<a href="https://savannah.nongnu.org/projects/checker/">https://savannah.nongnu.org/projects/checker/</a>) can be
+used with GMP.  It contains a stub library which means GMP applications
+compiled with checker can use a normal GMP build.
+
+     <p>A build of GMP with checking within GMP itself can be made.  This will run
+very very slowly.  On GNU/Linux for example,
+
+     <p><a name="index-g_t_0040command_007bcheckergcc_007d-227"></a>
+     <pre class="example">          ./configure --disable-assembly CC=checkergcc
+</pre>
+     <p><samp><span class="option">--disable-assembly</span></samp> must be used, since the GMP assembly code doesn't
+support the checking scheme.  The GMP C++ features cannot be used, since
+current versions of checker (0.9.9.1) don't yet support the standard C++
+library.
+
+     <br><dt>Valgrind<dd><a name="index-Valgrind-228"></a>Valgrind (<a href="http://valgrind.org/">http://valgrind.org/</a>) is a memory checker for x86, ARM, MIPS,
+PowerPC, and S/390.  It translates and emulates machine instructions to do
+strong checks for uninitialized data (at the level of individual bits), memory
+accesses through bad pointers, and memory leaks.
+
+     <p>Valgrind does not always support every possible instruction, in particular
+ones recently added to an ISA.  Valgrind might therefore be incompatible with
+a recent GMP or even a less recent GMP which is compiled using a recent GCC.
+
+     <p>GMP's assembly code sometimes promotes a read of the limbs to some larger size,
+for efficiency.  GMP will do this even at the start and end of a multilimb
+operand, using naturally aligned operations on the larger type.  This may lead
+to benign reads outside of allocated areas, triggering complaints from
+Valgrind.  Valgrind's option &lsquo;<samp><span class="samp">--partial-loads-ok=yes</span></samp>&rsquo; should help.
+
+     <br><dt>Other Problems<dd>Any suspected bug in GMP itself should be isolated to make sure it's not an
+application problem, see <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>. 
+</dl>
+
+   </body></html>
+

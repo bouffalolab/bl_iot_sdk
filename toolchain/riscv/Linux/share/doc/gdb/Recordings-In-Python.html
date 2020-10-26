@@ -1,0 +1,312 @@
+<html lang="en">
+<head>
+<title>Recordings In Python - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Python-API.html#Python-API" title="Python API">
+<link rel="prev" href="Threads-In-Python.html#Threads-In-Python" title="Threads In Python">
+<link rel="next" href="Commands-In-Python.html#Commands-In-Python" title="Commands In Python">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Recordings-In-Python"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Commands-In-Python.html#Commands-In-Python">Commands In Python</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Threads-In-Python.html#Threads-In-Python">Threads In Python</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Python-API.html#Python-API">Python API</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">23.2.2.19 Recordings In Python</h5>
+
+<p><a name="index-recordings-in-python-2109"></a>
+The following recordings-related functions
+(see <a href="Process-Record-and-Replay.html#Process-Record-and-Replay">Process Record and Replay</a>) are available in the <code>gdb</code>
+module:
+
+<div class="defun">
+&mdash; Function: <b>gdb.start_recording</b> (<span class="roman">[</span><var>method</var><span class="roman">]</span><var>, </var><span class="roman">[</span><var>format</var><span class="roman">]</span>)<var><a name="index-gdb_002estart_005frecording-2110"></a></var><br>
+<blockquote><p>Start a recording using the given <var>method</var> and <var>format</var>.  If
+no <var>format</var> is given, the default format for the recording method
+is used.  If no <var>method</var> is given, the default method will be used. 
+Returns a <code>gdb.Record</code> object on success.  Throw an exception on
+failure.
+
+        <p>The following strings can be passed as <var>method</var>:
+
+          <ul>
+<li><code>"full"</code>
+<li><code>"btrace"</code>: Possible values for <var>format</var>: <code>"pt"</code>,
+<code>"bts"</code> or leave out for default format. 
+</ul>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>gdb.current_recording</b> ()<var><a name="index-gdb_002ecurrent_005frecording-2111"></a></var><br>
+<blockquote><p>Access a currently running recording.  Return a <code>gdb.Record</code>
+object on success.  Return <code>None</code> if no recording is currently
+active. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>gdb.stop_recording</b> ()<var><a name="index-gdb_002estop_005frecording-2112"></a></var><br>
+<blockquote><p>Stop the current recording.  Throw an exception if no recording is
+currently active.  All record objects become invalid after this call. 
+</p></blockquote></div>
+
+   <p>A <code>gdb.Record</code> object has the following attributes:
+
+<div class="defun">
+&mdash; Variable: <b>Record.method</b><var><a name="index-Record_002emethod-2113"></a></var><br>
+<blockquote><p>A string with the current recording method, e.g. <code>full</code> or
+<code>btrace</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.format</b><var><a name="index-Record_002eformat-2114"></a></var><br>
+<blockquote><p>A string with the current recording format, e.g. <code>bt</code>, <code>pts</code> or
+<code>None</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.begin</b><var><a name="index-Record_002ebegin-2115"></a></var><br>
+<blockquote><p>A method specific instruction object representing the first instruction
+in this recording. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.end</b><var><a name="index-Record_002eend-2116"></a></var><br>
+<blockquote><p>A method specific instruction object representing the current
+instruction, that is not actually part of the recording. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.replay_position</b><var><a name="index-Record_002ereplay_005fposition-2117"></a></var><br>
+<blockquote><p>The instruction representing the current replay position.  If there is
+no replay active, this will be <code>None</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.instruction_history</b><var><a name="index-Record_002einstruction_005fhistory-2118"></a></var><br>
+<blockquote><p>A list with all recorded instructions. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Record.function_call_history</b><var><a name="index-Record_002efunction_005fcall_005fhistory-2119"></a></var><br>
+<blockquote><p>A list with all recorded function call segments. 
+</p></blockquote></div>
+
+   <p>A <code>gdb.Record</code> object has the following methods:
+
+<div class="defun">
+&mdash; Function: <b>Record.goto</b> (<var>instruction</var>)<var><a name="index-Record_002egoto-2120"></a></var><br>
+<blockquote><p>Move the replay position to the given <var>instruction</var>. 
+</p></blockquote></div>
+
+   <p>The common <code>gdb.Instruction</code> class that recording method specific
+instruction objects inherit from, has the following attributes:
+
+<div class="defun">
+&mdash; Variable: <b>Instruction.pc</b><var><a name="index-Instruction_002epc-2121"></a></var><br>
+<blockquote><p>An integer representing this instruction's address. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Instruction.data</b><var><a name="index-Instruction_002edata-2122"></a></var><br>
+<blockquote><p>A buffer with the raw instruction data.  In Python 3, the return value is a
+<code>memoryview</code> object. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Instruction.decoded</b><var><a name="index-Instruction_002edecoded-2123"></a></var><br>
+<blockquote><p>A human readable string with the disassembled instruction. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>Instruction.size</b><var><a name="index-Instruction_002esize-2124"></a></var><br>
+<blockquote><p>The size of the instruction in bytes. 
+</p></blockquote></div>
+
+   <p>Additionally <code>gdb.RecordInstruction</code> has the following attributes:
+
+<div class="defun">
+&mdash; Variable: <b>RecordInstruction.number</b><var><a name="index-RecordInstruction_002enumber-2125"></a></var><br>
+<blockquote><p>An integer identifying this instruction.  <code>number</code> corresponds to
+the numbers seen in <code>record instruction-history</code>
+(see <a href="Process-Record-and-Replay.html#Process-Record-and-Replay">Process Record and Replay</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordInstruction.sal</b><var><a name="index-RecordInstruction_002esal-2126"></a></var><br>
+<blockquote><p>A <code>gdb.Symtab_and_line</code> object representing the associated symtab
+and line of this instruction.  May be <code>None</code> if no debug information is
+available. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordInstruction.is_speculative</b><var><a name="index-RecordInstruction_002eis_005fspeculative-2127"></a></var><br>
+<blockquote><p>A boolean indicating whether the instruction was executed speculatively. 
+</p></blockquote></div>
+
+   <p>If an error occured during recording or decoding a recording, this error is
+represented by a <code>gdb.RecordGap</code> object in the instruction list.  It has
+the following attributes:
+
+<div class="defun">
+&mdash; Variable: <b>RecordGap.number</b><var><a name="index-RecordGap_002enumber-2128"></a></var><br>
+<blockquote><p>An integer identifying this gap.  <code>number</code> corresponds to the numbers seen
+in <code>record instruction-history</code> (see <a href="Process-Record-and-Replay.html#Process-Record-and-Replay">Process Record and Replay</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordGap.error_code</b><var><a name="index-RecordGap_002eerror_005fcode-2129"></a></var><br>
+<blockquote><p>A numerical representation of the reason for the gap.  The value is specific to
+the current recording method. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordGap.error_string</b><var><a name="index-RecordGap_002eerror_005fstring-2130"></a></var><br>
+<blockquote><p>A human readable string with the reason for the gap. 
+</p></blockquote></div>
+
+   <p>A <code>gdb.RecordFunctionSegment</code> object has the following attributes:
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.number</b><var><a name="index-RecordFunctionSegment_002enumber-2131"></a></var><br>
+<blockquote><p>An integer identifying this function segment.  <code>number</code> corresponds to
+the numbers seen in <code>record function-call-history</code>
+(see <a href="Process-Record-and-Replay.html#Process-Record-and-Replay">Process Record and Replay</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.symbol</b><var><a name="index-RecordFunctionSegment_002esymbol-2132"></a></var><br>
+<blockquote><p>A <code>gdb.Symbol</code> object representing the associated symbol.  May be
+<code>None</code> if no debug information is available. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.level</b><var><a name="index-RecordFunctionSegment_002elevel-2133"></a></var><br>
+<blockquote><p>An integer representing the function call's stack level.  May be
+<code>None</code> if the function call is a gap. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.instructions</b><var><a name="index-RecordFunctionSegment_002einstructions-2134"></a></var><br>
+<blockquote><p>A list of <code>gdb.RecordInstruction</code> or <code>gdb.RecordGap</code> objects
+associated with this function call. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.up</b><var><a name="index-RecordFunctionSegment_002eup-2135"></a></var><br>
+<blockquote><p>A <code>gdb.RecordFunctionSegment</code> object representing the caller's
+function segment.  If the call has not been recorded, this will be the
+function segment to which control returns.  If neither the call nor the
+return have been recorded, this will be <code>None</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.prev</b><var><a name="index-RecordFunctionSegment_002eprev-2136"></a></var><br>
+<blockquote><p>A <code>gdb.RecordFunctionSegment</code> object representing the previous
+segment of this function call.  May be <code>None</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>RecordFunctionSegment.next</b><var><a name="index-RecordFunctionSegment_002enext-2137"></a></var><br>
+<blockquote><p>A <code>gdb.RecordFunctionSegment</code> object representing the next segment of
+this function call.  May be <code>None</code>. 
+</p></blockquote></div>
+
+   <p>The following example demonstrates the usage of these objects and
+functions to create a function that will rewind a record to the last
+time a function in a different file was executed.  This would typically
+be used to track the execution of user provided callback functions in a
+library which typically are not visible in a back trace.
+
+<pre class="smallexample">     def bringback ():
+         rec = gdb.current_recording ()
+         if not rec:
+             return
+     
+         insn = rec.instruction_history
+         if len (insn) == 0:
+             return
+     
+         try:
+             position = insn.index (rec.replay_position)
+         except:
+             position = -1
+         try:
+             filename = insn[position].sal.symtab.fullname ()
+         except:
+             filename = None
+     
+         for i in reversed (insn[:position]):
+     	try:
+                 current = i.sal.symtab.fullname ()
+     	except:
+                 current = None
+     
+             if filename == current:
+                 continue
+     
+             rec.goto (i)
+             return
+</pre>
+   <p>Another possible application is to write a function that counts the
+number of code executions in a given line range.  This line range can
+contain parts of functions or span across several functions and is not
+limited to be contiguous.
+
+<pre class="smallexample">     def countrange (filename, linerange):
+         count = 0
+     
+         def filter_only (file_name):
+             for call in gdb.current_recording ().function_call_history:
+                 try:
+                     if file_name in call.symbol.symtab.fullname ():
+                         yield call
+                 except:
+                     pass
+     
+         for c in filter_only (filename):
+             for i in c.instructions:
+                 try:
+                     if i.sal.line in linerange:
+                         count += 1
+                         break;
+                 except:
+                         pass
+     
+         return count
+</pre>
+   </body></html>
+

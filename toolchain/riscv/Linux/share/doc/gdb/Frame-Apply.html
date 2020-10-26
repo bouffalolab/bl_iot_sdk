@@ -1,0 +1,154 @@
+<html lang="en">
+<head>
+<title>Frame Apply - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack.html#Stack" title="Stack">
+<link rel="prev" href="Frame-Info.html#Frame-Info" title="Frame Info">
+<link rel="next" href="Frame-Filter-Management.html#Frame-Filter-Management" title="Frame Filter Management">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Frame-Apply"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Frame-Filter-Management.html#Frame-Filter-Management">Frame Filter Management</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Frame-Info.html#Frame-Info">Frame Info</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack.html#Stack">Stack</a>
+<hr>
+</div>
+
+<h3 class="section">8.5 Applying a Command to Several Frames.</h3>
+
+<p><a name="index-frame-apply-545"></a><a name="index-apply-command-to-several-frames-546"></a>
+     <dl>
+<dt><code>frame apply [all | </code><var>count</var><code> | </code><var>-count</var><code> | level </code><var>level</var><code>...] [</code><var>flag</var><code>]... </code><var>command</var><dd>The <code>frame apply</code> command allows you to apply the named
+<var>command</var> to one or more frames.
+
+          <dl>
+<dt><code>all</code><dd>Specify <code>all</code> to apply <var>command</var> to all frames.
+
+          <br><dt><var>count</var><dd>Use <var>count</var> to apply <var>command</var> to the innermost <var>count</var>
+frames, where <var>count</var> is a positive number.
+
+          <br><dt><var>-count</var><dd>Use <var>-count</var> to apply <var>command</var> to the outermost <var>count</var>
+frames, where <var>count</var> is a positive number.
+
+          <br><dt><code>level</code><dd>Use <code>level</code> to apply <var>command</var> to the set of frames identified
+by the <var>level</var> list.  <var>level</var> is a frame level or a range of frame
+levels as <var>level1</var>-<var>level2</var>.  The frame level is the number shown
+in the first field of the &lsquo;<samp><span class="samp">backtrace</span></samp>&rsquo; command output. 
+E.g., &lsquo;<samp><span class="samp">2-4 6-8 3</span></samp>&rsquo; indicates to apply <var>command</var> for the frames
+at levels 2, 3, 4, 6, 7, 8, and then again on frame at level 3.
+
+     </dl>
+
+   </dl>
+
+   <p>Note that the frames on which <code>frame apply</code> applies a command are
+also influenced by the <code>set backtrace</code> settings such as <code>set
+backtrace past-main</code> and <code>set backtrace limit N</code>.  See
+See <a href="Backtrace.html#Backtrace">Backtraces</a>.
+
+   <p>The <var>flag</var> arguments control what output to produce and how to handle
+errors raised when applying <var>command</var> to a frame.  <var>flag</var>
+must start with a <code>-</code> directly followed by one letter in
+<code>qcs</code>.  If several flags are provided, they must be given
+individually, such as <code>-c -q</code>.
+
+   <p>By default, <span class="sc">gdb</span> displays some frame information before the
+output produced by <var>command</var>, and an error raised during the
+execution of a <var>command</var> will abort <code>frame apply</code>.  The
+following flags can be used to fine-tune this behavior:
+
+     <dl>
+<dt><code>-c</code><dd>The flag <code>-c</code>, which stands for &lsquo;<samp><span class="samp">continue</span></samp>&rsquo;, causes any
+errors in <var>command</var> to be displayed, and the execution of
+<code>frame apply</code> then continues. 
+<br><dt><code>-s</code><dd>The flag <code>-s</code>, which stands for &lsquo;<samp><span class="samp">silent</span></samp>&rsquo;, causes any errors
+or empty output produced by a <var>command</var> to be silently ignored. 
+That is, the execution continues, but the frame information and errors
+are not printed. 
+<br><dt><code>-q</code><dd>The flag <code>-q</code> (&lsquo;<samp><span class="samp">quiet</span></samp>&rsquo;) disables printing the frame
+information. 
+</dl>
+
+   <p>The following example shows how the flags <code>-c</code> and <code>-s</code> are
+working when applying the command <code>p j</code> to all frames, where
+variable <code>j</code> can only be successfully printed in the outermost
+<code>#1 main</code> frame.
+
+<pre class="smallexample">     (gdb) frame apply all p j
+     #0  some_function (i=5) at fun.c:4
+     No symbol "j" in current context.
+     (gdb) frame apply all -c p j
+     #0  some_function (i=5) at fun.c:4
+     No symbol "j" in current context.
+     #1  0x565555fb in main (argc=1, argv=0xffffd2c4) at fun.c:11
+     $1 = 5
+     (gdb) frame apply all -s p j
+     #1  0x565555fb in main (argc=1, argv=0xffffd2c4) at fun.c:11
+     $2 = 5
+     (gdb)
+</pre>
+   <p>By default, &lsquo;<samp><span class="samp">frame apply</span></samp>&rsquo;, prints the frame location
+information before the command output:
+
+<pre class="smallexample">     (gdb) frame apply all p $sp
+     #0  some_function (i=5) at fun.c:4
+     $4 = (void *) 0xffffd1e0
+     #1  0x565555fb in main (argc=1, argv=0xffffd2c4) at fun.c:11
+     $5 = (void *) 0xffffd1f0
+     (gdb)
+</pre>
+   <p>If flag <code>-q</code> is given, no frame information is printed:
+<pre class="smallexample">     (gdb) frame apply all -q p $sp
+     $12 = (void *) 0xffffd1e0
+     $13 = (void *) 0xffffd1f0
+     (gdb)
+</pre>
+     
+<a name="index-faas-547"></a>
+<a name="index-apply-a-command-to-all-frames-_0028ignoring-errors-and-empty-output_0029-548"></a>
+<dl><dt><code>faas </code><var>command</var><dd>Shortcut for <code>frame apply all -s </code><var>command</var>. 
+Applies <var>command</var> on all frames, ignoring errors and empty output.
+
+     <p>It can for example be used to print a local variable or a function
+argument without knowing the frame where this variable or argument
+is, using:
+     <pre class="smallexample">          (gdb) faas p some_local_var_i_do_not_remember_where_it_is
+</pre>
+     <p>Note that the command <code>tfaas </code><var>command</var> applies <var>command</var>
+on all frames of all threads.  See See <a href="Threads.html#Threads">Threads</a>. 
+</dl>
+
+   </body></html>
+

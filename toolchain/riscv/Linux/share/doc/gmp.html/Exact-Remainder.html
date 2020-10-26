@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Exact Remainder - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Division-Algorithms.html#Division-Algorithms" title="Division Algorithms">
+<link rel="prev" href="Exact-Division.html#Exact-Division" title="Exact Division">
+<link rel="next" href="Small-Quotient-Division.html#Small-Quotient-Division" title="Small Quotient Division">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Exact-Remainder"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Small-Quotient-Division.html#Small-Quotient-Division">Small Quotient Division</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Exact-Division.html#Exact-Division">Exact Division</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Division-Algorithms.html#Division-Algorithms">Division Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.2.6 Exact Remainder</h4>
+
+<p><a name="index-Exact-remainder-911"></a>
+If the exact division algorithm is done with a full subtraction at each stage
+and the dividend isn't a multiple of the divisor, then low zero limbs are
+produced but with a remainder in the high limbs.  For dividend a,
+divisor d, quotient q, and b = 2^mp_bits_per_limb, this remainder
+r is of the form
+
+<pre class="example">     a = q*d + r*b^n
+</pre>
+   <p>n represents the number of zero limbs produced by the subtractions,
+that being the number of limbs produced for q.  r will be in the
+range 0&lt;=r&lt;d and can be viewed as a remainder, but one shifted up by
+a factor of b^n.
+
+   <p>Carrying out full subtractions at each stage means the same number of cross
+products must be done as a normal division, but there's still some single limb
+divisions saved.  When d is a single limb some simplifications arise,
+providing good speedups on a number of processors.
+
+   <p>The functions <code>mpn_divexact_by3</code>, <code>mpn_modexact_1_odd</code> and the
+internal <code>mpn_redc_X</code> functions differ subtly in how they return r,
+leading to some negations in the above formula, but all are essentially the
+same.
+
+   <p><a name="index-Divisibility-algorithm-912"></a><a name="index-Congruence-algorithm-913"></a>Clearly r is zero when a is a multiple of d, and this
+leads to divisibility or congruence tests which are potentially more efficient
+than a normal division.
+
+   <p>The factor of b^n on r can be ignored in a GCD when d is
+odd, hence the use of <code>mpn_modexact_1_odd</code> by <code>mpn_gcd_1</code> and
+<code>mpz_kronecker_ui</code> etc (see <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms">Greatest Common Divisor Algorithms</a>).
+
+   <p>Montgomery's REDC method for modular multiplications uses operands of the form
+of x*b^-n and y*b^-n and on calculating (x*b^-n)*(y*b^-n) uses the factor of b^n in the exact
+remainder to reach a product in the same form (x*y)*b^-n
+(see <a href="Modular-Powering-Algorithm.html#Modular-Powering-Algorithm">Modular Powering Algorithm</a>).
+
+   <p>Notice that r generally gives no useful information about the ordinary
+remainder a mod d since b^n mod d could be anything.  If
+however b^n == 1 mod d, then r is the negative of the
+ordinary remainder.  This occurs whenever d is a factor of
+b^n-1, as for example with 3 in <code>mpn_divexact_by3</code>.  For a 32 or
+64 bit limb other such factors include 5, 17 and 257, but no particular use
+has been found for this.
+
+   </body></html>
+

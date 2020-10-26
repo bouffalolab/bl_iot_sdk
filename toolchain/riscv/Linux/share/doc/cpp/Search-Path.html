@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Search Path - The C Preprocessor</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="The C Preprocessor">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Header-Files.html#Header-Files" title="Header Files">
+<link rel="prev" href="Include-Operation.html#Include-Operation" title="Include Operation">
+<link rel="next" href="Once_002dOnly-Headers.html#Once_002dOnly-Headers" title="Once-Only Headers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1987-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation.  A copy of
+the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+This manual contains no Invariant Sections.  The Front-Cover Texts are
+(a) (see below), and the Back-Cover Texts are (b) (see below).
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Search-Path"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Once_002dOnly-Headers.html#Once_002dOnly-Headers">Once-Only Headers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Include-Operation.html#Include-Operation">Include Operation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Header-Files.html#Header-Files">Header Files</a>
+<hr>
+</div>
+
+<h3 class="section">2.3 Search Path</h3>
+
+<p>By default, the preprocessor looks for header files included by the quote
+form of the directive <code>#include&nbsp;"</code><var>file</var><code>"<!-- /@w --></code> first relative to
+the directory of the current file, and then in a preconfigured list
+of standard system directories. 
+For example, if <samp><span class="file">/usr/include/sys/stat.h</span></samp> contains
+<code>#include&nbsp;"types.h"<!-- /@w --></code>, GCC looks for <samp><span class="file">types.h</span></samp> first in
+<samp><span class="file">/usr/include/sys</span></samp>, then in its usual search path.
+
+   <p>For the angle-bracket form <code>#include&nbsp;&lt;</code><var>file</var><code>&gt;<!-- /@w --></code>, the
+preprocessor's default behavior is to look only in the standard system
+directories.  The exact search directory list depends on the target
+system, how GCC is configured, and where it is installed.  You can
+find the default search directory list for your version of CPP by
+invoking it with the <samp><span class="option">-v</span></samp> option.  For example,
+
+<pre class="smallexample">     cpp -v /dev/null -o /dev/null
+</pre>
+   <p>There are a number of command-line options you can use to add
+additional directories to the search path. 
+The most commonly-used option is <samp><span class="option">-I</span><var>dir</var></samp>, which causes
+<var>dir</var> to be searched after the current directory (for the quote
+form of the directive) and ahead of the standard system directories. 
+You can specify multiple <samp><span class="option">-I</span></samp> options on the command line,
+in which case the directories are searched in left-to-right order.
+
+   <p>If you need separate control over the search paths for the quote and
+angle-bracket forms of the &lsquo;<samp><span class="samp">#include</span></samp>&rsquo; directive, you can use the
+<samp><span class="option">-iquote</span></samp> and/or <samp><span class="option">-isystem</span></samp> options instead of <samp><span class="option">-I</span></samp>. 
+See <a href="Invocation.html#Invocation">Invocation</a>, for a detailed description of these options, as
+well as others that are less generally useful.
+
+   <p>If you specify other options on the command line, such as <samp><span class="option">-I</span></samp>,
+that affect where the preprocessor searches for header files, the
+directory list printed by the <samp><span class="option">-v</span></samp> option reflects the actual
+search path used by the preprocessor.
+
+   <p>Note that you can also prevent the preprocessor from searching any of
+the default system header directories with the <samp><span class="option">-nostdinc</span></samp>
+option.  This is useful when you are compiling an operating system
+kernel or some other program that does not use the standard C library
+facilities, or the standard C library itself.
+
+   </body></html>
+

@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Rational Number Functions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="next" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Rational-Number-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">6 Rational Number Functions</h2>
+
+<p><a name="index-Rational-number-functions-487"></a>
+This chapter describes the GMP functions for performing arithmetic on rational
+numbers.  These functions start with the prefix <code>mpq_</code>.
+
+   <p>Rational numbers are stored in objects of type <code>mpq_t</code>.
+
+   <p>All rational arithmetic functions assume operands have a canonical form, and
+canonicalize their result.  The canonical from means that the denominator and
+the numerator have no common factors, and that the denominator is positive. 
+Zero has the unique representation 0/1.
+
+   <p>Pure assignment functions do not canonicalize the assigned variable.  It is
+the responsibility of the user to canonicalize the assigned variable before
+any arithmetic operations are performed on that variable.
+
+<div class="defun">
+&mdash; Function: void <b>mpq_canonicalize</b> (<var>mpq_t op</var>)<var><a name="index-mpq_005fcanonicalize-488"></a></var><br>
+<blockquote><p>Remove any factors that are common to the numerator and denominator of
+<var>op</var>, and make the denominator positive. 
+</p></blockquote></div>
+
+<ul class="menu">
+<li><a accesskey="1" href="Initializing-Rationals.html#Initializing-Rationals">Initializing Rationals</a>
+<li><a accesskey="2" href="Rational-Conversions.html#Rational-Conversions">Rational Conversions</a>
+<li><a accesskey="3" href="Rational-Arithmetic.html#Rational-Arithmetic">Rational Arithmetic</a>
+<li><a accesskey="4" href="Comparing-Rationals.html#Comparing-Rationals">Comparing Rationals</a>
+<li><a accesskey="5" href="Applying-Integer-Functions.html#Applying-Integer-Functions">Applying Integer Functions</a>
+<li><a accesskey="6" href="I_002fO-of-Rationals.html#I_002fO-of-Rationals">I/O of Rationals</a>
+</ul>
+
+   </body></html>
+

@@ -1,0 +1,117 @@
+<html lang="en">
+<head>
+<title>I/O of Floats - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link rel="prev" href="Float-Comparison.html#Float-Comparison" title="Float Comparison">
+<link rel="next" href="Miscellaneous-Float-Functions.html#Miscellaneous-Float-Functions" title="Miscellaneous Float Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="I%2fO-of-Floats"></a>
+<a name="I_002fO-of-Floats"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Miscellaneous-Float-Functions.html#Miscellaneous-Float-Functions">Miscellaneous Float Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Float-Comparison.html#Float-Comparison">Float Comparison</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">7.7 Input and Output Functions</h3>
+
+<p><a name="index-Float-input-and-output-functions-623"></a><a name="index-Input-functions-624"></a><a name="index-Output-functions-625"></a><a name="index-I_002fO-functions-626"></a>
+Functions that perform input from a stdio stream, and functions that output to
+a stdio stream, of <code>mpf</code> numbers.  Passing a <code>NULL</code> pointer for a
+<var>stream</var> argument to any of these functions will make them read from
+<code>stdin</code> and write to <code>stdout</code>, respectively.
+
+   <p>When using any of these functions, it is a good idea to include <samp><span class="file">stdio.h</span></samp>
+before <samp><span class="file">gmp.h</span></samp>, since that will allow <samp><span class="file">gmp.h</span></samp> to define prototypes
+for these functions.
+
+   <p>See also <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a> and <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>.
+
+<div class="defun">
+&mdash; Function: size_t <b>mpf_out_str</b> (<var>FILE *stream, int base, size_t n_digits, const mpf_t op</var>)<var><a name="index-mpf_005fout_005fstr-627"></a></var><br>
+<blockquote><p>Print <var>op</var> to <var>stream</var>, as a string of digits.  Return the number of
+bytes written, or if an error occurred, return 0.
+
+        <p>The mantissa is prefixed with an &lsquo;<samp><span class="samp">0.</span></samp>&rsquo; and is in the given <var>base</var>,
+which may vary from 2 to 62 or from &minus;2 to &minus;36.  An exponent is
+then printed, separated by an &lsquo;<samp><span class="samp">e</span></samp>&rsquo;, or if the base is greater than 10 then
+by an &lsquo;<samp><span class="samp">@</span></samp>&rsquo;.  The exponent is always in decimal.  The decimal point follows
+the current locale, on systems providing <code>localeconv</code>.
+
+        <p>For <var>base</var> in the range 2..36, digits and lower-case letters are used; for
+&minus;2..&minus;36, digits and upper-case letters are used; for 37..62,
+digits, upper-case letters, and lower-case letters (in that significance order)
+are used.
+
+        <p>Up to <var>n_digits</var> will be printed from the mantissa, except that no more
+digits than are accurately representable by <var>op</var> will be printed. 
+<var>n_digits</var> can be 0 to select that accurate maximum. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpf_inp_str</b> (<var>mpf_t rop, FILE *stream, int base</var>)<var><a name="index-mpf_005finp_005fstr-628"></a></var><br>
+<blockquote><p>Read a string in base <var>base</var> from <var>stream</var>, and put the read float in
+<var>rop</var>.  The string is of the form &lsquo;<samp><span class="samp">M@N</span></samp>&rsquo; or, if the base is 10 or
+less, alternatively &lsquo;<samp><span class="samp">MeN</span></samp>&rsquo;.  &lsquo;<samp><span class="samp">M</span></samp>&rsquo; is the mantissa and &lsquo;<samp><span class="samp">N</span></samp>&rsquo; is the
+exponent.  The mantissa is always in the specified base.  The exponent is
+either in the specified base or, if <var>base</var> is negative, in decimal.  The
+decimal point expected is taken from the current locale, on systems providing
+<code>localeconv</code>.
+
+        <p>The argument <var>base</var> may be in the ranges 2 to 36, or &minus;36 to
+&minus;2.  Negative values are used to specify that the exponent is in
+decimal.
+
+        <p>Unlike the corresponding <code>mpz</code> function, the base will not be determined
+from the leading characters of the string if <var>base</var> is 0.  This is so that
+numbers like &lsquo;<samp><span class="samp">0.23</span></samp>&rsquo; are not interpreted as octal.
+
+        <p>Return the number of bytes read, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<!-- @deftypefun void mpf_out_raw (FILE *@var{stream}, const mpf_t @var{float}) -->
+<!-- Output @var{float} on stdio stream @var{stream}, in raw binary -->
+<!-- format.  The float is written in a portable format, with 4 bytes of -->
+<!-- size information, and that many bytes of limbs.  Both the size and the -->
+<!-- limbs are written in decreasing significance order. -->
+<!-- @end deftypefun -->
+<!-- @deftypefun void mpf_inp_raw (mpf_t @var{float}, FILE *@var{stream}) -->
+<!-- Input from stdio stream @var{stream} in the format written by -->
+<!-- @code{mpf_out_raw}, and put the result in @var{float}. -->
+<!-- @end deftypefun -->
+   </body></html>
+

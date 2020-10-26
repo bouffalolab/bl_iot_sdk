@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+<title>ARC Features - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Standard-Target-Features.html#Standard-Target-Features" title="Standard Target Features">
+<link rel="prev" href="AArch64-Features.html#AArch64-Features" title="AArch64 Features">
+<link rel="next" href="ARM-Features.html#ARM-Features" title="ARM Features">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ARC-Features"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="ARM-Features.html#ARM-Features">ARM Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="AArch64-Features.html#AArch64-Features">AArch64 Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Standard-Target-Features.html#Standard-Target-Features">Standard Target Features</a>
+<hr>
+</div>
+
+<h4 class="subsection">G.5.2 ARC Features</h4>
+
+<p><a name="index-target-descriptions_002c-ARC-Features-3659"></a>
+ARC processors are highly configurable, so even core registers and their number
+are not completely predetermined.  In addition flags and PC registers which are
+important to <span class="sc">gdb</span> are not &ldquo;core&rdquo; registers in ARC.  It is required
+that one of the core registers features is present. 
+&lsquo;<samp><span class="samp">org.gnu.gdb.arc.aux-minimal</span></samp>&rsquo; feature is mandatory.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.arc.core.v2</span></samp>&rsquo; feature is required for ARC EM and ARC HS
+targets with a normal register file.  It should contain registers &lsquo;<samp><span class="samp">r0</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">r25</span></samp>&rsquo;, &lsquo;<samp><span class="samp">gp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">fp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">sp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">r30</span></samp>&rsquo;, &lsquo;<samp><span class="samp">blink</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">lp_count</span></samp>&rsquo; and &lsquo;<samp><span class="samp">pcl</span></samp>&rsquo;.  This feature may contain register &lsquo;<samp><span class="samp">ilink</span></samp>&rsquo;
+and any of extension core registers &lsquo;<samp><span class="samp">r32</span></samp>&rsquo; through &lsquo;<samp><span class="samp">r59/acch</span></samp>&rsquo;. 
+&lsquo;<samp><span class="samp">ilink</span></samp>&rsquo; and extension core registers are not available to read/write, when
+debugging GNU/Linux applications, thus &lsquo;<samp><span class="samp">ilink</span></samp>&rsquo; is made optional.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.arc.core-reduced.v2</span></samp>&rsquo; feature is required for ARC EM and
+ARC HS targets with a reduced register file.  It should contain registers
+&lsquo;<samp><span class="samp">r0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">r3</span></samp>&rsquo;, &lsquo;<samp><span class="samp">r10</span></samp>&rsquo; through &lsquo;<samp><span class="samp">r15</span></samp>&rsquo;, &lsquo;<samp><span class="samp">gp</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">fp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">sp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">r30</span></samp>&rsquo;, &lsquo;<samp><span class="samp">blink</span></samp>&rsquo;, &lsquo;<samp><span class="samp">lp_count</span></samp>&rsquo; and &lsquo;<samp><span class="samp">pcl</span></samp>&rsquo;. 
+This feature may contain register &lsquo;<samp><span class="samp">ilink</span></samp>&rsquo; and any of extension core
+registers &lsquo;<samp><span class="samp">r32</span></samp>&rsquo; through &lsquo;<samp><span class="samp">r59/acch</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.arc.core.arcompact</span></samp>&rsquo; feature is required for ARCompact
+targets with a normal register file.  It should contain registers &lsquo;<samp><span class="samp">r0</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">r25</span></samp>&rsquo;, &lsquo;<samp><span class="samp">gp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">fp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">sp</span></samp>&rsquo;, &lsquo;<samp><span class="samp">r30</span></samp>&rsquo;, &lsquo;<samp><span class="samp">blink</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">lp_count</span></samp>&rsquo; and &lsquo;<samp><span class="samp">pcl</span></samp>&rsquo;.  This feature may contain registers
+&lsquo;<samp><span class="samp">ilink1</span></samp>&rsquo;, &lsquo;<samp><span class="samp">ilink2</span></samp>&rsquo; and any of extension core registers &lsquo;<samp><span class="samp">r32</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">r59/acch</span></samp>&rsquo;.  &lsquo;<samp><span class="samp">ilink1</span></samp>&rsquo; and &lsquo;<samp><span class="samp">ilink2</span></samp>&rsquo; and extension core
+registers are not available when debugging GNU/Linux applications.  The only
+difference with &lsquo;<samp><span class="samp">org.gnu.gdb.arc.core.v2</span></samp>&rsquo; feature is in the names of
+&lsquo;<samp><span class="samp">ilink1</span></samp>&rsquo; and &lsquo;<samp><span class="samp">ilink2</span></samp>&rsquo; registers and that &lsquo;<samp><span class="samp">r30</span></samp>&rsquo; is mandatory in
+ARC v2, but &lsquo;<samp><span class="samp">ilink2</span></samp>&rsquo; is optional on ARCompact.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.arc.aux-minimal</span></samp>&rsquo; feature is required for all ARC
+targets.  It should contain registers &lsquo;<samp><span class="samp">pc</span></samp>&rsquo; and &lsquo;<samp><span class="samp">status32</span></samp>&rsquo;.
+
+   </body></html>
+

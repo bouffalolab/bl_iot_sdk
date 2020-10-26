@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+<title>Output Styling - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Controlling-GDB.html#Controlling-GDB" title="Controlling GDB">
+<link rel="prev" href="Screen-Size.html#Screen-Size" title="Screen Size">
+<link rel="next" href="Numbers.html#Numbers" title="Numbers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Output-Styling"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Numbers.html#Numbers">Numbers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Screen-Size.html#Screen-Size">Screen Size</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Controlling-GDB.html#Controlling-GDB">Controlling GDB</a>
+<hr>
+</div>
+
+<h3 class="section">22.5 Output Styling</h3>
+
+<p><a name="index-styling-1690"></a><a name="index-colors-1691"></a>
+<a name="index-set-style-1692"></a><a name="index-show-style-1693"></a><span class="sc">gdb</span> can style its output on a capable terminal.  This is
+enabled by default on most systems, but disabled by default when in
+batch mode (see <a href="Mode-Options.html#Mode-Options">Mode Options</a>).  Various style settings are available;
+and styles can also be disabled entirely.
+
+     <dl>
+<dt><code>set style enabled &lsquo;</code><samp><span class="samp">on|off</span></samp><code>&rsquo;</code><dd>Enable or disable all styling.  The default is host-dependent, with
+most hosts defaulting to &lsquo;<samp><span class="samp">on</span></samp>&rsquo;.
+
+     <br><dt><code>show style enabled</code><dd>Show the current state of styling.
+
+     <br><dt><code>set style sources &lsquo;</code><samp><span class="samp">on|off</span></samp><code>&rsquo;</code><dd>Enable or disable source code styling.  This affects whether source
+code, such as the output of the <code>list</code> command, is styled.  Note
+that source styling only works if styling in general is enabled, and
+if <span class="sc">gdb</span> was linked with the GNU Source Highlight library.  The
+default is &lsquo;<samp><span class="samp">on</span></samp>&rsquo;.
+
+     <br><dt><code>show style sources</code><dd>Show the current state of source code styling. 
+</dl>
+
+   <p>Subcommands of <code>set style</code> control specific forms of styling. 
+These subcommands all follow the same pattern: each style-able object
+can be styled with a foreground color, a background color, and an
+intensity.
+
+   <p>For example, the style of file names can be controlled using the
+<code>set style filename</code> group of commands:
+
+     <dl>
+<dt><code>set style filename background </code><var>color</var><dd>Set the background to <var>color</var>.  Valid colors are &lsquo;<samp><span class="samp">none</span></samp>&rsquo;
+(meaning the terminal's default color), &lsquo;<samp><span class="samp">black</span></samp>&rsquo;, &lsquo;<samp><span class="samp">red</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">green</span></samp>&rsquo;, &lsquo;<samp><span class="samp">yellow</span></samp>&rsquo;, &lsquo;<samp><span class="samp">blue</span></samp>&rsquo;, &lsquo;<samp><span class="samp">magenta</span></samp>&rsquo;, &lsquo;<samp><span class="samp">cyan</span></samp>&rsquo;,
+and&lsquo;<samp><span class="samp">white</span></samp>&rsquo;.
+
+     <br><dt><code>set style filename foreground </code><var>color</var><dd>Set the foreground to <var>color</var>.  Valid colors are &lsquo;<samp><span class="samp">none</span></samp>&rsquo;
+(meaning the terminal's default color), &lsquo;<samp><span class="samp">black</span></samp>&rsquo;, &lsquo;<samp><span class="samp">red</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">green</span></samp>&rsquo;, &lsquo;<samp><span class="samp">yellow</span></samp>&rsquo;, &lsquo;<samp><span class="samp">blue</span></samp>&rsquo;, &lsquo;<samp><span class="samp">magenta</span></samp>&rsquo;, &lsquo;<samp><span class="samp">cyan</span></samp>&rsquo;,
+and&lsquo;<samp><span class="samp">white</span></samp>&rsquo;.
+
+     <br><dt><code>set style filename intensity </code><var>value</var><dd>Set the intensity to <var>value</var>.  Valid intensities are &lsquo;<samp><span class="samp">normal</span></samp>&rsquo;
+(the default), &lsquo;<samp><span class="samp">bold</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">dim</span></samp>&rsquo;. 
+</dl>
+
+   <p>The style-able objects are:
+     <dl>
+<dt><code>filename</code><dd>Control the styling of file names.  By default, this style's
+foreground color is green.
+
+     <br><dt><code>function</code><dd>Control the styling of function names.  These are managed with the
+<code>set style function</code> family of commands.  By default, this
+style's foreground color is yellow.
+
+     <br><dt><code>variable</code><dd>Control the styling of variable names.  These are managed with the
+<code>set style variable</code> family of commands.  By default, this style's
+foreground color is cyan.
+
+     <br><dt><code>address</code><dd>Control the styling of addresses.  These are managed with the
+<code>set style address</code> family of commands.  By default, this style's
+foreground color is blue. 
+</dl>
+
+   </body></html>
+

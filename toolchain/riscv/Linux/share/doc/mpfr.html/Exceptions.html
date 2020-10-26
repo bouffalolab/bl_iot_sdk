@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Exceptions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Basics.html#MPFR-Basics" title="MPFR Basics">
+<link rel="prev" href="Floating_002dPoint-Values-on-Special-Numbers.html#Floating_002dPoint-Values-on-Special-Numbers" title="Floating-Point Values on Special Numbers">
+<link rel="next" href="Memory-Handling.html#Memory-Handling" title="Memory Handling">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Exceptions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory-Handling.html#Memory-Handling">Memory Handling</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Floating_002dPoint-Values-on-Special-Numbers.html#Floating_002dPoint-Values-on-Special-Numbers">Floating-Point Values on Special Numbers</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Basics.html#MPFR-Basics">MPFR Basics</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.6 Exceptions</h3>
+
+<p>MPFR supports 6 exception types:
+
+     <ul>
+<li>Underflow:
+An underflow occurs when the exact result of a function is a non-zero
+real number and the result obtained after the rounding, assuming an
+unbounded exponent range (for the rounding), has an exponent smaller
+than the minimum value of the current exponent range. (In the round-to-nearest
+mode, the halfway case is rounded toward zero.)
+
+     <p>Note: This is not the single possible definition of the underflow. MPFR chooses
+to consider the underflow <em>after</em> rounding. The underflow before rounding
+can also be defined. For instance, consider a function that has the
+exact result 7 multiplied by two to the power
+<var>e</var>&minus;4, where <var>e</var> is the smallest exponent (for a
+significand between 1/2 and 1),
+with a 2-bit target precision and rounding toward plus infinity. 
+The exact result has the exponent <var>e</var>&minus;1. With the underflow
+before rounding, such a function call would yield an underflow, as
+<var>e</var>&minus;1 is outside the current exponent range. However, MPFR
+first considers the rounded result assuming an unbounded exponent range. 
+The exact result cannot be represented exactly in precision 2, and here,
+it is rounded to 0.5 times 2 to <var>e</var>, which is
+representable in the current exponent range. As a consequence, this will
+not yield an underflow in MPFR.
+
+     <li>Overflow:
+An overflow occurs when the exact result of a function is a non-zero
+real number and the result obtained after the rounding, assuming an
+unbounded exponent range (for the rounding), has an exponent larger
+than the maximum value of the current exponent range. In the round-to-nearest
+mode, the result is infinite. 
+Note: unlike the underflow case, there is only one possible definition of
+overflow here.
+
+     <li>Divide-by-zero:
+An exact infinite result is obtained from finite inputs.
+
+     <li>NaN:
+A NaN exception occurs when the result of a function is NaN. 
+<!-- NaN is defined above. So, we don't say anything more. -->
+
+     <li>Inexact:
+An inexact exception occurs when the result of a function cannot be
+represented exactly and must be rounded.
+
+     <li>Range error:
+A range exception occurs when a function that does not return a MPFR
+number (such as comparisons and conversions to an integer) has an
+invalid result (e.g., an argument is NaN in <code>mpfr_cmp</code>, or a
+conversion to an integer cannot be represented in the target type).
+
+   </ul>
+
+   <p>MPFR has a global flag for each exception, which can be cleared, set
+or tested by functions described in <a href="Exception-Related-Functions.html#Exception-Related-Functions">Exception Related Functions</a>.
+
+   <p>Differences with the ISO C99 standard:
+
+     <ul>
+<li>In C, only quiet NaNs are specified, and a NaN propagation does not
+raise an invalid exception. Unless explicitly stated otherwise, MPFR sets
+the NaN flag whenever a NaN is generated, even when a NaN is propagated
+(e.g., in NaN + NaN), as if all NaNs were signaling.
+
+     <li>An invalid exception in C corresponds to either a NaN exception or
+a range error in MPFR.
+
+   </ul>
+
+   </body></html>
+

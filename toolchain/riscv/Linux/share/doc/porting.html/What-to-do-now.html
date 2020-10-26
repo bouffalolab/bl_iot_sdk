@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+<title>What to do now - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libraries.html#Libraries" title="Libraries">
+<link rel="prev" href="Linker-Scripts.html#Linker-Scripts" title="Linker Scripts">
+<link rel="next" href="Libc.html#Libc" title="Libc">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="What-to-do-now"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Libc.html#Libc">Libc</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Linker-Scripts.html#Linker-Scripts">Linker Scripts</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libraries.html#Libraries">Libraries</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 What to do when you have a binary image</h3>
+
+<p>A few ROM monitors load binary images, typically <code>a.out</code>, but most all
+will load an <code>srecord</code>. An srecord is an ASCII representation of a binary
+image. At it's simplest, an srecord is an address, followed by a byte
+count, followed by the bytes, and a 2's compliment checksum. A whole
+srecord file has an optional <em>start</em> record, and a required <em>end</em>
+record. To make an srecord from a binary image, the GNU <code>objcopy</code> program
+is used. This will read the image and make an srecord from it. To do
+this, invoke objcopy like this: <code>objcopy -O srec infile outfile</code>. Most
+PROM burners also read srecords or a similar format. Use <code>objdump -i</code> to
+get a list of support object files types for your architecture.
+
+   </body></html>
+

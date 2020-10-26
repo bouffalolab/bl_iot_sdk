@@ -1,0 +1,200 @@
+<html lang="en">
+<head>
+<title>Installing MPFR - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Introduction-to-MPFR.html#Introduction-to-MPFR" title="Introduction to MPFR">
+<link rel="next" href="Reporting-Bugs.html#Reporting-Bugs" title="Reporting Bugs">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Installing-MPFR"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Introduction-to-MPFR.html#Introduction-to-MPFR">Introduction to MPFR</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">2 Installing MPFR</h2>
+
+<p><a name="index-Installation-3"></a>
+The MPFR library is already installed on some GNU/Linux distributions,
+but the development files necessary to the compilation such as
+<samp><span class="file">mpfr.h</span></samp> are not always present. To check that MPFR is fully
+installed on your computer, you can check the presence of the file
+<samp><span class="file">mpfr.h</span></samp> in <samp><span class="file">/usr/include</span></samp>, or try to compile a small program
+having <code>#include &lt;mpfr.h&gt;</code> (since <samp><span class="file">mpfr.h</span></samp> may be installed
+somewhere else). For instance, you can try to compile:
+
+<pre class="example">     #include &lt;stdio.h&gt;
+     #include &lt;mpfr.h&gt;
+     int main (void)
+     {
+       printf ("MPFR library: %-12s\nMPFR header:  %s (based on %d.%d.%d)\n",
+               mpfr_get_version (), MPFR_VERSION_STRING, MPFR_VERSION_MAJOR,
+               MPFR_VERSION_MINOR, MPFR_VERSION_PATCHLEVEL);
+       return 0;
+     }
+</pre>
+   <p class="noindent">with
+
+<pre class="example">     cc -o version version.c -lmpfr -lgmp
+</pre>
+   <p class="noindent">and if you get errors whose first line looks like
+
+<pre class="example">     version.c:2:19: error: mpfr.h: No such file or directory
+</pre>
+   <p class="noindent">then MPFR is probably not installed. Running this program will give you
+the MPFR version.
+
+   <p>If MPFR is not installed on your computer, or if you want to install a
+different version, please follow the steps below.
+
+<h3 class="section">2.1 How to Install</h3>
+
+<p>Here are the steps needed to install the library on Unix systems
+(more details are provided in the <samp><span class="file">INSTALL</span></samp> file):
+
+     <ol type=1 start=1>
+<li>To build MPFR, you first have to install GNU MP
+(version 4.1 or higher) on your computer. 
+You need a C compiler, preferably GCC, but any reasonable compiler should
+work.  And you need the standard Unix &lsquo;<samp><span class="samp">make</span></samp>&rsquo; command, plus some other
+standard Unix utility commands.
+
+     <p>Then, in the MPFR build directory, type the following commands.
+
+     <li>&lsquo;<samp><span class="samp">./configure</span></samp>&rsquo;
+
+     <p>This will prepare the build and setup the options according to your system. 
+You can give options to specify the install directories (instead of
+the default <samp><span class="file">/usr/local</span></samp>), threading support, and so on. See
+the <samp><span class="file">INSTALL</span></samp> file and/or the output of &lsquo;<samp><span class="samp">./configure --help</span></samp>&rsquo;
+for more information, in particular if you get error messages.
+
+     <li>&lsquo;<samp><span class="samp">make</span></samp>&rsquo;
+
+     <p>This will compile MPFR, and create a library archive file <samp><span class="file">libmpfr.a</span></samp>. 
+On most platforms, a dynamic library will be produced too.
+
+     <li>&lsquo;<samp><span class="samp">make check</span></samp>&rsquo;
+
+     <p>This will make sure that MPFR was built correctly. 
+If any test fails, information about this failure can be found in the
+<samp><span class="file">tests/test-suite.log</span></samp> file. If you want the contents of this file to
+be automatically output in case of failure, you can set the &lsquo;<samp><span class="samp">VERBOSE</span></samp>&rsquo;
+environment variable to 1 before running &lsquo;<samp><span class="samp">make check</span></samp>&rsquo;, for instance
+by typing:
+
+     <p>&lsquo;<samp><span class="samp">VERBOSE=1 make check</span></samp>&rsquo;
+
+     <p>In case of failure, you may want to check whether the problem is already
+known. If not, please report this failure to the MPFR mailing-list
+&lsquo;<samp><span class="samp">mpfr@inria.fr</span></samp>&rsquo;. For details, See <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>.
+
+     <li>&lsquo;<samp><span class="samp">make install</span></samp>&rsquo;
+
+     <p>This will copy the files <samp><span class="file">mpfr.h</span></samp> and <samp><span class="file">mpf2mpfr.h</span></samp> to the directory
+<samp><span class="file">/usr/local/include</span></samp>, the library files (<samp><span class="file">libmpfr.a</span></samp> and possibly
+others) to the directory <samp><span class="file">/usr/local/lib</span></samp>, the file <samp><span class="file">mpfr.info</span></samp>
+to the directory <samp><span class="file">/usr/local/share/info</span></samp>, and some other documentation
+files to the directory <samp><span class="file">/usr/local/share/doc/mpfr</span></samp> (or if you passed the
+&lsquo;<samp><span class="samp">--prefix</span></samp>&rsquo; option to <samp><span class="file">configure</span></samp>, using the prefix directory given
+as argument to &lsquo;<samp><span class="samp">--prefix</span></samp>&rsquo; instead of <samp><span class="file">/usr/local</span></samp>).
+        </ol>
+
+<h3 class="section">2.2 Other `make' Targets</h3>
+
+<p>There are some other useful make targets:
+
+     <ul>
+<li>&lsquo;<samp><span class="samp">mpfr.info</span></samp>&rsquo; or &lsquo;<samp><span class="samp">info</span></samp>&rsquo;
+
+     <p>Create or update an info version of the manual, in <samp><span class="file">mpfr.info</span></samp>.
+
+     <p>This file is already provided in the MPFR archives.
+
+     <li>&lsquo;<samp><span class="samp">mpfr.pdf</span></samp>&rsquo; or &lsquo;<samp><span class="samp">pdf</span></samp>&rsquo;
+
+     <p>Create a PDF version of the manual, in <samp><span class="file">mpfr.pdf</span></samp>.
+
+     <li>&lsquo;<samp><span class="samp">mpfr.dvi</span></samp>&rsquo; or &lsquo;<samp><span class="samp">dvi</span></samp>&rsquo;
+
+     <p>Create a DVI version of the manual, in <samp><span class="file">mpfr.dvi</span></samp>.
+
+     <li>&lsquo;<samp><span class="samp">mpfr.ps</span></samp>&rsquo; or &lsquo;<samp><span class="samp">ps</span></samp>&rsquo;
+
+     <p>Create a Postscript version of the manual, in <samp><span class="file">mpfr.ps</span></samp>.
+
+     <li>&lsquo;<samp><span class="samp">mpfr.html</span></samp>&rsquo; or &lsquo;<samp><span class="samp">html</span></samp>&rsquo;
+
+     <p>Create a HTML version of the manual, in several pages in the directory
+<samp><span class="file">doc/mpfr.html</span></samp>; if you want only one output HTML file, then type
+&lsquo;<samp><span class="samp">makeinfo --html --no-split mpfr.texi</span></samp>&rsquo; from the &lsquo;<samp><span class="samp">doc</span></samp>&rsquo; directory
+instead.
+
+     <li>&lsquo;<samp><span class="samp">clean</span></samp>&rsquo;
+
+     <p>Delete all object files and archive files, but not the configuration files.
+
+     <li>&lsquo;<samp><span class="samp">distclean</span></samp>&rsquo;
+
+     <p>Delete all generated files not included in the distribution.
+
+     <li>&lsquo;<samp><span class="samp">uninstall</span></samp>&rsquo;
+
+     <p>Delete all files copied by &lsquo;<samp><span class="samp">make install</span></samp>&rsquo;.
+
+   </ul>
+
+<h3 class="section">2.3 Build Problems</h3>
+
+<p>In case of problem, please read the <samp><span class="file">INSTALL</span></samp> file carefully
+before reporting a bug, in particular section &ldquo;In case of problem&rdquo;. 
+Some problems are due to bad configuration on the user side (not
+specific to MPFR). Problems are also mentioned in the FAQ
+<a href="http://www.mpfr.org/faq.html">http://www.mpfr.org/faq.html</a>.
+
+<!-- Warning! Do not split "MPFR ... @url{...}" across several lines -->
+<!-- as this needs to be updated with update-version. -->
+   <p>Please report problems to the MPFR mailing-list &lsquo;<samp><span class="samp">mpfr@inria.fr</span></samp>&rsquo;. 
+See <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>. 
+Some bug fixes are available on the
+MPFR 3.1.4 web page <a href="http://www.mpfr.org/mpfr-3.1.4/">http://www.mpfr.org/mpfr-3.1.4/</a>.
+
+<h3 class="section">2.4 Getting the Latest Version of MPFR</h3>
+
+<p>The latest version of MPFR is available from
+<a href="ftp://ftp.gnu.org/gnu/mpfr/">ftp://ftp.gnu.org/gnu/mpfr/</a> or <a href="http://www.mpfr.org/">http://www.mpfr.org/</a>.
+
+   </body></html>
+

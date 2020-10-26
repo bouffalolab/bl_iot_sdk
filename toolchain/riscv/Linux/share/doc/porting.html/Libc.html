@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<title>Libc - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libraries.html#Libraries" title="Libraries">
+<link rel="prev" href="What-to-do-now.html#What-to-do-now" title="What to do now">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Libc"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="What-to-do-now.html#What-to-do-now">What to do now</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libraries.html#Libraries">Libraries</a>
+<hr>
+</div>
+
+<h3 class="section">3.4 Libraries</h3>
+
+<p>This describes <code>newlib</code>, a freely available libc replacement. Most
+applications use calls in the standard C library. When initially linking
+in libc.a, several I/O functions are undefined. If you don't plan on
+doing any I/O, then you're OK, otherwise they need to be created. These
+routines are read, write, open, close. sbrk, and kill. Open &amp; close
+don't need to be fully supported unless you have a filesystems, so
+typically they are stubbed out. Kill is also a stub, since you can't do
+process control on an embedded system.
+
+   <p>Sbrk() is only needed by applications that do dynamic memory
+allocation. It's uses the symbol <code>_end</code> that is setup in the linker
+script. It also requires a compile time option to set the upper size
+limit on the heap space. This leaves us with read and write, which are
+required for serial I/O. Usually these two routines are written in C,
+and call a lower level function for the actual I/O operation. These two
+lowest level I/O primitives are inbyte() and outbyte(), and are also
+used by GDB back ends if you've written an exception handler. Some
+systems also implement a havebyte() for input as well.
+
+   <p>Other commonly included functions are routines for manipulating
+LED's on the target (if they exist) or low level debug help. Typically a
+putnum() for printing words and bytes as a hex number is helpful, as
+well as a low-level print() to output simple strings.
+
+   <p>As libg++ uses the I/O routines in libc.a, if read and write work,
+then libg++ will also work with no additional changes.
+
+<ul class="menu">
+<li><a accesskey="1" href="I_002fO-Support.html#I_002fO-Support">I/O Support</a>:          Functions that make serial I/O work. 
+<li><a accesskey="2" href="Memory-Support.html#Memory-Support">Memory Support</a>:       Memory support. 
+<li><a accesskey="3" href="Misc-Support.html#Misc-Support">Misc Support</a>:         Other needed functions. 
+<li><a accesskey="4" href="Debugging.html#Debugging">Debugging</a>:             Useful Debugging Functions
+</ul>
+
+   </body></html>
+

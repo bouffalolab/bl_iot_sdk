@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>Input and Output Functions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="prev" href="Special-Functions.html#Special-Functions" title="Special Functions">
+<link rel="next" href="Formatted-Output-Functions.html#Formatted-Output-Functions" title="Formatted Output Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Input-and-Output-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Formatted-Output-Functions.html#Formatted-Output-Functions">Formatted Output Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Special-Functions.html#Special-Functions">Special Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+   <p><a name="index-Float-input-and-output-functions-235"></a><a name="index-Input-functions-236"></a><a name="index-Output-functions-237"></a><a name="index-I_002fO-functions-238"></a>
+
+<h3 class="section">5.8 Input and Output Functions</h3>
+
+<p>This section describes functions that perform input from an input/output
+stream, and functions that output to an input/output stream. 
+Passing a null pointer for a <code>stream</code> to any of these functions will make
+them read from <code>stdin</code> and write to <code>stdout</code>, respectively.
+
+   <p>When using any of these functions, you must include the <code>&lt;stdio.h&gt;</code>
+standard header before <samp><span class="file">mpfr.h</span></samp>, to allow <samp><span class="file">mpfr.h</span></samp> to define
+prototypes for these functions.
+
+<div class="defun">
+&mdash; Function: size_t <b>mpfr_out_str</b> (<var>FILE *stream, int base, size_t n, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fout_005fstr-239"></a></var><br>
+<blockquote><p>Output <var>op</var> on stream <var>stream</var>, as a string of digits in
+base <var>base</var>, rounded in the direction <var>rnd</var>. 
+The base may vary from 2 to 62.  Print <var>n</var> significant digits exactly,
+or if <var>n</var> is 0, enough digits so that <var>op</var> can be read back
+exactly (see <code>mpfr_get_str</code>).
+
+        <p>In addition to the significant digits, a decimal point (defined by the
+current locale) at the right of the
+first digit and a trailing exponent in base 10, in the form &lsquo;<samp><span class="samp">eNNN</span></samp>&rsquo;,
+are printed. If <var>base</var> is greater than 10, &lsquo;<samp><span class="samp">@</span></samp>&rsquo; will be used
+instead of &lsquo;<samp><span class="samp">e</span></samp>&rsquo; as exponent delimiter.
+
+        <p>Return the number of characters written, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpfr_inp_str</b> (<var>mpfr_t rop, FILE *stream, int base, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finp_005fstr-240"></a></var><br>
+<blockquote><p>Input a string in base <var>base</var> from stream <var>stream</var>,
+rounded in the direction <var>rnd</var>, and put the
+read float in <var>rop</var>. 
+<!-- The argument @var{base} must be in the range 2 to 62. -->
+
+     <!-- The string is of the form @samp{M@@N} or, if the -->
+     <!-- base is 10 or less, alternatively @samp{MeN} or @samp{MEN}, or, if the base -->
+     <!-- is 16, alternatively @samp{MpB} or @samp{MPB}. -->
+     <!-- @samp{M} is the significand in the specified base, @samp{N} is the exponent -->
+     <!-- written in decimal for the specified base, and in base 16, @samp{B} is the -->
+     <!-- binary exponent written in decimal (i.e., it indicates the power of 2 by -->
+     <!-- which the significand is to be scaled). -->
+        <p>This function reads a word (defined as a sequence of characters between
+whitespace) and parses it using <code>mpfr_set_str</code>. 
+See the documentation of <code>mpfr_strtofr</code> for a detailed description
+of the valid string formats. 
+<!-- Special values can be read as follows (the case does not matter): -->
+<!-- @code{@@NaN@@}, @code{@@Inf@@}, @code{+@@Inf@@} and @code{-@@Inf@@}, -->
+<!-- possibly followed by other characters; if the base is smaller or equal -->
+<!-- to 16, the following strings are accepted too: @code{NaN}, @code{Inf}, -->
+<!-- @code{+Inf} and @code{-Inf}. -->
+
+        <p>Return the number of bytes read, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<!-- @deftypefun void mpfr_inp_raw (mpfr_t @var{float}, FILE *@var{stream}) -->
+<!-- Input from stdio stream @var{stream} in the format written by -->
+<!-- @code{mpfr_out_raw}, and put the result in @var{float}. -->
+<!-- @end deftypefun -->
+   </body></html>
+

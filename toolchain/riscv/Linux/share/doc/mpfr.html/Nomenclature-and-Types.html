@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Nomenclature and Types - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Basics.html#MPFR-Basics" title="MPFR Basics">
+<link rel="prev" href="Headers-and-Libraries.html#Headers-and-Libraries" title="Headers and Libraries">
+<link rel="next" href="MPFR-Variable-Conventions.html#MPFR-Variable-Conventions" title="MPFR Variable Conventions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Nomenclature-and-Types"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="MPFR-Variable-Conventions.html#MPFR-Variable-Conventions">MPFR Variable Conventions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Headers-and-Libraries.html#Headers-and-Libraries">Headers and Libraries</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Basics.html#MPFR-Basics">MPFR Basics</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.2 Nomenclature and Types</h3>
+
+<p><a name="index-Floating_002dpoint-number-16"></a><a name="index-g_t_0040code_007bmpfr_005ft_007d-17"></a>A <dfn>floating-point number</dfn>, or <dfn>float</dfn> for short, is an arbitrary
+precision significand (also called mantissa) with a limited precision
+exponent. The C data type
+for such objects is <code>mpfr_t</code> (internally defined as a one-element
+array of a structure, and <code>mpfr_ptr</code> is the C data type representing
+a pointer to this structure). A floating-point number can have
+three special values: Not-a-Number (NaN) or plus or minus Infinity. NaN
+represents an uninitialized object, the result of an invalid operation
+(like 0 divided by 0), or a value that cannot be determined (like
++Infinity minus +Infinity). Moreover, like in the IEEE 754 standard,
+zero is signed, i.e., there are both +0 and &minus;0; the behavior
+is the same as in the IEEE 754 standard and it is generalized to
+the other functions supported by MPFR. Unless documented otherwise,
+the sign bit of a NaN is unspecified. 
+<!-- VL: re-added how mpfr_t is defined, due to some questions from users -->
+<!-- in the past (the fact that the result was returned in an argument -->
+<!-- seemed strange); also, mpfr_ptr needs to be defined here, as it is -->
+<!-- used in the API. -->
+
+   <p><a name="index-Precision-18"></a><a name="index-g_t_0040code_007bmpfr_005fprec_005ft_007d-19"></a>The <dfn>precision</dfn> is the number of bits used to represent the significand
+of a floating-point number;
+the corresponding C data type is <code>mpfr_prec_t</code>. 
+The precision can be any integer between <code>MPFR_PREC_MIN</code> and
+<code>MPFR_PREC_MAX</code>. In the current implementation, <code>MPFR_PREC_MIN</code>
+is equal to 2.
+
+   <p>Warning! MPFR needs to increase the precision internally, in order to
+provide accurate results (and in particular, correct rounding). Do not
+attempt to set the precision to any value near <code>MPFR_PREC_MAX</code>,
+otherwise MPFR will abort due to an assertion failure. Moreover, you
+may reach some memory limit on your platform, in which case the program
+may abort, crash or have undefined behavior (depending on your C
+implementation).
+
+   <p><a name="index-Rounding-Modes-20"></a><a name="index-g_t_0040code_007bmpfr_005frnd_005ft_007d-21"></a>The <dfn>rounding mode</dfn> specifies the way to round the result of a
+floating-point operation, in case the exact result can not be represented
+exactly in the destination significand;
+the corresponding C data type is <code>mpfr_rnd_t</code>.
+
+   </body></html>
+

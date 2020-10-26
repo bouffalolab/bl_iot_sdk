@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+<title>crt0.S - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Code-Listings.html#Code-Listings" title="Code Listings">
+<link rel="prev" href="idp_002eld.html#idp_002eld" title="idp.ld">
+<link rel="next" href="glue_002ec.html#glue_002ec" title="glue.c">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="crt0.S"></a>
+<a name="crt0_002eS"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="glue_002ec.html#glue_002ec">glue.c</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="idp_002eld.html#idp_002eld">idp.ld</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Code-Listings.html#Code-Listings">Code Listings</a>
+<hr>
+</div>
+
+<h3 class="section">A.2 crt0.S - The startup file</h3>
+
+<pre class="example">     /*
+      * crt0.S -- startup file for m68k-coff
+      *
+      */
+     
+     	.title "crt0.S for m68k-coff"
+     
+     /* These are predefined by new versions of GNU cpp.  */
+     
+     #ifndef __USER_LABEL_PREFIX__
+     #define __USER_LABEL_PREFIX__ _
+     #endif
+     
+     #ifndef __REGISTER_PREFIX__
+     #define __REGISTER_PREFIX__
+     #endif
+     
+     /* ANSI concatenation macros.  */
+     
+     #define CONCAT1(a, b) CONCAT2(a, b)
+     #define CONCAT2(a, b) a ## b
+     
+     /* Use the right prefix for global labels.  */
+     
+     #define SYM(x) CONCAT1 (__USER_LABEL_PREFIX__, x)
+     
+     /* Use the right prefix for registers.  */
+     
+     #define REG(x) CONCAT1 (__REGISTER_PREFIX__, x)
+     
+     #define d0 REG (d0)
+     #define d1 REG (d1)
+     #define d2 REG (d2)
+     #define d3 REG (d3)
+     #define d4 REG (d4)
+     #define d5 REG (d5)
+     #define d6 REG (d6)
+     #define d7 REG (d7)
+     #define a0 REG (a0)
+     #define a1 REG (a1)
+     #define a2 REG (a2)
+     #define a3 REG (a3)
+     #define a4 REG (a4)
+     #define a5 REG (a5)
+     #define a6 REG (a6)
+     #define fp REG (fp)
+     #define sp REG (sp)
+     
+     /*
+      * Set up some room for a stack. We just grab a chunk of memory.
+      */
+     	.set	stack_size, 0x2000
+     	.comm	SYM (stack), stack_size
+     
+     /*
+      * Define an empty environment.
+      */
+             .data
+             .align 2
+     SYM (environ):
+             .long 0
+     
+      	.align	2
+     	.text
+     	.global SYM (stack)
+     
+     	.global SYM (main)
+     	.global SYM (exit)
+     /*
+      * This really should be __bss_start, not SYM (__bss_start).
+      */
+     	.global __bss_start
+     
+     /*
+      * start -- set things up so the application will run.
+      */
+     SYM (start):
+     	link	a6, #-8
+     	moveal	#SYM (stack) + stack_size, sp
+     
+     /*
+      * zerobss -- zero out the bss section
+      */
+     	moveal	#__bss_start, a0
+     	moveal	#SYM (end), a1
+     1:
+     	movel	#0, (a0)
+     	leal	4(a0), a0
+     	cmpal	a0, a1
+     	bne	1b
+     
+     /*
+      * Call the main routine from the application to get it going.
+      * main (argc, argv, environ)
+      * We pass argv as a pointer to NULL.
+      */
+             pea     0
+             pea     SYM (environ)
+             pea     sp@(4)
+             pea     0
+     	jsr	SYM (main)
+     	movel	d0, sp@-
+     
+     /*
+      * _exit -- Exit from the application. Normally we cause a user trap
+      *          to return to the ROM monitor for another run.
+      */
+     SYM (exit):
+     	trap	#0
+</pre>
+   </body></html>
+

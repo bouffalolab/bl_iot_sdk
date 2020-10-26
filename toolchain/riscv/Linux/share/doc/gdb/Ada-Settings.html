@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Ada Settings - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Ada.html#Ada" title="Ada">
+<link rel="prev" href="Ravenscar-Profile.html#Ravenscar-Profile" title="Ravenscar Profile">
+<link rel="next" href="Ada-Glitches.html#Ada-Glitches" title="Ada Glitches">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Ada-Settings"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Ada-Glitches.html#Ada-Glitches">Ada Glitches</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Ravenscar-Profile.html#Ravenscar-Profile">Ravenscar Profile</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Ada.html#Ada">Ada</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">15.4.10.10 Ada Settings</h5>
+
+<p><a name="index-Ada-settings-1085"></a>
+     
+<a name="index-set-varsize_002dlimit-1086"></a>
+<dl><dt><code>set varsize-limit </code><var>size</var><dd>Prevent <span class="sc">gdb</span> from attempting to evaluate objects whose size
+is above the given limit (<var>size</var>) when those sizes are computed
+from run-time quantities.  This is typically the case when the object
+has a variable size, such as an array whose bounds are not known at
+compile time for example.  Setting <var>size</var> to <code>unlimited</code>
+removes the size limitation.  By default, the limit is about 65KB.
+
+     <p>The purpose of having such a limit is to prevent <span class="sc">gdb</span> from
+trying to grab enormous chunks of virtual memory when asked to evaluate
+a quantity whose bounds have been corrupted or have not yet been fully
+initialized.  The limit applies to the results of some subexpressions
+as well as to complete expressions.  For example, an expression denoting
+a simple integer component, such as <code>x.y.z</code>, may fail if the size of
+<code>x.y</code> is variable and exceeds <code>size</code>.  On the other hand,
+<span class="sc">gdb</span> is sometimes clever; the expression <code>A(i)</code>, where
+<code>A</code> is an array variable with non-constant size, will generally
+succeed regardless of the bounds on <code>A</code>, as long as the component
+size is less than <var>size</var>.
+
+     <p><a name="index-show-varsize_002dlimit-1087"></a><br><dt><code>show varsize-limit</code><dd>Show the limit on types whose size is determined by run-time quantities. 
+</dl>
+
+   </body></html>
+

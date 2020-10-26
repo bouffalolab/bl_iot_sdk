@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Internals - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="prev" href="Custom-Interface.html#Custom-Interface" title="Custom Interface">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Internals"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Custom-Interface.html#Custom-Interface">Custom Interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
+<hr>
+</div>
+
+   <p><a name="index-Internals-347"></a>
+
+<h3 class="section">5.16 Internals</h3>
+
+<p><a name="index-Limb-348"></a><!-- @tindex @code{mp_limb_t} -->
+A <dfn>limb</dfn> means the part of a multi-precision number that fits in a single
+word. Usually a limb contains
+32 or 64 bits.  The C data type for a limb is <code>mp_limb_t</code>.
+
+   <p>The <code>mpfr_t</code> type is internally defined as a one-element
+array of a structure, and <code>mpfr_ptr</code> is the C data type representing
+a pointer to this structure. 
+The <code>mpfr_t</code> type consists of four fields:
+
+     <ul>
+<li>The <code>_mpfr_prec</code> field is used to store the precision of
+the variable (in bits); this is not less than <code>MPFR_PREC_MIN</code>.
+
+     <li>The <code>_mpfr_sign</code> field is used to store the sign of the variable.
+
+     <li>The <code>_mpfr_exp</code> field stores the exponent. 
+An exponent of 0 means a radix point just above the most significant
+limb.  Non-zero values n are a multiplier 2^n relative to that
+point. 
+A NaN, an infinity and a zero are indicated by special values of the exponent
+field.
+
+     <li>Finally, the <code>_mpfr_d</code> field is a pointer to the limbs, least
+significant limbs stored first. 
+The number of limbs in use is controlled by <code>_mpfr_prec</code>, namely
+ceil(<code>_mpfr_prec</code>/<code>mp_bits_per_limb</code>). 
+Non-singular (i.e., different from NaN, Infinity or zero)
+values always have the most significant bit of the most
+significant limb set to 1.  When the precision does not correspond to a
+whole number of limbs, the excess bits at the low end of the data are zeros.
+
+   </ul>
+
+   </body></html>
+

@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+<title>PowerPC Features - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Standard-Target-Features.html#Standard-Target-Features" title="Standard Target Features">
+<link rel="prev" href="OpenRISC-1000-Features.html#OpenRISC-1000-Features" title="OpenRISC 1000 Features">
+<link rel="next" href="RISC_002dV-Features.html#RISC_002dV-Features" title="RISC-V Features">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="PowerPC-Features"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="RISC_002dV-Features.html#RISC_002dV-Features">RISC-V Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="OpenRISC-1000-Features.html#OpenRISC-1000-Features">OpenRISC 1000 Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Standard-Target-Features.html#Standard-Target-Features">Standard Target Features</a>
+<hr>
+</div>
+
+<h4 class="subsection">G.5.11 PowerPC Features</h4>
+
+<p><a name="index-target-descriptions_002c-PowerPC-features-3668"></a>
+The &lsquo;<samp><span class="samp">org.gnu.gdb.power.core</span></samp>&rsquo; feature is required for PowerPC
+targets.  It should contain registers &lsquo;<samp><span class="samp">r0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">r31</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">pc</span></samp>&rsquo;, &lsquo;<samp><span class="samp">msr</span></samp>&rsquo;, &lsquo;<samp><span class="samp">cr</span></samp>&rsquo;, &lsquo;<samp><span class="samp">lr</span></samp>&rsquo;, &lsquo;<samp><span class="samp">ctr</span></samp>&rsquo;, and
+&lsquo;<samp><span class="samp">xer</span></samp>&rsquo;.  They may be 32-bit or 64-bit depending on the target.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.fpu</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">f0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">f31</span></samp>&rsquo; and &lsquo;<samp><span class="samp">fpscr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.altivec</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">vr0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">vr31</span></samp>&rsquo;, &lsquo;<samp><span class="samp">vscr</span></samp>&rsquo;, and
+&lsquo;<samp><span class="samp">vrsave</span></samp>&rsquo;.  <span class="sc">gdb</span> will define pseudo-registers &lsquo;<samp><span class="samp">v0</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">v31</span></samp>&rsquo; as aliases for the corresponding &lsquo;<samp><span class="samp">vrX</span></samp>&rsquo;
+registers.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.vsx</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">vs0h</span></samp>&rsquo; through &lsquo;<samp><span class="samp">vs31h</span></samp>&rsquo;.  <span class="sc">gdb</span> will
+combine these registers with the floating point registers (&lsquo;<samp><span class="samp">f0</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">f31</span></samp>&rsquo;) and the altivec registers (&lsquo;<samp><span class="samp">vr0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">vr31</span></samp>&rsquo;) to present the 128-bit wide registers &lsquo;<samp><span class="samp">vs0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">vs63</span></samp>&rsquo;, the set of vector-scalar registers for POWER7. 
+Therefore, this feature requires both &lsquo;<samp><span class="samp">org.gnu.gdb.power.fpu</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">org.gnu.gdb.power.altivec</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.spe</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">ev0h</span></samp>&rsquo; through &lsquo;<samp><span class="samp">ev31h</span></samp>&rsquo;, &lsquo;<samp><span class="samp">acc</span></samp>&rsquo;, and
+&lsquo;<samp><span class="samp">spefscr</span></samp>&rsquo;.  SPE targets should provide 32-bit registers in
+&lsquo;<samp><span class="samp">org.gnu.gdb.power.core</span></samp>&rsquo; and provide the upper halves in
+&lsquo;<samp><span class="samp">ev0h</span></samp>&rsquo; through &lsquo;<samp><span class="samp">ev31h</span></samp>&rsquo;.  <span class="sc">gdb</span> will combine
+these to present registers &lsquo;<samp><span class="samp">ev0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">ev31</span></samp>&rsquo; to the
+user.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.ppr</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit register &lsquo;<samp><span class="samp">ppr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.dscr</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit register &lsquo;<samp><span class="samp">dscr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.tar</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit register &lsquo;<samp><span class="samp">tar</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.ebb</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">bescr</span></samp>&rsquo;, &lsquo;<samp><span class="samp">ebbhr</span></samp>&rsquo; and &lsquo;<samp><span class="samp">ebbrr</span></samp>&rsquo;, all
+64-bit wide.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.linux.pmu</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">mmcr0</span></samp>&rsquo;, &lsquo;<samp><span class="samp">mmcr2</span></samp>&rsquo;, &lsquo;<samp><span class="samp">siar</span></samp>&rsquo;, &lsquo;<samp><span class="samp">sdar</span></samp>&rsquo;
+and &lsquo;<samp><span class="samp">sier</span></samp>&rsquo;, all 64-bit wide.  This is the subset of the isa 2.07
+server PMU registers provided by <span class="sc">gnu</span>/Linux.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.spr</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">tfhar</span></samp>&rsquo;, &lsquo;<samp><span class="samp">texasr</span></samp>&rsquo; and &lsquo;<samp><span class="samp">tfiar</span></samp>&rsquo;, all
+64-bit wide.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.core</span></samp>&rsquo; feature is optional.  It should
+contain the checkpointed general-purpose registers &lsquo;<samp><span class="samp">cr0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">cr31</span></samp>&rsquo;, as well as the checkpointed registers &lsquo;<samp><span class="samp">clr</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">cctr</span></samp>&rsquo;.  These registers may all be either 32-bit or 64-bit
+depending on the target.  It should also contain the checkpointed
+registers &lsquo;<samp><span class="samp">ccr</span></samp>&rsquo; and &lsquo;<samp><span class="samp">cxer</span></samp>&rsquo;, which should both be 32-bit
+wide.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.fpu</span></samp>&rsquo; feature is optional.  It should
+contain the checkpointed 64-bit floating-point registers &lsquo;<samp><span class="samp">cf0</span></samp>&rsquo;
+through &lsquo;<samp><span class="samp">cf31</span></samp>&rsquo;, as well as the checkpointed 64-bit register
+&lsquo;<samp><span class="samp">cfpscr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.altivec</span></samp>&rsquo; feature is optional.  It
+should contain the checkpointed altivec registers &lsquo;<samp><span class="samp">cvr0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">cvr31</span></samp>&rsquo;, all 128-bit wide.  It should also contain the
+checkpointed registers &lsquo;<samp><span class="samp">cvscr</span></samp>&rsquo; and &lsquo;<samp><span class="samp">cvrsave</span></samp>&rsquo;, both 32-bit
+wide.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.vsx</span></samp>&rsquo; feature is optional.  It should
+contain registers &lsquo;<samp><span class="samp">cvs0h</span></samp>&rsquo; through &lsquo;<samp><span class="samp">cvs31h</span></samp>&rsquo;.  <span class="sc">gdb</span>
+will combine these registers with the checkpointed floating point
+registers (&lsquo;<samp><span class="samp">cf0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">cf31</span></samp>&rsquo;) and the checkpointed
+altivec registers (&lsquo;<samp><span class="samp">cvr0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">cvr31</span></samp>&rsquo;) to present the
+128-bit wide checkpointed vector-scalar registers &lsquo;<samp><span class="samp">cvs0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">cvs63</span></samp>&rsquo;.  Therefore, this feature requires both
+&lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.altivec</span></samp>&rsquo; and
+&lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.fpu</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.ppr</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit checkpointed register &lsquo;<samp><span class="samp">cppr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.dscr</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit checkpointed register &lsquo;<samp><span class="samp">cdscr</span></samp>&rsquo;.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.power.htm.tar</span></samp>&rsquo; feature is optional.  It should
+contain the 64-bit checkpointed register &lsquo;<samp><span class="samp">ctar</span></samp>&rsquo;.
+
+   </body></html>
+

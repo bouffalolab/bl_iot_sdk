@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>C++ Formatted Input - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Formatted-Input.html#Formatted-Input" title="Formatted Input">
+<link rel="prev" href="Formatted-Input-Functions.html#Formatted-Input-Functions" title="Formatted Input Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C++-Formatted-Input"></a>
+<a name="C_002b_002b-Formatted-Input"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Formatted-Input-Functions.html#Formatted-Input-Functions">Formatted Input Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Formatted-Input.html#Formatted-Input">Formatted Input</a>
+<hr>
+</div>
+
+<h3 class="section">11.3 C++ Formatted Input</h3>
+
+<p><a name="index-C_002b_002b-_0040code_007bistream_007d-input-781"></a><a name="index-g_t_0040code_007bistream_007d-input-782"></a>
+The following functions are provided in <samp><span class="file">libgmpxx</span></samp> (see <a href="Headers-and-Libraries.html#Headers-and-Libraries">Headers and Libraries</a>), which is built only if C++ support is enabled (see <a href="Build-Options.html#Build-Options">Build Options</a>).  Prototypes are available from <code>&lt;gmp.h&gt;</code>.
+
+<div class="defun">
+&mdash; Function: istream&amp; <b>operator&gt;&gt;</b> (<var>istream&amp; stream, mpz_t rop</var>)<var><a name="index-operator_003e_003e-783"></a></var><br>
+<blockquote><p>Read <var>rop</var> from <var>stream</var>, using its <code>ios</code> formatting settings. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: istream&amp; <b>operator&gt;&gt;</b> (<var>istream&amp; stream, mpq_t rop</var>)<var><a name="index-operator_003e_003e-784"></a></var><br>
+<blockquote><p>An integer like &lsquo;<samp><span class="samp">123</span></samp>&rsquo; will be read, or a fraction like &lsquo;<samp><span class="samp">5/9</span></samp>&rsquo;.  No
+whitespace is allowed around the &lsquo;<samp><span class="samp">/</span></samp>&rsquo;.  If the fraction is not in
+canonical form then <code>mpq_canonicalize</code> must be called (see <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>) before operating on it.
+
+        <p>As per integer input, an &lsquo;<samp><span class="samp">0</span></samp>&rsquo; or &lsquo;<samp><span class="samp">0x</span></samp>&rsquo; base indicator is read when
+none of <code>ios::dec</code>, <code>ios::oct</code> or <code>ios::hex</code> are set.  This is
+done separately for numerator and denominator, so that for instance
+&lsquo;<samp><span class="samp">0x10/11</span></samp>&rsquo; is 16/11 and &lsquo;<samp><span class="samp">0x10/0x11</span></samp>&rsquo; is 16/17. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: istream&amp; <b>operator&gt;&gt;</b> (<var>istream&amp; stream, mpf_t rop</var>)<var><a name="index-operator_003e_003e-785"></a></var><br>
+<blockquote><p>Read <var>rop</var> from <var>stream</var>, using its <code>ios</code> formatting settings.
+
+        <p>Hex or octal floats are not supported, but might be in the future, or perhaps
+it's best to accept only what the standard float <code>operator&gt;&gt;</code> does. 
+</p></blockquote></div>
+
+   <p>Note that digit grouping specified by the <code>istream</code> locale is currently
+not accepted.  Perhaps this will change in the future.
+
+   <pre class="sp">
+
+</pre>
+These operators mean that GMP types can be read in the usual C++ way, for
+example,
+
+<pre class="example">     mpz_t  z;
+     ...
+     cin &gt;&gt; z;
+</pre>
+   <p>But note that <code>istream</code> input (and <code>ostream</code> output, see <a href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output">C++ Formatted Output</a>) is the only overloading available for the GMP types and
+that for instance using <code>+</code> with an <code>mpz_t</code> will have unpredictable
+results.  For classes with overloading, see <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface">C++ Class Interface</a>.
+
+   </body></html>
+

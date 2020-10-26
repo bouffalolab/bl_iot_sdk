@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Miscellaneous Complex Functions - GNU MPC 1.0.3</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU MPC 1.0.3">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Complex-Functions.html#Complex-Functions" title="Complex Functions">
+<link rel="prev" href="Trigonometric-Functions.html#Trigonometric-Functions" title="Trigonometric Functions">
+<link rel="next" href="Advanced-Functions.html#Advanced-Functions" title="Advanced Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for GNU MPC, a library for multiple precision complex arithmetic,
+version 1.0.3 of February 2015.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 INRIA
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections. A copy of the license is
+     included in the section entitled ``GNU Free Documentation
+     License.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Miscellaneous-Complex-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Advanced-Functions.html#Advanced-Functions">Advanced Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Trigonometric-Functions.html#Trigonometric-Functions">Trigonometric Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Complex-Functions.html#Complex-Functions">Complex Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.10 Miscellaneous Functions</h3>
+
+<p><a name="index-Miscellaneous-complex-functions-126"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_urandom</b> (<var>mpc_t rop, gmp_randstate_t state</var>)<var><a name="index-mpc_005furandom-127"></a></var><br>
+<blockquote><p>Generate a uniformly distributed random complex in the unit square [0,
+1] x [0, 1]. Return 0, unless an exponent in the real or imaginary part
+is not in the current exponent range, in which case that part is set to NaN
+and a zero value is returned. The second argument is a <code>gmp_randstate_t</code>
+structure which should be created using the GMP <code>rand_init</code> function, see
+the GMP manual. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: const char * <b>mpc_get_version</b> (<var>void</var>)<var><a name="index-mpc_005fget_005fversion-128"></a></var><br>
+<blockquote><p>Return the GNU MPC version, as a null-terminated string. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Macro: <b>MPC_VERSION</b><var><a name="index-MPC_005fVERSION-129"></a></var><br>
+&mdash; Macro: <b>MPC_VERSION_MAJOR</b><var><a name="index-MPC_005fVERSION_005fMAJOR-130"></a></var><br>
+&mdash; Macro: <b>MPC_VERSION_MINOR</b><var><a name="index-MPC_005fVERSION_005fMINOR-131"></a></var><br>
+&mdash; Macro: <b>MPC_VERSION_PATCHLEVEL</b><var><a name="index-MPC_005fVERSION_005fPATCHLEVEL-132"></a></var><br>
+&mdash; Macro: <b>MPC_VERSION_STRING</b><var><a name="index-MPC_005fVERSION_005fSTRING-133"></a></var><br>
+<blockquote><p><code>MPC_VERSION</code> is the version of GNU MPC as a preprocessing constant. 
+<code>MPC_VERSION_MAJOR</code>, <code>MPC_VERSION_MINOR</code> and
+<code>MPC_VERSION_PATCHLEVEL</code> are respectively the major, minor and
+patch level of GNU MPC version, as preprocessing constants. 
+<code>MPC_VERSION_STRING</code> is the version as a string constant, which
+can be compared to the result of <code>mpc_get_version</code> to check at
+run time the header file and library used match:
+     <pre class="example">          if (strcmp (mpc_get_version (), MPC_VERSION_STRING))
+            fprintf (stderr, "Warning: header and library do not match\n");
+</pre>
+        <p>Note: Obtaining different strings is not necessarily an error, as in
+general, a program compiled with some old GNU MPC version can be
+dynamically linked with a newer GNU MPC library version (if allowed by the
+library versioning system). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Macro: long <b>MPC_VERSION_NUM</b> (<var>major, minor, patchlevel</var>)<var><a name="index-MPC_005fVERSION_005fNUM-134"></a></var><br>
+<blockquote><p>Create an integer in the same format as used by <code>MPC_VERSION</code> from the
+given <var>major</var>, <var>minor</var> and <var>patchlevel</var>. 
+Here is an example of how to check the GNU MPC version at compile time:
+     <pre class="example">          #if (!defined(MPC_VERSION) || (MPC_VERSION&lt;MPC_VERSION_NUM(2,1,0)))
+          # error "Wrong GNU MPC version."
+          #endif
+</pre>
+        </blockquote></div>
+
+   </body></html>
+

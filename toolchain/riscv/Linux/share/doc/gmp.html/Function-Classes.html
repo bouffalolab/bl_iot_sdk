@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+<title>Function Classes - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="prev" href="Nomenclature-and-Types.html#Nomenclature-and-Types" title="Nomenclature and Types">
+<link rel="next" href="Variable-Conventions.html#Variable-Conventions" title="Variable Conventions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Function-Classes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Variable-Conventions.html#Variable-Conventions">Variable Conventions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Nomenclature-and-Types.html#Nomenclature-and-Types">Nomenclature and Types</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 Function Classes</h3>
+
+<p><a name="index-Function-classes-162"></a>
+There are six classes of functions in the GMP library:
+
+     <ol type=1 start=1>
+<li>Functions for signed integer arithmetic, with names beginning with
+<code>mpz_</code>.  The associated type is <code>mpz_t</code>.  There are about 150
+functions in this class.  (see <a href="Integer-Functions.html#Integer-Functions">Integer Functions</a>)
+
+     <li>Functions for rational number arithmetic, with names beginning with
+<code>mpq_</code>.  The associated type is <code>mpq_t</code>.  There are about 35
+functions in this class, but the integer functions can be used for arithmetic
+on the numerator and denominator separately.  (see <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>)
+
+     <li>Functions for floating-point arithmetic, with names beginning with
+<code>mpf_</code>.  The associated type is <code>mpf_t</code>.  There are about 70
+functions is this class.  (see <a href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>)
+
+     <li>Fast low-level functions that operate on natural numbers.  These are used by
+the functions in the preceding groups, and you can also call them directly
+from very time-critical user programs.  These functions' names begin with
+<code>mpn_</code>.  The associated type is array of <code>mp_limb_t</code>.  There are
+about 60 (hard-to-use) functions in this class.  (see <a href="Low_002dlevel-Functions.html#Low_002dlevel-Functions">Low-level Functions</a>)
+
+     <li>Miscellaneous functions.  Functions for setting up custom allocation and
+functions for generating random numbers.  (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>, and
+see <a href="Random-Number-Functions.html#Random-Number-Functions">Random Number Functions</a>)
+        </ol>
+
+   </body></html>
+

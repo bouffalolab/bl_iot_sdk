@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+<title>C++ Interface Random Numbers - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" title="C++ Class Interface">
+<link rel="prev" href="C_002b_002b-Interface-Floats.html#C_002b_002b-Interface-Floats" title="C++ Interface Floats">
+<link rel="next" href="C_002b_002b-Interface-Limitations.html#C_002b_002b-Interface-Limitations" title="C++ Interface Limitations">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C++-Interface-Random-Numbers"></a>
+<a name="C_002b_002b-Interface-Random-Numbers"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002b_002b-Interface-Limitations.html#C_002b_002b-Interface-Limitations">C++ Interface Limitations</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C_002b_002b-Interface-Floats.html#C_002b_002b-Interface-Floats">C++ Interface Floats</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface">C++ Class Interface</a>
+<hr>
+</div>
+
+<h3 class="section">12.5 C++ Interface Random Numbers</h3>
+
+<div class="defun">
+&mdash; Class: <b>gmp_randclass</b><var><a name="index-gmp_005frandclass-880"></a></var><br>
+<blockquote><p>The C++ class interface to the GMP random number functions uses
+<code>gmp_randclass</code> to hold an algorithm selection and current state, as per
+<code>gmp_randstate_t</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function:  <b>gmp_randclass::gmp_randclass</b> (<var>void </var>(<var>*randinit</var>) (<var>gmp_randstate_t, <small class="dots">...</small></var>)<var>, <small class="dots">...</small></var>)<var><a name="index-gmp_005frandclass_003a_003agmp_005frandclass-881"></a></var><br>
+<blockquote><p>Construct a <code>gmp_randclass</code>, using a call to the given <var>randinit</var>
+function (see <a href="Random-State-Initialization.html#Random-State-Initialization">Random State Initialization</a>).  The arguments expected are
+the same as <var>randinit</var>, but with <code>mpz_class</code> instead of <code>mpz_t</code>. 
+For example,
+
+     <pre class="example">          gmp_randclass r1 (gmp_randinit_default);
+          gmp_randclass r2 (gmp_randinit_lc_2exp_size, 32);
+          gmp_randclass r3 (gmp_randinit_lc_2exp, a, c, m2exp);
+          gmp_randclass r4 (gmp_randinit_mt);
+</pre>
+        <p><code>gmp_randinit_lc_2exp_size</code> will fail if the size requested is too big,
+an <code>std::length_error</code> exception is thrown in that case. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function:  <b>gmp_randclass::gmp_randclass</b> (<var>gmp_randalg_t alg, <small class="dots">...</small></var>)<var><a name="index-gmp_005frandclass_003a_003agmp_005frandclass-882"></a></var><br>
+<blockquote><p>Construct a <code>gmp_randclass</code> using the same parameters as
+<code>gmp_randinit</code> (see <a href="Random-State-Initialization.html#Random-State-Initialization">Random State Initialization</a>).  This function is
+obsolete and the above <var>randinit</var> style should be preferred. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>gmp_randclass::seed</b> (<var>unsigned long int s</var>)<var><a name="index-gmp_005frandclass_003a_003aseed-883"></a></var><br>
+&mdash; Function: void <b>gmp_randclass::seed</b> (<var>mpz_class s</var>)<var><a name="index-gmp_005frandclass_003a_003aseed-884"></a></var><br>
+<blockquote><p>Seed a random number generator.  See see <a href="Random-Number-Functions.html#Random-Number-Functions">Random Number Functions</a>, for how
+to choose a good seed. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpz_class <b>gmp_randclass::get_z_bits</b> (<var>mp_bitcnt_t bits</var>)<var><a name="index-gmp_005frandclass_003a_003aget_005fz_005fbits-885"></a></var><br>
+&mdash; Function: mpz_class <b>gmp_randclass::get_z_bits</b> (<var>mpz_class bits</var>)<var><a name="index-gmp_005frandclass_003a_003aget_005fz_005fbits-886"></a></var><br>
+<blockquote><p>Generate a random integer with a specified number of bits. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpz_class <b>gmp_randclass::get_z_range</b> (<var>mpz_class n</var>)<var><a name="index-gmp_005frandclass_003a_003aget_005fz_005frange-887"></a></var><br>
+<blockquote><p>Generate a random integer in the range 0 to <var>n</var>-1 inclusive. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpf_class <b>gmp_randclass::get_f</b> ()<var><a name="index-gmp_005frandclass_003a_003aget_005ff-888"></a></var><br>
+&mdash; Function: mpf_class <b>gmp_randclass::get_f</b> (<var>mp_bitcnt_t prec</var>)<var><a name="index-gmp_005frandclass_003a_003aget_005ff-889"></a></var><br>
+<blockquote><p>Generate a random float <var>f</var> in the range 0 &lt;= <var>f</var> &lt; 1.  <var>f</var>
+will be to <var>prec</var> bits precision, or if <var>prec</var> is not given then to
+the precision of the destination.  For example,
+
+     <pre class="example">          gmp_randclass  r;
+          ...
+          mpf_class  f (0, 512);   // 512 bits precision
+          f = r.get_f();           // random number, 512 bits
+</pre>
+        </blockquote></div>
+
+   </body></html>
+

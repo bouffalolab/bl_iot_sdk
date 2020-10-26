@@ -1,0 +1,183 @@
+/dts-v1/;
+// version: 17
+// last_comp_version: 16
+// boot_cpuid_phys: 0x0
+
+/ {
+    model = "bl bl702 AVB board";
+    compatible = "bl,bl702-sample", "bl,bl702-common";
+    #address-cells = <0x1>;
+    #size-cells = <0x1>;
+    gpio {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        max_num = <40>;
+        gpio0 {                                  
+            status = "okay";                     
+            pin  = <31>;                          
+            feature = "led";                     
+            active = "Hi"; //Hi or Lo
+            mode = "blink"; //blink or hearbeat
+            time = <100>; //duration for this mode
+        };
+        gpio1 {                                  
+            status = "disable";                     
+            pin  = <6>;                          
+            feature = "led";                     
+            active = "Hi"; //Hi or Lo
+            mode = "blink"; //blink or hearbeat
+            time = <100>; //duration for this mode
+        };
+    };
+    i2s {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        i2s@40017000 {
+            status = "okay";
+            compatible = "bl702_i2s";
+            reg = <0x40017000 0x100>;
+            mclk_only = "okay";
+            pin {
+                mclk = <11>;
+            };
+        };
+        i2s@40017100 {
+            status = "okay";
+            compatible = "bl702_i2s";
+            reg = <0x40017100 0x100>;
+            mclk_only = "disable";
+            pin {
+                bclk = <12>;
+                fs = <29>;
+                do = <30>;
+                di = <31>;
+            };
+        };
+    };
+    i2c {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        i2c@40011000 {
+            status = "okay";
+            compatible = "bl702_i2c";
+            reg = <0x40011000 0x100>;
+            pin {
+                scl = <32>;
+                sda = <13>;
+            };
+            devices {
+                list_addr = <0x18 0x21>;
+                list_driver = "i2c_es8311", "i2c_gc0308>";
+            };
+        };
+        i2c@40011100 {
+            status = "disable";
+            compatible = "bl702_i2c";
+            reg = <0x40011100 0x100>;
+            pin {
+                /*empty here*/
+            };
+        };
+    };
+    timer {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        timer@40014000 {
+            status = "disable";
+            compatible = "bl702_timer";
+            reg = <0x40014000 0x100>;
+        };
+        timer@40014100 {
+            status = "disable";
+            compatible = "bl702_timer";
+            reg = <0x40014100 0x100>;
+        };
+    };
+    pwm {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        pwm@40012000 {
+            status = "disable";
+            compatible = "bl702_pwm";
+            reg = <0x40012000 0x100>;
+            pin {
+                /*empty here*/
+            };
+        };
+    };
+    uart {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        uart@4000A000 {
+            status = "okay";
+            id = <0>;
+            compatible = "bl702_uart";
+            path = "/dev/ttyS0";
+            baudrate = <2000000>;
+            pin {
+                rx = <15>;
+                tx = <14>;
+            };
+            feature {
+                tx = "okay";
+                rx = "okay";
+                cts = "disable";
+                rts = "disable";
+            };
+        };
+        uart@4000A100 {
+            status = "disable";
+            id = <1>;
+            compatible = "bl702_uart";
+            path = "/dev/ttyS1";
+            baudrate = <115200>;
+            pin {
+                rx = <3>;
+                tx = <4>;
+            };
+            feature {
+                tx = "okay";
+                rx = "okay";
+                cts = "disable";
+                rts = "disable";
+            };
+        };
+    };
+    spi {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        spi@4000F000 {
+            status = "disable";
+            reg = <0x4000F000 0x100>;/* 4KB */
+        };
+    };
+    gpip {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        adc_key {
+            status = "disable";
+            pin = <9>;
+            interrupt  = <3>;
+            key_vol = <0 100 400 300 500>;
+            key_pcb = "SW1", "SW2", "SW3", "SW4","SW5";
+            key_event = "Usr1", "Usr2", "Start", "Up", "Down";
+            key_raw = <1 2 3 4 5>;
+        };
+    };
+    qspi {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        qspi@4000A000 {
+            status = "disable";
+            reg = <0x4000A000 0x1000>;/* 4KB */
+        };
+    };
+    wireless {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        mac {
+            mode = "MBF";  // 'M': manufacture; 'B': efuse; 'F': flash
+            mac_addr = [C8 43 57 82 73 40 88 88];
+        };
+    };
+};

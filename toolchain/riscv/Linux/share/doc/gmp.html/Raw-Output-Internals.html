@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+<title>Raw Output Internals - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Internals.html#Internals" title="Internals">
+<link rel="prev" href="Float-Internals.html#Float-Internals" title="Float Internals">
+<link rel="next" href="C_002b_002b-Interface-Internals.html#C_002b_002b-Interface-Internals" title="C++ Interface Internals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Raw-Output-Internals"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002b_002b-Interface-Internals.html#C_002b_002b-Interface-Internals">C++ Interface Internals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Float-Internals.html#Float-Internals">Float Internals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Internals.html#Internals">Internals</a>
+<hr>
+</div>
+
+<h3 class="section">16.4 Raw Output Internals</h3>
+
+<p><a name="index-Raw-output-internals-948"></a>
+<code>mpz_out_raw</code> uses the following format.
+
+<pre class="example">     +------+------------------------+
+     | size |       data bytes       |
+     +------+------------------------+
+</pre>
+   <p>The size is 4 bytes written most significant byte first, being the number of
+subsequent data bytes, or the twos complement negative of that when a negative
+integer is represented.  The data bytes are the absolute value of the integer,
+written most significant byte first.
+
+   <p>The most significant data byte is always non-zero, so the output is the same
+on all systems, irrespective of limb size.
+
+   <p>In GMP 1, leading zero bytes were written to pad the data bytes to a multiple
+of the limb size.  <code>mpz_inp_raw</code> will still accept this, for
+compatibility.
+
+   <p>The use of &ldquo;big endian&rdquo; for both the size and data fields is deliberate, it
+makes the data easy to read in a hex dump of a file.  Unfortunately it also
+means that the limb data must be reversed when reading or writing, so neither
+a big endian nor little endian system can just read and write <code>_mp_d</code>.
+
+   </body></html>
+

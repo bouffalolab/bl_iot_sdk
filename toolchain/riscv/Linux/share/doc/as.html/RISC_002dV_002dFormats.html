@@ -1,0 +1,230 @@
+<html lang="en">
+<head>
+<title>RISC-V-Formats - Using as</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using as">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="RISC_002dV_002dDependent.html#RISC_002dV_002dDependent" title="RISC-V-Dependent">
+<link rel="prev" href="RISC_002dV_002dDirectives.html#RISC_002dV_002dDirectives" title="RISC-V-Directives">
+<link rel="next" href="RISC_002dV_002dATTRIBUTE.html#RISC_002dV_002dATTRIBUTE" title="RISC-V-ATTRIBUTE">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This file documents the GNU Assembler "as".
+
+Copyright (C) 1991-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="RISC-V-Formats"></a>
+<a name="RISC_002dV_002dFormats"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="RISC_002dV_002dATTRIBUTE.html#RISC_002dV_002dATTRIBUTE">RISC-V-ATTRIBUTE</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="RISC_002dV_002dDirectives.html#RISC_002dV_002dDirectives">RISC-V-Directives</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="RISC_002dV_002dDependent.html#RISC_002dV_002dDependent">RISC-V-Dependent</a>
+<hr>
+</div>
+
+<h4 class="subsection">9.37.3 Instruction Formats</h4>
+
+<p><a name="index-instruction-formats_002c-risc_002dv-1976"></a><a name="index-RISC_002dV-instruction-formats-1977"></a>
+The RISC-V Instruction Set Manual Volume I: User-Level ISA lists 12
+instruction formats where some of the formats have multiple variants. 
+For the &lsquo;<samp><span class="samp">.insn</span></samp>&rsquo; pseudo directive the assembler recognizes some
+of the formats. 
+Typically, the most general variant of the instruction format is used
+by the &lsquo;<samp><span class="samp">.insn</span></samp>&rsquo; directive.
+
+   <p>The following table lists the abbreviations used in the table of
+instruction formats:
+
+<pre class="display">
+     <p><table summary=""><tr align="left"><td valign="top" width="15%">opcode </td><td valign="top" width="40%">Unsigned immediate or opcode name for 7-bits opcode.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">opcode2 </td><td valign="top" width="40%">Unsigned immediate or opcode name for 2-bits opcode.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">func7 </td><td valign="top" width="40%">Unsigned immediate for 7-bits function code.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">func6 </td><td valign="top" width="40%">Unsigned immediate for 6-bits function code.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">func4 </td><td valign="top" width="40%">Unsigned immediate for 4-bits function code.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">func3 </td><td valign="top" width="40%">Unsigned immediate for 3-bits function code.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">func2 </td><td valign="top" width="40%">Unsigned immediate for 2-bits function code.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rd </td><td valign="top" width="40%">Destination register number for operand x, can be GPR or FPR.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rd' </td><td valign="top" width="40%">Destination register number for operand x,
+     only accept s0-s1, a0-a5, fs0-fs1 and fa0-fa5.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rs1 </td><td valign="top" width="40%">First source register number for operand x, can be GPR or FPR.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rs1' </td><td valign="top" width="40%">First source register number for operand x,
+     only accept s0-s1, a0-a5, fs0-fs1 and fa0-fa5.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rs2 </td><td valign="top" width="40%">Second source register number for operand x, can be GPR or FPR.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">rs2' </td><td valign="top" width="40%">Second source register number for operand x,
+     only accept s0-s1, a0-a5, fs0-fs1 and fa0-fa5.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">simm12 </td><td valign="top" width="40%">Sign-extended 12-bit immediate for operand x.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">simm20 </td><td valign="top" width="40%">Sign-extended 20-bit immediate for operand x.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">simm6 </td><td valign="top" width="40%">Sign-extended 6-bit immediate for operand x.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">uimm8 </td><td valign="top" width="40%">Unsigned 8-bit immediate for operand x.
+     <br></td></tr><tr align="left"><td valign="top" width="15%">symbol </td><td valign="top" width="40%">Symbol or lable reference for operand x.
+     <br></td></tr></table>
+</pre>
+   <p>The following table lists all available opcode name:
+
+     <dl>
+<dt><code>C0</code><br><dt><code>C1</code><br><dt><code>C2</code><dd>Opcode space for compressed instructions.
+
+     <br><dt><code>LOAD</code><dd>Opcode space for load instructions.
+
+     <br><dt><code>LOAD_FP</code><dd>Opcode space for floating-point load instructions.
+
+     <br><dt><code>STORE</code><dd>Opcode space for store instructions.
+
+     <br><dt><code>STORE_FP</code><dd>Opcode space for floating-point store instructions.
+
+     <br><dt><code>AUIPC</code><dd>Opcode space for auipc instruction.
+
+     <br><dt><code>LUI</code><dd>Opcode space for lui instruction.
+
+     <br><dt><code>BRANCH</code><dd>Opcode space for branch instructions.
+
+     <br><dt><code>JAL</code><dd>Opcode space for jal instruction.
+
+     <br><dt><code>JALR</code><dd>Opcode space for jalr instruction.
+
+     <br><dt><code>OP</code><dd>Opcode space for ALU instructions.
+
+     <br><dt><code>OP_32</code><dd>Opcode space for 32-bits ALU instructions.
+
+     <br><dt><code>OP_IMM</code><dd>Opcode space for ALU with immediate instructions.
+
+     <br><dt><code>OP_IMM_32</code><dd>Opcode space for 32-bits ALU with immediate instructions.
+
+     <br><dt><code>OP_FP</code><dd>Opcode space for floating-point operation instructions.
+
+     <br><dt><code>MADD</code><dd>Opcode space for madd instruction.
+
+     <br><dt><code>MSUB</code><dd>Opcode space for msub instruction.
+
+     <br><dt><code>NMADD</code><dd>Opcode space for nmadd instruction.
+
+     <br><dt><code>NMSUB</code><dd>Opcode space for msub instruction.
+
+     <br><dt><code>AMO</code><dd>Opcode space for atomic memory operation instructions.
+
+     <br><dt><code>MISC_MEM</code><dd>Opcode space for misc instructions.
+
+     <br><dt><code>SYSTEM</code><dd>Opcode space for system instructions.
+
+     <br><dt><code>CUSTOM_0</code><br><dt><code>CUSTOM_1</code><br><dt><code>CUSTOM_2</code><br><dt><code>CUSTOM_3</code><dd>Opcode space for customize instructions.
+
+   </dl>
+
+   <p>An instruction is two or four bytes in length and must be aligned
+on a 2 byte boundary. The first two bits of the instruction specify the
+length of the instruction, 00, 01 and 10 indicates a two byte instruction,
+11 indicates a four byte instruction.
+
+   <p>The following table lists the RISC-V instruction formats that are available
+with the &lsquo;<samp><span class="samp">.insn</span></samp>&rsquo; pseudo directive:
+
+     <dl>
+<dt><code>R type: .insn r opcode, func3, func7, rd, rs1, rs2</code><dd><pre class="verbatim">     +-------+-----+-----+-------+----+-------------+
+     | func7 | rs2 | rs1 | func3 | rd |      opcode |
+     +-------+-----+-----+-------+----+-------------+
+     31      25    20    15      12   7             0
+</pre>
+
+     <br><dt><code>R type with 4 register operands: .insn r opcode, func3, func2, rd, rs1, rs2, rs3</code><dt><code>R4 type: .insn r4 opcode, func3, func2, rd, rs1, rs2, rs3</code><dd><pre class="verbatim">     +-----+-------+-----+-----+-------+----+-------------+
+     | rs3 | func2 | rs2 | rs1 | func3 | rd |      opcode |
+     +-----+-------+-----+-----+-------+----+-------------+
+     31    27      25    20    15      12   7             0
+</pre>
+
+     <br><dt><code>I type: .insn i opcode, func3, rd, rs1, simm12</code><dd><pre class="verbatim">     +-------------+-----+-------+----+-------------+
+     |      simm12 | rs1 | func3 | rd |      opcode |
+     +-------------+-----+-------+----+-------------+
+     31            20    15      12   7             0
+</pre>
+
+     <br><dt><code>S type: .insn s opcode, func3, rd, rs1, simm12</code><dd><pre class="verbatim">     +--------------+-----+-----+-------+-------------+-------------+
+     | simm12[11:5] | rs2 | rs1 | func3 | simm12[4:0] |      opcode |
+     +--------------+-----+-----+-------+-------------+-------------+
+     31             25    20    15      12            7             0
+</pre>
+
+     <br><dt><code>SB type: .insn sb opcode, func3, rd, rs1, symbol</code><dt><code>SB type: .insn sb opcode, func3, rd, simm12(rs1)</code><dt><code>B type: .insn s opcode, func3, rd, rs1, symbol</code><dt><code>B type: .insn s opcode, func3, rd, simm12(rs1)</code><dd><pre class="verbatim">     +------------+--------------+-----+-----+-------+-------------+-------------+--------+
+     | simm12[12] | simm12[10:5] | rs2 | rs1 | func3 | simm12[4:1] | simm12[11]] | opcode |
+     +------------+--------------+-----+-----+-------+-------------+-------------+--------+
+     31          30            25    20    15      12           7            0
+</pre>
+
+     <br><dt><code>U type: .insn u opcode, rd, simm20</code><dd><pre class="verbatim">     +---------------------------+----+-------------+
+     |                    simm20 | rd |      opcode |
+     +---------------------------+----+-------------+
+     31                          12   7             0
+</pre>
+
+     <br><dt><code>UJ type: .insn uj opcode, rd, symbol</code><dt><code>J type: .insn j opcode, rd, symbol</code><dd><pre class="verbatim">     +------------+--------------+------------+---------------+----+-------------+
+     | simm20[20] | simm20[10:1] | simm20[11] | simm20[19:12] | rd |      opcode |
+     +------------+--------------+------------+---------------+----+-------------+
+     31           30             21           20              12   7             0
+</pre>
+
+     <br><dt><code>CR type: .insn cr opcode2, func4, rd, rs2</code><dd><pre class="verbatim">     +---------+--------+-----+---------+
+     |   func4 | rd/rs1 | rs2 | opcode2 |
+     +---------+--------+-----+---------+
+     15        12       7     2        0
+</pre>
+
+     <br><dt><code>CI type: .insn ci opcode2, func3, rd, simm6</code><dd><pre class="verbatim">     +---------+-----+--------+-----+---------+
+     |   func3 | imm | rd/rs1 | imm | opcode2 |
+     +---------+-----+--------+-----+---------+
+     15        13    12       7     2         0
+</pre>
+
+     <br><dt><code>CIW type: .insn ciw opcode2, func3, rd, uimm8</code><dd><pre class="verbatim">     +---------+--------------+-----+---------+
+     |   func3 |          imm | rd' | opcode2 |
+     +---------+--------------+-----+---------+
+     15        13             7     2         0
+</pre>
+
+     <br><dt><code>CA type: .insn ca opcode2, func6, func2, rd, rs2</code><dd><pre class="verbatim">     +---------+----------+-------+------+--------+
+     |   func6 | rd'/rs1' | func2 | rs2' | opcode |
+     +---------+----------+-------+------+--------+
+     15        10         7       5      2        0
+</pre>
+
+     <br><dt><code>CB type: .insn cb opcode2, func3, rs1, symbol</code><dd><pre class="verbatim">     +---------+--------+------+--------+---------+
+     |   func3 | offset | rs1' | offset | opcode2 |
+     +---------+--------+------+--------+---------+
+     15        13       10     7        2         0
+</pre>
+
+     <br><dt><code>CJ type: .insn cj opcode2, symbol</code><dd><pre class="verbatim">     +---------+--------------------+---------+
+     |   func3 |        jump target | opcode2 |
+     +---------+--------------------+---------+
+     15        13             7     2         0
+</pre>
+
+   </dl>
+
+   <p>For the complete list of all instruction format variants see
+The RISC-V Instruction Set Manual Volume I: User-Level ISA.
+
+   </body></html>
+

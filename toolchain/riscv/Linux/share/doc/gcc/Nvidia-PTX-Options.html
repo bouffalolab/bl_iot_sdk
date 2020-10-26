@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Nvidia PTX Options - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Submodel-Options.html#Submodel-Options" title="Submodel Options">
+<link rel="prev" href="Nios-II-Options.html#Nios-II-Options" title="Nios II Options">
+<link rel="next" href="PDP_002d11-Options.html#PDP_002d11-Options" title="PDP-11 Options">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Nvidia-PTX-Options"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="PDP_002d11-Options.html#PDP_002d11-Options">PDP-11 Options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Nios-II-Options.html#Nios-II-Options">Nios II Options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Submodel-Options.html#Submodel-Options">Submodel Options</a>
+<hr>
+</div>
+
+<h4 class="subsection">3.18.33 Nvidia PTX Options</h4>
+
+<p><a name="index-Nvidia-PTX-options-2414"></a><a name="index-nvptx-options-2415"></a>
+These options are defined for Nvidia PTX:
+
+     <dl>
+<dt><code>-m32</code><dt><code>-m64</code><dd><a name="index-m32-2416"></a><a name="index-m64-2417"></a>Generate code for 32-bit or 64-bit ABI.
+
+     <br><dt><code>-mmainkernel</code><dd><a name="index-mmainkernel-2418"></a>Link in code for a __main kernel.  This is for stand-alone instead of
+offloading execution.
+
+     <br><dt><code>-moptimize</code><dd><a name="index-moptimize-2419"></a>Apply partitioned execution optimizations.  This is the default when any
+level of optimization is selected.
+
+     <br><dt><code>-msoft-stack</code><dd><a name="index-msoft_002dstack-2420"></a>Generate code that does not use <code>.local</code> memory
+directly for stack storage. Instead, a per-warp stack pointer is
+maintained explicitly. This enables variable-length stack allocation (with
+variable-length arrays or <code>alloca</code>), and when global memory is used for
+underlying storage, makes it possible to access automatic variables from other
+threads, or with atomic instructions. This code generation variant is used
+for OpenMP offloading, but the option is exposed on its own for the purpose
+of testing the compiler; to generate code suitable for linking into programs
+using OpenMP offloading, use option <samp><span class="option">-mgomp</span></samp>.
+
+     <br><dt><code>-muniform-simt</code><dd><a name="index-muniform_002dsimt-2421"></a>Switch to code generation variant that allows to execute all threads in each
+warp, while maintaining memory state and side effects as if only one thread
+in each warp was active outside of OpenMP SIMD regions.  All atomic operations
+and calls to runtime (malloc, free, vprintf) are conditionally executed (iff
+current lane index equals the master lane index), and the register being
+assigned is copied via a shuffle instruction from the master lane.  Outside of
+SIMD regions lane 0 is the master; inside, each thread sees itself as the
+master.  Shared memory array <code>int __nvptx_uni[]</code> stores all-zeros or
+all-ones bitmasks for each warp, indicating current mode (0 outside of SIMD
+regions).  Each thread can bitwise-and the bitmask at position <code>tid.y</code>
+with current lane index to compute the master lane index.
+
+     <br><dt><code>-mgomp</code><dd><a name="index-mgomp-2422"></a>Generate code for use in OpenMP offloading: enables <samp><span class="option">-msoft-stack</span></samp> and
+<samp><span class="option">-muniform-simt</span></samp> options, and selects corresponding multilib variant.
+
+ </dl>
+
+ </body></html>
+

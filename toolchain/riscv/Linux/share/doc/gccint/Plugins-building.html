@@ -1,0 +1,140 @@
+<html lang="en">
+<head>
+<title>Plugins building - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Plugins.html#Plugins" title="Plugins">
+<link rel="prev" href="Plugins-tracking.html#Plugins-tracking" title="Plugins tracking">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Plugins-building"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Plugins-tracking.html#Plugins-tracking">Plugins tracking</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Plugins.html#Plugins">Plugins</a>
+<hr>
+</div>
+
+<h3 class="section">24.10 Building GCC plugins</h3>
+
+<p>If plugins are enabled, GCC installs the headers needed to build a
+plugin (somewhere in the installation tree, e.g. under
+<samp><span class="file">/usr/local</span></samp>).  In particular a <samp><span class="file">plugin/include</span></samp> directory
+is installed, containing all the header files needed to build plugins.
+
+ <p>On most systems, you can query this <code>plugin</code> directory by
+invoking <samp><span class="command">gcc -print-file-name=plugin</span></samp> (replace if needed
+<samp><span class="command">gcc</span></samp> with the appropriate program path).
+
+ <p>Inside plugins, this <code>plugin</code> directory name can be queried by
+calling <code>default_plugin_dir_name ()</code>.
+
+ <p>Plugins may know, when they are compiled, the GCC version for which
+<samp><span class="file">plugin-version.h</span></samp> is provided.  The constant macros
+<code>GCCPLUGIN_VERSION_MAJOR</code>, <code>GCCPLUGIN_VERSION_MINOR</code>,
+<code>GCCPLUGIN_VERSION_PATCHLEVEL</code>, <code>GCCPLUGIN_VERSION</code> are
+integer numbers, so a plugin could ensure it is built for GCC 4.7 with
+<pre class="smallexample">     #if GCCPLUGIN_VERSION != 4007
+     #error this GCC plugin is for GCC 4.7
+     #endif
+</pre>
+ <p>The following GNU Makefile excerpt shows how to build a simple plugin:
+
+<pre class="smallexample">     HOST_GCC=g++
+     TARGET_GCC=gcc
+     PLUGIN_SOURCE_FILES= plugin1.c plugin2.cc
+     GCCPLUGINS_DIR:= $(shell $(TARGET_GCC) -print-file-name=plugin)
+     CXXFLAGS+= -I$(GCCPLUGINS_DIR)/include -fPIC -fno-rtti -O2
+     
+     plugin.so: $(PLUGIN_SOURCE_FILES)
+        $(HOST_GCC) -shared $(CXXFLAGS) $^ -o $@
+</pre>
+ <p>A single source file plugin may be built with <code>g++ -I`gcc
+-print-file-name=plugin`/include -fPIC -shared -fno-rtti -O2 plugin.c -o
+plugin.so</code>, using backquote shell syntax to query the <samp><span class="file">plugin</span></samp>
+directory.
+
+ <p>Plugin support on Windows/MinGW has a number of limitations and
+additional requirements. When building a plugin on Windows we have to
+link an import library for the corresponding backend executable, for
+example, <samp><span class="file">cc1.exe</span></samp>, <samp><span class="file">cc1plus.exe</span></samp>, etc., in order to gain
+access to the symbols provided by GCC. This means that on Windows a
+plugin is language-specific, for example, for C, C++, etc. If you wish
+to use your plugin with multiple languages, then you will need to
+build multiple plugin libraries and either instruct your users on how
+to load the correct version or provide a compiler wrapper that does
+this automatically.
+
+ <p>Additionally, on Windows the plugin library has to export the
+<code>plugin_is_GPL_compatible</code> and <code>plugin_init</code> symbols. If you
+do not wish to modify the source code of your plugin, then you can use
+the <samp><span class="option">-Wl,--export-all-symbols</span></samp> option or provide a suitable DEF
+file. Alternatively, you can export just these two symbols by decorating
+them with <code>__declspec(dllexport)</code>, for example:
+
+<pre class="smallexample">     #ifdef _WIN32
+     __declspec(dllexport)
+     #endif
+     int plugin_is_GPL_compatible;
+     
+     #ifdef _WIN32
+     __declspec(dllexport)
+     #endif
+     int plugin_init (plugin_name_args *, plugin_gcc_version *)
+</pre>
+ <p>The import libraries are installed into the <code>plugin</code> directory
+and their names are derived by appending the <code>.a</code> extension to
+the backend executable names, for example, <samp><span class="file">cc1.exe.a</span></samp>,
+<samp><span class="file">cc1plus.exe.a</span></samp>, etc. The following command line shows how to
+build the single source file plugin on Windows to be used with the C++
+compiler:
+
+<pre class="smallexample">     g++ -I`gcc -print-file-name=plugin`/include -shared -Wl,--export-all-symbols \
+     -o plugin.dll plugin.c `gcc -print-file-name=plugin`/cc1plus.exe.a
+</pre>
+ <p>When a plugin needs to use <samp><span class="command">gengtype</span></samp>, be sure that both
+<samp><span class="file">gengtype</span></samp> and <samp><span class="file">gtype.state</span></samp> have the same version as the
+GCC for which the plugin is built.
+
+<!-- Copyright (C) 2010-2018 Free Software Foundation, Inc. -->
+<!-- This is part of the GCC manual. -->
+<!-- For copying conditions, see the file gcc.texi. -->
+<!-- Contributed by Jan Hubicka <jh@suse.cz> and -->
+<!-- Diego Novillo <dnovillo@google.com> -->
+ </body></html>
+

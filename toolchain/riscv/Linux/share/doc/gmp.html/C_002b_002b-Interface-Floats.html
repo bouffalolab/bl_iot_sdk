@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+<title>C++ Interface Floats - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" title="C++ Class Interface">
+<link rel="prev" href="C_002b_002b-Interface-Rationals.html#C_002b_002b-Interface-Rationals" title="C++ Interface Rationals">
+<link rel="next" href="C_002b_002b-Interface-Random-Numbers.html#C_002b_002b-Interface-Random-Numbers" title="C++ Interface Random Numbers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C++-Interface-Floats"></a>
+<a name="C_002b_002b-Interface-Floats"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="C_002b_002b-Interface-Random-Numbers.html#C_002b_002b-Interface-Random-Numbers">C++ Interface Random Numbers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C_002b_002b-Interface-Rationals.html#C_002b_002b-Interface-Rationals">C++ Interface Rationals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface">C++ Class Interface</a>
+<hr>
+</div>
+
+<h3 class="section">12.4 C++ Interface Floats</h3>
+
+<p>When an expression requires the use of temporary intermediate <code>mpf_class</code>
+values, like <code>f=g*h+x*y</code>, those temporaries will have the same precision
+as the destination <code>f</code>.  Explicit constructors can be used if this
+doesn't suit.
+
+<div class="defun">
+&mdash; Function:  <b>mpf_class::mpf_class</b> (<var>type op</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-844"></a></var><br>
+&mdash; Function:  <b>mpf_class::mpf_class</b> (<var>type op, mp_bitcnt_t prec</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-845"></a></var><br>
+<blockquote><p>Construct an <code>mpf_class</code>.  Any standard C++ type can be used, except
+<code>long long</code> and <code>long double</code>, and any of the GMP C++ classes can be
+used.
+
+        <p>If <var>prec</var> is given, the initial precision is that value, in bits.  If
+<var>prec</var> is not given, then the initial precision is determined by the type
+of <var>op</var> given.  An <code>mpz_class</code>, <code>mpq_class</code>, or C++
+builtin type will give the default <code>mpf</code> precision (see <a href="Initializing-Floats.html#Initializing-Floats">Initializing Floats</a>).  An <code>mpf_class</code> or expression will give the precision of that
+value.  The precision of a binary expression is the higher of the two
+operands.
+
+     <pre class="example">          mpf_class f(1.5);        // default precision
+          mpf_class f(1.5, 500);   // 500 bits (at least)
+          mpf_class f(x);          // precision of x
+          mpf_class f(abs(x));     // precision of x
+          mpf_class f(-g, 1000);   // 1000 bits (at least)
+          mpf_class f(x+y);        // greater of precisions of x and y
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: explicit <b>mpf_class::mpf_class</b> (<var>const mpf_t f</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-846"></a></var><br>
+&mdash; Function:  <b>mpf_class::mpf_class</b> (<var>const mpf_t f, mp_bitcnt_t prec</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-847"></a></var><br>
+<blockquote><p>Construct an <code>mpf_class</code> from an <code>mpf_t</code>.  The value in <var>f</var> is
+copied into the new <code>mpf_class</code>, there won't be any permanent association
+between it and <var>f</var>.
+
+        <p>If <var>prec</var> is given, the initial precision is that value, in bits.  If
+<var>prec</var> is not given, then the initial precision is that of <var>f</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: explicit <b>mpf_class::mpf_class</b> (<var>const char *s</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-848"></a></var><br>
+&mdash; Function:  <b>mpf_class::mpf_class</b> (<var>const char *s, mp_bitcnt_t prec, int base = 0</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-849"></a></var><br>
+&mdash; Function: explicit <b>mpf_class::mpf_class</b> (<var>const string&amp; s</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-850"></a></var><br>
+&mdash; Function:  <b>mpf_class::mpf_class</b> (<var>const string&amp; s, mp_bitcnt_t prec, int base = 0</var>)<var><a name="index-mpf_005fclass_003a_003ampf_005fclass-851"></a></var><br>
+<blockquote><p>Construct an <code>mpf_class</code> converted from a string using <code>mpf_set_str</code>
+(see <a href="Assigning-Floats.html#Assigning-Floats">Assigning Floats</a>).  If <var>prec</var> is given, the initial precision is
+that value, in bits.  If not, the default <code>mpf</code> precision
+(see <a href="Initializing-Floats.html#Initializing-Floats">Initializing Floats</a>) is used.
+
+        <p>If the string is not a valid float, an <code>std::invalid_argument</code> exception
+is thrown.  The same applies to <code>operator=</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpf_class <b>operator""</b><var> _mpf </var>(<var>const char *str</var>)<var><a name="index-operator_0022_0022-852"></a></var><br>
+<blockquote><p>With C++11 compilers, floats can be constructed with the syntax
+<code>1.23e-1_mpf</code> which is equivalent to <code>mpf_class("1.23e-1")</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpf_class&amp; <b>mpf_class::operator=</b> (<var>type op</var>)<var><a name="index-mpf_005fclass_003a_003aoperator_003d-853"></a></var><br>
+<blockquote><p>Convert and store the given <var>op</var> value to an <code>mpf_class</code> object.  The
+same types are accepted as for the constructors above.
+
+        <p>Note that <code>operator=</code> only stores a new value, it doesn't copy or change
+the precision of the destination, instead the value is truncated if necessary. 
+This is the same as <code>mpf_set</code> etc.  Note in particular this means for
+<code>mpf_class</code> a copy constructor is not the same as a default constructor
+plus assignment.
+
+     <pre class="example">          mpf_class x (y);   // x created with precision of y
+          
+          mpf_class x;       // x created with default precision
+          x = y;             // value truncated to that precision
+</pre>
+        <p>Applications using templated code may need to be careful about the assumptions
+the code makes in this area, when working with <code>mpf_class</code> values of
+various different or non-default precisions.  For instance implementations of
+the standard <code>complex</code> template have been seen in both styles above,
+though of course <code>complex</code> is normally only actually specified for use
+with the builtin float types. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpf_class <b>abs</b> (<var>mpf_class op</var>)<var><a name="index-abs-854"></a></var><br>
+&mdash; Function: mpf_class <b>ceil</b> (<var>mpf_class op</var>)<var><a name="index-ceil-855"></a></var><br>
+&mdash; Function: int <b>cmp</b> (<var>mpf_class op1, type op2</var>)<var><a name="index-cmp-856"></a></var><br>
+&mdash; Function: int <b>cmp</b> (<var>type op1, mpf_class op2</var>)<var><a name="index-cmp-857"></a></var><br>
+
+   &mdash; Function: bool <b>mpf_class::fits_sint_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fsint_005fp-858"></a></var><br>
+&mdash; Function: bool <b>mpf_class::fits_slong_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fslong_005fp-859"></a></var><br>
+&mdash; Function: bool <b>mpf_class::fits_sshort_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fsshort_005fp-860"></a></var><br>
+
+   &mdash; Function: bool <b>mpf_class::fits_uint_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fuint_005fp-861"></a></var><br>
+&mdash; Function: bool <b>mpf_class::fits_ulong_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fulong_005fp-862"></a></var><br>
+&mdash; Function: bool <b>mpf_class::fits_ushort_p</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003afits_005fushort_005fp-863"></a></var><br>
+
+   &mdash; Function: mpf_class <b>floor</b> (<var>mpf_class op</var>)<var><a name="index-floor-864"></a></var><br>
+&mdash; Function: mpf_class <b>hypot</b> (<var>mpf_class op1, mpf_class op2</var>)<var><a name="index-hypot-865"></a></var><br>
+
+   &mdash; Function: double <b>mpf_class::get_d</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003aget_005fd-866"></a></var><br>
+&mdash; Function: long <b>mpf_class::get_si</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003aget_005fsi-867"></a></var><br>
+&mdash; Function: string <b>mpf_class::get_str</b> (<var>mp_exp_t&amp; exp, int base = 10, size_t digits = 0</var>)<var><a name="index-mpf_005fclass_003a_003aget_005fstr-868"></a></var><br>
+&mdash; Function: unsigned long <b>mpf_class::get_ui</b> (<var>void</var>)<var><a name="index-mpf_005fclass_003a_003aget_005fui-869"></a></var><br>
+
+   &mdash; Function: int <b>mpf_class::set_str</b> (<var>const char *str, int base</var>)<var><a name="index-mpf_005fclass_003a_003aset_005fstr-870"></a></var><br>
+&mdash; Function: int <b>mpf_class::set_str</b> (<var>const string&amp; str, int base</var>)<var><a name="index-mpf_005fclass_003a_003aset_005fstr-871"></a></var><br>
+&mdash; Function: int <b>sgn</b> (<var>mpf_class op</var>)<var><a name="index-sgn-872"></a></var><br>
+&mdash; Function: mpf_class <b>sqrt</b> (<var>mpf_class op</var>)<var><a name="index-sqrt-873"></a></var><br>
+
+   &mdash; Function: void <b>mpf_class::swap</b> (<var>mpf_class&amp; op</var>)<var><a name="index-mpf_005fclass_003a_003aswap-874"></a></var><br>
+&mdash; Function: void <b>swap</b> (<var>mpf_class&amp; op1, mpf_class&amp; op2</var>)<var><a name="index-swap-875"></a></var><br>
+&mdash; Function: mpf_class <b>trunc</b> (<var>mpf_class op</var>)<var><a name="index-trunc-876"></a></var><br>
+<blockquote><p>These functions provide a C++ class interface to the corresponding GMP C
+routines.
+
+        <p><code>cmp</code> can be used with any of the classes or the standard C++ types,
+except <code>long long</code> and <code>long double</code>.
+
+        <p>The accuracy provided by <code>hypot</code> is not currently guaranteed. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mp_bitcnt_t <b>mpf_class::get_prec</b> ()<var><a name="index-mpf_005fclass_003a_003aget_005fprec-877"></a></var><br>
+&mdash; Function: void <b>mpf_class::set_prec</b> (<var>mp_bitcnt_t prec</var>)<var><a name="index-mpf_005fclass_003a_003aset_005fprec-878"></a></var><br>
+&mdash; Function: void <b>mpf_class::set_prec_raw</b> (<var>mp_bitcnt_t prec</var>)<var><a name="index-mpf_005fclass_003a_003aset_005fprec_005fraw-879"></a></var><br>
+<blockquote><p>Get or set the current precision of an <code>mpf_class</code>.
+
+        <p>The restrictions described for <code>mpf_set_prec_raw</code> (see <a href="Initializing-Floats.html#Initializing-Floats">Initializing Floats</a>) apply to <code>mpf_class::set_prec_raw</code>.  Note in particular that the
+<code>mpf_class</code> must be restored to it's allocated precision before being
+destroyed.  This must be done by application code, there's no automatic
+mechanism for it. 
+</p></blockquote></div>
+
+   </body></html>
+

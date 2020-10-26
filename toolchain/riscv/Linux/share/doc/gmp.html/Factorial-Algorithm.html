@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>Factorial Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="prev" href="Prime-Testing-Algorithm.html#Prime-Testing-Algorithm" title="Prime Testing Algorithm">
+<link rel="next" href="Binomial-Coefficients-Algorithm.html#Binomial-Coefficients-Algorithm" title="Binomial Coefficients Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Factorial-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Binomial-Coefficients-Algorithm.html#Binomial-Coefficients-Algorithm">Binomial Coefficients Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Prime-Testing-Algorithm.html#Prime-Testing-Algorithm">Prime Testing Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.7.2 Factorial</h4>
+
+<p><a name="index-Factorial-algorithm-927"></a>
+Factorials are calculated by a combination of two algorithms. An idea is
+shared among them: to compute the odd part of the factorial; a final step
+takes account of the power of 2 term, by shifting.
+
+   <p>For small n, the odd factor of n! is computed with the simple
+observation that it is equal to the product of all positive odd numbers
+smaller than n times the odd factor of [n/2]!,
+where [x] is the integer part of x, and so on
+recursively. The procedure can be best illustrated with an example,
+
+   <blockquote>
+23! = (23.21.19.17.15.13.11.9.7.5.3)(11.9.7.5.3)(5.3)2^19
+</blockquote>
+
+   <p>Current code collects all the factors in a single list, with a loop and no
+recursion, and compute the product, with no special care for repeated chunks.
+
+   <p>When n is larger, computation pass trough prime sieving. An helper
+function is used, as suggested by Peter Luschny:
+
+<pre class="example">                                 n
+                               -----
+                    n!          | |   L(p,n)
+     msf(n) = -------------- =  | |  p
+               [n/2]!^2.2^k     p=3
+</pre>
+   <p>Where p ranges on odd prime numbers. The exponent k is chosen to
+obtain an odd integer number: k is the number of 1 bits in the binary
+representation of [n/2]. The function L(p,n)
+can be defined as zero when p is composite, and, for any prime
+p, it is computed with:
+
+<pre class="example">               ---
+                \    n
+     L(p,n) =   /  [---] mod 2   &lt;=  log (n) .
+               ---  p^i                p
+               i&gt;0
+</pre>
+   <p>With this helper function, we are able to compute the odd part of n! 
+using the recursion implied by n!=[n/2]!^2*msf(n)*2^k. The recursion stops using the
+small-n algorithm on some [n/2^i].
+
+   <p>Both the above algorithms use binary splitting to compute the product of many
+small factors. At first as many products as possible are accumulated in a
+single register, generating a list of factors that fit in a machine word. This
+list is then split into halves, and the product is computed recursively.
+
+   <p>Such splitting is more efficient than repeated Nx1 multiplies since it
+forms big multiplies, allowing Karatsuba and higher algorithms to be used. 
+And even below the Karatsuba threshold a big block of work can be more
+efficient for the basecase algorithm.
+
+   </body></html>
+

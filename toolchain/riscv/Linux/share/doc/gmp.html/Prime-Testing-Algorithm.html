@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+<title>Prime Testing Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="prev" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="next" href="Factorial-Algorithm.html#Factorial-Algorithm" title="Factorial Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Prime-Testing-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Factorial-Algorithm.html#Factorial-Algorithm">Factorial Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.7.1 Prime Testing</h4>
+
+<p><a name="index-Prime-testing-algorithms-926"></a>
+The primality testing in <code>mpz_probab_prime_p</code> (see <a href="Number-Theoretic-Functions.html#Number-Theoretic-Functions">Number Theoretic Functions</a>) first does some trial division by small factors and then uses the
+Miller-Rabin probabilistic primality testing algorithm, as described in Knuth
+section 4.5.4 algorithm P (see <a href="References.html#References">References</a>).
+
+   <p>For an odd input n, and with n = q*2^k+1 where
+q is odd, this algorithm selects a random base x and tests
+whether x^q mod n is 1 or -1, or an x^(q*2^j) mod n is 1, for 1&lt;=j&lt;=k.  If so then n
+is probably prime, if not then n is definitely composite.
+
+   <p>Any prime n will pass the test, but some composites do too.  Such
+composites are known as strong pseudoprimes to base x.  No n is
+a strong pseudoprime to more than 1/4 of all bases (see Knuth exercise
+22), hence with x chosen at random there's no more than a 1/4
+chance a &ldquo;probable prime&rdquo; will in fact be composite.
+
+   <p>In fact strong pseudoprimes are quite rare, making the test much more
+powerful than this analysis would suggest, but 1/4 is all that's proven
+for an arbitrary n.
+
+   </body></html>
+

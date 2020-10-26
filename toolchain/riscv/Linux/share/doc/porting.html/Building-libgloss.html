@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>Building libgloss - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Libgloss.html#Libgloss" title="Libgloss">
+<link rel="prev" href="Supported-targets.html#Supported-targets" title="Supported targets">
+<link rel="next" href="Board-support.html#Board-support" title="Board support">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Building-libgloss"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Board-support.html#Board-support">Board support</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Supported-targets.html#Supported-targets">Supported targets</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Libgloss.html#Libgloss">Libgloss</a>
+<hr>
+</div>
+
+<h3 class="section">1.2 Configuring and building libgloss.</h3>
+
+<p>Libgloss uses an autoconf based script to configure. Autoconf scripts
+are portable shell scripts that are generated from a configure.in file. 
+Configure input scripts are based themselves on m4. Most configure
+scripts run a series of tests to determine features the various
+supported features of the target. For features that can't be determined
+by a feature test, a makefile fragment is merged in. The configure
+process leaves creates a Makefile in the build directory. For libgloss,
+there are only a few configure options of importance. These are &ndash;target
+and &ndash;srcdir.
+
+   <p>Typically libgloss is built in a separate tree just for objects. In this
+manner, it's possible to have a single source tree, and multiple object
+trees. If you only need to configure for a single target environment,
+then you can configure in the source tree. The argument for &ndash;target is
+a config string. It's usually safest to use the full canonical opposed
+to the target alias. So, to configure for a CPU32 (m68k) with a separate
+source tree, use:
+
+<pre class="smallexample">     ../src/libgloss/configure --verbose --target m68k-coff
+</pre>
+   <p>The configure script is in the source tree. When configure is invoked
+it will determine it's own source tree, so the &ndash;srcdir is would be
+redundant here.
+
+   <p>Once libgloss is configured, <code>make</code> is sufficient to build it. The
+default values for <code>Makefiles</code> are typically correct for all
+supported systems. The test cases in the testsuite will also built
+automatically as opposed to a <code>make check</code>, where test binaries
+aren't built till test time. This is mostly cause the libgloss
+testsuites are the last thing built when building the entire GNU source
+tree, so it's a good test of all the other compilation passes.
+
+   <p>The default values for the Makefiles are set in the Makefile fragment
+merged in during configuration. This fragment typically has rules like
+
+<pre class="smallexample">     CC_FOR_TARGET = `if [ -f $${OBJROOT}/gcc/xgcc ] ; \
+     	then echo ${OBJROOT}/gcc/xgcc -B${OBJROOT}/gcc/ ; \
+     	else t='${program_transform_name}'; echo gcc | sed -e '' $$t ; fi`
+</pre>
+   <p>Basically this is a runtime test to determine whether there are freshly
+built executables for the other main passes of the GNU tools. If there
+isn't an executable built in the same object tree, then
+<em>transformed</em>the generic tool name (like gcc) is transformed to the
+name typically used in GNU cross compilers. The  names are
+typically based on the target's canonical name, so if you've configured
+for <code>m68k-coff</code> the transformed name is <code>m68k-coff-gcc</code> in
+this case. If you install with aliases or rename the tools, this won't
+work, and it will always look for tools in the path. You can force the a
+different name to work by reconfiguring with the
+<code>--program-transform-name</code> option to configure. This option takes a
+sed script like this <code>-e s,^,m68k-coff-,</code> which produces tools
+using the standard names (at least here at Cygnus).
+
+   <p>The search for the other GNU development tools is exactly the same idea. 
+This technique gets messier when build options like <code>-msoft-float</code>
+support are used. The Makefile fragments set the <code>MUTILIB</code>
+variable, and if it is set, the search path is modified. If the linking
+is done with an installed cross compiler, then none of this needs to be
+used. This is done so libgloss will build automatically with a fresh,
+and uninstalled object tree. It also makes it easier to debug the other
+tools using libgloss's test suites.
+
+   </body></html>
+

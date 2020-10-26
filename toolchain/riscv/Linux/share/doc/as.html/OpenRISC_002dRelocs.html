@@ -1,0 +1,179 @@
+<html lang="en">
+<head>
+<title>OpenRISC-Relocs - Using as</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using as">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="OpenRISC_002dSyntax.html#OpenRISC_002dSyntax" title="OpenRISC-Syntax">
+<link rel="prev" href="OpenRISC_002dRegs.html#OpenRISC_002dRegs" title="OpenRISC-Regs">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This file documents the GNU Assembler "as".
+
+Copyright (C) 1991-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled ``GNU Free Documentation License''.
+
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="OpenRISC-Relocs"></a>
+<a name="OpenRISC_002dRelocs"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="OpenRISC_002dRegs.html#OpenRISC_002dRegs">OpenRISC-Regs</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="OpenRISC_002dSyntax.html#OpenRISC_002dSyntax">OpenRISC-Syntax</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">9.32.1.3 Relocations</h5>
+
+<p><a name="index-OpenRISC-relocations-1817"></a><a name="index-relocations_002c-OpenRISC-1818"></a>
+ELF relocations are available as defined in the OpenRISC architecture
+specification.
+
+   <p><code>R_OR1K_HI_16_IN_INSN</code> is obtained using &lsquo;<samp><span class="samp">hi</span></samp>&rsquo; and
+<code>R_OR1K_LO_16_IN_INSN</code> and <code>R_OR1K_SLO16</code> are obtained using
+&lsquo;<samp><span class="samp">lo</span></samp>&rsquo;.  For signed offsets <code>R_OR1K_AHI16</code> is obtained from
+&lsquo;<samp><span class="samp">ha</span></samp>&rsquo;.  For example:
+
+<pre class="example">     l.movhi r5, hi(symbol)
+     l.ori   r5, r5, lo(symbol)
+     
+     l.movhi r5, ha(symbol)
+     l.addi  r5, r5, lo(symbol)
+</pre>
+   <p>These &ldquo;high&rdquo; mnemonics extract bits 31:16 of their operand,
+and the &ldquo;low&rdquo; mnemonics extract bits 15:0 of their operand.
+
+   <p>The PC relative relocation <code>R_OR1K_GOTPC_HI16</code> can be obtained by
+enclosing an operand inside of &lsquo;<samp><span class="samp">gotpchi</span></samp>&rsquo;.  Likewise, the
+<code>R_OR1K_GOTPC_LO16</code> relocation can be obtained using &lsquo;<samp><span class="samp">gotpclo</span></samp>&rsquo;. 
+These are mostly used when assembling PIC code.  For example, the
+standard PIC sequence on OpenRISC to get the base of the global offset
+table, PC relative, into a register, can be performed as:
+
+<pre class="example">     l.jal   0x8
+      l.movhi r17, gotpchi(_GLOBAL_OFFSET_TABLE_-4)
+     l.ori   r17, r17, gotpclo(_GLOBAL_OFFSET_TABLE_+0)
+     l.add   r17, r17, r9
+</pre>
+   <p>Several relocations exist to allow the link editor to perform GOT data
+references.  The <code>R_OR1K_GOT16</code> relocation can obtained by enclosing an
+operand inside of &lsquo;<samp><span class="samp">got</span></samp>&rsquo;.  For example, assuming the GOT base is in
+register <code>r17</code>.
+
+<pre class="example">     l.lwz   r19, got(a)(r17)
+     l.lwz   r21, 0(r19)
+</pre>
+   <p>Also, several relocations exist for local GOT references.  The
+<code>R_OR1K_GOTOFF_AHI16</code> relocation can obtained by enclosing an operand
+inside of &lsquo;<samp><span class="samp">gotoffha</span></samp>&rsquo;.  Likewise, <code>R_OR1K_GOTOFF_LO16</code> and
+<code>R_OR1K_GOTOFF_SLO16</code> can be obtained by enclosing an operand inside of
+&lsquo;<samp><span class="samp">gotofflo</span></samp>&rsquo;.  For example, assuming the GOT base is in register
+<code>rl7</code>:
+
+<pre class="example">     l.movhi r19, gotoffha(symbol)
+     l.add   r19, r19, r17
+     l.lwz   r19, gotofflo(symbol)(r19)
+</pre>
+   <p>The above PC relative relocations use a <code>l.jal</code> (jump) instruction
+and reading of the link register to load the PC.  OpenRISC also supports
+page offset PC relative locations without a jump instruction using the
+<code>l.adrp</code> instruction.  By default the <code>l.adrp</code> instruction will
+create an <code>R_OR1K_PCREL_PG21</code> relocation. 
+Likewise, <code>BFD_RELOC_OR1K_LO13</code> and <code>BFD_RELOC_OR1K_SLO13</code> can
+be obtained by enclosing an operand inside of &lsquo;<samp><span class="samp">po</span></samp>&rsquo;.  For example:
+
+<pre class="example">     l.adrp  r3, symbol
+     l.ori   r4, r3, po(symbol)
+     l.lbz   r5, po(symbol)(r3)
+     l.sb    po(symbol)(r3), r6
+</pre>
+   <p>Likewise the page offset relocations can be used with GOT references.  The
+relocation <code>R_OR1K_GOT_PG21</code> can be obtained by enclosing an
+<code>l.adrp</code> immediate operand inside of &lsquo;<samp><span class="samp">got</span></samp>&rsquo;.  Likewise,
+<code>R_OR1K_GOT_LO13</code> can be obtained by enclosing an operand inside of
+&lsquo;<samp><span class="samp">gotpo</span></samp>&rsquo;.  For example to load the value of a GOT symbol into register
+&lsquo;<samp><span class="samp">r5</span></samp>&rsquo; we can do:
+
+<pre class="example">     l.adrp  r17, got(_GLOBAL_OFFSET_TABLE_)
+     l.lwz   r5, gotpo(symbol)(r17)
+</pre>
+   <p>There are many relocations that can be requested for access to
+thread local storage variables.  All of the OpenRISC TLS mnemonics
+are supported:
+
+     <ul>
+<li><code>R_OR1K_TLS_GD_HI16</code> is requested using &lsquo;<samp><span class="samp">tlsgdhi</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_GD_LO16</code> is requested using &lsquo;<samp><span class="samp">tlsgdlo</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_GD_PG21</code> is requested using &lsquo;<samp><span class="samp">tldgd</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_GD_LO13</code> is requested using &lsquo;<samp><span class="samp">tlsgdpo</span></samp>&rsquo;.
+
+     <li><code>R_OR1K_TLS_LDM_HI16</code> is requested using &lsquo;<samp><span class="samp">tlsldmhi</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LDM_LO16</code> is requested using &lsquo;<samp><span class="samp">tlsldmlo</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LDM_PG21</code> is requested using &lsquo;<samp><span class="samp">tldldm</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LDM_LO13</code> is requested using &lsquo;<samp><span class="samp">tlsldmpo</span></samp>&rsquo;.
+
+     <li><code>R_OR1K_TLS_LDO_HI16</code> is requested using &lsquo;<samp><span class="samp">dtpoffhi</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LDO_LO16</code> is requested using &lsquo;<samp><span class="samp">dtpofflo</span></samp>&rsquo;.
+
+     <li><code>R_OR1K_TLS_IE_HI16</code> is requested using &lsquo;<samp><span class="samp">gottpoffhi</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_IE_AHI16</code> is requested using &lsquo;<samp><span class="samp">gottpoffha</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_IE_LO16</code> is requested using &lsquo;<samp><span class="samp">gottpofflo</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_IE_PG21</code> is requested using &lsquo;<samp><span class="samp">gottp</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_IE_LO13</code> is requested using &lsquo;<samp><span class="samp">gottppo</span></samp>&rsquo;.
+
+     <li><code>R_OR1K_TLS_LE_HI16</code> is requested using &lsquo;<samp><span class="samp">tpoffhi</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LE_AHI16</code> is requested using &lsquo;<samp><span class="samp">tpoffha</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LE_LO16</code> is requested using &lsquo;<samp><span class="samp">tpofflo</span></samp>&rsquo;. 
+<li><code>R_OR1K_TLS_LE_SLO16</code> also is requested using &lsquo;<samp><span class="samp">tpofflo</span></samp>&rsquo;
+depending on the instruction format. 
+</ul>
+
+   <p>Here are some example TLS model sequences.
+
+   <p>First, General Dynamic:
+
+<pre class="example">     l.movhi r17, tlsgdhi(symbol)
+     l.ori   r17, r17, tlsgdlo(symbol)
+     l.add   r17, r17, r16
+     l.or    r3, r17, r17
+     l.jal   plt(__tls_get_addr)
+      l.nop
+</pre>
+   <p>Initial Exec:
+
+<pre class="example">     l.movhi r17, gottpoffhi(symbol)
+     l.add   r17, r17, r16
+     l.lwz   r17, gottpofflo(symbol)(r17)
+     l.add   r17, r17, r10
+     l.lbs   r17, 0(r17)
+</pre>
+   <p>And finally, Local Exec:
+
+<pre class="example">     l.movhi r17, tpoffha(symbol)
+     l.add   r17, r17, r10
+     l.addi  r17, r17, tpofflo(symbol)
+     l.lbs   r17, 0(r17)
+</pre>
+   </body></html>
+

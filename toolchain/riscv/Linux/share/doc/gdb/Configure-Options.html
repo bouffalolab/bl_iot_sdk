@@ -1,0 +1,229 @@
+<html lang="en">
+<head>
+<title>Configure Options - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Installing-GDB.html#Installing-GDB" title="Installing GDB">
+<link rel="prev" href="Config-Names.html#Config-Names" title="Config Names">
+<link rel="next" href="System_002dwide-configuration.html#System_002dwide-configuration" title="System-wide configuration">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Configure-Options"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="System_002dwide-configuration.html#System_002dwide-configuration">System-wide configuration</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Config-Names.html#Config-Names">Config Names</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Installing-GDB.html#Installing-GDB">Installing GDB</a>
+<hr>
+</div>
+
+<h3 class="section">C.5 <samp><span class="file">configure</span></samp> Options</h3>
+
+<p>Here is a summary of the <samp><span class="file">configure</span></samp> options and arguments that
+are most often useful for building <span class="sc">gdb</span>.  <samp><span class="file">configure</span></samp>
+also has several other options not listed here.  see <a href="../autoconf.info/Running-configure-scripts.html#Running-configure-scripts">Running configure scripts</a>, for a full
+explanation of <samp><span class="file">configure</span></samp>.
+
+<pre class="smallexample">     configure <span class="roman">[</span>--help<span class="roman">]</span>
+               <span class="roman">[</span>--prefix=<var>dir</var><span class="roman">]</span>
+               <span class="roman">[</span>--exec-prefix=<var>dir</var><span class="roman">]</span>
+               <span class="roman">[</span>--srcdir=<var>dirname</var><span class="roman">]</span>
+               <span class="roman">[</span>--target=<var>target</var><span class="roman">]</span>
+</pre>
+   <p class="noindent">You may introduce options with a single &lsquo;<samp><span class="samp">-</span></samp>&rsquo; rather than
+&lsquo;<samp><span class="samp">--</span></samp>&rsquo; if you prefer; but you may abbreviate option names if you use
+&lsquo;<samp><span class="samp">--</span></samp>&rsquo;.
+
+     <dl>
+<dt><code>--help</code><dd>Display a quick summary of how to invoke <samp><span class="file">configure</span></samp>.
+
+     <br><dt><code>--prefix=</code><var>dir</var><dd>Configure the source to install programs and files under directory
+<samp><var>dir</var></samp>.
+
+     <br><dt><code>--exec-prefix=</code><var>dir</var><dd>Configure the source to install programs under directory
+<samp><var>dir</var></samp>.
+
+     <!-- avoid splitting the warning from the explanation: -->
+     <br><dt><code>--srcdir=</code><var>dirname</var><dd>Use this option to make configurations in directories separate from the
+<span class="sc">gdb</span> source directories.  Among other things, you can use this to
+build (or maintain) several configurations simultaneously, in separate
+directories.  <samp><span class="file">configure</span></samp> writes configuration-specific files in
+the current directory, but arranges for them to use the source in the
+directory <var>dirname</var>.  <samp><span class="file">configure</span></samp> creates directories under
+the working directory in parallel to the source directories below
+<var>dirname</var>.
+
+     <br><dt><code>--target=</code><var>target</var><dd>Configure <span class="sc">gdb</span> for cross-debugging programs running on the specified
+<var>target</var>.  Without this option, <span class="sc">gdb</span> is configured to debug
+programs that run on the same machine (<var>host</var>) as <span class="sc">gdb</span> itself.
+
+     <p>There is no convenient way to generate a list of all available
+targets.  Also see the <code>--enable-targets</code> option, below. 
+</dl>
+
+   <p>There are many other options that are specific to <span class="sc">gdb</span>.  This
+lists just the most common ones; there are some very specialized
+options not described here.
+
+     <dl>
+<dt><code>--enable-targets=</code><span class="roman">[</span><var>target</var><span class="roman">]</span><code>...</code><dt><code>--enable-targets=all</code><dd>Configure <span class="sc">gdb</span> for cross-debugging programs running on the
+specified list of targets.  The special value &lsquo;<samp><span class="samp">all</span></samp>&rsquo; configures
+<span class="sc">gdb</span> for debugging programs running on any target it supports.
+
+     <br><dt><code>--with-gdb-datadir=</code><var>path</var><dd>Set the <span class="sc">gdb</span>-specific data directory.  <span class="sc">gdb</span> will look
+here for certain supporting files or scripts.  This defaults to the
+<samp><span class="file">gdb</span></samp> subdirectory of &lsquo;<samp><span class="samp">datadi</span></samp>&rsquo; (which can be set using
+<code>--datadir</code>).
+
+     <br><dt><code>--with-relocated-sources=</code><var>dir</var><dd>Sets up the default source path substitution rule so that directory
+names recorded in debug information will be automatically adjusted for
+any directory under <var>dir</var>.  <var>dir</var> should be a subdirectory of
+<span class="sc">gdb</span>'s configured prefix, the one mentioned in the
+<code>--prefix</code> or <code>--exec-prefix</code> options to configure.  This
+option is useful if GDB is supposed to be moved to a different place
+after it is built.
+
+     <br><dt><code>--enable-64-bit-bfd</code><dd>Enable 64-bit support in BFD on 32-bit hosts.
+
+     <br><dt><code>--disable-gdbmi</code><dd>Build <span class="sc">gdb</span> without the GDB/MI machine interface
+(see <a href="GDB_002fMI.html#GDB_002fMI">GDB/MI</a>).
+
+     <br><dt><code>--enable-tui</code><dd>Build <span class="sc">gdb</span> with the text-mode full-screen user interface
+(TUI).  Requires a curses library (ncurses and cursesX are also
+supported).
+
+     <br><dt><code>--with-curses</code><dd>Use the curses library instead of the termcap library, for text-mode
+terminal operations.
+
+     <br><dt><code>--with-libunwind-ia64</code><dd>Use the libunwind library for unwinding function call stack on ia64
+target platforms.  See http://www.nongnu.org/libunwind/index.html for
+details.
+
+     <br><dt><code>--with-system-readline</code><dd>Use the readline library installed on the host, rather than the
+library supplied as part of <span class="sc">gdb</span>.
+
+     <br><dt><code>--with-system-zlib</code><dd>Use the zlib library installed on the host, rather than the library
+supplied as part of <span class="sc">gdb</span>.
+
+     <br><dt><code>--with-expat</code><dd>Build <span class="sc">gdb</span> with Expat, a library for XML parsing.  (Done by
+default if libexpat is installed and found at configure time.)  This
+library is used to read XML files supplied with <span class="sc">gdb</span>.  If it
+is unavailable, some features, such as remote protocol memory maps,
+target descriptions, and shared library lists, that are based on XML
+files, will not be available in <span class="sc">gdb</span>.  If your host does not
+have libexpat installed, you can get the latest version from
+`http://expat.sourceforge.net'.
+
+     <br><dt><code>--with-libiconv-prefix</code><span class="roman">[</span><code>=</code><var>dir</var><span class="roman">]</span><dd>
+Build <span class="sc">gdb</span> with GNU libiconv, a character set encoding
+conversion library.  This is not done by default, as on GNU systems
+the <code>iconv</code> that is built in to the C library is sufficient.  If
+your host does not have a working <code>iconv</code>, you can get the latest
+version of GNU iconv from `https://www.gnu.org/software/libiconv/'.
+
+     <p><span class="sc">gdb</span>'s build system also supports building GNU libiconv as
+part of the overall build.   See <a href="Requirements.html#Requirements">Requirements</a>.
+
+     <br><dt><code>--with-lzma</code><dd>Build <span class="sc">gdb</span> with LZMA, a compression library.  (Done by default
+if liblzma is installed and found at configure time.)  LZMA is used by
+<span class="sc">gdb</span>'s "mini debuginfo" feature, which is only useful on
+platforms using the ELF object file format.  If your host does not
+have liblzma installed, you can get the latest version from
+`https://tukaani.org/xz/'.
+
+     <br><dt><code>--with-mpfr</code><dd>Build <span class="sc">gdb</span> with GNU MPFR, a library for multiple-precision
+floating-point computation with correct rounding.  (Done by default if
+GNU MPFR is installed and found at configure time.)  This library is
+used to emulate target floating-point arithmetic during expression
+evaluation when the target uses different floating-point formats than
+the host.  If GNU MPFR is not available, <span class="sc">gdb</span> will fall back
+to using host floating-point arithmetic.  If your host does not have
+GNU MPFR installed, you can get the latest version from
+`http://www.mpfr.org'.
+
+     <br><dt><code>--with-python</code><span class="roman">[</span><code>=</code><var>python</var><span class="roman">]</span><dd>Build <span class="sc">gdb</span> with Python scripting support.  (Done by default if
+libpython is present and found at configure time.)  Python makes
+<span class="sc">gdb</span> scripting much more powerful than the restricted CLI
+scripting language.  If your host does not have Python installed, you
+can find it on `http://www.python.org/download/'.  The oldest version
+of Python supported by GDB is 2.6.  The optional argument <var>python</var>
+is used to find the Python headers and libraries.  It can be either
+the name of a Python executable, or the name of the directory in which
+Python is installed.
+
+     <br><dt><code>--with-guile[=GUILE]'</code><dd>Build <span class="sc">gdb</span> with GNU Guile scripting support.  (Done by default
+if libguile is present and found at configure time.)  If your host
+does not have Guile installed, you can find it at
+`https://www.gnu.org/software/guile/'.  The optional argument GUILE
+can be a version number, which will cause <code>configure</code> to try to
+use that version of Guile; or the file name of a <code>pkg-config</code>
+executable, which will be queried to find the information needed to
+compile and link against Guile.
+
+     <br><dt><code>--without-included-regex</code><dd>Don't use the regex library included with <span class="sc">gdb</span> (as part of the
+libiberty library).  This is the default on hosts with version 2 of
+the GNU C library.
+
+     <br><dt><code>--with-sysroot=</code><var>dir</var><dd>Use <var>dir</var> as the default system root directory for libraries whose
+file names begin with <samp><span class="file">/lib</span></samp>' or <samp><span class="file">/usr/lib'</span></samp>.  (The value of
+<var>dir</var> can be modified at run time by using the <samp><span class="command">set
+sysroot</span></samp> command.)  If <var>dir</var> is under the <span class="sc">gdb</span> configured
+prefix (set with <code>--prefix</code> or <code>--exec-prefix options</code>, the
+default system root will be automatically adjusted if and when
+<span class="sc">gdb</span> is moved to a different location.
+
+     <br><dt><code>--with-system-gdbinit=</code><var>file</var><dd>Configure <span class="sc">gdb</span> to automatically load a system-wide init file. 
+<var>file</var> should be an absolute file name.  If <var>file</var> is in a
+directory under the configured prefix, and <span class="sc">gdb</span> is moved to
+another location after being built, the location of the system-wide
+init file will be adjusted accordingly.
+
+     <br><dt><code>--enable-build-warnings</code><dd>When building the <span class="sc">gdb</span> sources, ask the compiler to warn about
+any code which looks even vaguely suspicious.  It passes many
+different warning flags, depending on the exact version of the
+compiler you are using.
+
+     <br><dt><code>--enable-werror</code><dd>Treat compiler warnings as werrors.  It adds the <code>-Werror</code> flag
+to the compiler, which will fail the compilation if the compiler
+outputs any warning messages.
+
+     <br><dt><code>--enable-ubsan</code><dd>Enable the GCC undefined behavior sanitizer.  This is disabled by
+default, but passing <code>--enable-ubsan=yes</code> or
+<code>--enable-ubsan=auto</code> to <code>configure</code> will enable it.  The
+undefined behavior sanitizer checks for C<tt>++</tt> undefined behavior. 
+It has a performance cost, so if you are looking at <span class="sc">gdb</span>'s
+performance, you should disable it.  The undefined behavior sanitizer
+was first introduced in GCC 4.9. 
+</dl>
+
+   </body></html>
+

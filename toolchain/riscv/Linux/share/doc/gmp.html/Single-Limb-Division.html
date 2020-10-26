@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Single Limb Division - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Division-Algorithms.html#Division-Algorithms" title="Division Algorithms">
+<link rel="prev" href="Division-Algorithms.html#Division-Algorithms" title="Division Algorithms">
+<link rel="next" href="Basecase-Division.html#Basecase-Division" title="Basecase Division">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Single-Limb-Division"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Basecase-Division.html#Basecase-Division">Basecase Division</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Division-Algorithms.html#Division-Algorithms">Division Algorithms</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Division-Algorithms.html#Division-Algorithms">Division Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.2.1 Single Limb Division</h4>
+
+<p>Nx1 division is implemented using repeated 2x1 divisions from
+high to low, either with a hardware divide instruction or a multiplication by
+inverse, whichever is best on a given CPU.
+
+   <p>The multiply by inverse follows &ldquo;Improved division by invariant integers&rdquo; by
+M&ouml;ller and Granlund (see <a href="References.html#References">References</a>) and is implemented as
+<code>udiv_qrnnd_preinv</code> in <samp><span class="file">gmp-impl.h</span></samp>.  The idea is to have a
+fixed-point approximation to 1/d (see <code>invert_limb</code>) and then
+multiply by the high limb (plus one bit) of the dividend to get a quotient
+q.  With d normalized (high bit set), q is no more than 1
+too small.  Subtracting q*d from the dividend gives a remainder, and
+reveals whether q or q-1 is correct.
+
+   <p>The result is a division done with two multiplications and four or five
+arithmetic operations.  On CPUs with low latency multipliers this can be much
+faster than a hardware divide, though the cost of calculating the inverse at
+the start may mean it's only better on inputs bigger than say 4 or 5 limbs.
+
+   <p>When a divisor must be normalized, either for the generic C
+<code>__udiv_qrnnd_c</code> or the multiply by inverse, the division performed is
+actually a*2^k by d*2^k where a is the dividend and
+k is the power necessary to have the high bit of d*2^k set. 
+The bit shifts for the dividend are usually accomplished &ldquo;on the fly&rdquo;
+meaning by extracting the appropriate bits at each step.  Done this way the
+quotient limbs come out aligned ready to store.  When only the remainder is
+wanted, an alternative is to take the dividend limbs unshifted and calculate
+r = a mod d*2^k followed by an extra final step r*2^k mod d*2^k.  This can help on CPUs with poor bit shifts or
+few registers.
+
+   <p>The multiply by inverse can be done two limbs at a time.  The calculation is
+basically the same, but the inverse is two limbs and the divisor treated as if
+padded with a low zero limb.  This means more work, since the inverse will
+need a 2x2 multiply, but the four 1x1s to do that are
+independent and can therefore be done partly or wholly in parallel.  Likewise
+for a 2x1 calculating q*d.  The net effect is to process two
+limbs with roughly the same two multiplies worth of latency that one limb at a
+time gives.  This extends to 3 or 4 limbs at a time, though the extra work to
+apply the inverse will almost certainly soon reach the limits of multiplier
+throughput.
+
+   <p>A similar approach in reverse can be taken to process just half a limb at a
+time if the divisor is only a half limb.  In this case the 1x1 multiply
+for the inverse effectively becomes two (1/2)x1 for each
+limb, which can be a saving on CPUs with a fast half limb multiply, or in fact
+if the only multiply is a half limb, and especially if it's not pipelined.
+
+   </body></html>
+

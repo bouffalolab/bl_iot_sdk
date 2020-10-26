@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>__retarget_lock_init - Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Misc.html#Misc" title="Misc">
+<link rel="prev" href="ffs.html#ffs" title="ffs">
+<link rel="next" href="unctrl.html#unctrl" title="unctrl">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="__retarget_lock_init"></a>
+<a name="g_t_005f_005fretarget_005flock_005finit"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="unctrl.html#unctrl">unctrl</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ffs.html#ffs">ffs</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Misc.html#Misc">Misc</a>
+<hr>
+</div>
+
+<h3 class="section">11.2 <code>__retarget_lock_init</code>, <code>__retarget_lock_init_recursive</code>, <code>__retarget_lock_close</code>, <code>__retarget_lock_close_recursive</code>, <code>__retarget_lock_acquire</code>, <code>__retarget_lock_acquire_recursive</code>, <code>__retarget_lock_try_acquire</code>, <code>__retarget_lock_try_acquire_recursive</code>, <code>__retarget_lock_release</code>, <code>__retarget_lock_release_recursive</code>&mdash;locking routines</h3>
+
+<p><a name="index-g_t_005f_005flock_005f_005f_005fsinit_005frecursive_005fmutex-563"></a><a name="index-g_t_005f_005flock_005f_005f_005fsfp_005frecursive_005fmutex-564"></a><a name="index-g_t_005f_005flock_005f_005f_005fatexit_005frecursive_005fmutex-565"></a><a name="index-g_t_005f_005flock_005f_005f_005fat_005fquick_005fexit_005fmutex-566"></a><a name="index-g_t_005f_005flock_005f_005f_005fmalloc_005frecursive_005fmutex-567"></a><a name="index-g_t_005f_005flock_005f_005f_005fenv_005frecursive_005fmutex-568"></a><a name="index-g_t_005f_005flock_005f_005f_005ftz_005fmutex-569"></a><a name="index-g_t_005f_005flock_005f_005f_005fdd_005fhash_005fmutex-570"></a><a name="index-g_t_005f_005flock_005f_005f_005farc4random_005fmutex-571"></a><a name="index-g_t_005f_005fretarget_005flock_005finit-572"></a><a name="index-g_t_005f_005fretarget_005flock_005finit_005frecursive-573"></a><a name="index-g_t_005f_005fretarget_005flock_005fclose-574"></a><a name="index-g_t_005f_005fretarget_005flock_005fclose_005frecursive-575"></a><a name="index-g_t_005f_005fretarget_005flock_005facquire-576"></a><a name="index-g_t_005f_005fretarget_005flock_005facquire_005frecursive-577"></a><a name="index-g_t_005f_005fretarget_005flock_005ftry_005facquire-578"></a><a name="index-g_t_005f_005fretarget_005flock_005ftry_005facquire_005frecursive-579"></a><a name="index-g_t_005f_005fretarget_005flock_005frelease-580"></a><a name="index-g_t_005f_005fretarget_005flock_005frelease_005frecursive-581"></a><strong>Synopsis</strong>
+<pre class="example">     #include &lt;lock.h&gt;
+     struct __lock __lock___sinit_recursive_mutex;
+     struct __lock __lock___sfp_recursive_mutex;
+     struct __lock __lock___atexit_recursive_mutex;
+     struct __lock __lock___at_quick_exit_mutex;
+     struct __lock __lock___malloc_recursive_mutex;
+     struct __lock __lock___env_recursive_mutex;
+     struct __lock __lock___tz_mutex;
+     struct __lock __lock___dd_hash_mutex;
+     struct __lock __lock___arc4random_mutex;
+     
+     void __retarget_lock_init (_LOCK_T * <var>lock_ptr</var>);
+     void __retarget_lock_init_recursive (_LOCK_T * <var>lock_ptr</var>);
+     void __retarget_lock_close (_LOCK_T <var>lock</var>);
+     void __retarget_lock_close_recursive (_LOCK_T <var>lock</var>);
+     void __retarget_lock_acquire (_LOCK_T <var>lock</var>);
+     void __retarget_lock_acquire_recursive (_LOCK_T <var>lock</var>);
+     int __retarget_lock_try_acquire (_LOCK_T <var>lock</var>);
+     int __retarget_lock_try_acquire_recursive (_LOCK_T <var>lock</var>);
+     void __retarget_lock_release (_LOCK_T <var>lock</var>);
+     void __retarget_lock_release_recursive (_LOCK_T <var>lock</var>);
+     
+</pre>
+   <p><strong>Description</strong><br>
+Newlib was configured to allow the target platform to provide the locking
+routines and static locks at link time.  As such, a dummy default
+implementation of these routines and static locks is provided for
+single-threaded application to link successfully out of the box on bare-metal
+systems.
+
+   <p>For multi-threaded applications the target platform is required to provide
+an implementation for <strong>all</strong> these routines and static locks.  If some
+routines or static locks are missing, the link will fail with doubly defined
+symbols.
+
+   <pre class="sp">
+
+</pre>
+<strong>Portability</strong><br>
+These locking routines and static lock are newlib-specific.  Supporting OS
+subroutines are required for linking multi-threaded applications.
+
+   <pre class="sp">
+
+</pre>
+
+   </body></html>
+

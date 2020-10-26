@@ -1,0 +1,140 @@
+<html lang="en">
+<head>
+<title>C++ Interface Internals - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Internals.html#Internals" title="Internals">
+<link rel="prev" href="Raw-Output-Internals.html#Raw-Output-Internals" title="Raw Output Internals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="C++-Interface-Internals"></a>
+<a name="C_002b_002b-Interface-Internals"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Raw-Output-Internals.html#Raw-Output-Internals">Raw Output Internals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Internals.html#Internals">Internals</a>
+<hr>
+</div>
+
+<h3 class="section">16.5 C++ Interface Internals</h3>
+
+<p><a name="index-C_002b_002b-interface-internals-949"></a>
+A system of expression templates is used to ensure something like <code>a=b+c</code>
+turns into a simple call to <code>mpz_add</code> etc.  For <code>mpf_class</code>
+the scheme also ensures the precision of the final
+destination is used for any temporaries within a statement like
+<code>f=w*x+y*z</code>.  These are important features which a naive implementation
+cannot provide.
+
+   <p>A simplified description of the scheme follows.  The true scheme is
+complicated by the fact that expressions have different return types.  For
+detailed information, refer to the source code.
+
+   <p>To perform an operation, say, addition, we first define a &ldquo;function object&rdquo;
+evaluating it,
+
+<pre class="example">     struct __gmp_binary_plus
+     {
+       static void eval(mpf_t f, const mpf_t g, const mpf_t h)
+       {
+         mpf_add(f, g, h);
+       }
+     };
+</pre>
+   <p class="noindent">And an &ldquo;additive expression&rdquo; object,
+
+<pre class="example">     __gmp_expr&lt;__gmp_binary_expr&lt;mpf_class, mpf_class, __gmp_binary_plus&gt; &gt;
+     operator+(const mpf_class &amp;f, const mpf_class &amp;g)
+     {
+       return __gmp_expr
+         &lt;__gmp_binary_expr&lt;mpf_class, mpf_class, __gmp_binary_plus&gt; &gt;(f, g);
+     }
+</pre>
+   <p>The seemingly redundant <code>__gmp_expr&lt;__gmp_binary_expr&lt;...&gt;&gt;</code> is used to
+encapsulate any possible kind of expression into a single template type.  In
+fact even <code>mpf_class</code> etc are <code>typedef</code> specializations of
+<code>__gmp_expr</code>.
+
+   <p>Next we define assignment of <code>__gmp_expr</code> to <code>mpf_class</code>.
+
+<pre class="example">     template &lt;class T&gt;
+     mpf_class &amp; mpf_class::operator=(const __gmp_expr&lt;T&gt; &amp;expr)
+     {
+       expr.eval(this-&gt;get_mpf_t(), this-&gt;precision());
+       return *this;
+     }
+     
+     template &lt;class Op&gt;
+     void __gmp_expr&lt;__gmp_binary_expr&lt;mpf_class, mpf_class, Op&gt; &gt;::eval
+     (mpf_t f, mp_bitcnt_t precision)
+     {
+       Op::eval(f, expr.val1.get_mpf_t(), expr.val2.get_mpf_t());
+     }
+</pre>
+   <p>where <code>expr.val1</code> and <code>expr.val2</code> are references to the expression's
+operands (here <code>expr</code> is the <code>__gmp_binary_expr</code> stored within the
+<code>__gmp_expr</code>).
+
+   <p>This way, the expression is actually evaluated only at the time of assignment,
+when the required precision (that of <code>f</code>) is known.  Furthermore the
+target <code>mpf_t</code> is now available, thus we can call <code>mpf_add</code> directly
+with <code>f</code> as the output argument.
+
+   <p>Compound expressions are handled by defining operators taking subexpressions
+as their arguments, like this:
+
+<pre class="example">     template &lt;class T, class U&gt;
+     __gmp_expr
+     &lt;__gmp_binary_expr&lt;__gmp_expr&lt;T&gt;, __gmp_expr&lt;U&gt;, __gmp_binary_plus&gt; &gt;
+     operator+(const __gmp_expr&lt;T&gt; &amp;expr1, const __gmp_expr&lt;U&gt; &amp;expr2)
+     {
+       return __gmp_expr
+         &lt;__gmp_binary_expr&lt;__gmp_expr&lt;T&gt;, __gmp_expr&lt;U&gt;, __gmp_binary_plus&gt; &gt;
+         (expr1, expr2);
+     }
+</pre>
+   <p>And the corresponding specializations of <code>__gmp_expr::eval</code>:
+
+<pre class="example">     template &lt;class T, class U, class Op&gt;
+     void __gmp_expr
+     &lt;__gmp_binary_expr&lt;__gmp_expr&lt;T&gt;, __gmp_expr&lt;U&gt;, Op&gt; &gt;::eval
+     (mpf_t f, mp_bitcnt_t precision)
+     {
+       // declare two temporaries
+       mpf_class temp1(expr.val1, precision), temp2(expr.val2, precision);
+       Op::eval(f, temp1.get_mpf_t(), temp2.get_mpf_t());
+     }
+</pre>
+   <p>The expression is thus recursively evaluated to any level of complexity and
+all subexpressions are evaluated to the precision of <code>f</code>.
+
+   </body></html>
+

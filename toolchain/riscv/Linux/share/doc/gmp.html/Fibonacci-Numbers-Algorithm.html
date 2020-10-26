@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Fibonacci Numbers Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="prev" href="Binomial-Coefficients-Algorithm.html#Binomial-Coefficients-Algorithm" title="Binomial Coefficients Algorithm">
+<link rel="next" href="Lucas-Numbers-Algorithm.html#Lucas-Numbers-Algorithm" title="Lucas Numbers Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Fibonacci-Numbers-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Lucas-Numbers-Algorithm.html#Lucas-Numbers-Algorithm">Lucas Numbers Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Binomial-Coefficients-Algorithm.html#Binomial-Coefficients-Algorithm">Binomial Coefficients Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.7.4 Fibonacci Numbers</h4>
+
+<p><a name="index-Fibonacci-number-algorithm-929"></a>
+The Fibonacci functions <code>mpz_fib_ui</code> and <code>mpz_fib2_ui</code> are designed
+for calculating isolated F[n] or F[n],F[n-1]
+values efficiently.
+
+   <p>For small n, a table of single limb values in <code>__gmp_fib_table</code> is
+used.  On a 32-bit limb this goes up to F[47], or on a 64-bit limb
+up to F[93].  For convenience the table starts at F[-1].
+
+   <p>Beyond the table, values are generated with a binary powering algorithm,
+calculating a pair F[n] and F[n-1] working from high to
+low across the bits of n.  The formulas used are
+
+<pre class="example">     F[2k+1] = 4*F[k]^2 - F[k-1]^2 + 2*(-1)^k
+     F[2k-1] =   F[k]^2 + F[k-1]^2
+     
+     F[2k] = F[2k+1] - F[2k-1]
+</pre>
+   <p>At each step, k is the high b bits of n.  If the next bit
+of n is 0 then F[2k],F[2k-1] is used, or if
+it's a 1 then F[2k+1],F[2k] is used, and the process
+repeated until all bits of n are incorporated.  Notice these formulas
+require just two squares per bit of n.
+
+   <p>It'd be possible to handle the first few n above the single limb table
+with simple additions, using the defining Fibonacci recurrence F[k+1]=F[k]+F[k-1], but this is not done since it usually
+turns out to be faster for only about 10 or 20 values of n, and
+including a block of code for just those doesn't seem worthwhile.  If they
+really mattered it'd be better to extend the data table.
+
+   <p>Using a table avoids lots of calculations on small numbers, and makes small
+n go fast.  A bigger table would make more small n go fast, it's
+just a question of balancing size against desired speed.  For GMP the code is
+kept compact, with the emphasis primarily on a good powering algorithm.
+
+   <p><code>mpz_fib2_ui</code> returns both F[n] and F[n-1], but
+<code>mpz_fib_ui</code> is only interested in F[n].  In this case the last
+step of the algorithm can become one multiply instead of two squares.  One of
+the following two formulas is used, according as n is odd or even.
+
+<pre class="example">     F[2k]   = F[k]*(F[k]+2F[k-1])
+     
+     F[2k+1] = (2F[k]+F[k-1])*(2F[k]-F[k-1]) + 2*(-1)^k
+</pre>
+   <p>F[2k+1] here is the same as above, just rearranged to be a
+multiply.  For interest, the 2*(-1)^k term both here and above
+can be applied just to the low limb of the calculation, without a carry or
+borrow into further limbs, which saves some code size.  See comments with
+<code>mpz_fib_ui</code> and the internal <code>mpn_fib2_ui</code> for how this is done.
+
+   </body></html>
+

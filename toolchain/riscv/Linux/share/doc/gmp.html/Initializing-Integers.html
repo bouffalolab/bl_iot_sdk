@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Initializing Integers - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="next" href="Assigning-Integers.html#Assigning-Integers" title="Assigning Integers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Initializing-Integers"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Assigning-Integers.html#Assigning-Integers">Assigning Integers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.1 Initialization Functions</h3>
+
+<p><a name="index-Integer-initialization-functions-245"></a><a name="index-Initialization-functions-246"></a>
+The functions for integer arithmetic assume that all integer objects are
+initialized.  You do that by calling the function <code>mpz_init</code>.  For
+example,
+
+<pre class="example">     {
+       mpz_t integ;
+       mpz_init (integ);
+       ...
+       mpz_add (integ, ...);
+       ...
+       mpz_sub (integ, ...);
+     
+       /* Unless the program is about to exit, do ... */
+       mpz_clear (integ);
+     }
+</pre>
+   <p>As you can see, you can store new values any number of times, once an
+object is initialized.
+
+<div class="defun">
+&mdash; Function: void <b>mpz_init</b> (<var>mpz_t x</var>)<var><a name="index-mpz_005finit-247"></a></var><br>
+<blockquote><p>Initialize <var>x</var>, and set its value to 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_inits</b> (<var>mpz_t x, ...</var>)<var><a name="index-mpz_005finits-248"></a></var><br>
+<blockquote><p>Initialize a NULL-terminated list of <code>mpz_t</code> variables, and set their
+values to 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_init2</b> (<var>mpz_t x, mp_bitcnt_t n</var>)<var><a name="index-mpz_005finit2-249"></a></var><br>
+<blockquote><p>Initialize <var>x</var>, with space for <var>n</var>-bit numbers, and set its value to 0. 
+Calling this function instead of <code>mpz_init</code> or <code>mpz_inits</code> is never
+necessary; reallocation is handled automatically by GMP when needed.
+
+        <p>While <var>n</var> defines the initial space, <var>x</var> will grow automatically in the
+normal way, if necessary, for subsequent values stored.  <code>mpz_init2</code> makes
+it possible to avoid such reallocations if a maximum size is known in advance.
+
+        <p>In preparation for an operation, GMP often allocates one limb more than
+ultimately needed.  To make sure GMP will not perform reallocation for
+<var>x</var>, you need to add the number of bits in <code>mp_limb_t</code> to <var>n</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_clear</b> (<var>mpz_t x</var>)<var><a name="index-mpz_005fclear-250"></a></var><br>
+<blockquote><p>Free the space occupied by <var>x</var>.  Call this function for all <code>mpz_t</code>
+variables when you are done with them. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_clears</b> (<var>mpz_t x, ...</var>)<var><a name="index-mpz_005fclears-251"></a></var><br>
+<blockquote><p>Free the space occupied by a NULL-terminated list of <code>mpz_t</code> variables. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpz_realloc2</b> (<var>mpz_t x, mp_bitcnt_t n</var>)<var><a name="index-mpz_005frealloc2-252"></a></var><br>
+<blockquote><p>Change the space allocated for <var>x</var> to <var>n</var> bits.  The value in <var>x</var>
+is preserved if it fits, or is set to 0 if not.
+
+        <p>Calling this function is never necessary; reallocation is handled automatically
+by GMP when needed.  But this function can be used to increase the space for a
+variable in order to avoid repeated automatic reallocations, or to decrease it
+to give memory back to the heap. 
+</p></blockquote></div>
+
+   </body></html>
+

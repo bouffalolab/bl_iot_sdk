@@ -1,0 +1,153 @@
+<html lang="en">
+<head>
+<title>MIPS Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="Microsoft-Windows-Function-Attributes.html#Microsoft-Windows-Function-Attributes" title="Microsoft Windows Function Attributes">
+<link rel="next" href="MSP430-Function-Attributes.html#MSP430-Function-Attributes" title="MSP430 Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="MIPS-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="MSP430-Function-Attributes.html#MSP430-Function-Attributes">MSP430 Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Microsoft-Windows-Function-Attributes.html#Microsoft-Windows-Function-Attributes">Microsoft Windows Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.18 MIPS Function Attributes</h4>
+
+<p>These function attributes are supported by the MIPS back end:
+
+     <dl>
+<dt><code>interrupt</code><dd><a name="index-g_t_0040code_007binterrupt_007d-function-attribute_002c-MIPS-3636"></a>Use this attribute to indicate that the specified function is an interrupt
+handler.  The compiler generates function entry and exit sequences suitable
+for use in an interrupt handler when this attribute is present. 
+An optional argument is supported for the interrupt attribute which allows
+the interrupt mode to be described.  By default GCC assumes the external
+interrupt controller (EIC) mode is in use, this can be explicitly set using
+<code>eic</code>.  When interrupts are non-masked then the requested Interrupt
+Priority Level (IPL) is copied to the current IPL which has the effect of only
+enabling higher priority interrupts.  To use vectored interrupt mode use
+the argument <code>vector=[sw0|sw1|hw0|hw1|hw2|hw3|hw4|hw5]</code>, this will change
+the behavior of the non-masked interrupt support and GCC will arrange to mask
+all interrupts from sw0 up to and including the specified interrupt vector.
+
+     <p>You can use the following attributes to modify the behavior
+of an interrupt handler:
+          <dl>
+<dt><code>use_shadow_register_set</code><dd><a name="index-g_t_0040code_007buse_005fshadow_005fregister_005fset_007d-function-attribute_002c-MIPS-3637"></a>Assume that the handler uses a shadow register set, instead of
+the main general-purpose registers.  An optional argument <code>intstack</code> is
+supported to indicate that the shadow register set contains a valid stack
+pointer.
+
+          <br><dt><code>keep_interrupts_masked</code><dd><a name="index-g_t_0040code_007bkeep_005finterrupts_005fmasked_007d-function-attribute_002c-MIPS-3638"></a>Keep interrupts masked for the whole function.  Without this attribute,
+GCC tries to reenable interrupts for as much of the function as it can.
+
+          <br><dt><code>use_debug_exception_return</code><dd><a name="index-g_t_0040code_007buse_005fdebug_005fexception_005freturn_007d-function-attribute_002c-MIPS-3639"></a>Return using the <code>deret</code> instruction.  Interrupt handlers that don't
+have this attribute return using <code>eret</code> instead. 
+</dl>
+
+     <p>You can use any combination of these attributes, as shown below:
+     <pre class="smallexample">          void __attribute__ ((interrupt)) v0 ();
+          void __attribute__ ((interrupt, use_shadow_register_set)) v1 ();
+          void __attribute__ ((interrupt, keep_interrupts_masked)) v2 ();
+          void __attribute__ ((interrupt, use_debug_exception_return)) v3 ();
+          void __attribute__ ((interrupt, use_shadow_register_set,
+                               keep_interrupts_masked)) v4 ();
+          void __attribute__ ((interrupt, use_shadow_register_set,
+                               use_debug_exception_return)) v5 ();
+          void __attribute__ ((interrupt, keep_interrupts_masked,
+                               use_debug_exception_return)) v6 ();
+          void __attribute__ ((interrupt, use_shadow_register_set,
+                               keep_interrupts_masked,
+                               use_debug_exception_return)) v7 ();
+          void __attribute__ ((interrupt("eic"))) v8 ();
+          void __attribute__ ((interrupt("vector=hw3"))) v9 ();
+</pre>
+     <br><dt><code>long_call</code><dt><code>short_call</code><dt><code>near</code><dt><code>far</code><dd><a name="index-indirect-calls_002c-MIPS-3640"></a><a name="index-g_t_0040code_007blong_005fcall_007d-function-attribute_002c-MIPS-3641"></a><a name="index-g_t_0040code_007bshort_005fcall_007d-function-attribute_002c-MIPS-3642"></a><a name="index-g_t_0040code_007bnear_007d-function-attribute_002c-MIPS-3643"></a><a name="index-g_t_0040code_007bfar_007d-function-attribute_002c-MIPS-3644"></a>These attributes specify how a particular function is called on MIPS. 
+The attributes override the <samp><span class="option">-mlong-calls</span></samp> (see <a href="MIPS-Options.html#MIPS-Options">MIPS Options</a>)
+command-line switch.  The <code>long_call</code> and <code>far</code> attributes are
+synonyms, and cause the compiler to always call
+the function by first loading its address into a register, and then using
+the contents of that register.  The <code>short_call</code> and <code>near</code>
+attributes are synonyms, and have the opposite
+effect; they specify that non-PIC calls should be made using the more
+efficient <code>jal</code> instruction.
+
+     <br><dt><code>mips16</code><dt><code>nomips16</code><dd><a name="index-g_t_0040code_007bmips16_007d-function-attribute_002c-MIPS-3645"></a><a name="index-g_t_0040code_007bnomips16_007d-function-attribute_002c-MIPS-3646"></a>
+On MIPS targets, you can use the <code>mips16</code> and <code>nomips16</code>
+function attributes to locally select or turn off MIPS16 code generation. 
+A function with the <code>mips16</code> attribute is emitted as MIPS16 code,
+while MIPS16 code generation is disabled for functions with the
+<code>nomips16</code> attribute.  These attributes override the
+<samp><span class="option">-mips16</span></samp> and <samp><span class="option">-mno-mips16</span></samp> options on the command line
+(see <a href="MIPS-Options.html#MIPS-Options">MIPS Options</a>).
+
+     <p>When compiling files containing mixed MIPS16 and non-MIPS16 code, the
+preprocessor symbol <code>__mips16</code> reflects the setting on the command line,
+not that within individual functions.  Mixed MIPS16 and non-MIPS16 code
+may interact badly with some GCC extensions such as <code>__builtin_apply</code>
+(see <a href="Constructing-Calls.html#Constructing-Calls">Constructing Calls</a>).
+
+     <br><dt><code>micromips, MIPS</code><dt><code>nomicromips, MIPS</code><dd><a name="index-g_t_0040code_007bmicromips_007d-function-attribute-3647"></a><a name="index-g_t_0040code_007bnomicromips_007d-function-attribute-3648"></a>
+On MIPS targets, you can use the <code>micromips</code> and <code>nomicromips</code>
+function attributes to locally select or turn off microMIPS code generation. 
+A function with the <code>micromips</code> attribute is emitted as microMIPS code,
+while microMIPS code generation is disabled for functions with the
+<code>nomicromips</code> attribute.  These attributes override the
+<samp><span class="option">-mmicromips</span></samp> and <samp><span class="option">-mno-micromips</span></samp> options on the command line
+(see <a href="MIPS-Options.html#MIPS-Options">MIPS Options</a>).
+
+     <p>When compiling files containing mixed microMIPS and non-microMIPS code, the
+preprocessor symbol <code>__mips_micromips</code> reflects the setting on the
+command line,
+not that within individual functions.  Mixed microMIPS and non-microMIPS code
+may interact badly with some GCC extensions such as <code>__builtin_apply</code>
+(see <a href="Constructing-Calls.html#Constructing-Calls">Constructing Calls</a>).
+
+     <br><dt><code>nocompression</code><dd><a name="index-g_t_0040code_007bnocompression_007d-function-attribute_002c-MIPS-3649"></a>On MIPS targets, you can use the <code>nocompression</code> function attribute
+to locally turn off MIPS16 and microMIPS code generation.  This attribute
+overrides the <samp><span class="option">-mips16</span></samp> and <samp><span class="option">-mmicromips</span></samp> options on the
+command line (see <a href="MIPS-Options.html#MIPS-Options">MIPS Options</a>). 
+</dl>
+
+ </body></html>
+

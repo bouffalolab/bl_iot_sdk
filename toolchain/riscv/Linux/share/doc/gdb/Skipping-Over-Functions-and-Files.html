@@ -1,0 +1,189 @@
+<html lang="en">
+<head>
+<title>Skipping Over Functions and Files - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stopping.html#Stopping" title="Stopping">
+<link rel="prev" href="Continuing-and-Stepping.html#Continuing-and-Stepping" title="Continuing and Stepping">
+<link rel="next" href="Signals.html#Signals" title="Signals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Skipping-Over-Functions-and-Files"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Signals.html#Signals">Signals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Continuing-and-Stepping.html#Continuing-and-Stepping">Continuing and Stepping</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stopping.html#Stopping">Stopping</a>
+<hr>
+</div>
+
+<h3 class="section">5.3 Skipping Over Functions and Files</h3>
+
+<p><a name="index-skipping-over-functions-and-files-376"></a>
+The program you are debugging may contain some functions which are
+uninteresting to debug.  The <code>skip</code> command lets you tell <span class="sc">gdb</span> to
+skip a function, all functions in a file or a particular function in
+a particular file when stepping.
+
+   <p>For example, consider the following C function:
+
+<pre class="smallexample">     101     int func()
+     102     {
+     103         foo(boring());
+     104         bar(boring());
+     105     }
+</pre>
+   <p class="noindent">Suppose you wish to step into the functions <code>foo</code> and <code>bar</code>, but you
+are not interested in stepping through <code>boring</code>.  If you run <code>step</code>
+at line 103, you'll enter <code>boring()</code>, but if you run <code>next</code>, you'll
+step over both <code>foo</code> and <code>boring</code>!
+
+   <p>One solution is to <code>step</code> into <code>boring</code> and use the <code>finish</code>
+command to immediately exit it.  But this can become tedious if <code>boring</code>
+is called from many places.
+
+   <p>A more flexible solution is to execute <kbd>skip boring</kbd>.  This instructs
+<span class="sc">gdb</span> never to step into <code>boring</code>.  Now when you execute
+<code>step</code> at line 103, you'll step over <code>boring</code> and directly into
+<code>foo</code>.
+
+   <p>Functions may be skipped by providing either a function name, linespec
+(see <a href="Specify-Location.html#Specify-Location">Specify Location</a>), regular expression that matches the function's
+name, file name or a <code>glob</code>-style pattern that matches the file name.
+
+   <p>On Posix systems the form of the regular expression is
+&ldquo;Extended Regular Expressions&rdquo;.  See for example &lsquo;<samp><span class="samp">man 7 regex</span></samp>&rsquo;
+on <span class="sc">gnu</span>/Linux systems.  On non-Posix systems the form of the regular
+expression is whatever is provided by the <code>regcomp</code> function of
+the underlying system. 
+See for example &lsquo;<samp><span class="samp">man 7 glob</span></samp>&rsquo; on <span class="sc">gnu</span>/Linux systems for a
+description of <code>glob</code>-style patterns.
+
+     
+<a name="index-skip-377"></a>
+<dl><dt><code>skip </code><span class="roman">[</span><var>options</var><span class="roman">]</span><dd>The basic form of the <code>skip</code> command takes zero or more options
+that specify what to skip. 
+The <var>options</var> argument is any useful combination of the following:
+
+          <dl>
+<dt><code>-file </code><var>file</var><dt><code>-fi </code><var>file</var><dd>Functions in <var>file</var> will be skipped over when stepping.
+
+          <br><dt><code>-gfile </code><var>file-glob-pattern</var><dt><code>-gfi </code><var>file-glob-pattern</var><dd><a name="index-skipping-over-files-via-glob_002dstyle-patterns-378"></a>Functions in files matching <var>file-glob-pattern</var> will be skipped
+over when stepping.
+
+          <pre class="smallexample">               (gdb) skip -gfi utils/*.c
+</pre>
+          <br><dt><code>-function </code><var>linespec</var><dt><code>-fu </code><var>linespec</var><dd>Functions named by <var>linespec</var> or the function containing the line
+named by <var>linespec</var> will be skipped over when stepping. 
+See <a href="Specify-Location.html#Specify-Location">Specify Location</a>.
+
+          <br><dt><code>-rfunction </code><var>regexp</var><dt><code>-rfu </code><var>regexp</var><dd><a name="index-skipping-over-functions-via-regular-expressions-379"></a>Functions whose name matches <var>regexp</var> will be skipped over when stepping.
+
+          <p>This form is useful for complex function names. 
+For example, there is generally no need to step into C<tt>++</tt> <code>std::string</code>
+constructors or destructors.  Plus with C<tt>++</tt> templates it can be hard to
+write out the full name of the function, and often it doesn't matter what
+the template arguments are.  Specifying the function to be skipped as a
+regular expression makes this easier.
+
+          <pre class="smallexample">               (gdb) skip -rfu ^std::(allocator|basic_string)&lt;.*&gt;::~?\1 *\(
+</pre>
+          <p>If you want to skip every templated C<tt>++</tt> constructor and destructor
+in the <code>std</code> namespace you can do:
+
+          <pre class="smallexample">               (gdb) skip -rfu ^std::([a-zA-z0-9_]+)&lt;.*&gt;::~?\1 *\(
+</pre>
+          </dl>
+
+     <p>If no options are specified, the function you're currently debugging
+will be skipped.
+
+     <p><a name="index-skip-function-380"></a><br><dt><code>skip function </code><span class="roman">[</span><var>linespec</var><span class="roman">]</span><dd>After running this command, the function named by <var>linespec</var> or the
+function containing the line named by <var>linespec</var> will be skipped over when
+stepping.  See <a href="Specify-Location.html#Specify-Location">Specify Location</a>.
+
+     <p>If you do not specify <var>linespec</var>, the function you're currently debugging
+will be skipped.
+
+     <p>(If you have a function called <code>file</code> that you want to skip, use
+<kbd>skip function file</kbd>.)
+
+     <p><a name="index-skip-file-381"></a><br><dt><code>skip file </code><span class="roman">[</span><var>filename</var><span class="roman">]</span><dd>After running this command, any function whose source lives in <var>filename</var>
+will be skipped over when stepping.
+
+     <pre class="smallexample">          (gdb) skip file boring.c
+          File boring.c will be skipped when stepping.
+</pre>
+     <p>If you do not specify <var>filename</var>, functions whose source lives in the file
+you're currently debugging will be skipped. 
+</dl>
+
+   <p>Skips can be listed, deleted, disabled, and enabled, much like breakpoints. 
+These are the commands for managing your list of skips:
+
+     
+<a name="index-info-skip-382"></a>
+<dl><dt><code>info skip </code><span class="roman">[</span><var>range</var><span class="roman">]</span><dd>Print details about the specified skip(s).  If <var>range</var> is not specified,
+print a table with details about all functions and files marked for skipping. 
+<code>info skip</code> prints the following information about each skip:
+
+          <dl>
+<dt><em>Identifier</em><dd>A number identifying this skip. 
+<br><dt><em>Enabled or Disabled</em><dd>Enabled skips are marked with &lsquo;<samp><span class="samp">y</span></samp>&rsquo;. 
+Disabled skips are marked with &lsquo;<samp><span class="samp">n</span></samp>&rsquo;. 
+<br><dt><em>Glob</em><dd>If the file name is a &lsquo;<samp><span class="samp">glob</span></samp>&rsquo; pattern this is &lsquo;<samp><span class="samp">y</span></samp>&rsquo;. 
+Otherwise it is &lsquo;<samp><span class="samp">n</span></samp>&rsquo;. 
+<br><dt><em>File</em><dd>The name or &lsquo;<samp><span class="samp">glob</span></samp>&rsquo; pattern of the file to be skipped. 
+If no file is specified this is &lsquo;<samp><span class="samp">&lt;none&gt;</span></samp>&rsquo;. 
+<br><dt><em>RE</em><dd>If the function name is a &lsquo;<samp><span class="samp">regular expression</span></samp>&rsquo; this is &lsquo;<samp><span class="samp">y</span></samp>&rsquo;. 
+Otherwise it is &lsquo;<samp><span class="samp">n</span></samp>&rsquo;. 
+<br><dt><em>Function</em><dd>The name or regular expression of the function to skip. 
+If no function is specified this is &lsquo;<samp><span class="samp">&lt;none&gt;</span></samp>&rsquo;. 
+</dl>
+
+     <p><a name="index-skip-delete-383"></a><br><dt><code>skip delete </code><span class="roman">[</span><var>range</var><span class="roman">]</span><dd>Delete the specified skip(s).  If <var>range</var> is not specified, delete all
+skips.
+
+     <p><a name="index-skip-enable-384"></a><br><dt><code>skip enable </code><span class="roman">[</span><var>range</var><span class="roman">]</span><dd>Enable the specified skip(s).  If <var>range</var> is not specified, enable all
+skips.
+
+     <p><a name="index-skip-disable-385"></a><br><dt><code>skip disable </code><span class="roman">[</span><var>range</var><span class="roman">]</span><dd>Disable the specified skip(s).  If <var>range</var> is not specified, disable all
+skips.
+
+     <p><a name="index-set-debug-skip-386"></a><br><dt><code>set debug skip </code><span class="roman">[</span><code>on|off</code><span class="roman">]</span><dd>Set whether to print the debug output about skipping files and functions.
+
+     <p><a name="index-show-debug-skip-387"></a><br><dt><code>show debug skip</code><dd>Show whether the debug output about skipping files and functions is printed.
+
+   </dl>
+
+   </body></html>
+

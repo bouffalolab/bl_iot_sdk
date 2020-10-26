@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Assembly Cache Handling - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembly-Coding.html#Assembly-Coding" title="Assembly Coding">
+<link rel="prev" href="Assembly-Carry-Propagation.html#Assembly-Carry-Propagation" title="Assembly Carry Propagation">
+<link rel="next" href="Assembly-Functional-Units.html#Assembly-Functional-Units" title="Assembly Functional Units">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Assembly-Cache-Handling"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Assembly-Functional-Units.html#Assembly-Functional-Units">Assembly Functional Units</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assembly-Carry-Propagation.html#Assembly-Carry-Propagation">Assembly Carry Propagation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembly-Coding.html#Assembly-Coding">Assembly Coding</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.8.4 Cache Handling</h4>
+
+<p><a name="index-Assembly-cache-handling-938"></a>
+GMP aims to perform well both on operands that fit entirely in L1 cache and
+those which don't.
+
+   <p>Basic routines like <code>mpn_add_n</code> or <code>mpn_lshift</code> are often used on
+large operands, so L2 and main memory performance is important for them. 
+<code>mpn_mul_1</code> and <code>mpn_addmul_1</code> are mostly used for multiply and
+square basecases, so L1 performance matters most for them, unless assembly
+versions of <code>mpn_mul_basecase</code> and <code>mpn_sqr_basecase</code> exist, in
+which case the remaining uses are mostly for larger operands.
+
+   <p>For L2 or main memory operands, memory access times will almost certainly be
+more than the calculation time.  The aim therefore is to maximize memory
+throughput, by starting a load of the next cache line while processing the
+contents of the previous one.  Clearly this is only possible if the chip has a
+lock-up free cache or some sort of prefetch instruction.  Most current chips
+have both these features.
+
+   <p>Prefetching sources combines well with loop unrolling, since a prefetch can be
+initiated once per unrolled loop (or more than once if the loop covers more
+than one cache line).
+
+   <p>On CPUs without write-allocate caches, prefetching destinations will ensure
+individual stores don't go further down the cache hierarchy, limiting
+bandwidth.  Of course for calculations which are slow anyway, like
+<code>mpn_divrem_1</code>, write-throughs might be fine.
+
+   <p>The distance ahead to prefetch will be determined by memory latency versus
+throughput.  The aim of course is to have data arriving continuously, at peak
+throughput.  Some CPUs have limits on the number of fetches or prefetches in
+progress.
+
+   <p>If a special prefetch instruction doesn't exist then a plain load can be used,
+but in that case care must be taken not to attempt to read past the end of an
+operand, since that might produce a segmentation violation.
+
+   <p>Some CPUs or systems have hardware that detects sequential memory accesses and
+initiates suitable cache movements automatically, making life easy.
+
+   </body></html>
+

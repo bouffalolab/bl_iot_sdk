@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+<title>Exception handler - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GDB.html#GDB" title="GDB">
+<link rel="prev" href="GNU-remote-protocol.html#GNU-remote-protocol" title="GNU remote protocol">
+<link rel="next" href="ROM-monitors.html#ROM-monitors" title="ROM monitors">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Exception-handler"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="ROM-monitors.html#ROM-monitors">ROM monitors</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="GNU-remote-protocol.html#GNU-remote-protocol">GNU remote protocol</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GDB.html#GDB">GDB</a>
+<hr>
+</div>
+
+<h3 class="section">4.2 A linked in exception handler</h3>
+
+<p>A <em>GDB stub</em> consists of two parts, support for the exception
+handler, and the exception handler itself. The exception handler needs
+to communicate to GDB on the host whenever there is a breakpoint
+exception. When GDB starts a program running on the target, it's polling
+the serial port during execution looking for any debug packets. So when
+a breakpoint occurs, the exception handler needs to save state, and send
+a GDB remote protocol packet to GDB on the host. GDB takes any output
+that isn't a debug command packet and displays it in the command window.
+
+   <p>Support for the exception handler varies between processors, but the
+minimum supported functions are those needed by GDB. These are functions
+to support the reading and writing of registers, the reading and writing
+of memory, start execution at an address, single step, and last signal. 
+Sometimes other functions for adjusting the baud rate, or resetting the
+hardware are implemented.
+
+   <p>Once GDB gets the command packet from the breakpoint, it will read a few
+registers and memory locations an then wait for the user. When the user
+types <code>run</code> or <code>continue</code> a <code>continue</code> command is issued
+to the backend, and control returns from the breakpoint routine to the
+application.
+
+   </body></html>
+

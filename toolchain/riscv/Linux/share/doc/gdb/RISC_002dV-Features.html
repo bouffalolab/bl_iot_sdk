@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>RISC-V Features - Debugging with GDB</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Debugging with GDB">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Standard-Target-Features.html#Standard-Target-Features" title="Standard Target Features">
+<link rel="prev" href="PowerPC-Features.html#PowerPC-Features" title="PowerPC Features">
+<link rel="next" href="S_002f390-and-System-z-Features.html#S_002f390-and-System-z-Features" title="S/390 and System z Features">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2019 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+this GNU Manual.  Buying copies from GNU Press supports the FSF in
+developing GNU and promoting software freedom.''
+-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="RISC-V-Features"></a>
+<a name="RISC_002dV-Features"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="S_002f390-and-System-z-Features.html#S_002f390-and-System-z-Features">S/390 and System z Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="PowerPC-Features.html#PowerPC-Features">PowerPC Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Standard-Target-Features.html#Standard-Target-Features">Standard Target Features</a>
+<hr>
+</div>
+
+<h4 class="subsection">G.5.12 RISC-V Features</h4>
+
+<p><a name="index-target-descriptions_002c-RISC_002dV-Features-3669"></a>
+The &lsquo;<samp><span class="samp">org.gnu.gdb.riscv.cpu</span></samp>&rsquo; feature is required for RISC-V
+targets.  It should contain the registers &lsquo;<samp><span class="samp">x0</span></samp>&rsquo; through
+&lsquo;<samp><span class="samp">x31</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">pc</span></samp>&rsquo;.  Either the architectural names (&lsquo;<samp><span class="samp">x0</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">x1</span></samp>&rsquo;, etc) can be used, or the ABI names (&lsquo;<samp><span class="samp">zero</span></samp>&rsquo;, &lsquo;<samp><span class="samp">ra</span></samp>&rsquo;,
+etc).
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.riscv.fpu</span></samp>&rsquo; feature is optional.  If present, it
+should contain registers &lsquo;<samp><span class="samp">f0</span></samp>&rsquo; through &lsquo;<samp><span class="samp">f31</span></samp>&rsquo;, &lsquo;<samp><span class="samp">fflags</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">frm</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">fcsr</span></samp>&rsquo;.  As with the cpu feature, either the
+architectural register names, or the ABI names can be used.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.riscv.virtual</span></samp>&rsquo; feature is optional.  If present,
+it should contain registers that are not backed by real registers on
+the target, but are instead virtual, where the register value is
+derived from other target state.  In many ways these are like
+<span class="sc">gdb</span>s pseudo-registers, except implemented by the target. 
+Currently the only register expected in this set is the one byte
+&lsquo;<samp><span class="samp">priv</span></samp>&rsquo; register that contains the target's privilege level in the
+least significant two bits.
+
+   <p>The &lsquo;<samp><span class="samp">org.gnu.gdb.riscv.csr</span></samp>&rsquo; feature is optional.  If present, it
+should contain all of the target's standard CSRs.  Standard CSRs are
+those defined in the RISC-V specification documents.  There is some
+overlap between this feature and the fpu feature; the &lsquo;<samp><span class="samp">fflags</span></samp>&rsquo;,
+&lsquo;<samp><span class="samp">frm</span></samp>&rsquo;, and &lsquo;<samp><span class="samp">fcsr</span></samp>&rsquo; registers could be in either feature.  The
+expectation is that these registers will be in the fpu feature if the
+target has floating point hardware, but can be moved into the csr
+feature if the target has the floating point control registers, but no
+other floating point hardware.
+
+   </body></html>
+

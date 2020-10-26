@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>x86 control-flow protection intrinsics - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Target-Builtins.html#Target-Builtins" title="Target Builtins">
+<link rel="prev" href="x86-transactional-memory-intrinsics.html#x86-transactional-memory-intrinsics" title="x86 transactional memory intrinsics">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="x86-control-flow-protection-intrinsics"></a>
+<a name="x86-control_002dflow-protection-intrinsics"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="x86-transactional-memory-intrinsics.html#x86-transactional-memory-intrinsics">x86 transactional memory intrinsics</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Target-Builtins.html#Target-Builtins">Target Builtins</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.59.35 x86 Control-Flow Protection Intrinsics</h4>
+
+<div class="defun">
+&mdash; CET Function: ret_type <b>_get_ssp</b> (<var>void</var>)<var><a name="index-g_t_005fget_005fssp-4736"></a></var><br>
+<blockquote><p>Get the current value of shadow stack pointer if shadow stack support
+from Intel CET is enabled in the hardware or <code>0</code> otherwise. 
+The <code>ret_type</code> is <code>unsigned long long</code> for 64-bit targets
+and <code>unsigned int</code> for 32-bit targets. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; CET Function: void <b>_inc_ssp</b> (<var>unsigned int</var>)<var><a name="index-g_t_005finc_005fssp-4737"></a></var><br>
+<blockquote><p>Increment the current shadow stack pointer by the size specified by the
+function argument.  The argument is masked to a byte value for security
+reasons, so to increment by more than 255 bytes you must call the function
+multiple times. 
+</p></blockquote></div>
+
+ <p>The shadow stack unwind code looks like:
+
+<pre class="smallexample">     #include &lt;immintrin.h&gt;
+     
+     /* Unwind the shadow stack for EH.  */
+     #define _Unwind_Frames_Extra(x)       \
+       do                                  \
+         {                                \
+           _Unwind_Word ssp = _get_ssp (); \
+           if (ssp != 0)                   \
+             {                            \
+               _Unwind_Word tmp = (x);     \
+               while (tmp &gt; 255)           \
+                 {                        \
+                   _inc_ssp (tmp);         \
+                   tmp -= 255;             \
+                 }                        \
+               _inc_ssp (tmp);             \
+             }                            \
+         }                                \
+         while (0)
+</pre>
+ <p class="noindent">This code runs unconditionally on all 64-bit processors.  For 32-bit
+processors the code runs on those that support multi-byte NOP instructions.
+
+ </body></html>
+

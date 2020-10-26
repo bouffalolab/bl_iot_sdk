@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+<title>Nth Root Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms" title="Root Extraction Algorithms">
+<link rel="prev" href="Square-Root-Algorithm.html#Square-Root-Algorithm" title="Square Root Algorithm">
+<link rel="next" href="Perfect-Square-Algorithm.html#Perfect-Square-Algorithm" title="Perfect Square Algorithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Nth-Root-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Perfect-Square-Algorithm.html#Perfect-Square-Algorithm">Perfect Square Algorithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Square-Root-Algorithm.html#Square-Root-Algorithm">Square Root Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms">Root Extraction Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.5.2 Nth Root</h4>
+
+<p><a name="index-Root-extraction-algorithm-921"></a><a name="index-Nth-root-algorithm-922"></a>
+Integer Nth roots are taken using Newton's method with the following
+iteration, where A is the input and n is the root to be taken.
+
+<pre class="example">              1         A
+     a[i+1] = - * ( --------- + (n-1)*a[i] )
+              n     a[i]^(n-1)
+</pre>
+   <p>The initial approximation a[1] is generated bitwise by successively
+powering a trial root with or without new 1 bits, aiming to be just above the
+true root.  The iteration converges quadratically when started from a good
+approximation.  When n is large more initial bits are needed to get
+good convergence.  The current implementation is not particularly well
+optimized.
+
+   </body></html>
+

@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>Converting Integers - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Simultaneous-Integer-Init-_0026-Assign.html#Simultaneous-Integer-Init-_0026-Assign" title="Simultaneous Integer Init &amp; Assign">
+<link rel="next" href="Integer-Arithmetic.html#Integer-Arithmetic" title="Integer Arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Converting-Integers"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Integer-Arithmetic.html#Integer-Arithmetic">Integer Arithmetic</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Simultaneous-Integer-Init-_0026-Assign.html#Simultaneous-Integer-Init-_0026-Assign">Simultaneous Integer Init &amp; Assign</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.4 Conversion Functions</h3>
+
+<p><a name="index-Integer-conversion-functions-272"></a><a name="index-Conversion-functions-273"></a>
+This section describes functions for converting GMP integers to standard C
+types.  Functions for converting <em>to</em> GMP integers are described in
+<a href="Assigning-Integers.html#Assigning-Integers">Assigning Integers</a> and <a href="I_002fO-of-Integers.html#I_002fO-of-Integers">I/O of Integers</a>.
+
+<div class="defun">
+&mdash; Function: unsigned long int <b>mpz_get_ui</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fget_005fui-274"></a></var><br>
+<blockquote><p>Return the value of <var>op</var> as an <code>unsigned long</code>.
+
+        <p>If <var>op</var> is too big to fit an <code>unsigned long</code> then just the least
+significant bits that do fit are returned.  The sign of <var>op</var> is ignored,
+only the absolute value is used. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: signed long int <b>mpz_get_si</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fget_005fsi-275"></a></var><br>
+<blockquote><p>If <var>op</var> fits into a <code>signed long int</code> return the value of <var>op</var>. 
+Otherwise return the least significant part of <var>op</var>, with the same sign
+as <var>op</var>.
+
+        <p>If <var>op</var> is too big to fit in a <code>signed long int</code>, the returned
+result is probably not very useful.  To find out if the value will fit, use
+the function <code>mpz_fits_slong_p</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: double <b>mpz_get_d</b> (<var>const mpz_t op</var>)<var><a name="index-mpz_005fget_005fd-276"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
+towards zero).
+
+        <p>If the exponent from the conversion is too big, the result is system
+dependent.  An infinity is returned where available.  A hardware overflow trap
+may or may not occur. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: double <b>mpz_get_d_2exp</b> (<var>signed long int *exp, const mpz_t op</var>)<var><a name="index-mpz_005fget_005fd_005f2exp-277"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
+towards zero), and returning the exponent separately.
+
+        <p>The return value is in the range 0.5&lt;=abs(<var>d</var>)&lt;1 and the
+exponent is stored to <code>*</code><var>exp</var>.  <var>d</var> *
+2^<var>exp</var> is the (truncated) <var>op</var> value.  If <var>op</var> is zero, the
+return is 0.0 and 0 is stored to <code>*</code><var>exp</var>.
+
+        <p><a name="index-g_t_0040code_007bfrexp_007d-278"></a>This is similar to the standard C <code>frexp</code> function (see <a href="../libc/Normalization-Functions.html#Normalization-Functions">Normalization Functions</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>mpz_get_str</b> (<var>char *str, int base, const mpz_t op</var>)<var><a name="index-mpz_005fget_005fstr-279"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a string of digits in base <var>base</var>.  The base argument
+may vary from 2 to 62 or from &minus;2 to &minus;36.
+
+        <p>For <var>base</var> in the range 2..36, digits and lower-case letters are used; for
+&minus;2..&minus;36, digits and upper-case letters are used; for 37..62,
+digits, upper-case letters, and lower-case letters (in that significance order)
+are used.
+
+        <p>If <var>str</var> is <code>NULL</code>, the result string is allocated using the current
+allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be
+<code>strlen(str)+1</code> bytes, that being exactly enough for the string and
+null-terminator.
+
+        <p>If <var>str</var> is not <code>NULL</code>, it should point to a block of storage large
+enough for the result, that being <code>mpz_sizeinbase (</code><var>op</var><code>, </code><var>base</var><code>)
++ 2</code>.  The two extra bytes are for a possible minus sign, and the
+null-terminator.
+
+        <p>A pointer to the result string is returned, being either the allocated block,
+or the given <var>str</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

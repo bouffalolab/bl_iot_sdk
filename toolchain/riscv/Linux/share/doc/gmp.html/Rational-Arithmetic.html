@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Rational Arithmetic - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Rational-Number-Functions.html#Rational-Number-Functions" title="Rational Number Functions">
+<link rel="prev" href="Rational-Conversions.html#Rational-Conversions" title="Rational Conversions">
+<link rel="next" href="Comparing-Rationals.html#Comparing-Rationals" title="Comparing Rationals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Rational-Arithmetic"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Comparing-Rationals.html#Comparing-Rationals">Comparing Rationals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Rational-Conversions.html#Rational-Conversions">Rational Conversions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">6.3 Arithmetic Functions</h3>
+
+<p><a name="index-Rational-arithmetic-functions-509"></a><a name="index-Arithmetic-functions-510"></a>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_add</b> (<var>mpq_t sum, const mpq_t addend1, const mpq_t addend2</var>)<var><a name="index-mpq_005fadd-511"></a></var><br>
+<blockquote><p>Set <var>sum</var> to <var>addend1</var> + <var>addend2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_sub</b> (<var>mpq_t difference, const mpq_t minuend, const mpq_t subtrahend</var>)<var><a name="index-mpq_005fsub-512"></a></var><br>
+<blockquote><p>Set <var>difference</var> to <var>minuend</var> &minus; <var>subtrahend</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_mul</b> (<var>mpq_t product, const mpq_t multiplier, const mpq_t multiplicand</var>)<var><a name="index-mpq_005fmul-513"></a></var><br>
+<blockquote><p>Set <var>product</var> to <var>multiplier</var> times <var>multiplicand</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_mul_2exp</b> (<var>mpq_t rop, const mpq_t op1, mp_bitcnt_t op2</var>)<var><a name="index-mpq_005fmul_005f2exp-514"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times 2 raised to
+<var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_div</b> (<var>mpq_t quotient, const mpq_t dividend, const mpq_t divisor</var>)<var><a name="index-mpq_005fdiv-515"></a></var><br>
+<blockquote><p><a name="index-Division-functions-516"></a>Set <var>quotient</var> to <var>dividend</var>/<var>divisor</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_div_2exp</b> (<var>mpq_t rop, const mpq_t op1, mp_bitcnt_t op2</var>)<var><a name="index-mpq_005fdiv_005f2exp-517"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> divided by 2 raised to
+<var>op2</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_neg</b> (<var>mpq_t negated_operand, const mpq_t operand</var>)<var><a name="index-mpq_005fneg-518"></a></var><br>
+<blockquote><p>Set <var>negated_operand</var> to &minus;<var>operand</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_abs</b> (<var>mpq_t rop, const mpq_t op</var>)<var><a name="index-mpq_005fabs-519"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the absolute value of <var>op</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_inv</b> (<var>mpq_t inverted_number, const mpq_t number</var>)<var><a name="index-mpq_005finv-520"></a></var><br>
+<blockquote><p>Set <var>inverted_number</var> to 1/<var>number</var>.  If the new denominator is
+zero, this routine will divide by zero. 
+</p></blockquote></div>
+
+   </body></html>
+

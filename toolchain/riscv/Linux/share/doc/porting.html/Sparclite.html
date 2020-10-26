@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+<title>Sparclite - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Supported-targets.html#Supported-targets" title="Supported targets">
+<link rel="next" href="CPU32.html#CPU32" title="CPU32">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Sparclite"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="CPU32.html#CPU32">CPU32</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Supported-targets.html#Supported-targets">Supported targets</a>
+<hr>
+</div>
+
+<h4 class="subsection">1.1.1 Sparclite Targets Supported</h4>
+
+<!-- FIXME: put links to the docs in etc/targetdoc -->
+<p>This is for the Fujitsu Sparclite family of processors. Currently this
+covers the ex930, ex931, ex932, ex933, and the ex934. In addition to the
+I/O code a startup file, this has a GDB debug-stub that gets linked into
+your application. This is an exception handler style debug stub. For
+more info, see the section on Porting GDB. <a href="GDB.html#GDB">Porting GDB</a>.
+
+   <p>The Fujitsu eval boards use a host based terminal program to load and
+execute programs on the target. This program, <code>pciuh</code> is relatively
+new (in 1994) and it replaced the previous ROM monitor which had the
+shell in the ROM. GDB uses the the GDB remote protocol, the relevant
+source files from the gdb sources are remote-sparcl.c. The debug stub is
+part of libgloss and is called sparcl-stub.c.
+
+   </body></html>
+

@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Enumerator Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Extensions.html#C-Extensions" title="C Extensions">
+<link rel="prev" href="Label-Attributes.html#Label-Attributes" title="Label Attributes">
+<link rel="next" href="Statement-Attributes.html#Statement-Attributes" title="Statement Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Enumerator-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Statement-Attributes.html#Statement-Attributes">Statement Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Label-Attributes.html#Label-Attributes">Label Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Extensions.html#C-Extensions">C Extensions</a>
+<hr>
+</div>
+
+<h3 class="section">6.35 Enumerator Attributes</h3>
+
+<p><a name="index-Enumerator-Attributes-3933"></a>
+GCC allows attributes to be set on enumerators.  See <a href="Attribute-Syntax.html#Attribute-Syntax">Attribute Syntax</a>, for
+details of the exact syntax for using attributes.  Other attributes are
+available for functions (see <a href="Function-Attributes.html#Function-Attributes">Function Attributes</a>), variables
+(see <a href="Variable-Attributes.html#Variable-Attributes">Variable Attributes</a>), labels (see <a href="Label-Attributes.html#Label-Attributes">Label Attributes</a>), statements
+(see <a href="Statement-Attributes.html#Statement-Attributes">Statement Attributes</a>), and for types (see <a href="Type-Attributes.html#Type-Attributes">Type Attributes</a>).
+
+ <p>This example uses the <code>deprecated</code> enumerator attribute to indicate the
+<code>oldval</code> enumerator is deprecated:
+
+<pre class="smallexample">     enum E {
+       oldval __attribute__((deprecated)),
+       newval
+     };
+     
+     int
+     fn (void)
+     {
+       return oldval;
+     }
+</pre>
+     <dl>
+<dt><code>deprecated</code><dd><a name="index-g_t_0040code_007bdeprecated_007d-enumerator-attribute-3934"></a>The <code>deprecated</code> attribute results in a warning if the enumerator
+is used anywhere in the source file.  This is useful when identifying
+enumerators that are expected to be removed in a future version of a
+program.  The warning also includes the location of the declaration
+of the deprecated enumerator, to enable users to easily find further
+information about why the enumerator is deprecated, or what they should
+do instead.  Note that the warnings only occurs for uses.
+
+ </dl>
+
+ </body></html>
+

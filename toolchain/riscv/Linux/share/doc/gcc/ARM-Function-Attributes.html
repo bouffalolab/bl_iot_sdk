@@ -1,0 +1,166 @@
+<html lang="en">
+<head>
+<title>ARM Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="ARC-Function-Attributes.html#ARC-Function-Attributes" title="ARC Function Attributes">
+<link rel="next" href="AVR-Function-Attributes.html#AVR-Function-Attributes" title="AVR Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ARM-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="AVR-Function-Attributes.html#AVR-Function-Attributes">AVR Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ARC-Function-Attributes.html#ARC-Function-Attributes">ARC Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.4 ARM Function Attributes</h4>
+
+<p>These function attributes are supported for ARM targets:
+
+     <dl>
+<dt><code>interrupt</code><dd><a name="index-g_t_0040code_007binterrupt_007d-function-attribute_002c-ARM-3564"></a>Use this attribute to indicate
+that the specified function is an interrupt handler.  The compiler generates
+function entry and exit sequences suitable for use in an interrupt handler
+when this attribute is present.
+
+     <p>You can specify the kind of interrupt to be handled by
+adding an optional parameter to the interrupt attribute like this:
+
+     <pre class="smallexample">          void f () __attribute__ ((interrupt ("IRQ")));
+</pre>
+     <p class="noindent">Permissible values for this parameter are: <code>IRQ</code>, <code>FIQ</code>,
+<code>SWI</code>, <code>ABORT</code> and <code>UNDEF</code>.
+
+     <p>On ARMv7-M the interrupt type is ignored, and the attribute means the function
+may be called with a word-aligned stack pointer.
+
+     <br><dt><code>isr</code><dd><a name="index-g_t_0040code_007bisr_007d-function-attribute_002c-ARM-3565"></a>Use this attribute on ARM to write Interrupt Service Routines. This is an
+alias to the <code>interrupt</code> attribute above.
+
+     <br><dt><code>long_call</code><dt><code>short_call</code><dd><a name="index-g_t_0040code_007blong_005fcall_007d-function-attribute_002c-ARM-3566"></a><a name="index-g_t_0040code_007bshort_005fcall_007d-function-attribute_002c-ARM-3567"></a><a name="index-indirect-calls_002c-ARM-3568"></a>These attributes specify how a particular function is called. 
+These attributes override the
+<samp><span class="option">-mlong-calls</span></samp> (see <a href="ARM-Options.html#ARM-Options">ARM Options</a>)
+command-line switch and <code>#pragma long_calls</code> settings.  For ARM, the
+<code>long_call</code> attribute indicates that the function might be far
+away from the call site and require a different (more expensive)
+calling sequence.   The <code>short_call</code> attribute always places
+the offset to the function from the call site into the &lsquo;<samp><span class="samp">BL</span></samp>&rsquo;
+instruction directly.
+
+     <br><dt><code>naked</code><dd><a name="index-g_t_0040code_007bnaked_007d-function-attribute_002c-ARM-3569"></a>This attribute allows the compiler to construct the
+requisite function declaration, while allowing the body of the
+function to be assembly code. The specified function will not have
+prologue/epilogue sequences generated by the compiler. Only basic
+<code>asm</code> statements can safely be included in naked functions
+(see <a href="Basic-Asm.html#Basic-Asm">Basic Asm</a>). While using extended <code>asm</code> or a mixture of
+basic <code>asm</code> and C code may appear to work, they cannot be
+depended upon to work reliably and are not supported.
+
+     <br><dt><code>pcs</code><dd><a name="index-g_t_0040code_007bpcs_007d-function-attribute_002c-ARM-3570"></a>
+The <code>pcs</code> attribute can be used to control the calling convention
+used for a function on ARM.  The attribute takes an argument that specifies
+the calling convention to use.
+
+     <p>When compiling using the AAPCS ABI (or a variant of it) then valid
+values for the argument are <code>"aapcs"</code> and <code>"aapcs-vfp"</code>.  In
+order to use a variant other than <code>"aapcs"</code> then the compiler must
+be permitted to use the appropriate co-processor registers (i.e., the
+VFP registers must be available in order to use <code>"aapcs-vfp"</code>). 
+For example,
+
+     <pre class="smallexample">          /* Argument passed in r0, and result returned in r0+r1.  */
+          double f2d (float) __attribute__((pcs("aapcs")));
+</pre>
+     <p>Variadic functions always use the <code>"aapcs"</code> calling convention and
+the compiler rejects attempts to specify an alternative.
+
+     <br><dt><code>target (</code><var>options</var><code>)</code><dd><a name="index-g_t_0040code_007btarget_007d-function-attribute-3571"></a>As discussed in <a href="Common-Function-Attributes.html#Common-Function-Attributes">Common Function Attributes</a>, this attribute
+allows specification of target-specific compilation options.
+
+     <p>On ARM, the following options are allowed:
+
+          <dl>
+<dt>&lsquo;<samp><span class="samp">thumb</span></samp>&rsquo;<dd><a name="index-g_t_0040code_007btarget_0028_0022thumb_0022_0029_007d-function-attribute_002c-ARM-3572"></a>Force code generation in the Thumb (T16/T32) ISA, depending on the
+architecture level.
+
+          <br><dt>&lsquo;<samp><span class="samp">arm</span></samp>&rsquo;<dd><a name="index-g_t_0040code_007btarget_0028_0022arm_0022_0029_007d-function-attribute_002c-ARM-3573"></a>Force code generation in the ARM (A32) ISA.
+
+          <p>Functions from different modes can be inlined in the caller's mode.
+
+          <br><dt>&lsquo;<samp><span class="samp">fpu=</span></samp>&rsquo;<dd><a name="index-g_t_0040code_007btarget_0028_0022fpu_003d_0022_0029_007d-function-attribute_002c-ARM-3574"></a>Specifies the fpu for which to tune the performance of this function. 
+The behavior and permissible arguments are the same as for the <samp><span class="option">-mfpu=</span></samp>
+command-line option.
+
+          <br><dt>&lsquo;<samp><span class="samp">arch=</span></samp>&rsquo;<dd><a name="index-g_t_0040code_007barch_003d_007d-function-attribute_002c-ARM-3575"></a>Specifies the architecture version and architectural extensions to use
+for this function.  The behavior and permissible arguments are the same as
+for the <samp><span class="option">-march=</span></samp> command-line option.
+
+          <p>The above target attributes can be specified as follows:
+
+          <pre class="smallexample">               __attribute__((target("arch=armv8-a+crc")))
+               int
+               f (int a)
+               {
+                 return a + 5;
+               }
+</pre>
+          <p>Additionally, the architectural extension string may be specified on its
+own.  This can be used to turn on and off particular architectural extensions
+without having to specify a particular architecture version or core.  Example:
+
+          <pre class="smallexample">               __attribute__((target("+crc+nocrypto")))
+               int
+               foo (int a)
+               {
+                 return a + 5;
+               }
+</pre>
+          <p>In this example <code>target("+crc+nocrypto")</code> enables the <code>crc</code>
+extension and disables the <code>crypto</code> extension for the function <code>foo</code>
+without modifying an existing <samp><span class="option">-march=</span></samp> or <samp><span class="option">-mcpu</span></samp> option.
+
+     </dl>
+
+ </dl>
+
+ </body></html>
+

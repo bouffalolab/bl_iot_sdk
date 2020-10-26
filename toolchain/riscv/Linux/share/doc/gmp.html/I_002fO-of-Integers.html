@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>I/O of Integers - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Integer-Functions.html#Integer-Functions" title="Integer Functions">
+<link rel="prev" href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling" title="Integer Logic and Bit Fiddling">
+<link rel="next" href="Integer-Random-Numbers.html#Integer-Random-Numbers" title="Integer Random Numbers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="I%2fO-of-Integers"></a>
+<a name="I_002fO-of-Integers"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Integer-Random-Numbers.html#Integer-Random-Numbers">Integer Random Numbers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling">Integer Logic and Bit Fiddling</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Integer-Functions.html#Integer-Functions">Integer Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.12 Input and Output Functions</h3>
+
+<p><a name="index-Integer-input-and-output-functions-440"></a><a name="index-Input-functions-441"></a><a name="index-Output-functions-442"></a><a name="index-I_002fO-functions-443"></a>
+Functions that perform input from a stdio stream, and functions that output to
+a stdio stream, of <code>mpz</code> numbers.  Passing a <code>NULL</code> pointer for a
+<var>stream</var> argument to any of these functions will make them read from
+<code>stdin</code> and write to <code>stdout</code>, respectively.
+
+   <p>When using any of these functions, it is a good idea to include <samp><span class="file">stdio.h</span></samp>
+before <samp><span class="file">gmp.h</span></samp>, since that will allow <samp><span class="file">gmp.h</span></samp> to define prototypes
+for these functions.
+
+   <p>See also <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a> and <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>.
+
+<div class="defun">
+&mdash; Function: size_t <b>mpz_out_str</b> (<var>FILE *stream, int base, const mpz_t op</var>)<var><a name="index-mpz_005fout_005fstr-444"></a></var><br>
+<blockquote><p>Output <var>op</var> on stdio stream <var>stream</var>, as a string of digits in base
+<var>base</var>.  The base argument may vary from 2 to 62 or from &minus;2 to
+&minus;36.
+
+        <p>For <var>base</var> in the range 2..36, digits and lower-case letters are used; for
+&minus;2..&minus;36, digits and upper-case letters are used; for 37..62,
+digits, upper-case letters, and lower-case letters (in that significance order)
+are used.
+
+        <p>Return the number of bytes written, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpz_inp_str</b> (<var>mpz_t rop, FILE *stream, int base</var>)<var><a name="index-mpz_005finp_005fstr-445"></a></var><br>
+<blockquote><p>Input a possibly white-space preceded string in base <var>base</var> from stdio
+stream <var>stream</var>, and put the read integer in <var>rop</var>.
+
+        <p>The <var>base</var> may vary from 2 to 62, or if <var>base</var> is 0, then the leading
+characters are used: <code>0x</code> and <code>0X</code> for hexadecimal, <code>0b</code> and
+<code>0B</code> for binary, <code>0</code> for octal, or decimal otherwise.
+
+        <p>For bases up to 36, case is ignored; upper-case and lower-case letters have
+the same value.  For bases 37 to 62, upper-case letter represent the usual
+10..35 while lower-case letter represent 36..61.
+
+        <p>Return the number of bytes read, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpz_out_raw</b> (<var>FILE *stream, const mpz_t op</var>)<var><a name="index-mpz_005fout_005fraw-446"></a></var><br>
+<blockquote><p>Output <var>op</var> on stdio stream <var>stream</var>, in raw binary format.  The
+integer is written in a portable format, with 4 bytes of size information, and
+that many bytes of limbs.  Both the size and the limbs are written in
+decreasing significance order (i.e., in big-endian).
+
+        <p>The output can be read with <code>mpz_inp_raw</code>.
+
+        <p>Return the number of bytes written, or if an error occurred, return 0.
+
+        <p>The output of this can not be read by <code>mpz_inp_raw</code> from GMP 1, because
+of changes necessary for compatibility between 32-bit and 64-bit machines. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpz_inp_raw</b> (<var>mpz_t rop, FILE *stream</var>)<var><a name="index-mpz_005finp_005fraw-447"></a></var><br>
+<blockquote><p>Input from stdio stream <var>stream</var> in the format written by
+<code>mpz_out_raw</code>, and put the result in <var>rop</var>.  Return the number of
+bytes read, or if an error occurred, return 0.
+
+        <p>This routine can read the output from <code>mpz_out_raw</code> also from GMP 1, in
+spite of changes necessary for compatibility between 32-bit and 64-bit
+machines. 
+</p></blockquote></div>
+
+   </body></html>
+

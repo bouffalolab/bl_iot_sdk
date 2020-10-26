@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+<title>Combined Initialization and Assignment Functions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="prev" href="Assignment-Functions.html#Assignment-Functions" title="Assignment Functions">
+<link rel="next" href="Conversion-Functions.html#Conversion-Functions" title="Conversion Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Combined-Initialization-and-Assignment-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Conversion-Functions.html#Conversion-Functions">Conversion Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assignment-Functions.html#Assignment-Functions">Assignment Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+   <p><a name="index-Combined-initialization-and-assignment-functions-63"></a>
+
+<h3 class="section">5.3 Combined Initialization and Assignment Functions</h3>
+
+<div class="defun">
+&mdash; Macro: int <b>mpfr_init_set</b> (<var>mpfr_t rop, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset-64"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_ui</b> (<var>mpfr_t rop, unsigned long int op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fui-65"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_si</b> (<var>mpfr_t rop, long int op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fsi-66"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_d</b> (<var>mpfr_t rop, double op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fd-67"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_ld</b> (<var>mpfr_t rop, long double op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fld-68"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_z</b> (<var>mpfr_t rop, mpz_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fz-69"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_q</b> (<var>mpfr_t rop, mpq_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fq-70"></a></var><br>
+&mdash; Macro: int <b>mpfr_init_set_f</b> (<var>mpfr_t rop, mpf_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005ff-71"></a></var><br>
+<blockquote><p>Initialize <var>rop</var> and set its value from <var>op</var>, rounded in the direction
+<var>rnd</var>. 
+The precision of <var>rop</var> will be taken from the active default precision,
+as set by <code>mpfr_set_default_prec</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_init_set_str</b> (<var>mpfr_t x, const char *s, int base, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005finit_005fset_005fstr-72"></a></var><br>
+<blockquote><p>Initialize <var>x</var> and set its value from
+the string <var>s</var> in base <var>base</var>,
+rounded in the direction <var>rnd</var>. 
+See <code>mpfr_set_str</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

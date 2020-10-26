@@ -1,0 +1,576 @@
+<html lang="en">
+<head>
+<title>Invoking Gcov - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gcov.html#Gcov" title="Gcov">
+<link rel="prev" href="Gcov-Intro.html#Gcov-Intro" title="Gcov Intro">
+<link rel="next" href="Gcov-and-Optimization.html#Gcov-and-Optimization" title="Gcov and Optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Invoking-Gcov"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Gcov-and-Optimization.html#Gcov-and-Optimization">Gcov and Optimization</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gcov-Intro.html#Gcov-Intro">Gcov Intro</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gcov.html#Gcov">Gcov</a>
+<hr>
+</div>
+
+<h3 class="section">10.2 Invoking <samp><span class="command">gcov</span></samp></h3>
+
+<pre class="smallexample">     gcov <span class="roman">[</span><var>options</var><span class="roman">]</span> <var>files</var>
+</pre>
+ <p><samp><span class="command">gcov</span></samp> accepts the following options:
+
+<!-- man begin OPTIONS -->
+     <dl>
+<dt><code>-a</code><dt><code>--all-blocks</code><dd>Write individual execution counts for every basic block.  Normally gcov
+outputs execution counts only for the main blocks of a line.  With this
+option you can determine if blocks within a single line are not being
+executed.
+
+     <br><dt><code>-b</code><dt><code>--branch-probabilities</code><dd>Write branch frequencies to the output file, and write branch summary
+info to the standard output.  This option allows you to see how often
+each branch in your program was taken.  Unconditional branches will not
+be shown, unless the <samp><span class="option">-u</span></samp> option is given.
+
+     <br><dt><code>-c</code><dt><code>--branch-counts</code><dd>Write branch frequencies as the number of branches taken, rather than
+the percentage of branches taken.
+
+     <br><dt><code>-d</code><dt><code>--display-progress</code><dd>Display the progress on the standard output.
+
+     <br><dt><code>-f</code><dt><code>--function-summaries</code><dd>Output summaries for each function in addition to the file level summary.
+
+     <br><dt><code>-h</code><dt><code>--help</code><dd>Display help about using <samp><span class="command">gcov</span></samp> (on the standard output), and
+exit without doing any further processing.
+
+     <br><dt><code>-i</code><dt><code>--intermediate-format</code><dd>Output gcov file in an easy-to-parse intermediate text format that can
+be used by <samp><span class="command">lcov</span></samp> or other tools. The output is a single
+<samp><span class="file">.gcov</span></samp> file per <samp><span class="file">.gcda</span></samp> file. No source code is required.
+
+     <p>The format of the intermediate <samp><span class="file">.gcov</span></samp> file is plain text with
+one entry per line
+
+     <pre class="smallexample">          version:<var>gcc_version</var>
+          file:<var>source_file_name</var>
+          function:<var>start_line_number</var>,<var>end_line_number</var>,<var>execution_count</var>,<var>function_name</var>
+          lcount:<var>line number</var>,<var>execution_count</var>,<var>has_unexecuted_block</var>
+          branch:<var>line_number</var>,<var>branch_coverage_type</var>
+          
+          Where the <var>branch_coverage_type</var> is
+             notexec (Branch not executed)
+             taken (Branch executed and taken)
+             nottaken (Branch executed, but not taken)
+</pre>
+     <p>There can be multiple <var>file</var> entries in an intermediate gcov
+file. All entries following a <var>file</var> pertain to that source file
+until the next <var>file</var> entry.  If there are multiple functions that
+start on a single line, then corresponding lcount is repeated multiple
+times.
+
+     <p>Here is a sample when <samp><span class="option">-i</span></samp> is used in conjunction with <samp><span class="option">-b</span></samp> option:
+
+     <pre class="smallexample">          version: 8.1.0 20180103
+          file:tmp.cpp
+          function:7,7,0,_ZN3FooIcEC2Ev
+          function:7,7,1,_ZN3FooIiEC2Ev
+          function:8,8,0,_ZN3FooIcE3incEv
+          function:8,8,2,_ZN3FooIiE3incEv
+          function:18,37,1,main
+          lcount:7,0,1
+          lcount:7,1,0
+          lcount:8,0,1
+          lcount:8,2,0
+          lcount:18,1,0
+          lcount:21,1,0
+          branch:21,taken
+          branch:21,nottaken
+          lcount:23,1,0
+          branch:23,taken
+          branch:23,nottaken
+          lcount:24,1,0
+          branch:24,taken
+          branch:24,nottaken
+          lcount:25,1,0
+          lcount:27,11,0
+          branch:27,taken
+          branch:27,taken
+          lcount:28,10,0
+          lcount:30,1,1
+          branch:30,nottaken
+          branch:30,taken
+          lcount:32,1,0
+          branch:32,nottaken
+          branch:32,taken
+          lcount:33,0,1
+          branch:33,notexec
+          branch:33,notexec
+          lcount:35,1,0
+          branch:35,taken
+          branch:35,nottaken
+          lcount:36,1,0
+</pre>
+     <br><dt><code>-j</code><dt><code>--human-readable</code><dd>Write counts in human readable format (like 24k).
+
+     <br><dt><code>-k</code><dt><code>--use-colors</code><dd>
+Use colors for lines of code that have zero coverage.  We use red color for
+non-exceptional lines and cyan for exceptional.  Same colors are used for
+basic blocks with <samp><span class="option">-a</span></samp> option.
+
+     <br><dt><code>-l</code><dt><code>--long-file-names</code><dd>Create long file names for included source files.  For example, if the
+header file <samp><span class="file">x.h</span></samp> contains code, and was included in the file
+<samp><span class="file">a.c</span></samp>, then running <samp><span class="command">gcov</span></samp> on the file <samp><span class="file">a.c</span></samp> will
+produce an output file called <samp><span class="file">a.c##x.h.gcov</span></samp> instead of
+<samp><span class="file">x.h.gcov</span></samp>.  This can be useful if <samp><span class="file">x.h</span></samp> is included in
+multiple source files and you want to see the individual
+contributions.  If you use the &lsquo;<samp><span class="samp">-p</span></samp>&rsquo; option, both the including
+and included file names will be complete path names.
+
+     <br><dt><code>-m</code><dt><code>--demangled-names</code><dd>Display demangled function names in output. The default is to show
+mangled function names.
+
+     <br><dt><code>-n</code><dt><code>--no-output</code><dd>Do not create the <samp><span class="command">gcov</span></samp> output file.
+
+     <br><dt><code>-o </code><var>directory|file</var><dt><code>--object-directory </code><var>directory</var><dt><code>--object-file </code><var>file</var><dd>Specify either the directory containing the gcov data files, or the
+object path name.  The <samp><span class="file">.gcno</span></samp>, and
+<samp><span class="file">.gcda</span></samp> data files are searched for using this option.  If a directory
+is specified, the data files are in that directory and named after the
+input file name, without its extension.  If a file is specified here,
+the data files are named after that file, without its extension.
+
+     <br><dt><code>-p</code><dt><code>--preserve-paths</code><dd>Preserve complete path information in the names of generated
+<samp><span class="file">.gcov</span></samp> files.  Without this option, just the filename component is
+used.  With this option, all directories are used, with &lsquo;<samp><span class="samp">/</span></samp>&rsquo; characters
+translated to &lsquo;<samp><span class="samp">#</span></samp>&rsquo; characters, <samp><span class="file">.</span></samp> directory components
+removed and unremoveable <samp><span class="file">..</span></samp>
+components renamed to &lsquo;<samp><span class="samp">^</span></samp>&rsquo;.  This is useful if sourcefiles are in several
+different directories.
+
+     <br><dt><code>-r</code><dt><code>--relative-only</code><dd>Only output information about source files with a relative pathname
+(after source prefix elision).  Absolute paths are usually system
+header files and coverage of any inline functions therein is normally
+uninteresting.
+
+     <br><dt><code>-s </code><var>directory</var><dt><code>--source-prefix </code><var>directory</var><dd>A prefix for source file names to remove when generating the output
+coverage files.  This option is useful when building in a separate
+directory, and the pathname to the source directory is not wanted when
+determining the output file names.  Note that this prefix detection is
+applied before determining whether the source file is absolute.
+
+     <br><dt><code>-u</code><dt><code>--unconditional-branches</code><dd>When branch probabilities are given, include those of unconditional branches. 
+Unconditional branches are normally not interesting.
+
+     <br><dt><code>-v</code><dt><code>--version</code><dd>Display the <samp><span class="command">gcov</span></samp> version number (on the standard output),
+and exit without doing any further processing.
+
+     <br><dt><code>-w</code><dt><code>--verbose</code><dd>Print verbose informations related to basic blocks and arcs.
+
+     <br><dt><code>-x</code><dt><code>--hash-filenames</code><dd>By default, gcov uses the full pathname of the source files to create
+an output filename.  This can lead to long filenames that can overflow
+filesystem limits.  This option creates names of the form
+<samp><var>source-file</var><span class="file">##</span><var>md5</var><span class="file">.gcov</span></samp>,
+where the <var>source-file</var> component is the final filename part and
+the <var>md5</var> component is calculated from the full mangled name that
+would have been used otherwise.
+
+ </dl>
+
+ <p><samp><span class="command">gcov</span></samp> should be run with the current directory the same as that
+when you invoked the compiler.  Otherwise it will not be able to locate
+the source files.  <samp><span class="command">gcov</span></samp> produces files called
+<samp><var>mangledname</var><span class="file">.gcov</span></samp> in the current directory.  These contain
+the coverage information of the source file they correspond to. 
+One <samp><span class="file">.gcov</span></samp> file is produced for each source (or header) file
+containing code,
+which was compiled to produce the data files.  The <var>mangledname</var> part
+of the output file name is usually simply the source file name, but can
+be something more complicated if the &lsquo;<samp><span class="samp">-l</span></samp>&rsquo; or &lsquo;<samp><span class="samp">-p</span></samp>&rsquo; options are
+given.  Refer to those options for details.
+
+ <p>If you invoke <samp><span class="command">gcov</span></samp> with multiple input files, the
+contributions from each input file are summed.  Typically you would
+invoke it with the same list of files as the final link of your executable.
+
+ <p>The <samp><span class="file">.gcov</span></samp> files contain the &lsquo;<samp><span class="samp">:</span></samp>&rsquo; separated fields along with
+program source code.  The format is
+
+<pre class="smallexample">     <var>execution_count</var>:<var>line_number</var>:<var>source line text</var>
+</pre>
+ <p>Additional block information may succeed each line, when requested by
+command line option.  The <var>execution_count</var> is &lsquo;<samp><span class="samp">-</span></samp>&rsquo; for lines
+containing no code.  Unexecuted lines are marked &lsquo;<samp><span class="samp">#####</span></samp>&rsquo; or
+&lsquo;<samp><span class="samp">=====</span></samp>&rsquo;, depending on whether they are reachable by
+non-exceptional paths or only exceptional paths such as C++ exception
+handlers, respectively. Given &lsquo;<samp><span class="samp">-a</span></samp>&rsquo; option, unexecuted blocks are
+marked &lsquo;<samp><span class="samp">$$$$$</span></samp>&rsquo; or &lsquo;<samp><span class="samp">%%%%%</span></samp>&rsquo;, depending on whether a basic block
+is reachable via non-exceptional or exceptional paths. 
+Executed basic blocks having a statement with zero <var>execution_count</var>
+end with &lsquo;<samp><span class="samp">*</span></samp>&rsquo; character and are colored with magenta color with <samp><span class="option">-k</span></samp>
+option.  The functionality is not supported in Ada.
+
+ <p>Note that GCC can completely remove the bodies of functions that are
+not needed &ndash; for instance if they are inlined everywhere.  Such functions
+are marked with &lsquo;<samp><span class="samp">-</span></samp>&rsquo;, which can be confusing. 
+Use the <samp><span class="option">-fkeep-inline-functions</span></samp> and <samp><span class="option">-fkeep-static-functions</span></samp>
+options to retain these functions and
+allow gcov to properly show their <var>execution_count</var>.
+
+ <p>Some lines of information at the start have <var>line_number</var> of zero. 
+These preamble lines are of the form
+
+<pre class="smallexample">     -:0:<var>tag</var>:<var>value</var>
+</pre>
+ <p>The ordering and number of these preamble lines will be augmented as
+<samp><span class="command">gcov</span></samp> development progresses &mdash; do not rely on them remaining
+unchanged.  Use <var>tag</var> to locate a particular preamble line.
+
+ <p>The additional block information is of the form
+
+<pre class="smallexample">     <var>tag</var> <var>information</var>
+</pre>
+ <p>The <var>information</var> is human readable, but designed to be simple
+enough for machine parsing too.
+
+ <p>When printing percentages, 0% and 100% are only printed when the values
+are <em>exactly</em> 0% and 100% respectively.  Other values which would
+conventionally be rounded to 0% or 100% are instead printed as the
+nearest non-boundary value.
+
+ <p>When using <samp><span class="command">gcov</span></samp>, you must first compile your program with two
+special GCC options: &lsquo;<samp><span class="samp">-fprofile-arcs -ftest-coverage</span></samp>&rsquo;. 
+This tells the compiler to generate additional information needed by
+gcov (basically a flow graph of the program) and also includes
+additional code in the object files for generating the extra profiling
+information needed by gcov.  These additional files are placed in the
+directory where the object file is located.
+
+ <p>Running the program will cause profile output to be generated.  For each
+source file compiled with <samp><span class="option">-fprofile-arcs</span></samp>, an accompanying
+<samp><span class="file">.gcda</span></samp> file will be placed in the object file directory.
+
+ <p>Running <samp><span class="command">gcov</span></samp> with your program's source file names as arguments
+will now produce a listing of the code along with frequency of execution
+for each line.  For example, if your program is called <samp><span class="file">tmp.cpp</span></samp>, this
+is what you see when you use the basic <samp><span class="command">gcov</span></samp> facility:
+
+<pre class="smallexample">     $ g++ -fprofile-arcs -ftest-coverage tmp.cpp
+     $ a.out
+     $ gcov tmp.cpp -m
+     File 'tmp.cpp'
+     Lines executed:92.86% of 14
+     Creating 'tmp.cpp.gcov'
+</pre>
+ <p>The file <samp><span class="file">tmp.cpp.gcov</span></samp> contains output from <samp><span class="command">gcov</span></samp>. 
+Here is a sample:
+
+<pre class="smallexample">             -:    0:Source:tmp.cpp
+             -:    0:Graph:tmp.gcno
+             -:    0:Data:tmp.gcda
+             -:    0:Runs:1
+             -:    0:Programs:1
+             -:    1:#include &lt;stdio.h&gt;
+             -:    2:
+             -:    3:template&lt;class T&gt;
+             -:    4:class Foo
+             -:    5:{
+             -:    6:  public:
+            1*:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;char&gt;::Foo():
+         #####:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;int&gt;::Foo():
+             1:    7:  Foo(): b (1000) {}
+     ------------------
+            2*:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;char&gt;::inc():
+         #####:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;int&gt;::inc():
+             2:    8:  void inc () { b++; }
+     ------------------
+             -:    9:
+             -:   10:  private:
+             -:   11:  int b;
+             -:   12:};
+             -:   13:
+             -:   14:template class Foo&lt;int&gt;;
+             -:   15:template class Foo&lt;char&gt;;
+             -:   16:
+             -:   17:int
+             1:   18:main (void)
+             -:   19:{
+             -:   20:  int i, total;
+             1:   21:  Foo&lt;int&gt; counter;
+             -:   22:
+             1:   23:  counter.inc();
+             1:   24:  counter.inc();
+             1:   25:  total = 0;
+             -:   26:
+            11:   27:  for (i = 0; i &lt; 10; i++)
+            10:   28:    total += i;
+             -:   29:
+            1*:   30:  int v = total &gt; 100 ? 1 : 2;
+             -:   31:
+             1:   32:  if (total != 45)
+         #####:   33:    printf ("Failure\n");
+             -:   34:  else
+             1:   35:    printf ("Success\n");
+             1:   36:  return 0;
+             -:   37:}
+</pre>
+ <p>Note that line 7 is shown in the report multiple times.  First occurrence
+presents total number of execution of the line and the next two belong
+to instances of class Foo constructors.  As you can also see, line 30 contains
+some unexecuted basic blocks and thus execution count has asterisk symbol.
+
+ <p>When you use the <samp><span class="option">-a</span></samp> option, you will get individual block
+counts, and the output looks like this:
+
+<pre class="smallexample">             -:    0:Source:tmp.cpp
+             -:    0:Graph:tmp.gcno
+             -:    0:Data:tmp.gcda
+             -:    0:Runs:1
+             -:    0:Programs:1
+             -:    1:#include &lt;stdio.h&gt;
+             -:    2:
+             -:    3:template&lt;class T&gt;
+             -:    4:class Foo
+             -:    5:{
+             -:    6:  public:
+            1*:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;char&gt;::Foo():
+         #####:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;int&gt;::Foo():
+             1:    7:  Foo(): b (1000) {}
+     ------------------
+            2*:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;char&gt;::inc():
+         #####:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;int&gt;::inc():
+             2:    8:  void inc () { b++; }
+     ------------------
+             -:    9:
+             -:   10:  private:
+             -:   11:  int b;
+             -:   12:};
+             -:   13:
+             -:   14:template class Foo&lt;int&gt;;
+             -:   15:template class Foo&lt;char&gt;;
+             -:   16:
+             -:   17:int
+             1:   18:main (void)
+             -:   19:{
+             -:   20:  int i, total;
+             1:   21:  Foo&lt;int&gt; counter;
+             1:   21-block  0
+             -:   22:
+             1:   23:  counter.inc();
+             1:   23-block  0
+             1:   24:  counter.inc();
+             1:   24-block  0
+             1:   25:  total = 0;
+             -:   26:
+            11:   27:  for (i = 0; i &lt; 10; i++)
+             1:   27-block  0
+            11:   27-block  1
+            10:   28:    total += i;
+            10:   28-block  0
+             -:   29:
+            1*:   30:  int v = total &gt; 100 ? 1 : 2;
+             1:   30-block  0
+         %%%%%:   30-block  1
+             1:   30-block  2
+             -:   31:
+             1:   32:  if (total != 45)
+             1:   32-block  0
+         #####:   33:    printf ("Failure\n");
+         %%%%%:   33-block  0
+             -:   34:  else
+             1:   35:    printf ("Success\n");
+             1:   35-block  0
+             1:   36:  return 0;
+             1:   36-block  0
+             -:   37:}
+</pre>
+ <p>In this mode, each basic block is only shown on one line &ndash; the last
+line of the block.  A multi-line block will only contribute to the
+execution count of that last line, and other lines will not be shown
+to contain code, unless previous blocks end on those lines. 
+The total execution count of a line is shown and subsequent lines show
+the execution counts for individual blocks that end on that line.  After each
+block, the branch and call counts of the block will be shown, if the
+<samp><span class="option">-b</span></samp> option is given.
+
+ <p>Because of the way GCC instruments calls, a call count can be shown
+after a line with no individual blocks. 
+As you can see, line 33 contains a basic block that was not executed.
+
+ <p>When you use the <samp><span class="option">-b</span></samp> option, your output looks like this:
+
+<pre class="smallexample">             -:    0:Source:tmp.cpp
+             -:    0:Graph:tmp.gcno
+             -:    0:Data:tmp.gcda
+             -:    0:Runs:1
+             -:    0:Programs:1
+             -:    1:#include &lt;stdio.h&gt;
+             -:    2:
+             -:    3:template&lt;class T&gt;
+             -:    4:class Foo
+             -:    5:{
+             -:    6:  public:
+            1*:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;char&gt;::Foo():
+     function Foo&lt;char&gt;::Foo() called 0 returned 0% blocks executed 0%
+         #####:    7:  Foo(): b (1000) {}
+     ------------------
+     Foo&lt;int&gt;::Foo():
+     function Foo&lt;int&gt;::Foo() called 1 returned 100% blocks executed 100%
+             1:    7:  Foo(): b (1000) {}
+     ------------------
+            2*:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;char&gt;::inc():
+     function Foo&lt;char&gt;::inc() called 0 returned 0% blocks executed 0%
+         #####:    8:  void inc () { b++; }
+     ------------------
+     Foo&lt;int&gt;::inc():
+     function Foo&lt;int&gt;::inc() called 2 returned 100% blocks executed 100%
+             2:    8:  void inc () { b++; }
+     ------------------
+             -:    9:
+             -:   10:  private:
+             -:   11:  int b;
+             -:   12:};
+             -:   13:
+             -:   14:template class Foo&lt;int&gt;;
+             -:   15:template class Foo&lt;char&gt;;
+             -:   16:
+             -:   17:int
+     function main called 1 returned 100% blocks executed 81%
+             1:   18:main (void)
+             -:   19:{
+             -:   20:  int i, total;
+             1:   21:  Foo&lt;int&gt; counter;
+     call    0 returned 100%
+     branch  1 taken 100% (fallthrough)
+     branch  2 taken 0% (throw)
+             -:   22:
+             1:   23:  counter.inc();
+     call    0 returned 100%
+     branch  1 taken 100% (fallthrough)
+     branch  2 taken 0% (throw)
+             1:   24:  counter.inc();
+     call    0 returned 100%
+     branch  1 taken 100% (fallthrough)
+     branch  2 taken 0% (throw)
+             1:   25:  total = 0;
+             -:   26:
+            11:   27:  for (i = 0; i &lt; 10; i++)
+     branch  0 taken 91% (fallthrough)
+     branch  1 taken 9%
+            10:   28:    total += i;
+             -:   29:
+            1*:   30:  int v = total &gt; 100 ? 1 : 2;
+     branch  0 taken 0% (fallthrough)
+     branch  1 taken 100%
+             -:   31:
+             1:   32:  if (total != 45)
+     branch  0 taken 0% (fallthrough)
+     branch  1 taken 100%
+         #####:   33:    printf ("Failure\n");
+     call    0 never executed
+     branch  1 never executed
+     branch  2 never executed
+             -:   34:  else
+             1:   35:    printf ("Success\n");
+     call    0 returned 100%
+     branch  1 taken 100% (fallthrough)
+     branch  2 taken 0% (throw)
+             1:   36:  return 0;
+             -:   37:}
+</pre>
+ <p>For each function, a line is printed showing how many times the function
+is called, how many times it returns and what percentage of the
+function's blocks were executed.
+
+ <p>For each basic block, a line is printed after the last line of the basic
+block describing the branch or call that ends the basic block.  There can
+be multiple branches and calls listed for a single source line if there
+are multiple basic blocks that end on that line.  In this case, the
+branches and calls are each given a number.  There is no simple way to map
+these branches and calls back to source constructs.  In general, though,
+the lowest numbered branch or call will correspond to the leftmost construct
+on the source line.
+
+ <p>For a branch, if it was executed at least once, then a percentage
+indicating the number of times the branch was taken divided by the
+number of times the branch was executed will be printed.  Otherwise, the
+message &ldquo;never executed&rdquo; is printed.
+
+ <p>For a call, if it was executed at least once, then a percentage
+indicating the number of times the call returned divided by the number
+of times the call was executed will be printed.  This will usually be
+100%, but may be less for functions that call <code>exit</code> or <code>longjmp</code>,
+and thus may not return every time they are called.
+
+ <p>The execution counts are cumulative.  If the example program were
+executed again without removing the <samp><span class="file">.gcda</span></samp> file, the count for the
+number of times each line in the source was executed would be added to
+the results of the previous run(s).  This is potentially useful in
+several ways.  For example, it could be used to accumulate data over a
+number of program runs as part of a test verification suite, or to
+provide more accurate long-term information over a large number of
+program runs.
+
+ <p>The data in the <samp><span class="file">.gcda</span></samp> files is saved immediately before the program
+exits.  For each source file compiled with <samp><span class="option">-fprofile-arcs</span></samp>, the
+profiling code first attempts to read in an existing <samp><span class="file">.gcda</span></samp> file; if
+the file doesn't match the executable (differing number of basic block
+counts) it will ignore the contents of the file.  It then adds in the
+new execution counts and finally writes the data to the file.
+
+ </body></html>
+

@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+<title>Assembly SIMD Instructions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembly-Coding.html#Assembly-Coding" title="Assembly Coding">
+<link rel="prev" href="Assembly-Floating-Point.html#Assembly-Floating-Point" title="Assembly Floating Point">
+<link rel="next" href="Assembly-Software-Pipelining.html#Assembly-Software-Pipelining" title="Assembly Software Pipelining">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Assembly-SIMD-Instructions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Assembly-Software-Pipelining.html#Assembly-Software-Pipelining">Assembly Software Pipelining</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assembly-Floating-Point.html#Assembly-Floating-Point">Assembly Floating Point</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembly-Coding.html#Assembly-Coding">Assembly Coding</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.8.7 SIMD Instructions</h4>
+
+<p><a name="index-Assembly-SIMD-940"></a>
+The single-instruction multiple-data support in current microprocessors is
+aimed at signal processing algorithms where each data point can be treated
+more or less independently.  There's generally not much support for
+propagating the sort of carries that arise in GMP.
+
+   <p>SIMD multiplications of say four 16x16 bit multiplies only do as much
+work as one 32x32 from GMP's point of view, and need some shifts and
+adds besides.  But of course if say the SIMD form is fully pipelined and uses
+less instruction decoding then it may still be worthwhile.
+
+   <p>On the x86 chips, MMX has so far found a use in <code>mpn_rshift</code> and
+<code>mpn_lshift</code>, and is used in a special case for 16-bit multipliers in the
+P55 <code>mpn_mul_1</code>.  SSE2 is used for Pentium 4 <code>mpn_mul_1</code>,
+<code>mpn_addmul_1</code>, and <code>mpn_submul_1</code>.
+
+   </body></html>
+

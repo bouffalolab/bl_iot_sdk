@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Known Build Problems - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Installing-GMP.html#Installing-GMP" title="Installing GMP">
+<link rel="prev" href="Notes-for-Particular-Systems.html#Notes-for-Particular-Systems" title="Notes for Particular Systems">
+<link rel="next" href="Performance-optimization.html#Performance-optimization" title="Performance optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Known-Build-Problems"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Performance-optimization.html#Performance-optimization">Performance optimization</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Notes-for-Particular-Systems.html#Notes-for-Particular-Systems">Notes for Particular Systems</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Installing-GMP.html#Installing-GMP">Installing GMP</a>
+<hr>
+</div>
+
+<h3 class="section">2.5 Known Build Problems</h3>
+
+<p><a name="index-Build-problems-known-120"></a>
+<!-- This section is more or less meant for known build problems that are not -->
+<!-- otherwise worked around and require some sort of manual intervention. -->
+
+   <p>You might find more up-to-date information at <a href="https://gmplib.org/">https://gmplib.org/</a>.
+
+     <dl>
+<dt>Compiler link options<dd>The version of libtool currently in use rather aggressively strips compiler
+options when linking a shared library.  This will hopefully be relaxed in the
+future, but for now if this is a problem the suggestion is to create a little
+script to hide them, and for instance configure with
+
+     <pre class="example">          ./configure CC=gcc-with-my-options
+</pre>
+     <br><dt>DJGPP (&lsquo;<samp><span class="samp">*-*-msdosdjgpp*</span></samp>&rsquo;)<dd><a name="index-DJGPP-121"></a>The DJGPP port of <samp><span class="command">bash</span></samp> 2.03 is unable to run the &lsquo;<samp><span class="samp">configure</span></samp>&rsquo;
+script, it exits silently, having died writing a preamble to
+<samp><span class="file">config.log</span></samp>.  Use <samp><span class="command">bash</span></samp> 2.04 or higher.
+
+     <p>&lsquo;<samp><span class="samp">make all</span></samp>&rsquo; was found to run out of memory during the final
+<samp><span class="file">libgmp.la</span></samp> link on one system tested, despite having 64Mb available. 
+Running &lsquo;<samp><span class="samp">make libgmp.la</span></samp>&rsquo; directly helped, perhaps recursing into the
+various subdirectories uses up memory.
+
+     <br><dt>GNU binutils <samp><span class="command">strip</span></samp> prior to 2.12<dd><a name="index-Stripped-libraries-122"></a><a name="index-Binutils-_0040command_007bstrip_007d-123"></a><a name="index-GNU-_0040command_007bstrip_007d-124"></a><samp><span class="command">strip</span></samp> from GNU binutils 2.11 and earlier should not be used on the
+static libraries <samp><span class="file">libgmp.a</span></samp> and <samp><span class="file">libmp.a</span></samp> since it will discard all
+but the last of multiple archive members with the same name, like the three
+versions of <samp><span class="file">init.o</span></samp> in <samp><span class="file">libgmp.a</span></samp>.  Binutils 2.12 or higher can be
+used successfully.
+
+     <p>The shared libraries <samp><span class="file">libgmp.so</span></samp> and <samp><span class="file">libmp.so</span></samp> are not affected by
+this and any version of <samp><span class="command">strip</span></samp> can be used on them.
+
+     <br><dt><samp><span class="command">make</span></samp> syntax error<dd><a name="index-SCO-125"></a><a name="index-IRIX-126"></a>On certain versions of SCO OpenServer 5 and IRIX 6.5 the native <samp><span class="command">make</span></samp>
+is unable to handle the long dependencies list for <samp><span class="file">libgmp.la</span></samp>.  The
+symptom is a &ldquo;syntax error&rdquo; on the following line of the top-level
+<samp><span class="file">Makefile</span></samp>.
+
+     <pre class="example">          libgmp.la: $(libgmp_la_OBJECTS) $(libgmp_la_DEPENDENCIES)
+</pre>
+     <p>Either use GNU Make, or as a workaround remove
+<code>$(libgmp_la_DEPENDENCIES)</code> from that line (which will make the initial
+build work, but if any recompiling is done <samp><span class="file">libgmp.la</span></samp> might not be
+rebuilt).
+
+     <br><dt>MacOS X (&lsquo;<samp><span class="samp">*-*-darwin*</span></samp>&rsquo;)<dd><a name="index-MacOS-X-127"></a><a name="index-Darwin-128"></a>Libtool currently only knows how to create shared libraries on MacOS X using
+the native <samp><span class="command">cc</span></samp> (which is a modified GCC), not a plain GCC.  A
+static-only build should work though (&lsquo;<samp><span class="samp">--disable-shared</span></samp>&rsquo;).
+
+     <br><dt>NeXT prior to 3.3<dd><a name="index-NeXT-129"></a>The system compiler on old versions of NeXT was a massacred and old GCC, even
+if it called itself <samp><span class="file">cc</span></samp>.  This compiler cannot be used to build GMP, you
+need to get a real GCC, and install that.  (NeXT may have fixed this in
+release 3.3 of their system.)
+
+     <br><dt>POWER and PowerPC<dd><a name="index-Power_002fPowerPC-130"></a>Bugs in GCC 2.7.2 (and 2.6.3) mean it can't be used to compile GMP on POWER or
+PowerPC.  If you want to use GCC for these machines, get GCC 2.7.2.1 (or
+later).
+
+     <br><dt>Sequent Symmetry<dd><a name="index-Sequent-Symmetry-131"></a>Use the GNU assembler instead of the system assembler, since the latter has
+serious bugs.
+
+     <br><dt>Solaris 2.6<dd><a name="index-Solaris-132"></a>The system <samp><span class="command">sed</span></samp> prints an error &ldquo;Output line too long&rdquo; when libtool
+builds <samp><span class="file">libgmp.la</span></samp>.  This doesn't seem to cause any obvious ill effects,
+but GNU <samp><span class="command">sed</span></samp> is recommended, to avoid any doubt.
+
+     <br><dt>Sparc Solaris 2.7 with gcc 2.95.2 in &lsquo;<samp><span class="samp">ABI=32</span></samp>&rsquo;<dd><a name="index-Solaris-133"></a>A shared library build of GMP seems to fail in this combination, it builds but
+then fails the tests, apparently due to some incorrect data relocations within
+<code>gmp_randinit_lc_2exp_size</code>.  The exact cause is unknown,
+&lsquo;<samp><span class="samp">--disable-shared</span></samp>&rsquo; is recommended. 
+</dl>
+
+   </body></html>
+

@@ -1,0 +1,147 @@
+<html lang="en">
+<head>
+<title>Microsoft Windows Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="MicroBlaze-Function-Attributes.html#MicroBlaze-Function-Attributes" title="MicroBlaze Function Attributes">
+<link rel="next" href="MIPS-Function-Attributes.html#MIPS-Function-Attributes" title="MIPS Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Microsoft-Windows-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="MIPS-Function-Attributes.html#MIPS-Function-Attributes">MIPS Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="MicroBlaze-Function-Attributes.html#MicroBlaze-Function-Attributes">MicroBlaze Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.17 Microsoft Windows Function Attributes</h4>
+
+<p>The following attributes are available on Microsoft Windows and Symbian OS
+targets.
+
+     <dl>
+<dt><code>dllexport</code><dd><a name="index-g_t_0040code_007bdllexport_007d-function-attribute-3632"></a><a name="index-g_t_0040code_007b_005f_005fdeclspec_0028dllexport_0029_007d-3633"></a>On Microsoft Windows targets and Symbian OS targets the
+<code>dllexport</code> attribute causes the compiler to provide a global
+pointer to a pointer in a DLL, so that it can be referenced with the
+<code>dllimport</code> attribute.  On Microsoft Windows targets, the pointer
+name is formed by combining <code>_imp__</code> and the function or variable
+name.
+
+     <p>You can use <code>__declspec(dllexport)</code> as a synonym for
+<code>__attribute__ ((dllexport))</code> for compatibility with other
+compilers.
+
+     <p>On systems that support the <code>visibility</code> attribute, this
+attribute also implies &ldquo;default&rdquo; visibility.  It is an error to
+explicitly specify any other visibility.
+
+     <p>GCC's default behavior is to emit all inline functions with the
+<code>dllexport</code> attribute.  Since this can cause object file-size bloat,
+you can use <samp><span class="option">-fno-keep-inline-dllexport</span></samp>, which tells GCC to
+ignore the attribute for inlined functions unless the
+<samp><span class="option">-fkeep-inline-functions</span></samp> flag is used instead.
+
+     <p>The attribute is ignored for undefined symbols.
+
+     <p>When applied to C++ classes, the attribute marks defined non-inlined
+member functions and static data members as exports.  Static consts
+initialized in-class are not marked unless they are also defined
+out-of-class.
+
+     <p>For Microsoft Windows targets there are alternative methods for
+including the symbol in the DLL's export table such as using a
+<samp><span class="file">.def</span></samp> file with an <code>EXPORTS</code> section or, with GNU ld, using
+the <samp><span class="option">--export-all</span></samp> linker flag.
+
+     <br><dt><code>dllimport</code><dd><a name="index-g_t_0040code_007bdllimport_007d-function-attribute-3634"></a><a name="index-g_t_0040code_007b_005f_005fdeclspec_0028dllimport_0029_007d-3635"></a>On Microsoft Windows and Symbian OS targets, the <code>dllimport</code>
+attribute causes the compiler to reference a function or variable via
+a global pointer to a pointer that is set up by the DLL exporting the
+symbol.  The attribute implies <code>extern</code>.  On Microsoft Windows
+targets, the pointer name is formed by combining <code>_imp__</code> and the
+function or variable name.
+
+     <p>You can use <code>__declspec(dllimport)</code> as a synonym for
+<code>__attribute__ ((dllimport))</code> for compatibility with other
+compilers.
+
+     <p>On systems that support the <code>visibility</code> attribute, this
+attribute also implies &ldquo;default&rdquo; visibility.  It is an error to
+explicitly specify any other visibility.
+
+     <p>Currently, the attribute is ignored for inlined functions.  If the
+attribute is applied to a symbol <em>definition</em>, an error is reported. 
+If a symbol previously declared <code>dllimport</code> is later defined, the
+attribute is ignored in subsequent references, and a warning is emitted. 
+The attribute is also overridden by a subsequent declaration as
+<code>dllexport</code>.
+
+     <p>When applied to C++ classes, the attribute marks non-inlined
+member functions and static data members as imports.  However, the
+attribute is ignored for virtual methods to allow creation of vtables
+using thunks.
+
+     <p>On the SH Symbian OS target the <code>dllimport</code> attribute also has
+another affect&mdash;it can cause the vtable and run-time type information
+for a class to be exported.  This happens when the class has a
+dllimported constructor or a non-inline, non-pure virtual function
+and, for either of those two conditions, the class also has an inline
+constructor or destructor and has a key function that is defined in
+the current translation unit.
+
+     <p>For Microsoft Windows targets the use of the <code>dllimport</code>
+attribute on functions is not necessary, but provides a small
+performance benefit by eliminating a thunk in the DLL.  The use of the
+<code>dllimport</code> attribute on imported variables can be avoided by passing the
+<samp><span class="option">--enable-auto-import</span></samp> switch to the GNU linker.  As with
+functions, using the attribute for a variable eliminates a thunk in
+the DLL.
+
+     <p>One drawback to using this attribute is that a pointer to a
+<em>variable</em> marked as <code>dllimport</code> cannot be used as a constant
+address. However, a pointer to a <em>function</em> with the
+<code>dllimport</code> attribute can be used as a constant initializer; in
+this case, the address of a stub function in the import lib is
+referenced.  On Microsoft Windows targets, the attribute can be disabled
+for functions by setting the <samp><span class="option">-mnop-fun-dllimport</span></samp> flag. 
+</dl>
+
+ </body></html>
+

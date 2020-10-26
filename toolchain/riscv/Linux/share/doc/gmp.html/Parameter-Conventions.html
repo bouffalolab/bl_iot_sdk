@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+<title>Parameter Conventions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="GMP-Basics.html#GMP-Basics" title="GMP Basics">
+<link rel="prev" href="Variable-Conventions.html#Variable-Conventions" title="Variable Conventions">
+<link rel="next" href="Memory-Management.html#Memory-Management" title="Memory Management">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Parameter-Conventions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory-Management.html#Memory-Management">Memory Management</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Variable-Conventions.html#Variable-Conventions">Variable Conventions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="GMP-Basics.html#GMP-Basics">GMP Basics</a>
+<hr>
+</div>
+
+<h3 class="section">3.5 Parameter Conventions</h3>
+
+<p><a name="index-Parameter-conventions-165"></a><a name="index-Conventions-for-parameters-166"></a>
+When a GMP variable is used as a function parameter, it's effectively a
+call-by-reference, meaning if the function stores a value there it will change
+the original in the caller.  Parameters which are input-only can be designated
+<code>const</code> to provoke a compiler error or warning on attempting to modify
+them.
+
+   <p>When a function is going to return a GMP result, it should designate a
+parameter that it sets, like the library functions do.  More than one value
+can be returned by having more than one output parameter, again like the
+library functions.  A <code>return</code> of an <code>mpz_t</code> etc doesn't return the
+object, only a pointer, and this is almost certainly not what's wanted.
+
+   <p>Here's an example accepting an <code>mpz_t</code> parameter, doing a calculation,
+and storing the result to the indicated parameter.
+
+<pre class="example">     void
+     foo (mpz_t result, const mpz_t param, unsigned long n)
+     {
+       unsigned long  i;
+       mpz_mul_ui (result, param, n);
+       for (i = 1; i &lt; n; i++)
+         mpz_add_ui (result, result, i*7);
+     }
+     
+     int
+     main (void)
+     {
+       mpz_t  r, n;
+       mpz_init (r);
+       mpz_init_set_str (n, "123456", 0);
+       foo (r, n, 20L);
+       gmp_printf ("%Zd\n", r);
+       return 0;
+     }
+</pre>
+   <p><code>foo</code> works even if the mainline passes the same variable for
+<code>param</code> and <code>result</code>, just like the library functions.  But
+sometimes it's tricky to make that work, and an application might not want to
+bother supporting that sort of thing.
+
+   <p>For interest, the GMP types <code>mpz_t</code> etc are implemented as one-element
+arrays of certain structures.  This is why declaring a variable creates an
+object with the fields GMP needs, but then using it as a parameter passes a
+pointer to the object.  Note that the actual fields in each <code>mpz_t</code> etc
+are for internal use only and should not be accessed directly by code that
+expects to be compatible with future GMP releases.
+
+   </body></html>
+

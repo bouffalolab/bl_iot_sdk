@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+<title>Trigonometric Functions - GNU MPC 1.0.3</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU MPC 1.0.3">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Complex-Functions.html#Complex-Functions" title="Complex Functions">
+<link rel="prev" href="Power-Functions-and-Logarithm.html#Power-Functions-and-Logarithm" title="Power Functions and Logarithm">
+<link rel="next" href="Miscellaneous-Complex-Functions.html#Miscellaneous-Complex-Functions" title="Miscellaneous Complex Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for GNU MPC, a library for multiple precision complex arithmetic,
+version 1.0.3 of February 2015.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 INRIA
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections. A copy of the license is
+     included in the section entitled ``GNU Free Documentation
+     License.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Trigonometric-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Miscellaneous-Complex-Functions.html#Miscellaneous-Complex-Functions">Miscellaneous Complex Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Power-Functions-and-Logarithm.html#Power-Functions-and-Logarithm">Power Functions and Logarithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Complex-Functions.html#Complex-Functions">Complex Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.9 Trigonometric Functions</h3>
+
+<p><a name="index-Trigonometric-functions-112"></a>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sin</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsin-113"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the sine of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_cos</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fcos-114"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the cosine of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sin_cos</b> (<var>mpc_t rop_sin, mpc_t rop_cos, mpc_t op, mpc_rnd_t rnd_sin, mpc_rnd_t rnd_cos</var>)<var><a name="index-mpc_005fsin_005fcos-115"></a></var><br>
+<blockquote><p>Set <var>rop_sin</var> to the sine of <var>op</var>,
+rounded according to <var>rnd_sin</var> with the precision of <var>rop_sin</var>,
+and <var>rop_cos</var> to the cosine of <var>op</var>,
+rounded according to <var>rnd_cos</var> with the precision of <var>rop_cos</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_tan</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005ftan-116"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the tangent of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sinh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsinh-117"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the hyperbolic sine of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_cosh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fcosh-118"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the hyperbolic cosine of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_tanh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005ftanh-119"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the hyperbolic tangent of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_asin</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fasin-120"></a></var><br>
+&mdash; Function: int <b>mpc_acos</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005facos-121"></a></var><br>
+&mdash; Function: int <b>mpc_atan</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fatan-122"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the inverse sine, inverse cosine, inverse tangent of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_asinh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fasinh-123"></a></var><br>
+&mdash; Function: int <b>mpc_acosh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005facosh-124"></a></var><br>
+&mdash; Function: int <b>mpc_atanh</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fatanh-125"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the inverse hyperbolic sine, inverse hyperbolic cosine,
+inverse hyperbolic tangent of <var>op</var>,
+rounded according to <var>rnd</var> with the precision of <var>rop</var>. 
+The branch cut of <var>mpc_acosh</var> is (-\infty, 1). 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+<title>leds.c - Embed with GNU</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Embed with GNU">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Code-Listings.html#Code-Listings" title="Code Listings">
+<link rel="prev" href="io_002ec.html#io_002ec" title="io.c">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="leds.c"></a>
+<a name="leds_002ec"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="io_002ec.html#io_002ec">io.c</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Code-Listings.html#Code-Listings">Code Listings</a>
+<hr>
+</div>
+
+<h3 class="section">A.6 Led control sample</h3>
+
+<pre class="example">     /*
+      * leds.h -- control the led's on a Motorola mc68ec0x0 board.
+      */
+     
+     #ifndef __LEDS_H__
+     #define __LEDS_H__
+     
+     #define LED_ADDR	0xd00003
+     #define LED_0           ~0x1
+     #define LED_1           ~0x2
+     #define LED_2           ~0x4
+     #define LED_3           ~0x8
+     #define LED_4           ~0x10
+     #define LED_5           ~0x20
+     #define LED_6           ~0x40
+     #define LED_7           ~0x80
+     #define LEDS_OFF	0xff
+     #define LEDS_ON		0x0
+     
+     #define FUDGE(x) ((x &gt;= 0xa &amp;&amp; x &lt;= 0xf) ? (x + 'a') &amp; 0x7f : (x + '0') &amp; 0x7f)
+     
+     extern void led_putnum( char );
+     
+     #endif		/* __LEDS_H__ */
+     
+     /*
+      * leds.c -- control the led's on a Motorola mc68ec0x0 (IDP)board.
+      */
+     #include "leds.h"
+     
+     void zylons();
+     void led_putnum();
+     
+     /*
+      * led_putnum -- print a hex number on the LED. the value of num must be a char with
+      *              the ascii value. ie... number 0 is '0', a is 'a', ' ' (null) clears
+      *		the led display.
+      *		Setting the bit to 0 turns it on, 1 turns it off.
+      * 		the LED's are controlled by setting the right bit mask in the base
+      * 		address.
+      *		The bits are:
+      *			[d.p | g | f | e | d | c | b | a ] is the byte.
+      *
+      *		The locations are:
+      *
+      *			 a
+      *		       -----
+      *		    f |     | b
+      *		      |  g  |
+      *		       -----
+      *                    |     |
+      *                  e |     | c
+      *                     -----
+      *                       d                . d.p (decimal point)
+      */
+     void
+     led_putnum ( num )
+     char num;
+     {
+         static unsigned char *leds = (unsigned char *)LED_ADDR;
+         static unsigned char num_bits [18] = {
+           0xff,						/* clear all */
+           0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x98, /* numbers 0-9 */
+           0x98, 0x20, 0x3, 0x27, 0x21, 0x4, 0xe 		/* letters a-f */
+         };
+     
+         if (num &gt;= '0' &amp;&amp; num &lt;= '9')
+           num = (num - '0') + 1;
+     
+         if (num &gt;= 'a' &amp;&amp; num &lt;= 'f')
+           num = (num - 'a') + 12;
+     
+         if (num == ' ')
+           num = 0;
+     
+         *leds = num_bits[num];
+     }
+     
+     /*
+      * zylons -- draw a rotating pattern. NOTE: this function never returns.
+      */
+     void
+     zylons()
+     {
+       unsigned char *leds 	= (unsigned char *)LED_ADDR;
+       unsigned char curled = 0xfe;
+     
+       while (1)
+         {
+           *leds = curled;
+           curled = (curled &gt;&gt; 1) | (curled &lt;&lt; 7);
+           delay ( 200 );
+         }
+     }
+</pre>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Top" href="index.html#Top">Embed with GNU</a>
+<li><a name="toc_Libgloss" href="Libgloss.html#Libgloss">1 Libgloss</a>
+<ul>
+<li><a href="Supported-targets.html#Supported-targets">1.1 Supported Targets</a>
+<ul>
+<li><a href="Sparclite.html#Sparclite">1.1.1 Sparclite Targets Supported</a>
+<li><a href="CPU32.html#CPU32">1.1.2 Motorola CPU32 Targets supported</a>
+<li><a href="Mips.html#Mips">1.1.3 Mips core Targets Supported</a>
+<li><a href="PA_002dRISC.html#PA_002dRISC">1.1.4 PA-RISC Targets Supported</a>
+</li></ul>
+<li><a href="Building-libgloss.html#Building-libgloss">1.2 Configuring and building libgloss.</a>
+<li><a href="Board-support.html#Board-support">1.3 Adding Support for a New Board</a>
+</li></ul>
+<li><a name="toc_GCC" href="GCC.html#GCC">2 Porting GCC</a>
+<ul>
+<li><a href="Overview.html#Overview">2.1 Compilation passes</a>
+</li></ul>
+<li><a name="toc_Libraries" href="Libraries.html#Libraries">3 Porting newlib</a>
+<ul>
+<li><a href="Crt0.html#Crt0">3.1 Crt0, the main startup file</a>
+<li><a href="Linker-Scripts.html#Linker-Scripts">3.2 Linker scripts for memory management</a>
+<li><a href="What-to-do-now.html#What-to-do-now">3.3 What to do when you have a binary image</a>
+<li><a href="Libc.html#Libc">3.4 Libraries</a>
+<ul>
+<li><a href="I_002fO-Support.html#I_002fO-Support">3.4.1 Making I/O work</a>
+<li><a href="Memory-Support.html#Memory-Support">3.4.2 Routines for dynamic memory allocation</a>
+<li><a href="Misc-Support.html#Misc-Support">3.4.3 Misc support routines</a>
+<li><a href="Debugging.html#Debugging">3.4.4 Useful debugging functions</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_GDB" href="GDB.html#GDB">4 Writing a new GDB backend</a>
+<ul>
+<li><a href="GNU-remote-protocol.html#GNU-remote-protocol">4.1 The standard remote protocol</a>
+<li><a href="Exception-handler.html#Exception-handler">4.2 A linked in exception handler</a>
+<li><a href="ROM-monitors.html#ROM-monitors">4.3 Using a ROM monitor as a backend</a>
+<li><a href="Other-remote-protocols.html#Other-remote-protocols">4.4 Adding support for new protocols</a>
+</li></ul>
+<li><a name="toc_Code-Listings" href="Code-Listings.html#Code-Listings">Appendix A Code Listings</a>
+<ul>
+<li><a href="idp_002eld.html#idp_002eld">A.1 Linker script for the IDP board</a>
+<li><a href="crt0_002eS.html#crt0_002eS">A.2 crt0.S - The startup file</a>
+<li><a href="glue_002ec.html#glue_002ec">A.3 C based "glue" code.</a>
+<li><a href="mvme_002eS.html#mvme_002eS">A.4 I/O assembler code sample</a>
+<li><a href="io_002ec.html#io_002ec">A.5 I/O code sample</a>
+<li><a href="leds_002ec.html#leds_002ec">A.6 Led control sample</a>
+</li></ul>
+</li></ul>
+</div>
+
+<!-- second page break makes sure right-left page alignment works right -->
+<!-- with a one-page toc, even though we don't have setchapternewpage odd. -->
+</body></html>
+

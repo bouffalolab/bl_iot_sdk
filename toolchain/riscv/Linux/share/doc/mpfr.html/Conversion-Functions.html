@@ -1,0 +1,236 @@
+<html lang="en">
+<head>
+<title>Conversion Functions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="prev" href="Combined-Initialization-and-Assignment-Functions.html#Combined-Initialization-and-Assignment-Functions" title="Combined Initialization and Assignment Functions">
+<link rel="next" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" title="Basic Arithmetic Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Conversion-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions">Basic Arithmetic Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Combined-Initialization-and-Assignment-Functions.html#Combined-Initialization-and-Assignment-Functions">Combined Initialization and Assignment Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+   <p><a name="index-Conversion-functions-73"></a>
+
+<h3 class="section">5.4 Conversion Functions</h3>
+
+<div class="defun">
+&mdash; Function: float <b>mpfr_get_flt</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fflt-74"></a></var><br>
+&mdash; Function: double <b>mpfr_get_d</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fd-75"></a></var><br>
+&mdash; Function: long double <b>mpfr_get_ld</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fld-76"></a></var><br>
+&mdash; Function: _Decimal64 <b>mpfr_get_decimal64</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fdecimal64-77"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>float</code> (respectively <code>double</code>,
+<code>long double</code> or <code>_Decimal64</code>), using the rounding mode <var>rnd</var>. 
+If <var>op</var> is NaN, some fixed NaN (either quiet or signaling) or the result
+of 0.0/0.0 is returned. If <var>op</var> is ±Inf, an infinity of the same
+sign or the result of ±1.0/0.0 is returned. If <var>op</var> is zero, these
+functions return a zero, trying to preserve its sign, if possible. 
+The <code>mpfr_get_decimal64</code> function is built only under some conditions:
+see the documentation of <code>mpfr_set_decimal64</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: long <b>mpfr_get_si</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fsi-78"></a></var><br>
+&mdash; Function: unsigned long <b>mpfr_get_ui</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fui-79"></a></var><br>
+&mdash; Function: intmax_t <b>mpfr_get_sj</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fsj-80"></a></var><br>
+&mdash; Function: uintmax_t <b>mpfr_get_uj</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fuj-81"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>long</code>, an <code>unsigned long</code>,
+an <code>intmax_t</code> or an <code>uintmax_t</code> (respectively) after rounding
+it with respect to <var>rnd</var>. 
+If <var>op</var> is NaN, 0 is returned and the <em>erange</em> flag is set. 
+If <var>op</var> is too big for the return type, the function returns the maximum
+or the minimum of the corresponding C type, depending on the direction
+of the overflow; the <em>erange</em> flag is set too. 
+See also <code>mpfr_fits_slong_p</code>, <code>mpfr_fits_ulong_p</code>,
+<code>mpfr_fits_intmax_p</code> and <code>mpfr_fits_uintmax_p</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: double <b>mpfr_get_d_2exp</b> (<var>long *exp, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fd_005f2exp-82"></a></var><br>
+&mdash; Function: long double <b>mpfr_get_ld_2exp</b> (<var>long *exp, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fld_005f2exp-83"></a></var><br>
+<blockquote><p>Return <var>d</var> and set <var>exp</var>
+(formally, the value pointed to by <var>exp</var>)
+such that 0.5&lt;=abs(<var>d</var>)&lt;1
+and <var>d</var> times 2 raised to <var>exp</var> equals
+<var>op</var> rounded to double (resp. long double)
+precision, using the given rounding mode. 
+<!-- See ISO C standard, frexp function. -->
+If <var>op</var> is zero, then a zero of the same sign (or an unsigned zero,
+if the implementation does not have signed zeros) is returned, and
+<var>exp</var> is set to 0. 
+If <var>op</var> is NaN or an infinity, then the corresponding double precision
+(resp. long-double precision)
+value is returned, and <var>exp</var> is undefined. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_frexp</b> (<var>mpfr_exp_t *exp, mpfr_t y, mpfr_t x, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffrexp-84"></a></var><br>
+<blockquote><p>Set <var>exp</var>
+(formally, the value pointed to by <var>exp</var>) and <var>y</var>
+such that 0.5&lt;=abs(<var>y</var>)&lt;1
+and <var>y</var> times 2 raised to <var>exp</var> equals
+<var>x</var> rounded to the precision of <var>y</var>, using the given rounding mode. 
+<!-- See ISO C standard, frexp function. -->
+If <var>x</var> is zero, then <var>y</var> is set to a zero of the same sign and
+<var>exp</var> is set to 0. 
+If <var>x</var> is NaN or an infinity, then <var>y</var> is set to the same value
+and <var>exp</var> is undefined. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: mpfr_exp_t <b>mpfr_get_z_2exp</b> (<var>mpz_t rop, mpfr_t op</var>)<var><a name="index-mpfr_005fget_005fz_005f2exp-85"></a></var><br>
+<blockquote><p>Put the scaled significand of <var>op</var> (regarded as an integer, with the
+precision of <var>op</var>) into <var>rop</var>, and return the exponent <var>exp</var>
+(which may be outside the current exponent range) such that <var>op</var>
+exactly equals
+<var>rop</var> times 2 raised to the power <var>exp</var>. 
+If <var>op</var> is zero, the minimal exponent <code>emin</code> is returned. 
+If <var>op</var> is NaN or an infinity, the <em>erange</em> flag is set, <var>rop</var>
+is set to 0, and the the minimal exponent <code>emin</code> is returned. 
+The returned exponent may be less than the minimal exponent <code>emin</code>
+of MPFR numbers in the current exponent range; in case the exponent is
+not representable in the <code>mpfr_exp_t</code> type, the <em>erange</em> flag
+is set and the minimal value of the <code>mpfr_exp_t</code> type is returned. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_get_z</b> (<var>mpz_t rop, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fz-86"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>mpz_t</code>, after rounding it with respect to
+<var>rnd</var>. If <var>op</var> is NaN or an infinity, the <em>erange</em> flag is
+set, <var>rop</var> is set to 0, and 0 is returned. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_get_f</b> (<var>mpf_t rop, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005ff-87"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>mpf_t</code>, after rounding it with respect to
+<var>rnd</var>. 
+The <em>erange</em> flag is set if <var>op</var> is NaN or an infinity, which
+do not exist in MPF.  If <var>op</var> is NaN, then <var>rop</var> is undefined. 
+If <var>op</var> is +Inf (resp. &minus;Inf), then <var>rop</var> is set to
+the maximum (resp. minimum) value in the precision of the MPF number;
+if a future MPF version supports infinities, this behavior will be
+considered incorrect and will change (portable programs should assume
+that <var>rop</var> is set either to this finite number or to an infinite
+number). 
+Note that since MPFR currently has the same exponent type as MPF (but
+not with the same radix), the range of values is much larger in MPF
+than in MPFR, so that an overflow or underflow is not possible. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>mpfr_get_str</b> (<var>char *str, mpfr_exp_t *expptr, int b, size_t n, mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005fget_005fstr-88"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a string of digits in base <var>b</var>, with rounding in
+the direction <var>rnd</var>, where <var>n</var> is either zero (see below) or the
+number of significant digits output in the string; in the latter case,
+<var>n</var> must be greater or equal to 2. The base may vary from 2 to 62;
+otherwise the function does nothing and immediately returns a null pointer. 
+If the input number is an ordinary number, the exponent is written through
+the pointer <var>expptr</var> (for input 0, the current minimal exponent is
+written); the type <code>mpfr_exp_t</code> is large enough to hold the exponent
+in all cases.
+
+        <p>The generated string is a fraction, with an implicit radix point immediately
+to the left of the first digit.  For example, the number &minus;3.1416 would
+be returned as "&minus;31416" in the string and 1 written at <var>expptr</var>. 
+If <var>rnd</var> is to nearest, and <var>op</var> is exactly in the middle of two
+consecutive possible outputs, the one with an even significand is chosen,
+where both significands are considered with the exponent of <var>op</var>. 
+Note that for an odd base, this may not correspond to an even last digit:
+for example with 2 digits in base 7, (14) and a half is rounded to (15)
+which is 12 in decimal, (16) and a half is rounded to
+(20) which is 14 in decimal,
+<!-- The following example duplicates (16) and a half -->
+<!-- (36) and a half is rounded to (40) which is 28 in decimal, -->
+and (26) and a half is rounded to (26) which is 20 in decimal.
+
+        <p>If <var>n</var> is zero, the number of digits of the significand is chosen
+large enough so that re-reading the printed value with the same precision,
+assuming both output and input use rounding to nearest, will recover
+the original value of <var>op</var>. 
+More precisely, in most cases, the chosen precision of <var>str</var> is the
+minimal precision m depending only on <var>p</var> = PREC(<var>op</var>) and
+<var>b</var> that satisfies the above property, i.e.,
+m = 1 + ceil(<var>p</var>*log(2)/log(<var>b</var>)),
+with <var>p</var> replaced by <var>p</var>&minus;1 if <var>b</var> is a power of 2,
+but in some very rare cases, it might be m+1
+(the smallest case for bases up to 62 is when <var>p</var> equals 186564318007
+for bases 7 and 49).
+
+        <p>If <var>str</var> is a null pointer, space for the significand is allocated using
+the current allocation function and a pointer to the string is returned
+(unless the base is invalid). 
+To free the returned string, you must use <code>mpfr_free_str</code>.
+
+        <p>If <var>str</var> is not a null pointer, it should point to a block of storage
+large enough for the significand, i.e., at least <code>max(</code><var>n</var><code> + 2, 7)</code>. 
+The extra two bytes are for a possible minus sign, and for the terminating null
+character, and the value 7 accounts for <code>-@Inf@</code>
+plus the terminating null character. The pointer to the string <var>str</var>
+is returned (unless the base is invalid).
+
+        <p>Note: The NaN and inexact flags are currently not set when need be; this
+will be fixed in future versions. Programmers should currently assume that
+whether the flags are set by this function is unspecified. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpfr_free_str</b> (<var>char *str</var>)<var><a name="index-mpfr_005ffree_005fstr-89"></a></var><br>
+<blockquote><p>Free a string allocated by <code>mpfr_get_str</code> using the current unallocation
+function. 
+The block is assumed to be <code>strlen(</code><var>str</var><code>)+1</code> bytes. 
+For more information about how it is done:
+see Section &ldquo;Custom Allocation&rdquo; in <cite>GNU MP</cite>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_fits_ulong_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fulong_005fp-90"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_slong_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fslong_005fp-91"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_uint_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fuint_005fp-92"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_sint_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fsint_005fp-93"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_ushort_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fushort_005fp-94"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_sshort_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fsshort_005fp-95"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_uintmax_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fuintmax_005fp-96"></a></var><br>
+&mdash; Function: int <b>mpfr_fits_intmax_p</b> (<var>mpfr_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpfr_005ffits_005fintmax_005fp-97"></a></var><br>
+<blockquote><p>Return non-zero if <var>op</var> would fit in the respective C data type,
+respectively <code>unsigned long</code>, <code>long</code>, <code>unsigned int</code>,
+<code>int</code>, <code>unsigned short</code>, <code>short</code>, <code>uintmax_t</code>,
+<code>intmax_t</code>, when rounded to an integer in the direction <var>rnd</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>Simultaneous Float Init &amp; Assign - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link rel="prev" href="Assigning-Floats.html#Assigning-Floats" title="Assigning Floats">
+<link rel="next" href="Converting-Floats.html#Converting-Floats" title="Converting Floats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Simultaneous-Float-Init-%26-Assign"></a>
+<a name="Simultaneous-Float-Init-_0026-Assign"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Converting-Floats.html#Converting-Floats">Converting Floats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assigning-Floats.html#Assigning-Floats">Assigning Floats</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">7.3 Combined Initialization and Assignment Functions</h3>
+
+<p><a name="index-Float-assignment-functions-571"></a><a name="index-Assignment-functions-572"></a><a name="index-Float-initialization-functions-573"></a><a name="index-Initialization-functions-574"></a>
+For convenience, GMP provides a parallel series of initialize-and-set functions
+which initialize the output and then store the value there.  These functions'
+names have the form <code>mpf_init_set...</code>
+
+   <p>Once the float has been initialized by any of the <code>mpf_init_set...</code>
+functions, it can be used as the source or destination operand for the ordinary
+float functions.  Don't use an initialize-and-set function on a variable
+already initialized!
+
+<div class="defun">
+&mdash; Function: void <b>mpf_init_set</b> (<var>mpf_t rop, const mpf_t op</var>)<var><a name="index-mpf_005finit_005fset-575"></a></var><br>
+&mdash; Function: void <b>mpf_init_set_ui</b> (<var>mpf_t rop, unsigned long int op</var>)<var><a name="index-mpf_005finit_005fset_005fui-576"></a></var><br>
+&mdash; Function: void <b>mpf_init_set_si</b> (<var>mpf_t rop, signed long int op</var>)<var><a name="index-mpf_005finit_005fset_005fsi-577"></a></var><br>
+&mdash; Function: void <b>mpf_init_set_d</b> (<var>mpf_t rop, double op</var>)<var><a name="index-mpf_005finit_005fset_005fd-578"></a></var><br>
+<blockquote><p>Initialize <var>rop</var> and set its value from <var>op</var>.
+
+        <p>The precision of <var>rop</var> will be taken from the active default precision, as
+set by <code>mpf_set_default_prec</code>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpf_init_set_str</b> (<var>mpf_t rop, const char *str, int base</var>)<var><a name="index-mpf_005finit_005fset_005fstr-579"></a></var><br>
+<blockquote><p>Initialize <var>rop</var> and set its value from the string in <var>str</var>.  See
+<code>mpf_set_str</code> above for details on the assignment operation.
+
+        <p>Note that <var>rop</var> is initialized even if an error occurs.  (I.e., you have to
+call <code>mpf_clear</code> for it.)
+
+        <p>The precision of <var>rop</var> will be taken from the active default precision, as
+set by <code>mpf_set_default_prec</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

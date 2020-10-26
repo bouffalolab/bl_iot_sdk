@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+<title>Stack Smashing Protection - Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Overflow-Protection.html#Overflow-Protection" title="Overflow Protection">
+<link rel="next" href="Object-Size-Checking.html#Object-Size-Checking" title="Object Size Checking">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Stack-Smashing-Protection"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Object-Size-Checking.html#Object-Size-Checking">Object Size Checking</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Overflow-Protection.html#Overflow-Protection">Overflow Protection</a>
+<hr>
+</div>
+
+<h3 class="section">12.1 Stack Smashing Protection</h3>
+
+<p>Stack Smashing Protection is a compiler feature which emits extra code
+to check for stack smashing attacks.  It depends on a canary, which is
+initialized with the process, and functions for process termination when
+an overflow is detected.  These are private entry points intended solely
+for use by the compiler, and are used when any of the <code>-fstack-protector</code>,
+<code>-fstack-protector-all</code>, <code>-fstack-protector-explicit</code>, or
+<code>-fstack-protector-strong</code> compiler flags are enabled.
+
+   </body></html>
+

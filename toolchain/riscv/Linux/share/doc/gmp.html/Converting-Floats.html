@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>Converting Floats - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" title="Floating-point Functions">
+<link rel="prev" href="Simultaneous-Float-Init-_0026-Assign.html#Simultaneous-Float-Init-_0026-Assign" title="Simultaneous Float Init &amp; Assign">
+<link rel="next" href="Float-Arithmetic.html#Float-Arithmetic" title="Float Arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Converting-Floats"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Float-Arithmetic.html#Float-Arithmetic">Float Arithmetic</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Simultaneous-Float-Init-_0026-Assign.html#Simultaneous-Float-Init-_0026-Assign">Simultaneous Float Init &amp; Assign</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions">Floating-point Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">7.4 Conversion Functions</h3>
+
+<p><a name="index-Float-conversion-functions-580"></a><a name="index-Conversion-functions-581"></a>
+
+<div class="defun">
+&mdash; Function: double <b>mpf_get_d</b> (<var>const mpf_t op</var>)<var><a name="index-mpf_005fget_005fd-582"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
+towards zero).
+
+        <p>If the exponent in <var>op</var> is too big or too small to fit a <code>double</code>
+then the result is system dependent.  For too big an infinity is returned when
+available.  For too small 0.0 is normally returned.  Hardware overflow,
+underflow and denorm traps may or may not occur. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: double <b>mpf_get_d_2exp</b> (<var>signed long int *exp, const mpf_t op</var>)<var><a name="index-mpf_005fget_005fd_005f2exp-583"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
+towards zero), and with an exponent returned separately.
+
+        <p>The return value is in the range 0.5&lt;=abs(<var>d</var>)&lt;1 and the
+exponent is stored to <code>*</code><var>exp</var>.  <var>d</var> * 2^<var>exp</var> is the (truncated) <var>op</var> value.  If <var>op</var> is zero,
+the return is 0.0 and 0 is stored to <code>*</code><var>exp</var>.
+
+        <p><a name="index-g_t_0040code_007bfrexp_007d-584"></a>This is similar to the standard C <code>frexp</code> function (see <a href="../libc/Normalization-Functions.html#Normalization-Functions">Normalization Functions</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: long <b>mpf_get_si</b> (<var>const mpf_t op</var>)<var><a name="index-mpf_005fget_005fsi-585"></a></var><br>
+&mdash; Function: unsigned long <b>mpf_get_ui</b> (<var>const mpf_t op</var>)<var><a name="index-mpf_005fget_005fui-586"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>long</code> or <code>unsigned long</code>, truncating any
+fraction part.  If <var>op</var> is too big for the return type, the result is
+undefined.
+
+        <p>See also <code>mpf_fits_slong_p</code> and <code>mpf_fits_ulong_p</code>
+(see <a href="Miscellaneous-Float-Functions.html#Miscellaneous-Float-Functions">Miscellaneous Float Functions</a>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>mpf_get_str</b> (<var>char *str, mp_exp_t *expptr, int base, size_t n_digits, const mpf_t op</var>)<var><a name="index-mpf_005fget_005fstr-587"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a string of digits in base <var>base</var>.  The base argument
+may vary from 2 to 62 or from &minus;2 to &minus;36.  Up to <var>n_digits</var>
+digits will be generated.  Trailing zeros are not returned.  No more digits
+than can be accurately represented by <var>op</var> are ever generated.  If
+<var>n_digits</var> is 0 then that accurate maximum number of digits are generated.
+
+        <p>For <var>base</var> in the range 2..36, digits and lower-case letters are used; for
+&minus;2..&minus;36, digits and upper-case letters are used; for 37..62,
+digits, upper-case letters, and lower-case letters (in that significance order)
+are used.
+
+        <p>If <var>str</var> is <code>NULL</code>, the result string is allocated using the current
+allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be
+<code>strlen(str)+1</code> bytes, that being exactly enough for the string and
+null-terminator.
+
+        <p>If <var>str</var> is not <code>NULL</code>, it should point to a block of
+<var>n_digits</var> + 2 bytes, that being enough for the mantissa, a
+possible minus sign, and a null-terminator.  When <var>n_digits</var> is 0 to get
+all significant digits, an application won't be able to know the space
+required, and <var>str</var> should be <code>NULL</code> in that case.
+
+        <p>The generated string is a fraction, with an implicit radix point immediately
+to the left of the first digit.  The applicable exponent is written through
+the <var>expptr</var> pointer.  For example, the number 3.1416 would be returned as
+string <code>"31416"</code> and exponent 1.
+
+        <p>When <var>op</var> is zero, an empty string is produced and the exponent returned
+is 0.
+
+        <p>A pointer to the result string is returned, being either the allocated block
+or the given <var>str</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

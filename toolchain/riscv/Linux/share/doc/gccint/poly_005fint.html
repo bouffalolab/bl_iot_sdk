@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>poly_int - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Passes.html#Passes" title="Passes">
+<link rel="next" href="GENERIC.html#GENERIC" title="GENERIC">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="poly_int"></a>
+<a name="poly_005fint"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="GENERIC.html#GENERIC">GENERIC</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Passes.html#Passes">Passes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">10 Sizes and offsets as runtime invariants</h2>
+
+<p><a name="index-polynomial-integers-1712"></a><a name="index-poly_005fint-1713"></a>
+GCC allows the size of a hardware register to be a runtime invariant
+rather than a compile-time constant.  This in turn means that various
+sizes and offsets must also be runtime invariants rather than
+compile-time constants, such as:
+
+     <ul>
+<li>the size of a general <code>machine_mode</code> (see <a href="Machine-Modes.html#Machine-Modes">Machine Modes</a>);
+
+     <li>the size of a spill slot;
+
+     <li>the offset of something within a stack frame;
+
+     <li>the number of elements in a vector;
+
+     <li>the size and offset of a <code>mem</code> rtx (see <a href="Regs-and-Memory.html#Regs-and-Memory">Regs and Memory</a>); and
+
+     <li>the byte offset in a <code>subreg</code> rtx (see <a href="Regs-and-Memory.html#Regs-and-Memory">Regs and Memory</a>). 
+</ul>
+
+ <p>The motivating example is the Arm SVE ISA, whose vector registers can be
+any multiple of 128 bits between 128 and 2048 inclusive.  The compiler
+normally produces code that works for all SVE register sizes, with the
+actual size only being known at runtime.
+
+ <p>GCC's main representation of such runtime invariants is the
+<code>poly_int</code> class.  This chapter describes what <code>poly_int</code>
+does, lists the available operations, and gives some general
+usage guidelines.
+
+<ul class="menu">
+<li><a accesskey="1" href="Overview-of-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Overview-of-_003ccode_003epoly_005fint_003c_002fcode_003e">Overview of <code>poly_int</code></a>
+<li><a accesskey="2" href="Consequences-of-using-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Consequences-of-using-_003ccode_003epoly_005fint_003c_002fcode_003e">Consequences of using <code>poly_int</code></a>
+<li><a accesskey="3" href="Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Comparisons-involving-_003ccode_003epoly_005fint_003c_002fcode_003e">Comparisons involving <code>poly_int</code></a>
+<li><a accesskey="4" href="Arithmetic-on-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Arithmetic-on-_003ccode_003epoly_005fint_003c_002fcode_003es">Arithmetic on <code>poly_int</code>s</a>
+<li><a accesskey="5" href="Alignment-of-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Alignment-of-_003ccode_003epoly_005fint_003c_002fcode_003es">Alignment of <code>poly_int</code>s</a>
+<li><a accesskey="6" href="Computing-bounds-on-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Computing-bounds-on-_003ccode_003epoly_005fint_003c_002fcode_003es">Computing bounds on <code>poly_int</code>s</a>
+<li><a accesskey="7" href="Converting-_003ccode_003epoly_005fint_003c_002fcode_003es.html#Converting-_003ccode_003epoly_005fint_003c_002fcode_003es">Converting <code>poly_int</code>s</a>
+<li><a accesskey="8" href="Miscellaneous-_003ccode_003epoly_005fint_003c_002fcode_003e-routines.html#Miscellaneous-_003ccode_003epoly_005fint_003c_002fcode_003e-routines">Miscellaneous <code>poly_int</code> routines</a>
+<li><a accesskey="9" href="Guidelines-for-using-_003ccode_003epoly_005fint_003c_002fcode_003e.html#Guidelines-for-using-_003ccode_003epoly_005fint_003c_002fcode_003e">Guidelines for using <code>poly_int</code></a>
+</ul>
+
+ </body></html>
+

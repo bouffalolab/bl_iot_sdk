@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+<title>MPFR Variable Conventions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Basics.html#MPFR-Basics" title="MPFR Basics">
+<link rel="prev" href="Nomenclature-and-Types.html#Nomenclature-and-Types" title="Nomenclature and Types">
+<link rel="next" href="Rounding-Modes.html#Rounding-Modes" title="Rounding Modes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="MPFR-Variable-Conventions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Rounding-Modes.html#Rounding-Modes">Rounding Modes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Nomenclature-and-Types.html#Nomenclature-and-Types">Nomenclature and Types</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Basics.html#MPFR-Basics">MPFR Basics</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.3 MPFR Variable Conventions</h3>
+
+<p>Before you can assign to an MPFR variable, you need to initialize it by calling
+one of the special initialization functions.  When you're done with a
+variable, you need to clear it out, using one of the functions for that
+purpose. 
+A variable should only be initialized once, or at least cleared out between
+each initialization.  After a variable has been initialized, it may be
+assigned to any number of times. 
+For efficiency reasons, avoid to initialize and clear out a variable in loops. 
+Instead, initialize it before entering the loop, and clear it out after the
+loop has exited. 
+You do not need to be concerned about allocating additional space for MPFR
+variables, since any variable has a significand of fixed size. 
+Hence unless you change its precision, or clear and reinitialize it,
+a floating-point variable will have the same allocated space during all its
+life.
+
+   <p>As a general rule, all MPFR functions expect output arguments before input
+arguments.  This notation is based on an analogy with the assignment operator. 
+MPFR allows you to use the same variable for both input and output in the same
+expression.  For example, the main function for floating-point multiplication,
+<code>mpfr_mul</code>, can be used like this: <code>mpfr_mul (x, x, x, rnd)</code>. 
+This
+computes the square of <var>x</var> with rounding mode <code>rnd</code>
+and puts the result back in <var>x</var>.
+
+   </body></html>
+

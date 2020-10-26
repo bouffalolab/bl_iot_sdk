@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<title>I/O of Rationals - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Rational-Number-Functions.html#Rational-Number-Functions" title="Rational Number Functions">
+<link rel="prev" href="Applying-Integer-Functions.html#Applying-Integer-Functions" title="Applying Integer Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="I%2fO-of-Rationals"></a>
+<a name="I_002fO-of-Rationals"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Applying-Integer-Functions.html#Applying-Integer-Functions">Applying Integer Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">6.6 Input and Output Functions</h3>
+
+<p><a name="index-Rational-input-and-output-functions-539"></a><a name="index-Input-functions-540"></a><a name="index-Output-functions-541"></a><a name="index-I_002fO-functions-542"></a>
+Functions that perform input from a stdio stream, and functions that output to
+a stdio stream, of <code>mpq</code> numbers.  Passing a <code>NULL</code> pointer for a
+<var>stream</var> argument to any of these functions will make them read from
+<code>stdin</code> and write to <code>stdout</code>, respectively.
+
+   <p>When using any of these functions, it is a good idea to include <samp><span class="file">stdio.h</span></samp>
+before <samp><span class="file">gmp.h</span></samp>, since that will allow <samp><span class="file">gmp.h</span></samp> to define prototypes
+for these functions.
+
+   <p>See also <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a> and <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>.
+
+<div class="defun">
+&mdash; Function: size_t <b>mpq_out_str</b> (<var>FILE *stream, int base, const mpq_t op</var>)<var><a name="index-mpq_005fout_005fstr-543"></a></var><br>
+<blockquote><p>Output <var>op</var> on stdio stream <var>stream</var>, as a string of digits in base
+<var>base</var>.  The base may vary from 2 to 36.  Output is in the form
+&lsquo;<samp><span class="samp">num/den</span></samp>&rsquo; or if the denominator is 1 then just &lsquo;<samp><span class="samp">num</span></samp>&rsquo;.
+
+        <p>Return the number of bytes written, or if an error occurred, return 0. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: size_t <b>mpq_inp_str</b> (<var>mpq_t rop, FILE *stream, int base</var>)<var><a name="index-mpq_005finp_005fstr-544"></a></var><br>
+<blockquote><p>Read a string of digits from <var>stream</var> and convert them to a rational in
+<var>rop</var>.  Any initial white-space characters are read and discarded.  Return
+the number of characters read (including white space), or 0 if a rational
+could not be read.
+
+        <p>The input can be a fraction like &lsquo;<samp><span class="samp">17/63</span></samp>&rsquo; or just an integer like
+&lsquo;<samp><span class="samp">123</span></samp>&rsquo;.  Reading stops at the first character not in this form, and white
+space is not permitted within the string.  If the input might not be in
+canonical form, then <code>mpq_canonicalize</code> must be called (see <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>).
+
+        <p>The <var>base</var> can be between 2 and 36, or can be 0 in which case the leading
+characters of the string determine the base, &lsquo;<samp><span class="samp">0x</span></samp>&rsquo; or &lsquo;<samp><span class="samp">0X</span></samp>&rsquo; for
+hexadecimal, &lsquo;<samp><span class="samp">0</span></samp>&rsquo; for octal, or decimal otherwise.  The leading characters
+are examined separately for the numerator and denominator of a fraction, so
+for instance &lsquo;<samp><span class="samp">0x10/11</span></samp>&rsquo; is 16/11, whereas &lsquo;<samp><span class="samp">0x10/0x11</span></samp>&rsquo; is
+16/17. 
+</p></blockquote></div>
+
+   </body></html>
+

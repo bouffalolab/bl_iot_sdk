@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+<title>Divide and Conquer Division - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Division-Algorithms.html#Division-Algorithms" title="Division Algorithms">
+<link rel="prev" href="Basecase-Division.html#Basecase-Division" title="Basecase Division">
+<link rel="next" href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division" title="Block-Wise Barrett Division">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Divide-and-Conquer-Division"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division">Block-Wise Barrett Division</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basecase-Division.html#Basecase-Division">Basecase Division</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Division-Algorithms.html#Division-Algorithms">Division Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.2.3 Divide and Conquer Division</h4>
+
+<p>For divisors larger than <code>DC_DIV_QR_THRESHOLD</code>, division is done by dividing. 
+Or to be precise by a recursive divide and conquer algorithm based on work by
+Moenck and Borodin, Jebelean, and Burnikel and Ziegler (see <a href="References.html#References">References</a>).
+
+   <p>The algorithm consists essentially of recognising that a 2NxN division
+can be done with the basecase division algorithm (see <a href="Basecase-Division.html#Basecase-Division">Basecase Division</a>),
+but using N/2 limbs as a base, not just a single limb.  This way the
+multiplications that arise are (N/2)x(N/2) and can take advantage of
+Karatsuba and higher multiplication algorithms (see <a href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>).  The two &ldquo;digits&rdquo; of the quotient are formed by recursive
+Nx(N/2) divisions.
+
+   <p>If the (N/2)x(N/2) multiplies are done with a basecase multiplication
+then the work is about the same as a basecase division, but with more function
+call overheads and with some subtractions separated from the multiplies. 
+These overheads mean that it's only when N/2 is above
+<code>MUL_TOOM22_THRESHOLD</code> that divide and conquer is of use.
+
+   <p><code>DC_DIV_QR_THRESHOLD</code> is based on the divisor size N, so it will be somewhere
+above twice <code>MUL_TOOM22_THRESHOLD</code>, but how much above depends on the
+CPU.  An optimized <code>mpn_mul_basecase</code> can lower <code>DC_DIV_QR_THRESHOLD</code> a
+little by offering a ready-made advantage over repeated <code>mpn_submul_1</code>
+calls.
+
+   <p>Divide and conquer is asymptotically O(M(N)*log(N)) where
+M(N) is the time for an NxN multiplication done with FFTs.  The
+actual time is a sum over multiplications of the recursed sizes, as can be
+seen near the end of section 2.2 of Burnikel and Ziegler.  For example, within
+the Toom-3 range, divide and conquer is 2.63*M(N).  With higher
+algorithms the M(N) term improves and the multiplier tends to log(N).  In practice, at moderate to large sizes, a 2NxN division
+is about 2 to 4 times slower than an NxN multiplication.
+
+   </body></html>
+

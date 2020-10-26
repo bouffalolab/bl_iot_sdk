@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+<title>Lucas Numbers Algorithm - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-Algorithms.html#Other-Algorithms" title="Other Algorithms">
+<link rel="prev" href="Fibonacci-Numbers-Algorithm.html#Fibonacci-Numbers-Algorithm" title="Fibonacci Numbers Algorithm">
+<link rel="next" href="Random-Number-Algorithms.html#Random-Number-Algorithms" title="Random Number Algorithms">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Lucas-Numbers-Algorithm"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Random-Number-Algorithms.html#Random-Number-Algorithms">Random Number Algorithms</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Fibonacci-Numbers-Algorithm.html#Fibonacci-Numbers-Algorithm">Fibonacci Numbers Algorithm</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-Algorithms.html#Other-Algorithms">Other Algorithms</a>
+<hr>
+</div>
+
+<h4 class="subsection">15.7.5 Lucas Numbers</h4>
+
+<p><a name="index-Lucas-number-algorithm-930"></a>
+<code>mpz_lucnum2_ui</code> derives a pair of Lucas numbers from a pair of Fibonacci
+numbers with the following simple formulas.
+
+<pre class="example">     L[k]   =   F[k] + 2*F[k-1]
+     L[k-1] = 2*F[k] -   F[k-1]
+</pre>
+   <p><code>mpz_lucnum_ui</code> is only interested in L[n], and some work can be
+saved.  Trailing zero bits on n can be handled with a single square
+each.
+
+<pre class="example">     L[2k] = L[k]^2 - 2*(-1)^k
+</pre>
+   <p>And the lowest 1 bit can be handled with one multiply of a pair of Fibonacci
+numbers, similar to what <code>mpz_fib_ui</code> does.
+
+<pre class="example">     L[2k+1] = 5*F[k-1]*(2*F[k]+F[k-1]) - 4*(-1)^k
+</pre>
+   </body></html>
+

@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>ARC Function Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Function-Attributes.html#Function-Attributes" title="Function Attributes">
+<link rel="prev" href="AArch64-Function-Attributes.html#AArch64-Function-Attributes" title="AArch64 Function Attributes">
+<link rel="next" href="ARM-Function-Attributes.html#ARM-Function-Attributes" title="ARM Function Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="ARC-Function-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="ARM-Function-Attributes.html#ARM-Function-Attributes">ARM Function Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="AArch64-Function-Attributes.html#AArch64-Function-Attributes">AArch64 Function Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Function-Attributes.html#Function-Attributes">Function Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.31.3 ARC Function Attributes</h4>
+
+<p>These function attributes are supported by the ARC back end:
+
+     <dl>
+<dt><code>interrupt</code><dd><a name="index-g_t_0040code_007binterrupt_007d-function-attribute_002c-ARC-3556"></a>Use this attribute to indicate
+that the specified function is an interrupt handler.  The compiler generates
+function entry and exit sequences suitable for use in an interrupt handler
+when this attribute is present.
+
+     <p>On the ARC, you must specify the kind of interrupt to be handled
+in a parameter to the interrupt attribute like this:
+
+     <pre class="smallexample">          void f () __attribute__ ((interrupt ("ilink1")));
+</pre>
+     <p>Permissible values for this parameter are: <code>ilink1</code><!-- /@w --> and
+<code>ilink2</code><!-- /@w -->.
+
+     <br><dt><code>long_call</code><dt><code>medium_call</code><dt><code>short_call</code><dd><a name="index-g_t_0040code_007blong_005fcall_007d-function-attribute_002c-ARC-3557"></a><a name="index-g_t_0040code_007bmedium_005fcall_007d-function-attribute_002c-ARC-3558"></a><a name="index-g_t_0040code_007bshort_005fcall_007d-function-attribute_002c-ARC-3559"></a><a name="index-indirect-calls_002c-ARC-3560"></a>These attributes specify how a particular function is called. 
+These attributes override the
+<samp><span class="option">-mlong-calls</span></samp> and <samp><span class="option">-mmedium-calls</span></samp> (see <a href="ARC-Options.html#ARC-Options">ARC Options</a>)
+command-line switches and <code>#pragma long_calls</code> settings.
+
+     <p>For ARC, a function marked with the <code>long_call</code> attribute is
+always called using register-indirect jump-and-link instructions,
+thereby enabling the called function to be placed anywhere within the
+32-bit address space.  A function marked with the <code>medium_call</code>
+attribute will always be close enough to be called with an unconditional
+branch-and-link instruction, which has a 25-bit offset from
+the call site.  A function marked with the <code>short_call</code>
+attribute will always be close enough to be called with a conditional
+branch-and-link instruction, which has a 21-bit offset from
+the call site.
+
+     <br><dt><code>jli_always</code><dd><a name="index-g_t_0040code_007bjli_005falways_007d-function-attribute_002c-ARC-3561"></a>Forces a particular function to be called using <code>jli</code>
+instruction.  The <code>jli</code> instruction makes use of a table stored
+into <code>.jlitab</code> section, which holds the location of the functions
+which are addressed using this instruction.
+
+     <br><dt><code>jli_fixed</code><dd><a name="index-g_t_0040code_007bjli_005ffixed_007d-function-attribute_002c-ARC-3562"></a>Identical like the above one, but the location of the function in the
+<code>jli</code> table is known and given as an attribute parameter.
+
+     <br><dt><code>secure_call</code><dd><a name="index-g_t_0040code_007bsecure_005fcall_007d-function-attribute_002c-ARC-3563"></a>This attribute allows one to mark secure-code functions that are
+callable from normal mode.  The location of the secure call function
+into the <code>sjli</code> table needs to be passed as argument.
+
+ </dl>
+
+ </body></html>
+

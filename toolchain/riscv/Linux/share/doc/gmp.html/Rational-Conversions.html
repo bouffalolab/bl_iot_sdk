@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Rational Conversions - GNU MP 6.1.0</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Rational-Number-Functions.html#Rational-Number-Functions" title="Rational Number Functions">
+<link rel="prev" href="Initializing-Rationals.html#Initializing-Rationals" title="Initializing Rationals">
+<link rel="next" href="Rational-Arithmetic.html#Rational-Arithmetic" title="Rational Arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual describes how to install and use the GNU multiple precision
+arithmetic library, version 6.1.0.
+
+Copyright 1991, 1993-2015 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.3 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
+Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
+software''.  A copy of the license is included in
+*note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Rational-Conversions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Rational-Arithmetic.html#Rational-Arithmetic">Rational Arithmetic</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Initializing-Rationals.html#Initializing-Rationals">Initializing Rationals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">6.2 Conversion Functions</h3>
+
+<p><a name="index-Rational-conversion-functions-503"></a><a name="index-Conversion-functions-504"></a>
+
+<div class="defun">
+&mdash; Function: double <b>mpq_get_d</b> (<var>const mpq_t op</var>)<var><a name="index-mpq_005fget_005fd-505"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
+towards zero).
+
+        <p>If the exponent from the conversion is too big or too small to fit a
+<code>double</code> then the result is system dependent.  For too big an infinity is
+returned when available.  For too small 0.0 is normally returned. 
+Hardware overflow, underflow and denorm traps may or may not occur. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: void <b>mpq_set_d</b> (<var>mpq_t rop, double op</var>)<var><a name="index-mpq_005fset_005fd-506"></a></var><br>
+&mdash; Function: void <b>mpq_set_f</b> (<var>mpq_t rop, const mpf_t op</var>)<var><a name="index-mpq_005fset_005ff-507"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the value of <var>op</var>.  There is no rounding, this conversion
+is exact. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: char * <b>mpq_get_str</b> (<var>char *str, int base, const mpq_t op</var>)<var><a name="index-mpq_005fget_005fstr-508"></a></var><br>
+<blockquote><p>Convert <var>op</var> to a string of digits in base <var>base</var>.  The base may vary
+from 2 to 36.  The string will be of the form &lsquo;<samp><span class="samp">num/den</span></samp>&rsquo;, or if the
+denominator is 1 then just &lsquo;<samp><span class="samp">num</span></samp>&rsquo;.
+
+        <p>If <var>str</var> is <code>NULL</code>, the result string is allocated using the current
+allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be
+<code>strlen(str)+1</code> bytes, that being exactly enough for the string and
+null-terminator.
+
+        <p>If <var>str</var> is not <code>NULL</code>, it should point to a block of storage large
+enough for the result, that being
+
+     <pre class="example">          mpz_sizeinbase (mpq_numref(<var>op</var>), <var>base</var>)
+          + mpz_sizeinbase (mpq_denref(<var>op</var>), <var>base</var>) + 3
+</pre>
+        <p>The three extra bytes are for a possible minus sign, possible slash, and the
+null-terminator.
+
+        <p>A pointer to the result string is returned, being either the allocated block,
+or the given <var>str</var>. 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+<title>Comparison Functions - GNU MPFR 3.1.4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
+<link rel="prev" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" title="Basic Arithmetic Functions">
+<link rel="next" href="Special-Functions.html#Special-Functions" title="Special Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual documents how to install and use the Multiple Precision
+Floating-Point Reliable Library, version 3.1.4.
+
+Copyright 1991, 1993-2016 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document under
+the terms of the GNU Free Documentation License, Version 1.2 or any later
+version published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
+license is included in *note GNU Free Documentation License::.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Comparison-Functions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Special-Functions.html#Special-Functions">Special Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions">Basic Arithmetic Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+   <p><a name="index-Float-comparisons-functions-151"></a><a name="index-Comparison-functions-152"></a>
+
+<h3 class="section">5.6 Comparison Functions</h3>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_cmp</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fcmp-153"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_ui</b> (<var>mpfr_t op1, unsigned long int op2</var>)<var><a name="index-mpfr_005fcmp_005fui-154"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_si</b> (<var>mpfr_t op1, long int op2</var>)<var><a name="index-mpfr_005fcmp_005fsi-155"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_d</b> (<var>mpfr_t op1, double op2</var>)<var><a name="index-mpfr_005fcmp_005fd-156"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_ld</b> (<var>mpfr_t op1, long double op2</var>)<var><a name="index-mpfr_005fcmp_005fld-157"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_z</b> (<var>mpfr_t op1, mpz_t op2</var>)<var><a name="index-mpfr_005fcmp_005fz-158"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_q</b> (<var>mpfr_t op1, mpq_t op2</var>)<var><a name="index-mpfr_005fcmp_005fq-159"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_f</b> (<var>mpfr_t op1, mpf_t op2</var>)<var><a name="index-mpfr_005fcmp_005ff-160"></a></var><br>
+<blockquote><p>Compare <var>op1</var> and <var>op2</var>.  Return a positive value if <var>op1</var> &gt;
+<var>op2</var>, zero if <var>op1</var> = <var>op2</var>, and a negative value if
+<var>op1</var> &lt; <var>op2</var>. 
+Both <var>op1</var> and <var>op2</var> are considered to their full own precision,
+which may differ. 
+If one of the operands is NaN, set the <em>erange</em> flag and return zero.
+
+        <p>Note: These functions may be useful to distinguish the three possible cases. 
+If you need to distinguish two cases only, it is recommended to use the
+predicate functions (e.g., <code>mpfr_equal_p</code> for the equality) described
+below; they behave like the IEEE 754 comparisons, in particular when one
+or both arguments are NaN. But only floating-point numbers can be compared
+(you may need to do a conversion first). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_cmp_ui_2exp</b> (<var>mpfr_t op1, unsigned long int op2, mpfr_exp_t e</var>)<var><a name="index-mpfr_005fcmp_005fui_005f2exp-161"></a></var><br>
+&mdash; Function: int <b>mpfr_cmp_si_2exp</b> (<var>mpfr_t op1, long int op2, mpfr_exp_t e</var>)<var><a name="index-mpfr_005fcmp_005fsi_005f2exp-162"></a></var><br>
+<blockquote><p>Compare <var>op1</var> and <var>op2</var> multiplied by two to
+the power <var>e</var>. Similar as above. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_cmpabs</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fcmpabs-163"></a></var><br>
+<blockquote><p>Compare |<var>op1</var>| and |<var>op2</var>|.  Return a positive value if
+|<var>op1</var>| &gt; |<var>op2</var>|, zero if |<var>op1</var>| = |<var>op2</var>|, and
+a negative value if |<var>op1</var>| &lt; |<var>op2</var>|. 
+If one of the operands is NaN, set the <em>erange</em> flag and return zero. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_nan_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fnan_005fp-164"></a></var><br>
+&mdash; Function: int <b>mpfr_inf_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005finf_005fp-165"></a></var><br>
+&mdash; Function: int <b>mpfr_number_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fnumber_005fp-166"></a></var><br>
+&mdash; Function: int <b>mpfr_zero_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fzero_005fp-167"></a></var><br>
+&mdash; Function: int <b>mpfr_regular_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fregular_005fp-168"></a></var><br>
+<blockquote><p>Return non-zero if <var>op</var> is respectively NaN, an infinity, an ordinary
+number (i.e., neither NaN nor an infinity), zero, or a regular number
+(i.e., neither NaN, nor an infinity nor zero). Return zero otherwise. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Macro: int <b>mpfr_sgn</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fsgn-169"></a></var><br>
+<blockquote><p>Return a positive value if <var>op</var> &gt; 0, zero if <var>op</var> = 0,
+and a negative value if <var>op</var> &lt; 0. 
+If the operand is NaN, set the <em>erange</em> flag and return zero. 
+This is equivalent to <code>mpfr_cmp_ui (op, 0)</code>, but more efficient. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_greater_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fgreater_005fp-170"></a></var><br>
+&mdash; Function: int <b>mpfr_greaterequal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fgreaterequal_005fp-171"></a></var><br>
+&mdash; Function: int <b>mpfr_less_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fless_005fp-172"></a></var><br>
+&mdash; Function: int <b>mpfr_lessequal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005flessequal_005fp-173"></a></var><br>
+&mdash; Function: int <b>mpfr_equal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fequal_005fp-174"></a></var><br>
+<blockquote><p>Return non-zero if
+<var>op1</var> &gt; <var>op2</var>,
+<var>op1</var> &gt;= <var>op2</var>,
+<var>op1</var> &lt; <var>op2</var>,
+<var>op1</var> &lt;= <var>op2</var>,
+<var>op1</var> = <var>op2</var> respectively,
+and zero otherwise. 
+Those functions return zero whenever <var>op1</var> and/or <var>op2</var> is NaN. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_lessgreater_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005flessgreater_005fp-175"></a></var><br>
+<blockquote><p>Return non-zero if <var>op1</var> &lt; <var>op2</var> or
+<var>op1</var> &gt; <var>op2</var> (i.e., neither <var>op1</var>, nor <var>op2</var> is
+NaN, and <var>op1</var> &lt;&gt; <var>op2</var>), zero otherwise (i.e., <var>op1</var>
+and/or <var>op2</var> is NaN, or <var>op1</var> = <var>op2</var>). 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpfr_unordered_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005funordered_005fp-176"></a></var><br>
+<blockquote><p>Return non-zero if <var>op1</var> or <var>op2</var> is a NaN (i.e., they cannot be
+compared), zero otherwise. 
+</p></blockquote></div>
+
+   </body></html>
+

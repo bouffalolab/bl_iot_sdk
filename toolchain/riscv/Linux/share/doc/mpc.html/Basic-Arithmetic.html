@@ -1,0 +1,156 @@
+<html lang="en">
+<head>
+<title>Basic Arithmetic - GNU MPC 1.0.3</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU MPC 1.0.3">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Complex-Functions.html#Complex-Functions" title="Complex Functions">
+<link rel="prev" href="Projection-_0026-Decomposing.html#Projection-_0026-Decomposing" title="Projection &amp; Decomposing">
+<link rel="next" href="Power-Functions-and-Logarithm.html#Power-Functions-and-Logarithm" title="Power Functions and Logarithm">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for GNU MPC, a library for multiple precision complex arithmetic,
+version 1.0.3 of February 2015.
+
+Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 INRIA
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections. A copy of the license is
+     included in the section entitled ``GNU Free Documentation
+     License.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Basic-Arithmetic"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Power-Functions-and-Logarithm.html#Power-Functions-and-Logarithm">Power Functions and Logarithm</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Projection-_0026-Decomposing.html#Projection-_0026-Decomposing">Projection &amp; Decomposing</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Complex-Functions.html#Complex-Functions">Complex Functions</a>
+<hr>
+</div>
+
+<h3 class="section">5.7 Basic Arithmetic Functions</h3>
+
+<p><a name="index-Complex-arithmetic-functions-68"></a><a name="index-Arithmetic-functions-69"></a>
+All the following functions are designed in such a way that, when working
+with real numbers instead of complex numbers, their complexity should
+essentially be the same as with the GNU MPFR library, with only a marginal
+overhead due to the GNU MPC layer.
+
+<div class="defun">
+&mdash; Function: int <b>mpc_add</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fadd-70"></a></var><br>
+&mdash; Function: int <b>mpc_add_ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fadd_005fui-71"></a></var><br>
+&mdash; Function: int <b>mpc_add_fr</b> (<var>mpc_t rop, mpc_t op1, mpfr_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fadd_005ffr-72"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> + <var>op2</var> rounded according to <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sub</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsub-73"></a></var><br>
+&mdash; Function: int <b>mpc_sub_fr</b> (<var>mpc_t rop, mpc_t op1, mpfr_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsub_005ffr-74"></a></var><br>
+&mdash; Function: int <b>mpc_fr_sub</b> (<var>mpc_t rop, mpfr_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005ffr_005fsub-75"></a></var><br>
+&mdash; Function: int <b>mpc_sub_ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsub_005fui-76"></a></var><br>
+&mdash; Macro: int <b>mpc_ui_sub</b> (<var>mpc_t rop, unsigned long int op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fui_005fsub-77"></a></var><br>
+&mdash; Function: int <b>mpc_ui_ui_sub</b> (<var>mpc_t rop, unsigned long int re1, unsigned long int im1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fui_005fui_005fsub-78"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> &minus; <var>op2</var> rounded according to <var>rnd</var>. 
+For <code>mpc_ui_ui_sub</code>, <var>op1</var> is <var>re1</var> + <var>im1</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_neg</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fneg-79"></a></var><br>
+<blockquote><p>Set <var>rop</var> to &minus;<var>op</var> rounded according to <var>rnd</var>. 
+Just changes the sign if <var>rop</var> and <var>op</var> are the same variable. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_mul</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul-80"></a></var><br>
+&mdash; Function: int <b>mpc_mul_ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005fui-81"></a></var><br>
+&mdash; Function: int <b>mpc_mul_si</b> (<var>mpc_t rop, mpc_t op1, long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005fsi-82"></a></var><br>
+&mdash; Function: int <b>mpc_mul_fr</b> (<var>mpc_t rop, mpc_t op1, mpfr_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005ffr-83"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times <var>op2</var> rounded according to <var>rnd</var>. 
+Note: for <code>mpc_mul</code>, in case <var>op1</var> and <var>op2</var> have the same value,
+use <code>mpc_sqr</code> for better efficiency. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_mul_i</b> (<var>mpc_t rop, mpc_t op, int sgn, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005fi-84"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op</var> times the imaginary unit i if <var>sgn</var> is
+non-negative, set <var>rop</var> to <var>op</var> times -i otherwise,
+in both cases rounded according to <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_sqr</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fsqr-85"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the square of <var>op</var> rounded according to <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_fma</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_t op3, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005ffma-86"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var>*<var>op2</var>+<var>op3</var>,
+rounded according to <var>rnd</var>, with only one final rounding. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_div</b> (<var>mpc_t rop, mpc_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fdiv-87"></a></var><br>
+&mdash; Function: int <b>mpc_div_ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fdiv_005fui-88"></a></var><br>
+&mdash; Function: int <b>mpc_div_fr</b> (<var>mpc_t rop, mpc_t op1, mpfr_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fdiv_005ffr-89"></a></var><br>
+&mdash; Function: int <b>mpc_ui_div</b> (<var>mpc_t rop, unsigned long int op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fui_005fdiv-90"></a></var><br>
+&mdash; Function: int <b>mpc_fr_div</b> (<var>mpc_t rop, mpfr_t op1, mpc_t op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005ffr_005fdiv-91"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var>/<var>op2</var> rounded according to <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_conj</b> (<var>mpc_t rop, mpc_t op, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fconj-92"></a></var><br>
+<blockquote><p>Set <var>rop</var> to the conjugate of <var>op</var> rounded according to <var>rnd</var>. 
+Just changes the sign of the imaginary part
+if <var>rop</var> and <var>op</var> are the same variable. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_abs</b> (<var>mpfr_t rop, mpc_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpc_005fabs-93"></a></var><br>
+<blockquote><p>Set the floating-point number <var>rop</var> to the absolute value of <var>op</var>,
+rounded in the direction <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_norm</b> (<var>mpfr_t rop, mpc_t op, mpfr_rnd_t rnd</var>)<var><a name="index-mpc_005fnorm-94"></a></var><br>
+<blockquote><p>Set the floating-point number <var>rop</var> to the norm of <var>op</var>
+(i.e., the square of its absolute value),
+rounded in the direction <var>rnd</var>. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_mul_2ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005f2ui-95"></a></var><br>
+&mdash; Function: int <b>mpc_mul_2si</b> (<var>mpc_t rop, mpc_t op1, long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fmul_005f2si-96"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> times 2 raised to <var>op2</var>
+rounded according to <var>rnd</var>. Just modifies the exponents
+of the real and imaginary parts by <var>op2</var>
+when <var>rop</var> and <var>op1</var> are identical. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: int <b>mpc_div_2ui</b> (<var>mpc_t rop, mpc_t op1, unsigned long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fdiv_005f2ui-97"></a></var><br>
+&mdash; Function: int <b>mpc_div_2si</b> (<var>mpc_t rop, mpc_t op1, long int op2, mpc_rnd_t rnd</var>)<var><a name="index-mpc_005fdiv_005f2si-98"></a></var><br>
+<blockquote><p>Set <var>rop</var> to <var>op1</var> divided by 2 raised to <var>op2</var>
+rounded according to <var>rnd</var>. Just modifies the exponents
+of the real and imaginary parts by <var>op2</var>
+when <var>rop</var> and <var>op1</var> are identical. 
+</p></blockquote></div>
+
+   </body></html>
+

@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>GIMPLE Tests - GNU Compiler Collection (GCC) Internals</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Compiler Collection (GCC) Internals">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Testsuites.html#Testsuites" title="Testsuites">
+<link rel="prev" href="Torture-Tests.html#Torture-Tests" title="Torture Tests">
+<link rel="next" href="RTL-Tests.html#RTL-Tests" title="RTL Tests">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="GIMPLE-Tests"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="RTL-Tests.html#RTL-Tests">RTL Tests</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Torture-Tests.html#Torture-Tests">Torture Tests</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Testsuites.html#Testsuites">Testsuites</a>
+<hr>
+</div>
+
+<h3 class="section">7.10 Support for testing GIMPLE passes</h3>
+
+<p>As of gcc 7, C functions can be tagged with <code>__GIMPLE</code> to indicate
+that the function body will be GIMPLE, rather than C.  The compiler requires
+the option <samp><span class="option">-fgimple</span></samp> to enable this functionality.  For example:
+
+<pre class="smallexample">     /* { dg-do compile } */
+     /* { dg-options "-O -fgimple" } */
+     
+     void __GIMPLE (startwith ("dse2")) foo ()
+     {
+       int a;
+     
+     bb_2:
+       if (a &gt; 4)
+         goto bb_3;
+       else
+         goto bb_4;
+     
+     bb_3:
+       a_2 = 10;
+       goto bb_5;
+     
+     bb_4:
+       a_3 = 20;
+     
+     bb_5:
+       a_1 = __PHI (bb_3: a_2, bb_4: a_3);
+       a_4 = a_1 + 4;
+     
+       return;
+     }
+</pre>
+ <p>The <code>startwith</code> argument indicates at which pass to begin.
+
+ <p>Use the dump modifier <code>-gimple</code> (e.g. <samp><span class="option">-fdump-tree-all-gimple</span></samp>)
+to make tree dumps more closely follow the format accepted by the GIMPLE
+parser.
+
+ <p>Example DejaGnu tests of GIMPLE can be seen in the source tree at
+<samp><span class="file">gcc/testsuite/gcc.dg/gimplefe-*.c</span></samp>.
+
+ <p>The <code>__GIMPLE</code> parser is integrated with the C tokenizer and
+preprocessor, so it should be possible to use macros to build out
+test coverage.
+
+ </body></html>
+

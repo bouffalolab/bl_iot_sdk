@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>MeP Variable Attributes - Using the GNU Compiler Collection (GCC)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the GNU Compiler Collection (GCC)">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Variable-Attributes.html#Variable-Attributes" title="Variable Attributes">
+<link rel="prev" href="M32R_002fD-Variable-Attributes.html#M32R_002fD-Variable-Attributes" title="M32R/D Variable Attributes">
+<link rel="next" href="Microsoft-Windows-Variable-Attributes.html#Microsoft-Windows-Variable-Attributes" title="Microsoft Windows Variable Attributes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) 1988-2018 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Funding Free Software'', the Front-Cover
+Texts being (a) (see below), and with the Back-Cover Texts being (b)
+(see below).  A copy of the license is included in the section entitled
+``GNU Free Documentation License''.
+
+(a) The FSF's Front-Cover Text is:
+
+     A GNU Manual
+
+(b) The FSF's Back-Cover Text is:
+
+     You have freedom to copy and modify this GNU Manual, like GNU
+     software.  Copies published by the Free Software Foundation raise
+     funds for GNU development.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="MeP-Variable-Attributes"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Microsoft-Windows-Variable-Attributes.html#Microsoft-Windows-Variable-Attributes">Microsoft Windows Variable Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="M32R_002fD-Variable-Attributes.html#M32R_002fD-Variable-Attributes">M32R/D Variable Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Variable-Attributes.html#Variable-Attributes">Variable Attributes</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.32.8 MeP Variable Attributes</h4>
+
+<p>The MeP target has a number of addressing modes and busses.  The
+<code>near</code> space spans the standard memory space's first 16 megabytes
+(24 bits).  The <code>far</code> space spans the entire 32-bit memory space. 
+The <code>based</code> space is a 128-byte region in the memory space that
+is addressed relative to the <code>$tp</code> register.  The <code>tiny</code>
+space is a 65536-byte region relative to the <code>$gp</code> register.  In
+addition to these memory regions, the MeP target has a separate 16-bit
+control bus which is specified with <code>cb</code> attributes.
+
+     <dl>
+<dt><code>based</code><dd><a name="index-g_t_0040code_007bbased_007d-variable-attribute_002c-MeP-3875"></a>Any variable with the <code>based</code> attribute is assigned to the
+<code>.based</code> section, and is accessed with relative to the
+<code>$tp</code> register.
+
+     <br><dt><code>tiny</code><dd><a name="index-g_t_0040code_007btiny_007d-variable-attribute_002c-MeP-3876"></a>Likewise, the <code>tiny</code> attribute assigned variables to the
+<code>.tiny</code> section, relative to the <code>$gp</code> register.
+
+     <br><dt><code>near</code><dd><a name="index-g_t_0040code_007bnear_007d-variable-attribute_002c-MeP-3877"></a>Variables with the <code>near</code> attribute are assumed to have addresses
+that fit in a 24-bit addressing mode.  This is the default for large
+variables (<code>-mtiny=4</code> is the default) but this attribute can
+override <code>-mtiny=</code> for small variables, or override <code>-ml</code>.
+
+     <br><dt><code>far</code><dd><a name="index-g_t_0040code_007bfar_007d-variable-attribute_002c-MeP-3878"></a>Variables with the <code>far</code> attribute are addressed using a full
+32-bit address.  Since this covers the entire memory space, this
+allows modules to make no assumptions about where variables might be
+stored.
+
+     <br><dt><code>io</code><dd><a name="index-g_t_0040code_007bio_007d-variable-attribute_002c-MeP-3879"></a><dt><code>io (</code><var>addr</var><code>)</code><dd>Variables with the <code>io</code> attribute are used to address
+memory-mapped peripherals.  If an address is specified, the variable
+is assigned that address, else it is not assigned an address (it is
+assumed some other module assigns an address).  Example:
+
+     <pre class="smallexample">          int timer_count __attribute__((io(0x123)));
+</pre>
+     <br><dt><code>cb</code><dt><code>cb (</code><var>addr</var><code>)</code><dd><a name="index-g_t_0040code_007bcb_007d-variable-attribute_002c-MeP-3880"></a>Variables with the <code>cb</code> attribute are used to access the control
+bus, using special instructions.  <code>addr</code> indicates the control bus
+address.  Example:
+
+     <pre class="smallexample">          int cpu_clock __attribute__((cb(0x123)));
+</pre>
+     </dl>
+
+ </body></html>
+
