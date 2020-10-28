@@ -131,7 +131,7 @@ int inode_avail_count(void)
     int e = 0;
 
     for (; e < AOS_CONFIG_VFS_DEV_NODES; e++) {
-        if (g_vfs_dev_nodes[count].type == VFS_TYPE_NOT_INIT) {
+        if (g_vfs_dev_nodes[e].type == VFS_TYPE_NOT_INIT) {
             count++;
         }
     }
