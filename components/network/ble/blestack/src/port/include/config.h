@@ -360,7 +360,7 @@
 #endif
 
 /**
-*  CONFIG_BT_CONTROLLER_NAME:Bluetooth controller name. default support ESP32.
+*  CONFIG_BT_CONTROLLER_NAME:Bluetooth controller name.
 */
 #ifndef CONFIG_BT_CONTROLLER_NAME
 #if defined(BL602)
