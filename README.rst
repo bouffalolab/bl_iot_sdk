@@ -7,9 +7,29 @@ Check ``docs/html`` for more detail.
 
 Fire an issue, if you have any issue or need any support.
 
+Quick Start
+===========
+
+In order to build one of the sample apps, you need to set a few environment
+variables:
+```
+export BL60X_SDK_PATH=/path/to/this/repo
+export CONFIG_CHIP_NAME=bl602
+```
+Then go to the sample directory of interest and call `make`, for example:
+```
+cd customer_app/bl602_boot2
+make
+```
+There is a linker script (written in python) at `image_conf/flash_build.py`.
+To run this, you need to specify the application and the target, for example:
+```
+python3 flash_build.py bl602_boot2 bl602
+```
 
 Hardware
 =========
+
 BL602 is a 32-bit RISC-V based combo chipset supporting Wi-Fi and BLE (Bluetooth Low Energy). The chip is made by `Nanjing-based Bouffalo Lab <https://www.bouffalolab.com/bl602>`_ for ultra-low-power applications.
 In terms of price range and feature set, the chip is competing against `Espressif ESP8266 <https://www.espressif.com/en/products/socs/esp8266>`_
 
