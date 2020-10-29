@@ -1,7 +1,7 @@
 BLE602 SDK
 ==========
 
-`Discord <https://discord.gg/89VWQVH>`_, `Telegram <https://t.me/joinchat/Kmi2S0nOsT240emHk-aO6g>`_
+Join us on `Discord <https://discord.gg/89VWQVH>`_, `Telegram <https://t.me/joinchat/Kmi2S0nOsT240emHk-aO6g>`_, `Matrix <https://matrix.to/#/#pine64-nutcracker:matrix.org>`_
 
 Bouffalolab bl_iot_sdk. Support BL602 Wi-Fi/BLE Combo RISC-V based Chip.
 
