@@ -21,6 +21,13 @@ Then go to the sample directory of interest and call `make`, for example:
 cd customer_app/bl602_boot2
 make
 ```
+Call
+```
+make CONFIG_TOOLPREFIX=riscv64-linux-gnu-
+```
+for bypassing the bundled crosscompiler and using your distribution's own crosscompiler.
+
+
 There is a linker script (written in python) at `image_conf/flash_build.py`.
 To run this, you need to specify the application and the target, for example:
 ```
