@@ -272,7 +272,7 @@ void blog_port_output(const char *log, size_t size) {
 size_t blog_strcpy(size_t cur_len, char *dst, const char *src) {
     const char *src_old = src;
 
-    if ((!src) || (!src)) {
+    if ((!dst) || (!src)) {
         __blog_printf("assert.\r\n");
         return 0;
     }
