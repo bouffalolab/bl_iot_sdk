@@ -43,6 +43,15 @@ Low Energy). The chip is made by `Nanjing-based Bouffalo Lab <https://www.bouffa
 for ultra-low-power applications. In terms of price range and feature set, the
 chip is competing against `Espressif ESP8266 <https://www.espressif.com/en/products/socs/esp8266>`_
 
+- `BL602/604 Datasheet <docs/BL602_BL604_DS_Datasheet.pdf>`_
+  (34 pages): Includes pinout, memory map, and general peripheral descriptions
+  but no detailed functional specification or register listings. Sipeed, a board
+  vendor that plans to use the BL602, `claims <https://twitter.com/SipeedIO/status/1321658609990725633>`_
+  that full register documentation will be available sometime in November 2020.
+- `soc602_reg.svd <components/bl602/bl602_std/bl602_std/Device/Bouffalo/BL602/Peripherals/soc602_reg.svd>`_:
+  Contains a seemingly-complete register listing, with names but no descriptions,
+  for the BL602.
+
 Comparison with ESP8266
 =======================
 +-------------------+-----------------------------+----------------------------------+
