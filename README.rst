@@ -51,6 +51,8 @@ chip is competing against `Espressif ESP8266 <https://www.espressif.com/en/produ
 - `soc602_reg.svd <components/bl602/bl602_std/bl602_std/Device/Bouffalo/BL602/Peripherals/soc602_reg.svd>`_:
   Contains a seemingly-complete register listing, with names but no descriptions,
   for the BL602.
+- `Hardware Notes <docs/hardware_notes.md>`_: Additional information gathered
+  from this repository and elsewhere on the internet.
 
 Comparison with ESP8266
 =======================
