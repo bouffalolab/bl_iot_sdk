@@ -1,7 +1,5 @@
 from __future__ import print_function
 from __future__ import unicode_literals
-import time
-import re
 
 from tiny_test_fw import DUT, App, TinyFW
 from ttfw_bl import BL602App, BL602DUT
