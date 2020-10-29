@@ -170,7 +170,7 @@ static void DAC_LLI_Init(uint32_t *psrc, uint32_t bufsize)
         }
         LLIList[i].dmaCtrl= dmaCtrlRegVal;
     }
-    
+
     LLIList[i - 1].nextLLI=(uint32_t)&LLIList[0];
 
 
@@ -208,12 +208,9 @@ static BL_Err_Type DAC_DMA_Test(uint32_t *psrc, uint32_t bufsize)
 }
 
 
-int audio_dac_dma_test(uint16_t *paddr, uint32_t bufsize, int sampling)
+int audio_dac_dma_test(uint16_t *paddr, uint32_t bufsize)
 {
-    sampling = sampling;
-
     if(SUCCESS != DAC_DMA_Test(paddr, bufsize)){
-
        return 0;
     }
 

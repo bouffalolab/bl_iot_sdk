@@ -31,6 +31,6 @@
 #define __BL_DAC_DMA_H__
 #include <stdint.h>
 
-int audio_dac_dma_test(uint16_t *pcbuff, uint32_t bufsize, int sampling);
+int audio_dac_dma_test(uint16_t *pcbuff, uint32_t bufsize);
 
 #endif
