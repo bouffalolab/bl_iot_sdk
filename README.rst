@@ -1,17 +1,16 @@
-BLE602 SDK
-==========
+BL602 SDK (Pine64 version)
+==========================
 
 Join us on `Discord <https://discord.gg/89VWQVH>`_, `Telegram <https://t.me/joinchat/Kmi2S0nOsT240emHk-aO6g>`_, `Matrix <https://matrix.to/#/#pine64-nutcracker:matrix.org>`_
 
-Bouffalolab bl_iot_sdk. Support BL602 Wi-Fi/BLE Combo RISC-V based Chip.
+This repository contains the Pine64 fork of Bouffalo Lab's SDK for their BL602
+Wi-Fi/BLE Combo RISC-V SoC. The upstream documentation lives in ``docs/html``.
 
-Check ``docs/html`` for more detail.
-
-File an issue, if you have any issue or need any support.
+This repository is the central focus of Pine64's
+`Nutcracker Challenge <https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/>`_.
 
 Quick Start
-===========
-
+-----------
 In order to build one of the sample apps, you need to set a few environment
 variables::
 
@@ -36,8 +35,7 @@ To run this, you need to specify the application and the target, for example::
     python3 flash_build.py bl602_boot2 bl602
 
 Hardware
-=========
-
+--------
 BL602 is a 32-bit RISC-V based combo chipset supporting Wi-Fi and BLE (Bluetooth
 Low Energy). The chip is made by `Nanjing-based Bouffalo Lab <https://www.bouffalolab.com/bl602>`_
 for ultra-low-power applications. In terms of price range and feature set, the
@@ -55,7 +53,7 @@ chip is competing against `Espressif ESP8266 <https://www.espressif.com/en/produ
   from this repository and elsewhere on the internet.
 
 Comparison with ESP8266
-=======================
+-----------------------
 +-------------------+-----------------------------+----------------------------------+
 |                   | Bouffalo Lab BL602          | Espressif ESP8266                |
 +===================+=============================+==================================+
