@@ -2349,7 +2349,7 @@ GLB_GPIO_INT_CONTROL_Type GLB_Get_GPIO_IntCtlMod(GLB_GPIO_Type gpioPin)
 *******************************************************************************/
 BL_Err_Type GLB_GPIO_INT0_Callback_Install(GLB_GPIO_Type gpioPin,intCallback_Type* cbFun)
 {
-    if(gpioPin<32){
+    if(gpioPin<GLB_GPIO_INT0_NUM){
         glbGpioInt0CbfArra[gpioPin] = cbFun;
     }
     
