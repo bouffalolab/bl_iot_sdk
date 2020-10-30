@@ -49,6 +49,10 @@ int bl_sys_time_get(uint64_t *epoch)
 {
     int ms_diff;
 
+    if (!epoch) {
+        return -1;
+    }
+
     if (0 == epoch_time) {
         return -1;
     }
@@ -66,7 +70,7 @@ void bl_sys_time_sync_init(void)
     init_tick_rtos = xTaskGetTickCount();
     init_tick_rtc = bl_rtc_get_timestamp_ms() & 0xFFFFFFFF;
     taskEXIT_CRITICAL();
-    
+
     sync_init = 1;
 }
 
@@ -76,19 +80,23 @@ int bl_sys_time_sync_state(uint32_t *xTicksToJump)
     uint32_t currTickRtc;
     uint32_t deltaTickRtos;
     uint32_t deltaTickRtc;
-    
+
+    if (!xTicksToJump) {
+        return -1;
+    }
+
     if(!sync_init){
         return -1;
     }
-    
+
     taskENTER_CRITICAL();
     currTickRtos = xTaskGetTickCount();
     currTickRtc = bl_rtc_get_timestamp_ms() & 0xFFFFFFFF;
     taskEXIT_CRITICAL();
-    
+
     deltaTickRtos = currTickRtos - init_tick_rtos;
     deltaTickRtc = currTickRtc - init_tick_rtc;
-    
+
     if(deltaTickRtc > deltaTickRtos){
         *xTicksToJump = deltaTickRtc - deltaTickRtos;
         return 1;
@@ -100,10 +108,10 @@ int bl_sys_time_sync_state(uint32_t *xTicksToJump)
 uint32_t bl_sys_time_sync(void)
 {
     uint32_t xTicksToJump = 0;
-    
+
     if(bl_sys_time_sync_state(&xTicksToJump) > 0){
         vTaskStepTickSafe(xTicksToJump);
     }
-    
+
     return xTicksToJump;
 }
