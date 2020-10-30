@@ -129,12 +129,11 @@ static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
 
 static void cmd_play_audio(char *buf, int len, int argc, char **argv)
 {
-    int sampling = 0;
     int fd_audio;
     romfs_filebuf_t filebuf;
     uint16_t *p_u16addr;
     uint32_t bufsize;
-    
+
     fd_audio = aos_open("/romfs/audio_32k", 0);
 
     if (fd_audio < 0) {
@@ -144,15 +143,12 @@ static void cmd_play_audio(char *buf, int len, int argc, char **argv)
     aos_ioctl(fd_audio, IOCTL_ROMFS_GET_FILEBUF, (long unsigned int)&filebuf);
     aos_close(fd_audio);
 
-    // From a long unsigned int* to a uint16_t* should be a NOP, even 
+    // From a long unsigned int* to a uint16_t* should be a NOP, even
     // considering alignment.
     p_u16addr = (uint16_t*) filebuf.buf;
     bufsize = filebuf.bufsize;
-    
-    audio_dac_dma_test(p_u16addr, bufsize, sampling); 
 
-    return;
-
+    audio_dac_dma_test(p_u16addr, bufsize);
 }
 
 int bl_sys_play_audio_init(void)
@@ -176,7 +172,7 @@ static void aos_loop_proc(void *pvParameters)
     if (0 == get_dts_addr("uart", &fdt, &offset)) {
         vfs_uart_init(fdt, offset);
     }
-     
+
     #ifdef CONF_USER_ENABLE_VFS_ROMFS
     romfs_register();
     printf("romfs register \r\n");
@@ -194,8 +190,7 @@ static void aos_loop_proc(void *pvParameters)
         aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
         _cli_init();
     }
-    
-    
+
     aos_loop_run();
 
     puts("------------------------------------------\r\n");
