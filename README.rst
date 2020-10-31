@@ -18,7 +18,7 @@ In order to build one of the sample apps, you need to set a few environment
 variables::
 
     export BL60X_SDK_PATH=/path/to/this/repo
-    export CONFIG_CHIP_NAME=bl602
+    export CONFIG_CHIP_NAME=BL602
 
 Then go to the sample directory of interest and call `make`, for example::
 
