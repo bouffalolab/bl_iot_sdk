@@ -140,7 +140,7 @@ static int32_t BLSP_MediaBot_Cal_Hash(uint32_t startAddr,uint32_t totalLen)
  * @return BL_Err_Type
  *
 *******************************************************************************/
-static int32_t BLSP_MediaBoot_Read_Signaure(uint32_t addr,uint32_t *len)
+static int32_t BLSP_MediaBoot_Read_Signature(uint32_t addr,uint32_t *len)
 {
     int32_t ret=BFLB_BOOT2_SUCCESS;
     uint32_t sig_len;
@@ -234,7 +234,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         }
         /* Read signature*/
         MSG_DBG("R SIG1\r\n");
-        BLSP_MediaBoot_Read_Signaure(addr,&sig_len);
+        BLSP_MediaBoot_Read_Signature(addr,&sig_len);
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
         }
@@ -251,7 +251,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         
         /* Read signature2*/
         MSG_DBG("R SIG2\r\n");
-        BLSP_MediaBoot_Read_Signaure(addr,&sig_len);
+        BLSP_MediaBoot_Read_Signature(addr,&sig_len);
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
         }
