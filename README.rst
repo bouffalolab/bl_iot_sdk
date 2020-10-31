@@ -43,13 +43,20 @@ BL602 is a 32-bit RISC-V based combo chipset supporting Wi-Fi and BLE (Bluetooth
 Low Energy). The chip is made by `Nanjing-based Bouffalo Lab <https://www.bouffalolab.com/bl602>`_
 for ultra-low-power applications. In terms of price range and feature set, the
 chip is competing against `Espressif ESP8266 <https://www.espressif.com/en/products/socs/esp8266>`_.
+The RISC-V core is based on `SiFive E24 <https://www.sifive.com/cores/e24>`_.
+
+At the moment there are mainly three development boards:
+
+  - `PineCone <https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/>`_: USB-C evaluation board by Pine64 (datasheet `here <https://www.cnx-software.com/pdf/schematics/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf>`_), RGB LED, CH340N USB-to-UART chip
+  - `Doi.am DT-BL10 <https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/>`_: micro USB
+  - `Official BL EVB <https://twitter.com/nnn112358/status/1321289916249235457>`_ (Sipeed early adopter program): mini USB, FTDI chip?
 
 Comparison with ESP8266
 -----------------------
 +-------------------+-----------------------------+----------------------------------+
 |                   | Bouffalo Lab BL602          | Espressif ESP8266                |
 +===================+=============================+==================================+
-| Architecture      | 32-bit RISC-V               | 32-bit Xtensa                    |
+| Architecture      | 32-bit RISC-V (SiFive E24)  | 32-bit Xtensa                    |
 |                   |                             |                                  |
 |                   | @192MHz (dynamic @1-192MHz) | @80MHz (and 160MHz)              |
 |                   |                             |                                  |
