@@ -336,7 +336,7 @@ void BLSP_Clr_User_Specified_Fw(void)
  * @return None
  *
 *******************************************************************************/
-void ATTR_TCM_SECTION BLSP_Boot2_Releae_Other_CPU(void)
+void ATTR_TCM_SECTION BLSP_Boot2_Release_Other_CPU(void)
 {
 
 }

@@ -95,7 +95,7 @@ void BLSP_Boot2_Pass_Parameter(void *data,uint32_t len);
 uint32_t BLSP_Boot2_Get_XIP_Offset();
 uint8_t* BLSP_Get_User_Specified_Fw(void);
 void BLSP_Clr_User_Specified_Fw(void);
-void BLSP_Boot2_Releae_Other_CPU(void);
+void BLSP_Boot2_Release_Other_CPU(void);
 int32_t BLSP_Is_MSP_Valid(uint32_t mspVal);
 int32_t BLSP_Is_PC_Valid(uint32_t pcVal);
 void ATTR_TCM_SECTION BLSP_Sboot_Finish(void);;
