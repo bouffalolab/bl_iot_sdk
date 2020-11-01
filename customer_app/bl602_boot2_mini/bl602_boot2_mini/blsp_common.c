@@ -153,7 +153,7 @@ void BLSP_Boot2_Exit(void)
     }    
     /* Release other CPUs*/
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
-        BLSP_Boot2_Releae_Other_CPU();
+        BLSP_Boot2_Release_Other_CPU();
     }    
     /* Stay here */
     while(1){

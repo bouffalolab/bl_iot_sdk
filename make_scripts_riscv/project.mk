@@ -208,7 +208,7 @@ ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
 BL_SDK_PHY_VER := `cat ${BL60X_SDK_PATH}/version.txt |head -n2|tail -n1`
 BL_SDK_RF_VER := `cat ${BL60X_SDK_PATH}/version.txt |head -n3|tail -n1`
 endif
-$(info use exsting version.txt file)
+$(info use existing version.txt file)
 endif
 BL_CHIP_NAME := ${CONFIG_CHIP_NAME}
 

@@ -153,7 +153,7 @@ void BLSP_Boot2_Exit(void)
     }    
     /* Release other CPUs*/
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
-        BLSP_Boot2_Releae_Other_CPU();
+        BLSP_Boot2_Release_Other_CPU();
     }    
     /* Stay here */
     while(1){
@@ -239,7 +239,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
         }
         /* Release other CPUs unless user halt it */
         if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
-            BLSP_Boot2_Releae_Other_CPU();
+            BLSP_Boot2_Release_Other_CPU();
         }
         if(pentry!=NULL){
             pentry();
@@ -247,7 +247,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     }   
     /* Release other CPUs unless user halt it */
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
-        BLSP_Boot2_Releae_Other_CPU();
+        BLSP_Boot2_Release_Other_CPU();
     }
     /* If cann't jump stay here */
     while(1){
