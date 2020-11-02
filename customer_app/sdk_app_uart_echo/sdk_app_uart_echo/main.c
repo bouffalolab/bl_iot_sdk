@@ -262,7 +262,10 @@ void bfl_main()
     static StackType_t aos_loop_proc_stack[1024];
     static StaticTask_t aos_loop_proc_task;
 
-    /*Init UART In the first place*/
+    /*
+     * Init UART using pins 16+7 (TX+RX)
+     * and baudrate of 2M
+     */
     bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
     puts("Starting bl602 now....\r\n");
 
