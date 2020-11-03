@@ -12,6 +12,10 @@ is cloned as a submodule of this repository at ``docs``. Use `git submodule upda
 This repository is the central focus of Pine64's
 `Nutcracker Challenge <https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/>`_.
 
+Documentation
+------------
+You can find a lot of documentation on `PINE64 Documentation Website <https://pine64.github.io/bl602-docs/>`_ and `PINE64 Documentation Repository <https://github.com/pine64/bl602-docs>`_, where you can find Datasheets, Reference Manuals and various other documentation materials.
+
 Quick Start
 -----------
 In order to build one of the sample apps, you need to set a few environment
