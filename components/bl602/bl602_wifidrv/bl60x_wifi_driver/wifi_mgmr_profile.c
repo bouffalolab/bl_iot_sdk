@@ -48,7 +48,7 @@ int wifi_mgmr_profile_add(wifi_mgmr_t *mgmr, wifi_mgmr_profile_msg_t *profile_ms
         for (i = 0; i < sizeof(mgmr->profiles)/sizeof(mgmr->profiles[0]); i++) {
             if (0 == mgmr->profiles[i].isUsed) {
                 profile = &(mgmr->profiles[i]);
-                
+
                 mgmr->profile_active_index = i;
                 os_printf("[WF][PF] Using free profile, idx is @%d\r\n", i);
                 break;
@@ -149,7 +149,7 @@ int wifi_mgmr_profile_autoreconnect_is_enabled(wifi_mgmr_t *mgmr, int index)
 {
 #if 0
     wifi_mgmr_profile_t *profile;
-    
+
     profile = __lookup_profile(mgmr, index);
     if (NULL == profile) {
         return -1;

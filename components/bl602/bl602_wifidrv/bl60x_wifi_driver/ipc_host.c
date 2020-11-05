@@ -86,7 +86,7 @@ extern int internel_cal_size_tx_hdr;
     );
     utils_list_init(&tx_list_bl);
 #if 0
-    
+
 /**
  ****************************************************************************************
  *
@@ -185,7 +185,7 @@ uint32_t ipc_host_get_status(struct ipc_host_env_tag *env)
     status = ipc_emb2app_status_get(env->shared);
 
     return status;
-} 
+}
 
 uint32_t ipc_host_get_rawstatus(struct ipc_host_env_tag *env)
 {
@@ -194,7 +194,7 @@ uint32_t ipc_host_get_rawstatus(struct ipc_host_env_tag *env)
     status = ipc_emb2app_rawstatus_get(env->shared);
 
     return status;
-} 
+}
 
 static void ipc_host_msgack_handler(struct ipc_host_env_tag *env)
 {
@@ -274,7 +274,7 @@ volatile struct txdesc_host *ipc_host_txdesc_get(struct ipc_host_env_tag *env)
     uint32_t free_idx = env->txdesc_free_idx;
 
     os_printf("free_idx is %u(%u), used_idx is %u(%u), cnt is %u\r\n",
-        free_idx, 
+        free_idx,
         free_idx & nx_txdesc_cnt_msk[0],
         used_idx,
         used_idx & nx_txdesc_cnt_msk[0],

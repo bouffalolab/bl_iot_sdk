@@ -56,7 +56,7 @@
 
 wifi_mgmr_t wifiMgmr;
 const static struct state
-    stateGlobal, 
+    stateGlobal,
     stateIdle,
     stateConnecting,
     stateConnectedIPNo, stateConnectedIPYes,
@@ -128,7 +128,7 @@ char *wifi_mgmr_auth_to_str(uint8_t auth)
             return "Unknown";
         }
         break;
-        default: 
+        default:
         {
             return "Unknown";
         }
@@ -576,7 +576,7 @@ static bool stateGlobalGuard_conf_max_sta(void *ev, struct event *event )
 static int auto_repeat = 0;
 static void trigger_auto_denoise(void* arg)
 {
-    //Continuously check the microwave and try to denoise 
+    //Continuously check the microwave and try to denoise
     if (auto_repeat) {
 int wifi_mgmr_api_denoise_enable(void);
         wifi_mgmr_api_denoise_enable();
@@ -884,7 +884,7 @@ static void stateConnectedIPNoAction_ipgot(void *oldStateData, struct event *eve
     USER_UNUSED(ipgot);
     msg = event->data;
     ipgot = (wifi_mgmr_ipgot_msg_t*)msg->data;
-    os_printf(DEBUG_HEADER 
+    os_printf(DEBUG_HEADER
             "IP GOT IP:%u.%u.%u.%u, "
             "MASK: %u.%u.%u.%u, "
             "Gateway: %u.%u.%u.%u, "
@@ -951,7 +951,7 @@ static void __run_reload_tsen(void)
     int16_t temp = 0;
     extern void phy_tcal_callback(int16_t temperature);
 
-    if (&stateConnecting == wifiMgmr.m.currentState || &stateDisconnect == wifiMgmr.m.currentState || &stateConnectedIPYes == wifiMgmr.m.currentState || 
+    if (&stateConnecting == wifiMgmr.m.currentState || &stateDisconnect == wifiMgmr.m.currentState || &stateConnectedIPYes == wifiMgmr.m.currentState ||
             &stateSniffer == wifiMgmr.m.currentState || &stateConnectedIPNo == wifiMgmr.m.currentState) {
         bl_tsen_adc_get(&temp, 0);
         phy_tcal_callback(temp);
@@ -1378,7 +1378,7 @@ void wifi_mgmr_start(void)
 
     /*TODO: use another way based on event sys?*/
     hal_sys_capcode_update(255, 255);
-    
+
     /*periodic reload tsen */
     periodic_tsen_reload(&state_tsen_reload_data, NULL);
 
@@ -1391,7 +1391,7 @@ void wifi_mgmr_start(void)
                 continue;
             }
 
-            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP : 
+            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
                 (msg->ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
             stateM_handleEvent(&(wifiMgmr.m), &ev);
         }

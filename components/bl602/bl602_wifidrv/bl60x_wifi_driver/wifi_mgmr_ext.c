@@ -689,7 +689,7 @@ int wifi_mgmr_scan_ap(char *ssid, wifi_mgmr_ap_item_t *item)
     wifi_mgmr_scan_item_t *scan;
 
     for (i = 0; i < sizeof(wifiMgmr.scan_items)/sizeof(wifiMgmr.scan_items[0]); i++) {
-        if (wifiMgmr.scan_items[i].is_used && 
+        if (wifiMgmr.scan_items[i].is_used &&
                 (!wifi_mgmr_scan_item_is_timeout(&wifiMgmr, &(wifiMgmr.scan_items[i]))) && 0 == strcmp(wifiMgmr.scan_items[i].ssid, ssid)) {
             /*found the ssid*/
             index = i;

@@ -11,7 +11,7 @@
 #define WRITE_REG(a,v)    *((volatile uint32_t *)(a))=(v)
 #define MSG_PRINT_MSG_LEN  (0x200)
 #define SV_C_SHARE_LEN     (0x200)
-#define DBG_BASE           (0x5201bc00) 
+#define DBG_BASE           (0x5201bc00)
 
 
 #define MSG_PRINT_MARK_ADR          (DBG_BASE)
@@ -29,10 +29,10 @@
 extern void BL602_Delay_US(uint32_t cnt);
 
 #define MSG(a,...)              {sprintf((char*)MSG_PRINT_MSG_ADR, a, ##__VA_ARGS__);\
-                                    WRITE_REG(MSG_PRINT_MARK_ADR, MSG_PRINT_MSG_MARK);} 
+                                    WRITE_REG(MSG_PRINT_MARK_ADR, MSG_PRINT_MSG_MARK);}
 #define MSG_ERR(a,...)          {sprintf((char*)MSG_PRINT_MSG_ADR, a, ##__VA_ARGS__); \
                                     WRITE_REG(MSG_PRINT_MARK_ADR, MSG_PRINT_ERR_MSG_MARK);}
-                           
+
 #define SIM_END                 WRITE_REG(SIM_END_MARK_ADR, SIM_END_MARK)
 #define SIM_FAIL                {MSG_ERR("sw sim fail"); SIM_END;}
 

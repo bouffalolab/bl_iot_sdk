@@ -170,7 +170,7 @@ static void cmd_mgr_print(struct bl_cmd_mgr *cmd_mgr)
     list_for_each_entry(cur, &cmd_mgr->cmds, list) {
         cmd_dump(cur);
     }
-    
+
     os_mutex_give(cmd_mgr->lock);
 }
 

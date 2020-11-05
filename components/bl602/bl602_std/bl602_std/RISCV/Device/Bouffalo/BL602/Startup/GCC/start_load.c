@@ -39,7 +39,7 @@ extern uint32_t __HeapLimit;
 
 void start_load(void) {
     uint32_t *pSrc, *pDest;
-    uint32_t *pTable __attribute__((unused));  
+    uint32_t *pTable __attribute__((unused));
 
     /* Copy ITCM code */
     pSrc  = &__itcm_load_addr;
@@ -82,5 +82,5 @@ void start_load(void) {
     for ( ; pDest < &__bss_end__ ; ) {
         *pDest++ = 0ul;
     }
-#endif 
+#endif
 }
