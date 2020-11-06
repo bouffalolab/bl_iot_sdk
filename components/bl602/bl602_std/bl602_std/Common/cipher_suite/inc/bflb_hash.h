@@ -21,7 +21,7 @@
 #define BFLB_HASH_TYPE_SHA256       2
 #define BFLB_HASH_TYPE_SHA384       3
 #define BFLB_HASH_TYPE_SHA512       4
-   
+
 typedef struct tag_bflb_hash_handle_t
 {
     bflb_hash_ctx_t hash_ctx;

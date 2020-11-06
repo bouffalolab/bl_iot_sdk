@@ -35,7 +35,7 @@
 #include "bl_cmds.h"
 #include "bl_mod_params.h"
 
-#define ETH_ALEN    6       
+#define ETH_ALEN    6
 /**
  ****************************************************************************************
  *

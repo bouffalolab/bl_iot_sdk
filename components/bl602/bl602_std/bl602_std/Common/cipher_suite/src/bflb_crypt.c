@@ -432,7 +432,7 @@ int32_t bflb_crypt_deinit_do(bflb_crypt_handle_t *crypt_handle)
 int32_t bflb_crypt_init(bflb_crypt_handle_t *crypt_handle,uint8_t type)
 {
     int32_t result = bflb_crypt_init_do(crypt_handle,type);
-    
+
     if(result==BFLB_CRYPT_OK){
         crypt_handle->crypt_cfg.type=type;
     }
@@ -491,7 +491,7 @@ int32_t bflb_crypt_encrypt_tag(bflb_crypt_handle_t *crypt_handle,const uint8_t *
                         uint8_t *tag,uint8_t tag_len)
 {
 	int32_t result;
-    
+
     result= bflb_crypt_encrypt_tag_do(crypt_handle,in,in_len,add,add_len,offset,out,tag,tag_len);
 
     if( result != BFLB_CRYPT_OK)
@@ -524,7 +524,7 @@ int32_t bflb_crypt_decrypt(bflb_crypt_handle_t *crypt_handle,const uint8_t *in,u
                         size_t offset,uint8_t *out)
 {
 	int32_t result;
-    
+
     result=bflb_crypt_decrypt_do(crypt_handle,in,len,offset,out);
 
     if( result != BFLB_CRYPT_OK)
@@ -541,9 +541,9 @@ int32_t bflb_crypt_auth_decrypt(bflb_crypt_handle_t *crypt_handle,const uint8_t 
                         const uint8_t *tag,uint8_t tag_len)
 {
 	int32_t result;
-    
+
     result= bflb_crypt_auth_decrypt_do(crypt_handle,in,in_len,add,add_len,offset,out,tag,tag_len);
-    
+
     if( result != BFLB_CRYPT_OK)
     {
         bflb_crypt_printe("crypt auth and decrypt fail\r\n");
@@ -556,9 +556,9 @@ int32_t bflb_crypt_auth_decrypt(bflb_crypt_handle_t *crypt_handle,const uint8_t 
 int32_t bflb_crypt_finish(bflb_crypt_handle_t *crypt_handle,uint8_t *tag,uint32_t len)
 {
 	int32_t result;
-    
+
     result=bflb_crypt_finish_do(crypt_handle,tag,len);
-    
+
     if( result != BFLB_CRYPT_OK)
     {
         bflb_crypt_printe("crypt finish fail\r\n");

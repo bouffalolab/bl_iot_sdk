@@ -114,7 +114,7 @@ void ATTR_TCM_SECTION HBN_Mode_Enter(HBN_APP_CFG_Type *cfg)
 
     /* always disable HBN pin pull up/down to reduce PDS/HBN current, 0x4000F014[16]=0 */
     HBN_Hw_Pu_Pd_Cfg(DISABLE);
-    
+
     HBN_Pin_WakeUp_Mask(~(cfg->gpioWakeupSrc));
     if(cfg->gpioWakeupSrc!=0){
         HBN_Aon_Pad_IeSmt_Cfg(ENABLE);

@@ -109,9 +109,9 @@ __WEAK
 GLB_ROOT_CLK_Type ATTR_CLOCK_SECTION GLB_Get_Root_CLK_Sel(void)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
-    
+
     switch(BL_GET_REG_BITS_VAL(tmpVal,GLB_HBN_ROOT_CLK_SEL)){
         case 0:
             return GLB_ROOT_CLK_RC32M;
@@ -140,7 +140,7 @@ __WEAK
 BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_System_CLK_Div(uint8_t hclkDiv,uint8_t bclkDiv)
 {
     uint32_t tmpVal;
-    
+
     /* recommended: fclk<=160MHz, bclk<=80MHz */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_HCLK_DIV,hclkDiv);
@@ -150,13 +150,13 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_System_CLK_Div(uint8_t hclkDiv,uint8_t bc
     GLB_REG_BCLK_DIS_FALSE;
     SystemCoreClockSet(SystemCoreClockGet()/((uint16_t)hclkDiv+1));
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_HCLK_EN);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_BCLK_EN);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG0,tmpVal);
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     return SUCCESS;
 }
 #endif
@@ -214,7 +214,7 @@ __WEAK
 BL_Err_Type ATTR_CLOCK_SECTION Update_SystemCoreClockWith_XTAL(GLB_PLL_XTAL_Type xtalType)
 {
     CHECK_PARAM(IS_GLB_PLL_XTAL_TYPE(xtalType));
-    
+
     switch(xtalType){
         case GLB_PLL_XTAL_NONE:
             break;
@@ -239,7 +239,7 @@ BL_Err_Type ATTR_CLOCK_SECTION Update_SystemCoreClockWith_XTAL(GLB_PLL_XTAL_Type
         default :
             break;
     }
-    
+
     return SUCCESS;
 }
 #endif
@@ -258,22 +258,22 @@ __WEAK
 BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_System_CLK(GLB_PLL_XTAL_Type xtalType,GLB_SYS_CLK_Type clkFreq)
 {
     uint32_t tmpVal;
-    
+
     CHECK_PARAM(IS_GLB_PLL_XTAL_TYPE(xtalType));
     CHECK_PARAM(IS_GLB_SYS_CLK_TYPE(clkFreq));
-    
+
     /* reg_bclk_en = reg_hclk_en = reg_fclk_en = 1, cannot be zero */
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal = BL_SET_REG_BIT(tmpVal,GLB_REG_BCLK_EN);
     tmpVal = BL_SET_REG_BIT(tmpVal,GLB_REG_HCLK_EN);
     tmpVal = BL_SET_REG_BIT(tmpVal,GLB_REG_FCLK_EN);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG0,tmpVal);
-    
+
     /* Before config XTAL and PLL ,make sure root clk is from RC32M */
     HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_RC32M);
     GLB_Set_System_CLK_Div(0,0);
     SystemCoreClockSet(32*1000*1000);
-    
+
     /* Select PKA clock from hclk */
     GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_HCLK);
 
@@ -284,22 +284,22 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_System_CLK(GLB_PLL_XTAL_Type xtalType,GLB
             return ERROR;
         }
     }
-    
+
     if(xtalType!=GLB_PLL_XTAL_RC32M){
         /* power on xtal first */
         AON_Power_On_XTAL();
     }
-    
+
     /* always power up PLL and enable all PLL clock output */
     PDS_Power_On_PLL((PDS_PLL_XTAL_Type)xtalType);
     BL602_Delay_US(55);
     PDS_Enable_PLL_All_Clks();
-    
+
     /* reg_pll_en = 1, cannot be zero */
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal = BL_SET_REG_BIT(tmpVal,GLB_REG_PLL_EN);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG0,tmpVal);
-    
+
     /* select pll output clock before select root clock */
     if(clkFreq>=GLB_SYS_CLK_PLL48M){
         tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
@@ -338,9 +338,9 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_System_CLK(GLB_PLL_XTAL_Type xtalType,GLB
         default :
             break;
     }
-    
+
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* select PKA clock from 120M since we power up PLL */
     GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_PLL120M);
 
@@ -378,7 +378,7 @@ BL_Err_Type ATTR_CLOCK_SECTION System_Core_Clock_Update_From_RC32M(void)
     __NOP();
     __NOP();
     __NOP();
-    
+
     return SUCCESS;
 }
 #endif
@@ -394,7 +394,7 @@ BL_Err_Type ATTR_CLOCK_SECTION System_Core_Clock_Update_From_RC32M(void)
 BL_Err_Type GLB_Set_BLE_CLK(uint8_t enable)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG1);
     if(enable){
         tmpVal = BL_SET_REG_BIT(tmpVal,GLB_BLE_EN);
@@ -402,7 +402,7 @@ BL_Err_Type GLB_Set_BLE_CLK(uint8_t enable)
         tmpVal = BL_CLR_REG_BIT(tmpVal,GLB_BLE_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -417,13 +417,13 @@ BL_Err_Type GLB_Set_BLE_CLK(uint8_t enable)
 BL_Err_Type GLB_Set_WiFi_Core_CLK(uint8_t clkDiv)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((clkDiv<=0x3));
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG1);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal,GLB_WIFI_MAC_CORE_DIV,clkDiv);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -438,13 +438,13 @@ BL_Err_Type GLB_Set_WiFi_Core_CLK(uint8_t clkDiv)
 BL_Err_Type GLB_Set_WiFi_Encrypt_CLK(uint8_t clkDiv)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((clkDiv<=0x3));
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG1);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal,GLB_WIFI_MAC_WT_DIV,clkDiv);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -461,7 +461,7 @@ BL_Err_Type GLB_Set_DMA_CLK(uint8_t enable,GLB_DMA_CLK_ID_Type clk)
 {
     uint32_t tmpVal;
     uint32_t tmpVal2;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     tmpVal2=BL_GET_REG_BITS_VAL(tmpVal,GLB_DMA_CLK_EN);
     if(enable){
@@ -471,7 +471,7 @@ BL_Err_Type GLB_Set_DMA_CLK(uint8_t enable,GLB_DMA_CLK_ID_Type clk)
     }
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DMA_CLK_EN,tmpVal2);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -488,14 +488,14 @@ BL_Err_Type GLB_Set_DMA_CLK(uint8_t enable,GLB_DMA_CLK_ID_Type clk)
 BL_Err_Type GLB_Set_IR_CLK(uint8_t enable,GLB_IR_CLK_SRC_Type clkSel,uint8_t div)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM(IS_GLB_IR_CLK_SRC_TYPE(clkSel));
     CHECK_PARAM((div<=0x3F));
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal,GLB_IR_CLK_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     if(enable){
         tmpVal = BL_SET_REG_BIT(tmpVal,GLB_IR_CLK_EN);
@@ -503,7 +503,7 @@ BL_Err_Type GLB_Set_IR_CLK(uint8_t enable,GLB_IR_CLK_SRC_Type clkSel,uint8_t div
         tmpVal = BL_CLR_REG_BIT(tmpVal,GLB_IR_CLK_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -523,15 +523,15 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_SF_CLK(uint8_t enable,GLB_SFLASH_CLK_Type
 {
     uint32_t tmpVal = 0;
     GLB_PLL_CLK_Type clk;
-    
+
     CHECK_PARAM(IS_GLB_SFLASH_CLK_TYPE(clkSel));
     CHECK_PARAM((div<=0x7));
-    
+
     /* disable SFLASH clock first */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_SF_CLK_EN);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     /* Select flash clock, all Flash CLKs are divied by PLL_480M */
     clk=GLB_PLL_CLK_480M;
     PDS_Enable_PLL_Clk((PDS_PLL_CLK_Type)clk);
@@ -565,7 +565,7 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_SF_CLK(uint8_t enable,GLB_SFLASH_CLK_Type
             break;
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     /* enable or disable flash clock */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     if(enable){
@@ -574,7 +574,7 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_SF_CLK(uint8_t enable,GLB_SFLASH_CLK_Type
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_SF_CLK_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -592,23 +592,23 @@ BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_SF_CLK(uint8_t enable,GLB_SFLASH_CLK_Type
 BL_Err_Type GLB_Set_UART_CLK(uint8_t enable,HBN_UART_CLK_Type clkSel,uint8_t div)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((div<=0x7));
     CHECK_PARAM(IS_HBN_UART_CLK_TYPE(clkSel));
-    
+
     /* disable UART clock first */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_UART_CLK_EN);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     /* Set div */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_UART_CLK_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     /* Select clock source for uart */
     HBN_Set_UART_CLK_Sel(clkSel);
-    
+
     /* Set enable or disable */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
     if(enable){
@@ -617,7 +617,7 @@ BL_Err_Type GLB_Set_UART_CLK(uint8_t enable,HBN_UART_CLK_Type clkSel,uint8_t div
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_UART_CLK_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -633,11 +633,11 @@ BL_Err_Type GLB_Set_UART_CLK(uint8_t enable,HBN_UART_CLK_Type clkSel,uint8_t div
 BL_Err_Type GLB_Set_I2C_CLK(uint8_t enable,uint8_t div)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG3);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_I2C_CLK_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG3,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG3);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_I2C_CLK_EN);
@@ -645,7 +645,7 @@ BL_Err_Type GLB_Set_I2C_CLK(uint8_t enable,uint8_t div)
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_I2C_CLK_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG3,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -661,13 +661,13 @@ BL_Err_Type GLB_Set_I2C_CLK(uint8_t enable,uint8_t div)
 BL_Err_Type GLB_Set_SPI_CLK(uint8_t enable,uint8_t div)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((div<=0x1F));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG3);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_SPI_CLK_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG3,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG3);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_SPI_CLK_EN);
@@ -675,7 +675,7 @@ BL_Err_Type GLB_Set_SPI_CLK(uint8_t enable,uint8_t div)
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_SPI_CLK_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CLK_CFG3,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -692,13 +692,13 @@ __WEAK
 BL_Err_Type ATTR_CLOCK_SECTION GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_Type clkSel)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM(IS_GLB_PKA_CLK_TYPE(clkSel));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_PKA_CLK_SEL,clkSel);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -716,13 +716,13 @@ __WEAK
 BL_Err_Type ATTR_TCM_SECTION GLB_SW_System_Reset(void)
 {
     uint32_t tmpVal;
-    
+
     /* Swicth clock to 32M as default */
     tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_ROOT_CLK_SEL,0);
     BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* HCLK is RC32M , so BCLK/HCLK no need divider */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_BCLK_DIV,0);
@@ -731,25 +731,25 @@ BL_Err_Type ATTR_TCM_SECTION GLB_SW_System_Reset(void)
     GLB_REG_BCLK_DIS_TRUE;
     GLB_REG_BCLK_DIS_FALSE;
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* Do reset */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_SYS_RESET);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_SYS_RESET);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     //tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     /* waiting for reset */
     while(1){
         BL602_Delay_US(10);
     }
-    
+
     return SUCCESS;
 }
 #endif
@@ -767,13 +767,13 @@ __WEAK
 BL_Err_Type ATTR_TCM_SECTION GLB_SW_CPU_Reset(void)
 {
     uint32_t tmpVal;
-    
+
     /* Swicth clock to 32M as default */
     tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_ROOT_CLK_SEL,0);
     BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* HCLK is RC32M , so BCLK/HCLK no need divider */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_BCLK_DIV,0);
@@ -782,25 +782,25 @@ BL_Err_Type ATTR_TCM_SECTION GLB_SW_CPU_Reset(void)
     GLB_REG_BCLK_DIS_TRUE;
     GLB_REG_BCLK_DIS_FALSE;
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* Do reset */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_SYS_RESET);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     //tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_SYS_RESET);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     //tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     /* waiting for reset */
     while(1){
         BL602_Delay_US(10);
     }
-    
+
     return SUCCESS;
 }
 #endif
@@ -818,13 +818,13 @@ __WEAK
 BL_Err_Type ATTR_TCM_SECTION GLB_SW_POR_Reset(void)
 {
     uint32_t tmpVal;
-    
+
     /* Swicth clock to 32M as default */
     tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_ROOT_CLK_SEL,0);
     BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
     GLB_CLK_SET_DUMMY_WAIT;
-    
+
     /* HCLK is RC32M , so BCLK/HCLK no need divider */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_BCLK_DIV,0);
@@ -840,18 +840,18 @@ BL_Err_Type ATTR_TCM_SECTION GLB_SW_POR_Reset(void)
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG2);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_SYS_RESET);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_CPU_RESET);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_CTRL_PWRON_RST);
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG2,tmpVal);
-    
+
     /* waiting for reset */
     while(1){
         BL602_Delay_US(10);
     }
-    
+
     return SUCCESS;
 }
 #endif
@@ -867,7 +867,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_SW_POR_Reset(void)
 BL_Err_Type GLB_AHB_Slave1_Reset(BL_AHB_Slave1_Type slave1)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SWRST_CFG1);
     tmpVal &=(~(1<<slave1));
     BL_WR_REG(GLB_BASE,GLB_SWRST_CFG1,tmpVal);
@@ -895,7 +895,7 @@ BL_Err_Type GLB_AHB_Slave1_Reset(BL_AHB_Slave1_Type slave1)
 BL_Err_Type GLB_AHB_Slave1_Clock_Gate(uint8_t enable,BL_AHB_Slave1_Type slave1)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CGEN_CFG1);
     if(enable){
         /* clear bit means clock gate */
@@ -905,7 +905,7 @@ BL_Err_Type GLB_AHB_Slave1_Clock_Gate(uint8_t enable,BL_AHB_Slave1_Type slave1)
         tmpVal |=(1<<slave1);
     }
     BL_WR_REG(GLB_BASE,GLB_CGEN_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -920,15 +920,15 @@ BL_Err_Type GLB_AHB_Slave1_Clock_Gate(uint8_t enable,BL_AHB_Slave1_Type slave1)
 BL_Err_Type GLB_BMX_Init(BMX_Cfg_Type *BmxCfg)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((BmxCfg->timeoutEn)<=0xF);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG1);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_BMX_TIMEOUT_EN,BmxCfg->timeoutEn);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_BMX_ERR_EN,BmxCfg->errEn);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_BMX_ARB_MODE,BmxCfg->arbMod);
     BL_WR_REG(GLB_BASE,GLB_BMX_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -943,11 +943,11 @@ BL_Err_Type GLB_BMX_Init(BMX_Cfg_Type *BmxCfg)
 BL_Err_Type GLB_BMX_Addr_Monitor_Enable(void)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG2);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_BMX_ERR_ADDR_DIS);
     BL_WR_REG(GLB_BASE,GLB_BMX_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -962,11 +962,11 @@ BL_Err_Type GLB_BMX_Addr_Monitor_Enable(void)
 BL_Err_Type GLB_BMX_Addr_Monitor_Disable(void)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG2);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_BMX_ERR_ADDR_DIS);
     BL_WR_REG(GLB_BASE,GLB_BMX_CFG2,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -981,11 +981,11 @@ BL_Err_Type GLB_BMX_Addr_Monitor_Disable(void)
 BL_Err_Type GLB_BMX_BusErrResponse_Enable(void)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG1);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_BMX_ERR_EN);
     BL_WR_REG(GLB_BASE,GLB_BMX_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1000,11 +1000,11 @@ BL_Err_Type GLB_BMX_BusErrResponse_Enable(void)
 BL_Err_Type GLB_BMX_BusErrResponse_Disable(void)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG1);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_BMX_ERR_EN);
     BL_WR_REG(GLB_BASE,GLB_BMX_CFG1,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1019,9 +1019,9 @@ BL_Err_Type GLB_BMX_BusErrResponse_Disable(void)
 BL_Sts_Type GLB_BMX_Get_Status(BMX_BUS_ERR_Type errType)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM(IS_BMX_BUS_ERR_TYPE(errType));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_BMX_CFG2);
     if(errType==BMX_BUS_ERR_TRUSTZONE_DECODE){
         return BL_GET_REG_BITS_VAL(tmpVal,GLB_BMX_ERR_TZ)?SET:RESET;
@@ -1057,7 +1057,7 @@ BL_Err_Type BMX_ERR_INT_Callback_Install(BMX_ERR_INT_Type intType,intCallback_Ty
     CHECK_PARAM(IS_BMX_ERR_INT_TYPE(intType));
 
     glbBmxErrIntCbfArra[intType] = cbFun;
-    
+
     return SUCCESS;
 }
 
@@ -1073,13 +1073,13 @@ BL_Err_Type BMX_ERR_INT_Callback_Install(BMX_ERR_INT_Type intType,intCallback_Ty
 void __IRQ BMX_ERR_IRQHandler(void)
 {
     BMX_ERR_INT_Type intType;
-    
+
     for(intType=BMX_ERR_INT_ERR;intType<BMX_ERR_INT_ALL;intType++){
         if(glbBmxErrIntCbfArra[intType]!=NULL){
             glbBmxErrIntCbfArra[intType]();
         }
     }
-    
+
     while(1){
         MSG("BMX_ERR_IRQHandler\r\n");
         BL602_Delay_MS(1000);
@@ -1101,7 +1101,7 @@ BL_Err_Type BMX_TIMEOUT_INT_Callback_Install(BMX_TO_INT_Type intType,intCallback
     CHECK_PARAM(IS_BMX_TO_INT_TYPE(intType));
 
     glbBmxToIntCbfArra[intType] = cbFun;
-    
+
     return SUCCESS;
 }
 
@@ -1117,13 +1117,13 @@ BL_Err_Type BMX_TIMEOUT_INT_Callback_Install(BMX_TO_INT_Type intType,intCallback
 void __IRQ BMX_TO_IRQHandler(void)
 {
     BMX_TO_INT_Type intType;
-    
+
     for(intType=BMX_TO_INT_TIMEOUT;intType<BMX_TO_INT_ALL;intType++){
         if(glbBmxToIntCbfArra[intType]!=NULL){
             glbBmxToIntCbfArra[intType]();
         }
     }
-    
+
     while(1){
         MSG("BMX_TO_IRQHandler\r\n");
         BL602_Delay_MS(1000);
@@ -1142,7 +1142,7 @@ void __IRQ BMX_TO_IRQHandler(void)
 BL_Err_Type GLB_Set_SRAM_RET(uint32_t value)
 {
     BL_WR_REG(GLB_BASE,GLB_SRAM_RET,value);
-    
+
     return SUCCESS;
 }
 
@@ -1170,7 +1170,7 @@ uint32_t GLB_Get_SRAM_RET(void)
 BL_Err_Type GLB_Set_SRAM_SLP(uint32_t value)
 {
     BL_WR_REG(GLB_BASE,GLB_SRAM_SLP,value);
-    
+
     return SUCCESS;
 }
 
@@ -1198,7 +1198,7 @@ uint32_t GLB_Get_SRAM_SLP(void)
 BL_Err_Type GLB_Set_SRAM_PARM(uint32_t value)
 {
     BL_WR_REG(GLB_BASE,GLB_SRAM_PARM,value);
-    
+
     return SUCCESS;
 }
 
@@ -1226,13 +1226,13 @@ uint32_t GLB_Get_SRAM_PARM(void)
 BL_Err_Type GLB_Set_EM_Sel(GLB_EM_Type emType)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM(IS_GLB_EM_TYPE(emType));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_SEAM_MISC);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_EM_SEL,emType);
     BL_WR_REG(GLB_BASE,GLB_SEAM_MISC,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1247,13 +1247,13 @@ BL_Err_Type GLB_Set_EM_Sel(GLB_EM_Type emType)
 BL_Err_Type GLB_UART_Sig_Swap_Set(uint8_t swapSel)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((swapSel<=0x7));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_UART_SWAP_SET,swapSel);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1268,13 +1268,13 @@ BL_Err_Type GLB_UART_Sig_Swap_Set(uint8_t swapSel)
 BL_Err_Type GLB_JTAG_Sig_Swap_Set(uint8_t swapSel)
 {
     uint32_t tmpVal = 0;
-    
+
     CHECK_PARAM((swapSel<=0x3F));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_JTAG_SWAP_SET,swapSel);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1289,11 +1289,11 @@ BL_Err_Type GLB_JTAG_Sig_Swap_Set(uint8_t swapSel)
 BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
 {
     uint32_t tmpVal = 0;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_SPI_0_SWAP,newState);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1310,11 +1310,11 @@ BL_Err_Type GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_Type mod)
     uint32_t tmpVal;
 
     CHECK_PARAM(IS_GLB_SPI_PAD_ACT_AS_TYPE(mod));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_SPI_0_MASTER_MODE,mod);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1335,7 +1335,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Select_Internal_Flash(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_SEL_EMBEDDED_SFLASH);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -1357,7 +1357,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Select_External_Flash(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_SEL_EMBEDDED_SFLASH);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -1379,7 +1379,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Deswap_Flash_Pin(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_SWAP_SFLASH_IO_3_IO_0);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -1401,7 +1401,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Swap_Flash_Pin(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_SWAP_SFLASH_IO_3_IO_0);
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -1419,20 +1419,20 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Swap_Flash_Pin(void)
 BL_Err_Type GLB_Set_MTimer_CLK(uint8_t enable,GLB_MTIMER_CLK_Type clkSel,uint32_t div)
 {
     uint32_t tmpVal;
-    
+
     CHECK_PARAM(IS_GLB_MTIMER_CLK_TYPE(clkSel));
     CHECK_PARAM((div<=0x1FFFF));
-    
+
     /* disable MTimer clock first */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CPU_CLK_CFG);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_CPU_RTC_EN);
     BL_WR_REG(GLB_BASE,GLB_CPU_CLK_CFG,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CPU_CLK_CFG);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_CPU_RTC_SEL,clkSel);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_CPU_RTC_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_CPU_CLK_CFG,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_CPU_CLK_CFG);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_CPU_RTC_EN);
@@ -1440,7 +1440,7 @@ BL_Err_Type GLB_Set_MTimer_CLK(uint8_t enable,GLB_MTIMER_CLK_Type clkSel,uint32_
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_CPU_RTC_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_CPU_CLK_CFG,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1457,19 +1457,19 @@ BL_Err_Type GLB_Set_MTimer_CLK(uint8_t enable,GLB_MTIMER_CLK_Type clkSel,uint32_
 BL_Err_Type GLB_Set_ADC_CLK(uint8_t enable,GLB_ADC_CLK_Type clkSel,uint8_t div)
 {
     uint32_t tmpVal;
-    
+
     CHECK_PARAM(IS_GLB_ADC_CLK_TYPE(clkSel));
-    
+
     /* disable ADC clock first */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_GPADC_32M_DIV_EN);
     BL_WR_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_GPADC_32M_CLK_DIV,div);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_GPADC_32M_CLK_SEL,clkSel);
     BL_WR_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_GPADC_32M_DIV_EN);
@@ -1477,7 +1477,7 @@ BL_Err_Type GLB_Set_ADC_CLK(uint8_t enable,GLB_ADC_CLK_Type clkSel,uint8_t div)
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_GPADC_32M_DIV_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_GPADC_32M_SRC_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1494,12 +1494,12 @@ BL_Err_Type GLB_Set_ADC_CLK(uint8_t enable,GLB_ADC_CLK_Type clkSel,uint8_t div)
 BL_Err_Type GLB_Set_DAC_CLK(uint8_t enable,GLB_DAC_CLK_Type clkSel,uint8_t div)
 {
     uint32_t tmpVal;
-    
+
     CHECK_PARAM(IS_GLB_DAC_CLK_TYPE(clkSel));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_DIG_512K_EN);
-    BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);    
+    BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
 
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_DIG_512K_COMP);
 
@@ -1510,15 +1510,15 @@ BL_Err_Type GLB_Set_DAC_CLK(uint8_t enable,GLB_DAC_CLK_Type clkSel,uint8_t div)
     }
 
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_512K_DIV,div);
-    
+
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_DIG_512K_EN);
     }else{
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_DIG_512K_EN);
     }
 
-    BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);   
-     
+    BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
+
     return SUCCESS;
 }
 
@@ -1537,7 +1537,7 @@ BL_Err_Type GLB_Platform_Wakeup_Enable(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_EN_PLATFORM_WAKEUP);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1556,7 +1556,7 @@ BL_Err_Type GLB_Platform_Wakeup_Disable(void)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_EN_PLATFORM_WAKEUP);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1585,13 +1585,13 @@ BL_Err_Type GLB_Set_DIG_CLK_Sel(GLB_DIG_CLK_Type clkSel)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_CLK_SRC_SEL,clkSel);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     /* repristinate DIG512K and DIG32K clock */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_512K_EN,dig512kEn);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_32K_EN,dig32kEn);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1608,7 +1608,7 @@ BL_Err_Type GLB_Set_DIG_CLK_Sel(GLB_DIG_CLK_Type clkSel)
 BL_Err_Type GLB_Set_DIG_512K_CLK(uint8_t enable,uint8_t compensation,uint8_t div)
 {
     uint32_t tmpVal;
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     if(compensation){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_DIG_512K_COMP);
@@ -1617,7 +1617,7 @@ BL_Err_Type GLB_Set_DIG_512K_CLK(uint8_t enable,uint8_t compensation,uint8_t div
     }
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_512K_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_DIG_512K_EN);
@@ -1625,7 +1625,7 @@ BL_Err_Type GLB_Set_DIG_512K_CLK(uint8_t enable,uint8_t compensation,uint8_t div
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_DIG_512K_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1651,7 +1651,7 @@ BL_Err_Type GLB_Set_DIG_32K_CLK(uint8_t enable,uint8_t compensation,uint8_t div)
     }
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_DIG_32K_DIV,div);
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL);
     if(enable){
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_DIG_32K_EN);
@@ -1659,7 +1659,7 @@ BL_Err_Type GLB_Set_DIG_32K_CLK(uint8_t enable,uint8_t compensation,uint8_t div)
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_DIG_32K_EN);
     }
     BL_WR_REG(GLB_BASE,GLB_DIG32K_WAKEUP_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1677,17 +1677,17 @@ BL_Err_Type GLB_Set_DIG_32K_CLK(uint8_t enable,uint8_t compensation,uint8_t div)
 BL_Err_Type GLB_Set_BT_Coex_Signal(uint8_t enable,GLB_BT_BANDWIDTH_Type bandWidth,uint8_t pti,uint8_t channel)
 {
     uint32_t tmpVal=0;
-    
+
     CHECK_PARAM(IS_GLB_BT_BANDWIDTH_TYPE(bandWidth));
     CHECK_PARAM((pti<=0xF));
     CHECK_PARAM((channel<=78));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_WIFI_BT_COEX_CTRL);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_COEX_BT_BW,bandWidth);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_COEX_BT_PTI,pti);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_COEX_BT_CHANNEL,channel);
     BL_WR_REG(GLB_BASE,GLB_WIFI_BT_COEX_CTRL,tmpVal);
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_WIFI_BT_COEX_CTRL);
     if(enable){
         tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_EN_GPIO_BT_COEX,1);
@@ -1695,7 +1695,7 @@ BL_Err_Type GLB_Set_BT_Coex_Signal(uint8_t enable,GLB_BT_BANDWIDTH_Type bandWidt
         tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_EN_GPIO_BT_COEX,0);
     }
     BL_WR_REG(GLB_BASE,GLB_WIFI_BT_COEX_CTRL,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1712,10 +1712,10 @@ BL_Err_Type GLB_UART_Fun_Sel(GLB_UART_SIG_Type sig,GLB_UART_SIG_FUN_Type fun)
 {
     uint32_t sig_pos=0;
     uint32_t tmpVal=0;
-    
+
     CHECK_PARAM(IS_GLB_UART_SIG_TYPE(sig));
     CHECK_PARAM(IS_GLB_UART_SIG_FUN_TYPE(fun));
-    
+
     tmpVal=BL_RD_REG(GLB_BASE,GLB_UART_SIG_SEL_0);
     sig_pos=(sig*4);
     /* Clear original val */
@@ -1723,7 +1723,7 @@ BL_Err_Type GLB_UART_Fun_Sel(GLB_UART_SIG_Type sig,GLB_UART_SIG_FUN_Type fun)
     /* Set new value */
     tmpVal |= (fun<<sig_pos);
     BL_WR_REG(GLB_BASE,GLB_UART_SIG_SEL_0,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1738,21 +1738,21 @@ BL_Err_Type GLB_UART_Fun_Sel(GLB_UART_SIG_Type sig,GLB_UART_SIG_FUN_Type fun)
 BL_Err_Type GLB_IR_RX_GPIO_Sel(GLB_GPIO_Type gpio)
 {
     uint32_t tmpVal=0;
-    
+
     /* Select gpio between gpio11 and gpio13 */
     if(gpio>10 && gpio<14){
         tmpVal=BL_RD_REG(GLB_BASE,GLB_LED_DRIVER);
         tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_IR_RX_GPIO_SEL,gpio-10);
         BL_WR_REG(GLB_BASE,GLB_LED_DRIVER,tmpVal);
     }
-    
+
     /* Close ir rx */
     if(gpio == 0){
         tmpVal=BL_RD_REG(GLB_BASE,GLB_LED_DRIVER);
         tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_IR_RX_GPIO_SEL,0);
         BL_WR_REG(GLB_BASE,GLB_LED_DRIVER,tmpVal);
     }
-    
+
     return SUCCESS;
 }
 
@@ -1767,12 +1767,12 @@ BL_Err_Type GLB_IR_RX_GPIO_Sel(GLB_GPIO_Type gpio)
 BL_Err_Type GLB_IR_LED_Driver_Enable(void)
 {
     uint32_t tmpVal=0;
-    
+
     /* Enable led driver */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_LED_DRIVER);
     tmpVal=BL_SET_REG_BIT(tmpVal,GLB_PU_LEDDRV);
     BL_WR_REG(GLB_BASE,GLB_LED_DRIVER,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1787,12 +1787,12 @@ BL_Err_Type GLB_IR_LED_Driver_Enable(void)
 BL_Err_Type GLB_IR_LED_Driver_Disable(void)
 {
     uint32_t tmpVal=0;
-    
+
     /* Disable led driver */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_LED_DRIVER);
     tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_PU_LEDDRV);
     BL_WR_REG(GLB_BASE,GLB_LED_DRIVER,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1807,12 +1807,12 @@ BL_Err_Type GLB_IR_LED_Driver_Disable(void)
 BL_Err_Type GLB_IR_LED_Driver_Ibias(uint8_t ibias)
 {
     uint32_t tmpVal=0;
-    
+
     /* Set driver ibias */
     tmpVal=BL_RD_REG(GLB_BASE,GLB_LED_DRIVER);
     tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_LEDDRV_IBIAS,ibias&0xF);
     BL_WR_REG(GLB_BASE,GLB_LED_DRIVER,tmpVal);
-    
+
     return SUCCESS;
 }
 
@@ -1889,7 +1889,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_Init(GLB_GPIO_Cfg_Type *cfg)
     BL_WR_WORD(GLB_BASE+GLB_GPIO_OFFSET+gpioPin/2*4,tmpVal);
 
     *pOut=tmpOut;
-    
+
     return SUCCESS;
 }
 #endif
@@ -1914,16 +1914,16 @@ BL_Err_Type GLB_GPIO_Func_Init(GLB_GPIO_FUNC_Type gpioFun,GLB_GPIO_Type *pinList
         .drive=1,
         .smtCtrl=1
     };
-    
+
     if(gpioFun==GPIO_FUN_ANALOG){
         gpioCfg.pullType=GPIO_PULL_NONE;
     }
-    
+
     for(uint8_t i=0;i<cnt;i++){
         gpioCfg.gpioPin=pinList[i];
         GLB_GPIO_Init(&gpioCfg);
     }
-    
+
     return SUCCESS;
 }
 
@@ -1941,7 +1941,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Enable(GLB_GPIO_Type gpioPin)
 {
     uint32_t tmpVal;
     uint32_t pinOffset;
-    
+
     pinOffset=(gpioPin>>1)<<2;
     tmpVal=*(uint32_t *)(GLB_BASE+GLB_GPIO_OFFSET+pinOffset);
     if(gpioPin%2==0){
@@ -1952,7 +1952,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Enable(GLB_GPIO_Type gpioPin)
         tmpVal=BL_SET_REG_BIT(tmpVal,GLB_REG_GPIO_1_IE);
     }
     *(uint32_t *)(GLB_BASE+GLB_GPIO_OFFSET+pinOffset)=tmpVal;
-    
+
     return SUCCESS;
 }
 #endif
@@ -1971,7 +1971,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Disable(GLB_GPIO_Type gpioPin)
 {
     uint32_t tmpVal;
     uint32_t pinOffset;
-    
+
     pinOffset=(gpioPin>>1)<<2;
     tmpVal=*(uint32_t *)(GLB_BASE+GLB_GPIO_OFFSET+pinOffset);
     if(gpioPin%2==0){
@@ -1982,7 +1982,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Disable(GLB_GPIO_Type gpioPin)
         tmpVal=BL_CLR_REG_BIT(tmpVal,GLB_REG_GPIO_1_IE);
     }
     *(uint32_t *)(GLB_BASE+GLB_GPIO_OFFSET+pinOffset)=tmpVal;
-    
+
     return SUCCESS;
 }
 #endif
@@ -2004,7 +2004,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_OUTPUT_Enable(GLB_GPIO_Type gpioPin)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_GPIO_CFGCTL34);
     tmpVal=tmpVal|(1<<gpioPin);
     BL_WR_REG(GLB_BASE,GLB_GPIO_CFGCTL34,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -2026,7 +2026,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_OUTPUT_Disable(GLB_GPIO_Type gpioPin)
     tmpVal=BL_RD_REG(GLB_BASE,GLB_GPIO_CFGCTL34);
     tmpVal=tmpVal&~(1<<gpioPin);
     BL_WR_REG(GLB_BASE,GLB_GPIO_CFGCTL34,tmpVal);
-    
+
     return SUCCESS;
 }
 #endif
@@ -2071,7 +2071,7 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_Set_HZ(GLB_GPIO_Type gpioPin)
 
     /* Disable output anyway*/
     *pOut=tmpOut;
-    
+
     return SUCCESS;
 }
 #endif
@@ -2110,9 +2110,9 @@ uint8_t ATTR_TCM_SECTION GLB_GPIO_Get_Fun(GLB_GPIO_Type gpioPin)
 GLB_GPIO_REAL_MODE_Type GLB_GPIO_Get_Real_Fun(GLB_GPIO_Type gpioPin)
 {
    uint32_t tmpVal;
-   
+
    CHECK_PARAM((gpioPin<=GLB_GPIO_PIN_5));
-   
+
    tmpVal=BL_RD_WORD(GLB_BASE+GLB_GPIO_OFFSET+gpioPin/2*4);
    if(gpioPin%2==0){
        return (GLB_GPIO_REAL_MODE_Type)BL_GET_REG_BITS_VAL(tmpVal,GLB_REAL_GPIO_0_FUNC_SEL);
@@ -2143,7 +2143,7 @@ BL_Err_Type GLB_GPIO_Write(GLB_GPIO_Type gpioPin,uint32_t val)
         tmpOut &= (~(1<<pos));
     }
     *pOut=tmpOut;
-    
+
     return SUCCESS;
 }
 
@@ -2190,7 +2190,7 @@ BL_Err_Type GLB_GPIO_IntMask(GLB_GPIO_Type gpioPin,BL_Mask_Type intMask)
         }
         BL_WR_REG(GLB_BASE,GLB_GPIO_INT_MASK1,tmpVal);
     }
-    
+
     return SUCCESS;
 }
 
@@ -2217,7 +2217,7 @@ BL_Err_Type GLB_GPIO_IntClear(GLB_GPIO_Type gpioPin,BL_Sts_Type intClear)
         }
         BL_WR_REG(GLB_BASE,GLB_GPIO_INT_CLR1,tmpVal);
     }
-    
+
     return SUCCESS;
 }
 
@@ -2237,7 +2237,7 @@ BL_Sts_Type GLB_Get_GPIO_IntStatus(GLB_GPIO_Type gpioPin)
         /* GPIO0 ~ GPIO31 */
         tmpVal = BL_RD_REG(GLB_BASE,GLB_GPIO_INT_STAT1);
     }
-    
+
     return (tmpVal&(1<<gpioPin))?SET:RESET;
 }
 
@@ -2259,7 +2259,7 @@ BL_Err_Type GLB_Clr_GPIO_IntStatus(GLB_GPIO_Type gpioPin)
         tmpVal = tmpVal|(1<<gpioPin);
         BL_WR_REG(GLB_BASE,GLB_GPIO_INT_CLR1,tmpVal);
     }
-    
+
     return SUCCESS;
 }
 
@@ -2300,7 +2300,7 @@ BL_Err_Type GLB_Set_GPIO_IntMod(GLB_GPIO_Type gpioPin,GLB_GPIO_INT_CONTROL_Type 
         tmpVal = (tmpVal&~(0x7<<(3*tmpGpioPin)))|(((intCtlMod<<2)|intTrgMod)<<(3*tmpGpioPin));
         BL_WR_REG(GLB_BASE,GLB_GPIO_INT_MODE_SET3,tmpVal);
     }
-    
+
     return SUCCESS;
 }
 
@@ -2352,7 +2352,7 @@ BL_Err_Type GLB_GPIO_INT0_Callback_Install(GLB_GPIO_Type gpioPin,intCallback_Typ
     if(gpioPin<GLB_GPIO_INT0_NUM){
         glbGpioInt0CbfArra[gpioPin] = cbFun;
     }
-    
+
     return SUCCESS;
 }
 

@@ -330,11 +330,11 @@ void bflb_platform_init(uint32_t baudrate)
         return ;
     }
     init_flag = PLATFORM_INIT_TRUE;
-    
+
     bflb_platform_init_time();
-    
+
     Sec_Eng_Trng_Enable();
-    
+
     if(!uart_dbg_disable){
         bflb_platform_uart_dbg_init(baudrate);
         bflb_platform_printf("system clock=%dM\r\n",SystemCoreClockGet()/1000000);
@@ -348,11 +348,11 @@ void bflb_platform_deinit()
         return ;
     }
     init_flag = PLATFORM_INIT_FALSE;
-    
+
     bflb_platform_deinit_time();
-    
+
     Sec_Eng_Trng_Disable();
-    
+
     if(!uart_dbg_disable){
         bflb_platform_uart_dbg_deinit();
     }

@@ -166,7 +166,7 @@ static const struct ieee80211_channel bl_channels_24_ER[] = {
     { .band = NL80211_BAND_2GHZ, .center_freq = 2472, .hw_value = 13, .max_power=16},
 };
 
-static const struct ieee80211_dot_d country_list[] = 
+static const struct ieee80211_dot_d country_list[] =
 {
     {
         .code   = "CN",
@@ -1011,7 +1011,7 @@ int bl_send_cfg_task_req(struct bl_hw *bl_hw, uint32_t ops, uint32_t task, uint3
             req->u.set[0].length = utils_tlv_bl_pack_auto(
                 req->u.set[0].buf,
                 ENTRY_BUF_SIZE,
-                type, 
+                type,
                 arg1
             );
         }
@@ -1062,7 +1062,7 @@ int bl_send_channel_set_req(struct bl_hw *bl_hw, int channel)
     param->type = PHY_CHNL_BW_20;
     param->prim20_freq = phy_channel_to_freq(param->band, channel);
     param->center1_freq = phy_channel_to_freq(param->band, channel);//useless when bandwidth bigger than 20MHZ?
-    param->center2_freq = phy_channel_to_freq(param->band, channel);//useless when bandwidth bigger than 20MHZ? 
+    param->center2_freq = phy_channel_to_freq(param->band, channel);//useless when bandwidth bigger than 20MHZ?
     param->index = 0;
     param->tx_power = 15;//FIXME which value should be tx_power set?
 

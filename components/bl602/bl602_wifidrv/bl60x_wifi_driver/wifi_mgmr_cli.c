@@ -429,7 +429,7 @@ static void wifi_sta_ip_set_cmd(char *buf, int len, int argc, char **argv)
     /* sample input
      *
      * cmd_ip_set 192.168.1.212 255.255.255.0 192.168.1.1 114.114.114.114 114.114.114.114
-     * 
+     *
      * */
     uint32_t ip, mask, gw, dns1, dns2;
     char addr_str[20];
@@ -980,13 +980,13 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_edca_dump", "dump EDCA data", wifi_edca_dump_cmd},
         { "wifi_state", "get wifi_state", cmd_wifi_state_get},
         { "wifi_update_power", "Power table test command", cmd_wifi_power_table_update},
-};                                                                                   
+};
 
 int wifi_mgmr_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

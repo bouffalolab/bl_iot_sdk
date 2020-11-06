@@ -31,19 +31,19 @@
 
 
 
-/* 
+/*
  * Copyright (c) 2013 Andreas Misje
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -117,7 +117,7 @@ struct event
 {
    /** \brief Type of event. Defined by user. */
    int type;
-   /** 
+   /**
     * \brief Event payload.
     *
     * How this is used is entirely up to the user. This data
@@ -212,7 +212,7 @@ struct transition
     * \returns true if the event's data fulfils the condition, otherwise false.
     */
    bool ( *guard )( void *condition, struct event *event );
-   /** 
+   /**
     * \brief Function containing tasks to be performed during the transition
     *
     * The transition may optionally do some work in this function before
@@ -254,7 +254,7 @@ struct transition
  * state has a parent state, the event will be passed to the parent state.
  * This behaviour is repeated for all parents. Thus all children of a state
  * have a set of common #transitions. A parent state's #entryAction will not
- * be called if an event is passed on to a child state. 
+ * be called if an event is passed on to a child state.
  *
  * The following lists the different types of states that may be created, and
  * how to create them:
@@ -328,11 +328,11 @@ struct state
     * child state that serves as an entry point.
     */
    const struct state *entryState;
-   /** 
+   /**
     * \brief An array of transitions for the state.
     */
    struct transition *transitions;
-   /** 
+   /**
     * \brief Number of transitions in the #transitions array.
     */
    size_t numTransitions;
@@ -341,7 +341,7 @@ struct state
     * #exitAction, and in any \ref transition::action "transition action"
     */
    void *data;
-   /** 
+   /**
     * \brief This function is called whenever the state is being entered. May
     * be NULL.
     *
@@ -377,14 +377,14 @@ struct stateMachine
 {
    /** \brief Pointer to the current state */
    const struct state *currentState;
-   /** 
+   /**
     * \brief Pointer to previous state
     *
     * The previous state is stored for convenience in case the user needs to
     * keep track of previous states.
     */
    const struct state *previousState;
-   /** 
+   /**
     * \brief Pointer to a state that will be entered whenever an error occurs
     * in the state machine.
     *
@@ -405,7 +405,7 @@ struct stateMachine
  *
  * \note The \ref #state::entryAction "entry action" for \pn{initialState}
  * will not be called.
- * 
+ *
  * \note If \pn{initialState} is a parent state with its \ref
  * state::entryState "entryState" defined, it will not be entered. The user
  * must explicitly set the initial state.

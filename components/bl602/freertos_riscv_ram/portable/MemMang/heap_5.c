@@ -273,7 +273,7 @@ void *pvReturn = NULL;
 void* pvPortCalloc(size_t numElements, size_t sizeOfElement)
 {
     void *pv = NULL;
-    
+
     pv=pvPortMalloc(numElements*sizeOfElement);
     if(pv){
         memset(pv,0,numElements*sizeOfElement);

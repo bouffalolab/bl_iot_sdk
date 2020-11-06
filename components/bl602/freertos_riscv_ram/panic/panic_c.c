@@ -52,7 +52,7 @@ static void backtrace_stack(int (*print_func)(const char *fmt, ...),
                             uintptr_t *fp, uintptr_t *regs)
 {
     uintptr_t *ra;
-    uint32_t i = 0; 
+    uint32_t i = 0;
 
     while (1) {
         ra = (uintptr_t *)*(unsigned long *)(fp - 1);
