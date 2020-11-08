@@ -49,14 +49,14 @@ PtTable_Error_Type PtTable_Update_Entry(const SPI_Flash_Cfg_Type *pFlashCfg,
     if(ptEntry==NULL||ptStuff==NULL){
         return PT_ERROR_PARAMETER;
     }
-    
+
     ptTable=&ptStuff->ptTable;
     ptEntries=ptStuff->ptEntries;
-    
+
     if(targetTableID==PT_TABLE_ID_INVALID){
         return PT_ERROR_TABLE_NOT_VALID;
     }
-    
+
     if(targetTableID==PT_TABLE_ID_0){
         writeAddr=BFLB_PT_TABLE0_ADDRESS;
     }else{
@@ -77,17 +77,17 @@ PtTable_Error_Type PtTable_Update_Entry(const SPI_Flash_Cfg_Type *pFlashCfg,
             return PT_ERROR_ENTRY_UPDATE_FAIL;
         }
     }
-    
+
     /* Prepare write back to flash */
     /* Update age */
     ptTable->age++;
     ptTable->crc32=BFLB_Soft_CRC32((uint8_t*)ptTable,sizeof(PtTable_Config)-4);
-    
+
     /* Update entries CRC */
     entriesLen=ptTable->entryCnt*sizeof(PtTable_Entry_Config);
     pCrc32=(uint32_t *)((uint32_t)ptEntries+entriesLen);
     *pCrc32=BFLB_Soft_CRC32((uint8_t *)&ptEntries[0],entriesLen);
-    
+
     /* Write back to flash */
     /* Erase flash first */
     ret=bl_flash_erase(writeAddr,sizeof(PtTable_Config)+entriesLen+4);
@@ -110,7 +110,7 @@ PtTable_Error_Type PtTable_Get_Active_Entries(PtTable_Stuff_Config *ptStuff,
                                             PtTable_Entry_Config *ptEntry)
 {
     uint32_t i=0;
-    
+
     if(ptStuff==NULL||ptEntry==NULL){
         return PT_ERROR_PARAMETER;
     }

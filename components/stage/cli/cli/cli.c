@@ -972,7 +972,7 @@ static void ps_cmd(char *buf, int len, int argc, char **argv)
     char *pcWriteBuffer, *info;
     const char *const pcHeader = "State   Priority  Stack    #          Base\r\n********************************************************\r\n";
     BaseType_t xSpacePadding;
- 
+
     info = pvPortMalloc(1536);
     if (NULL == info) {
         return;
@@ -982,17 +982,17 @@ static void ps_cmd(char *buf, int len, int argc, char **argv)
     /* Generate a table of task stats. */
     strcpy(pcWriteBuffer, "Task" );
     pcWriteBuffer += strlen(pcWriteBuffer );
- 
+
     /* Minus three for the null terminator and half the number of characters in
     "Task" so the column lines up with the centre of the heading. */
-    for ( xSpacePadding = strlen( "Task" ); xSpacePadding < ( configMAX_TASK_NAME_LEN - 3 ); xSpacePadding++ ) {                                 
+    for ( xSpacePadding = strlen( "Task" ); xSpacePadding < ( configMAX_TASK_NAME_LEN - 3 ); xSpacePadding++ ) {
         /* Add a space to align columns after the task's name. */
-        *pcWriteBuffer = ' ';         
-        pcWriteBuffer++;              
-    
+        *pcWriteBuffer = ' ';
+        pcWriteBuffer++;
+
         /* Ensure always terminated. */
-        *pcWriteBuffer = 0x00;        
-    }                                 
+        *pcWriteBuffer = 0x00;
+    }
     strcpy(pcWriteBuffer, pcHeader );
     vTaskList(pcWriteBuffer + strlen(pcHeader));
     cli_putstr(info);
@@ -1095,7 +1095,7 @@ static void ls_cmd(char *buf, int len, int argc, char **argv)
             inode_forearch_name(cb_idnoe, &env);
         } else {
             aos_cli_printf("invalid parameter!\r\n");
-        }        
+        }
     }
     vPortFree(st);
 }
@@ -1317,7 +1317,7 @@ init_general_err:
     }
 
     return ret;
-#endif 
+#endif
 }
 
 static void console_cb_read(int fd, void *param)
@@ -1334,12 +1334,12 @@ static void console_cb_read(int fd, void *param)
             printf("-------------BUG from aos_read for ret\r\n");
         }
     }
-}                                                                                 
+}
 
 static void console_cb_write(int fd, void *param)
 {
     printf("Empty cb\r\n");
-}                                                                                 
+}
 
 void *aos_cli_event_cb_read_get()
 {

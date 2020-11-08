@@ -102,7 +102,7 @@ void bl_irq_default(void)
 }
 
 static void (*handler_list[2][16 + 64])(void) = {
-    
+
 };
 
 
@@ -125,7 +125,7 @@ void bl_irq_register_with_ctx(int irqnum, void *handler, void *ctx)
              handler_list[0][irqnum]
         );
     }
-   
+
     if (handler == NULL) {
         blog_error("handler is NULL pointer! \r\n");
         return;
@@ -141,7 +141,7 @@ void bl_irq_register_with_ctx(int irqnum, void *handler, void *ctx)
     }
 
     return;
-    
+
 }
 
 void bl_irq_ctx_get(int irqnum, void **ctx)
@@ -170,7 +170,7 @@ void bl_irq_unregister(int irqnum, void *handler)
     handler_list[0][irqnum] = handler;
 }
 
-void interrupt_entry(uint32_t mcause) 
+void interrupt_entry(uint32_t mcause)
 {
     void *handler = NULL;
     mcause &= 0x7FFFFFF;
@@ -306,9 +306,9 @@ extern void misaligned_store_trap(uintptr_t* regs, uintptr_t mcause, uintptr_t m
 
 #ifdef DBG_RECORD_EXCEP_VAL
 struct{
-	uint32_t mcause;
-	uint32_t mepc;
-	uint32_t mtval;
+    uint32_t mcause;
+    uint32_t mepc;
+    uint32_t mtval;
 }rval[4];
 int rval_idx;
 #endif /* DBG_RECORD_EXCEP_VAL */
@@ -316,10 +316,10 @@ int rval_idx;
 void exception_entry(uint32_t mcause, uint32_t mepc, uint32_t mtval, uintptr_t *regs)
 {
 #ifdef DBG_RECORD_EXCEP_VAL
-	rval[rval_idx&0x3].mcause = mcause;
-	rval[rval_idx&0x3].mepc = mepc;
-	rval[rval_idx&0x3].mtval = mtval;
-	rval_idx++;
+    rval[rval_idx&0x3].mcause = mcause;
+    rval[rval_idx&0x3].mepc = mepc;
+    rval[rval_idx&0x3].mtval = mtval;
+    rval_idx++;
 #endif /* DBG_RECORD_EXCEP_VAL */
     if ((mcause & 0x3ff) == EXCPT_LOAD_MISALIGNED){
         misaligned_load_trap(regs, mcause, mepc);

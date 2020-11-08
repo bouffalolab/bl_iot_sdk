@@ -2386,7 +2386,7 @@ mdns_resp_init(void)
 {
   err_t res;
   static u8_t flag = 1;
-  
+
   /* LWIP_ASSERT_CORE_LOCKED(); is checked by udp_new() */
 
   mdns_pcb = udp_new_ip_type(IPADDR_TYPE_ANY);
@@ -2443,7 +2443,7 @@ int mdns_responder_start(struct netif *netif)
         return -1;
     }
 
-    mdns_resp_init(); 
+    mdns_resp_init();
     ret = mdns_resp_add_netif(netif, "mdns", 3600);
     if (ret != 0) {
         mdns_resp_deinit();
@@ -2468,7 +2468,7 @@ int mdns_responder_stop(struct netif *netif)
         printf("netif is NULL\r\n");
         return -1;
     }
-    
+
     ret = mdns_resp_remove_netif(netif);
     if (ret != 0) {
         printf("remove netif failed:%d\r\n", ret);

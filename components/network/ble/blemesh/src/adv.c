@@ -63,267 +63,267 @@ static K_THREAD_STACK_DEFINE(adv_thread_stack, ADV_STACK_SIZE);
 #endif
 
 static const u8_t adv_type[] = {
-	[BT_MESH_ADV_PROV]   = BT_DATA_MESH_PROV,
-	[BT_MESH_ADV_DATA]   = BT_DATA_MESH_MESSAGE,
-	[BT_MESH_ADV_BEACON] = BT_DATA_MESH_BEACON,
-	[BT_MESH_ADV_URI]    = BT_DATA_URI,
+    [BT_MESH_ADV_PROV]   = BT_DATA_MESH_PROV,
+    [BT_MESH_ADV_DATA]   = BT_DATA_MESH_MESSAGE,
+    [BT_MESH_ADV_BEACON] = BT_DATA_MESH_BEACON,
+    [BT_MESH_ADV_URI]    = BT_DATA_URI,
 };
 
 NET_BUF_POOL_DEFINE(adv_buf_pool, CONFIG_BT_MESH_ADV_BUF_COUNT,
-		    BT_MESH_ADV_DATA_SIZE, BT_MESH_ADV_USER_DATA_SIZE, NULL);
+            BT_MESH_ADV_DATA_SIZE, BT_MESH_ADV_USER_DATA_SIZE, NULL);
 
 static struct bt_mesh_adv adv_pool[CONFIG_BT_MESH_ADV_BUF_COUNT];
 
 static struct bt_mesh_adv *adv_alloc(int id)
 {
-	return &adv_pool[id];
+    return &adv_pool[id];
 }
 
 static inline void adv_send_start(u16_t duration, int err,
-				  const struct bt_mesh_send_cb *cb,
-				  void *cb_data)
+                  const struct bt_mesh_send_cb *cb,
+                  void *cb_data)
 {
-	if (cb && cb->start) {
-		cb->start(duration, err, cb_data);
-	}
+    if (cb && cb->start) {
+        cb->start(duration, err, cb_data);
+    }
 }
 
 static inline void adv_send_end(int err, const struct bt_mesh_send_cb *cb,
-				void *cb_data)
+                void *cb_data)
 {
-	if (cb && cb->end) {
-		cb->end(err, cb_data);
-	}
+    if (cb && cb->end) {
+        cb->end(err, cb_data);
+    }
 }
 
 static inline void adv_send(struct net_buf *buf)
 {
-	const s32_t adv_int_min = ((bt_dev.hci_version >= BT_HCI_VERSION_5_0) ?
-				   ADV_INT_FAST_MS : ADV_INT_DEFAULT_MS);
-	const struct bt_mesh_send_cb *cb = BT_MESH_ADV(buf)->cb;
-	void *cb_data = BT_MESH_ADV(buf)->cb_data;
-	struct bt_le_adv_param param;
-	u16_t duration, adv_int;
-	struct bt_data ad;
-	int err;
+    const s32_t adv_int_min = ((bt_dev.hci_version >= BT_HCI_VERSION_5_0) ?
+                   ADV_INT_FAST_MS : ADV_INT_DEFAULT_MS);
+    const struct bt_mesh_send_cb *cb = BT_MESH_ADV(buf)->cb;
+    void *cb_data = BT_MESH_ADV(buf)->cb_data;
+    struct bt_le_adv_param param;
+    u16_t duration, adv_int;
+    struct bt_data ad;
+    int err;
 
-	adv_int = MAX(adv_int_min,
-		      BT_MESH_TRANSMIT_INT(BT_MESH_ADV(buf)->xmit));
-	duration = (MESH_SCAN_WINDOW_MS +
-		    ((BT_MESH_TRANSMIT_COUNT(BT_MESH_ADV(buf)->xmit) + 1) *
-		     (adv_int + 10)));
+    adv_int = MAX(adv_int_min,
+              BT_MESH_TRANSMIT_INT(BT_MESH_ADV(buf)->xmit));
+    duration = (MESH_SCAN_WINDOW_MS +
+            ((BT_MESH_TRANSMIT_COUNT(BT_MESH_ADV(buf)->xmit) + 1) *
+             (adv_int + 10)));
 
-	BT_DBG("type %u len %u: %s", BT_MESH_ADV(buf)->type,
-	       buf->len, bt_hex(buf->data, buf->len));
-	BT_DBG("count %u interval %ums duration %ums",
-	       BT_MESH_TRANSMIT_COUNT(BT_MESH_ADV(buf)->xmit) + 1, adv_int,
-	       duration);
+    BT_DBG("type %u len %u: %s", BT_MESH_ADV(buf)->type,
+           buf->len, bt_hex(buf->data, buf->len));
+    BT_DBG("count %u interval %ums duration %ums",
+           BT_MESH_TRANSMIT_COUNT(BT_MESH_ADV(buf)->xmit) + 1, adv_int,
+           duration);
 
-	ad.type = adv_type[BT_MESH_ADV(buf)->type];
-	ad.data_len = buf->len;
-	ad.data = buf->data;
+    ad.type = adv_type[BT_MESH_ADV(buf)->type];
+    ad.data_len = buf->len;
+    ad.data = buf->data;
 
-	if (IS_ENABLED(CONFIG_BT_MESH_DEBUG_USE_ID_ADDR)) {
-		param.options = BT_LE_ADV_OPT_USE_IDENTITY;
-	} else {
-		param.options = 0U;
-	}
+    if (IS_ENABLED(CONFIG_BT_MESH_DEBUG_USE_ID_ADDR)) {
+        param.options = BT_LE_ADV_OPT_USE_IDENTITY;
+    } else {
+        param.options = 0U;
+    }
 
-	param.id = BT_ID_DEFAULT;
-	param.interval_min = ADV_SCAN_UNIT(adv_int);
-	param.interval_max = param.interval_min;
+    param.id = BT_ID_DEFAULT;
+    param.interval_min = ADV_SCAN_UNIT(adv_int);
+    param.interval_max = param.interval_min;
 
-	err = bt_le_adv_start(&param, &ad, 1, NULL, 0);
-	net_buf_unref(buf);
-	adv_send_start(duration, err, cb, cb_data);
-	if (err) {
-		BT_ERR("Advertising failed: err %d", err);
-		return;
-	}
+    err = bt_le_adv_start(&param, &ad, 1, NULL, 0);
+    net_buf_unref(buf);
+    adv_send_start(duration, err, cb, cb_data);
+    if (err) {
+        BT_ERR("Advertising failed: err %d", err);
+        return;
+    }
 
-	BT_DBG("Advertising started. Sleeping %u ms", duration);
+    BT_DBG("Advertising started. Sleeping %u ms", duration);
 
-	k_sleep(K_MSEC(duration));
+    k_sleep(K_MSEC(duration));
 
-	err = bt_le_adv_stop();
+    err = bt_le_adv_stop();
 
-	adv_send_end(err, cb, cb_data);
-	if (err) {
-		BT_ERR("Stopping advertising failed: err %d", err);
-		return;
-	}
+    adv_send_end(err, cb, cb_data);
+    if (err) {
+        BT_ERR("Stopping advertising failed: err %d", err);
+        return;
+    }
 
-	BT_DBG("Advertising stopped");
+    BT_DBG("Advertising stopped");
 }
 
 #if !defined(BFLB_BLE)
 static void adv_stack_dump(const struct k_thread *thread, void *user_data)
 {
 #if defined(CONFIG_THREAD_STACK_INFO)
-	stack_analyze((char *)user_data, (char *)thread->stack_info.start,
-						thread->stack_info.size);
+    stack_analyze((char *)user_data, (char *)thread->stack_info.start,
+                        thread->stack_info.size);
 #endif
 }
 #endif
 
 static void adv_thread(void *p1)
 {
-	BT_DBG("started");
+    BT_DBG("started");
     UNUSED(p1);
-    
-	while (1) {
-		struct net_buf *buf;
 
-		if (IS_ENABLED(CONFIG_BT_MESH_PROXY)) {
-			buf = net_buf_get(&adv_queue, K_NO_WAIT);
-			while (!buf) {
-				s32_t timeout;
+    while (1) {
+        struct net_buf *buf;
 
-				timeout = bt_mesh_proxy_adv_start();
-				BT_DBG("Proxy Advertising up to %d ms",
-				       timeout);
-				buf = net_buf_get(&adv_queue, timeout);
-				bt_mesh_proxy_adv_stop();
-			}
-		} else {
-			buf = net_buf_get(&adv_queue, K_FOREVER);
-		}
-       
+        if (IS_ENABLED(CONFIG_BT_MESH_PROXY)) {
+            buf = net_buf_get(&adv_queue, K_NO_WAIT);
+            while (!buf) {
+                s32_t timeout;
+
+                timeout = bt_mesh_proxy_adv_start();
+                BT_DBG("Proxy Advertising up to %d ms",
+                       timeout);
+                buf = net_buf_get(&adv_queue, timeout);
+                bt_mesh_proxy_adv_stop();
+            }
+        } else {
+            buf = net_buf_get(&adv_queue, K_FOREVER);
+        }
+
         if (!buf) {
-			continue;
-		}
+            continue;
+        }
 
-		/* busy == 0 means this was canceled */
-		if (BT_MESH_ADV(buf)->busy) {
-			BT_MESH_ADV(buf)->busy = 0U;
-			adv_send(buf);
-		} else {
-			net_buf_unref(buf);
-		}
+        /* busy == 0 means this was canceled */
+        if (BT_MESH_ADV(buf)->busy) {
+            BT_MESH_ADV(buf)->busy = 0U;
+            adv_send(buf);
+        } else {
+            net_buf_unref(buf);
+        }
 
 #if !defined(BFLB_BLE)
-		STACK_ANALYZE("adv stack", adv_thread_stack);
-		k_thread_foreach(adv_stack_dump, "BT_MESH");
+        STACK_ANALYZE("adv stack", adv_thread_stack);
+        k_thread_foreach(adv_stack_dump, "BT_MESH");
 #endif
-		/* Give other threads a chance to run */
-		k_yield();
-	}
+        /* Give other threads a chance to run */
+        k_yield();
+    }
 }
 
 void bt_mesh_adv_update(void)
 {
-	BT_DBG("");
+    BT_DBG("");
     #if defined(BFLB_BLE)
     struct net_buf *buf;
-    
-	//in order to post the adv thread to make it handle the enqueued msg, enqueue a beacon packet to adv queue,
-	//and set busy bit as 0 to make adv thread directly ignore this beacon packet.
+
+    //in order to post the adv thread to make it handle the enqueued msg, enqueue a beacon packet to adv queue,
+    //and set busy bit as 0 to make adv thread directly ignore this beacon packet.
     buf = bt_mesh_adv_create(BT_MESH_ADV_BEACON, 0,
-					 K_NO_WAIT);
+                     K_NO_WAIT);
     BT_MESH_ADV(buf)->busy = 0;
     net_buf_put(&adv_queue, net_buf_ref(buf));
     #else
-	k_fifo_cancel_wait(&adv_queue);
+    k_fifo_cancel_wait(&adv_queue);
     #endif
 }
 
 struct net_buf *bt_mesh_adv_create_from_pool(struct net_buf_pool *pool,
-					     bt_mesh_adv_alloc_t get_id,
-					     enum bt_mesh_adv_type type,
-					     u8_t xmit, s32_t timeout)
+                         bt_mesh_adv_alloc_t get_id,
+                         enum bt_mesh_adv_type type,
+                         u8_t xmit, s32_t timeout)
 {
-	struct bt_mesh_adv *adv;
-	struct net_buf *buf;
+    struct bt_mesh_adv *adv;
+    struct net_buf *buf;
 
-	if (atomic_test_bit(bt_mesh.flags, BT_MESH_SUSPENDED)) {
-		BT_WARN("Refusing to allocate buffer while suspended");
-		return NULL;
-	}
-	buf = net_buf_alloc(pool, timeout);
-	if (!buf) {
-		return NULL;
-	}
+    if (atomic_test_bit(bt_mesh.flags, BT_MESH_SUSPENDED)) {
+        BT_WARN("Refusing to allocate buffer while suspended");
+        return NULL;
+    }
+    buf = net_buf_alloc(pool, timeout);
+    if (!buf) {
+        return NULL;
+    }
 
-	adv = get_id(net_buf_id(buf));
-	BT_MESH_ADV(buf) = adv;
+    adv = get_id(net_buf_id(buf));
+    BT_MESH_ADV(buf) = adv;
 
-	(void)memset(adv, 0, sizeof(*adv));
+    (void)memset(adv, 0, sizeof(*adv));
 
-	adv->type         = type;
-	adv->xmit         = xmit;
+    adv->type         = type;
+    adv->xmit         = xmit;
 
-	return buf;
+    return buf;
 }
 
 struct net_buf *bt_mesh_adv_create(enum bt_mesh_adv_type type, u8_t xmit,
-				   s32_t timeout)
+                   s32_t timeout)
 {
-	return bt_mesh_adv_create_from_pool(&adv_buf_pool, adv_alloc, type,
-					    xmit, timeout);
+    return bt_mesh_adv_create_from_pool(&adv_buf_pool, adv_alloc, type,
+                        xmit, timeout);
 }
 
 void bt_mesh_adv_send(struct net_buf *buf, const struct bt_mesh_send_cb *cb,
-		      void *cb_data)
+              void *cb_data)
 {
-	BT_DBG("type 0x%02x len %u: %s", BT_MESH_ADV(buf)->type, buf->len,
-	       bt_hex(buf->data, buf->len));
+    BT_DBG("type 0x%02x len %u: %s", BT_MESH_ADV(buf)->type, buf->len,
+           bt_hex(buf->data, buf->len));
 
-	BT_MESH_ADV(buf)->cb = cb;
-	BT_MESH_ADV(buf)->cb_data = cb_data;
-	BT_MESH_ADV(buf)->busy = 1U;
+    BT_MESH_ADV(buf)->cb = cb;
+    BT_MESH_ADV(buf)->cb_data = cb_data;
+    BT_MESH_ADV(buf)->busy = 1U;
 
-	net_buf_put(&adv_queue, net_buf_ref(buf));
+    net_buf_put(&adv_queue, net_buf_ref(buf));
 }
 
 static void bt_mesh_scan_cb(const bt_addr_le_t *addr, s8_t rssi,
-			    u8_t adv_type, struct net_buf_simple *buf)
+                u8_t adv_type, struct net_buf_simple *buf)
 {
-	if (adv_type != BT_LE_ADV_NONCONN_IND) {
-		return;
-	}
+    if (adv_type != BT_LE_ADV_NONCONN_IND) {
+        return;
+    }
 
-	BT_DBG("len %u: %s", buf->len, bt_hex(buf->data, buf->len));
+    BT_DBG("len %u: %s", buf->len, bt_hex(buf->data, buf->len));
 
-	while (buf->len > 1) {
-		struct net_buf_simple_state state;
-		u8_t len, type;
+    while (buf->len > 1) {
+        struct net_buf_simple_state state;
+        u8_t len, type;
 
-		len = net_buf_simple_pull_u8(buf);
-		/* Check for early termination */
-		if (len == 0U) {
-			return;
-		}
+        len = net_buf_simple_pull_u8(buf);
+        /* Check for early termination */
+        if (len == 0U) {
+            return;
+        }
 
-		if (len > buf->len) {
-			BT_WARN("AD malformed");
-			return;
-		}
+        if (len > buf->len) {
+            BT_WARN("AD malformed");
+            return;
+        }
 
-		net_buf_simple_save(buf, &state);
+        net_buf_simple_save(buf, &state);
 
-		type = net_buf_simple_pull_u8(buf);
+        type = net_buf_simple_pull_u8(buf);
 
-		buf->len = len - 1;
+        buf->len = len - 1;
 
-		switch (type) {
-		case BT_DATA_MESH_MESSAGE:
-			bt_mesh_net_recv(buf, rssi, BT_MESH_NET_IF_ADV);
-			break;
+        switch (type) {
+        case BT_DATA_MESH_MESSAGE:
+            bt_mesh_net_recv(buf, rssi, BT_MESH_NET_IF_ADV);
+            break;
 #if defined(CONFIG_BT_MESH_PB_ADV)
-		case BT_DATA_MESH_PROV:
-			bt_mesh_pb_adv_recv(buf);
-			break;
+        case BT_DATA_MESH_PROV:
+            bt_mesh_pb_adv_recv(buf);
+            break;
 #endif
-		case BT_DATA_MESH_BEACON:
-			bt_mesh_beacon_recv(buf);
-			break;
-		default:
-			break;
-		}
+        case BT_DATA_MESH_BEACON:
+            bt_mesh_beacon_recv(buf);
+            break;
+        default:
+            break;
+        }
 
-		net_buf_simple_restore(buf, &state);
-		net_buf_simple_pull(buf, len);
-	}
+        net_buf_simple_restore(buf, &state);
+        net_buf_simple_pull(buf, len);
+    }
 }
 
 void bt_mesh_adv_init(void)
@@ -333,45 +333,45 @@ void bt_mesh_adv_init(void)
     k_fifo_init(&adv_queue, 20);
     k_thread_create(&adv_thread_data, "BT Mesh adv", CONFIG_MESH_ADV_STACK_SIZE,
         adv_thread, CONFIG_BT_MESH_ADV_PRIO);
-#else   
-	k_thread_create(&adv_thread_data, adv_thread_stack,
-			K_THREAD_STACK_SIZEOF(adv_thread_stack), adv_thread,
-			NULL, NULL, NULL, K_PRIO_COOP(7), 0, K_NO_WAIT);
-	k_thread_name_set(&adv_thread_data, "BT Mesh adv");
+#else
+    k_thread_create(&adv_thread_data, adv_thread_stack,
+            K_THREAD_STACK_SIZEOF(adv_thread_stack), adv_thread,
+            NULL, NULL, NULL, K_PRIO_COOP(7), 0, K_NO_WAIT);
+    k_thread_name_set(&adv_thread_data, "BT Mesh adv");
 #endif
 }
 
 int bt_mesh_scan_enable(void)
 {
-	struct bt_le_scan_param scan_param = {
-			.type       = BT_HCI_LE_SCAN_PASSIVE,
-			.filter_dup = BT_HCI_LE_SCAN_FILTER_DUP_DISABLE,
-			.interval   = MESH_SCAN_INTERVAL,
-			.window     = MESH_SCAN_WINDOW };
-	int err;
+    struct bt_le_scan_param scan_param = {
+            .type       = BT_HCI_LE_SCAN_PASSIVE,
+            .filter_dup = BT_HCI_LE_SCAN_FILTER_DUP_DISABLE,
+            .interval   = MESH_SCAN_INTERVAL,
+            .window     = MESH_SCAN_WINDOW };
+    int err;
 
-	BT_DBG("");
+    BT_DBG("");
 
-	err = bt_le_scan_start(&scan_param, bt_mesh_scan_cb);
-	if (err && err != -EALREADY) {
-		BT_ERR("starting scan failed (err %d)", err);
-		return err;
-	}
+    err = bt_le_scan_start(&scan_param, bt_mesh_scan_cb);
+    if (err && err != -EALREADY) {
+        BT_ERR("starting scan failed (err %d)", err);
+        return err;
+    }
 
-	return 0;
+    return 0;
 }
 
 int bt_mesh_scan_disable(void)
 {
-	int err;
+    int err;
 
-	BT_DBG("");
+    BT_DBG("");
 
-	err = bt_le_scan_stop();
-	if (err && err != -EALREADY) {
-		BT_ERR("stopping scan failed (err %d)", err);
-		return err;
-	}
+    err = bt_le_scan_stop();
+    if (err && err != -EALREADY) {
+        BT_ERR("stopping scan failed (err %d)", err);
+        return err;
+    }
 
-	return 0;
+    return 0;
 }

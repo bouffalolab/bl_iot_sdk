@@ -315,7 +315,7 @@ int mbedtls_entropy_func( void *data, unsigned char *output, size_t len )
      * Always gather extra entropy before a call
      */
     do
-    {        
+    {
         if( count++ > ENTROPY_MAX_LOOP )
         {
             ret = MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;

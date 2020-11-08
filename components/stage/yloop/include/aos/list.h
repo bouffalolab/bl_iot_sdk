@@ -184,12 +184,12 @@ static inline int dlist_empty(const dlist_t *head)
  */
 static inline int dlist_entry_number(dlist_t *queue)
 {
-	int num;
-	dlist_t *cur = queue;  
-	for (num=0;cur->next != queue;cur=cur->next, num++)
-		;
-	
-	return num; 
+    int num;
+    dlist_t *cur = queue;
+    for (num=0;cur->next != queue;cur=cur->next, num++)
+        ;
+
+    return num;
 }
 
 
@@ -321,12 +321,12 @@ static inline void slist_init(slist_t *head)
  */
 static inline int slist_entry_number(slist_t *queue)
 {
-	int num;
-    slist_t *cur = queue;  
+    int num;
+    slist_t *cur = queue;
     for (num=0;cur->next;cur=cur->next, num++)
-		;
-	
-    return num; 
+        ;
+
+    return num;
 }
 
 

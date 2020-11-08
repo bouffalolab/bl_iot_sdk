@@ -1021,10 +1021,10 @@ int32_t bflb_ecdh_get_public_key( uint8_t id,const uint32_t *pkX,const uint32_t 
 
 int32_t bflb_ecdsa_get_private_key( uint8_t id,uint32_t *private_key)
 {
-	if(bflb_ecc_get_random_value(private_key,(uint32_t *)secp256r1N,32)<0){
-		return -1;
-	}
-	return 0;
+    if(bflb_ecc_get_random_value(private_key,(uint32_t *)secp256r1N,32)<0){
+        return -1;
+    }
+    return 0;
 }
 
 int32_t bflb_ecdsa_sign( uint8_t id,const uint32_t *private_key,const uint32_t *random_k,const uint32_t *hash,uint32_t *r,uint32_t *s)

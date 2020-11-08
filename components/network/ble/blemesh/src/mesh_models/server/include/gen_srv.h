@@ -22,8 +22,8 @@ struct bt_mesh_gen_onoff_srv {
 extern const struct bt_mesh_model_op bt_mesh_onoff_srv_op[];
 
 #define BT_MESH_MODEL_GEN_ONOFF(srv_data)                                      \
-		BT_MESH_MODEL(BT_MESH_MODEL_ID_GEN_ONOFF_SRV,                      \
-			      bt_mesh_onoff_srv_op, NULL, srv_data)
+        BT_MESH_MODEL(BT_MESH_MODEL_ID_GEN_ONOFF_SRV,                      \
+                  bt_mesh_onoff_srv_op, NULL, srv_data)
 
 typedef void (*bt_mesh_model_gen_cb)(uint8_t value);
 void mesh_gen_srv_callback_register(bt_mesh_model_gen_cb cb);

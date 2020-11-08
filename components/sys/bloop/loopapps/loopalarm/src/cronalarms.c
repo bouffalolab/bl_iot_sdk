@@ -16,15 +16,15 @@ typedef struct cronevent
     cron_expr expr;
     void (*handler)(void);
     uint32_t nexttrigger;
-    int enabled;  
-    int oneshot; 
+    int enabled;
+    int oneshot;
 }cronevent_t;
 
 static uint32_t test_count = 0;//for test use
 uint32_t cronal_time(uint32_t test_s)
 {
     uint32_t seconds = 0, frags = 0;
-   
+
     sntp_get_time(&seconds, &frags);
     test_count = test_count + test_s;
     seconds = seconds + test_count;
@@ -61,7 +61,7 @@ static void cronal_enable(cronevent_t *pstcron)
         pstcron->enabled = 1;
         update_next_trigger(pstcron);
     }
-       
+
     return;
 }
 
@@ -86,7 +86,7 @@ void cron_alarm_service(void)
        if(node->enabled == 1 && (cronal_time(0) >= node->nexttrigger)) {
             handler = node->handler;
             if (node->oneshot == 1) {
-                cronal_free(node); 
+                cronal_free(node);
             } else {
                 update_next_trigger(node);
             }
@@ -95,17 +95,17 @@ void cron_alarm_service(void)
 
             }
         } else if (node->enabled == 0) {
-            cronal_enable(node);    
+            cronal_enable(node);
         } else {
-        } 
- 
+        }
+
     }
-    
+
     return;
 }
 
 int cron_alarm_create(const char * cronstring, void *handler, int oneshot)
-{   
+{
     cronevent_t *pstcron;
     const char *err;
 
@@ -119,7 +119,7 @@ int cron_alarm_create(const char * cronstring, void *handler, int oneshot)
         blog_error("malloc failed , return \r\n");
         return -1;
     }
-    
+
     memset(pstcron, 0, sizeof(cronevent_t));
     cron_parse_expr(cronstring, &(pstcron->expr), &err);
     if (err) {
@@ -129,8 +129,8 @@ int cron_alarm_create(const char * cronstring, void *handler, int oneshot)
 
     pstcron->handler = (void (*)(void))handler;
     pstcron->oneshot = oneshot;
-    cronal_enable(pstcron); 
+    cronal_enable(pstcron);
     utils_dlist_add(&(pstcron->dlist_item), &cronalarm_queue);
-    
+
     return 0;
 }

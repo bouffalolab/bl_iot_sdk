@@ -1701,7 +1701,7 @@ struct me_traffic_ind_req
 struct me_rc_stats_req
 {
     /// Index of the station for which the RC statistics are requested
-	u8_l sta_idx;
+    u8_l sta_idx;
 };
 
 /// Structure containing the structure of a retry chain step

@@ -518,9 +518,9 @@ err_out:
 
 /**
  * @scan: Request to do a scan. If returning zero, the scan request is given
- *	the driver, and will be valid until passed to cfg80211_scan_done().
- *	For scan results, call cfg80211_inform_bss(); you can call this outside
- *	the scan/scan_done bracket too.
+ *  the driver, and will be valid until passed to cfg80211_scan_done().
+ *  For scan results, call cfg80211_inform_bss(); you can call this outside
+ *  the scan/scan_done bracket too.
  */
 int bl_cfg80211_scan(struct bl_hw *bl_hw)
 {

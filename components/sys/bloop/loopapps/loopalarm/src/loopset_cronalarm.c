@@ -26,7 +26,7 @@ static int _cronalarm_bloop_evt(struct loop_ctx *loop, const struct loop_evt_han
 {
     uint32_t map = *evt_type_map;
 redo:
-    if (map & EVT_MAP_CRON_ALARM_TRIGGER) {      
+    if (map & EVT_MAP_CRON_ALARM_TRIGGER) {
         looprt_timer_register(&cronalarm_item.timer);
         map &= (~EVT_MAP_CRON_ALARM_TRIGGER);
         blog_debug("end once timer trigger \r\n");

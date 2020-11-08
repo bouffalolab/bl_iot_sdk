@@ -91,12 +91,12 @@ static ssize_t vfs_adc_read(file_t *fp, void *buf, size_t nbytes)
     /* check empty pointer. */
     if ((fp != NULL) && (fp->node != NULL)) {
 
-        /* get the device pointer. */       
+        /* get the device pointer. */
         adc_dev = (adc_dev_t *)(fp->node->i_arg);
 
         if (adc_dev != NULL) {
 
-            /* get adc sampled value. */ 
+            /* get adc sampled value. */
             ret = hal_adc_value_get(adc_dev, &adc_value, HAL_WAIT_FOREVER);
             /* If the data is got successfully, set the return value to nbytes. */
             if (0 == ret) {
@@ -174,13 +174,13 @@ static int vfs_adc_ioctl(file_t *fp, int cmd, unsigned long arg)
         return -EINVAL;
     }
 
-    /* get the device pointer. */       
+    /* get the device pointer. */
     adc_dev = (adc_dev_t *)(fp->node->i_arg);
 
     if (adc_dev == NULL) {
         return -EINVAL;
     }
-    
+
     switch(cmd) {
         case IOCTL_ADC_TRIGGER_DISABLE:
         /*Disable low level trigger, such as INT*/

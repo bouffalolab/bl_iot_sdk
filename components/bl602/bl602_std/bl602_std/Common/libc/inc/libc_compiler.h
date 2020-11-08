@@ -17,7 +17,7 @@
   /* Most other C compilers have __cdecl as a keyword */
 # endif
 #else
-# define __cdecl		/* Meaningless on non-i386 */
+# define __cdecl        /* Meaningless on non-i386 */
 #endif
 
 /* How to declare a function that *must* be inlined */
@@ -26,7 +26,7 @@
 # if __GNUC__ >= 3
 #  ifdef __GNUC_STDC_INLINE__
 #   define __must_inline extern __inline__ \
-	__attribute__((__gnu_inline__,__always_inline__))
+    __attribute__((__gnu_inline__,__always_inline__))
 #  else
 #   define __must_inline extern __inline__ __attribute__((__always_inline__))
 #  endif
@@ -34,7 +34,7 @@
 #  define __must_inline extern __inline__
 # endif
 #else
-# define __must_inline __inline	/* Just hope this works... */
+# define __must_inline __inline /* Just hope this works... */
 # define __inline inline
 #endif
 

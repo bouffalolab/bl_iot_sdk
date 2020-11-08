@@ -53,10 +53,10 @@ int vfs_rtc_close(file_t *fp)
         if (fp->node->refs == 1) {
 
             /* get the device pointer. */
-            rtc_dev = (rtc_dev_t *)(fp->node->i_arg);  
+            rtc_dev = (rtc_dev_t *)(fp->node->i_arg);
 
             if (rtc_dev != NULL) {
-                
+
                 /* turns off hardware. */
                 ret = hal_rtc_finalize(rtc_dev);
             } else {
@@ -98,7 +98,7 @@ ssize_t vfs_rtc_read(file_t *fp, void *buf, size_t nbytes)
     } else {
         ret = -EINVAL;
     }
-    
+
     return ret;
 }
 
@@ -118,7 +118,7 @@ ssize_t vfs_rtc_write(file_t *fp, const void *buf, size_t nbytes)
             /* set rtc time. */
             ret = hal_rtc_set_time(rtc_dev, (const rtc_time_t *)buf);
 
-            /* If the time is set successfully, set the return 
+            /* If the time is set successfully, set the return
             value to nbytes. */
             if (ret == 0) {
                 ret = nbytes;
@@ -128,7 +128,7 @@ ssize_t vfs_rtc_write(file_t *fp, const void *buf, size_t nbytes)
         }
     } else {
         ret = -EINVAL;
-    } 
+    }
 
     return ret;
 }

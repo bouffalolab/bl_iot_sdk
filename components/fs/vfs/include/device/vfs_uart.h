@@ -66,7 +66,7 @@ int vfs_uart_close(file_t *fp);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return  The positive non-zero number of bytes read on success, 
+ * @return  The positive non-zero number of bytes read on success,
  * 0 on read nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_uart_read(file_t *fp, void *buf, size_t nbytes);
@@ -78,7 +78,7 @@ ssize_t vfs_uart_read(file_t *fp, void *buf, size_t nbytes);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return   The positive non-zero number of bytes write on success, 
+ * @return   The positive non-zero number of bytes write on success,
  * 0 on write nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_uart_write(file_t *fp, const void *buf, size_t nbytes);

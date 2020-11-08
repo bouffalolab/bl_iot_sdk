@@ -452,7 +452,7 @@ sntp_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *addr,
   u8_t mode;
   u8_t stratum;
   err_t err;
-  
+
   printf("SNTP time now\r\n");
 
   LWIP_UNUSED_ARG(arg);

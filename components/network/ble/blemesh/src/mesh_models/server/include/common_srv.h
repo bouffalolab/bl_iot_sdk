@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <types.h>
-#include <stdbool.h> 
+#include <stdbool.h>
 
 #define MESH_TRANS_MIC_SIZE_4    4
 #define MESH_TRANS_MIC_SIZE_8    8

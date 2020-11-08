@@ -39,7 +39,7 @@ int vfs_gpio_close(file_t *fp);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return  The positive non-zero number of bytes read on success, 
+ * @return  The positive non-zero number of bytes read on success,
  * 0 on read nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_gpio_write(file_t *fp, const void *buf, size_t nbytes);
@@ -51,7 +51,7 @@ ssize_t vfs_gpio_write(file_t *fp, const void *buf, size_t nbytes);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return  The positive non-zero number of bytes read on success, 
+ * @return  The positive non-zero number of bytes read on success,
  * 0 on read nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_gpio_read(file_t *fp, void *buf, size_t nbytes);
@@ -61,7 +61,7 @@ ssize_t vfs_gpio_read(file_t *fp, void *buf, size_t nbytes);
  *
  * @param[in]  fp   device pointer.
  * @param[in]  cmd  command of input and output operating.
- * @param[in]  arg  argument of input and output operating. 
+ * @param[in]  arg  argument of input and output operating.
  *
  * @return  0 on success, negative on failure with errno set appropriately.
  */

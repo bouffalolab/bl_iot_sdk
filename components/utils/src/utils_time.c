@@ -38,11 +38,11 @@ int utils_time_date_from_epoch(unsigned int epoch, utils_time_date_t *date)
     unsigned char month_days[12]={31,28,31,30,31,30,31,31,30,31,30,31};
     unsigned char week_days[7] = {4,5,6,0,1,2,3};
 
-    date->leap_days = 0; 
+    date->leap_days = 0;
     date->leap_year_ind = 0;
 
-    // Add or substract time zone here. 
-    //epoch += 19800; //GMT +5:30 = +19800 seconds 
+    // Add or substract time zone here.
+    //epoch += 19800; //GMT +5:30 = +19800 seconds
 
     date->ntp_second = epoch%60;
     epoch /= 60;
@@ -69,9 +69,9 @@ int utils_time_date_from_epoch(unsigned int epoch, utils_time_date_t *date)
 
     if (((date->ntp_year%4==0) && (date->ntp_year%100!=0)) || (date->ntp_year%400==0))  {
         month_days[1]=29;     //February = 29 days for leap years
-        date->leap_year_ind = 1;    //if current year is leap, set indicator to 1 
+        date->leap_year_ind = 1;    //if current year is leap, set indicator to 1
     } else {
-        month_days[1]=28; //February = 28 days for non-leap years 
+        month_days[1]=28; //February = 28 days for non-leap years
     }
 
     temp_days = 0;
@@ -79,7 +79,7 @@ int utils_time_date_from_epoch(unsigned int epoch, utils_time_date_t *date)
     for (date->ntp_month = 0; date->ntp_month <= 11; date->ntp_month++) {
         //calculating current Month
         if (date->day_of_year <= temp_days) {
-            break; 
+            break;
         }
         temp_days = temp_days + month_days[date->ntp_month];
     }

@@ -33,7 +33,7 @@
 void hal_pds_init(void)
 {
     bl_pds_init();
-    
+
 #if 0  /* RTC is started by bl_rtc_init() in bl_rtc.c */
     HBN_Clear_RTC_Counter();
     HBN_Enable_RTC_Counter();
@@ -56,20 +56,20 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     uint32_t rtcLowAfterSleep, rtcHighAfterSleep;
     uint32_t actualSleepDuration_32768cycles;
     uint32_t actualSleepDuration_ms;
-    
+
     HBN_Get_RTC_Timer_Val(&rtcLowBeforeSleep, &rtcHighBeforeSleep);
-    
+
     bl_pds_enter(pdsLevel, pdsSleepCycles);
-    
+
     HBN_Get_RTC_Timer_Val(&rtcLowAfterSleep, &rtcHighAfterSleep);
-    
+
     CHECK_PARAM((rtcHighAfterSleep - rtcHighBeforeSleep) <= 1); // make sure sleep less than 1 hour (2^32 us > 1 hour)
-    
+
     actualSleepDuration_32768cycles = (rtcLowAfterSleep - rtcLowBeforeSleep);
-    
+
     actualSleepDuration_ms = (actualSleepDuration_32768cycles>>5)-(actualSleepDuration_32768cycles>>11)-(actualSleepDuration_32768cycles>>12);
-    
+
     vTaskStepTick(actualSleepDuration_ms);
-    
+
     return actualSleepDuration_ms;
 }

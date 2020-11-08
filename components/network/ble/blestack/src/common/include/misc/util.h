@@ -41,34 +41,34 @@ extern "C" {
  * pointer)
  */
 #define IS_ARRAY(array) \
-	ZERO_OR_COMPILE_ERROR( \
-		!__builtin_types_compatible_p(__typeof__(array), \
-					      __typeof__(&(array)[0])))
+    ZERO_OR_COMPILE_ERROR( \
+        !__builtin_types_compatible_p(__typeof__(array), \
+                          __typeof__(&(array)[0])))
 
 /* Evaluates to number of elements in an array; compile error if not
  * an array (e.g. pointer)
  */
 #define ARRAY_SIZE(array) \
-	((unsigned long) (IS_ARRAY(array) + \
-		(sizeof(array) / sizeof((array)[0]))))
+    ((unsigned long) (IS_ARRAY(array) + \
+        (sizeof(array) / sizeof((array)[0]))))
 
 /* Evaluates to 1 if ptr is part of array, 0 otherwise; compile error if
  * "array" argument is not an array (e.g. "ptr" and "array" mixed up)
  */
 #define PART_OF_ARRAY(array, ptr) \
-	((ptr) && ((ptr) >= &array[0] && (ptr) < &array[ARRAY_SIZE(array)]))
+    ((ptr) && ((ptr) >= &array[0] && (ptr) < &array[ARRAY_SIZE(array)]))
 
 #define CONTAINER_OF(ptr, type, field) \
-	((type *)(((char *)(ptr)) - offsetof(type, field)))
+    ((type *)(((char *)(ptr)) - offsetof(type, field)))
 
 /* round "x" up/down to next multiple of "align" (which must be a power of 2) */
 #define ROUND_UP(x, align)                                   \
-	(((unsigned long)(x) + ((unsigned long)align - 1)) & \
-	 ~((unsigned long)align - 1))
+    (((unsigned long)(x) + ((unsigned long)align - 1)) & \
+     ~((unsigned long)align - 1))
 #define ROUND_DOWN(x, align) ((unsigned long)(x) & ~((unsigned long)align - 1))
 
 #define ceiling_fraction(numerator, divider) \
-	(((numerator) + ((divider) - 1)) / (divider))
+    (((numerator) + ((divider) - 1)) / (divider))
 
 #ifdef INLINED
 #define INLINE inline
@@ -94,25 +94,25 @@ unsigned int find_lsb_set(uint32_t data);
 
 static inline int is_power_of_two(unsigned int x)
 {
-	return (x != 0) && !(x & (x - 1));
+    return (x != 0) && !(x & (x - 1));
 }
 
 static inline s64_t arithmetic_shift_right(s64_t value, u8_t shift)
 {
-	s64_t sign_ext;
+    s64_t sign_ext;
 
-	if (shift == 0) {
-		return value;
-	}
+    if (shift == 0) {
+        return value;
+    }
 
-	/* extract sign bit */
-	sign_ext = (value >> 63) & 1;
+    /* extract sign bit */
+    sign_ext = (value >> 63) & 1;
 
-	/* make all bits of sign_ext be the same as the value's sign bit */
-	sign_ext = -sign_ext;
+    /* make all bits of sign_ext be the same as the value's sign bit */
+    sign_ext = -sign_ext;
 
-	/* shift value and fill opened bit positions with sign bit */
-	return (value >> shift) | (sign_ext << (64 - shift));
+    /* shift value and fill opened bit positions with sign bit */
+    return (value >> shift) | (sign_ext << (64 - shift));
 }
 
 #endif /* !_ASMLANGUAGE */
@@ -270,18 +270,18 @@ static inline s64_t arithmetic_shift_right(s64_t value, u8_t shift)
 #define UTIL_EXPAND(...) __VA_ARGS__
 #define UTIL_WHEN(c) UTIL_IF(c)(UTIL_EXPAND, UTIL_EAT)
 
-#define UTIL_REPEAT(count, macro, ...)			    \
-	UTIL_WHEN(count)				    \
-	(						    \
-		UTIL_OBSTRUCT(UTIL_REPEAT_INDIRECT) ()	    \
-		(					    \
-			UTIL_DEC(count), macro, __VA_ARGS__ \
-		)					    \
-		UTIL_OBSTRUCT(macro)			    \
-		(					    \
-			UTIL_DEC(count), __VA_ARGS__	    \
-		)					    \
-	)
+#define UTIL_REPEAT(count, macro, ...)              \
+    UTIL_WHEN(count)                    \
+    (                           \
+        UTIL_OBSTRUCT(UTIL_REPEAT_INDIRECT) ()      \
+        (                       \
+            UTIL_DEC(count), macro, __VA_ARGS__ \
+        )                       \
+        UTIL_OBSTRUCT(macro)                \
+        (                       \
+            UTIL_DEC(count), __VA_ARGS__        \
+        )                       \
+    )
 #define UTIL_REPEAT_INDIRECT() UTIL_REPEAT
 
 /**

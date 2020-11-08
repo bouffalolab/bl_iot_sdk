@@ -15,8 +15,8 @@ int32_t bflb_rsa_set_parameter(bflb_rsa_handle_t *rsa_handle,int type,uint8_t *v
     int32_t ret = BFLB_RSA_OK;
     mbedtls_rsa_context* rsa=(mbedtls_rsa_context*)&rsa_handle->rsa_ctx;
 
-	switch(type)
-	{
+    switch(type)
+    {
         case BFLB_RSA_PARA_N:
             mbedtls_mpi_read_binary(&rsa->N,value,len);
             rsa->len = ( mbedtls_mpi_bitlen( &rsa->N ) + 7 ) >> 3;
@@ -45,7 +45,7 @@ int32_t bflb_rsa_set_parameter(bflb_rsa_handle_t *rsa_handle,int type,uint8_t *v
         default:
             ret=BFLB_RSA_ERROR;
             break;
-	}
+    }
 
     return ret;
 }
@@ -55,7 +55,7 @@ int32_t bflb_rsa_check_private(bflb_rsa_handle_t *rsa_handle)
     int32_t ret = BFLB_RSA_OK;
     mbedtls_rsa_context* rsa=(mbedtls_rsa_context*)&rsa_handle->rsa_ctx;
 
-	if( ( ret = mbedtls_rsa_check_privkey( rsa ) ) != 0 )
+    if( ( ret = mbedtls_rsa_check_privkey( rsa ) ) != 0 )
     {
         bflb_rsa_printe("failed\r\n!rsa_check_privkey failed with -0x%0x\n", -ret );
         return BFLB_RSA_ERROR;
@@ -69,7 +69,7 @@ int32_t bflb_rsa_check_public(bflb_rsa_handle_t *rsa_handle)
     int32_t ret = BFLB_RSA_OK;
     mbedtls_rsa_context* rsa=(mbedtls_rsa_context*)&rsa_handle->rsa_ctx;
 
-	if( ( ret = mbedtls_rsa_check_pubkey( rsa ) ) != 0 )
+    if( ( ret = mbedtls_rsa_check_pubkey( rsa ) ) != 0 )
     {
         bflb_rsa_printe("failed\r\n!rsa_check_privkey failed with -0x%0x\n", -ret );
         return BFLB_RSA_ERROR;
@@ -84,8 +84,8 @@ int32_t bflb_rsa_sign( bflb_rsa_handle_t *rsa_handle,const uint8_t *hash,
     int32_t ret = BFLB_RSA_OK;
     mbedtls_rsa_context* rsa=(mbedtls_rsa_context*)&rsa_handle->rsa_ctx;
 
-	ret = mbedtls_rsa_pkcs1_sign( rsa, NULL, NULL, MBEDTLS_RSA_PRIVATE,
-    						(mbedtls_md_type_t)bflb_hash_get_type(hashtype),
+    ret = mbedtls_rsa_pkcs1_sign( rsa, NULL, NULL, MBEDTLS_RSA_PRIVATE,
+                            (mbedtls_md_type_t)bflb_hash_get_type(hashtype),
                             hashlen, hash, sig );
     if( ret != 0 )
     {
@@ -103,7 +103,7 @@ int32_t bflb_rsa_verify( bflb_rsa_handle_t *rsa_handle,const uint8_t *hash,
     mbedtls_rsa_context* rsa=(mbedtls_rsa_context*)&rsa_handle->rsa_ctx;
 
     ret = mbedtls_rsa_pkcs1_verify( rsa, NULL, NULL, MBEDTLS_RSA_PUBLIC,
-    						(mbedtls_md_type_t)bflb_hash_get_type(hashtype),
+                            (mbedtls_md_type_t)bflb_hash_get_type(hashtype),
                             hashlen, hash, sig );
     if( ret != 0 )
     {

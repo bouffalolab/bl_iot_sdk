@@ -5,8 +5,8 @@
 #define POLLOUT 0x2
 #define POLLERR 0x4
 struct pollfd {
-    int fd;  
-    short events;  
+    int fd;
+    short events;
     short revents;
 };
 

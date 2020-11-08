@@ -3,8 +3,8 @@ SUB_MODULE_OUT_DIR:= $(MODULE_OUT_DIR)/partition
 
 SUB_MODULE_SRC_DIR := $(SUB_MODULE_DIR)
 
-COMMON_INCLUDE += -I $(MODULE_DIR)/partition 
-                  
+COMMON_INCLUDE += -I $(MODULE_DIR)/partition
+
 partition_sources := partition.c
 
 partition_objs := $(addprefix $(SUB_MODULE_OUT_DIR)/, $(subst .c,.o,$(partition_sources)))

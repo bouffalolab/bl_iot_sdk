@@ -24,14 +24,14 @@
 
 /** Possible types of buffers passed around the Bluetooth stack */
 enum bt_buf_type {
-	/** HCI command */
-	BT_BUF_CMD,
-	/** HCI event */
-	BT_BUF_EVT,
-	/** Outgoing ACL data */
-	BT_BUF_ACL_OUT,
-	/** Incoming ACL data */
-	BT_BUF_ACL_IN,
+    /** HCI command */
+    BT_BUF_CMD,
+    /** HCI event */
+    BT_BUF_EVT,
+    /** Outgoing ACL data */
+    BT_BUF_ACL_OUT,
+    /** Incoming ACL data */
+    BT_BUF_ACL_IN,
 };
 
 /** Minimum amount of user data size for buffers passed to the stack. */
@@ -92,7 +92,7 @@ struct net_buf *bt_buf_get_evt(u8_t evt, bool discardable, s32_t timeout);
  */
 static inline void bt_buf_set_type(struct net_buf *buf, enum bt_buf_type type)
 {
-	*(u8_t *)net_buf_user_data(buf) = type;
+    *(u8_t *)net_buf_user_data(buf) = type;
 }
 
 /** Get the buffer type
@@ -103,13 +103,13 @@ static inline void bt_buf_set_type(struct net_buf *buf, enum bt_buf_type type)
  */
 static inline enum bt_buf_type bt_buf_get_type(struct net_buf *buf)
 {
-	/* De-referencing the pointer from net_buf_user_data(buf) as a
-	 * pointer to an enum causes issues on qemu_x86 because the true
-	 * size is 8-bit, but the enum is 32-bit on qemu_x86. So we put in
-	 * a temporary cast to 8-bit to ensure only 8 bits are read from
-	 * the pointer.
-	 */
-	return (enum bt_buf_type)(*(u8_t *)net_buf_user_data(buf));
+    /* De-referencing the pointer from net_buf_user_data(buf) as a
+     * pointer to an enum causes issues on qemu_x86 because the true
+     * size is 8-bit, but the enum is 32-bit on qemu_x86. So we put in
+     * a temporary cast to 8-bit to ensure only 8 bits are read from
+     * the pointer.
+     */
+    return (enum bt_buf_type)(*(u8_t *)net_buf_user_data(buf));
 }
 
 /**

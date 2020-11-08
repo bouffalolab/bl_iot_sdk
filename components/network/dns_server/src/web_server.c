@@ -1,6 +1,6 @@
 
 /* Brief: This demo shows how to use BL602 as a webserver
- * 
+ *
  * - use a sta connect to this ap
  * - open the browser and input the ip_address of this BL602(the default ip_adress is: 192.168.4.1 )
  * - and you can see "Hello World, from BL602!" on this web page
@@ -65,7 +65,7 @@ static void web_http_server(struct netconn *conn)
         netconn_write(conn, http_index_hml, sizeof(http_index_hml)-1, NETCONN_NOCOPY);
       }
 //      else if(buf[5]=='j') {
-//    	  netconn_write(conn, json_unformatted, strlen(json_unformatted), NETCONN_NOCOPY);
+//        netconn_write(conn, json_unformatted, strlen(json_unformatted), NETCONN_NOCOPY);
 //      }
       else {
           netconn_write(conn, http_index_hml, sizeof(http_index_hml)-1, NETCONN_NOCOPY);

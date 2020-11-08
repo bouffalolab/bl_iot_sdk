@@ -2,11 +2,11 @@
 #
 ## These include paths would be exported to project level
 COMPONENT_ADD_INCLUDEDIRS += bl60x_wifi_driver/include
-							 
-## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS := bl60x_wifi_driver			 
 
-## This component's src 
+## not be exported to project level
+COMPONENT_PRIV_INCLUDEDIRS := bl60x_wifi_driver
+
+## This component's src
 COMPONENT_SRCS := bl60x_wifi_driver/ipc_host.c \
 				  bl60x_wifi_driver/os_hal.c \
 				  bl60x_wifi_driver/bl_apis.c \
@@ -30,7 +30,7 @@ COMPONENT_SRCS := bl60x_wifi_driver/ipc_host.c \
 				  bl60x_wifi_driver/wifi_mgmr_profile.c \
 				  bl60x_wifi_driver/wifi_netif.c \
 				  bl60x_wifi_driver/wifi_mgmr_event.c
-				  
+
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
 COMPONENT_SRCDIRS := bl60x_wifi_driver
@@ -43,4 +43,4 @@ endif
 
 
 ##
-#CPPFLAGS += 
+#CPPFLAGS +=

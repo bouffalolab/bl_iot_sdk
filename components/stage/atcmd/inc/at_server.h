@@ -11,24 +11,24 @@
 
 typedef enum {
     AT_ASYNC_WIFI_CONNECTED = 1,
-    AT_ASYNC_DATA_IN,       
-    AT_ASYNC_PSK_ERROR,    
-    AT_ASYNC_NO_AP_FOUND,   
-    AT_WIFI_DISCONNECT,     
-    AT_WIFI_PRVO_DUMP,      
-    AT_BLE_CONNECTED,       
-    AT_BLE_DISCONNECTED,    
-    AT_WIFI_IP_GET,         
+    AT_ASYNC_DATA_IN,
+    AT_ASYNC_PSK_ERROR,
+    AT_ASYNC_NO_AP_FOUND,
+    AT_WIFI_DISCONNECT,
+    AT_WIFI_PRVO_DUMP,
+    AT_BLE_CONNECTED,
+    AT_BLE_DISCONNECTED,
+    AT_WIFI_IP_GET,
 } at_evt_t;
 
 #define ATCMDSEND_MAX_BUFF_SIZE (1024)
 
 #if 0
-// CA 
+// CA
 extern uint8_t *ca;
 extern size_t ca_length;
 
-// cert 
+// cert
 extern uint8_t *cert;
 extern size_t cert_len;
 extern uint8_t *priv_key;

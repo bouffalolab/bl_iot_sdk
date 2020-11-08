@@ -43,7 +43,7 @@ typedef struct hw_timer {
     int repeat;
     hw_t handler;
     uint32_t triggle_time;
-    uint32_t calc_time; 
+    uint32_t calc_time;
 } hw_timer_t;
 
 int hal_hwtimer_init(void);

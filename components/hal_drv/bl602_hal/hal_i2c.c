@@ -80,14 +80,14 @@ static void i2c_transferbytes(i2c_msg_t *pstmsg)
             I2C_IntMask(pstmsg->i2cx, I2C_TX_FIFO_READY_INT, MASK);
             return;
         } else {
-        } 
+        }
     } else if ((pstmsg->direct == I2C_M_READ) && (pstmsg->event = EV_I2C_RXF_INT)){
         if (pstmsg->idex < pstmsg->len) {
-             do_read_data(pstmsg);      
+             do_read_data(pstmsg);
         } else {
             I2C_IntMask(pstmsg->i2cx, I2C_RX_FIFO_READY_INT, MASK);
             return;
-        } 
+        }
     } else {
     }
 
@@ -98,9 +98,9 @@ static void i2c_interrupt_entry(void *ctx)
 {
     uint32_t tmpval;
     i2c_msg_t *pstmsg;
-   
+
     pstmsg = *((i2c_msg_t **)ctx);
-    
+
     tmpval = BL_RD_REG(I2C_BASE, I2C_INT_STS);
     if(BL_IS_REG_BIT_SET(tmpval,I2C_RXF_INT)){
         pstmsg->event = EV_I2C_RXF_INT;
@@ -124,10 +124,10 @@ static void i2c_interrupt_entry(void *ctx)
         return;
     } else {
         blog_error("other interrupt \r\n");
-        pstmsg->event = EV_I2C_UNKNOW_INT; 
+        pstmsg->event = EV_I2C_UNKNOW_INT;
         i2c_callback(pstmsg);
     }
-    
+
     i2c_transferbytes(pstmsg);
     return;
 }
@@ -149,7 +149,7 @@ int i2c_transfer_block(i2c_msg_t *pstmsg)
 
     xSemaphoreGive(i2c_hd_handle);
     xSemaphoreGive(i2c_transfer_handle);
-    
+
     return pstmsg->event;
 }
 
@@ -173,7 +173,7 @@ int i2c_transfer_no_block(i2c_msg_t *pstmsg)
             blog_error("buf alloc failed. len = %ld \r\n", pstmsg->len);
         }
         memcpy(pbuf , pstmsg->buf, pstmsg->len);
-        psttmp->buf = pbuf; 
+        psttmp->buf = pbuf;
     } else if (pstmsg->direct == I2C_M_READ) {
         psttmp->buf = pstmsg->buf;
     } else {
@@ -246,11 +246,11 @@ int i2c_transfer_msgs_block(i2c_msg_t *pstmsg, int num, int support_ins)
         xSemaphoreGive(i2c_insert_handle);
     }
     xSemaphoreGive(i2c_msgs_handle);
-    
+
     return (pstmsg + i - 1)->event;
 }
 
-int i2c_insert_transfer_msgs(i2c_msg_t *pstmsg, int num) 
+int i2c_insert_transfer_msgs(i2c_msg_t *pstmsg, int num)
 {
     xSemaphoreTake(i2c_insert_handle, portMAX_DELAY);
     xSemaphoreTake(i2c_loop_handle, portMAX_DELAY);
@@ -264,7 +264,7 @@ int i2c_insert_transfer_msgs(i2c_msg_t *pstmsg, int num)
 }
 
 int i2c_transfer_onemsg_no_block(i2c_msg_t *pstmsg)
-{  
+{
     i2c_transfer_no_block(pstmsg);
     return 0;
 }
@@ -273,10 +273,10 @@ int hal_i2c_init(int i2cx, int freq)
 {
     i2c_gpio_init(i2cx);
     i2c_set_freq(freq, i2cx);
-    I2C_Disable(i2cx);       
+    I2C_Disable(i2cx);
     bl_irq_enable(I2C_IRQn);
     I2C_IntMask(i2cx, I2C_INT_ALL, MASK);
- 
+
     i2c_hd_handle = xSemaphoreCreateBinary();
     i2c_msgs_handle = xSemaphoreCreateMutex();
     i2c_transfer_handle = xSemaphoreCreateBinary();
@@ -294,7 +294,7 @@ int hal_i2c_init(int i2cx, int freq)
     xSemaphoreGive(i2c_insert_handle);
     bl_irq_register_with_ctx(I2C_IRQn, i2c_interrupt_entry, &gpstmsg);
 
-    return 0; 
+    return 0;
 }
 
 int hal_i2c_read_block(int address, char *data, int length, int subaddr_len, int subaddr)

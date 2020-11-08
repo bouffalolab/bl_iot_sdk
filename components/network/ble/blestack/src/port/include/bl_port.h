@@ -40,9 +40,9 @@ typedef uint32_t _task_t;
                 _K_SEM_INITIALIZER(name, initial_count, count_limit)
 
 #define K_MUTEX_DEFINE(name) \
-	struct k_mutex name \
-		__in_section(_k_mutex, static, name) = \
-		_K_MUTEX_INITIALIZER(name)
+    struct k_mutex name \
+        __in_section(_k_mutex, static, name) = \
+        _K_MUTEX_INITIALIZER(name)
 
 typedef sys_dlist_t _wait_q_t;
 
@@ -226,7 +226,7 @@ typedef void (*k_thread_entry_t)(void *args);
 int k_thread_create(struct k_thread *new_thread, const char *name,
                     size_t stack_size, k_thread_entry_t entry,
                     int prio);
-               
+
 void k_thread_delete(struct k_thread *new_thread);
 
 /**

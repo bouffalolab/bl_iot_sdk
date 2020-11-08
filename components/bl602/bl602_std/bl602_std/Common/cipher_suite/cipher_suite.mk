@@ -6,14 +6,14 @@ CIPHER_SUITE_INC := -I$(SUB_MODULE_DIR)/inc
 
 CIPHER_SUITE_CFLAGS :=
 
-COMMON_INCLUDE += -I $(MODULE_DIR)/cipher_suite/inc 
+COMMON_INCLUDE += -I $(MODULE_DIR)/cipher_suite/inc
 
 cipher_suite_sources :=   bflb_crypt.c bflb_hash.c bflb_ecdsa.c bflb_dsa.c
 
 cipher_suite_objs := $(addprefix $(SUB_MODULE_OUT_DIR)/, $(subst .c,.o,$(cipher_suite_sources)))
 
 common_objs_target += $(cipher_suite_objs)
-                      
+
 $(SUB_MODULE_OUT_DIR)/%.o:$(SUB_MODULE_SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@echo "cc $<"

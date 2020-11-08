@@ -492,9 +492,9 @@ static int find_ie_ds(uint8_t *buffer, int len, uint8_t *result)
 extern uint32_t mac_vsie_find(uint32_t addr, uint16_t buflen, uint8_t const *oui, uint8_t ouilen);
 extern uint32_t mac_ie_find(uint32_t addr, uint16_t buflen, uint8_t ie_id);
 extern unsigned char process_rsn_ie(uint8_t *rsn_ie, Cipher_t *mcstCipher,
-			      Cipher_t *ucstCipher, bool *is_pmf_required);
+                  Cipher_t *ucstCipher, bool *is_pmf_required);
 extern unsigned char process_wpa_ie(uint8_t *wpa_ie, Cipher_t *mcstCipher,
-			      Cipher_t *ucstCipher);
+                  Cipher_t *ucstCipher);
 static uint8_t co_read8p(uint32_t addr)
 {
     return (*(uint8_t *)addr);

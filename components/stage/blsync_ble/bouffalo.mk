@@ -12,8 +12,8 @@ COMPONENT_PRIV_INCLUDEDIRS :=
 COMPONENT_SRCS := src/blsync_ble.c \
 				  src/encrypt_layer.c \
 				  src/payload.c \
-				  src/transfer.c 
-					
+				  src/transfer.c
+
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
 COMPONENT_SRCDIRS := src

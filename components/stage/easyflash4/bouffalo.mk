@@ -4,7 +4,7 @@
 COMPONENT_ADD_INCLUDEDIRS += inc
 ## not be exported to project level
 COMPONENT_PRIV_INCLUDEDIRS :=
-## This component's src 
+## This component's src
 COMPONENT_SRCS := src/easyflash.c src/ef_env.c \
                   src/ef_env_legacy_wl.c src/ef_env_legacy.c \
                   src/ef_port.c src/ef_utils.c \
@@ -13,4 +13,4 @@ COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 COMPONENT_SRCDIRS := src
 
 ##
-#CPPFLAGS += 
+#CPPFLAGS +=

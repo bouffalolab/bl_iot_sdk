@@ -42,14 +42,14 @@
 static void _bl_cks_test_case1()
 {
     /*case from wiki: https://en.wikipedia.org/wiki/IPv4_header_checksum*/
-    static const uint8_t data_src1[] = 
+    static const uint8_t data_src1[] =
     {
         0x45, 0x00, 0x00, 0x73, 0x00, 0x00, 0x40, 0x00, 0x40, 0x11, 0x00, 0x00, 0xc0, 0xa8, 0x00, 0x01,
         0xc0, 0xa8, 0x00, 0xc7
     };
     static const uint8_t data_src1_cks[] =
     {
-        0xB8, 0x61 
+        0xB8, 0x61
     };
     int i;
     uint16_t cks;

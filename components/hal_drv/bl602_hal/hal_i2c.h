@@ -36,7 +36,7 @@
 #define EV_I2C_TXF_INT       1
 #define EV_I2C_RXF_INT       3
 #define EV_I2C_FER_INT       4
-#define EV_I2C_ARB_INT       5 
+#define EV_I2C_ARB_INT       5
 #define EV_I2C_NAK_INT       6
 #define EV_I2C_UNKNOW_INT    0xff
 

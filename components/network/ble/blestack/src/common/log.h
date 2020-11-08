@@ -73,10 +73,10 @@ extern void user_vAssertCalled(void);
 #define BT_ASSERT(cond) if( ( cond ) == 0 ) user_vAssertCalled()
 #else
 #define BT_ASSERT(cond) if (!(cond)) { \
-				BT_ASSERT_PRINT("assert: '" #cond \
-						"' failed\n"); \
-				BT_ASSERT_DIE(); \
-			}
+                BT_ASSERT_PRINT("assert: '" #cond \
+                        "' failed\n"); \
+                BT_ASSERT_DIE(); \
+            }
 #endif/*BFLB_BLE*/
 #else
 #if defined(BFLB_BLE)
@@ -87,12 +87,12 @@ extern void user_vAssertCalled(void);
 #endif/* CONFIG_BT_ASSERT*/
 
 #define BT_HEXDUMP_DBG(_data, _length, _str) \
-		LOG_HEXDUMP_DBG((const u8_t *)_data, _length, _str)
+        LOG_HEXDUMP_DBG((const u8_t *)_data, _length, _str)
 
 #if defined(BFLB_BLE)
 static inline char *log_strdup(const char *str)
 {
-	return (char *)str;
+    return (char *)str;
 }
 #endif
 

@@ -207,7 +207,7 @@ static void ota_tcp_cmd(char *buf, int len, int argc, char **argv)
         bl_mtd_close(handle);
         return;
     }
-            
+
     buffer_offset = 0;
     flash_offset = 0;
     ota_header_found = 0;
@@ -328,6 +328,6 @@ int bl_sys_ota_cli_init(void)
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

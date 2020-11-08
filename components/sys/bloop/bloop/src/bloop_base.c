@@ -345,10 +345,10 @@ void bloop_evt_set_async(struct loop_ctx *loop, unsigned int evt, uint32_t evt_m
 {
     BL_ASSERT_ERROR(evt < LOOP_TASK_MAX);
 
-	taskENTER_CRITICAL();
+    taskENTER_CRITICAL();
     loop->bitmap_evt_async |= (1 << evt);
     loop->evt_type_map_async[evt] |= evt_map;
-	taskEXIT_CRITICAL();
+    taskEXIT_CRITICAL();
 
     /*wait up looper in case*/
     xTaskNotifyGive(loop->looper);
@@ -425,7 +425,7 @@ static void _dump_timer_dlist(utils_dlist_t *dlist)
 int bloop_status_dump(struct loop_ctx *loop)
 {
     int i;
-    
+
     puts("====== bloop dump ======\r\n");
     printf("  bitmap_evt %lx\r\n", loop->bitmap_evt_sync);
     printf("  bitmap_msg %lx\r\n", loop->bitmap_msg);
