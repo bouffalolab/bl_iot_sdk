@@ -127,8 +127,8 @@
 #define USR_AWS_IOT_CONFIG_FILE        "/romfs/aws/config" ///< Device private key filename
 #define AWS_IOT_MQTT_HOST              "ap3im43fimllm-ats.iot.us-east-1.amazonaws.com"
 #define AWS_IOT_MQTT_PORT              443 ///< default port for MQTT/S
-#define AWS_IOT_MQTT_CLIENT_ID         "bl60xDevRjwang" 
-#define AWS_IOT_MY_THING_NAME          "bl60xDevRjwang" 
+#define AWS_IOT_MQTT_CLIENT_ID         "bl60xDevRjwang"
+#define AWS_IOT_MY_THING_NAME          "bl60xDevRjwang"
 
 #define ROOMTEMPERATURE_UPPERLIMIT 32.0f
 #define ROOMTEMPERATURE_LOWERLIMIT 25.0f
@@ -311,7 +311,7 @@ static int _update_mqtt_config_default(ShadowInitParameters_t *sp, ShadowConnect
     return 0;
 }
 
-void aws_main_entry(void *param) 
+void aws_main_entry(void *param)
 {
     IoT_Error_t rc = FAILURE;
     ShadowInitParameters_t sp = ShadowInitParametersDefault;

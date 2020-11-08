@@ -174,7 +174,7 @@ static void aos_loop_proc(void *pvParameters)
     if (0 == get_dts_addr("ir", &fdt, &offset)) {
         hal_ir_init_from_dts(fdt, offset);
     }
-    
+
     irled_cli_init();
     aos_loop_init();
 

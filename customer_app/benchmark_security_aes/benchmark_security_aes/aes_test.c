@@ -746,7 +746,7 @@ void aes_ctr_test(uint32_t length, uint32_t count,
         printf("CTR HW\r\n");
         bl_aes_test(ptr, ptr, length, count, keytype, AES_CTR_MODE);
     }
-    
+
     free_hw(ptr);
 }
 

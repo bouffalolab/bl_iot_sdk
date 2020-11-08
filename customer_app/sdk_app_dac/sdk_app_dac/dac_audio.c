@@ -170,7 +170,7 @@ static void DAC_LLI_Init(uint32_t *psrc, uint32_t bufsize)
         }
         LLIList[i].dmaCtrl= dmaCtrlRegVal;
     }
-    
+
     LLIList[i - 1].nextLLI=(uint32_t)&LLIList[0];
 
 

@@ -31,7 +31,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         dut.write('wifi_sta_connect bl_test 12345678')
         dut.expect("Reason: SSID error, scan no bssid and channel", timeout=10)
         print('case1:SSID error test successed')
-        
+
         print('To reboot BL602')
         dut.write('reboot')
         dut.expect("Booting BL602 Chip...", timeout=0.5)
@@ -45,7 +45,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         dut.write(cmd_wifi_connect)
         dut.expect("Reason: Passwd error, 4-way handshake timeout", timeout=20)
         print('case2:Passwd error test successed')
-        
+
         print('To reboot BL602')
         dut.write('reboot')
         dut.expect("Booting BL602 Chip...", timeout=0.5)
@@ -62,11 +62,11 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         dut.expect("Entering wifiConnected_IPOK state", timeout=20)
         print('case3:connect wifi test successed')
         print('Please power off router!')
-        
+
         #cmd = "ssh xiaohei@192.168.4.145 'cd /home/xiaohei/PycharmProjects/router_auto_test/ ; python3 test.py close_wifi'"
         #subprocess.call(cmd, shell=True)
         #dut.expect("Reason: Beacon Loss", timeout=20)
-        
+
         print('case4:Beacon Loss test successed')
         dut.halt()
 

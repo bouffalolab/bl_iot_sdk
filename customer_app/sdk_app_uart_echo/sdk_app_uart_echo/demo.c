@@ -71,8 +71,8 @@ static void uart_echo_task(void *arg)
 
     while (1) {
         length = aos_read(fd, pbuf + total, strlen(send_recv_log));
-        total += length;    
-        
+        total += length;
+
         if (total != strlen(send_recv_log)) {
             continue;
         }

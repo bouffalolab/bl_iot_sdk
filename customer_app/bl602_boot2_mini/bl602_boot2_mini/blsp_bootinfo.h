@@ -58,16 +58,16 @@
 #define BFLB_BOOT2_CPU_0                        0
 #define BFLB_BOOT2_CPU_1                        1
 #define BFLB_BOOT2_CPU_MAX                      2
-    
-/* Public key hash size */  
+
+/* Public key hash size */
 #define BFLB_BOOT2_PK_HASH_SIZE                 256/8
 #define BFLB_BOOT2_HASH_SIZE                    256/8
-/* Public key type */       
+/* Public key type */
 #define BFLB_BOOT2_ECC_KEYXSIZE                 256/8
 #define BFLB_BOOT2_ECC_KEYYSIZE                 256/8
 #define BFLB_BOOT2_SIGN_MAXSIZE                 2048/8
-    
-/* Power save define */ 
+
+/* Power save define */
 #define BFLB_PSM_ACTIVE                         0
 #define BFLB_PSM_HBN                            1
 
@@ -149,7 +149,7 @@ typedef struct {
     uint8_t pllClk;
     uint8_t hclkDiv;
     uint8_t bclkDiv;
-    
+
     uint8_t flashClkType;
     uint8_t flashClkDiv;
     uint8_t rsvd[2];
@@ -163,8 +163,8 @@ typedef struct {
 
 typedef struct {
     uint32_t magicCode;                   /*'BFXP'*/
-    uint32_t rivison; 
-    Boot_Flash_Config flashCfg;       
+    uint32_t rivison;
+    Boot_Flash_Config flashCfg;
     Boot_Clk_Config   clkCfg;
     __PACKED_UNION {
         __PACKED_STRUCT {
@@ -184,12 +184,12 @@ typedef struct {
         } bval;
         uint32_t wval;
     }bootCfg ;
-    
+
     __PACKED_UNION {
         uint32_t segmentCnt;
         uint32_t imgLen;
     }imgSegmentInfo;
-    
+
     uint32_t bootEntry;      /* entry point of the image*/
     __PACKED_UNION {
         uint32_t ramAddr;
@@ -225,12 +225,12 @@ typedef struct {
     uint8_t signType;
     uint8_t keySel;
     uint8_t imgValid;
-    
+
     uint8_t noSegment;
     uint8_t cacheEnable;
     uint8_t cacheWayDisable;
     uint8_t hashIgnore;
-    
+
     uint8_t aesRegionLock;
     uint8_t haltCPU1;
     uint8_t cpuType;
@@ -240,8 +240,8 @@ typedef struct {
         uint32_t segmentCnt;
         uint32_t imgLen;
     }imgSegmentInfo;
-    
-    uint32_t mspVal; 
+
+    uint32_t mspVal;
     uint32_t entryPoint;
     __PACKED_UNION {
         uint32_t ramAddr;
@@ -257,7 +257,7 @@ typedef struct {
     uint8_t aesiv[16+4];                                //iv in boot header
 
     uint8_t ecKeyX[BFLB_BOOT2_ECC_KEYXSIZE];          //ec key in boot header
-    uint8_t ecKeyY[BFLB_BOOT2_ECC_KEYYSIZE];          //ec key in boot header    
+    uint8_t ecKeyY[BFLB_BOOT2_ECC_KEYYSIZE];          //ec key in boot header
     uint8_t ecKeyX2[BFLB_BOOT2_ECC_KEYXSIZE];         //ec key in boot header
     uint8_t ecKeyY2[BFLB_BOOT2_ECC_KEYYSIZE];         //ec key in boot header
 

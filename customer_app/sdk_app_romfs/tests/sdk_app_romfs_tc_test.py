@@ -34,7 +34,7 @@ def sdk_app_romfs_tc(env, extra_data):
         dut.expect("49 44 33 03 00 00 00 00 00 3f 54 58 58 58 00 00 00 03 00 00 00 00 00 50 52 49 56 00 00 00 05 00 00 00 7b 04 00 00 54 53 53 45 00 00 00 0f 00 00 00 4c")
         dut.expect("case5:len = 0", timeout=1)
         dut.expect("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
-       
+
         dut.halt()
     except DUT.ExpectTimeout:
         print('ENV_TEST_FAILURE: BL602 romfs test failed')

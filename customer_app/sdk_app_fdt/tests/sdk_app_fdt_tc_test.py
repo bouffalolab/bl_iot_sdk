@@ -26,7 +26,7 @@ def sdk_app_fdt_tc(env, extra_data):
         dut.write('fdt')
         dut.expect("fdt wifi module successed", timeout=2)
         dut.expect("dump successed", timeout=2)
-       
+
         dut.halt()
     except DUT.ExpectTimeout:
         print('ENV_TEST_FAILURE: BL602 fdt test failed')

@@ -34,4 +34,4 @@ void blsync_ble_start (void);
 
 void blsync_ble_stop (void);
 
-#endif 
+#endif

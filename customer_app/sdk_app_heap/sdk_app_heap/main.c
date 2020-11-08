@@ -284,7 +284,7 @@ static void __heap_test_fun (void *p_arg)
         p_handle = (TaskHandle_t *)p_arg;
         vTaskDelete(*p_handle);
         return;
-	}
+    }
 
     counts = 0;
     ptr = NULL;
