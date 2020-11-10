@@ -19,7 +19,7 @@ Easyflash4 boot times
 - 假定 ENV 分区里有 4 个扇区，以下将按照操作 ENV 的方式，逐一举例讲解不同操作下，对应的 Flash 状态及数据变化。
 
     .. figure:: imgs/image1.png
-       :alt: 
+       :alt:
 
 - 首次使用时，EasyFlash 会检查各个扇区的 header，如果不符合规定的格式将执行全部格式化操作，格式化后，每个扇区的顶部将被存入 header ，负责记录当前扇区的状态、魔数等信息。格式化的初始化状态为空状态。
 
@@ -29,13 +29,13 @@ Easyflash4 boot times
 ~~~~~~~~~~~~~~~~~~~~~
 
     .. figure:: imgs/image2.png
-       :alt: 
+       :alt:
 
 -  在执行添加操作前，会先检索合适地址来存放即将添加的新 KV，这里检索策略主要是：
 
 1) 确定当前选择的扇区剩余容量充足
 2) 优选选择正在使用状态的扇区，最后使用空状态扇区
-3) 检查新 KV 是否有同名的 KV 存在，存在还需要额外执行删除旧值的动作 
+3) 检查新 KV 是否有同名的 KV 存在，存在还需要额外执行删除旧值的动作
 
 - 通过上图可以看出， KV1、KV2 及 KV3 已经被放入 sector1 ，添加后，扇区状态也被修改为正在使用。
 
@@ -45,7 +45,7 @@ Easyflash4 boot times
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     .. figure:: imgs/image3.png
-       :alt: 
+       :alt:
 
 - 修改 ENV 时，旧的 ENV 将被删除，扇区的状态也将被修改为脏状态，然后再执行新增 ENV 的操作。
 
@@ -60,10 +60,10 @@ Easyflash4 boot times
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     .. figure:: imgs/image4.png
-       :alt: 
+       :alt:
 
 - 执行添加 KV5 操作，由于 KV5 体积较大，sector2 放不下，所以只能放在一个新扇区 sector3 上，添加后，修改 sector3 状态为正在使用 ;
-- 执行添加 KV6 操作，KV6 也只能放在 sector3 下，将其放入 sector 3 后，发现 sector3 空间已满，所以将其修改已满状态。执行完成后，发现整个 ENV 的 4 个扇区只有 1 个状态为空的扇区了，这个扇区如果再继续使用就没法再执行 GC 操作了，所以此时触发了 GC 请求； 
+- 执行添加 KV6 操作，KV6 也只能放在 sector3 下，将其放入 sector 3 后，发现 sector3 空间已满，所以将其修改已满状态。执行完成后，发现整个 ENV 的 4 个扇区只有 1 个状态为空的扇区了，这个扇区如果再继续使用就没法再执行 GC 操作了，所以此时触发了 GC 请求；
 - 执行 GC 请求，EasyFlash 会找到所有被标记为已满并且为脏状态的扇区，并将其内部的 ENV 搬运至其他位置。就这样 sector1 上的 KV2 被搬运至了 sector2，腾空 sector1 后，又对其执行了格式化操作，这样整个 ENV 分区里又多了一个空状态的扇区。
 
 boot times测试
@@ -101,20 +101,20 @@ boot times测试
         times = ef_get_env(EASYFLASH_BOOT_TIMES);
         timer_us = bl_timer_now_us() - timer_us;
         printf("easyflash read boot_times us %ld\r\n", timer_us);
-        
+
         if (times == NULL) {
             __easyflash_first_boottimes();
             return;
         }
         times_num = atoi(times);
         sprintf(env_set, "%ld", ++times_num);
-        
+
         timer_us = bl_timer_now_us();
         ef_set_env(EASYFLASH_BOOT_TIMES, env_set);
         ef_save_env();
         timer_us = bl_timer_now_us() - timer_us;
         printf("easyflash write boot_times us %ld\r\n", timer_us);
-        
+
         printf("The system now boot times %ld\r\n", times_num);
     }
 
@@ -123,9 +123,9 @@ boot times测试
     .. figure:: imgs/image5.png
        :width: 900
        :height: 450
-       :alt: 
+       :alt:
 
-横坐标：boot times （单位：次数）      
+横坐标：boot times （单位：次数）
 
 纵坐标：时间（单位：us）
 

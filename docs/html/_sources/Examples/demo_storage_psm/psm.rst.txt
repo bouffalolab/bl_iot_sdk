@@ -14,7 +14,7 @@ PSM
 - 使用 ``psm_set <key> <value>`` 命令向指定ENV_name中写入数据，如输入 ``psm_set data_test 12345678`` 命令表示将ENV_name为 ``data_test`` 的值设为 ``12345678`` ；
 
   .. figure:: imgs/image1.png
-     :alt: 
+     :alt:
 
 - 使用 ``psm_get <key>``  命令读出指定ENV_name中存储的值，如读取上面写入的数据，输入命令：psm_get data_test；
 
@@ -75,14 +75,14 @@ PSM
 - 擦除数据
 
 ::
-    
+
     ef_del_env(argv[1]);
     ef_save_env();
 
 擦除ENV_name为argv[1]中的数据。
 
 ::
-    
+
     ef_env_set_default();
 
 调用此接口将擦除保存在psm中所有的数据。

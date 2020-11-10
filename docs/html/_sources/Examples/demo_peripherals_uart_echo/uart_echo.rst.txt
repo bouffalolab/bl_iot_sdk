@@ -14,7 +14,7 @@ UART_echo
 - 使用之前需要准备一个 ``USB转TTL`` 串口线，并配置SDK目录下 ``bl_iot_sdk/tools/flash_tool/bl602/device_tree/bl_factory_params_evb_40M.dts`` 文件中的 ``uart`` ，具体配置可以参考本例。
 
 ::
-    
+
     uart {
         #address-cells = <1>;
         #size-cells = <1>;
@@ -60,11 +60,11 @@ UART_echo
  - 打开一个串口终端窗口A（波特率为115200，用于接收和发送uart消息），打开另一个串口终端窗口B（波特率为2000000，用于打印log）。板子上电可以看到窗口A接收到 ``1234567890abcdefg`` ，窗口B打印的log 停止在 ``send case`` 处，在A窗口中输入 ``1234567890abcdefg`` （没有回显）可以在B串口看到 ``recv case`` 和 ``end`` 的消息，此时说明演示成功。
 
 .. figure:: imgs/image1.png
-   :alt: 
+   :alt:
 
 .. figure:: imgs/image2.png
-   :alt: 
-   
+   :alt:
+
 应用实例
 ----------------
 

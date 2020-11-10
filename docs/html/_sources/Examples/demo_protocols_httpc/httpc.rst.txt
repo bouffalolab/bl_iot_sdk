@@ -14,27 +14,27 @@ Httpc client
 - 使用之前需要准备可用的URL以及网络。
 
 - 使用步骤：
-    
+
   - 在终端输入开启wifi的命令： ``stack_wifi`` ，会打印下图一log（部分），然后输入连接wifi的命令： ``wifi_sta_connect <name> <key>`` ，并确认wifi连接成功（如输入：wifi_sta_connect bl_test_005 12345678）；
 
     .. figure:: imgs/image1.png
-       :alt: 
+       :alt:
 
     .. figure:: imgs/image2.png
-       :alt: 
+       :alt:
 
   - 使用 ``httpc`` 命令进行下载。
-    
+
     .. figure:: imgs/image3.png
-       :alt: 
+       :alt:
 
 应用实例
 ---------
 
 - 主要实现过程
 
-::    
-    
+::
+
     settings.use_proxy = 0;
     settings.result_fn = cb_httpc_result;
     settings.headers_done_fn = cb_httpc_headers_done_fn;
