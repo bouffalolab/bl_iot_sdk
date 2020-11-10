@@ -36,12 +36,12 @@ def bl602_demo_event_RPI_ble_wifi_tc(env, extra_data):
         dut.expect("Register auth callback successfully", timeout=1)
         dut.write('ble_start_adv 0 0 0080 0080')
         dut.expect("Advertising started", timeout=1)
-        
+
         dut.write('ble_read_local_address')
         local_addr = dut.expect(re.compile(r"Local addr : (.*) "), timeout=2)
         print(f'local_addr is {local_addr[0]}')
         # scan bluetooth
-        
+
         rst = scan_device(local_addr[0])
         if rst != True:
             raise Exception
@@ -85,7 +85,7 @@ def bl602_demo_event_RPI_ble_wifi_tc(env, extra_data):
         dut.expect("Register auth callback successfully", timeout=1)
         dut.write('ble_start_adv 0 0 0080 0080')
         dut.expect("Advertising started", timeout=1)
-        
+
         dut.write('ble_read_local_address')
         local_addr = dut.expect(re.compile(r"Local addr : (.*) "), timeout=2)
         print(f'local_addr is {local_addr[0]}')
@@ -104,7 +104,7 @@ def bl602_demo_event_RPI_ble_wifi_tc(env, extra_data):
         raise
 
 def scan_device(mac):
-    
+
     result = os.popen('timeout -s INT 10s hcitool lescan').read()
     device_list = result.split('\n')
     device_dict = {}
@@ -121,7 +121,7 @@ def scan_device(mac):
         return False
 
 def connect_device(mac):
-    
+
     conn = btle.Peripheral(mac, "random")
     print("BLE is connected")
     conn.disconnect()

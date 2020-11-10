@@ -141,11 +141,11 @@ int i2c_data_test(void)
     msgs[3].i2cx = 0;
 
 
-    i2c_transfer_msgs_block(&msgs[1], 3, 0); 
+    i2c_transfer_msgs_block(&msgs[1], 3, 0);
 
     for(i = 0; i < 31; i++) {
         printf("test[%d] = %d, recv[%d] = %d \r\n", i, testarr[i], i, recvarr01[i]);
-    }      
+    }
     flag = memcmp(testarr, recvarr01, 31);
     if (flag == 0) {
         printf("data correct \r\n");
@@ -156,7 +156,7 @@ int i2c_data_test(void)
 
     for(i = 0; i < 31; i++) {
         printf("test[%d] = %d, recv[%d] = %d \r\n", i, testarr[i], i, recvarr02[i]);
-    }    
+    }
     flag = memcmp(testarr, recvarr02, data_len);
     if (flag == 0) {
         printf("data correct \r\n");
@@ -188,10 +188,10 @@ static void test_i2c_api(char *buf, int len, int argc, char **argv)
     for (i = 0; i < 32; i++) {
         test_arr[i] = i + 3 * i;
     }
-    
+
     hal_i2c_write_block(0x50, (char *)test_arr, 32, 2, 0x04);
     vTaskDelay(80 / portTICK_PERIOD_MS);//eeprom, when write ,should be delay ,then it could be read
-    
+
     hal_i2c_read_block(0x50, (char *)recv_arr, 32, 2, 0x04);
 
     for (i = 0; i < 32; i++) {
@@ -213,13 +213,13 @@ static void test_i2c_api(char *buf, int len, int argc, char **argv)
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"test_i2c", "test i2c", test_i2c_api},
-};                                                                                   
+};
 
 int i2c_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

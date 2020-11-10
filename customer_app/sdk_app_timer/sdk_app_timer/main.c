@@ -145,7 +145,7 @@ static void aos_loop_proc(void *pvParameters)
     }
 
     hal_hwtimer_init();
-    
+
     aos_loop_run();
 
     puts("------------------------------------------\r\n");

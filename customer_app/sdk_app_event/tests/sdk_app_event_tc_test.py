@@ -25,7 +25,7 @@ def sdk_app_event_tc(env, extra_data):
 
         dut.expect("######This is event test1", timeout=1)
         dut.expect("######This is event test2", timeout=1)
-       
+
         dut.write('event')
         dut.expect("#####This is event poll_read_fd", timeout=6)
         dut.halt()

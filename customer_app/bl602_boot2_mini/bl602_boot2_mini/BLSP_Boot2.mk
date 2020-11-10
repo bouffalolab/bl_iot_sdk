@@ -7,8 +7,8 @@ MODULE_OUT_DIR:= $(TARGET_OUT_PATH)/$(MODULE_DIR)
 $(MODULE_OUT_DIR)/%.o: LOCAL_CFLAGS:= -DBLSP_BOOT2_ROLLBACK -O2
 $(MODULE_OUT_DIR)/%.o: LOCAL_INCLUDE:= -I$(MODULE_DIR)
 
-LOCAL_COM_SRCS_FILE:= 
-local_com_objs := $(subst .c,.o,$(LOCAL_COM_SRCS_FILE)) 
+LOCAL_COM_SRCS_FILE:=
+local_com_objs := $(subst .c,.o,$(LOCAL_COM_SRCS_FILE))
 
 $(MODULE_OUT_DIR)/%.o:$(MODULE_DIR)/%.c
 	@mkdir -p $(dir $@)

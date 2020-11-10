@@ -100,7 +100,7 @@ void BLSP_Dump_Data(void *datain,int len)
 {
     int i=0;
     uint8_t *data=(uint8_t *)datain;
-    
+
     for(i=0;i<len;i++){
         if(i%16==0&&i!=0){
             MSG("\r\n");
@@ -122,13 +122,13 @@ int32_t BLSP_MediaBoot_Pre_Jump(void)
 {
     /* Sec eng deinit*/
     BLSP_Boot2_Reset_Sec_Eng();
-    
+
     /* Platform deinit */
-    bflb_platform_deinit(); 
-    
+    bflb_platform_deinit();
+
     /* Jump to entry */
     BLSP_Boot2_Jump_Entry();
-    
+
     return BFLB_BOOT2_SUCCESS;
 }
 
@@ -141,20 +141,20 @@ int32_t BLSP_MediaBoot_Pre_Jump(void)
  *
 *******************************************************************************/
 void BLSP_Boot2_Exit(void)
-{    
+{
     uint32_t i=0;
-    
+
     BLSP_Sboot_Finish();
     /* Prepare release Other CPUs anyway */
     /* Deal Other CPU's entry point */
     for(i=1;i<cpuCount;i++){
         BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,0);
         BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,0);
-    }    
+    }
     /* Release other CPUs*/
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
         BLSP_Boot2_Release_Other_CPU();
-    }    
+    }
     /* Stay here */
     while(1){
         /* Use soft delay only */
@@ -175,9 +175,9 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     pentry_t  pentry;
     uint32_t i=0;
     int32_t ret;
-    
-    BLSP_Sboot_Finish();    
-        
+
+    BLSP_Sboot_Finish();
+
     /*Note:enable cache with flash offset, after this, should be no flash directl read,
       If need read, should take flash offset into consideration */
     if(0!=efuseCfg.encrypted[0]){
@@ -190,7 +190,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     if(ret!=BFLB_BOOT2_SUCCESS){
         return;
     }
-    
+
     /* Set decryption before read MSP and PC*/
     if(0!=efuseCfg.encrypted[0]){
         BLSP_Boot2_Set_Encrypt(0,&bootImgCfg[0]);
@@ -218,7 +218,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
             bootImgCfg[1].cacheWayDisable=0xf;
         }
     }
-    
+
     /* Deal Other CPUs' entry point */
     /* Prepare release CPU1 anyway */
     for(i=1;i<cpuCount;i++){
@@ -230,7 +230,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
             BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,0);
         }
     }
-    
+
     /* Deal CPU0's entry point */
     if(bootImgCfg[0].imgValid){
         pentry=(pentry_t)bootImgCfg[0].entryPoint;
@@ -244,7 +244,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
         if(pentry!=NULL){
             pentry();
         }
-    }   
+    }
     /* Release other CPUs unless user halt it */
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
         BLSP_Boot2_Release_Other_CPU();

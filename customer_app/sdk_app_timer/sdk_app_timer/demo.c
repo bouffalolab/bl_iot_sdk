@@ -45,7 +45,7 @@ hw_timer_t *handle7;
 
 static uint32_t bl_timer_now_us(void)
 {
-    uint32_t tick_now; 
+    uint32_t tick_now;
     tick_now = *(volatile uint32_t*)0x0200BFF8;
     return MTIMER_TICKS_PER_US * tick_now;
 }
@@ -122,7 +122,7 @@ void cmd_timer_func(char *buf, int len, int argc, char **argv)
     handle3 = hal_hwtimer_create(1000, testfunc03, 1);
     handle4 = hal_hwtimer_create(3748, testfunc04, 1);
     handle5 = hal_hwtimer_create(2312, testfunc05, 1);
-    
+
     return;
 }
 
@@ -130,10 +130,10 @@ void cmd_timer_add(char *buf, int len, int argc, char **argv)
 {
     hal_hwtimer_create(3301, testfunc06, 0);
     hal_hwtimer_create(3301, testfunc07, 0);
-    hal_hwtimer_create(1234, testfunc08, 0); 
+    hal_hwtimer_create(1234, testfunc08, 0);
     return;
 }
-   
+
 void cmd_timer_delete(char *buf, int len, int argc, char **argv)
 {
     int id;
@@ -171,13 +171,13 @@ void cmd_timer_delete(char *buf, int len, int argc, char **argv)
             printf("not right id \r\n");
         }
     }
-    
+
     if (ret == 0) {
         printf("delete timer success \r\n");
     } else {
         printf("not find node\r\n", id);
     }
- 
+
     return;
 }
 
@@ -186,13 +186,13 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"test_timer", "test timer", cmd_timer_func},
     {"add_timer", "add timer", cmd_timer_add},
     {"delete_timer", "delete timer by id", cmd_timer_delete},
-};                                                                                   
+};
 
 int timer_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

@@ -30,7 +30,7 @@ def sdk_app_http_client_socket_tc(env, extra_data):
         pwd = os.getenv('TEST_ROUTER_PASSWORD')
         cmd = ("wifi_sta_connect", bssid, pwd)
         cmd_wifi_connect = ' '.join(cmd)
-        dut.write(cmd_wifi_connect)        
+        dut.write(cmd_wifi_connect)
         #dut.write('wifi_sta_connect bl_test_013 tester12345678')
 
         dut.expect("Entering wifiConnected_IPOK state", timeout=20)
@@ -38,7 +38,7 @@ def sdk_app_http_client_socket_tc(env, extra_data):
         dut.write('http')
         dut.expect("Server ip Address", timeout=2)
         dut.expect("Download comlete", timeout=200)
-        
+
         dut.halt()
     except DUT.ExpectTimeout:
         print('ENV_TEST_FAILURE: BL602 http test failed')

@@ -143,7 +143,7 @@ static void aos_loop_proc(void *pvParameters)
         aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
         _cli_init();
     }
-    
+
     test_hbnram2();
     test_hbnram1();
 

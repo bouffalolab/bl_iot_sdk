@@ -43,7 +43,7 @@ static void wifiprov_connect_ap_ind(struct wifi_conn *info)
 {
     extern int wifi_mgmr_status_code_clean_internal();
     wifi_mgmr_status_code_clean_internal();
-    printf("Recevied indication to connect to AP\r\n");    
+    printf("Recevied indication to connect to AP\r\n");
     wifi_prov_api_event_trigger_connect(info);
 }
 
@@ -73,10 +73,10 @@ static void blesync_complete_cb (void *p_arg)
 }
 
 static struct blesync_wifi_func WifiProv_conn_callback = {
-	.local_connect_remote_ap = wifiprov_connect_ap_ind,
-	.local_disconnect_remote_ap = wifiprov_disc_from_ap_ind,
-	.local_wifi_scan = wifiprov_wifi_scan,
-	.local_wifi_state_get = wifiprov_api_state_get,
+    .local_connect_remote_ap = wifiprov_connect_ap_ind,
+    .local_disconnect_remote_ap = wifiprov_disc_from_ap_ind,
+    .local_wifi_scan = wifiprov_wifi_scan,
+    .local_wifi_state_get = wifiprov_api_state_get,
 };
 
 static void blsync_init(int err)

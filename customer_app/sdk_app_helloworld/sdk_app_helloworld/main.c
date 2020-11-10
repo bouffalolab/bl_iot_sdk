@@ -59,7 +59,7 @@ void user_vApplicationMallocFailedHook(void)
 {
     printf("Memory Allocate Failed. Current left size is %d bytes\r\n",
         xPortGetFreeHeapSize()
-    );  
+    );
     /*empty*/
 }
 
@@ -67,7 +67,7 @@ void user_vApplicationIdleHook(void)
 {
     __asm volatile(
             "   wfi     "
-    );  
+    );
     /*empty*/
 }
 
@@ -77,7 +77,7 @@ void bfl_main(void)
      * Init UART using pins 16+7 (TX+RX)
      * and baudrate of 2M
      */
-    bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);    
+    bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
     helloworld();
 }
 

@@ -43,7 +43,7 @@ void cmd_romfs(char *buf, int len, int argc, char **argv)
 }
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
-    {"romfs", "romfs test", cmd_romfs}, 
+    {"romfs", "romfs test", cmd_romfs},
 };
 int romfs_cli_init(void)
 {

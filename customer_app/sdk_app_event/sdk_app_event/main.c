@@ -135,7 +135,7 @@ static void event_cb_demo_event(input_event_t *event, void *private_data)
         break;
         case CODE_DEMO_TEST2:
         {
-            printf("######This is event test2\r\n"); 
+            printf("######This is event test2\r\n");
         }
         break;
         default:
@@ -145,7 +145,7 @@ static void event_cb_demo_event(input_event_t *event, void *private_data)
     }
 }
 
-static void delay_action(void *arg) 
+static void delay_action(void *arg)
 {
     printf("######This is event delay_action\r\n");
 }

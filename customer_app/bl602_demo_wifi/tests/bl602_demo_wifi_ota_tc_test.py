@@ -44,7 +44,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
         dut.write(cmd_wifi_connect)
         dut.expect("Entering wifiConnected_IPOK state", timeout=30)
 
-        #get host ip 
+        #get host ip
 
         ip = get_ip_address(bytes('eth0', encoding = "utf8"))
         print(ip)
@@ -54,7 +54,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
         ota_path = path + '/tools/flash_tool/bl602/ota'
         p = subprocess.Popen('cat FW_OTA.bin.xz.ota | nc -l 3333', shell=True, cwd=ota_path)
         print(p.pid)
-        
+
         cmd = 'ota_tcp' + ' ' + ip
         dut.write(cmd)
         time.sleep(0.5)
@@ -68,11 +68,11 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
             new_age = int(dev1.group(5))
             print(new_age)
         else:
-            raise Exception("no match") 
+            raise Exception("no match")
 
         if new_age != old_age + 2:
             raise Exception("ota failed")
-        
+
         #os.killpg(os.getpgid(p.pid),9)
         nc=processinfo('nc')
         cat=processinfo('cat')

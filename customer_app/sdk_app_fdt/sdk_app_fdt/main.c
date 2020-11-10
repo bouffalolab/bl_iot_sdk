@@ -124,7 +124,7 @@ static void aos_loop_proc(void *pvParameters)
 {
     int fd_console;
     uint32_t fdt = 0, offset = 0;
-    
+
     vfs_init();
     vfs_device_init();
 

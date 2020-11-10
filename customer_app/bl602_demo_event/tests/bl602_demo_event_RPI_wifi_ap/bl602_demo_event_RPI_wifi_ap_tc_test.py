@@ -35,7 +35,7 @@ def bl602_demo_event_RPI_wifi_ap_tc(env, extra_data):
         rst = connect_device(ap_ssid[0])
         if rst != True:
             raise Exception
-        
+
         dut.halt()
     except Exception:
         print('ENV_TEST_FAILURE: BL602 ble_wifi test failed')

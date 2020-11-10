@@ -432,9 +432,9 @@ int main(void)
     MSG_DBG("MCU SDK:%s\r\n",MCU_SDK_VERSION);
     MSG_DBG("BSP:%s\r\n",BSP_VERSION);
 #endif
-	if(BLSP_Boot2_Dump_Critical_Flag()){
+    if(BLSP_Boot2_Dump_Critical_Flag()){
         BLSP_Dump_Data(&clkCfg,16);
-		BLSP_Dump_Data(&flashCfg,16);
+        BLSP_Dump_Data(&flashCfg,16);
     }
 
     MSG_DBG("Get efuse config\r\n");

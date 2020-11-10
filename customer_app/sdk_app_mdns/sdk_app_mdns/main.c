@@ -455,7 +455,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
 
 typedef struct mdns {
     struct netif *netif;
-    int slot;  
+    int slot;
 } mdns_t;
 
 static mdns_t mdns = {NULL, -1};
@@ -465,14 +465,14 @@ void mdns_task(void *pvParameters)
     int slot;
     uint32_t pre_ip, cur_ip;
     struct netif *netif;
-    
+
     netif = netif_find("st");
     if (netif == NULL) {
         printf("find failed\r\n");
         goto _failed;
     }
 
-    cur_ip = netif->ip_addr.addr;  
+    cur_ip = netif->ip_addr.addr;
     pre_ip = cur_ip;
 
     slot = mdns_responder_start(netif);
@@ -500,8 +500,8 @@ static void cmd_mdns_cli(char *buf, int len, int argc, char **argv)
     static xTaskHandle xHandle;
     static int start_flag = 1;
     static int stop_flag = 0;
-    int ret; 
-    
+    int ret;
+
     if (argc != 2) {
         printf("Please Input Parameter!\r\n");
         return;
@@ -543,7 +543,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 
 static void _cli_init()
 {
-    /*Put CLI which needs to be init here*/ 
+    /*Put CLI which needs to be init here*/
     wifi_mgmr_cli_init();
 }
 
