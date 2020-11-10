@@ -9,10 +9,10 @@
 #include "mcu_sdk_version.h"
 #endif
 
-void *	pvPortMalloc( size_t xWantedSize );
-void* 	pvPortRealloc(void* ptr, size_t newsize);
-void* 	pvPortCalloc(size_t numElements, size_t sizeOfElement);
-void 	vPortFree( void *pv );
+void *  pvPortMalloc( size_t xWantedSize );
+void*   pvPortRealloc(void* ptr, size_t newsize);
+void*   pvPortCalloc(size_t numElements, size_t sizeOfElement);
+void    vPortFree( void *pv );
 
 #define bflb_platform_malloc           pvPortMalloc
 #define bflb_platform_free             vPortFree

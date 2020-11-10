@@ -40,7 +40,7 @@ int vfs_wdg_close(file_t *fp);
  *
  * @param[in]  fp   device pointer.
  * @param[in]  cmd  command of input and output operating.
- * @param[in]  arg  argument of input and output operating. 
+ * @param[in]  arg  argument of input and output operating.
  *
  * @return  0 on success, negative on failure with errno set appropriately.
  */

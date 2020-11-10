@@ -93,5 +93,5 @@ SECTIONS
     PROVIDE( _ld_ram_addr1 = 0);
     PROVIDE( _ld_ram_size2 = 0);
     PROVIDE( _ld_ram_addr2 = 0);
- 
+
 }

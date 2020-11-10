@@ -36,7 +36,7 @@
 #include <blog.h>
 #define USER_UNUSED(a) ((void)(a))
 
-static void cmd_gpio_func(char *buf, int len, int argc, char **argv) 
+static void cmd_gpio_func(char *buf, int len, int argc, char **argv)
 {
     int ionum = -1, inputmode = -1, pullup = -1, pulldown = -1;
 
@@ -67,7 +67,7 @@ static void cmd_gpio_func(char *buf, int len, int argc, char **argv)
     }
 }
 
-static void cmd_gpio_set(char *buf, int len, int argc, char **argv) 
+static void cmd_gpio_set(char *buf, int len, int argc, char **argv)
 {
     int ionum = -1, val = -1;
 
@@ -90,7 +90,7 @@ static void cmd_gpio_set(char *buf, int len, int argc, char **argv)
     bl_gpio_output_set(ionum, val ? 1 : 0);
 }
 
-static void cmd_gpio_get(char *buf, int len, int argc, char **argv) 
+static void cmd_gpio_get(char *buf, int len, int argc, char **argv)
 {
     int ionum = -1, ret;
     uint8_t val;
@@ -119,13 +119,13 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"gpio-func", "gpio-func pinnum 0/1[0:output, 1:input] 0/1[pullup] 0/1[pulldown]", cmd_gpio_func},
     {"gpio-set", "gpio-set pinnum 0/1", cmd_gpio_set},
     {"gpio-get", "gpio-get pinnum", cmd_gpio_get},
-};                                                                                   
+};
 
 int bl_gpio_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

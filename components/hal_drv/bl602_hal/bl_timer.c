@@ -112,7 +112,7 @@ static void int_timer_cb(void)
 
 int bl_timer_tick_enable(void)
 {
-    TIMER_CFG_Type timerCh1Cfg = 
+    TIMER_CFG_Type timerCh1Cfg =
     {
         TIMER_CH1,                           /* timer channel 1 */
         TIMER_CLKSRC_FCLK,                   /* timer clock source:bus clock */

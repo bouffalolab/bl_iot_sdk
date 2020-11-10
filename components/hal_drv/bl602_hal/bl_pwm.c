@@ -38,12 +38,12 @@
 
 static void gpio_init(uint8_t pin)
 {
-	GLB_GPIO_Cfg_Type cfg;
+    GLB_GPIO_Cfg_Type cfg;
 
-	cfg.drive = 0;
-	cfg.smtCtrl = 1;
-	cfg.gpioMode = GPIO_MODE_OUTPUT;
-	cfg.pullType = GPIO_PULL_DOWN;
+    cfg.drive = 0;
+    cfg.smtCtrl = 1;
+    cfg.gpioMode = GPIO_MODE_OUTPUT;
+    cfg.pullType = GPIO_PULL_DOWN;
     cfg.gpioPin = pin;
     cfg.gpioFun = 8;
 
@@ -55,7 +55,7 @@ static int32_t pwm_init(uint8_t id, uint32_t freq)
     PWM_CH_CFG_Type pwmCfg = {
         .ch = PWM_CH0,
         .clk = PWM_CLK_XCLK,        //PWM_CLK_BCLK PWM_CLK_XCLK
-        .stopMode = PWM_STOP_ABRUPT,//PWM_STOP_ABRUPT:default PWM_STOP_GRACEFUL:no change 
+        .stopMode = PWM_STOP_ABRUPT,//PWM_STOP_ABRUPT:default PWM_STOP_GRACEFUL:no change
         .pol = PWM_POL_NORMAL,      //first low
         .clkDiv = 0,                //40/2 = 20M
         .period = 100,

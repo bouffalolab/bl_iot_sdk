@@ -370,17 +370,17 @@ void ATTR_TCM_SECTION bl_pds_init(void)
     XIP_SFlash_Read_Via_Cache_Need_Lock(BL602_FLASH_XIP_BASE+XTAL_TYPE_OFFSET,&xtalType,1);
     SFlash_Cache_Flush();
     __enable_irq();
-    
+
     // Get whether flash continuous read mode configured
     flashContRead = *(volatile uint32_t *)0x4000B014 & (0x1<<27) ? 0 : 1;
-    
+
     // Select XTAL32K (XTAL32K is default on)
 #ifdef CFG_USE_XTAL32K
     HBN_32K_Sel(HBN_32K_XTAL);
 #else
     HBN_32K_Sel(HBN_32K_RC);
 #endif
-    
+
 #if 1
     // Set clock gating to unused peripherals
     //GLB_AHB_Slave1_Clock_Gate(1, BL_AHB_SLAVE1_GLB);
@@ -419,7 +419,7 @@ void ATTR_TCM_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
 {
     PDS_DEFAULT_LV_CFG_Type *pdsCfg;
     uint32_t pin;
-    
+
     if(pdsLevel == 0){
         pdsCfg = &pdsCfgLevel0;
     }else if(pdsLevel == 1){
@@ -433,16 +433,16 @@ void ATTR_TCM_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
     }else{
         return;
     }
-    
+
     // Disable global interrupt
     __disable_irq();
-    
+
     // Disable GPIO7 pull up/down to reduce PDS current, 0x4000F014[16]=0
     HBN_Hw_Pu_Pd_Cfg(DISABLE);
-    
+
     // Disable GPIO7 IE/SMT, 0x4000F014[8]=0
     HBN_Aon_Pad_IeSmt_Cfg(DISABLE);
-    
+
     // Disable TRNG
 #if IS_ECO_VERSION == 0
     SEC_Eng_Turn_On_Sec_Ring();
@@ -450,17 +450,17 @@ void ATTR_TCM_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
     SEC_Eng_Turn_Off_Sec_Ring();
 #endif
     Sec_Eng_Trng_Disable();
-    
+
     // Power down flash
     SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
     SFlash_Reset_Continue_Read(&flashCfg);
     SFlash_Powerdown();
-    
+
     // Set internal flash pads (GPIO23 - GPIO28) in High-Z mode
     for(pin=23; pin<=28; pin++){
         GLB_GPIO_Set_HZ(pin);
     }
-    
+
 #if 1
     // Set all external pads (GPIO0 - GPIO22, uart pads excluded) in High-Z mode
     for(pin=0; pin<=22; pin++){
@@ -470,25 +470,25 @@ void ATTR_TCM_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
         GLB_GPIO_Set_HZ(pin);
     }
 #endif
-    
+
     // Select RC32M
     HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_RC32M);
     PDS_Power_Off_PLL();
-    
+
     // Enter PDS
     PDS_Default_Level_Config(pdsCfg, NULL, pdsSleepCycles);
-    
+
     // Select PLL
     PDS_Power_On_PLL((PDS_PLL_XTAL_Type)xtalType);
     HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_PLL);
-    
+
     // Initialize internal flash pads
     SF_Cfg_Init_Flash_Gpio(0, 1);
-    
+
     // Power on flash
     SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
     SFlash_Restore_From_Powerdown(&flashCfg, flashContRead);
-    
+
     // Enable TRNG
 #if IS_ECO_VERSION == 0
     SEC_Eng_Turn_Off_Sec_Ring();
@@ -496,13 +496,13 @@ void ATTR_TCM_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
     SEC_Eng_Turn_On_Sec_Ring();
 #endif
     Sec_Eng_Trng_Enable();
-    
+
     // Enable GPIO7 IE/SMT, 0x4000F014[8]=1
     HBN_Aon_Pad_IeSmt_Cfg(ENABLE);
-    
+
     // Enable GPIO7 pull up/down, 0x4000F014[16]=1
     HBN_Hw_Pu_Pd_Cfg(ENABLE);
-    
+
     // Enable global interrupt
     __enable_irq();
 }

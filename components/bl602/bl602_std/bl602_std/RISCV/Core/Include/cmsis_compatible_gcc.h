@@ -39,7 +39,7 @@
   #define __IRQ_ALIGN64                          __attribute__((interrupt,aligned(64)))
 #endif
 #ifndef ALIGN4
-#define ALIGN4									 __attribute((aligned (4)))
+#define ALIGN4                                   __attribute((aligned (4)))
 #endif
 /**
   \brief   No Operation
@@ -122,7 +122,7 @@ extern void clic_clear_pending(uint32_t source);
 
 #define NVIC_ClearPendingIRQ                clic_clear_pending
 
-//#define __set_MSP(val)						__ASM volatile ("lw sp,0(%0)":: "r"(val))
+//#define __set_MSP(val)                        __ASM volatile ("lw sp,0(%0)":: "r"(val))
 #define __set_MSP(msp)                      __ASM volatile ("add sp, x0, %0":: "r"(msp))
 
 #endif /* __CMSIS_COMPATIBLE_GCC_H */

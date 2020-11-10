@@ -62,7 +62,7 @@ void i2c_gpio_init(int i2cx)
         gpiopins[1] = GLB_GPIO_PIN_3;
     } else {
     }
-    
+
     GLB_GPIO_Func_Init(GPIO_FUN_I2C, gpiopins, sizeof(gpiopins) / sizeof(gpiopins[0]));
     return;
 }
@@ -70,7 +70,7 @@ void i2c_gpio_init(int i2cx)
 void i2c_clear_status(int i2cx)
 {
     uint32_t tmpval;
-    
+
     if (i2cx == I2C0) {
         tmpval = BL_RD_REG(I2C_BASE, I2C_INT_STS);
         tmpval = BL_SET_REG_BIT(tmpval, I2C_CR_I2C_END_CLR);
@@ -83,13 +83,13 @@ void i2c_clear_status(int i2cx)
         return;
 }
 
-void do_write_data(i2c_msg_t *pstmsg) 
+void do_write_data(i2c_msg_t *pstmsg)
 {
     uint32_t temp = 0;
     uint32_t val = 0;
     int i;
     int count;
-    
+
     count = pstmsg->len - pstmsg->idex;
     if (count >= 4) {
         count = 4;
@@ -132,7 +132,7 @@ static void i2c_transfer_enable(i2c_msg_t *pstmsg)
     if (pstmsg->direct == I2C_M_WRITE) {
         I2C_IntMask(pstmsg->i2cx, I2C_TX_FIFO_READY_INT, UNMASK);
     } else if (pstmsg->direct == I2C_M_READ) {
-        I2C_IntMask(pstmsg->i2cx, I2C_RX_FIFO_READY_INT, UNMASK); 
+        I2C_IntMask(pstmsg->i2cx, I2C_RX_FIFO_READY_INT, UNMASK);
     }
 
     I2C_IntMask(pstmsg->i2cx, I2C_TRANS_END_INT, UNMASK);

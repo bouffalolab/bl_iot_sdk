@@ -178,14 +178,14 @@ void *bl_dma_mem_malloc(uint32_t size)
 
     addr_start = DTCM_ADDR_START;
     addr_end = DTCM_ADDR_END;
-   
+
     ptr_piece_num = xPortGetFreeHeapSize() / MEM_UNIT_SIZE + 1;
     p_heap_addr = pvPortMalloc(ptr_piece_num * 4);
     memset(p_heap_addr, 0, ptr_piece_num * 4);
     if (p_heap_addr == NULL) {
         return NULL;
     }
-    
+
     ptr = NULL;
     counts = 0;
     while (1) {
@@ -223,19 +223,19 @@ static void bl_dma_int_process(void)
     int ch;
     uint32_t intclr;
     uint32_t tmpval;
-    uint32_t interr_val; 
+    uint32_t interr_val;
     struct dma_node *node;
     struct dma_ctx *pstctx;
-    void (*handler)(void) = NULL; 
+    void (*handler)(void) = NULL;
     int tc_flag, interr_flag;
-   
+
     tmpval = BL_RD_REG(DMA_BASE, DMA_INTTCSTATUS);
     interr_val = BL_RD_REG(DMA_BASE, DMA_INTERRORSTATUS);
-    bl_irq_ctx_get(DMA_ALL_IRQn, (void **)&pstctx); 
+    bl_irq_ctx_get(DMA_ALL_IRQn, (void **)&pstctx);
     for (ch = 0; ch < DMA_CH_MAX; ch++) {
         tc_flag = BL_GET_REG_BITS_VAL(tmpval, DMA_INTTCSTATUS) & (1 << ch);
         interr_flag = BL_GET_REG_BITS_VAL(interr_val, DMA_INTERRORSTATUS) & (1 << ch);
-        
+
         if((tc_flag != 0) || (interr_flag != 0)) {
             if (tc_flag != 0) {
                 /* tc int, clear interrupt */
@@ -266,11 +266,11 @@ static void bl_dma_int_process(void)
                         handler = (void(*)(void))node->interr_handler;
                         handler();
                     }
-                }               
+                }
             }
-        }        
+        }
     }
-    
+
     return;
 }
 
@@ -293,7 +293,7 @@ int bl_dma_irq_register(int channel, void *tc_handler, void *interr_handler, voi
             return -1;
         }
     }
-    pstnode = pvPortMalloc(sizeof(struct dma_node)); 
+    pstnode = pvPortMalloc(sizeof(struct dma_node));
     if (pstnode == NULL) {
         blog_error("malloc dma node failed. \r\n");
     }
@@ -317,13 +317,13 @@ void *bl_dma_find_node_by_channel(int channel)
             break;
         }
     }
-    
+
     if (&(node->dlist_item) == pstctx->pstqueue) {
         blog_error("not find channel register. \r\n");
 
         return NULL;
     }
-    
+
     return node;
 }
 
@@ -362,7 +362,7 @@ int bl_dma_irq_unregister(int channel)
         blog_error("not find node \r\n");
         return -1;
     }
-    
+
     return 0;
 }
 

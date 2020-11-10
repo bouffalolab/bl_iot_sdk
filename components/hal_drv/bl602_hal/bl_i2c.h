@@ -37,12 +37,12 @@
 #define I2C_M_NO_BLOCK       1
 
 typedef struct i2c_msg {
-	uint16_t addr;	
-	uint8_t direct;
+    uint16_t addr;
+    uint8_t direct;
     uint8_t subflag;
     uint32_t subaddr;
     uint8_t sublen;
-	uint32_t len;		
+    uint32_t len;
     uint8_t *buf;
     int event;
     int idex;

@@ -107,7 +107,7 @@ const pFunc __Vectors[] __attribute__ ((section(".init"),aligned(64))) = {
     I2C_IRQHandler,                  /* 16 + 32 */
     0,                               /* 16 + 33 */
     PWM_IRQHandler,                  /* 16 + 34 */
-    0,				                 /* 16 + 35 */
+    0,                               /* 16 + 35 */
     TIMER_CH0_IRQHandler,            /* 16 + 36 */
     TIMER_CH1_IRQHandler,            /* 16 + 37 */
     TIMER_WDT_IRQHandler,            /* 16 + 38 */
@@ -127,8 +127,8 @@ const pFunc __Vectors[] __attribute__ ((section(".init"),aligned(64))) = {
     HBN_OUT1_IRQHandler,             /* 16 + 52 */
     BOR_IRQHandler,                  /* 16 + 53 */
     WIFI_IRQHandler,                 /* 16 + 54 */
-	BZ_PHY_IRQHandler,               /* 16 + 55 */
-	BLE_IRQHandler,                  /* 16 + 56 */
+    BZ_PHY_IRQHandler,               /* 16 + 55 */
+    BLE_IRQHandler,                  /* 16 + 56 */
     MAC_TXRX_TIMER_IRQHandler,       /* 16 + 57 */
     MAC_TXRX_MISC_IRQHandler,        /* 16 + 58 */
     MAC_RX_TRG_IRQHandler,           /* 16 + 59 */

@@ -36,13 +36,13 @@
 uv_loop_t *loop;
 struct sockaddr_in addr;
 
-void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) 
+void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf)
 {
     buf->base = (char*)malloc(suggested_size);
     buf->len = suggested_size;
 }
 
-void echo_write(uv_write_t *req, int status) 
+void echo_write(uv_write_t *req, int status)
 {
     if (status) {
         fprintf(stderr, "Write error %s\n", uv_strerror(status));
@@ -51,7 +51,7 @@ void echo_write(uv_write_t *req, int status)
     free(req);
 }
 
-void echo_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) 
+void echo_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf)
 {
     if (nread < 0) {
         if (nread != UV_EOF) {
@@ -70,7 +70,7 @@ void echo_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf)
     }
 }
 
-void on_new_connection(uv_stream_t *server, int status) 
+void on_new_connection(uv_stream_t *server, int status)
 {
     if (status < 0) {
         fprintf(stderr, "New connection error %s\n", uv_strerror(status));
@@ -86,7 +86,7 @@ void on_new_connection(uv_stream_t *server, int status)
     }
 }
 
-int main() 
+int main()
 {
     loop = uv_default_loop();
 

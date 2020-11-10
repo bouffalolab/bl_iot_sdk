@@ -3,9 +3,9 @@
 #
 COMPONENT_ADD_INCLUDEDIRS += config portable/GCC/RISC-V portable/GCC/RISC-V/chip_specific_extensions/RV32I_CLINT_no_extensions
 
-COMPONENT_OBJS := 
+COMPONENT_OBJS :=
 
-COMPONENT_SRCDIRS := 
+COMPONENT_SRCDIRS :=
 
 OPT_FLAG_G := $(findstring -Og, $(CFLAGS))
 ifeq ($(strip $(OPT_FLAG_G)),-Og)

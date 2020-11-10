@@ -54,9 +54,9 @@ static int _ir_bloop_evt(struct loop_ctx *loop, const struct loop_evt_handler *h
 
     data = bl_receivedata();
     if (0 == data) {
-        aos_post_event(EV_IR, CODE_IR_RECEIVE_NEC_REPEAT, 0);        
+        aos_post_event(EV_IR, CODE_IR_RECEIVE_NEC_REPEAT, 0);
     } else {
-        aos_post_event(EV_IR, CODE_IR_RECEIVE_NEC, data);        
+        aos_post_event(EV_IR, CODE_IR_RECEIVE_NEC, data);
     }
     bl_enable_rx_int();
 
@@ -77,7 +77,7 @@ int loopset_ir_hook_on_looprt(void)
             .name = "IR Trigger",
             .evt = _ir_bloop_evt,
             .handle = _ir_bloop_msg,
-        }, 
+        },
     };
 
     //TODO use run-time priority based register

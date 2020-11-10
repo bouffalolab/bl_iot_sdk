@@ -25,55 +25,55 @@ extern "C" {
 
 /** @brief Bluetooth UUID types */
 enum {
-	BT_UUID_TYPE_16,
-	BT_UUID_TYPE_32,
-	BT_UUID_TYPE_128,
+    BT_UUID_TYPE_16,
+    BT_UUID_TYPE_32,
+    BT_UUID_TYPE_128,
 };
 
 /** @brief This is a 'tentative' type and should be used as a pointer only */
 struct bt_uuid {
-	u8_t type;
+    u8_t type;
 };
 
 struct bt_uuid_16 {
-	struct bt_uuid uuid;
-	u16_t val;
+    struct bt_uuid uuid;
+    u16_t val;
 };
 
 struct bt_uuid_32 {
-	struct bt_uuid uuid;
-	u32_t val;
+    struct bt_uuid uuid;
+    u32_t val;
 };
 
 struct bt_uuid_128 {
-	struct bt_uuid uuid;
-	u8_t val[16];
+    struct bt_uuid uuid;
+    u8_t val[16];
 };
 
-#define BT_UUID_INIT_16(value)		\
-{					\
-	.uuid = { BT_UUID_TYPE_16 },	\
-	.val = (value),			\
+#define BT_UUID_INIT_16(value)      \
+{                   \
+    .uuid = { BT_UUID_TYPE_16 },    \
+    .val = (value),         \
 }
 
-#define BT_UUID_INIT_32(value)		\
-{					\
-	.uuid = { BT_UUID_TYPE_32 },	\
-	.val = (value),			\
+#define BT_UUID_INIT_32(value)      \
+{                   \
+    .uuid = { BT_UUID_TYPE_32 },    \
+    .val = (value),         \
 }
 
-#define BT_UUID_INIT_128(value...)	\
-{					\
-	.uuid = { BT_UUID_TYPE_128 },	\
-	.val = { value },		\
+#define BT_UUID_INIT_128(value...)  \
+{                   \
+    .uuid = { BT_UUID_TYPE_128 },   \
+    .val = { value },       \
 }
 
 #define BT_UUID_DECLARE_16(value) \
-	((struct bt_uuid *) (&(struct bt_uuid_16) BT_UUID_INIT_16(value)))
+    ((struct bt_uuid *) (&(struct bt_uuid_16) BT_UUID_INIT_16(value)))
 #define BT_UUID_DECLARE_32(value) \
-	((struct bt_uuid *) (&(struct bt_uuid_32) BT_UUID_INIT_32(value)))
+    ((struct bt_uuid *) (&(struct bt_uuid_32) BT_UUID_INIT_32(value)))
 #define BT_UUID_DECLARE_128(value...) \
-	((struct bt_uuid *) (&(struct bt_uuid_128) BT_UUID_INIT_128(value)))
+    ((struct bt_uuid *) (&(struct bt_uuid_128) BT_UUID_INIT_128(value)))
 
 #define BT_UUID_16(__u) CONTAINER_OF(__u, struct bt_uuid_16, uuid)
 #define BT_UUID_32(__u) CONTAINER_OF(__u, struct bt_uuid_32, uuid)
@@ -107,22 +107,22 @@ struct bt_uuid_128 {
  *         @ref BT_UUID_INIT_128 or @ref BT_UUID_DECLARE_128
  */
 #define BT_UUID_128_ENCODE(w32, w1, w2, w3, w48) \
-	(((w48) >>  0) & 0xFF), \
-	(((w48) >>  8) & 0xFF), \
-	(((w48) >> 16) & 0xFF), \
-	(((w48) >> 24) & 0xFF), \
-	(((w48) >> 32) & 0xFF), \
-	(((w48) >> 40) & 0xFF), \
-	(((w3)  >>  0) & 0xFF), \
-	(((w3)  >>  8) & 0xFF), \
-	(((w2)  >>  0) & 0xFF), \
-	(((w2)  >>  8) & 0xFF), \
-	(((w1)  >>  0) & 0xFF), \
-	(((w1)  >>  8) & 0xFF), \
-	(((w32) >>  0) & 0xFF), \
-	(((w32) >>  8) & 0xFF), \
-	(((w32) >> 16) & 0xFF), \
-	(((w32) >> 24) & 0xFF)
+    (((w48) >>  0) & 0xFF), \
+    (((w48) >>  8) & 0xFF), \
+    (((w48) >> 16) & 0xFF), \
+    (((w48) >> 24) & 0xFF), \
+    (((w48) >> 32) & 0xFF), \
+    (((w48) >> 40) & 0xFF), \
+    (((w3)  >>  0) & 0xFF), \
+    (((w3)  >>  8) & 0xFF), \
+    (((w2)  >>  0) & 0xFF), \
+    (((w2)  >>  8) & 0xFF), \
+    (((w1)  >>  0) & 0xFF), \
+    (((w1)  >>  8) & 0xFF), \
+    (((w32) >>  0) & 0xFF), \
+    (((w32) >>  8) & 0xFF), \
+    (((w32) >> 16) & 0xFF), \
+    (((w32) >> 24) & 0xFF)
 
 
 
@@ -478,40 +478,40 @@ struct bt_uuid_128 {
 #define BT_UUID_GATT_DB_HASH              BT_UUID_DECLARE_16(0x2b2a)
 
 #if defined(CONFIG_BT_STACK_PTS) && defined(PTS_GAP_SLAVER_CONFIG_READ_CHARC)
-#define BT_UUID_PTS  					  BT_UUID_DECLARE_16(0x2b2b) 	
-#define BT_UUID_PTS_CHAR_READ_AUTHEN	  BT_UUID_DECLARE_16(0x2b2c) 
-#define BT_UUID_PTS_CHAR_READ_NOPERM	  BT_UUID_DECLARE_16(0x2b2d)
-#define BT_UUID_PTS_CHAR_READ_LONGVAL	  BT_UUID_DECLARE_16(0x2b2e)
-#define BT_UUID_PTS_CHAR_READ_L_NOPERM	  BT_UUID_DECLARE_16(0x2b2f)
-#define BT_UUID_PTS_CHAR_READ_LVAL_REF	  BT_UUID_DECLARE_16(0x2b30)
+#define BT_UUID_PTS                       BT_UUID_DECLARE_16(0x2b2b)
+#define BT_UUID_PTS_CHAR_READ_AUTHEN      BT_UUID_DECLARE_16(0x2b2c)
+#define BT_UUID_PTS_CHAR_READ_NOPERM      BT_UUID_DECLARE_16(0x2b2d)
+#define BT_UUID_PTS_CHAR_READ_LONGVAL     BT_UUID_DECLARE_16(0x2b2e)
+#define BT_UUID_PTS_CHAR_READ_L_NOPERM    BT_UUID_DECLARE_16(0x2b2f)
+#define BT_UUID_PTS_CHAR_READ_LVAL_REF    BT_UUID_DECLARE_16(0x2b30)
 #endif
 
 #if defined(CONFIG_BT_STACK_PTS)&& defined(PTS_GAP_SLAVER_CONFIG_WRITE_CHARC)
-#define BT_UUID_PTS_CHAR_WRITE_VALUE	  BT_UUID_DECLARE_16(0x2b31) 
-#define BT_UUID_PTS_CHAR_WRITE_AUTHEN	  BT_UUID_DECLARE_16(0x2b32) 
-#define BT_UUID_PTS_CHAR_WRITE_LONGVAL	  BT_UUID_DECLARE_16(0x2b33)
-#define BT_UUID_PTS_CHAR_WRITE_NORSP	  BT_UUID_DECLARE_16(0x2b34) 
-#define BT_UUID_PTS_CHAR_WRITE_2LONGVAL	  BT_UUID_DECLARE_16(0x2b35)
-#define BT_UUID_PTS_CHAR_WRITE_L_DES	  BT_UUID_DECLARE_16(0x2b36)
+#define BT_UUID_PTS_CHAR_WRITE_VALUE      BT_UUID_DECLARE_16(0x2b31)
+#define BT_UUID_PTS_CHAR_WRITE_AUTHEN     BT_UUID_DECLARE_16(0x2b32)
+#define BT_UUID_PTS_CHAR_WRITE_LONGVAL    BT_UUID_DECLARE_16(0x2b33)
+#define BT_UUID_PTS_CHAR_WRITE_NORSP      BT_UUID_DECLARE_16(0x2b34)
+#define BT_UUID_PTS_CHAR_WRITE_2LONGVAL   BT_UUID_DECLARE_16(0x2b35)
+#define BT_UUID_PTS_CHAR_WRITE_L_DES      BT_UUID_DECLARE_16(0x2b36)
 #endif
 
 #if defined(CONFIG_BT_STACK_PTS)&& defined(PTS_GAP_SLAVER_CONFIG_NOTIFY_CHARC)
-#define BT_UUID_PTS_CHAR_NOTIFY_CHAR	  BT_UUID_DECLARE_16(0x2b37)
+#define BT_UUID_PTS_CHAR_NOTIFY_CHAR      BT_UUID_DECLARE_16(0x2b37)
 #endif
 
 #if defined(CONFIG_BT_STACK_PTS)&& defined(PTS_GAP_SLAVER_CONFIG_INDICATE_CHARC)
-#define BT_UUID_PTS_CHAR_INDICATE_CHAR	  BT_UUID_DECLARE_16(0x2b38)
+#define BT_UUID_PTS_CHAR_INDICATE_CHAR    BT_UUID_DECLARE_16(0x2b38)
 #endif
 
 #if defined(CONFIG_BT_STACK_PTS) && defined(PTS_TEST_CASE_INSUFFICIENT_KEY)
-#define BT_UUID_PTS_ENC_KEY	  		  	  BT_UUID_DECLARE_16(0x2b3a)
+#define BT_UUID_PTS_ENC_KEY               BT_UUID_DECLARE_16(0x2b3a)
 #endif
 #if defined(CONFIG_BT_STACK_PTS) && defined(PTS_CHARC_LEN_EQUAL_MTU_SIZE)
-#define BT_UUID_PTS_READ_MTU_SIZE_CHAR	  BT_UUID_DECLARE_16(0x2b3b)
+#define BT_UUID_PTS_READ_MTU_SIZE_CHAR    BT_UUID_DECLARE_16(0x2b3b)
 #endif
 
 #if defined(CONFIG_BT_STACK_PTS)
-#define BT_UUID_PTS_AUTH_CHAR	  		  BT_UUID_DECLARE_16(0x2b39)
+#define BT_UUID_PTS_AUTH_CHAR             BT_UUID_DECLARE_16(0x2b39)
 #endif
 
 /*
@@ -600,16 +600,16 @@ const char *bt_uuid_str_real(const struct bt_uuid *uuid);
 #define bt_uuid_str(_uuid) log_strdup(bt_uuid_str_real(_uuid))
 #else
 static inline void bt_uuid_to_str(const struct bt_uuid *uuid, char *str,
-				  size_t len)
+                  size_t len)
 {
-	if (len > 0) {
-		str[0] = '\0';
-	}
+    if (len > 0) {
+        str[0] = '\0';
+    }
 }
 
 static inline const char *bt_uuid_str(const struct bt_uuid *uuid)
 {
-	return "";
+    return "";
 }
 #endif /* CONFIG_BT_DEBUG */
 

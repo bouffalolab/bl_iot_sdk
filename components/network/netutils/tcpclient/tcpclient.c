@@ -125,7 +125,7 @@ failed_nothing:
     for (i = 0; i < IPERF_BUFSZ; i ++)
         send_buf[i] = i & 0xff;
 
-    while (param.mode != IPERF_MODE_STOP) 
+    while (param.mode != IPERF_MODE_STOP)
     {
 
 
@@ -143,7 +143,7 @@ failed_nothing:
         sentlen = 0;
 
         tick1 = xTaskGetTickCount();
-        while(param.mode != IPERF_MODE_STOP) 
+        while(param.mode != IPERF_MODE_STOP)
         {
             tick2 = xTaskGetTickCount();
             if (tick2 - tick1 >= 1000 * 5)
@@ -159,7 +159,7 @@ failed_nothing:
             }
 
             ret = send(sock, send_buf, IPERF_BUFSZ, 0);
-            if (ret > 0) 
+            if (ret > 0)
             {
                 sentlen += ret;
             }
@@ -201,13 +201,13 @@ void tcpclient_cmd(char *buf, int len, int argc, char **argv)
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "tcpc", "create a tcpc for in a new task", tcpclient_cmd},
-};                                                                                   
+};
 
 int network_netutils_tcpclinet_cli_register()
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

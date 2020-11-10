@@ -152,32 +152,32 @@ typedef enum
 /**
  * @brief BL602 Memory Map Definitions
  */
-#define BL602_FLASH_XIP_BASE        		0x23000000
-#define BL602_FLASH_XIP_END					(0x23000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP0_BASE			0x33000000
-#define BL602_FLASH_XIP_REMAP0_END			(0x33000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP1_BASE			0x43000000
-#define BL602_FLASH_XIP_REMAP1_END			(0x43000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP2_BASE			0x53000000
-#define BL602_FLASH_XIP_REMAP2_END			(0x53000000+16*1024*1024)
+#define BL602_FLASH_XIP_BASE                0x23000000
+#define BL602_FLASH_XIP_END                 (0x23000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP0_BASE         0x33000000
+#define BL602_FLASH_XIP_REMAP0_END          (0x33000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP1_BASE         0x43000000
+#define BL602_FLASH_XIP_REMAP1_END          (0x43000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP2_BASE         0x53000000
+#define BL602_FLASH_XIP_REMAP2_END          (0x53000000+16*1024*1024)
 
-#define BL602_WRAM_BASE             		0x42020000
-#define BL602_WRAM_END              		(0x42020000+176*1024)
-#define BL602_WRAM_REMAP0_BASE             	0x22020000
-#define BL602_WRAM_REMAP0_END              	(0x22020000+176*1024)
-#define BL602_WRAM_REMAP1_BASE             	0x32020000
-#define BL602_WRAM_REMAP1_END              	(0x32020000+176*1024)
-#define BL602_WRAM_REMAP2_BASE             	0x52020000
-#define BL602_WRAM_REMAP2_END              	(0x52020000+176*1024)
+#define BL602_WRAM_BASE                     0x42020000
+#define BL602_WRAM_END                      (0x42020000+176*1024)
+#define BL602_WRAM_REMAP0_BASE              0x22020000
+#define BL602_WRAM_REMAP0_END               (0x22020000+176*1024)
+#define BL602_WRAM_REMAP1_BASE              0x32020000
+#define BL602_WRAM_REMAP1_END               (0x32020000+176*1024)
+#define BL602_WRAM_REMAP2_BASE              0x52020000
+#define BL602_WRAM_REMAP2_END               (0x52020000+176*1024)
 
-#define BL602_TCM_BASE              		0x22008000
-#define BL602_TCM_END               		(0x22008000+(96+176)*1024)
-#define BL602_TCM_REMAP0_BASE              	0x32008000
-#define BL602_TCM_REMAP0_END               	(0x32008000+(96+176)*1024)
-#define BL602_TCM_REMAP1_BASE             	0x42008000
-#define BL602_TCM_REMAP1_END             	(0x42008000+(96+176)*1024)
-#define BL602_TCM_REMAP2_BASE             	0x52008000
-#define BL602_TCM_REMAP2_END              	(0x52008000+(96+176)*1024)
+#define BL602_TCM_BASE                      0x22008000
+#define BL602_TCM_END                       (0x22008000+(96+176)*1024)
+#define BL602_TCM_REMAP0_BASE               0x32008000
+#define BL602_TCM_REMAP0_END                (0x32008000+(96+176)*1024)
+#define BL602_TCM_REMAP1_BASE               0x42008000
+#define BL602_TCM_REMAP1_END                (0x42008000+(96+176)*1024)
+#define BL602_TCM_REMAP2_BASE               0x52008000
+#define BL602_TCM_REMAP2_END                (0x52008000+(96+176)*1024)
 /*@} end of group Memory_Map_Section */
 
 /* BL602 peripherals base address */

@@ -100,7 +100,7 @@ static void hal_gpio_init(spi_hw_t *arg)
     gpiopins[1] = arg->pin_clk;
     gpiopins[2] = arg->pin_mosi;
     gpiopins[3] = arg->pin_miso;
-    
+
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 
     if (arg->mode == 0) {
@@ -162,7 +162,7 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
 
         dmactrl.SI = DMA_MINC_ENABLE;
         dmactrl.DI = DMA_MINC_DISABLE;
-            
+
         if (i == count - 1) {
             dmactrl.I = 1;
         } else {
@@ -199,7 +199,7 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     SPI_FifoCfg_Type fifocfg;
     SPI_ID_Type spi_id;
     uint8_t clk_div;
-    
+
     spi_id = hw_arg->ssp_id;
 
     /* clock */
@@ -264,7 +264,7 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_ERR, UNMASK);
 
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ALL, MASK);
-    DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
+    DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ERR, UNMASK);
 
     bl_irq_enable(DMA_ALL_IRQn);
@@ -289,7 +289,7 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
     }
 
     txllicfg.dir = DMA_TRNS_M2P;
-    txllicfg.srcPeriph = DMA_REQ_NONE; 
+    txllicfg.srcPeriph = DMA_REQ_NONE;
     txllicfg.dstPeriph = DMA_REQ_SPI_TX;
 
     rxllicfg.dir = DMA_TRNS_P2M;

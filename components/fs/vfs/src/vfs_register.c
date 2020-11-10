@@ -97,7 +97,7 @@ int aos_register_fs(const char *path, fs_ops_t *ops, void *arg)
 int aos_unregister_fs(const char *path)
 {
     int err, ret;
- 
+
     if (pdTRUE != xSemaphoreTake(g_vfs_mutex, portMAX_DELAY)) {
         err = -1;
         return err;

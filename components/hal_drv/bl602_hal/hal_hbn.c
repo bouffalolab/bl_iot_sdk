@@ -33,7 +33,7 @@
 #include "bl_sys.h"
 #include "bl_hbn.h"
 #include "hal_sys.h"
-#include <utils_log.h> 
+#include <utils_log.h>
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
@@ -90,7 +90,7 @@ int hal_hbn_init(uint8_t *pinbuf, uint8_t pinbuf_size)
     hbn->active = 1;
     hbn->buflen = pinbuf_size;
     memcpy(hbn->buf, pinbuf, pinbuf_size);
-    
+
     if (!hbn_list) {
         ntf_init();
     }

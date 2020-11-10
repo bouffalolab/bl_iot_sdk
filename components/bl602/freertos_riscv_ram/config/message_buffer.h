@@ -795,4 +795,4 @@ BaseType_t xMessageBufferReceiveCompletedFromISR( MessageBufferHandle_t xStreamB
 } /* extern "C" */
 #endif
 
-#endif	/* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+#endif  /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */

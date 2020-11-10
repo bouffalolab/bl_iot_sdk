@@ -51,7 +51,7 @@ COMPONENT_ADD_INCLUDEDIRS := $(ble_stack_srcs_include_dirs)
 ## not be exported to project level
 COMPONENT_PRIV_INCLUDEDIRS   :=
 
-## This component's src 
+## This component's src
 ble_stack_srcs  := src/port/bl_port.c \
 					src/common/atomic_c.c \
 					src/common/buf.c \
@@ -87,12 +87,12 @@ ble_stack_srcs  := src/port/bl_port.c \
 					src/host/hci_ecc.c \
 					src/host/l2cap.c \
 					src/host/uuid.c \
-					
+
 ifneq ($(CONFIG_DISABLE_BT_SMP), 1)
 ble_stack_srcs  += src/host/smp.c \
                    src/host/keys.c
 endif
-					
+
 ifeq ($(CONFIG_BT_OAD_CLIENT),1)
 ble_stack_srcs   += src/host_cmdproc/oadc_cmdproc.c
 endif

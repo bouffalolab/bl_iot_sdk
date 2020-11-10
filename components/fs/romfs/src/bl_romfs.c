@@ -136,7 +136,7 @@ static int romfs_mount(void)
     }
     memset(&info, 0, sizeof(info));
     bl_mtd_info(handle_romfs, &info);
-    
+
     if (0 == info.xip_addr) {
         log_error("romfs has no XIP-Addr\r\n");
         return -1;

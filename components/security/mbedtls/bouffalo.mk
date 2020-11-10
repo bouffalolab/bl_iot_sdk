@@ -12,7 +12,7 @@ $(NAME)_MBINS_TYPE := kernel
 $(NAME)_VERSION := 2.0.1
 $(NAME)_SUMMARY := Mbed Transport Layer Security on Embedded Devices for AliOS Things
 
-## This component's src 
+## This component's src
 COMPONENT_SRCS := src/aes.c
 COMPONENT_SRCS += src/aesni.c
 COMPONENT_SRCS += src/arc4.c
@@ -95,4 +95,4 @@ COMPONENT_SRCDIRS := src
 
 
 ##
-CPPFLAGS += -DLWIP_ENABLED -DCONFIG_PLAT_AOS  
+CPPFLAGS += -DLWIP_ENABLED -DCONFIG_PLAT_AOS

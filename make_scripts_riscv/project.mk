@@ -129,7 +129,7 @@ include_path += $(filter %/$(1), $(COMPONENTS_REAL_PATH))
 endef
 $(foreach comp,$(INCLUDE_COMPONENTS),$(eval $(call include_comps_add,$(comp))))
 INCLUDE_COMPONENTS_REAL_PATH := $(include_path)
-# include components 
+# include components
 COMPONENTS := $(filter $(INCLUDE_COMPONENTS), $(COMPONENTS))
 COMPONENTS_REAL_PATH := $(filter $(INCLUDE_COMPONENTS_REAL_PATH), $(COMPONENTS_REAL_PATH))
 endif
@@ -214,7 +214,7 @@ BL_CHIP_NAME := ${CONFIG_CHIP_NAME}
 
 # Set default LDFLAGS
 # -nostdlib
-# --specs=nosys.specs 
+# --specs=nosys.specs
 EXTRA_LDFLAGS ?= -Wl,--cref -nostartfiles
 ifeq ($(CONFIG_ZIGBEE), 1)
 EXTRA_LDFLAGS += --specs=nosys.specs
@@ -242,7 +242,7 @@ LDFLAGS ?=  $(E21_CPU_LDFLAGS) \
 #  before including project.mk. Default flags will be added before the ones provided in application Makefile.
 
 # CPPFLAGS used by C preprocessor
-# If any flags are defined in application Makefile, add them at the end. 
+# If any flags are defined in application Makefile, add them at the end.
 CPPFLAGS ?=
 ifeq ($(CONFIG_ENABLE_ACP),1)
 CPPFLAGS += -DCONF_USER_ENABLE_ACP
@@ -291,7 +291,7 @@ COMMON_FLAGS_M4_EXT := 	\
 	-ffreestanding \
 	-fno-strict-aliasing
 
-		
+
 COMMON_FLAGS += $(COMMON_FLAGS_M4_EXT)
 
 ifdef CONFIG_STACK_CHECK_NORM
@@ -430,7 +430,7 @@ all_binaries: $(APP_BIN)
 $(APP_BIN): $(APP_ELF)
 	@echo "Generating BIN File to $@"
 ifeq ($(CONFIG_ENABLE_ACP),1)
-	$(OBJCOPY) -S -O binary -R .rom.cpu1 $< $(@:.bin=.cpu0.bin) 
+	$(OBJCOPY) -S -O binary -R .rom.cpu1 $< $(@:.bin=.cpu0.bin)
 	$(OBJCOPY) -S -O binary -j .rom.cpu1 $< $(@:.bin=.cpu1.bin)
 	cp $(@:.bin=.cpu0.bin) $(@:.bin=.acp.bin)
 	dd if=$(@:.bin=.cpu1.bin) of=$(@:.bin=.acp.bin) bs=512 seek=2 conv=notrunc
@@ -438,23 +438,23 @@ ifeq ($(CONFIG_ENABLE_ACP),1)
 else
 ifeq ($(CONFIG_LINK_ROM),1)
 	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $@
-	$(OBJCOPY) -S -O binary -j .rom $< $(@:.bin=.rom.bin) 
-	$(OBJCOPY) -S -O binary -j .romdata $< $(@:.bin=.romdata.bin) 
-	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $(@:.bin=.flash.bin) 
+	$(OBJCOPY) -S -O binary -j .rom $< $(@:.bin=.rom.bin)
+	$(OBJCOPY) -S -O binary -j .romdata $< $(@:.bin=.romdata.bin)
+	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $(@:.bin=.flash.bin)
 else
 ifeq ($(CONFIG_GEN_ROM),1)
 	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $@
-	$(OBJCOPY) -S -O binary -j .bleromro $< $(@:.bin=.bleromro.bin) 
-	$(OBJCOPY) -S -O binary -j .bleromrw $< $(@:.bin=.bleromrw.bin) 
-	$(OBJCOPY) -S -O binary -j .rtosromro $< $(@:.bin=.rtosromro.bin) 
-	$(OBJCOPY) -S -O binary -j .rtosromrw $< $(@:.bin=.rtosromrw.bin) 
-	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $(@:.bin=.flash.bin) 
+	$(OBJCOPY) -S -O binary -j .bleromro $< $(@:.bin=.bleromro.bin)
+	$(OBJCOPY) -S -O binary -j .bleromrw $< $(@:.bin=.bleromrw.bin)
+	$(OBJCOPY) -S -O binary -j .rtosromro $< $(@:.bin=.rtosromro.bin)
+	$(OBJCOPY) -S -O binary -j .rtosromrw $< $(@:.bin=.rtosromrw.bin)
+	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $(@:.bin=.flash.bin)
 else
 	$(OBJCOPY) -S -O binary $< $@
 endif
 endif
 endif
-	
+
 
 $(BUILD_DIR_BASE):
 	mkdir -p $(BUILD_DIR_BASE)
@@ -532,7 +532,7 @@ list-components:
 	$(info $(COMPONENTS))
 	$(info $(call dequote,$(SEPARATOR)))
 	$(info EXCLUDE_COMPONENTS (list of excluded names))
-	$(info $(if $(EXCLUDE_COMPONENTS),$(EXCLUDE_COMPONENTS),(none provided)))	
+	$(info $(if $(EXCLUDE_COMPONENTS),$(EXCLUDE_COMPONENTS),(none provided)))
 	$(info $(call dequote,$(SEPARATOR)))
 	$(info COMPONENT_PATHS (paths to all components):)
 	$(foreach cp,$(COMPONENT_PATHS),$(info $(cp)))

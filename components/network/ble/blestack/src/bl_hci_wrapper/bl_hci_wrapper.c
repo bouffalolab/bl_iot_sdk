@@ -39,10 +39,10 @@ struct rx_msg_struct* bl_find_valid_queued_entry(void)
 {
     struct rx_msg_struct empty_msg;
     memset(&empty_msg, 0, sizeof(struct rx_msg_struct));
-    
+
     for(int i = 0; i < sizeof(msg_array)/(sizeof(struct rx_msg_struct)); i++){
         if(!memcmp(&msg_array[i], &empty_msg, sizeof(struct rx_msg_struct)))
-            return (msg_array + i);    
+            return (msg_array + i);
     }
 
     return NULL;
@@ -60,10 +60,10 @@ void bl_handle_queued_msg(void)
     buf = bt_buf_get_rx(BT_BUF_ACL_IN, K_NO_WAIT);
     if(!buf)
         return;
-    
+
     msg = k_fifo_get(&msg_queue, K_NO_WAIT);
     BT_ASSERT(buf);
-    
+
     bl_onchiphci_rx_packet_handler(msg->pkt_type, msg->src_id, msg->param, msg->param_len, buf);
     if(msg->param){
         k_free(msg->param);
@@ -74,7 +74,7 @@ void bl_handle_queued_msg(void)
 void bl_onchiphci_interface_deinit(void)
 {
     struct rx_msg_struct *msg;
-    
+
     do{
         msg = k_fifo_get(&msg_queue, K_NO_WAIT);
         if(msg){
@@ -85,7 +85,7 @@ void bl_onchiphci_interface_deinit(void)
             break;
         }
     }while(1);
-    
+
     k_queue_free(&msg_queue);
 }
 #endif
@@ -96,7 +96,7 @@ uint8_t bl_onchiphci_interface_init(void)
     memset(msg_array, 0, sizeof(msg_array));
     k_queue_init(&msg_queue, 9);
     #endif
-	return bt_onchiphci_interface_init(bl_onchiphci_rx_packet_handler);
+    return bt_onchiphci_interface_init(bl_onchiphci_rx_packet_handler);
 }
 
 int bl_onchiphci_send_2_controller(struct net_buf *buf)
@@ -108,11 +108,11 @@ int bl_onchiphci_send_2_controller(struct net_buf *buf)
   hci_pkt_struct pkt;
 
   buf_type = bt_buf_get_type(buf);
-  
+
   switch(buf_type)
   {
-  	case BT_BUF_CMD:
-	{	
+    case BT_BUF_CMD:
+    {
         struct bt_hci_cmd_hdr *chdr;
 
         if(buf->len < sizeof(struct bt_hci_cmd_hdr))
@@ -127,45 +127,45 @@ int bl_onchiphci_send_2_controller(struct net_buf *buf)
         opcode = sys_le16_to_cpu(chdr->opcode);
         //move buf to the payload
         net_buf_pull(buf, sizeof(struct bt_hci_cmd_hdr));
-        
-		switch(opcode)
-		{
+
+        switch(opcode)
+        {
             //Refer to hci_cmd_desc_tab_le, for the ones of which dest_ll is BLE_CTRL
-			case BT_HCI_OP_LE_CONN_UPDATE:
-			case BT_HCI_OP_LE_READ_CHAN_MAP:
+            case BT_HCI_OP_LE_CONN_UPDATE:
+            case BT_HCI_OP_LE_READ_CHAN_MAP:
             case BT_HCI_OP_LE_READ_REMOTE_FEATURES:
-			case BT_HCI_OP_LE_START_ENCRYPTION:
-			case BT_HCI_OP_LE_LTK_REQ_REPLY:
-			case BT_HCI_OP_LE_LTK_REQ_NEG_REPLY:
-			case BT_HCI_OP_LE_CONN_PARAM_REQ_REPLY:
-			case BT_HCI_OP_LE_CONN_PARAM_REQ_NEG_REPLY:
-			case BT_HCI_OP_LE_SET_DATA_LEN:
-			case BT_HCI_OP_LE_READ_PHY:
-			case BT_HCI_OP_LE_SET_PHY:
-			{
+            case BT_HCI_OP_LE_START_ENCRYPTION:
+            case BT_HCI_OP_LE_LTK_REQ_REPLY:
+            case BT_HCI_OP_LE_LTK_REQ_NEG_REPLY:
+            case BT_HCI_OP_LE_CONN_PARAM_REQ_REPLY:
+            case BT_HCI_OP_LE_CONN_PARAM_REQ_NEG_REPLY:
+            case BT_HCI_OP_LE_SET_DATA_LEN:
+            case BT_HCI_OP_LE_READ_PHY:
+            case BT_HCI_OP_LE_SET_PHY:
+            {
                 //dest_id is connectin handle
-				dest_id = buf->data[0];
-			}
+                dest_id = buf->data[0];
+            }
             default:
                 break;
-		}
+        }
         pkt.p.hci_cmd.opcode = opcode;
         pkt.p.hci_cmd.param_len = chdr->param_len;
         pkt.p.hci_cmd.params = buf->data;
-        
-		#if defined(CONFIG_BTSOONP_PRINT)
+
+        #if defined(CONFIG_BTSOONP_PRINT)
         printf("[btsnoop]:opcode =[0x%x],len =[0x%x],data=[%s]\r\n",opcode,chdr->param_len,bt_hex(buf->data,chdr->param_len));
-        printf("[btsnoop]:Stop\r\n"); 
-		#endif
-		
-		break;
-		break;
-  	}
-	case BT_BUF_ACL_OUT:
-	{
+        printf("[btsnoop]:Stop\r\n");
+        #endif
+
+        break;
+        break;
+    }
+    case BT_BUF_ACL_OUT:
+    {
         struct bt_hci_acl_hdr *acl;
         //connhandle +l2cap field
-		uint16_t connhdl_l2cf, tlt_len;
+        uint16_t connhdl_l2cf, tlt_len;
 
         if(buf->len < sizeof(struct bt_hci_acl_hdr))
             return -EINVAL;
@@ -181,35 +181,35 @@ int bl_onchiphci_send_2_controller(struct net_buf *buf)
             return -EINVAL;
 
         //get connection_handle
-		dest_id = bt_acl_handle(connhdl_l2cf);
+        dest_id = bt_acl_handle(connhdl_l2cf);
         pkt.p.acl_data.conhdl = dest_id;
         pkt.p.acl_data.pb_bc_flag = bt_acl_flags(connhdl_l2cf);
         pkt.p.acl_data.len = tlt_len;
         pkt.p.acl_data.buffer = (uint8_t *)buf->data;
-        
- 		#if defined(CONFIG_BTSOONP_PRINT)
- 		/**************************************************************************
-		*	 Need to subtract size of struct of @bt_hci_acl_hdr, it's 4bytes. 
-		*    the buf's data need to match the HCI package, otherwise ellisys failes to parses the data.
-		*	 Acl format: its total size is 4bytes
-		*    connection_hanlde : 12bits
-		*	 Packet Boundary Flag: 2bits
-		*	 Broadcast Flag	:2bits
-		*	 total_length: 2bytes
-		*    
-		***************************************************************************/
-        printf("[btsnoop]:Acl_out_handle =[0x%x],pb_bc_flag =[0x%x],len =[0x%x],data=[%s]\r\n",pkt.p.acl_data.conhdl,pkt.p.acl_data.pb_bc_flag,
-        															tlt_len,bt_hex(pkt.p.acl_data.buffer,tlt_len));
-        printf("[btsnoop]:Stop\r\n");
-		#endif
 
-		break;
-	}
-	
+        #if defined(CONFIG_BTSOONP_PRINT)
+        /**************************************************************************
+        *    Need to subtract size of struct of @bt_hci_acl_hdr, it's 4bytes.
+        *    the buf's data need to match the HCI package, otherwise ellisys failes to parses the data.
+        *    Acl format: its total size is 4bytes
+        *    connection_hanlde : 12bits
+        *    Packet Boundary Flag: 2bits
+        *    Broadcast Flag :2bits
+        *    total_length: 2bytes
+        *
+        ***************************************************************************/
+        printf("[btsnoop]:Acl_out_handle =[0x%x],pb_bc_flag =[0x%x],len =[0x%x],data=[%s]\r\n",pkt.p.acl_data.conhdl,pkt.p.acl_data.pb_bc_flag,
+                                                                    tlt_len,bt_hex(pkt.p.acl_data.buffer,tlt_len));
+        printf("[btsnoop]:Stop\r\n");
+        #endif
+
+        break;
+    }
+
     default:
-		return -EINVAL;
+        return -EINVAL;
   }
-  
+
   return bt_onchiphci_send(pkt_type, dest_id, &pkt);
 }
 
@@ -222,16 +222,16 @@ static void bl_onchiphci_rx_packet_handler(uint8_t pkt_type, uint16_t src_id, ui
 #endif
 {
     uint8_t nb_h2c_cmd_pkts = 0x01, buf_type, *buf_data;
-	uint16_t tlt_len;
-	bool prio = true;
+    uint16_t tlt_len;
+    bool prio = true;
 
-	#if defined(CONFIG_BTSOONP_PRINT)
-	uint8_t *tbuf_data;
-	#endif
+    #if defined(CONFIG_BTSOONP_PRINT)
+    uint8_t *tbuf_data;
+    #endif
 
-	struct net_buf *buf = NULL;
-	static uint32_t monitor = 0;// used to monitor buf pool
-	#if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
+    struct net_buf *buf = NULL;
+    static uint32_t monitor = 0;// used to monitor buf pool
+    #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
     struct rx_msg_struct *rx_msg;
     #endif
 
@@ -239,27 +239,27 @@ static void bl_onchiphci_rx_packet_handler(uint8_t pkt_type, uint16_t src_id, ui
     #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
     if(!rx_buf){
     #endif
-    buf_type = (pkt_type == BT_HCI_ACL_DATA)? BT_BUF_ACL_IN: BT_BUF_EVT; 
+    buf_type = (pkt_type == BT_HCI_ACL_DATA)? BT_BUF_ACL_IN: BT_BUF_EVT;
 
     if(pkt_type == BT_HCI_CMD_CMP_EVT || pkt_type == BT_HCI_CMD_STAT_EVT)
        buf  = bt_buf_get_cmd_complete(K_FOREVER);
     else{
-		do{
-			/* When deal with LE ADV report, Don't use reserve buf*/
-			if((pkt_type == BT_HCI_LE_EVT && param[0] == BT_HCI_EVT_LE_ADVERTISING_REPORT) && 
-				(bt_buf_get_rx_avail_cnt() <= CONFIG_BT_RX_BUF_RSV_COUNT)){
-				break;
-			}
-	        /*not use K_FOREVER, rw main loop thread cannot be blocked here. if there is no rx buffer,directly igore.
-	          otherwise, if rw main loop blocked here, hci command cannot be handled.*/
-	       buf = bt_buf_get_rx(buf_type, K_NO_WAIT);
-		}while(0);
+        do{
+            /* When deal with LE ADV report, Don't use reserve buf*/
+            if((pkt_type == BT_HCI_LE_EVT && param[0] == BT_HCI_EVT_LE_ADVERTISING_REPORT) &&
+                (bt_buf_get_rx_avail_cnt() <= CONFIG_BT_RX_BUF_RSV_COUNT)){
+                break;
+            }
+            /*not use K_FOREVER, rw main loop thread cannot be blocked here. if there is no rx buffer,directly igore.
+              otherwise, if rw main loop blocked here, hci command cannot be handled.*/
+           buf = bt_buf_get_rx(buf_type, K_NO_WAIT);
+        }while(0);
     }
-    
+
     if(!buf){
-		if(((++monitor)&0xff) == 0){
-			puts("hci_rx_pool is not available\n");
-		}
+        if(((++monitor)&0xff) == 0){
+            puts("hci_rx_pool is not available\n");
+        }
         #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
         //if it is le adv pkt, discard it.
         if(pkt_type == BT_HCI_LE_EVT && param[0] == BT_HCI_EVT_LE_ADVERTISING_REPORT)
@@ -280,24 +280,24 @@ static void bl_onchiphci_rx_packet_handler(uint8_t pkt_type, uint16_t src_id, ui
                 k_fifo_put(&msg_queue, rx_msg);
                 return;
             }
-        }       
+        }
         #else//OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER
         return;
         #endif
     }
-	monitor = 0;
+    monitor = 0;
     #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
     }else{
         buf = rx_buf;
     }
     #endif
-    
+
     buf_data = net_buf_tail(buf);
-        
-	switch(pkt_type)
-	{
-		case BT_HCI_CMD_CMP_EVT:
-		{
+
+    switch(pkt_type)
+    {
+        case BT_HCI_CMD_CMP_EVT:
+        {
             tlt_len = BT_HCI_EVT_CC_PARAM_OFFSET + param_len;
             *buf_data++ = BT_HCI_EVT_CMD_COMPLETE;
             *buf_data++ = BT_HCI_CCEVT_HDR_PARLEN + param_len;
@@ -310,15 +310,15 @@ static void bl_onchiphci_rx_packet_handler(uint8_t pkt_type, uint16_t src_id, ui
             memcpy(buf_data, param, param_len);
             #if defined(CONFIG_BTSOONP_PRINT)
             tbuf_data += param_len;
-            
+
             printf("[btsnoop]:pkt_type =[0x%x],len =[0x%x],data=[%s]\r\n",pkt_type,3+param_len,bt_hex(tbuf_data-(3+param_len),3+param_len));
             printf("[btsnoop]:Stop\r\n");
-			#endif
-			
-			break;
-		}
-		case BT_HCI_CMD_STAT_EVT:
-		{
+            #endif
+
+            break;
+        }
+        case BT_HCI_CMD_STAT_EVT:
+        {
             tlt_len = BT_HCI_CSEVT_LEN;
             *buf_data++ = BT_HCI_EVT_CMD_STATUS;
             *buf_data++ = BT_HCI_CSVT_PARLEN;
@@ -330,89 +330,89 @@ static void bl_onchiphci_rx_packet_handler(uint8_t pkt_type, uint16_t src_id, ui
             sys_put_le16(src_id, buf_data);
             #if defined(CONFIG_BTSOONP_PRINT)
             tbuf_data += 2;
-           
-			/**************************************************************************
-			*	  Status : 1 byte    
-			*	  Num hci command packet: 1byte
-			*     OCF: 1byte
-			*	  OGF: 1byte
-			***************************************************************************/
+
+            /**************************************************************************
+            *     Status : 1 byte
+            *     Num hci command packet: 1byte
+            *     OCF: 1byte
+            *     OGF: 1byte
+            ***************************************************************************/
             printf("[btsnoop]:pkt_type =[0x%x],len =[0x%x],data=[%s]\r\n",pkt_type,4,bt_hex(tbuf_data-4,4));
             printf("[btsnoop]:Stop\r\n");
             #endif
-            
+
             break;
-		}
-		case BT_HCI_LE_EVT:
-		{
+        }
+        case BT_HCI_LE_EVT:
+        {
             prio = false;
             bt_buf_set_type(buf, BT_BUF_EVT);
-			tlt_len = BT_HCI_EVT_LE_PARAM_OFFSET + param_len;
+            tlt_len = BT_HCI_EVT_LE_PARAM_OFFSET + param_len;
             *buf_data++ = BT_HCI_EVT_LE_META_EVENT;
             *buf_data++ = param_len;
-       
+
             memcpy(buf_data, param, param_len);
-           
-            #if defined(CONFIG_BTSOONP_PRINT)    	 	
+
+            #if defined(CONFIG_BTSOONP_PRINT)
             printf("[btsnoop]:pkt_type =[0x%x],len =[0x%x],data=[%s]\r\n",pkt_type,param_len,bt_hex(buf_data,param_len));
-            printf("[btsnoop]:Stop\r\n"); 
-		 	#endif
-		 	
-			break;
-		}
-		case BT_HCI_EVT:
-		{
+            printf("[btsnoop]:Stop\r\n");
+            #endif
+
+            break;
+        }
+        case BT_HCI_EVT:
+        {
             if(src_id != BT_HCI_EVT_NUM_COMPLETED_PACKETS)
                 prio = false;
             bt_buf_set_type(buf, BT_BUF_EVT);
-			tlt_len = BT_HCI_EVT_LE_PARAM_OFFSET + param_len;
-	
+            tlt_len = BT_HCI_EVT_LE_PARAM_OFFSET + param_len;
+
             *buf_data++ = src_id;
             *buf_data++ = param_len;
-    
-			memcpy(buf_data, param, param_len);
-			#if defined(CONFIG_BTSOONP_PRINT)
-			if(!prio){
-				printf("[btsnoop]:pkt_type =[0x%x],len =[0x%x],data=[%s]\r\n",pkt_type,param_len,bt_hex(buf_data-2,param_len+2));
-				printf("[btsnoop]:Stop\r\n");
-			}else{
-				/*ignore :BT_HCI_EVT_NUM_COMPLETED_PACKETS */
-			}
-			#endif
-			break;
-		}
-		case BT_HCI_ACL_DATA:
-		{
+
+            memcpy(buf_data, param, param_len);
+            #if defined(CONFIG_BTSOONP_PRINT)
+            if(!prio){
+                printf("[btsnoop]:pkt_type =[0x%x],len =[0x%x],data=[%s]\r\n",pkt_type,param_len,bt_hex(buf_data-2,param_len+2));
+                printf("[btsnoop]:Stop\r\n");
+            }else{
+                /*ignore :BT_HCI_EVT_NUM_COMPLETED_PACKETS */
+            }
+            #endif
+            break;
+        }
+        case BT_HCI_ACL_DATA:
+        {
             prio = false;
             bt_buf_set_type(buf, BT_BUF_ACL_IN);
-            #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER) 
+            #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
             tlt_len = bt_onchiphci_hanlde_rx_acl(param, buf_data);
             #else
-			tlt_len = param_len;
-			memcpy(buf_data, param, param_len);
+            tlt_len = param_len;
+            memcpy(buf_data, param, param_len);
 
             #endif
-			
-			#if defined(CONFIG_BTSOONP_PRINT)
-			/**************************************************************************
-			*	 Need to subtract size of struct of @bt_hci_acl_hdr, it's 4bytes. 
-			*    the buf's data need to match the HCI package, otherwise ellisys failes to parses the data.
-			*	 Acl format: its total size is 4bytes
-			*    connection_hanlde : 12bits
-			*	 Packet Boundary Flag: 2bits
-			*	 Broadcast Flag	:2bits
-			*	 total_length: 2bytes
-			*    
-			***************************************************************************/
-			printf("[btsnoop]:Acl_in_handle =[0x%x],pb_bc_flag =[0x%x],len =[0x%x],data=[%s]\r\n",buf_data[0],buf_data[1],tlt_len-4,bt_hex(buf_data+4,tlt_len-4));
-        	printf("[btsnoop]:Stop\r\n");
-			#endif
-			
-			break;
-		}
-		default:
-			return;
-	}
+
+            #if defined(CONFIG_BTSOONP_PRINT)
+            /**************************************************************************
+            *    Need to subtract size of struct of @bt_hci_acl_hdr, it's 4bytes.
+            *    the buf's data need to match the HCI package, otherwise ellisys failes to parses the data.
+            *    Acl format: its total size is 4bytes
+            *    connection_hanlde : 12bits
+            *    Packet Boundary Flag: 2bits
+            *    Broadcast Flag :2bits
+            *    total_length: 2bytes
+            *
+            ***************************************************************************/
+            printf("[btsnoop]:Acl_in_handle =[0x%x],pb_bc_flag =[0x%x],len =[0x%x],data=[%s]\r\n",buf_data[0],buf_data[1],tlt_len-4,bt_hex(buf_data+4,tlt_len-4));
+            printf("[btsnoop]:Stop\r\n");
+            #endif
+
+            break;
+        }
+        default:
+            return;
+    }
 
     net_buf_add(buf, tlt_len);
 

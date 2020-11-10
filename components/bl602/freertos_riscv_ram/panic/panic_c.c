@@ -146,7 +146,7 @@ int backtrace_now_app(int (*print_func)(const char *fmt, ...)) {
 
 #if defined(__GNUC__)
   __asm__("add %0, x0, fp"
-	  : "=r"(fp));
+      : "=r"(fp));
 #else
 #error "Compiler is not gcc!"
 #endif

@@ -151,7 +151,7 @@ static void bl_rx_mgmt(uint32_t *skb,  struct hw_rxhdr *hw_rxhdr, int len)
 #endif
 
     (void)counter;
-	if (ieee80211_is_beacon(mgmt->frame_control)) {
+    if (ieee80211_is_beacon(mgmt->frame_control)) {
 #if 0
         os_printf("[RX] %04X BCN Received, freq %u, rssi %d\r\n",
                 mgmt->frame_control,

@@ -14,10 +14,10 @@ COMPONENT_ADD_INCLUDEDIRS += bl602_std/StdDriver/Inc \
 							 bl602_std/Common/ring_buffer \
 
 ## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS :=							 
+COMPONENT_PRIV_INCLUDEDIRS :=
 
 
-## This component's src 
+## This component's src
 COMPONENT_SRCS := bl602_std/StdDriver/Src/bl602_uart.c \
                   bl602_std/StdDriver/Src/bl602_adc.c \
                   bl602_std/StdDriver/Src/bl602_sec_eng.c \
@@ -53,7 +53,7 @@ COMPONENT_SRCS := bl602_std/StdDriver/Src/bl602_uart.c \
                   bl602_std/Common/platform_print/platform_gpio.c \
                   bl602_std/Common/ring_buffer/ring_buffer.c \
                   bl602_std/RISCV/Device/Bouffalo/BL602/Startup/interrupt.c
-                  
+
 ifeq ($(CONFIG_BL602_USE_ROM_DRIVER),0)
 COMPONENT_SRCS += bl602_std/StdDriver/Src/bl602_sf_ctrl.c \
                   bl602_std/StdDriver/Src/bl602_sflash.c \
@@ -61,7 +61,7 @@ COMPONENT_SRCS += bl602_std/StdDriver/Src/bl602_sf_ctrl.c \
                   bl602_std/StdDriver/Src/bl602_xip_sflash.c \
                   bl602_std/StdDriver/Src/bl602_sf_cfg.c \
                   bl602_std/StdDriver/Src/bl602_sf_cfg_ext.c \
-                  
+
 else
 COMPONENT_SRCS += bl602_std/StdDriver/Src/bl602_romapi.c \
                   bl602_std/StdDriver/Src/bl602_sflash_ext.c \
@@ -70,7 +70,7 @@ COMPONENT_SRCS += bl602_std/StdDriver/Src/bl602_romapi.c \
 endif
 
 ifeq ($(CONFIG_BL602_USE_BSP_PARTITION),1)
-COMPONENT_SRCS += bl602_std/Common/partition/partition.c 
+COMPONENT_SRCS += bl602_std/Common/partition/partition.c
 endif
 
 ifeq ($(CONFIG_BL602_USE_BSP_STARTUP),1)

@@ -48,7 +48,7 @@ void TCP_Server(void *pvParameters)
     char *data_buffer;
     int yes = 1;
     int connect_time[MAXCLIENTNUM];
-    
+
     int time_cur, time_diff[MAXCLIENTNUM], time_last[MAXCLIENTNUM];
     fd_set fdsr;
     int maxsock;
@@ -63,7 +63,7 @@ void TCP_Server(void *pvParameters)
     memset(time_diff, 0, sizeof(time_diff));
     memset(time_last, 0, sizeof(time_last));
     memset(connect_time, 0, sizeof(connect_time));
-    
+
 
     if ((listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP) < 0)) {
         printf("socket creat failed\r\n");
@@ -87,7 +87,7 @@ void TCP_Server(void *pvParameters)
     }
 
     if (listen(listening_socket, MAXCLIENTNUM) < 0) {
-    	printf("listen failed\r\n");
+        printf("listen failed\r\n");
         goto Failed;
     }
 
@@ -169,7 +169,7 @@ void TCP_Server(void *pvParameters)
                 }
             }
         }
-        /*client connect require*/ 
+        /*client connect require*/
         if (FD_ISSET(listening_socket, &fdsr)) {
             if ((new_connection = accept(listening_socket, (struct sockaddr *)&client_addr, &client_addrlen)) <= 0) {
                 printf("accept failed\r\n");
@@ -178,7 +178,7 @@ void TCP_Server(void *pvParameters)
                 printf("new_sock:%d\r\n", new_connection);
             }
 
-            printf("We successfully got a connection from %s:%d\r\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));    
+            printf("We successfully got a connection from %s:%d\r\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
             printf("We are waiting to receive data\r\n");
 
             if (con_amount < MAXCLIENTNUM) {
@@ -196,7 +196,7 @@ void TCP_Server(void *pvParameters)
                         break;
                     }
                 }
-            } else { 
+            } else {
                 printf("Max connections arrived!\r\n");
                 send(new_connection, "Bye", 4, 0);
                 closesocket(new_connection);
@@ -221,13 +221,13 @@ static void cmd_tcp_server(char *buf, int len, int argc, char **argv)
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "tcps", "create a tcp server for in a new task", cmd_tcp_server},
-};                                                                                   
+};
 
 int network_netutils_tcpserver_cli_register()
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

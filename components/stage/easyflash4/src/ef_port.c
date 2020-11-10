@@ -75,7 +75,7 @@ EfErrCode ef_port_init(ef_env const **default_env, size_t *default_env_size) {
     printf("*default_env_size = 0x%08x\r\n", *default_env_size);
 
     env_cache_lock = xSemaphoreCreateMutex();
-    
+
     return EF_NO_ERR;
 }
 
@@ -98,7 +98,7 @@ EfErrCode ef_port_read(uint32_t addr, uint32_t *buf, size_t size) {
     if (bl_mtd_read(handle, addr, size, (uint8_t*)buf) < 0) {
         result = EF_READ_ERR;
     }
-    
+
     return result;
 }
 
@@ -140,7 +140,7 @@ EfErrCode ef_port_write(uint32_t addr, const uint32_t *buf, size_t size) {
     EfErrCode result = EF_NO_ERR;
 
     //EF_ASSERT(size % 4 == 0);
-    
+
     /* You can add your code under here. */
     if (bl_mtd_write(handle, addr, size, (const uint8_t*)buf) < 0) {
         result = EF_WRITE_ERR;
@@ -153,7 +153,7 @@ EfErrCode ef_port_write(uint32_t addr, const uint32_t *buf, size_t size) {
  * lock the ENV ram cache
  */
 void ef_port_env_lock(void) {
-    
+
     /* You can add your code under here. */
     xSemaphoreTake( env_cache_lock,
                  portMAX_DELAY );
@@ -163,7 +163,7 @@ void ef_port_env_lock(void) {
  * unlock the ENV ram cache
  */
 void ef_port_env_unlock(void) {
-    
+
     /* You can add your code under here. */
     xSemaphoreGive( env_cache_lock );
 }
@@ -210,7 +210,7 @@ void ef_log_info(const char *format, ...) {
 
     /* You can add your code under here. */
     vprint(format, args);
-    
+
     va_end(args);
 }
 /**
@@ -227,6 +227,6 @@ void ef_print(const char *format, ...) {
 
     /* You can add your code under here. */
     vprint(format, args);
-    
+
     va_end(args);
 }

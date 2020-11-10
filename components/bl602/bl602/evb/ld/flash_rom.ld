@@ -72,7 +72,7 @@ SECTIONS
     _bl_static_blogpri_code_end = .;
 
     *(.gnu.linkonce.r.*)
-    
+
     /*Framework table section, use ALIGN here to avoid fill section*/
     . = ALIGN(4);
     _rom_framework_audio_device_start = .;
@@ -136,7 +136,7 @@ SECTIONS
     *(.srodata.cst4)
     *(.srodata.cst2)
     *(.srodata .srodata.*)
-    
+
     . = ALIGN(8);
     *(._k_queue.static.*)
     *(._k_sem.static.*)
@@ -213,7 +213,7 @@ SECTIONS
 
   /*BOOT2 sections*/
   PROVIDE ( __boot2_pt_addr_src = BOOT2_PT_ADDR );
-  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR ); 
+  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR );
 
   PROVIDE(xTaskGetTickCount = 0x0000000021017694);
   PROVIDE(xTaskGetTickCountFromISR = 0x00000000210176aa);
@@ -269,7 +269,7 @@ SECTIONS
   PROVIDE(vTaskStartScheduler = 0x0000000021017610);
   PROVIDE(vPortDefineHeapRegions = 0x00000000210197da);
   PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
-  
+
   PROVIDE( _ld_symbol_rom_framework_audio_device_start = _rom_framework_audio_device_start);
   PROVIDE( _ld_symbol_rom_framework_audio_device_end = _rom_framework_audio_device_end);
 

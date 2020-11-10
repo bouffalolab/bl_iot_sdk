@@ -100,7 +100,7 @@ int32_t hal_gpio_output_toggle(gpio_dev_t *gpio);
 int32_t hal_gpio_input_get(gpio_dev_t *gpio, uint8_t *value);
 
 /**
- * Set the GPIO pulltype 
+ * Set the GPIO pulltype
  *
  * @param[in]  gpio the gpio pin which should be set
  * @param[in]  pulltype the gpio pulltype value

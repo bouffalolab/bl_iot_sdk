@@ -9,4 +9,4 @@
 #define true    1
 #define false   0
 
-#endif				/* _STDBOOL_H */
+#endif              /* _STDBOOL_H */

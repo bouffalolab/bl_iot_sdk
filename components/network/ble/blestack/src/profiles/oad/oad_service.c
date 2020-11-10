@@ -1,24 +1,24 @@
 #include "byteorder.h"
 #include "oad_service.h"
 #include "oad.h"
- 
+
 oad_upper_recv_cb upper_recv_cb;
 
 static int oad_recv(struct bt_conn *conn,
-			  const struct bt_gatt_attr *attr, const void *buf,
-			  u16_t len, u16_t offset, u8_t flags)
+              const struct bt_gatt_attr *attr, const void *buf,
+              u16_t len, u16_t offset, u8_t flags)
 {
     (upper_recv_cb)(conn, buf, len);
     return 0;
 }
 
 static ssize_t oad_ccc_write(struct bt_conn *conn,
-			       const struct bt_gatt_attr *attr,
-			       const void *buf, u16_t len,
-			       u16_t offset, u8_t flags)
+                   const struct bt_gatt_attr *attr,
+                   const void *buf, u16_t len,
+                   u16_t offset, u8_t flags)
 {
     uint16_t *value = attr->user_data;
-    
+
     if(len != sizeof(*value)){
         return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
     }
@@ -29,8 +29,8 @@ static ssize_t oad_ccc_write(struct bt_conn *conn,
 }
 
 static ssize_t oad_ccc_read(struct bt_conn *conn,
-			      const struct bt_gatt_attr *attr,
-			      void *buf, u16_t len, u16_t offset)
+                  const struct bt_gatt_attr *attr,
+                  void *buf, u16_t len, u16_t offset)
 {
     u16_t *value = attr->user_data;
 
@@ -52,7 +52,7 @@ static struct bt_gatt_attr oad_attrs[] = {
 
 static struct bt_gatt_service oad_svc = BT_GATT_SERVICE(oad_attrs);
 
-void bt_oad_notify(struct bt_conn *conn, const void *data, u16_t len)  
+void bt_oad_notify(struct bt_conn *conn, const void *data, u16_t len)
 {
     bt_gatt_notify(conn, &oad_attrs[2], data, len);
 }

@@ -145,9 +145,9 @@ typedef enum {
   ACC_SYSGPIOREAD,
   ACC_DELETEAP,
   ACC_OTA,
-	ACC_BLESYNC,
+    ACC_BLESYNC,
   ACC_CIPSTA_IP,
-	ACC_CIPSTA_IP_GET,
+    ACC_CIPSTA_IP_GET,
 } AT_CALLBACK_CMD;
 
 ////////////////////////////////////////////////////
@@ -495,9 +495,9 @@ typedef struct {
     at_client_ssl_path_para_t client_ssl_path_cfg;
     at_client_ssl_sni_t client_ssl_sni_cfg;
     at_client_ssl_alpn_t client_ssl_alpn_cfg;
-    
+
     at_ble_sync_mode_t ble_sync_mode;
-    
+
     struct {
       int ID;
       int mode;

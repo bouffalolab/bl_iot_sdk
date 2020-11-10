@@ -134,7 +134,7 @@ void             raw_recv       (struct raw_pcb *pcb, raw_recv_fn recv, void *re
 #define raw_get_multicast_ttl(pcb)              ((pcb)->mcast_ttl)
 #endif /* LWIP_MULTICAST_TX_OPTIONS */
 
-#if LWIP_STATS 
+#if LWIP_STATS
 struct raw_pcb *raw_get_pcbs(void);
 #endif
 

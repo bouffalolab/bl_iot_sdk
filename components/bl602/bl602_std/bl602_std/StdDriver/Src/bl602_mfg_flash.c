@@ -121,7 +121,7 @@ void mfg_flash_write_xtal_capcode(void)
 }
 
 int8_t mfg_flash_read_xtal_capcode(uint8_t *capcode,uint8_t reload)
-{    
+{
     if((reload!=0)&&(mfg_flash_read()!=0)){
         return -1;
     }

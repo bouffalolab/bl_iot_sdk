@@ -16,11 +16,11 @@
 int bt_mesh_model_subscribe_group_addr(u16_t elem_addr, u16_t cid,
                                        u16_t mod_id, u16_t group_addr)
 {
-	return -ENOMEM;
+    return -ENOMEM;
 }
 
 int bt_mesh_model_unsubscribe_group_addr(u16_t elem_addr, u16_t cid,
                                          u16_t mod_id, u16_t group_addr)
 {
-	return -ENODEV;
+    return -ENODEV;
 }

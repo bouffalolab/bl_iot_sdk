@@ -14,7 +14,7 @@
 #define BT_MESH_PROXY_PROV      0x03
 
 int bt_mesh_proxy_send(struct bt_conn *conn, u8_t type,
-		       struct net_buf_simple *msg);
+               struct net_buf_simple *msg);
 
 int bt_mesh_proxy_prov_enable(void);
 int bt_mesh_proxy_prov_disable(bool disconnect);

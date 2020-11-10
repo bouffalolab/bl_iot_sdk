@@ -106,4 +106,4 @@ int bl_ble_sync_start(bl_ble_sync_t *index,
 
 int bl_ble_sync_stop(bl_ble_sync_t *index);
 
-#endif 
+#endif

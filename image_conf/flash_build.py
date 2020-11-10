@@ -54,7 +54,7 @@ def bl_find_file_list(key_val, endswith):
 
 
 def bl_find_file(key_val, endswith):
-    conf_path = os.path.join(app_path, "img_conf") 
+    conf_path = os.path.join(app_path, "img_conf")
     if os.path.exists(conf_path):
         files = os.listdir(conf_path)
         for f in files:
@@ -87,15 +87,15 @@ class bl_efuse_boothd_gen():
         crcarray = self.utils.get_crc32_bytearray(pll_cfg)
         bootheader_data[pll_cfg_start + pll_cfg_len - 4:pll_cfg_start + pll_cfg_len] = crcarray
         return bootheader_data
-    
-    
+
+
     def get_int_mask(self, pos, length):
         ones = "1" * 32
         zeros = "0" * 32
         mask = ones[0:32 - pos - length] + zeros[0:length] + ones[0:pos]
         return int(mask, 2)
-    
-    
+
+
     def update_data_from_cfg(self, config_keys, config_file, section):
         cfg = BFConfigParser()
         cfg.read(config_file)
@@ -120,7 +120,7 @@ class bl_efuse_boothd_gen():
             offset = int(config_keys.get(key)["offset"], 10)
             pos = int(config_keys.get(key)["pos"], 10)
             bitlen = int(config_keys.get(key)["bitlen"], 10)
-    
+
             oldval = self.utils.bytearray_to_int(self.utils.bytearray_reverse(data[offset:offset + 4]))
             oldval_mask = self.utils.bytearray_to_int(self.utils.bytearray_reverse(data_mask[offset:offset + 4]))
             newval = (oldval & self.get_int_mask(pos, bitlen)) + (val << pos)
@@ -131,8 +131,8 @@ class bl_efuse_boothd_gen():
             data[offset:offset + 4] = self.utils.int_to_4bytearray_l(newval)
             data_mask[offset:offset + 4] = self.utils.int_to_4bytearray_l(newval_mask)
         return data, data_mask
-    
-    
+
+
     def bootheader_create_do(self, chipname, chiptype, config_file, section, output_file=None, if_img=False):
         efuse_bootheader_path = os.path.join(app_path, bin_build_out_path)
         try:
@@ -174,7 +174,7 @@ class bl_efuse_boothd_gen():
             print("bootheader_create_do  fail!!")
             print(err)
             traceback.print_exc(limit=5, file=sys.stdout)
-    
+
     def bootheader_create_process(self, chipname, chiptype, config_file, output_file1=None, output_file2=None, if_img=False):
         fp = open(config_file, 'r')
         data = fp.read()
@@ -185,8 +185,8 @@ class bl_efuse_boothd_gen():
             self.bootheader_create_do(chipname, chiptype, config_file, "BOOTHEADER_CPU0_CFG", output_file1, if_img)
         if "BOOTHEADER_CPU1_CFG" in data:
             self.bootheader_create_do(chipname, chiptype, config_file, "BOOTHEADER_CPU1_CFG", output_file2, if_img)
-    
-    
+
+
     def efuse_create_process(self, chipname, chiptype, config_file, output_file=None):
         efuse_file = os.path.join(app_path, bin_build_out_path, "efusedata.bin")
         # sub_module = __import__("efuse_cfg_keys.py", fromlist=[chiptype])
@@ -205,36 +205,36 @@ class bl_efuse_boothd_gen():
             fp = open(output_file.replace(".bin", "_mask.bin"), 'wb+')
         fp.write(mask)
         fp.close()
-    
+
     def efuse_boothd_create_process(self, chipname, chiptype, config_file):
         self.bootheader_create_process(chipname, chiptype, config_file)
         self.efuse_create_process(chipname, chiptype, config_file)
 
 class bl_utils():
-    
+
     #12345678->0x12,0x34,0x56,0x78
     def hexstr_to_bytearray_b(self, hexstring):
         return bytearray.fromhex(hexstring)
-    
-    
+
+
     def hexstr_to_bytearray(self, hexstring):
         return bytearray.fromhex(hexstring)
-    
-    
+
+
     def hexstr_to_bytearray_l(self, hexstring):
         b = bytearray.fromhex(hexstring)
         b.reverse()
         return b
-    
-    
+
+
     def int_to_2bytearray_l(self, intvalue):
         return struct.pack("<H", intvalue)
-    
-    
+
+
     def int_to_2bytearray_b(self, intvalue):
         return struct.pack(">H", intvalue)
-    
-    
+
+
     def int_to_4bytearray_l(self, intvalue):
         src = bytearray(4)
         src[3] = ((intvalue >> 24) & 0xFF)
@@ -242,14 +242,14 @@ class bl_utils():
         src[1] = ((intvalue >> 8) & 0xFF)
         src[0] = ((intvalue >> 0) & 0xFF)
         return src
-    
-    
+
+
     def int_to_4bytearray_b(self, intvalue):
         val = int_to_4bytearray_l(intvalue)
         val.reverse()
         return val
-    
-    
+
+
     def bytearray_reverse(self, a):
         l = len(a)
         b = bytearray(l)
@@ -258,20 +258,20 @@ class bl_utils():
             b[i] = a[l - i - 1]
             i = i + 1
         return b
-    
-    
+
+
     def bytearray_to_int(self, b):
         return int(binascii.hexlify(b), 16)
-    
-    
+
+
     def string_to_bytearray(self, string):
         return bytes(string, encoding="utf8")
-    
-    
+
+
     def bytearray_to_str(self, bytesarray):
         return str(bytesarray)
-    
-    
+
+
     def get_random_hexstr(self, n_bytes):
         hextring = ""
         i = 0
@@ -279,13 +279,13 @@ class bl_utils():
             hextring = hextring + str(binascii.hexlify(random.randint(0, 255)))
             i = i + 1
         return hextring
-    
-    
+
+
     def get_crc32_bytearray(self, data):
         crc = binascii.crc32(data)
         return self.int_to_4bytearray_l(crc)
-    
-    
+
+
     def copyfile(self, srcfile, dstfile):
         if os.path.isfile(srcfile):
             fpath, fname = os.path.split(dstfile)
@@ -295,30 +295,30 @@ class bl_utils():
         else:
             print("Src file not exists")
             sys.exit()
-    
+
     def enable_udp_send_log(self, server,local_echo):
         global udp_send_log,udp_socket_server,upd_log_local_echo
         udp_send_log=True
         upd_log_local_echo=local_echo
         udp_socket_server=server
-        
+
     def add_udp_client(self, tid,upd_client):
         udp_clinet_dict[tid]=upd_client
-    
+
     def remove_udp_client(self, tid):
         del udp_clinet_dict[tid]
-    
+
     def Update_Cfg(self, cfg, section, key, value):
         if cfg.has_option(section, key):
             cfg.set(section, key, str(value))
         else:
             #print key," not found,adding it"
             cfg.set(section, key, str(value))
-    
-    
+
+
     def get_byte_array(self, str):
         return str.encode("utf-8")
-    
+
 #class BFConfigParser(configparser.ConfigParser):
 #    def __init__(self, defaults=None):
 #        configparser.ConfigParser.__init__(self, defaults=defaults)
@@ -891,7 +891,7 @@ class bl_img_create_do(bl_utils):
             # will  something like "option -a not recognized")
             print(err)
             usage()
-            
+
 
         if img_type == "media":
             flash_img = 1
@@ -1028,7 +1028,7 @@ class bl_whole_img_generate():
         # python bflb_img_create.py -c np -i media -s none
         f = self.bl_image_gen_cfg(raw_bin_name, bintype)
         #exe_genitor(['bflb_img_create.exe', '-c', 'np', '-i', 'media', '-s', 'none'])
-        img_create = bl_img_create() 
+        img_create = bl_img_create()
         img_create.create_sp_media_image_file(f)
 
     def bl_fw_boot_head_gen(self, boot2, xtal, config, encrypt=False, chipname="bl60x", chiptype="bl60x", cpu_type=None):
@@ -1065,13 +1065,13 @@ class bl_whole_img_generate():
         create.efuse_boothd_create_process(chipname, chiptype, config)
 
     def bl_whole_flash_bin_create(self, bin_file, boot2, ro_params, pt_parcel, media, mfg, flash_opt="1M"):
-       
+
         d_files = []
         d_addrs = []
 
         if pt_parcel == None:
             return False
-        
+
         if boot2 == True:
             d_files.append(os.path.join(app_path, bin_build_out_path, "bootinfo_boot2.bin"))
             d_addrs.append("00000000")
@@ -1255,7 +1255,7 @@ class bl_img_ota():
             for b in file_bytes:
                 fw_ota_bin.append(b)
         fw_ota_bin_header = self.bl_mfg_ota_header(fw_ota_bin, use_xz=0)
-        
+
         FW_OTA_path = os.path.join(app_path, bin_build_out_path, "ota")
         if not os.path.exists(FW_OTA_path):
             os.makedirs(FW_OTA_path)

@@ -182,7 +182,7 @@ void print_mem_map(void)
     uint32_t val;
     uint32_t len;
     char keybuf[5];
-    
+
     printf("|head-64bytes|\r\n");
     memset(keybuf, 0, 5);
     paddr = (uint8_t *)(HBNRAM_ADDRESS + HBNRAM_HEAD_SIZE);
@@ -325,11 +325,11 @@ int hal_hbnram_buffer_set(const char *key, uint8_t *buf, int length)
     if (length > area_size) {
         printf("length is too big than alloc size\r\n");
         return -1;
-    } 
+    }
 
     if (length % 4 != 0) {
         count = length % 4;
-        if (length > 4) {    
+        if (length > 4) {
             mem_fourbytes_copy(phead + BUF_HEAD_SIZE, buf, length - count);
             memcpy(tmpbuf, buf + length - count, count);
             mem_fourbytes_copy(phead + BUF_HEAD_SIZE + length - count, tmpbuf, 4);
@@ -340,7 +340,7 @@ int hal_hbnram_buffer_set(const char *key, uint8_t *buf, int length)
     } else {
        mem_fourbytes_copy(phead + BUF_HEAD_SIZE, buf, length);
     }
-  
+
     sha_check_withctx((uint8_t*)HBNRAM_DATA_ADDR, output, BL_SHA256, SHA_DATA_SIZE, HBNRAM_DATA_SIZE);
     mem_fourbytes_copy((uint8_t *)(HBNRAM_ADDRESS + MAGIC_SIZE), output, HASH128_SIZE);
 
