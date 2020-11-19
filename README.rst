@@ -44,13 +44,19 @@ Call ::
 
     make CONFIG_TOOLPREFIX=riscv64-linux-gnu-
 
-for bypassing the bundled cross-compiler and using your distribution's own
+if you wish to bypass the bundled cross-compiler and using your distribution's own
 cross-compiler.
 
 There is a linker script (written in python) at `image_conf/flash_build.py`.
 To run this, you need to specify the application and the target, for example::
 
     python3 flash_build.py bl602_boot2 bl602
+
+**Note:** If you decide to copy any project outside of the `customer_app` folder,
+you will need to define a few variables in order to compile it::
+
+   export BL60X_SDK_PATH=/path/to/this/repo
+   export CONFIG_CHIP_NAME=bl602 
 
 Hardware
 --------
