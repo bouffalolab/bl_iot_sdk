@@ -1,6 +1,12 @@
-.PHONY: app
+.PHONY: app clean
 
-app:
-	find . -maxdepth 2 -mindepth 2 -type d -execdir ./genromap {} \;
+DIRECTORIES := $(wildcard */)
+
+app: $(DIRECTORIES)
+
+$(DIRECTORIES)::
+	echo building $@...
+	cd $@ && ./genromap
+
 clean:
-	find . -name build_out|xargs rm -rf
+	find . -name build_out | xargs rm -rf
