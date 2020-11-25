@@ -281,7 +281,7 @@ $(2)/%.o: $$(COMPONENT_PATH)/$(1)/%.c $(COMMON_MAKEFILES) $(COMPONENT_MAKEFILE) 
 
 $(2)/%.o: $$(COMPONENT_PATH)/$(1)/%.cpp $(COMMON_MAKEFILES) $(COMPONENT_MAKEFILE) | $(COMPONENT_OBJDIRS)
 	$$(summary) CXX $$(patsubst $$(PWD)/%,%,$$(CURDIR))/$$@
-	$$(CXX) $$(CFLAGS) $$(CXXFLAGS) -D __FILENAME__=\"$$(notdir $$<)\" -D __FILENAME_WO_SUFFIX__=\"$$(subst .c,,$$(notdir $$<))\" -D __FILENAME_WO_SUFFIX_DEQUOTED__=$$(subst .c,,$$(notdir $$<)) -D __COMPONENT_NAME__=\"$$(COMPONENT_NAME)\" -D __COMPONENT_NAME_DEQUOTED__=$$(COMPONENT_NAME) -D __COMPONENT_FILE_NAME__=\"$$(COMPONENT_NAME)$$(subst .c,,$$(notdir $$<))\" -D__COMPONENT_FILE_NAMED__=$$(COMPONENT_NAME).$$(subst .c,,$$(notdir $$<)) -D__COMPONENT_FILE_NAME_DEQUOTED__=$$(COMPONENT_NAME)$$(subst .c,,$$(notdir $$<)) $$(CPPFLAGS) $$(addprefix -I ,$$(COMPONENT_INCLUDES)) $$(addprefix -I ,$$(COMPONENT_EXTRA_INCLUDES)) -I $(1) -c $$(abspath $$<) -o $$@
+	$$(CXX) $$(CXXFLAGS) $$(CPPFLAGS) -D __FILENAME__=\"$$(notdir $$<)\" -D __FILENAME_WO_SUFFIX__=\"$$(subst .c,,$$(notdir $$<))\" -D __FILENAME_WO_SUFFIX_DEQUOTED__=$$(subst .c,,$$(notdir $$<)) -D __COMPONENT_NAME__=\"$$(COMPONENT_NAME)\" -D __COMPONENT_NAME_DEQUOTED__=$$(COMPONENT_NAME) -D __COMPONENT_FILE_NAME__=\"$$(COMPONENT_NAME)$$(subst .c,,$$(notdir $$<))\" -D__COMPONENT_FILE_NAMED__=$$(COMPONENT_NAME).$$(subst .c,,$$(notdir $$<)) -D__COMPONENT_FILE_NAME_DEQUOTED__=$$(COMPONENT_NAME)$$(subst .c,,$$(notdir $$<)) $$(CPPFLAGS) $$(addprefix -I ,$$(COMPONENT_INCLUDES)) $$(addprefix -I ,$$(COMPONENT_EXTRA_INCLUDES)) -I $(1) -c $$(abspath $$<) -o $$@
 	$(call AppendSourceToDependencies,$$<,$$@)
 
 $(2)/%.o: $$(COMPONENT_PATH)/$(1)/%.cc $(COMMON_MAKEFILES) $(COMPONENT_MAKEFILE) | $(COMPONENT_OBJDIRS)

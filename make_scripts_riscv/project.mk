@@ -341,8 +341,11 @@ CFLAGS := $(strip \
 	-save-temps=obj
 
 CXXFLAGS := $(strip \
-	$(CPPFLAGS) \
-	$(OPTIMIZATION_FLAGS) \
+	-std=c++11 \
+	$(OPTIMIZATION_FLAGS) $(DEBUG_FLAGS) \
+	$(COMMON_FLAGS) \
+	$(COMMON_WARNING_FLAGS) \
+	$(CXXFLAGS) \
 	$(E21_CPU_CFLAGS) \
 	-nostdlib \
 	-g3 \
@@ -357,7 +360,9 @@ CXXFLAGS := $(strip \
 	-Wswitch-default \
 	-Wunused \
 	-Wundef \
-	-fno-rtti -fno-exceptions)
+	-fno-rtti -fno-exceptions \
+	-save-temps=obj \
+	)
 
 export CFLAGS CPPFLAGS CXXFLAGS ASMFLAGS
 

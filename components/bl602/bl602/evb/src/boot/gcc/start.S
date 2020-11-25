@@ -119,6 +119,27 @@ bl602_start:
 	sd ra, 8(sp)
 #endif
 
+// call global obj constructors
+    la s1, __preinit_array_start
+    la s2, __preinit_array_end
+    li s3, 4
+1:
+    bgeu s1, s2, 2f
+    lw a3, (s1)
+    jalr a3
+    add s1, s1, s3
+    j 1b
+2:
+    la s1, __init_array_start
+    la s2, __init_array_end
+    li s3, 4
+1:
+    bgeu s1, s2, 2f
+    lw a3, (s1)
+    jalr a3
+    add s1, s1, s3
+    j 1b
+2:
 	/* argc = argv = 0 */
 	li a0, 0
 	li a1, 0
