@@ -67,6 +67,23 @@ SECTIONS
 
     *(.gnu.linkonce.r.*)
   } > flash
+  
+  .preinit_array :
+  {
+    . = ALIGN(4);
+    __preinit_array_start = .;
+    KEEP (*(.preinit_array))
+    __preinit_array_end = .;
+  } > flash
+
+  .init_array :
+  {
+    . = ALIGN(4);
+    __init_array_start = .;
+    KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+    KEEP (*(.init_array))
+    __init_array_end = .;
+  } > flash
 
   /*put wifibss in the first place*/
   .wifibss         (NOLOAD) :
