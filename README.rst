@@ -69,6 +69,15 @@ you will need to define a few variables in order to compile it::
    export BL60X_SDK_PATH=/path/to/this/repo
    export CONFIG_CHIP_NAME=bl602 
 
+Docker
+====
+
+To set up a development environment in Docker, and do a full build of all the example projects, using the bundled toolchain::
+
+    docker build -t bl602sdk -f Dockerfile.bundled
+    docker run -t -i --rm bl602sdk
+    # make
+
 Hardware
 --------
 BL602 is a 32-bit RISC-V based combo chipset supporting Wi-Fi and BLE (Bluetooth
