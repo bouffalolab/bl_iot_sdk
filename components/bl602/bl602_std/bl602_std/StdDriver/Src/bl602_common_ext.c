@@ -27,7 +27,7 @@
 
 /** @defgroup DRIVER_Private_Variables
  *  @{
- */                               
+ */
 
 /*@} end of group DRIVER_Private_Variables */
 

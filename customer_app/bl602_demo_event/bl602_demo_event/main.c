@@ -173,7 +173,7 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
 
     if(xExpectedIdleTime_ms + xTaskGetTickCount() == portMAX_DELAY){
         freertos_max_idle = true;
-    }else{   
+    }else{
         xExpectedIdleTime_ms -= 1;
         expectedIdleTime_32768cycles = 32768 * xExpectedIdleTime_ms / 1000;
     }
@@ -189,7 +189,7 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
     if(eSleepStatus == eAbortSleep || ble_controller_sleep_is_ongoing())
     {
         /*A task has been moved out of the Blocked state since this macro was
-        executed, or a context siwth is being held pending.Restart the tick 
+        executed, or a context siwth is being held pending.Restart the tick
         and exit the critical section. */
         /*Enable mtimer interrrupt*/
         *(volatile uint8_t*)configCLIC_TIMER_ENABLE_ADDRESS = 1;
@@ -199,9 +199,9 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
 
     bleSleepDuration_32768cycles = ble_controller_sleep();
 
-	if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
+    if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
     {
-        /*BLE controller does not allow sleep.  Do not enter a sleep state.Restart the tick 
+        /*BLE controller does not allow sleep.  Do not enter a sleep state.Restart the tick
         and exit the critical section. */
         /*Enable mtimer interrrupt*/
         //printf("%s:not do pds sleep\r\n", __func__);
@@ -992,7 +992,7 @@ static void cmd_align(char *buf, int len, int argc, char **argv)
     if (!testbuf) {
         log_error("mem error.\r\n");
     }
- 
+
     memset(testbuf, 0xEE, 1024);
     for (i = 0; i < 32; i++) {
         testbuf[i] = i;
@@ -1131,7 +1131,7 @@ static void aos_loop_proc(void *pvParameters)
     uint32_t fdt = 0, offset = 0;
     static StackType_t proc_stack_looprt[512];
     static StaticTask_t proc_task_looprt;
-    
+
     /*Init bloop stuff*/
     looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
     loopset_led_hook_on_looprt();
@@ -1202,7 +1202,7 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
     /* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
     Note that, as the array is necessarily of type StackType_t,
     configMINIMAL_STACK_SIZE is specified in words, not bytes. */
-    //*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE; 
+    //*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
     *pulIdleTaskStackSize = 512;//size 512 words is For ble pds mode, otherwise stack overflow of idle task will happen.
 }
 

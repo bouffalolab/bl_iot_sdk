@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import time
 import re
-import serial  
+import serial
 from tiny_test_fw import DUT, App, TinyFW
 from ttfw_bl import BL602App, BL602DUT
 
@@ -19,7 +19,7 @@ def sdk_app_uart_echo_tc(env, extra_data):
 
     try:
 
-        ser = serial.Serial('/dev/ttyUSB2', 115200, timeout=0.5)   
+        ser = serial.Serial('/dev/ttyUSB2', 115200, timeout=0.5)
         time.sleep(1)
         #dut.write('reboot')
         dut.expect("Booting BL602 Chip...", timeout=1)

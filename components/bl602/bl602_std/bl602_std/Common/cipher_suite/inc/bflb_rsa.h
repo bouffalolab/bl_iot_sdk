@@ -27,7 +27,7 @@ enum BFLB_RSA_PARA
     BFLB_RSA_PARA_DQ,
     BFLB_RSA_PARA_QP,
 };
-   
+
 typedef struct tag_bflb_rsa_handle_t
 {
     bflb_rsa_ctx_t rsa_ctx;
@@ -41,7 +41,7 @@ int32_t bflb_rsa_sign( bflb_rsa_handle_t *rsa_handle,const uint8_t *hash,
                             uint8_t hashlen,uint8_t hashtype,uint8_t *sig,uint32_t *slen);
 int32_t bflb_rsa_verify( bflb_rsa_handle_t *rsa_handle,const uint8_t *hash,
                             uint8_t hashlen,uint8_t hashtype,const uint8_t *sig,uint32_t slen);
-                            
+
 int32_t bflb_rsa_deinit( bflb_rsa_handle_t *rsa_handle);
 
 #endif

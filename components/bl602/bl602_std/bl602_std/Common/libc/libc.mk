@@ -5,7 +5,7 @@ SUB_MODULE_OUT_DIR:= $(MODULE_OUT_DIR)/libc
 SUB_MODULE_SRC_DIR := $(SUB_MODULE_DIR)/src
 
 COMMON_INCLUDE += -I $(MODULE_DIR)/libc/inc
-                  
+
 libc_sources :=  atof.c atoi.c atol.c
 libc_sources +=  atoll.c jrand48.c lrand48.c
 libc_sources +=  mrand48.c nrand48.c seed48.c

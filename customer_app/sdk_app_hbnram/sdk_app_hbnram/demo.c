@@ -51,10 +51,10 @@
 int print_hash128(void)
 {
     uint32_t *paddr;
-    
+
     int i = 0;
 
-    paddr = (uint32_t *)(hbnram_address + magic_size); 
+    paddr = (uint32_t *)(hbnram_address + magic_size);
     printf("hash128 \r\n");
     for (i = 0; i < 4; i++) {
         printf("%lu-", *paddr);
@@ -105,11 +105,11 @@ int test_hbnram1(void)
         printf("test_hbnram1 alloc failed \r\n");
         print_mem_map();
         return -1;
-    }        
+    }
 
     data_size = 15;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
-    hal_hbnram_buffer_get(test_key, recv_buf, data_size); 
+    hal_hbnram_buffer_get(test_key, recv_buf, data_size);
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data1 correct \r\n");
@@ -120,7 +120,7 @@ int test_hbnram1(void)
     data_size = 20;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data2 correct \r\n");
@@ -131,7 +131,7 @@ int test_hbnram1(void)
     data_size = 37;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data3 correct \r\n");
@@ -143,7 +143,7 @@ int test_hbnram1(void)
     data_size = 1;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data4 correct \r\n");
@@ -154,7 +154,7 @@ int test_hbnram1(void)
     data_size = 3;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data5 correct \r\n");
@@ -166,7 +166,7 @@ int test_hbnram1(void)
     data_size = 4;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data5 correct \r\n");
@@ -178,7 +178,7 @@ int test_hbnram1(void)
     data_size = 73;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data6 correct \r\n");
@@ -190,7 +190,7 @@ int test_hbnram1(void)
     data_size = 100;
     hal_hbnram_buffer_set(test_key, test_arr, data_size);
     hal_hbnram_buffer_get(test_key, recv_buf, data_size);
-    
+
     flag = memcmp(recv_buf, test_arr, data_size);
     if (flag == 0) {
         printf("data7 correct \r\n");
@@ -226,7 +226,7 @@ int test_hbnram2(void)
     int flag;
 
     print_hash128();
-    
+
 
     for (i = 0; i < 1000; i++) {
         test_buf[i] = i % 255;
@@ -283,7 +283,7 @@ int test_hbnram2(void)
         hal_hbnram_copy_from_stream(&test2_handle, recv_buf + 473, 400);
         hal_hbnram_copy_from_stream(&test2_handle, recv_buf + 873, 127);
 
-          
+
         flag = memcmp(test_buf, recv_buf, 1000);
         if (flag == 0) {
             printf("data-02 correct \r\n");
@@ -308,7 +308,7 @@ int test_hbnram2(void)
         print_hash128();
         //print_all_data();
 
-        memset(recv_buf, 0, 1000); 
+        memset(recv_buf, 0, 1000);
         hal_hbnram_alloc(test4_key, 1000);
         hal_hbnram_handle_get_fromkey(test4_key, &test4_handle);
         hal_hbnram_copy_to_stream(&test4_handle, test_buf, 1000);
@@ -348,7 +348,7 @@ int test_hbnram2(void)
     } else if (*(uint32_t *)hbnram_address == (uint32_t)magic_num) {
         printf("###############################\r\n");
         printf("not power down, just reboot \r\n");
-        
+
         hal_hbnram_init();
         memset(recv_buf, 0, 1000);
         hal_hbnram_handle_get_fromkey(test2_key, &test2_handle);
@@ -362,7 +362,7 @@ int test_hbnram2(void)
         }
         printf("reboot hash\r\n");
         print_hash128();
-         
+
         memset(recv_buf, 0, 1000);
         hal_hbnram_handle_get_fromkey(test3_key, &test3_handle);
         hal_hbnram_copy_from_stream(&test3_handle, recv_buf, 1000);
@@ -388,7 +388,7 @@ int test_hbnram2(void)
         }
         printf("reboot hash\r\n");
         print_hash128();
-                
+
         memset(recv_buf, 0, 1000);
         hal_hbnram_handle_get_fromkey(test5_key, &test5_handle);
         hal_hbnram_copy_from_stream(&test5_handle, recv_buf, 980);

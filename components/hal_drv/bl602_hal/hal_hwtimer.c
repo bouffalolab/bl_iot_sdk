@@ -39,9 +39,9 @@
 #include <task.h>
 #include <semphr.h>
 
-#define HW_TIMER_CHANNEL   TIMER_CH0  
+#define HW_TIMER_CHANNEL   TIMER_CH0
 #define HW_TIMER_IRQn      TIMER_CH0_IRQn
-#define HD_MS_TO_VAL       40000 
+#define HD_MS_TO_VAL       40000
 
 #ifdef HAL_USE_HW_TIMER
 struct hw_timer_ctx {
@@ -55,14 +55,14 @@ static void hwtimer_process(void *ctx)
     void (*handler)(void) = NULL;
     hw_timer_t tmpnode;
     struct hw_timer_ctx *pstctx;
-    
+
     pstctx = (struct hw_timer_ctx *)ctx;
     TIMER_IntMask(HW_TIMER_CHANNEL, TIMER_INT_ALL, MASK);
     TIMER_ClearIntStatus(HW_TIMER_CHANNEL, TIMER_COMP_ID_0);
 
-    
+
     utils_dlist_for_each_entry(pstctx->pstqueue, node, hw_timer_t, dlist_item) {
-        node->calc_time = node->calc_time + 1; 
+        node->calc_time = node->calc_time + 1;
         if (node->triggle_time <= node->calc_time) {
             handler = node->handler;
             if (node->repeat == 0) {
@@ -83,7 +83,7 @@ static void hwtimer_process(void *ctx)
 int hal_hwtimer_init(void)
 {
     struct hw_timer_ctx *pstctx;
-    TIMER_CFG_Type hw_timercfg = 
+    TIMER_CFG_Type hw_timercfg =
     {
         TIMER_CH0,                           /* timer channel 1 */
         TIMER_CLKSRC_XTAL,                    /* timer clock source:bus clock */
@@ -95,7 +95,7 @@ int hal_hwtimer_init(void)
         32000000,                            /* match value 2 */
         0,                                   /* preload value */
     };
-    
+
 
     pstctx = pvPortMalloc(sizeof(struct hw_timer_ctx));
     if (pstctx == NULL) {
@@ -119,7 +119,7 @@ int hal_hwtimer_init(void)
 
         return -1;
     }
-    
+
     GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
     TIMER_IntMask(hw_timercfg.timerCh,TIMER_INT_ALL, MASK);
     TIMER_Disable(hw_timercfg.timerCh);
@@ -134,7 +134,7 @@ int hal_hwtimer_init(void)
 }
 
 hw_timer_t *hal_hwtimer_create(uint32_t period, hw_t handler, int repeat)
-{ 
+{
     hw_timer_t *pstnode;
     struct hw_timer_ctx *pstctx;
 
@@ -143,14 +143,14 @@ hw_timer_t *hal_hwtimer_create(uint32_t period, hw_t handler, int repeat)
 
         return NULL;
     }
-    
+
     bl_irq_ctx_get(TIMER_CH0_IRQn, (void **)&pstctx);
     if( xSemaphoreTake(pstctx->hwtimer_mux, portMAX_DELAY) == pdTRUE ) {
         blog_info("get mux success \r\n");
     }
 
-    TIMER_IntMask(HW_TIMER_CHANNEL, TIMER_INT_ALL, MASK); 
-     
+    TIMER_IntMask(HW_TIMER_CHANNEL, TIMER_INT_ALL, MASK);
+
     pstnode = pvPortMalloc(sizeof(hw_timer_t));
     pstnode->triggle_time = period;
     pstnode->repeat = repeat;
@@ -168,7 +168,7 @@ int hal_hwtimer_delete(hw_timer_t *pstnode)
     hw_timer_t *node;
     int ret = 0;
     struct hw_timer_ctx *pstctx;
-    
+
     bl_irq_ctx_get(TIMER_CH0_IRQn, (void **)&pstctx);
     if( xSemaphoreTake(pstctx->hwtimer_mux, portMAX_DELAY) == pdTRUE ) {
         blog_info("get mux success \r\n");
@@ -189,7 +189,7 @@ int hal_hwtimer_delete(hw_timer_t *pstnode)
     if (ret == 0) {
         utils_dlist_del(&(node->dlist_item));
     }
-   
+
     TIMER_IntMask(HW_TIMER_CHANNEL, TIMER_INT_COMP_0, UNMASK);
     xSemaphoreGive(pstctx->hwtimer_mux);
     return ret;

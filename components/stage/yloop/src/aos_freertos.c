@@ -422,7 +422,7 @@ void *malloc(size_t size)
 #endif
 
 long long aos_now_ms(void)
-{          
+{
     long long ms;
     TickType_t ticks = 0;
     BaseType_t overflow_count = 0;
@@ -437,5 +437,5 @@ long long aos_now_ms(void)
     ms = ((long long)ticks) + ((TickType_t)(-1) * ((long long)overflow_count));
 
     return ms;
-}          
+}
 

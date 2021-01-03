@@ -57,11 +57,11 @@
 
 
 #define netifMTU                                (1500)
-#define netifINTERFACE_TASK_STACK_SIZE		( 350 )
-#define netifINTERFACE_TASK_PRIORITY		( configMAX_PRIORITIES - 1 )
-#define netifGUARD_BLOCK_TIME			( 250 )
+#define netifINTERFACE_TASK_STACK_SIZE      ( 350 )
+#define netifINTERFACE_TASK_PRIORITY        ( configMAX_PRIORITIES - 1 )
+#define netifGUARD_BLOCK_TIME           ( 250 )
 /* The time to block waiting for input. */
-#define emacBLOCK_TIME_WAITING_FOR_INPUT	( ( portTickType ) 100 )
+#define emacBLOCK_TIME_WAITING_FOR_INPUT    ( ( portTickType ) 100 )
 
 /* Define those to better describe your network interface. */
 #define IFNAME0 's'
@@ -103,8 +103,8 @@ static void low_level_init(struct netif *netif)
     xSemaphoreTake( s_xSemaphore, 0);
   }
 
-  /* initialize MAC address in ethernet MAC */ 
-  ETH_MACAddressConfig(ETH_MAC_Address0, netif->hwaddr); 
+  /* initialize MAC address in ethernet MAC */
+  ETH_MACAddressConfig(ETH_MAC_Address0, netif->hwaddr);
 
   /* Initialize Tx Descriptors list: Chain Mode */
   ETH_DMATxDescChainInit(DMATxDscrTab, &Tx_Buff[0][0], ETH_TXBUFNB);
@@ -112,7 +112,7 @@ static void low_level_init(struct netif *netif)
   ETH_DMARxDescChainInit(DMARxDscrTab, &Rx_Buff[0][0], ETH_RXBUFNB);
 
   /* Enable Ethernet Rx interrrupt */
-  { 
+  {
     for(i=0; i<ETH_RXBUFNB; i++)
     {
       ETH_DMARxDescReceiveITConfig(&DMARxDscrTab[i], ENABLE);
@@ -126,7 +126,7 @@ static void low_level_init(struct netif *netif)
     {
       ETH_DMATxDescChecksumInsertionConfig(&DMATxDscrTab[i], ETH_DMATxDesc_ChecksumTCPUDPICMPFull);
     }
-  } 
+  }
 #endif
 
   /* create the task that handles the ETH_MAC */
@@ -134,7 +134,7 @@ static void low_level_init(struct netif *netif)
               netifINTERFACE_TASK_PRIORITY,NULL);
 
     /* Enable MAC and DMA transmission and reception */
-    ETH_Start();   
+    ETH_Start();
 #endif
 }
 
@@ -158,7 +158,7 @@ static void low_level_init(struct netif *netif)
 static err_t low_level_output(struct netif *netif, struct pbuf *p)
 {
   static int count;
-  
+
   printf("---------------Sending packet(%d)\r\n", count++);
   return ERR_OK;
 }

@@ -191,6 +191,7 @@ static void aos_loop_proc(void *pvParameters)
         _cli_init();
     }
 
+
     aos_loop_run();
 
     puts("------------------------------------------\r\n");

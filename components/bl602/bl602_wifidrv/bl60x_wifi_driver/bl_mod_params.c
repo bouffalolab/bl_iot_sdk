@@ -70,7 +70,7 @@ struct bl_mod_params bl_mod_params = {
     // By default, only enable UAPSD for Voice queue (see IEEE80211_DEFAULT_UAPSD_QUEUE comment)
     COMMON_PARAM(uapsd_queues, IEEE80211_WMM_IE_STA_QOSINFO_AC_VO, IEEE80211_WMM_IE_STA_QOSINFO_AC_VO)
     COMMON_PARAM(tdls, false, false)
-    
+
     /* FULLMAC only parameters */
 };
 

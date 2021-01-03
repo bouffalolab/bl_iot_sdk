@@ -103,14 +103,14 @@ static int32_t BLSP_MediaBot_Cal_Hash(uint32_t startAddr,uint32_t totalLen)
     uint32_t addr=startAddr;
     int32_t ret;
     uint32_t dumpCnt=0;
-    
+
     while(dealLen<totalLen){
 
         readLen=totalLen-dealLen;
         if(readLen>BFLB_BOOT2_READBUF_SIZE){
             readLen=BFLB_BOOT2_READBUF_SIZE;
         }
-        
+
         ret=BLSP_MediaBoot_Read(addr,boot2ReadBuf,readLen);
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
@@ -124,7 +124,7 @@ static int32_t BLSP_MediaBot_Cal_Hash(uint32_t startAddr,uint32_t totalLen)
         /* Update hash*/
         Sec_Eng_SHA256_Update(&shaCtx,SEC_ENG_SHA_ID0,(uint8_t *)boot2ReadBuf,readLen);
         //BLSP_Dump_Data((uint8_t *)boot2ReadBuf,readLen);
-        
+
         addr+=readLen;
         dealLen+=readLen;
     }
@@ -145,7 +145,7 @@ static int32_t BLSP_MediaBoot_Read_Signature(uint32_t addr,uint32_t *len)
     int32_t ret=BFLB_BOOT2_SUCCESS;
     uint32_t sig_len;
     uint8_t *ptmp;
-    
+
     /* Read signature*/
     ret=BLSP_MediaBoot_Read(addr,(uint8_t*)&sig_len,sizeof(sig_len));
     if(ret!=BFLB_BOOT2_SUCCESS){
@@ -164,7 +164,7 @@ static int32_t BLSP_MediaBoot_Read_Signature(uint32_t addr,uint32_t *len)
     ARCH_MemCpy_Fast(boot2ReadBuf,&sig_len,sizeof(sig_len));
     addr+=(sig_len+4);
     *len=sig_len;
-    
+
     return ret;
 }
 
@@ -183,7 +183,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
     uint32_t addr=bootheaderAddr;
     int32_t ret;
     uint32_t sig_len;
-    
+
     /* Read boot header*/
     MSG_DBG("R header from %08x\r\n",addr);
     ret=BLSP_MediaBoot_Read(addr,boot2ReadBuf,sizeof(Boot_Header_Config));
@@ -193,7 +193,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
     if(BLSP_Boot2_Dump_Critical_Flag()){
         BLSP_Dump_Data(boot2ReadBuf,sizeof(Boot_Header_Config));
     }
-    
+
     addr+=sizeof(Boot_Header_Config);
     ret=BLSP_Boot_Parse_BootHeader(bootImgCfg,(uint8_t *)boot2ReadBuf);
     if(ret!=BFLB_BOOT2_SUCCESS){
@@ -201,7 +201,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
     }
     /* Due to OTA, the flashOffset is changed, so copy from partition info */
     bootImgCfg->imgStart.flashOffset=imgAddr;
-    
+
     /* If sign enable,get pk key and signature*/
     if(bootImgCfg->signType){
         /* Read public key */
@@ -217,7 +217,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         ret=BLSP_Boot_Parse_PKey(bootImgCfg,(uint8_t *)boot2ReadBuf,1);
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
-        }     
+        }
         /* Read public key 2*/
         MSG_DBG("R PK2\r\n");
         ret=BLSP_MediaBoot_Read(addr,boot2ReadBuf,sizeof(Boot_PK_Config));
@@ -248,7 +248,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
         }
-        
+
         /* Read signature2*/
         MSG_DBG("R SIG2\r\n");
         BLSP_MediaBoot_Read_Signature(addr,&sig_len);
@@ -266,7 +266,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
             return ret;
         }
     }
-    
+
     /* If encrypt enable,get AES key*/
     if(bootImgCfg->encryptType){
         /* Read aes iv*/
@@ -274,7 +274,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         ret=BLSP_MediaBoot_Read(addr,boot2ReadBuf,sizeof(Boot_AES_Config));
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
-        }        
+        }
         if(BLSP_Boot2_Dump_Critical_Flag()){
             BLSP_Dump_Data(boot2ReadBuf,sizeof(Boot_AES_Config));
         }
@@ -284,7 +284,7 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
             return ret;
         }
     }
-    
+
     if(bootImgCfg->noSegment){
         /* Flash image */
         if(!bootImgCfg->hashIgnore){
@@ -302,12 +302,12 @@ static int32_t BLSP_MediaBoot_Parse_One_FW(Boot_Image_Config *bootImgCfg,uint32_
         ret=BLSP_Boot_Parser_Check_Signature(bootImgCfg);
         if(ret!=BFLB_BOOT2_SUCCESS){
             return ret;
-        }               
+        }
         bootImgCfg->imgValid=1;
     }else{
         bootImgCfg->imgValid=0;
-    } 
-    
+    }
+
     return ret;
 }
 
@@ -350,9 +350,9 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
     uint32_t i=0;
     uint32_t validImgFound=0;
     uint32_t bootHeaderAddr[BFLB_BOOT2_CPU_MAX];
-    
+
     MSG_DBG("Media boot main\r\n");
-    
+
     /* Reset some parameters*/
     for(i=0;i<BFLB_BOOT2_CPU_MAX;i++){
         memset(&bootImgCfg[i],0,sizeof(bootImgCfg[i]));
@@ -360,7 +360,7 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
         cpuRollBack[i]=0;
     }
     bootImgCfg[0].haltCPU1=0;
-    
+
     /* Try to boot from flash */
     for(i=0;i<cpuCount;i++){
         if(bootHeaderAddr[i]==0){
@@ -379,7 +379,7 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
     if(validImgFound!=cpuCount && 1==rollBack){
         /* For CP and DP, found CPU0 image is taken as correct when the other not found, others as wrong and try to rollback */
         if(bootHeaderAddr[1]==0 && validImgFound==1){
-            MSG_DBG("Found One img Only\r\n");            
+            MSG_DBG("Found One img Only\r\n");
         }else{
             MSG_ERR("Image roll back\r\n");
             return BFLB_BOOT2_IMG_Roll_Back;
@@ -389,7 +389,7 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
         MSG_ERR("no valid img found\r\n");
         return BFLB_BOOT2_IMG_ALL_INVALID_ERROR;
     }
-    
+
 
     /* Get msp and pc value */
     for(i=0;i<cpuCount;i++){
@@ -422,13 +422,13 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
     MSG_DBG("%08x,%08x\r\n",bootImgCfg[1].imgStart.flashOffset,bootImgCfg[1].cacheWayDisable);
     MSG_DBG("CPU Count %d,%d\r\n",cpuCount,bootImgCfg[0].haltCPU1);
     BLSP_Boot2_Show_Timer();
-    
+
     /* Fix invalid pc and msp */
-    BLSP_Fix_Invalid_MSP_PC();   
-       
+    BLSP_Fix_Invalid_MSP_PC();
+
     /* Prepare jump to entry*/
     BLSP_MediaBoot_Pre_Jump();
-    
+
     /* We should never get here unless something is wrong */
     return BFLB_BOOT2_FAIL;
 }

@@ -34,43 +34,43 @@
 extern "C" {
 #endif
 
-#define AT_DBG_ON		1
-#define AT_WRN_ON		1
-#define AT_ERR_ON		1
+#define AT_DBG_ON       1
+#define AT_WRN_ON       1
+#define AT_ERR_ON       1
 
-#define AT_AST_ON		1
+#define AT_AST_ON       1
 
-#define AT_CHECK_OVERFLOW		1
+#define AT_CHECK_OVERFLOW       1
 
-#define AT_SYSLOG		printf
-#define AT_ABORT()	do { } while (1) //sys_abort()
+#define AT_SYSLOG       printf
+#define AT_ABORT()  do { } while (1) //sys_abort()
 
-#define AT_LOG(flags, fmt, arg...)	\
-	do {								\
-		if (flags) 						\
-			AT_SYSLOG(fmt, ##arg);	\
-	} while (0)
+#define AT_LOG(flags, fmt, arg...)  \
+    do {                                \
+        if (flags)                      \
+            AT_SYSLOG(fmt, ##arg);  \
+    } while (0)
 
-#define AT_DBG(fmt, arg...)	AT_LOG(AT_DBG_ON, "[atcmd] "fmt, ##arg)
-#define AT_WRN(fmt, arg...)	AT_LOG(AT_WRN_ON, "[atcmd WARN] "fmt, ##arg)
-#define AT_ERR(fmt, arg...)								\
-	do {													\
-		AT_LOG(AT_ERR_ON, "[atcmd ERR] %s():%d, "fmt,	\
-	           __func__, __LINE__, ##arg);					\
-	    if (AT_ERR_ON)									\
-			AT_ABORT();									\
-	} while (0)
+#define AT_DBG(fmt, arg...) AT_LOG(AT_DBG_ON, "[atcmd] "fmt, ##arg)
+#define AT_WRN(fmt, arg...) AT_LOG(AT_WRN_ON, "[atcmd WARN] "fmt, ##arg)
+#define AT_ERR(fmt, arg...)                             \
+    do {                                                    \
+        AT_LOG(AT_ERR_ON, "[atcmd ERR] %s():%d, "fmt,   \
+               __func__, __LINE__, ##arg);                  \
+        if (AT_ERR_ON)                                  \
+            AT_ABORT();                                 \
+    } while (0)
 
 #if AT_AST_ON == 1
-#define AT_ASSERT(con)	\
-	do { \
-		if (!(con)) { \
-			AT_LOG(AT_AST_ON, "[atcmd ASSERT] %s():%d assert \"%s\" faild!\n",	\
-				__func__, __LINE__, #con);					\
-	    	if (AT_AST_ON) \
-				AT_ABORT(); \
-		} \
-	} while (0)
+#define AT_ASSERT(con)  \
+    do { \
+        if (!(con)) { \
+            AT_LOG(AT_AST_ON, "[atcmd ASSERT] %s():%d assert \"%s\" faild!\n",  \
+                __func__, __LINE__, #con);                  \
+            if (AT_AST_ON) \
+                AT_ABORT(); \
+        } \
+    } while (0)
 #else
 #define AT_ASSERT(con, msg)
 #endif

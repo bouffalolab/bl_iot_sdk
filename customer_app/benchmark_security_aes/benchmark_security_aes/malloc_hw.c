@@ -74,7 +74,7 @@ void *malloc_hw (size_t size, ram_type_t type)
     if (p_heap_addr == NULL) {
         return NULL;
     }
-    
+
     ptr = NULL;
     counts = 0;
     while (1) {

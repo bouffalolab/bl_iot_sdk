@@ -32,44 +32,44 @@ static ssize_t read_data(struct bt_conn *conn,
 
 
 static void blsync_exchange_func(struct bt_conn *conn, u8_t err,
-			  struct bt_gatt_exchange_params *params)
+              struct bt_gatt_exchange_params *params)
 {
-	printf("Exchange %s\r\n", err == 0U ? "successful" : "failed");
+    printf("Exchange %s\r\n", err == 0U ? "successful" : "failed");
 }
 
 static void blsync_disconnected(struct bt_conn *conn, u8_t reason)
-{ 
-	printf("disconnected (reason %u)%s\r\n",reason);
-	blsync_conn = NULL;
+{
+    printf("disconnected (reason %u)%s\r\n",reason);
+    blsync_conn = NULL;
 }
 
 static void blsync_connected(struct bt_conn *conn, u8_t err)
 {
-	int tx_octets = 0x00fb;
-	int tx_time = 0x0848;
-	int ret = -1;
+    int tx_octets = 0x00fb;
+    int tx_time = 0x0848;
+    int ret = -1;
 
-	printf("%s\n",__func__);
-	blsync_conn = conn;
+    printf("%s\n",__func__);
+    blsync_conn = conn;
 
-	//set data length after connected.
-	ret = bt_le_set_data_len(blsync_conn, tx_octets, tx_time);
-	if(!ret){
-		printf("Set data length success.\n");
-	}
-	else{
-		printf("Set data length failure, err: %d\n", ret);
-	}
+    //set data length after connected.
+    ret = bt_le_set_data_len(blsync_conn, tx_octets, tx_time);
+    if(!ret){
+        printf("Set data length success.\n");
+    }
+    else{
+        printf("Set data length failure, err: %d\n", ret);
+    }
 
-	//exchange mtu size after connected.
-	blsync_exchg_mtu.func = blsync_exchange_func;
-	ret = bt_gatt_exchange_mtu(blsync_conn, &blsync_exchg_mtu);
-	if (!ret) {
-		printf("Exchange mtu size pending.\n");
-	} else {
-		printf("Exchange mtu size failure, err: %d\n", ret);
-	}
-}                        
+    //exchange mtu size after connected.
+    blsync_exchg_mtu.func = blsync_exchange_func;
+    ret = bt_gatt_exchange_mtu(blsync_conn, &blsync_exchg_mtu);
+    if (!ret) {
+        printf("Exchange mtu size pending.\n");
+    } else {
+        printf("Exchange mtu size failure, err: %d\n", ret);
+    }
+}
 
 static void scan_complete_cb(void *param)
 {
@@ -178,7 +178,7 @@ static int __recv_event(void *p_drv, struct pro_event *p_event)
         }
 
     } else if (p_event->type == PROTOCOL_EVENT_CMD) {
-        
+
         switch (p_event->event_id) {
           case CMD_CONNECT_WIFI:
               if(gp_index->wifi_func->local_connect_remote_ap) {
@@ -352,8 +352,8 @@ static struct bt_gatt_attr attrs[]= {
 const static struct bt_gatt_service wifiprov_server = BT_GATT_SERVICE(attrs);
 
 static struct bt_conn_cb blsync_conn_callbacks = {
-	.connected	=   blsync_connected,
-	.disconnected	=   blsync_disconnected,
+    .connected  =   blsync_connected,
+    .disconnected   =   blsync_disconnected,
 };
 
 int bl_ble_sync_start(bl_ble_sync_t *index,

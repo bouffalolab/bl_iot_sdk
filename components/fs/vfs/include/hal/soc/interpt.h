@@ -48,7 +48,7 @@ int32_t hal_interpt_umask(int32_t vec);
  *
  * @return  0 : on success, -1 : if an error occurred with any step
  */
-int32_t hal_interpt_install(int32_t vec, hal_interpt_t handler, 
+int32_t hal_interpt_install(int32_t vec, hal_interpt_t handler,
                                      void *para,  char *name);
 #endif
 

@@ -13,7 +13,7 @@
 typedef union tag_bflb_ecdsa_ctx_t
 {
 #ifndef BFLB_PKA_HARDWARE
-	mbedtls_ecdsa_context ctx_ecdsa;
+    mbedtls_ecdsa_context ctx_ecdsa;
 #endif
 }bflb_ecdsa_ctx_t;
 

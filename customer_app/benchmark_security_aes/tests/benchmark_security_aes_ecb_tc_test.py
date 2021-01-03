@@ -23,7 +23,7 @@ def benchmark_security_aes_tc(env, extra_data):
         dut.expect('Init CLI with event Driven', timeout=0.5)
         print('BL602 CLI init done')
         time.sleep(0.1)
-        
+
         for aes in ['ecb', 'cbc', 'ctr', 'gcm'] :
             for key, keybit in enumerate(['128', '192', '256'], 1) :
                 for ram, ramtype in enumerate(['dtcm', 'ocram', 'wram'], 0) :
@@ -42,11 +42,11 @@ def benchmark_security_aes_tc(env, extra_data):
         dut.write('test_aes_gmac 32768 256 0')
         speed = dut.expect(re.compile(r"aes encrypt speed is (.+)\r"), timeout=30)
         print('aes gmac hw dtcm test done speed is : {}'.format(speed[0]))
-        
+
         dut.write('test_aes_gmac 32768 256 1')
         speed = dut.expect(re.compile(r"aes encrypt speed is (.+)\r"), timeout=30)
         print('aes gmac hw ocram test done speed is : {}'.format(speed[0]))
-        
+
         dut.write('test_aes_gmac 32768 256 2')
         speed = dut.expect(re.compile(r"aes encrypt speed is (.+)\r"), timeout=30)
         print('aes gmac hw wram test done speed is : {}'.format(speed[0]))

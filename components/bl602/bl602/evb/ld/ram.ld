@@ -23,6 +23,23 @@ SECTIONS
     *(.text .text.*)
     *(.gnu.linkonce.t.*)
   } >ram
+  
+  .preinit_array :
+  {
+    . = ALIGN(4);
+    __preinit_array_start = .;
+    KEEP (*(.preinit_array))
+    __preinit_array_end = .;
+  } > ram
+
+  .init_array :
+  {
+    . = ALIGN(4);
+    __init_array_start = .;
+    KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+    KEEP (*(.init_array))
+    __init_array_end = .;
+  } > ram 
 
   .rodata         :
   {
@@ -93,5 +110,5 @@ SECTIONS
     PROVIDE( _ld_ram_addr1 = 0);
     PROVIDE( _ld_ram_size2 = 0);
     PROVIDE( _ld_ram_addr2 = 0);
- 
+
 }

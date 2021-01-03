@@ -30,7 +30,7 @@
 #include <bl602_ir.h>
 #include <bl602_glb.h>
 #include <bl_irq.h>
-#include <looprt.h> 
+#include <looprt.h>
 #include <loopset.h>
 #include <loopset_ir.h>
 #include <blog.h>
@@ -64,7 +64,7 @@ static void ir_init(int pin, int ctrltype)
 }
 
 uint32_t bl_receivedata(void)
-{ 
+{
     return IR_ReceiveData(IR_WORD_0);
 }
 
@@ -145,7 +145,7 @@ static void irled_config(HBN_XCLK_CLK_Type clk, uint8_t div, uint8_t unit, uint8
         DISABLE,                                             /* Disable signal of output modulation */
         ENABLE                                               /* Enable signal of output inverse */
     };
-    
+
     IR_TxPulseWidthCfg_Type txPWCfg = {
         code0L,                                              /* Pulse width of logic 0 pulse phase 1 */
         code0H,                                              /* Pulse width of logic 0 pulse phase 0 */
@@ -159,17 +159,17 @@ static void irled_config(HBN_XCLK_CLK_Type clk, uint8_t div, uint8_t unit, uint8
         1,                                                   /* Modulation phase 0 width */
         unit                                                 /* Pulse width unit */
     };
-    
+
     HBN_Set_XCLK_CLK_Sel(clk);
     GLB_Set_IR_CLK(ENABLE,GLB_IR_CLK_SRC_XCLK,div-1);
-    
+
     /* Disable ir before config */
     IR_Disable(IR_TXRX);
 
     /* IR tx init */
     IR_TxInit(&txCfg);
     IR_TxPulseWidthConfig(&txPWCfg);
-    
+
     return;
 }
 
@@ -177,7 +177,7 @@ static void irled_config(HBN_XCLK_CLK_Type clk, uint8_t div, uint8_t unit, uint8
 int bl_irled_gpio_init(void)
 {
     GLB_GPIO_Type pin = GLB_GPIO_PIN_11;
-     
+
     GLB_GPIO_Func_Init(GPIO_FUN_ANALOG,&pin,1);
     GLB_IR_LED_Driver_Enable();
 
@@ -185,13 +185,13 @@ int bl_irled_gpio_init(void)
 }
 
 
-int bl_irled_init(int chip_type) 
-{ 
+int bl_irled_init(int chip_type)
+{
     if (chip_type == 0) {
         irled_config(HBN_XCLK_CLK_XTAL, 2, 1, 8, 16, 16, 9);
     } else {
         irled_config(HBN_XCLK_CLK_XTAL, 2, 10, 1, 4, 4, 1);
-    }  
+    }
 
     return 0;
 }

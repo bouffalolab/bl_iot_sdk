@@ -13,7 +13,7 @@ typedef struct {
 typedef struct {
     uint32_t         base_addr;
     nor_config_t     config;
-    void            *priv;  
+    void            *priv;
 } nor_dev_t;
 
 /**
@@ -40,7 +40,7 @@ int32_t hal_nor_finalize(nor_dev_t *nor);
  * @param[in]   nor         the interface which should be initialised
  * @param[out]  data        pointer to the buffer which will store incoming data
  * @param[in]   addr        nor memory address
- * @param[in]   len         the number of bytes to read 
+ * @param[in]   len         the number of bytes to read
  *
  * @return  0 : on success, EIO : if an error occurred with any step
  */
@@ -58,7 +58,7 @@ int32_t hal_nor_read(nor_dev_t *nor, uint32_t *addr, uint8_t *data, uint32_t len
  * @return  0 : on success, EIO : if an error occurred with any step
  */
 int32_t hal_nor_write(nor_dev_t *nor, uint32_t *addr, uint8_t *data, uint32_t len);
- 
+
 /*
  * Erase the blocks of the NOR memory
  *

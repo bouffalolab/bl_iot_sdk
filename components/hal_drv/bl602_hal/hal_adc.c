@@ -37,14 +37,14 @@ static int check_adc_gpio_valid(int gpio_num)
 {
     int i;
     int gpio_arr[12] = {4, 5, 6, 9, 10, 11, 12, 13, 14, 15};
-     
+
     for (i = 0; i < 10; i++) {
         if (gpio_num == gpio_arr[i]) {
             return 0;
         }
     }
-     
-    return -1; 
+
+    return -1;
 }
 
 //mode = 0, for normal adc. freq 40HZ~1300HZ. one time sampling one data.
@@ -53,19 +53,19 @@ int hal_adc_init(int mode, int freq, int data_num, int gpio_num)
 {
     int ret;
     int buf_size;
-    
+
     if (mode == 0) {
         if (freq < 40 || freq > 1300) {
             blog_error("illegal freq. for mode0, freq 40HZ ~ 1300HZ \r\n");
-            
+
             return -1;
         }
     } else if (mode == 1) {
         if (freq < 500 || freq > 16000) {
             blog_error("illegal freq. for mode1, freq 500HZ ~ 16000HZ \r\n");
-            
+
             return -1;
-        } 
+        }
     } else {
         blog_error("illegal mode. \r\n");
 
@@ -117,7 +117,7 @@ int hal_adc_callback_register(bl_adc_cb_t cb)
     return 0;
 }
 
-/* the following function for mode 0*/ 
+/* the following function for mode 0*/
 int hal_adc_add_channel(int gpio_num)
 {
     int ret;
@@ -130,12 +130,12 @@ int hal_adc_add_channel(int gpio_num)
 
         return -1;
     }
-                
+
     bl_adc_gpio_init(gpio_num);
     channel = bl_adc_get_channel_by_gpio(gpio_num);
     pstctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
-    pstctx->chan_init_table = pstctx->chan_init_table | (1 << channel); 
-    
+    pstctx->chan_init_table = pstctx->chan_init_table | (1 << channel);
+
     return 0;
 }
 
@@ -146,7 +146,7 @@ int32_t hal_adc_get_data(int gpio_num, int raw_flag)
     uint32_t adc_data[ADC_CHANNEL_MAX];
     int32_t data;
     int channel;
-    
+
     ret = check_adc_gpio_valid(gpio_num);
     if (ret < 0) {
         blog_error("not legal gpio num, adc only support gpio 4,5,6,9,10,11,12,13,14,15 \r\n");
@@ -166,21 +166,21 @@ int32_t hal_adc_get_data(int gpio_num, int raw_flag)
         blog_error("gpio = %d  not init as adc \r\n", gpio_num);
         return -1;
     }
-    
+
     if (pstctx->channel_data == NULL) {
         blog_error("adc sampling not finish. \r\n");
 
         return -1;
     }
-    memcpy((uint8_t*)adc_data, (uint8_t*)(pstctx->channel_data), ADC_CHANNEL_MAX * 4);  
+    memcpy((uint8_t*)adc_data, (uint8_t*)(pstctx->channel_data), ADC_CHANNEL_MAX * 4);
     data = bl_adc_parse_data(adc_data, ADC_CHANNEL_MAX, channel, raw_flag);
 
     return data;
 }
 
-int32_t hal_prase_adc_data(uint32_t *ptr, int gpio_num, int raw_flag) 
+int32_t hal_prase_adc_data(uint32_t *ptr, int gpio_num, int raw_flag)
 {
-    int32_t data; 
+    int32_t data;
     int channel;
 
     channel = bl_adc_get_channel_by_gpio(gpio_num);
@@ -191,7 +191,7 @@ int32_t hal_prase_adc_data(uint32_t *ptr, int gpio_num, int raw_flag)
     }
 
     data = bl_adc_parse_data(ptr, ADC_CHANNEL_MAX, channel, raw_flag);
-    
+
     return data;
 }
 

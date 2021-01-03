@@ -21,12 +21,12 @@
 #define BFLB_HASH_TYPE_SHA256       2
 #define BFLB_HASH_TYPE_SHA384       3
 #define BFLB_HASH_TYPE_SHA512       4
-   
+
 typedef struct tag_bflb_hash_handle_t
 {
     bflb_hash_ctx_t hash_ctx;
 #ifdef BFLB_CRYPT_HARDWARE
-    uint32_t sha_padding[64/4];			    //for sha finish compute, must located at OCRAM
+    uint32_t sha_padding[64/4];             //for sha finish compute, must located at OCRAM
 #endif
     uint8_t type;
 }bflb_hash_handle_t;

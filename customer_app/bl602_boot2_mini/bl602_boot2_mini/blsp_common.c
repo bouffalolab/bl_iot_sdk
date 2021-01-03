@@ -100,7 +100,7 @@ void BLSP_Dump_Data(void *datain,int len)
 {
     int i=0;
     uint8_t *data=(uint8_t *)datain;
-    
+
     for(i=0;i<len;i++){
         if(i%16==0&&i!=0){
             MSG("\r\n");
@@ -122,13 +122,13 @@ int32_t BLSP_MediaBoot_Pre_Jump(void)
 {
     /* Sec eng deinit*/
     BLSP_Boot2_Reset_Sec_Eng();
-    
+
     /* Platform deinit */
-    bflb_platform_deinit(); 
-    
+    bflb_platform_deinit();
+
     /* Jump to entry */
     BLSP_Boot2_Jump_Entry(0x00011000);
-    
+
     return BFLB_BOOT2_SUCCESS;
 }
 
@@ -141,20 +141,20 @@ int32_t BLSP_MediaBoot_Pre_Jump(void)
  *
 *******************************************************************************/
 void BLSP_Boot2_Exit(void)
-{    
+{
     uint32_t i=0;
-    
+
     BLSP_Sboot_Finish();
     /* Prepare release Other CPUs anyway */
     /* Deal Other CPU's entry point */
     for(i=1;i<cpuCount;i++){
         BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,0);
         BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,0);
-    }    
+    }
     /* Release other CPUs*/
     if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
         BLSP_Boot2_Release_Other_CPU();
-    }    
+    }
     /* Stay here */
     while(1){
         /* Use soft delay only */

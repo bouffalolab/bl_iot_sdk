@@ -14,7 +14,7 @@ endif
 ## not be exported to project level
 COMPONENT_PRIV_INCLUDEDIRS   :=
 
-## This component's src 
+## This component's src
 COMPONENT_SRCS   := src/access.c \
 					src/adv.c \
 					src/beacon.c \
@@ -43,7 +43,7 @@ endif
 ifeq ($(CONFIG_BT_MESH_MODEL), 0)
 ifeq ($(CONFIG_BT_MESH_MODEL_GEN_SRV),1)
 COMPONENT_SRCS   += src/mesh_models/server/common_srv.c \
-                    src/mesh_models/server/gen_srv.c 
+                    src/mesh_models/server/gen_srv.c
 endif
 endif
 

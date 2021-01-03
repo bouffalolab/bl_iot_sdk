@@ -151,7 +151,7 @@ static void event_cb_i2c_event(input_event_t *event, void *private_data)
         default:
         {
              printf("[I2C] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
-            
+
         }
     }
 }

@@ -145,7 +145,7 @@ static void cmd_test_seconds(char *buf, int len, int argc, char **argv)
 static void cmd_test_minutes(char *buf, int len, int argc, char **argv)
 {
     cron_alarm_create("27 44 9 * * *", test_min01, 0);         // every 9:44:27
-    cron_alarm_create("0 */1 * * * *", test_min02, 0);         // timer for every 1 minutes 
+    cron_alarm_create("0 */1 * * * *", test_min02, 0);         // timer for every 1 minutes
     cron_alarm_create("15 3 * * * *", test_min03, 1);         // 3 minutes run once
     return;
 }
@@ -232,7 +232,7 @@ static void cmd_add_week(char *buf, int len, int argc, char **argv)
         cronal_time(604800 * num);
     } else {
     }
-    
+
     return;
 }
 

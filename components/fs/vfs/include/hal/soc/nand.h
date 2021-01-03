@@ -22,7 +22,7 @@ typedef struct {
 typedef struct {
     uint32_t         base_addr;
     nand_config_t    config;
-    void            *priv;  
+    void            *priv;
 } nand_dev_t;
 
 /**

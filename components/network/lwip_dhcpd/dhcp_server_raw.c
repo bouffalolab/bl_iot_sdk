@@ -27,7 +27,7 @@
 
 /* DHCP server option */
 #define DHCP_CLIENT_PORT  68
-#define DHCP_SERVER_PORT  67 
+#define DHCP_SERVER_PORT  67
 
 /* allocated client ip range */
 #ifndef DHCPD_CLIENT_IP_MIN

@@ -8,7 +8,7 @@ ifeq ($(DV_TEST),y)
 COMMON_INCLUDE += -I $(MODULE_DIR)/sim_print
 endif
 
-sim_print_sources :=  
+sim_print_sources :=
 
 sim_print_objs := $(addprefix $(SUB_MODULE_OUT_DIR)/, $(subst .c,.o,$(sim_print_sources)))
 

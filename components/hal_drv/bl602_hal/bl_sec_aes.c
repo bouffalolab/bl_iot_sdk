@@ -80,7 +80,7 @@ static void _dump_iv_status(SEC_Eng_AES_Link_Config_Type *linkCfg)
     blog_print("\r\n");
 }
 
-static const uint8_t aesSrcBuf_data[] = 
+static const uint8_t aesSrcBuf_data[] =
 {
     0x6b, 0xc1, 0xbe, 0xe2, 0x2e, 0x40, 0x9f, 0x96, 0xe9, 0x3d, 0x7e, 0x11, 0x73, 0x93, 0x17, 0x2a,
     0x6b, 0xc1, 0xbe, 0xe2, 0x2e, 0x40, 0x9f, 0x96, 0xe9, 0x3d, 0x7e, 0x11, 0x73, 0x93, 0x17, 0x2a,
@@ -99,7 +99,7 @@ void Sec_Eng_AES_Link_Case_CBC_128(SEC_ENG_AES_ID_Type aesId)
         0x07, 0x01, 0x34, 0x08, 0x5f, 0x02, 0x75, 0x17, 0x55, 0xef, 0xca, 0x3b, 0x4c, 0xdc, 0x7d, 0x62,
     };
 
-    
+
     SEC_Eng_AES_Link_Config_Type linkCfg = {
         .aesMode = SEC_ENG_AES_KEY_128BITS,                            /* 128-bit key mode select */
         .aesDecEn = SEC_ENG_AES_ENCRYPTION,                            /* Encode */
@@ -126,7 +126,7 @@ void Sec_Eng_AES_Link_Case_CBC_128(SEC_ENG_AES_ID_Type aesId)
     };
 
     Sec_Eng_AES_Enable_Link(aesId);
-    
+
     puts("[CBC] AES-128-CBC case...\r\n");
 
     blog_info("[CBC] IV Status Initial, %08lx\r\n", linkCfg.aesSrcAddr);
@@ -135,12 +135,12 @@ void Sec_Eng_AES_Link_Case_CBC_128(SEC_ENG_AES_ID_Type aesId)
     Aes_Compare_Data(aesResult_entrypted_cbc_128, (uint8_t*)linkCfg.aesDstAddr, 32);
     blog_info("[CBC] IV Status After, %08lx\r\n", linkCfg.aesSrcAddr);
     _dump_iv_status(&linkCfg);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 32, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_cbc_128[0]) + 32, (uint8_t*)linkCfg.aesDstAddr, 16);
     blog_info("[CBC] IV Status After %08lx\r\n", linkCfg.aesSrcAddr);
     _dump_iv_status(&linkCfg);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 48, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_cbc_128[0]) + 48, (uint8_t*)linkCfg.aesDstAddr, 16);
     blog_info("[CBC] IV Status After, %08lx\r\n", linkCfg.aesSrcAddr);
@@ -185,7 +185,7 @@ void Sec_Eng_AES_Link_Case_CTR_128(SEC_ENG_AES_ID_Type aesId)
     };
 
     Sec_Eng_AES_Enable_Link(aesId);
-    
+
     puts("[CTR] AES-128-CTR case...\r\n");
     blog_info("[CTR] IV Status Initial, %08lx\r\n", linkCfg.aesSrcAddr);
     _dump_iv_status(&linkCfg);
@@ -195,12 +195,12 @@ void Sec_Eng_AES_Link_Case_CTR_128(SEC_ENG_AES_ID_Type aesId)
 
     blog_info("[CTR] IV Status After %08lx\r\n", linkCfg.aesSrcAddr);
     _dump_iv_status(&linkCfg);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 32, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_ctr_128[0]) + 32, (uint8_t*)linkCfg.aesDstAddr, 16);
     blog_info("[CTR] IV Status After %08lx\r\n", linkCfg.aesSrcAddr);
     _dump_iv_status(&linkCfg);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 48, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_ctr_128[0]) + 48, (uint8_t*)linkCfg.aesDstAddr, 16);
     blog_info("[CTR] IV Status After, %08lx\r\n", linkCfg.aesSrcAddr);
@@ -250,10 +250,10 @@ void Sec_Eng_AES_Link_Case_ECB_128(SEC_ENG_AES_ID_Type aesId)
 
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]), 32, aesDstBuf);
     Aes_Compare_Data(aesResult_entrypted_ecb_128, (uint8_t*)linkCfg.aesDstAddr, 32);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 32, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_ecb_128[0]) + 32, (uint8_t*)linkCfg.aesDstAddr, 16);
-    
+
     Sec_Eng_AES_Link_Work(aesId, (uint32_t)&linkCfg, &(aesSrcBuf_data[0]) + 48, 16, aesDstBuf);
     Aes_Compare_Data(&(aesResult_entrypted_ecb_128[0]) + 48, (uint8_t*)linkCfg.aesDstAddr, 16);
 

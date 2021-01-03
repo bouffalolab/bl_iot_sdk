@@ -1701,7 +1701,7 @@ struct me_traffic_ind_req
 struct me_rc_stats_req
 {
     /// Index of the station for which the RC statistics are requested
-	u8_l sta_idx;
+    u8_l sta_idx;
 };
 
 /// Structure containing the structure of a retry chain step
@@ -1957,7 +1957,7 @@ enum cfg_msg_tag
 
 struct
 {
-    /// TASK 
+    /// TASK
     uint32_t task;
     /// ELEMENT
     uint32_t element;
@@ -1974,7 +1974,7 @@ struct cfg_start_req
     union {
         /// struct for get ELEMENT
         struct {
-            /// TASK 
+            /// TASK
             uint32_t task;
             /// ELEMENT
             uint32_t element;
@@ -1982,7 +1982,7 @@ struct cfg_start_req
 
         /// struct for reset ELEMENT
         struct {
-            /// TASK 
+            /// TASK
             uint32_t task;
             /// ELEMENT
             uint32_t element;
@@ -1990,7 +1990,7 @@ struct cfg_start_req
 
         /// struct for set ELEMENT with TLV based
         struct {
-            /// TASK 
+            /// TASK
             uint32_t task;
             /// ELEMENT
             uint32_t element;

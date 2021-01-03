@@ -92,8 +92,8 @@ ssize_t vfs_i2c_read(file_t *fp, void *buf, size_t nbytes)
             /* get data from i2c. */
             ret = hal_i2c_master_recv(i2c_dev, dev_addr, (uint8_t *)buf, nbytes, HAL_WAIT_FOREVER);
 
-            /* If the data is read correctly, the return 
-            value is set to read bytes. */ 
+            /* If the data is read correctly, the return
+            value is set to read bytes. */
             if (ret == 0) {
                 ret = nbytes;
             }
@@ -102,8 +102,8 @@ ssize_t vfs_i2c_read(file_t *fp, void *buf, size_t nbytes)
         }
     } else {
         ret = -EINVAL;
-    } 
-    
+    }
+
     return ret;
 }
 
@@ -116,7 +116,7 @@ ssize_t vfs_i2c_write(file_t *fp, const void *buf, size_t nbytes)
     /* check empty pointer. */
     if ((fp != NULL) && (fp->node != NULL)) {
 
-        /* get the device pointer. */       
+        /* get the device pointer. */
         i2c_dev = (i2c_dev_t *)(fp->node->i_arg);
 
         /* get the device address. */
@@ -124,10 +124,10 @@ ssize_t vfs_i2c_write(file_t *fp, const void *buf, size_t nbytes)
 
         if (dev_addr != NULL) {
 
-            /* send data from i2c. */ 
+            /* send data from i2c. */
             ret = hal_i2c_master_send(i2c_dev, dev_addr, (const uint8_t *)buf, nbytes, HAL_WAIT_FOREVER);
 
-            /* If the data is sent successfully, set the return 
+            /* If the data is sent successfully, set the return
             value to nbytes. */
             if (ret == 0) {
                 ret = nbytes;

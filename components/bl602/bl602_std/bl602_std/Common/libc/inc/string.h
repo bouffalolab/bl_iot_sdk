@@ -41,4 +41,4 @@ __extern char *strtok(char *, const char *);
 __extern char *strtok_r(char *, const char *, char **);
 char *index(const char *s, int c);
 
-#endif				/* _STRING_H */
+#endif              /* _STRING_H */

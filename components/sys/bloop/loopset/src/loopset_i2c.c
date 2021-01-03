@@ -51,7 +51,7 @@ struct loop_evt_handler_holder {
 };
 
 static int _i2c_bloop_evt(struct loop_ctx *loop, const struct loop_evt_handler *handler, uint32_t *bitmap_evt, uint32_t *evt_type_map)
-{                                                                                                                                    
+{
     uint32_t map = *evt_type_map;
 
 redo: if (map & EVT_MAP_INSERT_I2C_TRIGGER) {
@@ -72,14 +72,14 @@ redo: if (map & EVT_MAP_INSERT_I2C_TRIGGER) {
               aos_post_event(EV_I2C, CODE_I2C_NAK, 0);
           } else {
           }
-          
+
       } else {
           BL_ASSERT_ERROR(0 == map);
       }
 
       if (map) {
           goto redo;
-      } 
+      }
 
       *evt_type_map = 0;
 
@@ -100,7 +100,7 @@ int loopset_i2c_hook_on_looprt(void)
             .evt = _i2c_bloop_evt,
             .handle = _i2c_bloop_msg,
         },
-      
+
     };
 
     return looprt_handler_register(&_i2c_bloop_handler_holder.handler, LOOPSET_I2C_PRIORITY);

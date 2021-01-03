@@ -21,7 +21,7 @@ typedef union tag_bflb_hash_ctx_t
     mbedtls_sha256_context ctx_sha256;
     mbedtls_sha512_context ctx_sha512;
 #else
-    uint32_t sha_buf[64/4];					//for sha finish compute, must located at OCRAM
+    uint32_t sha_buf[64/4];                 //for sha finish compute, must located at OCRAM
 #endif
 }bflb_hash_ctx_t;
 

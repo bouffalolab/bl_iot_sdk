@@ -25,13 +25,13 @@ def sdk_app_gpio_tc(env, extra_data):
 
         dut.write('gpio-func 8 0 0 0')
         dut.expect("GPIO8 is set output with null pullup null pulldown", timeout=1)
-       
+
         dut.write('gpio-set 8 1')
         dut.expect("GPIO8 is set to high", timeout=1)
 
         dut.write('gpio-set 8 0')
         dut.expect("GPIO8 is set to lo", timeout=1)
-       
+
         dut.write('gpio-get 8')
         dut.expect("GPIO8 val is low", timeout=1)
         dut.halt()

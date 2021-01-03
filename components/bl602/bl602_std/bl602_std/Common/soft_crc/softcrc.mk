@@ -12,7 +12,7 @@ softcrc_sources :=  softcrc.c
 softcrc_objs := $(addprefix $(SUB_MODULE_OUT_DIR)/, $(subst .c,.o,$(softcrc_sources)))
 
 common_objs_target += $(softcrc_objs)
-                      
+
 $(SUB_MODULE_OUT_DIR)/%.o:$(SUB_MODULE_SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@echo "cc $<"

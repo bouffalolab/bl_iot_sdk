@@ -14,7 +14,7 @@
 
 static app_check_oad_cb app_check_cb = NULL;
 struct oad_env_tag oad_env;
-#define UPGRD_TIMEOUT	K_SECONDS(2)
+#define UPGRD_TIMEOUT   K_SECONDS(2)
 
 
 static bool check_data_valid(struct oad_file_info *file_info)
@@ -34,7 +34,7 @@ static void oad_notify_block_req(struct bt_conn *conn)
     *(buf->data) = OAD_CMD_IMAG_BLOCK_REQ;
     block_req = (struct oad_block_req_t *)(buf->data+1);
     buf->len = sizeof(struct oad_block_req_t) + OAD_OPCODE_SIZE;
-    
+
     block_req->file_info.file_ver = oad_env.upgrd_file_ver;
     block_req->file_info.manu_code = oad_env.file_info.manu_code;
     block_req->file_offset = oad_env.upgrd_offset;
@@ -54,7 +54,7 @@ static void oad_notify_upgrd_end(struct bt_conn *conn, u8_t status)
        k_delayed_work_submit(&oad_env.upgrd_work, UPGRD_TIMEOUT);
     }
     #endif
-    
+
     net_buf_simple_init(buf, 0);
     *(buf->data) = OAD_CMD_IMAG_UPGRD_END;
     upgrd_end = (struct oad_upgrd_end_t *)(buf->data+1);
@@ -114,7 +114,7 @@ static void oad_upgrade(struct k_work *work)
         ptEntry.activeIndex = 1 - ptEntry.activeIndex;
         bl_print(PRINT_UART0, PRINT_MODULE_APP,"update ptable,active index is %d\r\n", ptEntry.activeIndex);
         hal_boot2_update_ptable(&ptEntry);
-        XIP_SFlash_Exit_Cont_Read();    
+        XIP_SFlash_Exit_Cont_Read();
         oad_systemReset();
     }
     else
@@ -127,9 +127,9 @@ static u8_t oad_get_new_image_addr(void)
 {
     PtTable_Entry_Config ptEntry;
     u8_t active_idx;
-    
+
     if (0 == hal_boot2_get_active_entries(PT_ENTRY_FW_CPU0, &ptEntry))
-    {  
+    {
         active_idx = 1 - ptEntry.activeIndex;
         oad_env.new_img_addr = ptEntry.Address[active_idx];
         bl_print(PRINT_UART0, PRINT_MODULE_APP,"oad_get_new_image_addr,addr is %d\r\n", oad_env.new_img_addr);
@@ -137,14 +137,14 @@ static u8_t oad_get_new_image_addr(void)
     }
 
     return -1;
-}  
+}
 #endif //CFG_BOOT2_ENABLED
 
 static u8_t oad_write_flash(u8_t *data, u16_t len)
 {
     #if defined(CFG_BOOT2_ENABLED)
     if(!oad_env.new_img_addr)
-    {   
+    {
         if(oad_get_new_image_addr()){
             bl_print(PRINT_UART0, PRINT_MODULE_APP,"New img address is null\r\n");
             return -1;
@@ -158,7 +158,7 @@ static u8_t oad_write_flash(u8_t *data, u16_t len)
     XIP_SFlash_Write_With_Lock(CPU_TYPE_NP, oad_env.new_img_addr + oad_env.upgrd_offset, data, len);
     bl_print(PRINT_UART0, PRINT_MODULE_APP,"Write complete addr = 0x%x \r\n", oad_env.new_img_addr + oad_env.upgrd_offset);
     #endif
-    return 0;  
+    return 0;
 }
 
 static u8_t oad_image_data_handler(u8_t *data, u16_t len)
@@ -172,7 +172,7 @@ static u8_t oad_image_data_handler(u8_t *data, u16_t len)
         return OAD_UPGRD_CMPLT;
     }else{
         return OAD_REQ_MORE_DATA;
-    }  
+    }
 }
 
 static u8_t oad_image_block_resp_handler(struct bt_conn *conn, const u8_t *data, u16_t len)
@@ -197,11 +197,11 @@ static u8_t oad_image_block_resp_handler(struct bt_conn *conn, const u8_t *data,
             rsp_data = data + OAD_BLK_RSP_DATA_OFFSET;
             status = oad_image_data_handler(rsp_data, block_rsp->data_size);
             if(status == OAD_UPGRD_CMPLT){
-                oad_notify_upgrd_end(conn, OAD_SUCC);    
+                oad_notify_upgrd_end(conn, OAD_SUCC);
             }else if(status == OAD_REQ_MORE_DATA){
                 oad_notify_block_req(conn);
             }else{
-                oad_notify_upgrd_end(conn, status);   
+                oad_notify_upgrd_end(conn, status);
             }
         }
         break;
@@ -210,7 +210,7 @@ static u8_t oad_image_block_resp_handler(struct bt_conn *conn, const u8_t *data,
             XIP_SFlash_Erase_With_Lock(CPU_TYPE_NP, oad_env.new_img_addr, oad_env.upgrd_file_size);
         }
         break;
-        
+
         default:
             status = OAD_MALORMED_CMD;
 
@@ -221,29 +221,29 @@ static u8_t oad_image_block_resp_handler(struct bt_conn *conn, const u8_t *data,
 static void oad_image_identity_handler(struct bt_conn *conn, const u8_t *data, u16_t len)
 {
     struct oad_image_identity_t *identity;
-    
+
     identity = (struct oad_image_identity_t *)data;
-    
+
     if(identity->file_info.manu_code == oad_env.file_info.manu_code &&
-		(app_check_cb)(oad_env.file_info.file_ver, identity->file_info.file_ver)){
+        (app_check_cb)(oad_env.file_info.file_ver, identity->file_info.file_ver)){
         oad_env.upgrd_file_ver = identity->file_info.file_ver;
         oad_env.upgrd_file_size = identity->file_size;
         oad_env.upgrd_offset = 0x00;
         oad_env.upgrd_crc32 = identity->crc32;
-        
+
         oad_notify_block_req(conn);
     }else{
         oad_notity_image_identity(conn);
     }
 }
-  
+
 static void oad_recv_callback(struct bt_conn *conn, const u8_t *data, u16_t len)
-{    
+{
     if(*data == OAD_CMD_IMAG_IDENTITY){
         oad_image_identity_handler(conn, data+1, len-1);
     }else{
         if(*data == OAD_CMD_IMAG_BLOCK_RESP)
-            oad_image_block_resp_handler(conn, data+1, len-1); 
+            oad_image_block_resp_handler(conn, data+1, len-1);
     }
 }
 

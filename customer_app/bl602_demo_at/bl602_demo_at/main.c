@@ -378,7 +378,7 @@ static void wifi_sta_connect(char *ssid, char *password)
 
     wifi_interface = wifi_mgmr_sta_enable();
     wifi_mgmr_sta_connect(wifi_interface, ssid, password, NULL, NULL, 0, 0);
-    
+
     at_key_value_get(SAVE_KEY_WIFI_AUTO, &auto_conn);
     if (auto_conn) {
         wifi_mgmr_sta_autoconnect_enable();
@@ -464,7 +464,7 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
         case CODE_WIFI_ON_CONNECTED:
         {
             printf("[APP] [EVT] connected %lld\r\n", aos_now_ms());
-            
+
             // notify AT server
             at_server_notify(AT_ASYNC_WIFI_CONNECTED);
         }

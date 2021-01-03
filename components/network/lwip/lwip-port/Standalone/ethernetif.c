@@ -1,6 +1,6 @@
 /**
  * @file
- * Ethernet Interface for standalone applications (without RTOS) - works only for 
+ * Ethernet Interface for standalone applications (without RTOS) - works only for
  * ethernet polling mode (polling for ethernet frame reception)
  *
  */
@@ -58,7 +58,7 @@
 static void low_level_init(struct netif *netif)
 {
 #ifdef CHECKSUM_BY_HARDWARE
-  int i; 
+  int i;
 #endif
   /* set MAC hardware address length */
   netif->hwaddr_len = ETHARP_HWADDR_LEN;
@@ -70,9 +70,9 @@ static void low_level_init(struct netif *netif)
   netif->hwaddr[3] =  MAC_ADDR3;
   netif->hwaddr[4] =  MAC_ADDR4;
   netif->hwaddr[5] =  MAC_ADDR5;
-  
-  /* initialize MAC address in ethernet MAC */ 
-  ETH_MACAddressConfig(ETH_MAC_Address0, netif->hwaddr); 
+
+  /* initialize MAC address in ethernet MAC */
+  ETH_MACAddressConfig(ETH_MAC_Address0, netif->hwaddr);
 
   /* maximum transfer unit */
   netif->mtu = 1500;
@@ -174,17 +174,17 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
       bufferoffset = bufferoffset + byteslefttocopy;
       framelength = framelength + byteslefttocopy;
     }
-  
-  /* Note: padding and CRC for transmitted frame 
+
+  /* Note: padding and CRC for transmitted frame
      are automatically inserted by DMA */
 
-  /* Prepare transmit descriptors to give to DMA*/ 
+  /* Prepare transmit descriptors to give to DMA*/
   ETH_Prepare_Transmit_Descriptors(framelength);
 
   errval = ERR_OK;
 
 error:
-  
+
   /* When Transmit Underflow flag is set, clear it and issue a Transmit Poll Demand to resume transmission */
   if ((ETH->DMASR & ETH_DMASR_TUS) != (uint32_t)RESET)
   {
@@ -215,18 +215,18 @@ static struct pbuf * low_level_input(struct netif *netif)
   uint32_t bufferoffset = 0;
   uint32_t payloadoffset = 0;
   uint32_t byteslefttocopy = 0;
-  uint32_t i=0;  
-  
+  uint32_t i=0;
+
   /* get received frame */
   frame = ETH_Get_Received_Frame();
-  
+
   /* Obtain the size of the packet and put it into the "len" variable. */
   len = frame.length;
   buffer = (u8 *)frame.buffer;
-  
+
   /* We allocate a pbuf chain of pbufs from the Lwip buffer pool */
   p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-  
+
   if (p != NULL)
   {
     DMARxDesc = frame.descriptor;
@@ -235,17 +235,17 @@ static struct pbuf * low_level_input(struct netif *netif)
     {
       byteslefttocopy = q->len;
       payloadoffset = 0;
-      
+
       /* Check if the length of bytes to copy in current pbuf is bigger than Rx buffer size*/
       while( (byteslefttocopy + bufferoffset) > ETH_RX_BUF_SIZE )
       {
         /* Copy data to pbuf*/
         memcpy( (u8_t*)((u8_t*)q->payload + payloadoffset), (u8_t*)((u8_t*)buffer + bufferoffset), (ETH_RX_BUF_SIZE - bufferoffset));
-        
+
         /* Point to next descriptor */
         DMARxDesc = (ETH_DMADESCTypeDef *)(DMARxDesc->Buffer2NextDescAddr);
         buffer = (unsigned char *)(DMARxDesc->Buffer1Addr);
-        
+
         byteslefttocopy = byteslefttocopy - (ETH_RX_BUF_SIZE - bufferoffset);
         payloadoffset = payloadoffset + (ETH_RX_BUF_SIZE - bufferoffset);
         bufferoffset = 0;
@@ -255,22 +255,22 @@ static struct pbuf * low_level_input(struct netif *netif)
       bufferoffset = bufferoffset + byteslefttocopy;
     }
   }
-  
+
   /* Release descriptors to DMA */
   DMARxDesc =frame.descriptor;
 
   /* Set Own bit in Rx descriptors: gives the buffers back to DMA */
   for (i=0; i<DMA_RX_FRAME_infos->Seg_Count; i++)
-  {  
+  {
     DMARxDesc->Status = ETH_DMARxDesc_OWN;
     DMARxDesc = (ETH_DMADESCTypeDef *)(DMARxDesc->Buffer2NextDescAddr);
   }
-  
+
   /* Clear Segment_Count */
   DMA_RX_FRAME_infos->Seg_Count =0;
-  
+
   /* When Rx Buffer unavailable flag is set: clear it and resume reception */
-  if ((ETH->DMASR & ETH_DMASR_RBUS) != (u32)RESET)  
+  if ((ETH->DMASR & ETH_DMASR_RBUS) != (u32)RESET)
   {
     /* Clear RBUS ETHERNET DMA flag */
     ETH->DMASR = ETH_DMASR_RBUS;
@@ -302,7 +302,7 @@ err_t ethernetif_input(struct netif *netif)
 
   /* entry point to the LwIP stack */
   err = netif->input(p, netif);
-  
+
   if (err != ERR_OK)
   {
     LWIP_DEBUGF(NETIF_DEBUG, ("ethernetif_input: IP input error\n"));
@@ -328,7 +328,7 @@ err_t ethernetif_init(struct netif *netif)
 {
   LWIP_ASSERT("netif != NULL", (netif != NULL));
 #if 0
-  
+
 #if LWIP_NETIF_HOSTNAME
   /* Initialize interface hostname */
   netif->hostname = "lwip";

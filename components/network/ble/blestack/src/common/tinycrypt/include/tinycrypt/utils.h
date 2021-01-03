@@ -59,7 +59,7 @@ extern "C" {
  * @param from_len IN -- length of origin buffer
  */
 unsigned int _copy(uint8_t *to, unsigned int to_len,
-	           const uint8_t *from, unsigned int from_len);
+               const uint8_t *from, unsigned int from_len);
 
 /**
  * @brief Set the value 'val' into the buffer 'to', 'len' times.

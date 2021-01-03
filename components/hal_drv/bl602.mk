@@ -1,7 +1,7 @@
 # Component Makefile
 #
 ## These include paths would be exported to project level
-COMPONENT_ADD_INCLUDEDIRS += bl602_hal
+COMPONENT_ADD_INCLUDEDIRS += bl602_hal platform_hal
 
 ## not be exported to project level
 COMPONENT_PRIV_INCLUDEDIRS :=
@@ -50,8 +50,10 @@ COMPONENT_SRCS := bl602_hal/bl_uart.c \
                   bl602_hal/hal_spi.c \
                   bl602_hal/hal_adc.c \
                   bl602_hal/hal_wifi.c \
+                  platform_hal/platform_hal_device.cpp \
 
-COMPONENT_SRCDIRS := bl602_hal
+
+COMPONENT_SRCDIRS := bl602_hal platform_hal
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 COMPONENT_OBJS := $(patsubst %.cpp,%.o, $(COMPONENT_OBJS))

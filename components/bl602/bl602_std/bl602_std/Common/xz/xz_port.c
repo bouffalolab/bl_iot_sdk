@@ -7,13 +7,13 @@ void simple_malloc_init(void)
     malloced=0;
 }
 void * simple_malloc(uint32_t size)
-{ 
+{
     uint8_t *p;
     MSG_DBG("Simple Malloc %d\r\n",size);
     if(malloced+size<sizeof(mallocBuf)){
         p=mallocBuf+malloced;
         malloced+=size;
-        return p; 
+        return p;
     }
     return NULL;
 }

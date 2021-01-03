@@ -472,7 +472,7 @@ int rsa_sign_alt(void *ctx, size_t hash_id,
     return -1;
 }
 
-int rsa_decrypt_alt(void *ctx, 
+int rsa_decrypt_alt(void *ctx,
                     const unsigned char *input, size_t ilen,
                     unsigned char *output, size_t *olen)
 {

@@ -13,7 +13,7 @@ int bt_mesh_test(void);
 #else
 static inline int bt_mesh_test(void)
 {
-	return 0;
+    return 0;
 }
 #endif
 

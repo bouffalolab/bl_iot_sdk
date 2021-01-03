@@ -36,15 +36,15 @@ def bl602_demo_wifi_capcode_tc(env, extra_data):
         bssid1 = os.getenv('ROUTER_SSID_FOR_PPM1')
         bssid2 = os.getenv('ROUTER_SSID_FOR_PPM2')
         bssid3 = os.getenv('ROUTER_SSID_FOR_PPM3')
-        
+
         str_str1 = (regexp_str, bssid1)
         str_str2 = (regexp_str, bssid2)
         str_str3 = (regexp_str, bssid3)
-       
+
         search_str1 = " ".join(str_str1)
         search_str2 = " ".join(str_str2)
         search_str3 = " ".join(str_str3)
-        
+
         dev1 = re.search(search_str1, list_all[0])
         dev2 = re.search(search_str2, list_all[0])
         dev3 = re.search(search_str3, list_all[0])
@@ -55,25 +55,25 @@ def bl602_demo_wifi_capcode_tc(env, extra_data):
             dev1_num = dev1.group(1)
             if (math.fabs(int(dev1_num)) > 5) :
                 print(f'use dev1:{bssid1}, ppm need calibration {dev1_num}')
-                raise Exception("ppm need calibration") 
+                raise Exception("ppm need calibration")
             else:
                 print(f'use dev1:{bssid1}, ppm is accurate {dev1_num}')
         elif (dev2 != None) :
             dev2_num = dev2.group(1)
             if (math.fabs(int(dev2_num)) > 5) :
                 print(f'use dev2:{bssid2}, ppm need calibration {dev2_num}')
-                raise Exception("ppm need calibration") 
+                raise Exception("ppm need calibration")
             else:
                 print(f'use dev2:{bssid2}, ppm is accurate {dev2_num}')
         elif (dev3 != None) :
             dev3_num = dev3.group(1)
             if (math.fabs(int(dev3_num)) > 5) :
                 print(f'use dev3:{bssid3}, ppm need calibration {dev3_num}')
-                raise Exception("ppm need calibration") 
+                raise Exception("ppm need calibration")
             else:
                 print(f'use dev3:{bssid3}, ppm is accurate {dev3_num}')
         else :
-            raise Exception("No test equipment available") 
+            raise Exception("No test equipment available")
 
         dut.halt()
 

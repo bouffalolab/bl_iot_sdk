@@ -57,12 +57,12 @@ def bl602_demo_wifi_RPI_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipu failed!")
                     test_num+=1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipu failed!")
                     test_num+=1
-               
+
             elif action_cmd == 'ipc':
                 implement_time = '15'
                 board_cmd = "ipc {}".format(RPI_ip)
@@ -76,7 +76,7 @@ def bl602_demo_wifi_RPI_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num+=1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -95,7 +95,7 @@ def bl602_demo_wifi_RPI_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num+=1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -114,7 +114,7 @@ def bl602_demo_wifi_RPI_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num+=1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -122,7 +122,7 @@ def bl602_demo_wifi_RPI_iperf_tc(env, extra_data):
 
             else:
                 print('endif')
-            
+
         if test_num != 0:
             raise Exception
 
@@ -184,13 +184,13 @@ def check_board_log_result(action_cmd, log_name):
     with open(log_name, 'rb') as f:
         lines_data = f.readlines()
         if action_cmd == 'ipc':
-            find_iperf_speed_line('ipc ', lines_data) 
+            find_iperf_speed_line('ipc ', lines_data)
         elif action_cmd == 'ips':
-            find_iperf_speed_line('ips', lines_data) 
+            find_iperf_speed_line('ips', lines_data)
         elif action_cmd == 'ipu':
-            find_iperf_speed_line('ipu ', lines_data) 
+            find_iperf_speed_line('ipu ', lines_data)
         elif action_cmd == 'ipus':
-            find_iperf_speed_line('ipus', lines_data) 
+            find_iperf_speed_line('ipus', lines_data)
         else:
             pass
         # f.close()
@@ -249,7 +249,7 @@ def write_log(iperf_log_name, result, timeout):
     with open(iperf_log_name, mode='w') as fhandle:
         start_time = time.perf_counter()
         #print('start_time = {}'.format(start_time))
-        while True:  
+        while True:
             cur_time = time.perf_counter()
             #print('cur_time = {}'.format(cur_time))
             if cur_time - start_time < float(timeout):

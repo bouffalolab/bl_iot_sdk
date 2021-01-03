@@ -106,7 +106,7 @@ def sdk_app_pwm_tc(env, extra_data):
     dut.start_app()
 
     try:
-        dut.expect("Booting BL602 Chip...", timeout=0.5) 
+        dut.expect("Booting BL602 Chip...", timeout=0.5)
         print('BL602 booted')
         dut.expect('Init CLI with event Driven', timeout=0.5)
         print('BL602 CLI init done')
@@ -118,7 +118,7 @@ def sdk_app_pwm_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('hal_pwm_duty_get 2')
         dut.expect('pwm duty 1000', timeout=1)
-        
+
         PWM_GPIO = 4
         RUN_TIME = 30.0
         SAMPLE_TIME = 2.0

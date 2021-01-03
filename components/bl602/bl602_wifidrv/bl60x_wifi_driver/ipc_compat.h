@@ -38,7 +38,7 @@
 #if 1
 #define __WARN()        printf("%s:%d\r\n", __func__, __LINE__)
 #else
-#define __WARN()        
+#define __WARN()
 #endif
 
 #define WARN_ON(condition) ({                       \

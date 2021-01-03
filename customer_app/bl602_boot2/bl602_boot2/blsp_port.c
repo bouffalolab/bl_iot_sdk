@@ -279,7 +279,7 @@ void BLSP_Boot2_Pass_Parameter(void *data,uint32_t len)
 {
     static uint8_t *pParameter=NULL;
     if(len==0){
-    	GLB_Set_EM_Sel(0);
+        GLB_Set_EM_Sel(0);
         pParameter=(uint8_t *)(0x42030000+103*1024);
         return;
     }
@@ -588,7 +588,7 @@ void ATTR_TCM_SECTION BLSP_Sboot_Finish(void)
 void BLSP_Fix_Invalid_MSP_PC(void)
 {
     uint32_t i=0;
-    
+
     for(i=0;i<BFLB_BOOT2_CPU_MAX;i++){
         if(!BLSP_Is_MSP_Valid(bootImgCfg[i].mspVal)){
             bootImgCfg[i].mspVal=0;
@@ -628,7 +628,7 @@ uint8_t  ATTR_TCM_SECTION BLSP_Boot2_Get_Feature_Flag(void)
 {
     static uint8_t boot2Flag=0xff;
     uint8_t *p=((uint8_t *)&__Vectors[10]+0);
-    
+
     if(boot2Flag==0xff){
         boot2Flag=*p;
     }
@@ -646,7 +646,7 @@ uint8_t  ATTR_TCM_SECTION BLSP_Boot2_Get_Feature_Flag(void)
 uint8_t ATTR_TCM_SECTION BLSP_Boot2_Get_Log_Disable_Flag(void)
 {
     uint8_t *p=((uint8_t *)&__Vectors[10]+1);
-    
+
     return *p;
 }
 
@@ -661,7 +661,7 @@ uint8_t ATTR_TCM_SECTION BLSP_Boot2_Get_Log_Disable_Flag(void)
 uint8_t ATTR_TCM_SECTION BLSP_Boot2_8M_Support_Flag(void)
 {
     uint8_t *p=((uint8_t *)&__Vectors[10]+2);
-    
+
     return *p;
 }
 
@@ -705,22 +705,22 @@ uint32_t ATTR_TCM_SECTION BLSP_Boot2_Get_Baudrate(void)
 *******************************************************************************/
 void bflb_platform_init_uart_debug_gpio()
 {
-	GLB_GPIO_Cfg_Type cfg;
-    
+    GLB_GPIO_Cfg_Type cfg;
+
     uint8_t gpio=BLSP_Boot2_Get_TX_GPIO();
 
-	cfg.drive=0;
-	cfg.smtCtrl=1;
+    cfg.drive=0;
+    cfg.smtCtrl=1;
 
-	/*set GPIO as UART0 TX */
-	cfg.gpioPin=GLB_GPIO_PIN_0+(GLB_GPIO_Type)(gpio);
-	cfg.gpioFun=7;
-	cfg.gpioMode=GPIO_MODE_OUTPUT;
-	cfg.pullType=GPIO_PULL_UP;
-	GLB_GPIO_Init(&cfg);
+    /*set GPIO as UART0 TX */
+    cfg.gpioPin=GLB_GPIO_PIN_0+(GLB_GPIO_Type)(gpio);
+    cfg.gpioFun=7;
+    cfg.gpioMode=GPIO_MODE_OUTPUT;
+    cfg.pullType=GPIO_PULL_UP;
+    GLB_GPIO_Init(&cfg);
 
-	/* select uart gpio function */
-	GLB_UART_Fun_Sel((GLB_UART_SIG_Type)(GLB_UART_SIG_0+(gpio%8)),GLB_UART_SIG_FUN_UART0_TXD);
+    /* select uart gpio function */
+    GLB_UART_Fun_Sel((GLB_UART_SIG_Type)(GLB_UART_SIG_0+(gpio%8)),GLB_UART_SIG_FUN_UART0_TXD);
 }
 
 /****************************************************************************//**
@@ -733,21 +733,21 @@ void bflb_platform_init_uart_debug_gpio()
 *******************************************************************************/
 void bflb_platform_deinit_uart_debug_gpio()
 {
-	GLB_GPIO_Cfg_Type cfg;
+    GLB_GPIO_Cfg_Type cfg;
     uint8_t gpio=BLSP_Boot2_Get_TX_GPIO();
 
-	cfg.gpioMode=GPIO_MODE_INPUT;
-	cfg.pullType=GPIO_PULL_NONE;
-	cfg.drive=0;
-	cfg.smtCtrl=1;
+    cfg.gpioMode=GPIO_MODE_INPUT;
+    cfg.pullType=GPIO_PULL_NONE;
+    cfg.drive=0;
+    cfg.smtCtrl=1;
 
-	/*set GPIO as input */
-	cfg.gpioPin=GLB_GPIO_PIN_0+(GLB_GPIO_Type)(gpio);
-	cfg.gpioFun=11;
-	GLB_GPIO_Init(&cfg);
+    /*set GPIO as input */
+    cfg.gpioPin=GLB_GPIO_PIN_0+(GLB_GPIO_Type)(gpio);
+    cfg.gpioFun=11;
+    GLB_GPIO_Init(&cfg);
 
-	/* restore uart function sel*/
-	GLB_UART_Fun_Sel((GLB_UART_SIG_Type)(GLB_UART_SIG_0+(gpio%8)),
+    /* restore uart function sel*/
+    GLB_UART_Fun_Sel((GLB_UART_SIG_Type)(GLB_UART_SIG_0+(gpio%8)),
                     (GLB_UART_SIG_FUN_Type)(GLB_UART_SIG_0+(GLB_UART_SIG_Type)(gpio%12)));
 }
 

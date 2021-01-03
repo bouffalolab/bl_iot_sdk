@@ -15,9 +15,9 @@
 #include "stdlib.h"
 #include "string.h"
 
-#define BFLB_CRYPT_KEY_SIZE_MAX   		32
+#define BFLB_CRYPT_KEY_SIZE_MAX         32
 #define BFLB_CRYPT_NONCE_SIZE_MAX       16
-#define BFLB_CRYPT_BLK_SIZE       		16
+#define BFLB_CRYPT_BLK_SIZE             16
 
 #ifndef BFLB_CRYPT_HARDWARE
 typedef union tag_bflb_crypt_ctx_t
@@ -33,13 +33,13 @@ typedef union tag_bflb_crypt_ctx_t
 typedef struct tag_bflb_crypt_cfg_t
 {
 #ifndef BFLB_CRYPT_HARDWARE
-	uint8_t key[BFLB_CRYPT_KEY_SIZE_MAX];
-	//for general cipher,iv is 16 bytes, but for GCM vector test, there is a 60 bytes test
-	uint8_t iv_nonce[BFLB_CRYPT_NONCE_SIZE_MAX*4];
-	uint8_t stream_block[BFLB_CRYPT_BLK_SIZE];
-	uint8_t key_len;
-	uint8_t nonce_len;
-	uint8_t dir;
+    uint8_t key[BFLB_CRYPT_KEY_SIZE_MAX];
+    //for general cipher,iv is 16 bytes, but for GCM vector test, there is a 60 bytes test
+    uint8_t iv_nonce[BFLB_CRYPT_NONCE_SIZE_MAX*4];
+    uint8_t stream_block[BFLB_CRYPT_BLK_SIZE];
+    uint8_t key_len;
+    uint8_t nonce_len;
+    uint8_t dir;
 #else
 #endif
     uint8_t type;

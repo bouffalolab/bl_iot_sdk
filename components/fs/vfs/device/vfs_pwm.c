@@ -54,7 +54,7 @@ int vfs_pwm_close(file_t *fp)
         if (fp->node->refs == 1) {
 
             /* get the device pointer. */
-            pwm_dev = (pwm_dev_t *)(fp->node->i_arg);  
+            pwm_dev = (pwm_dev_t *)(fp->node->i_arg);
 
             if (pwm_dev != NULL) {
 
@@ -86,7 +86,7 @@ int vfs_pwm_ioctl(file_t *fp, int cmd, unsigned long arg)
     }
 
     /* get the device pointer. */
-    pwm_dev = (pwm_dev_t *)(fp->node->i_arg);  
+    pwm_dev = (pwm_dev_t *)(fp->node->i_arg);
 
     if (pwm_dev == NULL) {
         return -EINVAL;

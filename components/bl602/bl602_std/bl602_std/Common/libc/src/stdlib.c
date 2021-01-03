@@ -10,7 +10,7 @@
 
 void *malloc(size_t size)
 {
-	return NULL;
+    return NULL;
 }
 
 void free(void *ptr)
@@ -19,10 +19,10 @@ void free(void *ptr)
 
 void *calloc(size_t nmemb, size_t size)
 {
-	return NULL;
+    return NULL;
 }
 
 void *realloc(void *ptr, size_t size)
 {
-	return NULL;
+    return NULL;
 }

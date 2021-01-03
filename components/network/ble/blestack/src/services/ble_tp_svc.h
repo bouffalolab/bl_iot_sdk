@@ -20,12 +20,12 @@ NOTES
 #define BT_UUID_CHAR_BLE_TP_RX      BT_UUID_DECLARE_128(BT_UUID_128_ENCODE(0x07af27a8, 0x9c22, 0x11ea, 0x9afe, 0x02fcdc4e7412))
 
 //TX value handle offset 2
-#define BT_CHAR_BLE_TP_TX_ATTR_VAL_INDEX	(2)
+#define BT_CHAR_BLE_TP_TX_ATTR_VAL_INDEX    (2)
 //RX value handle offset 5
-#define BT_CHAR_BLE_TP_RX_ATTR_VAL_INDEX	(5)
+#define BT_CHAR_BLE_TP_RX_ATTR_VAL_INDEX    (5)
 
 void ble_tp_init();
 struct bt_gatt_attr *get_attr(u8_t index);
 
-#endif 
+#endif
 

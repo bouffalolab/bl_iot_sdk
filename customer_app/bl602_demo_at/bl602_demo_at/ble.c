@@ -53,7 +53,7 @@
 #if defined(CONFIG_BT_WIFIPROV_SERVER)
 static void wifiprov_connect_ap_ind(void)
 {
-    printf("Recevied indication to connect to AP\r\n");    
+    printf("Recevied indication to connect to AP\r\n");
     wifi_prov_api_event_trigger_connect();
 }
 
@@ -71,7 +71,7 @@ static void wifiprov_ssid_ind(void *buf,size_t size)
 
 static void wifiprov_bssid_ind(void *buf,size_t size)
 {
-    
+
     printf("Recevied bssid: %s \r\n", bt_hex(buf, size));
 }
 
@@ -82,11 +82,11 @@ static void wifiprov_password_ind(void *buf,size_t size)
 }
 
 struct conn_callback WifiProv_conn_callback = {
-	.local_connect_remote_ap = wifiprov_connect_ap_ind,
-	.local_disconnect_remote_ap = wifiprov_disc_from_ap_ind,
-	.get_remote_ap_ssid = wifiprov_ssid_ind,
-	.get_remote_ap_bssid = wifiprov_bssid_ind,
-	.get_remote_password = wifiprov_password_ind,
+    .local_connect_remote_ap = wifiprov_connect_ap_ind,
+    .local_disconnect_remote_ap = wifiprov_disc_from_ap_ind,
+    .get_remote_ap_ssid = wifiprov_ssid_ind,
+    .get_remote_ap_bssid = wifiprov_bssid_ind,
+    .get_remote_password = wifiprov_password_ind,
 };
 #endif
 
@@ -99,13 +99,13 @@ struct conn_callback WifiProv_conn_callback = {
 
 void model_gen_cb(uint8_t value)
 {
-    bl_gpio_output_set(LED_PIN, value); 
+    bl_gpio_output_set(LED_PIN, value);
 }
 #endif
 
 void bt_enable_cb(int err)
 {
-    if (!err) {     
+    if (!err) {
         ble_cli_register();
 #if defined(CONFIG_BT_STACK_PTS)
         pts_cli_register();
@@ -115,7 +115,7 @@ void bt_enable_cb(int err)
         blemesh_cli_register();
 #if defined(CONFIG_BT_MESH_MODEL_GEN_SRV)
         bl_gpio_enable_output(LED_PIN, LED_PIN_PULLUP, LED_PIN_PULDONW);
-        mesh_gen_srv_callback_register(model_gen_cb); 
+        mesh_gen_srv_callback_register(model_gen_cb);
 #endif
 #endif
 

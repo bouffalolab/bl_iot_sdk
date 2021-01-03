@@ -19,5 +19,5 @@
 
 int bt_mesh_test(void)
 {
-	return 0;
+    return 0;
 }

@@ -101,7 +101,7 @@ static int32_t BLSP_Boot2_Fw_Decompress(uint32_t srcAddress,uint32_t destAddress
     struct xz_buf b;
     struct xz_dec *s;
     enum xz_ret ret;
-    
+
     *pDestSize=0;
     if(destMaxSize>0){
         XIP_SFlash_Erase_Need_Lock(&flashCfg,destAddress,destAddress+destMaxSize-1);

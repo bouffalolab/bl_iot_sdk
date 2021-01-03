@@ -37,18 +37,18 @@ extern "C" {
 #endif
 
 typedef enum {
-	AQEC_OK=0,
-	AQEC_FAIL,
-	AQEC_EMPTY,
-	AQEC_FULL
+    AQEC_OK=0,
+    AQEC_FAIL,
+    AQEC_EMPTY,
+    AQEC_FULL
 } AT_QUEUE_ERROR_CODE;
 
 typedef struct {
-	u8 *qbuf;
-	s32 qsize;
-	s32 qcnt;
-	s32 ridx;
-	s32 widx;
+    u8 *qbuf;
+    s32 qsize;
+    s32 qcnt;
+    s32 ridx;
+    s32 widx;
 } at_queue_t;
 
 typedef s32 (*at_queue_callback_t)(u8 *buf, s32 size);

@@ -21,12 +21,12 @@
 #define WIFIPROV_FRAME_ACK_DATA_LEN     0x01
 
 struct conn_callback{
-	void (*local_connect_remote_ap) (void);
-	void (*local_disconnect_remote_ap) (void);
-	void (*get_remote_ap_ssid)(void *args,size_t size); 
-	void (*get_remote_ap_bssid)(void *args,size_t size); 
-	void (*get_remote_password)(void *args,size_t size); 
-}; 	
+    void (*local_connect_remote_ap) (void);
+    void (*local_disconnect_remote_ap) (void);
+    void (*get_remote_ap_ssid)(void *args,size_t size);
+    void (*get_remote_ap_bssid)(void *args,size_t size);
+    void (*get_remote_password)(void *args,size_t size);
+};
 
 enum wifiprov_ctrlfrm_type{
     SUB_TYPE_CTRL_ACK = 0x00,
@@ -42,12 +42,12 @@ enum wifiprov_datafrm_type{
 
 #define WIFIPROV_FRAME_DATA_PYLD_OFFSET    4
 struct wifiprov_data_format{
-	u8_t type;   /*type : highest 2 bit ; subtype : lowest 6 bit;*/
-	u8_t frame_control;  /* if 5th bit set "1" indicate fragmentation frame */
-	u8_t sequence_number;
-	u8_t len;
-	u8_t *data;
+    u8_t type;   /*type : highest 2 bit ; subtype : lowest 6 bit;*/
+    u8_t frame_control;  /* if 5th bit set "1" indicate fragmentation frame */
+    u8_t sequence_number;
+    u8_t len;
+    u8_t *data;
 };
 
 void WifiProv_init(struct conn_callback *cb);
-#endif 
+#endif
