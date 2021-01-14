@@ -18,8 +18,8 @@ $(info ****** Please SET BL60X_SDK_PATH ******)
 $(info ****** Trying SDK PATH [$(BL60X_SDK_PATH)])
 endif
 
-COMPONENTS_NETWORK := sntp dns_server
-COMPONENTS_BLSYS   := bltime blfdt blmtd blota bloop loopadc looprt loopset
+
+COMPONENTS_BLSYS   := bltime blfdt blmtd  bloop loopadc looprt loopset
 COMPONENTS_VFS     := romfs atcmd cjson
 ifeq ($(CONFIG_BT_TL),1)
 COMPONENTS_BLE     := blecontroller
@@ -27,9 +27,8 @@ else
 COMPONENTS_BLE     := blecontroller blestack
 endif
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std bl602_wifi bl602_wifidrv hal_drv lwip lwip_dhcpd mbedtls vfs yloop utils cli httpc netutils blog blog_testc
-INCLUDE_COMPONENTS += easyflash4 lwip_altcp_tls_mbedtls
-INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std bl602_wifi hal_drv  vfs yloop utils cli blog blog_testc
+INCLUDE_COMPONENTS += easyflash4 
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
 INCLUDE_COMPONENTS += $(PROJECT_NAME)
