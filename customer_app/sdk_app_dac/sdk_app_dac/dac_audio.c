@@ -208,7 +208,7 @@ static BL_Err_Type DAC_DMA_Test(uint32_t *psrc, uint32_t bufsize)
 }
 
 
-int audio_dac_dma_test(uint16_t *paddr, uint32_t bufsize)
+int audio_dac_dma_test(uint32_t *paddr, uint32_t bufsize)
 {
     if(SUCCESS != DAC_DMA_Test(paddr, bufsize)){
        return 0;
