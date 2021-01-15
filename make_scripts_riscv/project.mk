@@ -342,7 +342,8 @@ CFLAGS := $(strip \
 	$(CFLAGS) \
 	$(E21_CPU_CFLAGS) \
 	$(EXTRA_CFLAGS)) \
-	-save-temps=obj
+	-save-temps=obj \
+	-Werror -Wall
 
 CXXFLAGS := $(strip \
 	-std=c++11 \
@@ -366,6 +367,7 @@ CXXFLAGS := $(strip \
 	-Wundef \
 	-fno-rtti -fno-exceptions \
 	-save-temps=obj \
+	-Werror -Wall \
 	)
 
 export CFLAGS CPPFLAGS CXXFLAGS ASMFLAGS
