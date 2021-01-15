@@ -498,7 +498,7 @@ int main(void)
     MSG("jump entry:%08x\r\n",(unsigned int)entry);
     BLSP_Boot2_Jump_Entry(entry);
 
-    return ;
+    return 0;
 }
 
 void bfl_main()
