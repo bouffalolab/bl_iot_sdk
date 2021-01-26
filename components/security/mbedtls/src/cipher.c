@@ -46,7 +46,9 @@
 #endif
 
 #if defined(MBEDTLS_CCM_C)
-#include "mbedtls/ccm.h"
+// #include "mbedtls/ccm.h"
+#include "ccm.h" //
+
 #endif
 
 #if defined(MBEDTLS_CMAC_C)

@@ -1,0 +1,80 @@
+wakaama RestoreLog
+
+
+objects.c
+registration.c  (2019-9-19)
+    - 清除日志打印、注释、乱码等
+    - 还原类型转换, 编译器报note
+    - objects.c中新增的访问权限相关的代码, 暂时保留
+
+
+data.c          (2019-9-19)
+    - 移除lwm2m_data_decode_opaque函数(尚未使用)
+    - 移除lwm2m_data_serialize函数中对19号对象的特殊处理
+        1) formatP在management.c的dm_handleRequest函数中已经根据19号对象处理了
+        2) dataP->type在针对19号对象读的时候已经做了LWM2M_TYPE_OPAQUE处理
+        所以，此处应该是兼容19号对象的(待测)
+
+internals.h
+bootstrap.c     (2019-9-19)
+    * 将函数bootstrap_step的currentTime参数类型从uint32_t还原为time_t
+
+
+internals.h
+transaction.c   (2019-9-19)
+    - 还原internals.h中声明的相关函数
+    - 清除transaction.c中的打印，并还原coap超时重传次数的修改(COAP_MAX_RETRANSMIT)等
+
+internals.h
+objects.c
+observe.c       (2019-9-19)
+    - 合并object_checkReadable和object_checkNumeric
+    # 官方master版本在2017年12月20日 23:13:38已合并，commitId: 309a1ec2f5dbb0f8281d9baa86425f053717a6b4
+
+commandline.c   (2019-9-19)
+    - 移除无效的修改
+    ? output_buffer()打印函数, 做ATING_DEBUG宏控制，暂时保留
+
+
+liblwm2m.c      (2019-9-18)
+    - 将扩展的函数移到组件外, 在internals_ext.h中声明, 在liblwm2m_ext.c中实现
+    ? lwm2m_reconnect函数调用私有函数，暂时保留
+
+
+bootstrap.c
+internals.h
+observe.c
+registration.c  (2019-9-18)
+    - 将扩展的函数、头文件移到组件外对应的ext文件中
+    * 还原一些日志, 类型转换等
+
+
+block1.c
+er-coap-13.c
+packet.c
+lwm2m_utils.c   (2019-9-18)
+    * 直接还原, 主要是一些类型转换, 消除编译告警, 代码格式的处理
+    * lwm2m_utils.c还原到utils.c, 二者相同, 改名是因为别的模块有同名的utils.c
+
+
+liblwm2m.h      (2019-9-18)
+    - 将liblwm2m.h中扩展的数据结构、函数接口、头文件等, 移到liblwm2m_ext.h中
+        * 相关扩展会使用liblwm2m.h中的数据结构和函数指针，所以在liblwm2m_ext.h中做如下改动:
+            1、增加typedef(用到数据结构指针)
+                1) typedef struct _lwm2m_data_t lwm2m_data_t;
+                2) typedef struct _lwm2m_context_t lwm2m_context_t;
+                3) typedef struct _lwm2m_transaction_ lwm2m_transaction_t;
+                4) typedef void (*lwm2m_transaction_callback_t) (lwm2m_transaction_t * transacP, void * message);
+            2、枚举类型改为int
+                typedef struct
+                {
+                    lwm2m_bootstrap_type_e bsType;
+                    int state;     // -> lwm2m_client_state_t
+                    uint32_t cnt;
+                }lwm2m_bs_control_t;
+    - 移除liblwm2m.h中lwm2m_change_callback_t相关内容
+    * 将coap_packet_t* message 改为 void * message
+
+
+liblwm2m_api.h  (2019-9-18)
+    - 将该文件移到组件外

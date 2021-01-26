@@ -36,7 +36,8 @@
 
 #if defined(MBEDTLS_CCM_C)
 
-#include "mbedtls/ccm.h"
+// #include "mbedtls/ccm.h"
+#include "ccm.h" //
 
 #include <string.h>
 
