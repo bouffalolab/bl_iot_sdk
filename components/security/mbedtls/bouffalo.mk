@@ -1,10 +1,10 @@
 # Component Makefile
 #
 ## These include paths would be exported to project level
-COMPONENT_ADD_INCLUDEDIRS +=
+COMPONENT_ADD_INCLUDEDIRS += include/mbedtls_port
 
 ## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS := include/mbedtls include/icrypto
+COMPONENT_PRIV_INCLUDEDIRS := include/mbedtls include/icrypto 
 
 NAME := imbedtls
 
@@ -96,3 +96,5 @@ COMPONENT_SRCDIRS := src
 
 ##
 CPPFLAGS += -DLWIP_ENABLED -DCONFIG_PLAT_AOS
+## Hwcloud
+CPPFLAGS += -D MBEDTLS_CONFIG_FILE=\"los_mbedtls_config.h\"
