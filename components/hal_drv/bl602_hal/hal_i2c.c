@@ -73,7 +73,7 @@ static void i2c_callback(i2c_msg_t *pstmsg)
 
 static void i2c_transferbytes(i2c_msg_t *pstmsg)
 {
-    if ((pstmsg->direct == I2C_M_WRITE) && (pstmsg->event = EV_I2C_TXF_INT)) {
+    if ((pstmsg->direct == I2C_M_WRITE) && (pstmsg->event == EV_I2C_TXF_INT)) {
         if (pstmsg->idex < pstmsg->len) {
             do_write_data(pstmsg);
         } else if (pstmsg->idex == pstmsg->len) {
@@ -81,7 +81,7 @@ static void i2c_transferbytes(i2c_msg_t *pstmsg)
             return;
         } else {
         }
-    } else if ((pstmsg->direct == I2C_M_READ) && (pstmsg->event = EV_I2C_RXF_INT)){
+    } else if ((pstmsg->direct == I2C_M_READ) && (pstmsg->event == EV_I2C_RXF_INT)){
         if (pstmsg->idex < pstmsg->len) {
              do_read_data(pstmsg);
         } else {
