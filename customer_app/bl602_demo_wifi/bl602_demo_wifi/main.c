@@ -81,7 +81,7 @@
 #include <utils_log.h>
 #include <libfdt.h>
 #include <blog.h>
-
+#include "http_ota.h"
 #define mainHELLO_TASK_PRIORITY     ( 20 )
 #define UART_ID_2 (2)
 #define WIFI_AP_PSM_INFO_SSID           "conf_ap_ssid"
@@ -785,6 +785,7 @@ int codex_debug_cli_init(void);
     bl_wdt_cli_init();
     bl_gpio_cli_init();
     looprt_test_cli_init();
+    bl_http_ota_cli_init();
 }
 
 static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)

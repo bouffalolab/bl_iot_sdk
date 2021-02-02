@@ -83,7 +83,7 @@
 #include <blog.h>
 
 #ifdef CONFIG_HWCLOUD_IOT_LINK
-#include <example_hwcloud_iot_link.h> //
+#include <example_hwcloud_iot_link.h> 
 #endif
 
 #define mainHELLO_TASK_PRIORITY     ( 20 )
@@ -1015,7 +1015,7 @@ void bfl_main()
     xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
 
     #ifdef CONFIG_HWCLOUD_IOT_LINK
-    example_hwcloud_iot_link(); //
+    example_hwcloud_iot_link(); 
     #endif
     
     puts("[OS] Starting aos_loop_proc task...\r\n");
