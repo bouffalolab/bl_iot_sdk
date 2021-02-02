@@ -261,7 +261,7 @@ CPPFLAGS += -D BL_CHIP_NAME=\"$(BL_CHIP_NAME)\" -MMD -MP $(CPPFLAGS) $(EXTRA_CPP
 CPPFLAGS += -DARCH_RISCV
 
 # Warnings-related flags relevant both for C and C++
-COMMON_WARNING_FLAGS = -Wall -Werror=all \
+COMMON_WARNING_FLAGS = -Wall \
 	-Wno-error=unused-function \
 	-Wno-error=unused-but-set-variable \
 	-Wno-error=unused-variable \

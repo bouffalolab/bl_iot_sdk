@@ -89,7 +89,7 @@ static const char s_server_ca[] =
 "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\r\n"
 "-----END CERTIFICATE-----\r\n";
 
-#define CN_EP_DEVICEID        "6007910b4f04b00309bca4a3_bl602_mqtt_12345678" //  watermeter水表模型
+#define CN_EP_DEVICEID        "60056c19aaafca02dbd25786_bl602_mqtt_12345678" //  watermeter水表模型
 #define CN_EP_PASSWD          "12345678" // 
 
 ///< the client use the cert mode  SHA-256
