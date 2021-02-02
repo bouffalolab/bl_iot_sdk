@@ -32,5 +32,5 @@ INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
 INCLUDE_COMPONENTS += $(PROJECT_NAME)
 ## Hwcloud
-include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk
+include ./project.mk
 
