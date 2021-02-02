@@ -51,6 +51,10 @@ endif
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hal_drv loopset looprt bloop
 
+
 #enable huaweicloud iot link example  //
 CONFIG_HWCLOUD_IOT_LINK := 1
 
+ifeq ($(CONFIG_HWCLOUD_IOT_LINK),1)
+CPPFLAGS += -D MBEDTLS_CONFIG_FILE=\"los_mbedtls_config.h\"
+endif
