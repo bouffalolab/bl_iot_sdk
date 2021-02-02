@@ -1,10 +1,10 @@
 # Component Makefile
 #
 ## These include paths would be exported to project level
-COMPONENT_ADD_INCLUDEDIRS += include/mbedtls_port
+COMPONENT_ADD_INCLUDEDIRS +=
 
 ## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS := include/mbedtls include/icrypto 
+COMPONENT_PRIV_INCLUDEDIRS := include/mbedtls include/icrypto include/mbedtls_port
 
 NAME := imbedtls
 
@@ -12,7 +12,7 @@ $(NAME)_MBINS_TYPE := kernel
 $(NAME)_VERSION := 2.0.1
 $(NAME)_SUMMARY := Mbed Transport Layer Security on Embedded Devices for AliOS Things
 
-## This component's src
+## This component's src 
 COMPONENT_SRCS := src/aes.c
 COMPONENT_SRCS += src/aesni.c
 COMPONENT_SRCS += src/arc4.c
@@ -96,5 +96,3 @@ COMPONENT_SRCDIRS := src
 
 ##
 CPPFLAGS += -DLWIP_ENABLED -DCONFIG_PLAT_AOS
-## Hwcloud
-CPPFLAGS += -D MBEDTLS_CONFIG_FILE=\"los_mbedtls_config.h\"

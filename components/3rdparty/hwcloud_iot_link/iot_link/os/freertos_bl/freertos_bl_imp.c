@@ -258,18 +258,7 @@ static unsigned long long __get_sys_time()
 
 
 #if 0 //
-//interrupt
-// #include <los_hwi.h>
-// static int __int_connect(int intnum, int prio, int mode, fn_interrupt_handle callback, void* arg)
-// {
-//     extern unsigned int LOS_HwiCreate(HWI_HANDLE_T  uwHwiNum, \
-//                                 HWI_PRIOR_T   usHwiPrio, \
-//                                 HWI_MODE_T    usMode, \
-//                                 HWI_PROC_FUNC pfnHandler, \
-//                                 HWI_ARG_T     uwArg \
-//                                 );
-//     return LOS_HwiCreate((HWI_HANDLE_T)intnum, (HWI_PRIOR_T)prio,(HWI_MODE_T) mode, (HWI_PROC_FUNC)callback, (HWI_ARG_T)arg);
-// }
+
 #endif
 
 static const tag_os_ops s_cmsisos_ops =
