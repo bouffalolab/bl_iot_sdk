@@ -8,17 +8,17 @@
 #define MAX_MULTI_ADV_INSTANT       4
 #define MAX_AD_DATA_LEN             31
 
-#define TIME_PRIOD_MS               100
+#define TIME_PRIOD_MS               (10*(MAX_MULTI_ADV_INSTANT -2))
 #define SLOT_PER_PERIOD             (TIME_PRIOD_MS*8/5)
 
-#define MAX_MIN_MULTI               300
+#define MAX_MIN_MULTI               (30000/TIME_PRIOD_MS)
 
-#define HIGH_DUTY_CYCLE_INTERVAL    (40*8/5)
+#define HIGH_DUTY_CYCLE_INTERVAL    (20*8/5)
 
 
 struct multi_adv_instant {
     uint8_t inuse_flag;
-
+       
     /* for parameters  */
     struct bt_le_adv_param param;
     uint8_t ad[MAX_AD_DATA_LEN];
@@ -29,7 +29,7 @@ struct multi_adv_instant {
     /* own address maybe used */
     bt_addr_t own_addr;
     uint8_t own_addr_valid;
-
+    
     /* for schedule */
     int instant_id;
     int instant_interval;
@@ -62,6 +62,7 @@ int bt_le_multi_adv_start(const struct bt_le_adv_param *param,
                     const struct bt_data *sd, size_t sd_len, int *instant_id);
 int bt_le_multi_adv_stop(int instant_id);
 
+bool bt_le_multi_adv_id_is_vaild(int instant_id);
 
 #endif
 

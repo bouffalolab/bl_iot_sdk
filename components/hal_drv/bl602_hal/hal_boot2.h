@@ -60,9 +60,9 @@ typedef enum {
 /**
  * @brief Error type definition
  */
-typedef enum
+typedef enum 
 {
-  HAL_SUCCESS  = 0,
+  HAL_SUCCESS  = 0, 
   HAL_ERROR   = 1,
 } HAL_Err_Type;
 
@@ -82,5 +82,6 @@ int hal_boot2_get_active_entries(int type, HALPartition_Entry_Config *ptEntry);
 int hal_boot2_update_ptable(HALPartition_Entry_Config *ptEntry);
 int hal_boot2_dump(void);
 int hal_boot2_init(void);
+void hal_update_mfg_ptable(void);
 
 #endif

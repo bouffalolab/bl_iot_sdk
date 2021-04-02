@@ -40,24 +40,11 @@ struct bl_mod_params {
     bool ht_on;
     bool vht_on;
     int mcs_map;
-    bool ldpc_on;
-    bool vht_stbc;
     int phy_cfg;
     int uapsd_timeout;
-    bool ap_uapsd_on;
     bool sgi;
     bool sgi80;
     bool use_2040;
-    bool use_80;
-    bool custregd;
-    int nss;
-    bool bfmee;
-    bool bfmer;
-    bool mesh;
-    bool murx;
-    bool mutx;
-    bool mutx_on;
-    unsigned int roc_dur_max;
     int listen_itv;
     bool listen_bcmc;
     int lp_clk_ppm;
@@ -65,7 +52,6 @@ struct bl_mod_params {
     int tx_lft;
     int amsdu_maxnb;
     int uapsd_queues;
-    bool tdls;
 };
 
 extern struct bl_mod_params bl_mod_params;

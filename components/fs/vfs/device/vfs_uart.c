@@ -252,7 +252,7 @@ out:
 int uart_ioctl_cmd_waimode(uart_dev_t *uart_dev, int cmd, unsigned long arg)
 {
     int ret = 0;
-    uint32_t timeout;
+    TickType_t timeout, last_time, remain_time;
     uint32_t nbytes;
     uart_ioc_waitread_t *waitr_arg = (uart_ioc_waitread_t *)arg;
 
@@ -265,6 +265,7 @@ int uart_ioctl_cmd_waimode(uart_dev_t *uart_dev, int cmd, unsigned long arg)
     timeout = pdMS_TO_TICKS(waitr_arg->timeout);
 
     while (1) {
+        last_time = xTaskGetTickCount();
         ret += xStreamBufferReceive(uart_dev->rx_ringbuf_handle,
                                     (uint8_t*)waitr_arg->buf + ret,
                                     nbytes - ret,
@@ -272,11 +273,14 @@ int uart_ioctl_cmd_waimode(uart_dev_t *uart_dev, int cmd, unsigned long arg)
         if ((ret == nbytes) || (timeout == 0)) {
             break;
         }
-        if (IOCTL_UART_IOC_WAITRD_MODE == cmd) {
-            if (ret > 0) {
-                break;
+        if (IOCTL_UART_IOC_WAITRDFULL_MODE == cmd) {
+            remain_time = xTaskGetTickCount() - last_time;
+            if (remain_time < timeout) {
+                timeout -= remain_time;
+                continue;
             }
         }
+        break;
     }
 
     return ret;

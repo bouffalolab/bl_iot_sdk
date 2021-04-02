@@ -275,6 +275,10 @@ BL_Err_Type UART_Init(UART_ID_Type uartId,UART_CFG_Type* uartCfg)
     }
     BL_WR_REG(UARTx,UART_DATA_CONFIG,tmpValTxCfg);
 
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(UART0_IRQn,UART0_IRQHandler);
+    //Interrupt_Handler_Register(UART1_IRQn,UART1_IRQHandler);
+#endif
     return SUCCESS;
 }
 
@@ -1108,6 +1112,67 @@ BL_Sts_Type UART_GetOverflowStatus(UART_ID_Type uartId,UART_Overflow_Type overfl
 }
 
 /****************************************************************************//**
+ * @brief  Get current baudrate function
+ *
+ * @param  uartId: UART ID type
+ *
+ * @return Baudrate
+ *
+*******************************************************************************/
+uint32_t UART_GetBaudrate(UART_ID_Type uartId)
+{
+    uint32_t clock = 0;
+    uint32_t tmpVal = 0;
+    uint32_t div1 = 1;
+    uint32_t div2 = 1;
+    uint32_t UARTx = uartAddr[uartId];
+    
+    /* Get uart clock */
+    tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG2);
+    div2 = BL_GET_REG_BITS_VAL(tmpVal,GLB_UART_CLK_DIV)+1;
+    if(BL_IS_REG_BIT_SET(tmpVal,GLB_HBN_UART_CLK_SEL)){
+        clock = 160000000;
+    }else{
+        tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
+        div1 = BL_GET_REG_BITS_VAL(tmpVal,GLB_REG_HCLK_DIV);
+        tmpVal = BL_GET_REG_BITS_VAL(tmpVal,GLB_HBN_ROOT_CLK_SEL);
+        if(tmpVal == 0){
+            clock = 32000000;
+        }else if(tmpVal == 1){
+            clock = 40000000;
+        }else{
+            tmpVal = BL_RD_REG(GLB_BASE,GLB_CLK_CFG0);
+            tmpVal = BL_GET_REG_BITS_VAL(tmpVal,GLB_REG_PLL_SEL);
+            switch(tmpVal){
+                case 0:
+                    clock = 48000000;
+                    break;
+                case 1:
+                    clock = 120000000;
+                    break;
+                case 2:
+                    clock = 160000000;
+                    break;
+                case 3:
+                    clock = 192000000;
+                    break;
+                default:
+                    clock = 160000000;
+                    break;
+            }
+        }
+        clock /= div1;
+    }
+    clock /= div2;
+    
+    /* Get uart bit period */
+    tmpVal = BL_RD_REG(UARTx,UART_BIT_PRD);
+    tmpVal = BL_GET_REG_BITS_VAL(tmpVal,UART_CR_UTX_BIT_PRD)+1;
+    
+    return(clock/tmpVal);
+}
+
+/****************************************************************************//**
  * @brief  UART0 interrupt handler
  *
  * @param  None
@@ -1116,7 +1181,7 @@ BL_Sts_Type UART_GetOverflowStatus(UART_ID_Type uartId,UART_Overflow_Type overfl
  *
 *******************************************************************************/
 #if (!defined BL602_USE_HAL_DRIVER)||(defined BL602_EFLASH_LOADER)
-void __IRQ UART0_IRQHandler(void)
+void UART0_IRQHandler(void)
 {
     UART_IntHandler(UART0_ID);
 }
@@ -1131,7 +1196,7 @@ void __IRQ UART0_IRQHandler(void)
  *
 *******************************************************************************/
 #if (!defined BL602_USE_HAL_DRIVER)||(defined BL602_EFLASH_LOADER)
-void __IRQ UART1_IRQHandler(void)
+void UART1_IRQHandler(void)
 {
     UART_IntHandler(UART1_ID);
 }

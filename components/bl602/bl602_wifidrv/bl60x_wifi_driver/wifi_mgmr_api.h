@@ -30,6 +30,7 @@
 #ifndef __WIFI_MGMR_API_H__
 #define __WIFI_MGMR_API_H__
 #include <stdint.h>
+#include "wifi_mgmr.h"
 
 /**
  ****************************************************************************************
@@ -49,6 +50,7 @@ typedef struct
     uint8_t rsvd : 4;
 } wifi_mgmr_api_cipher_t;
 
+int wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_T ev, void *data1, void *data2);
 int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq);
 int wifi_mgmr_api_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, uint32_t length, uint32_t *buf);
 int wifi_mgmr_api_ip_got(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1, uint32_t dns2);
@@ -68,7 +70,7 @@ int wifi_mgmr_api_set_country_code(char *country_code);
 
 /*section for fw api*/
 int wifi_mgmr_api_fw_disconnect(void);
-int wifi_mgmr_api_fw_scan(void);
+int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num);
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_OFF           (1)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_ON            (2)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_DYNAMIC_ON    (3)

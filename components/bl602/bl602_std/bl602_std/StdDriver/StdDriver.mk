@@ -18,12 +18,12 @@ ifeq ($(ROMAPI_TEST),y)
 	stddriver_sources += bl602_romapi.c
     STDDRIVER_CFLAGS += -DBL602_USE_ROM_DRIVER
 else
-    stddriver_sources += bl602_romapi.c bl602_sflash_ext.c bl602_sf_cfg_ext.c
+    stddriver_sources += bl602_romapi.c bl602_sflash_ext.c bl602_sf_cfg_ext.c bl602_xip_sflash_ext.c
     STDDRIVER_CFLAGS += -DBL602_USE_ROM_DRIVER
 endif
 else
 	stddriver_sources += bl602_sf_ctrl.c bl602_sflash.c bl602_sf_cfg.c  bl602_xip_sflash.c bl602_sflash_ext.c \
-	 					 bl602_sf_cfg_ext.c
+	 					 bl602_sf_cfg_ext.c bl602_xip_sflash_ext.c
 endif
 
 stddriver_objs := $(addprefix $(SUBMODULE_OUT_DIR)/, $(subst .c,.o,$(stddriver_sources)))

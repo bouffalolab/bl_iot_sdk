@@ -3,6 +3,10 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( bl602_start )
 
 __EM_SIZE = DEFINED(ble_controller_init) ? 8K : 0K;
+__RFTLV_SIZE_OFFSET = 1K;
+__RFTLV_SIZE_HOLE = 2K;
+__RFTLV_HEAD1_H = (0x46524C42); /* BLRF */
+__RFTLV_HEAD1_L = (0x41524150); /* PAPA */
 
 MEMORY
 {
@@ -21,6 +25,17 @@ SECTIONS
   .init           :
   {
     KEEP (*(SORT_NONE(.init)))
+  } > flash
+
+  /* value for rftlv */
+
+  .rftlv.tool :
+  {
+      . = ORIGIN(flash) + __RFTLV_SIZE_OFFSET;
+      PROVIDE( _ld_symbol_rftlv_address = . );
+      LONG(__RFTLV_HEAD1_H);
+      LONG(__RFTLV_HEAD1_L);
+      . = ORIGIN(flash) + __RFTLV_SIZE_OFFSET + __RFTLV_SIZE_HOLE;
   } > flash
 
   .text           :
@@ -72,7 +87,7 @@ SECTIONS
     _bl_static_blogpri_code_end = .;
 
     *(.gnu.linkonce.r.*)
-
+    
     /*Framework table section, use ALIGN here to avoid fill section*/
     . = ALIGN(4);
     _rom_framework_audio_device_start = .;
@@ -153,7 +168,7 @@ SECTIONS
     *(.srodata.cst4)
     *(.srodata.cst2)
     *(.srodata .srodata.*)
-
+    
     . = ALIGN(8);
     *(._k_queue.static.*)
     *(._k_sem.static.*)
@@ -192,17 +207,16 @@ SECTIONS
     *(COMMON)
   } > ram_tcm
 
-  PROVIDE( _heap_start = . );
-  PROVIDE( _heap_size = ADDR(.stack) - _heap_start );
-
-
-  .stack ORIGIN(ram_tcm) + LENGTH(ram_tcm) - __stack_size (NOLOAD) :
+  .stack (NOLOAD)   :
   {
+    . = ALIGN(16);
     . = . + __stack_size;
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
-  } >ram_tcm
+  }
 
+  PROVIDE( _heap_start = . );
+  PROVIDE( _heap_size = ORIGIN(ram_tcm) + LENGTH(ram_tcm) - _heap_start );
 
   /*SYMOBOL used in code*/
   PROVIDE( _ld_bl_static_cli_cmds_start = _bl_static_cli_cmds_start );
@@ -230,7 +244,7 @@ SECTIONS
 
   /*BOOT2 sections*/
   PROVIDE ( __boot2_pt_addr_src = BOOT2_PT_ADDR );
-  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR );
+  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR ); 
 
   PROVIDE(xTaskGetTickCount = 0x0000000021017694);
   PROVIDE(xTaskGetTickCountFromISR = 0x00000000210176aa);
@@ -286,7 +300,7 @@ SECTIONS
   PROVIDE(vTaskStartScheduler = 0x0000000021017610);
   PROVIDE(vPortDefineHeapRegions = 0x00000000210197da);
   PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
-
+  
   PROVIDE( _ld_symbol_rom_framework_audio_device_start = _rom_framework_audio_device_start);
   PROVIDE( _ld_symbol_rom_framework_audio_device_end = _rom_framework_audio_device_end);
 

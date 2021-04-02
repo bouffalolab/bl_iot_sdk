@@ -66,8 +66,8 @@
 /**
  *  @brief PWM interrupt callback function address array
  */
-static intCallback_Type * PWMIntCbfArra[]= {
-    NULL, NULL, NULL, NULL, NULL
+static intCallback_Type * PWMIntCbfArra[PWM_CH_MAX][PWM_INT_ALL]= {
+    {NULL}
 };
 
 
@@ -108,14 +108,14 @@ static BL_Err_Type PWM_IntHandler(IRQn_Type intPeriph)
     uint32_t timeoutCnt = PWM_INT_TIMEOUT_COUNT;
     /* Get channel register */
     uint32_t PWMx = PWM_BASE;
-
+    
     for (i = 0; i < PWM_CH_MAX; i++) {
         tmpVal = BL_RD_REG(PWMx, PWM_INT_CONFIG);
         if ((BL_GET_REG_BITS_VAL(tmpVal, PWM_INTERRUPT_STS) & (1 << i)) != 0) {
             /* Clear interrupt */
             tmpVal |= (1 << (i + PWM_INT_CLEAR_POS));
             BL_WR_REG(PWMx, PWM_INT_CONFIG, tmpVal);
-            /* FIXME: we need set pwm_int_clear to 0 by software and
+            /* FIXME: we need set pwm_int_clear to 0 by software and 
                before this,we must make sure pwm_interrupt_sts is 0*/
             do{
                 tmpVal = BL_RD_REG(PWMx, PWM_INT_CONFIG);
@@ -124,12 +124,12 @@ static BL_Err_Type PWM_IntHandler(IRQn_Type intPeriph)
                     break;
                 }
             }while(BL_GET_REG_BITS_VAL(tmpVal,PWM_INTERRUPT_STS)&(1 << i));
-
+            
             tmpVal &= (~(1 << (i + PWM_INT_CLEAR_POS)));
             BL_WR_REG(PWMx, PWM_INT_CONFIG, tmpVal);
-            if (PWMIntCbfArra[i*PWM_INT_ALL + PWM_INT_PULSE_CNT] != NULL) {
+            if (PWMIntCbfArra[i][PWM_INT_PULSE_CNT] != NULL) {
                 /* Call the callback function */
-                PWMIntCbfArra[i*PWM_INT_ALL + PWM_INT_PULSE_CNT]();
+                PWMIntCbfArra[i][PWM_INT_PULSE_CNT]();
             }
         }
     }
@@ -192,6 +192,10 @@ BL_Err_Type PWM_Channel_Init(PWM_CH_CFG_Type *chCfg)
     BL_WR_REG(PWMx, PWM_INTERRUPT, BL_SET_REG_BITS_VAL(tmpVal, PWM_INT_PERIOD_CNT, chCfg->intPulseCnt));
     PWM_IntMask(chCfg->ch,PWM_INT_PULSE_CNT,chCfg->intPulseCnt!=0?UNMASK:MASK);
 
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(PWM_IRQn,PWM_IRQHandler);
+#endif
+
     return SUCCESS;
 }
 
@@ -206,7 +210,7 @@ BL_Err_Type PWM_Channel_Init(PWM_CH_CFG_Type *chCfg)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Update(uint8_t ch, uint16_t period, uint16_t threshold1,uint16_t threshold2)
+void PWM_Channel_Update(PWM_CH_ID_Type ch,uint16_t period,uint16_t threshold1,uint16_t threshold2)
 {
     /* Get channel register */
     uint32_t PWMx = PWM_Get_Channel_Reg(ch);
@@ -229,14 +233,14 @@ void PWM_Channel_Update(uint8_t ch, uint16_t period, uint16_t threshold1,uint16_
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Set_Div(uint8_t ch, uint16_t div)
+void PWM_Channel_Set_Div(PWM_CH_ID_Type ch,uint16_t div)
 {
     /* Get channel register */
     uint32_t PWMx = PWM_Get_Channel_Reg(ch);
 
     /* Check the parameters */
     CHECK_PARAM(IS_PWM_CH_ID_TYPE(ch));
-
+    
     BL_WR_REG(PWMx, PWM_CLKDIV, div);
 }
 
@@ -249,7 +253,7 @@ void PWM_Channel_Set_Div(uint8_t ch, uint16_t div)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Set_Threshold1(uint8_t ch, uint16_t threshold1)
+void PWM_Channel_Set_Threshold1(PWM_CH_ID_Type ch,uint16_t threshold1)
 {
     /* Get channel register */
     uint32_t PWMx = PWM_Get_Channel_Reg(ch);
@@ -270,7 +274,7 @@ void PWM_Channel_Set_Threshold1(uint8_t ch, uint16_t threshold1)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Set_Threshold2(uint8_t ch, uint16_t threshold2)
+void PWM_Channel_Set_Threshold2(PWM_CH_ID_Type ch,uint16_t threshold2)
 {
     /* Get channel register */
     uint32_t PWMx = PWM_Get_Channel_Reg(ch);
@@ -291,7 +295,7 @@ void PWM_Channel_Set_Threshold2(uint8_t ch, uint16_t threshold2)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Set_Period(uint8_t ch, uint16_t period)
+void PWM_Channel_Set_Period(PWM_CH_ID_Type ch,uint16_t period)
 {
     /* Get channel register */
     uint32_t PWMx = PWM_Get_Channel_Reg(ch);
@@ -314,7 +318,7 @@ void PWM_Channel_Set_Period(uint8_t ch, uint16_t period)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Get(uint8_t ch, uint16_t *period, uint16_t *threshold1, uint16_t *threshold2)
+void PWM_Channel_Get(PWM_CH_ID_Type ch,uint16_t *period,uint16_t *threshold1,uint16_t *threshold2)
 {
     uint32_t tmpVal;
     /* Get channel register */
@@ -340,7 +344,7 @@ void PWM_Channel_Get(uint8_t ch, uint16_t *period, uint16_t *threshold1, uint16_
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Enable(uint8_t ch)
+void PWM_Channel_Enable(PWM_CH_ID_Type ch)
 {
     uint32_t tmpVal;
     /* Get channel register */
@@ -362,7 +366,7 @@ void PWM_Channel_Enable(uint8_t ch)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Disable(uint8_t ch)
+void PWM_Channel_Disable(PWM_CH_ID_Type ch)
 {
     uint32_t tmpVal;
     /* Get channel register */
@@ -374,8 +378,53 @@ void PWM_Channel_Disable(uint8_t ch)
     /* Config pwm clock to disable pwm */
     tmpVal = BL_RD_REG(PWMx, PWM_CONFIG);
     BL_WR_REG(PWMx, PWM_CONFIG, BL_SET_REG_BIT(tmpVal, PWM_STOP_EN));
-    PWM_IntMask(ch,PWM_INT_PULSE_CNT,MASK);
+    PWM_IntMask(ch,PWM_INT_PULSE_CNT,MASK);  
 }
+
+/****************************************************************************//**
+ * @brief  PWM channel software mode enable or disable
+ *
+ * @param  ch: PWM channel number
+ * @param  enable: Enable or disable
+ *
+ * @return None
+ *
+*******************************************************************************/
+void PWM_SW_Mode(PWM_CH_ID_Type ch,BL_Fun_Type enable)
+{
+    uint32_t tmpVal;
+    /* Get channel register */
+    uint32_t PWMx = PWM_Get_Channel_Reg(ch);
+
+    /* Check the parameters */
+    CHECK_PARAM(IS_PWM_CH_ID_TYPE(ch));
+    
+    tmpVal = BL_RD_REG(PWMx,PWM_CONFIG);
+    BL_WR_REG(PWMx,PWM_CONFIG,BL_SET_REG_BITS_VAL(tmpVal,PWM_SW_MODE,enable));
+}
+
+/****************************************************************************//**
+ * @brief  PWM channel force output high or low
+ *
+ * @param  ch: PWM channel number
+ * @param  value: Output value
+ *
+ * @return None
+ *
+*******************************************************************************/
+void PWM_SW_Force_Value(PWM_CH_ID_Type ch,uint8_t value)
+{
+    uint32_t tmpVal;
+    /* Get channel register */
+    uint32_t PWMx = PWM_Get_Channel_Reg(ch);
+
+    /* Check the parameters */
+    CHECK_PARAM(IS_PWM_CH_ID_TYPE(ch));
+    
+    tmpVal = BL_RD_REG(PWMx,PWM_CONFIG);
+    BL_WR_REG(PWMx,PWM_CONFIG,BL_SET_REG_BITS_VAL(tmpVal,PWM_SW_FORCE_VAL,value));
+}
+
 
 /****************************************************************************//**
  * @brief  PWM channel force output high
@@ -385,7 +434,7 @@ void PWM_Channel_Disable(uint8_t ch)
  * @return None
  *
 *******************************************************************************/
-void PWM_Channel_Fource_Output(uint8_t ch)
+void PWM_Channel_Fource_Output(PWM_CH_ID_Type ch)
 {
     uint32_t tmpVal;
     /* Get channel register */
@@ -408,7 +457,7 @@ void PWM_Channel_Fource_Output(uint8_t ch)
  * @return None
  *
 *******************************************************************************/
-void PWM_IntMask(uint8_t ch,PWM_INT_Type intType, BL_Mask_Type intMask)
+void PWM_IntMask(PWM_CH_ID_Type ch,PWM_INT_Type intType,BL_Mask_Type intMask)
 {
     uint32_t tmpVal;
     /* Get channel register */
@@ -450,15 +499,86 @@ void PWM_IntMask(uint8_t ch,PWM_INT_Type intType, BL_Mask_Type intMask)
 /****************************************************************************//**
  * @brief  Install PWM interrupt callback function
  *
+ * @param  ch: PWM channel number
  * @param  intType: PWM interrupt type
  * @param  cbFun: Pointer to interrupt callback function. The type should be void (*fn)(void)
  *
  * @return None
  *
 *******************************************************************************/
-void PWM_Int_Callback_Install(uint32_t intType,intCallback_Type* cbFun)
+void PWM_Int_Callback_Install(PWM_CH_ID_Type ch,uint32_t intType,intCallback_Type* cbFun)
 {
-    PWMIntCbfArra[intType] = cbFun;
+    PWMIntCbfArra[ch][intType] = cbFun;
+}
+
+/****************************************************************************//**
+ * @brief  PWM smart configure according to frequency and duty cycle function
+ *
+ * @param  ch: PWM channel number
+ * @param  frequency: PWM frequency
+ * @param  dutyCycle: PWM duty cycle
+ *
+ * @return SUCCESS or TIMEOUT
+ *
+*******************************************************************************/
+BL_Err_Type PWM_Smart_Configure(PWM_CH_ID_Type ch,uint32_t frequency,uint8_t dutyCycle)
+{
+    uint32_t tmpVal;
+    uint16_t clkDiv,period,threshold2;
+    uint32_t timeoutCnt = PWM_STOP_TIMEOUT_COUNT;
+    /* Get channel register */
+    uint32_t PWMx = PWM_Get_Channel_Reg(ch);
+    
+    if(frequency <= 78){
+        clkDiv = 1250;
+        period = 64000/frequency;
+        threshold2 = 640*dutyCycle/frequency;
+    }else if(frequency <= 155){
+        clkDiv = 16;
+        period = 5000000/frequency;
+        threshold2 = 50000*dutyCycle/frequency;
+    }else if(frequency <= 310){
+        clkDiv = 8;
+        period = 10000000/frequency;
+        threshold2 = 100000*dutyCycle/frequency;
+    }else if(frequency <=620){
+        clkDiv = 4;
+        period = 20000000/frequency;
+        threshold2 = 200000*dutyCycle/frequency;
+    }else if(frequency <=1230){
+        clkDiv = 2;
+        period = 40000000/frequency;
+        threshold2 = 400000*dutyCycle/frequency;
+    }else{
+        clkDiv = 1;
+        period = 80000000/frequency;
+        threshold2 = 800000*dutyCycle/frequency;
+    }
+    
+    tmpVal = BL_RD_REG(PWMx, PWM_CONFIG);
+    if(BL_GET_REG_BITS_VAL(tmpVal, PWM_REG_CLK_SEL) != 1){
+        BL_WR_REG(PWMx, PWM_CONFIG, BL_SET_REG_BIT(tmpVal, PWM_STOP_EN));
+        while(!BL_IS_REG_BIT_SET(BL_RD_REG(PWMx, PWM_CONFIG), PWM_STS_TOP)){
+            timeoutCnt--;
+            if(timeoutCnt == 0){
+                return TIMEOUT;
+            }
+        }
+        tmpVal = BL_SET_REG_BITS_VAL(tmpVal, PWM_REG_CLK_SEL, PWM_CLK_BCLK);
+    }
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, PWM_OUT_INV, PWM_POL_NORMAL);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, PWM_STOP_MODE, PWM_STOP_GRACEFUL);
+    BL_WR_REG(PWMx, PWM_CONFIG, tmpVal);
+
+    /* Config pwm division */
+    BL_WR_REG(PWMx, PWM_CLKDIV, clkDiv);
+
+    /* Config pwm period and duty */
+    BL_WR_REG(PWMx, PWM_PERIOD, period);
+    BL_WR_REG(PWMx, PWM_THRE1, 0);
+    BL_WR_REG(PWMx, PWM_THRE2, threshold2);
+    
+    return SUCCESS;
 }
 
 /****************************************************************************//**
@@ -470,7 +590,7 @@ void PWM_Int_Callback_Install(uint32_t intType,intCallback_Type* cbFun)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ PWM_IRQHandler(void)
+void PWM_IRQHandler(void)
 {
    PWM_IntHandler(PWM_IRQn);
 }

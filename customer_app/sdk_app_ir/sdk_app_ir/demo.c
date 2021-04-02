@@ -31,50 +31,59 @@
 #include <stdio.h>
 #include <cli.h>
 #include <hal_ir.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <cli.h>
+#include <FreeRTOS.h>
+#include <task.h>
+#include <timers.h>
+#include <stdio.h>
+#include "demo.h"
+#include <queue.h>
 
-/*NOTE:
- * The order of IR sending data is LSB,
- * but the order required by the chip WS2812B and UCS1903 is MSB,
- * so here needs to be converted.
- * */
-
-static void convert_data(uint32_t *data, int length)
+uint32_t data[5001];
+static void test_irled(char *buf, int len, int argc, char **argv)
 {
-    int i = 0;
+    static int init_flag = 0;
+    int i;
+    int cnt = 1;
+    
+    for (i = 0; i < 5001; i++) {
+        if (i % 100 == 0 && i % 200 != 0) {
+            cnt = 0;
+        } else if (i % 200 == 0 && i != 0) {
+            cnt = 1;
+        } 
 
-    for (i = 0; i < length; i++) {
-        /* Change MSB_first to LSB_first */
-        data[i] = ((data[i] >> 1) & 0x55555555) | ((data[i] << 1) & 0xaaaaaaaa);
-        data[i] = ((data[i] >> 2) & 0x33333333) | ((data[i] << 2) & 0xcccccccc);
-        data[i] = ((data[i] >> 4) & 0x0f0f0f0f) | ((data[i] << 4) & 0xf0f0f0f0);
-        data[i] = ((data[i] >> 16) & 0xff) | (data[i] & 0xff00) | ((data[i] << 16) & 0xff0000);
+        if (!cnt) {
+            data[i] = 0xffffff;
+        } else {
+            data[i] = 0;
+        }
+    }
+    
+    if (init_flag == 0) {
+        hal_irled_init(1);//WS2812B 0, UCS1903 1
+        init_flag = 1;
+    }
+
+    for (i = 0; i < 1; i++) {
+        hal_irled_send_data(5001, data);
     }
 
     return;
 }
 
-static void test_irled(char *buf, int len, int argc, char **argv)
+static void cmd_free(char *buf, int len, int argc, char **argv)
 {
-    uint32_t data[13];
-    int i;
-
-    for (i = 0; i < 13; i++) {
-        data[i] = 0x3f;
-    }
-
-    convert_data(data, 13);
-    hal_irled_init(1);//WS2812B 0, UCS1903 1
-
-    hal_irled_send_data(13, data);
-    hal_irled_send_data(13, data);
-    hal_irled_send_data(13, data);
-
-    return;
+    printf("free memory is %d\r\n", xPortGetFreeHeapSize());
+    printf("min free memory is %d\r\n", xPortGetMinimumEverFreeHeapSize());
 }
 
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"test_ir", "test ir led", test_irled},
+    {"free", "free", cmd_free},
 };
 
 int irled_cli_init(void)
@@ -82,6 +91,6 @@ int irled_cli_init(void)
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
     return 0;
 }

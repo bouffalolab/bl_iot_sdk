@@ -303,6 +303,7 @@ BL_Sts_Type UART_GetIntStatus(UART_ID_Type uartId,UART_INT_Type intType);
 BL_Sts_Type UART_GetTxBusBusyStatus(UART_ID_Type uartId);
 BL_Sts_Type UART_GetRxBusBusyStatus(UART_ID_Type uartId);
 BL_Sts_Type UART_GetOverflowStatus(UART_ID_Type uartId,UART_Overflow_Type overflow);
+uint32_t UART_GetBaudrate(UART_ID_Type uartId);
 
 /*@} end of group UART_Public_Functions */
 

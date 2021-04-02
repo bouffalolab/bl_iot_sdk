@@ -152,32 +152,32 @@ typedef enum
 /**
  * @brief BL602 Memory Map Definitions
  */
-#define BL602_FLASH_XIP_BASE                0x23000000
-#define BL602_FLASH_XIP_END                 (0x23000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP0_BASE         0x33000000
-#define BL602_FLASH_XIP_REMAP0_END          (0x33000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP1_BASE         0x43000000
-#define BL602_FLASH_XIP_REMAP1_END          (0x43000000+16*1024*1024)
-#define BL602_FLASH_XIP_REMAP2_BASE         0x53000000
-#define BL602_FLASH_XIP_REMAP2_END          (0x53000000+16*1024*1024)
+#define BL602_FLASH_XIP_BASE        		0x23000000
+#define BL602_FLASH_XIP_END					(0x23000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP0_BASE			0x33000000
+#define BL602_FLASH_XIP_REMAP0_END			(0x33000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP1_BASE			0x43000000
+#define BL602_FLASH_XIP_REMAP1_END			(0x43000000+16*1024*1024)
+#define BL602_FLASH_XIP_REMAP2_BASE			0x53000000
+#define BL602_FLASH_XIP_REMAP2_END			(0x53000000+16*1024*1024)
 
-#define BL602_WRAM_BASE                     0x42020000
-#define BL602_WRAM_END                      (0x42020000+176*1024)
-#define BL602_WRAM_REMAP0_BASE              0x22020000
-#define BL602_WRAM_REMAP0_END               (0x22020000+176*1024)
-#define BL602_WRAM_REMAP1_BASE              0x32020000
-#define BL602_WRAM_REMAP1_END               (0x32020000+176*1024)
-#define BL602_WRAM_REMAP2_BASE              0x52020000
-#define BL602_WRAM_REMAP2_END               (0x52020000+176*1024)
+#define BL602_WRAM_BASE             		0x42020000
+#define BL602_WRAM_END              		(0x42020000+176*1024)
+#define BL602_WRAM_REMAP0_BASE             	0x22020000
+#define BL602_WRAM_REMAP0_END              	(0x22020000+176*1024)
+#define BL602_WRAM_REMAP1_BASE             	0x32020000
+#define BL602_WRAM_REMAP1_END              	(0x32020000+176*1024)
+#define BL602_WRAM_REMAP2_BASE             	0x52020000
+#define BL602_WRAM_REMAP2_END              	(0x52020000+176*1024)
 
-#define BL602_TCM_BASE                      0x22008000
-#define BL602_TCM_END                       (0x22008000+(96+176)*1024)
-#define BL602_TCM_REMAP0_BASE               0x32008000
-#define BL602_TCM_REMAP0_END                (0x32008000+(96+176)*1024)
-#define BL602_TCM_REMAP1_BASE               0x42008000
-#define BL602_TCM_REMAP1_END                (0x42008000+(96+176)*1024)
-#define BL602_TCM_REMAP2_BASE               0x52008000
-#define BL602_TCM_REMAP2_END                (0x52008000+(96+176)*1024)
+#define BL602_TCM_BASE              		0x22008000
+#define BL602_TCM_END               		(0x22008000+(96+176)*1024)
+#define BL602_TCM_REMAP0_BASE              	0x32008000
+#define BL602_TCM_REMAP0_END               	(0x32008000+(96+176)*1024)
+#define BL602_TCM_REMAP1_BASE             	0x42008000
+#define BL602_TCM_REMAP1_END             	(0x42008000+(96+176)*1024)
+#define BL602_TCM_REMAP2_BASE             	0x52008000
+#define BL602_TCM_REMAP2_END              	(0x52008000+(96+176)*1024)
 /*@} end of group Memory_Map_Section */
 
 /* BL602 peripherals base address */
@@ -210,53 +210,31 @@ typedef enum
 
 typedef enum
 {
-  BL_AHB_MASTER_CPU = 0,
-  BL_AHB_MASTER_AP2NP,
-  BL_AHB_MASTER_EMAC,
-  BL_AHB_MASTER_SEC0,
-  BL_AHB_MASTER_DMA,
-  BL_AHB_MASTER_606,
-  BL_AHB_MASTER_SEC1,
-  BL_AHB_MASTER_154,
-  BL_AHB_MASTER_CCI,
-}BL_AHB_Master_Type;
-
-typedef enum
-{
-  BL_AHB_SLAVE0_S2F = 0,
-  BL_AHB_SLAVE0_MAX,
-}BL_AHB_Slave0_Type;
-
-typedef enum
-{
-  BL_AHB_SLAVE1_GLB = 0x00,
-  BL_AHB_SLAVE1_RF = 0x01,
-  BL_AHB_SLAVE1_GPIP = 0x02,
-  BL_AHB_SLAVE1_DBG = 0x03,
-  BL_AHB_SLAVE1_SEC = 0x04,
-  BL_AHB_SLAVE1_TZ1 = 0x05,
-  BL_AHB_SLAVE1_TZ2 = 0x06,
-  BL_AHB_SLAVE1_EFUSE = 0x07,
-  BL_AHB_SLAVE1_CCI = 0x08,
-  BL_AHB_SLAVE1_L1C = 0x09,
-
-  BL_AHB_SLAVE1_SFC = 0x0B,
-  BL_AHB_SLAVE1_DMA = 0x0C,
-  BL_AHB_SLAVE1_SDU = 0x0D,
-  BL_AHB_SLAVE1_PDSHBN = 0x0E,
-  BL_AHB_SLAVE1_WRAM = 0x0F,
-
-  BL_AHB_SLAVE1_UART0 = 0x10,
-  BL_AHB_SLAVE1_UART1 = 0x11,
-  BL_AHB_SLAVE1_SPI = 0x12,
-  BL_AHB_SLAVE1_I2C = 0x13,
-  BL_AHB_SLAVE1_PWM = 0x14,
-  BL_AHB_SLAVE1_TMR = 0x15,
-  BL_AHB_SLAVE1_IRR = 0x16,
-  BL_AHB_SLAVE1_CKS =0x17,
-
-  BL_AHB_SLAVE1_MAX =0x18,
-
+    BL_AHB_SLAVE1_GLB                                 = 0x00,
+    BL_AHB_SLAVE1_RF                                  = 0x01,
+    BL_AHB_SLAVE1_GPIP_PHY_AGC                        = 0x02,
+    BL_AHB_SLAVE1_SEC_DBG                             = 0x03,
+    BL_AHB_SLAVE1_SEC                                 = 0x04,
+    BL_AHB_SLAVE1_TZ1                                 = 0x05,
+    BL_AHB_SLAVE1_TZ2                                 = 0x06,
+    BL_AHB_SLAVE1_EFUSE                               = 0x07,
+    BL_AHB_SLAVE1_CCI                                 = 0x08,
+    BL_AHB_SLAVE1_L1C                                 = 0x09,
+    BL_AHB_SLAVE1_RSVD0A                              = 0x0A,
+    BL_AHB_SLAVE1_SFC                                 = 0x0B,
+    BL_AHB_SLAVE1_DMA                                 = 0x0C,
+    BL_AHB_SLAVE1_SDU                                 = 0x0D,
+    BL_AHB_SLAVE1_PDS_HBN_AON_HBNRAM                  = 0x0E,
+    BL_AHB_SLAVE1_RSVD0F                              = 0x0F,
+    BL_AHB_SLAVE1_UART0                               = 0x10,
+    BL_AHB_SLAVE1_UART1                               = 0x11,
+    BL_AHB_SLAVE1_SPI                                 = 0x12,
+    BL_AHB_SLAVE1_I2C                                 = 0x13,
+    BL_AHB_SLAVE1_PWM                                 = 0x14,
+    BL_AHB_SLAVE1_TMR                                 = 0x15,
+    BL_AHB_SLAVE1_IRR                                 = 0x16,
+    BL_AHB_SLAVE1_CKS                                 = 0x17,
+    BL_AHB_SLAVE1_MAX                                 = 0x18,
 }BL_AHB_Slave1_Type;
 
 typedef enum
@@ -275,18 +253,6 @@ typedef enum
   BL_AHB_DMA0_CH3,
   BL_AHB_DMA0_CH4,
 }BL_AHB_DMA0_CHNL_Type;
-
-typedef enum
-{
-  BL_AHB_SLAVE2_WIFI_CFG = 0,
-  BL_AHB_SLAVE2_MAX,
-}BL_AHB_Slave2_Type;
-
-typedef enum
-{
-  BL_AHB_SLAVE3_BLE = 0,
-  BL_AHB_SLAVE3_MAX,
-}BL_AHB_Slave3_Type;
 
 typedef enum
 {

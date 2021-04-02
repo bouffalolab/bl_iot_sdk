@@ -1675,6 +1675,30 @@ void ef_print_env(void)
     ef_port_env_unlock();
 }
 
+/* Added by bouffalo  */
+void ef_print_env_cb(print_env_cb_t cb)
+{
+    struct env_node_obj env;
+    size_t using_size = 0;
+
+    if (!init_ok) {
+        EF_INFO("ENV isn't initialize OK.\r\n");
+        return;
+    }
+
+    /* lock the ENV cache */
+    ef_port_env_lock();
+
+    env_iterator(&env, &using_size, NULL, cb);
+
+    ef_print("\r\nmode: next generation\r\n");
+    ef_print("size: %lu/%lu bytes.\r\n", using_size + (SECTOR_NUM - EF_GC_EMPTY_SEC_THRESHOLD) * SECTOR_HDR_DATA_SIZE,
+            ENV_AREA_SIZE - SECTOR_SIZE * EF_GC_EMPTY_SEC_THRESHOLD);
+
+    /* unlock the ENV cache */
+    ef_port_env_unlock();
+}
+
 #ifdef EF_ENV_AUTO_UPDATE
 /*
  * Auto update ENV to latest default when current EF_ENV_VER_NUM is changed.

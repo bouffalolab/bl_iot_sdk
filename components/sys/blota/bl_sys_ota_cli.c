@@ -195,6 +195,7 @@ static void ota_tcp_cmd(char *buf, int len, int argc, char **argv)
     printf("[OTA] [TEST] activeIndex is %u, use OTA address=%08x\r\n", ptEntry.activeIndex, (unsigned int)ota_addr);
 
     printf("[OTA] [TEST] Erase flash with size %lu...", bin_size);
+    hal_update_mfg_ptable();    
     bl_mtd_erase_all(handle);
     printf("Done\r\n");
 
@@ -207,7 +208,7 @@ static void ota_tcp_cmd(char *buf, int len, int argc, char **argv)
         bl_mtd_close(handle);
         return;
     }
-
+            
     buffer_offset = 0;
     flash_offset = 0;
     ota_header_found = 0;
@@ -297,6 +298,8 @@ static void ota_tcp_cmd(char *buf, int len, int argc, char **argv)
                 printf("[OTA] [TCP] Update PARTITION, partition len is %lu\r\n", ptEntry.len);
                 hal_boot2_update_ptable(&ptEntry);
                 printf("[OTA] [TCP] Rebooting\r\n");
+                close(sockfd);
+                vTaskDelay(1000);
                 hal_reboot();
             }
         }
@@ -328,6 +331,6 @@ int bl_sys_ota_cli_init(void)
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
     return 0;
 }

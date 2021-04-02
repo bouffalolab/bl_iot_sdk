@@ -20,28 +20,28 @@
 #if defined(CONFIG_BT_STACK_PTS)
 
 #ifndef  PTS_CHARC_LEN_EQUAL_MTU_SIZE
-#define  PTS_CHARC_LEN_EQUAL_MTU_SIZE
+#define  PTS_CHARC_LEN_EQUAL_MTU_SIZE	
 #endif
 
 
 //#ifndef  CONFIG_BT_STACK_PTS_SM_SLA_KDU_BI_01
-//#define  CONFIG_BT_STACK_PTS_SM_SLA_KDU_BI_01
+//#define  CONFIG_BT_STACK_PTS_SM_SLA_KDU_BI_01	
 //#endif
 
 //#ifndef  PTS_GAP_SLAVER_CONFIG_READ_CHARC
-//#define  PTS_GAP_SLAVER_CONFIG_READ_CHARC
+//#define  PTS_GAP_SLAVER_CONFIG_READ_CHARC		
 //#endif
 
 //#ifndef  PTS_GAP_SLAVER_CONFIG_WRITE_CHARC
-//#define  PTS_GAP_SLAVER_CONFIG_WRITE_CHARC
+//#define  PTS_GAP_SLAVER_CONFIG_WRITE_CHARC		
 //#endif
 
 //#ifndef  PTS_GAP_SLAVER_CONFIG_NOTIFY_CHARC
-//#define  PTS_GAP_SLAVER_CONFIG_NOTIFY_CHARC
+//#define  PTS_GAP_SLAVER_CONFIG_NOTIFY_CHARC		
 //#endif
 
 //#ifndef  PTS_GAP_SLAVER_CONFIG_INDICATE_CHARC
-//#define  PTS_GAP_SLAVER_CONFIG_INDICATE_CHARC
+//#define  PTS_GAP_SLAVER_CONFIG_INDICATE_CHARC	
 //#endif
 
 #endif
@@ -133,11 +133,11 @@
 * range 73 to 2000
 */
 #ifndef CONFIG_BT_RX_BUF_LEN
+#if defined(CONFIG_BT_BREDR)
+#define CONFIG_BT_RX_BUF_LEN 680 //CONFIG_BT_L2CAP_RX_MTU + 4 + 4
+#else
 #define CONFIG_BT_RX_BUF_LEN 255 //108 //76
 #endif
-
-#ifndef CONFIG_MAX_TIMER_REC
-#define CONFIG_MAX_TIMER_REC 5
 #endif
 
 /**
@@ -167,10 +167,10 @@
 #define CONFIG_BT_CONN 1
 #endif
 
-#ifdef CONFIG_BT_CONN
+#ifdef CONFIG_BT_CONN 
 
 #ifndef CONFIG_BT_CREATE_CONN_TIMEOUT
-#define CONFIG_BT_CREATE_CONN_TIMEOUT 3
+#define CONFIG_BT_CREATE_CONN_TIMEOUT 3 
 #endif
 
 #if defined(BFLB_BLE)
@@ -354,8 +354,10 @@
 #ifndef CONFIG_BT_DEVICE_NAME
 #if defined(BL602)
 #define CONFIG_BT_DEVICE_NAME "BL602-BLE-DEV"
-#else
+#elif defined(BL702)
 #define CONFIG_BT_DEVICE_NAME "BL702-BLE-DEV"
+#else
+#define CONFIG_BT_DEVICE_NAME "BL606P-BTBLE"
 #endif
 #endif
 
@@ -543,24 +545,50 @@
 #define CONFIG_BT_PERIPHERAL_PREF_TIMEOUT 400
 #endif
 
+#if defined(CONFIG_BT_BREDR)
+#define CONFIG_BT_PAGE_TIMEOUT 0x2000 //5.12s
+#define CONFIG_BT_L2CAP_RX_MTU 672
+
+#ifndef CONFIG_BT_RFCOMM_TX_STACK_SIZE
+#define CONFIG_BT_RFCOMM_TX_STACK_SIZE  1024
+#endif
+#ifndef CONFIG_BT_RFCOMM_TX_PRIO
+#define CONFIG_BT_RFCOMM_TX_PRIO (configMAX_PRIORITIES - 3)
+#endif
+
+#define PCM_PRINTF 0
+#endif
+
+/*******************************Bouffalo Lab Modification******************************/
+
 //#define BFLB_BLE_DISABLE_STATIC_ATTR
-//#define BFLB_BLE_DISABLE_STATIC_BUF
 //#define BFLB_BLE_DISABLE_STATIC_CHANNEL
 #define BFLB_DISABLE_BT
 #define BFLB_FIXED_IRK 0
+#define BFLB_DYNAMIC_ALLOC_MEM
 #endif //BFLB_BLE
 
-/*******************************BFLB_BLE Patch******************************/
+/*******************************Bouffalo Lab Patch******************************/
+/*Fix the issue that DHKEY_check_failed error happens in smp procedure if CONFIG_BT_PRIVACY is enabled.*/
 #define BFLB_BLE_PATCH_DHKEY_CHECK_FAILED
+/*To notify upper layer that write_ccc is completed*/
 #define BFLB_BLE_PATCH_NOTIFY_WRITE_CCC_RSP
+/*Timer/Queue/Sem allocated during connection establishment is not released when disconnection
+happens, which cause memory leak issue.*/
 #define BFLB_BLE_PATCH_FREE_ALLOCATED_BUFFER_IN_OS
-#define BFLB_BLE_PATCH_AVOID_SEC_GATT_DISC
+/*To avoid duplicated pubkey callback.*/
 #define BFLB_BLE_PATCH_AVOID_DUPLI_PUBKEY_CB
-#define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF   /*The flag @conn_ref is not clean up after disconnect*/
+/*The flag @conn_ref is not clean up after disconnect*/
+#define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF 
 /*To avoid sevice changed indication sent at the very beginning, without any new service added.*/
 #define BFLB_BLE_PATCH_SET_SCRANGE_CHAGD_ONLY_IN_CONNECTED_STATE
 #ifdef CONFIG_BT_SETTINGS
+/*Semaphore is used during flash operation. Make sure that freertos has already run up when it
+  intends to write information to flash.*/
 #define BFLB_BLE_PATCH_SETTINGS_LOAD
+#endif
+#if defined(CFG_BT_RESET)
+#define BFLB_HOST_ASSISTANT
 #endif
 #if defined(__cplusplus)
 }

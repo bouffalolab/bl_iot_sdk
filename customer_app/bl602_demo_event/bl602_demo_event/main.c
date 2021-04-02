@@ -173,7 +173,7 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
 
     if(xExpectedIdleTime_ms + xTaskGetTickCount() == portMAX_DELAY){
         freertos_max_idle = true;
-    }else{
+    }else{   
         xExpectedIdleTime_ms -= 1;
         expectedIdleTime_32768cycles = 32768 * xExpectedIdleTime_ms / 1000;
     }
@@ -189,7 +189,7 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
     if(eSleepStatus == eAbortSleep || ble_controller_sleep_is_ongoing())
     {
         /*A task has been moved out of the Blocked state since this macro was
-        executed, or a context siwth is being held pending.Restart the tick
+        executed, or a context siwth is being held pending.Restart the tick 
         and exit the critical section. */
         /*Enable mtimer interrrupt*/
         *(volatile uint8_t*)configCLIC_TIMER_ENABLE_ADDRESS = 1;
@@ -199,9 +199,9 @@ void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
 
     bleSleepDuration_32768cycles = ble_controller_sleep();
 
-    if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
+	if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
     {
-        /*BLE controller does not allow sleep.  Do not enter a sleep state.Restart the tick
+        /*BLE controller does not allow sleep.  Do not enter a sleep state.Restart the tick 
         and exit the critical section. */
         /*Enable mtimer interrrupt*/
         //printf("%s:not do pds sleep\r\n", __func__);
@@ -413,6 +413,32 @@ static void _connect_wifi()
     wifi_mgmr_sta_connect(wifi_interface, ssid, password, pmk, mac, band, freq);
 }
 
+#if defined(CONFIG_BT_MESH_SYNC)
+typedef struct _wifi_item {
+    char ssid[32];
+    uint32_t ssid_len;
+    uint8_t bssid[6];
+    uint8_t channel;
+    uint8_t auth;
+    int8_t rssi;
+} _wifi_item_t;
+
+struct _wifi_conn {
+    char ssid[32];
+    char ssid_tail[1];
+    char pask[64];
+};
+
+struct _wifi_state {
+    char ip[16];
+    char gw[16];
+    char mask[16];
+    char ssid[32];
+    char ssid_tail[1];
+    uint8_t bssid[6];
+    uint8_t state;
+};
+#endif /* CONFIG_BT_MESH_SYNC */
 static void wifi_sta_connect(char *ssid, char *password)
 {
     wifi_interface_t wifi_interface;
@@ -420,7 +446,65 @@ static void wifi_sta_connect(char *ssid, char *password)
     wifi_interface = wifi_mgmr_sta_enable();
     wifi_mgmr_sta_connect(wifi_interface, ssid, password, NULL, NULL, 0, 0);
 }
+#if defined(CONFIG_BT_MESH_SYNC)
+static void scan_item_cb(wifi_mgmr_ap_item_t *env, uint32_t *param1, wifi_mgmr_ap_item_t *item)
+{
+    _wifi_item_t wifi_item;
+    void (*complete)(void *) = (void (*)(void *))param1;
 
+    wifi_item.auth = item->auth;
+    wifi_item.rssi = item->rssi;
+    wifi_item.channel = item->channel;
+    wifi_item.ssid_len = item->ssid_len;
+    memcpy(wifi_item.ssid, item->ssid, sizeof(wifi_item.ssid));
+    memcpy(wifi_item.bssid, item->bssid, sizeof(wifi_item.bssid));
+
+    if (complete) {
+        complete(&wifi_item);
+    }
+}
+
+static void scan_complete_cb(void *p_arg, void *param)
+{
+    wifi_mgmr_scan_ap_all(NULL, p_arg, scan_item_cb);
+}
+
+static void wifiprov_scan(void *p_arg)
+{
+    wifi_mgmr_scan(p_arg, scan_complete_cb);
+}
+
+static void wifiprov_wifi_state_get(void *p_arg)
+{
+    int tmp_state;
+    wifi_mgmr_sta_connect_ind_stat_info_t info;
+    ip4_addr_t ip, gw, mask;
+    struct _wifi_state state;
+    void (*state_get_cb)(void *) = (void (*)(void *))p_arg;
+
+    memset(&state, 0, sizeof(state));
+    memset(&info, 0, sizeof(info));
+    wifi_mgmr_state_get(&tmp_state);
+    wifi_mgmr_sta_ip_get(&ip.addr, &gw.addr, &mask.addr);
+    wifi_mgmr_sta_connect_ind_stat_get(&info);
+
+    state.state = tmp_state;
+    strcpy(state.ip, ip4addr_ntoa(&ip));
+    strcpy(state.mask, ip4addr_ntoa(&mask));
+    strcpy(state.gw, ip4addr_ntoa(&gw));
+    memcpy(state.ssid, info.ssid, sizeof(state.ssid));
+    memcpy(state.bssid, info.bssid, sizeof(state.bssid));
+    state.ssid_tail[0] = 0;
+
+    printf("IP  :%s \r\n", state.ip);
+    printf("GW  :%s \r\n", state.gw);
+    printf("MASK:%s \r\n", state.mask);
+
+    if (state_get_cb) {
+        state_get_cb(&state);
+    }
+}
+#endif /* CONFIG_BT_MESH_SYNC */
 static void event_cb_wifi_event(input_event_t *event, void *private_data)
 {
     static char *ssid;
@@ -521,15 +605,41 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
         case CODE_WIFI_ON_PROV_CONNECT:
         {
             printf("[APP] [EVT] [PROV] [CONNECT] %lld\r\n", aos_now_ms());
-            printf("connecting to %s:%s...\r\n", ssid, password);
-            wifi_sta_connect(ssid, password);
+			#if defined(CONFIG_BT_MESH_SYNC)
+			if(event->value){
+				struct _wifi_conn *conn_info = (struct _wifi_conn *)event->value;
+				wifi_sta_connect(conn_info->ssid, conn_info->pask);
+				break;
+			}
+			#endif
+			printf("connecting to %s:%s...\r\n", ssid, password);
+			wifi_sta_connect(ssid, password);
         }
         break;
         case CODE_WIFI_ON_PROV_DISCONNECT:
         {
             printf("[APP] [EVT] [PROV] [DISCONNECT] %lld\r\n", aos_now_ms());
+			#if defined(CONFIG_BT_MESH_SYNC)
+            wifi_mgmr_sta_disconnect();
+            vTaskDelay(1000);
+            wifi_mgmr_sta_disable(NULL);
+			#endif
         }
         break;
+		#if defined(CONFIG_BT_MESH_SYNC)
+		case CODE_WIFI_ON_PROV_SCAN_START:
+		{
+			printf("[APP] [EVT] [PROV] [SCAN] %lld\r\n", aos_now_ms());
+			wifiprov_scan((void *)event->value);
+		}
+		break;
+		case CODE_WIFI_ON_PROV_STATE_GET:
+		{
+			printf("[APP] [EVT] [PROV] [STATE] %lld\r\n", aos_now_ms());
+			wifiprov_wifi_state_get((void *)event->value);
+		}
+		break;
+		#endif /*CONFIG_BT_MESH_SYNC*/
         default:
         {
             printf("[APP] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
@@ -992,7 +1102,7 @@ static void cmd_align(char *buf, int len, int argc, char **argv)
     if (!testbuf) {
         log_error("mem error.\r\n");
     }
-
+ 
     memset(testbuf, 0xEE, 1024);
     for (i = 0; i < 32; i++) {
         testbuf[i] = i;
@@ -1131,7 +1241,7 @@ static void aos_loop_proc(void *pvParameters)
     uint32_t fdt = 0, offset = 0;
     static StackType_t proc_stack_looprt[512];
     static StaticTask_t proc_task_looprt;
-
+    
     /*Init bloop stuff*/
     looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
     loopset_led_hook_on_looprt();
@@ -1202,7 +1312,7 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
     /* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
     Note that, as the array is necessarily of type StackType_t,
     configMINIMAL_STACK_SIZE is specified in words, not bytes. */
-    //*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    //*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE; 
     *pulIdleTaskStackSize = 512;//size 512 words is For ble pds mode, otherwise stack overflow of idle task will happen.
 }
 
@@ -1243,7 +1353,7 @@ void vAssertCalled(void)
 
 static void _dump_boot_info(void)
 {
-    char chip_feature[40];
+    char print_info[40];
     const char *banner;
 
     puts("Booting BL602 Chip...\r\n");
@@ -1257,31 +1367,37 @@ static void _dump_boot_info(void)
     puts("\r\n");
     puts("------------------------------------------------------------\r\n");
     puts("RISC-V Core Feature:");
-    bl_chip_info(chip_feature);
-    puts(chip_feature);
+    bl_chip_info(print_info);
+    puts(print_info);
     puts("\r\n");
 
-    puts("Build Version: ");
+    puts("Build Version:      ");
     puts(BL_SDK_VER); // @suppress("Symbol is not resolved")
     puts("\r\n");
 
-    puts("Build Version: ");
-    puts(BL_SDK_VER); // @suppress("Symbol is not resolved")
+    puts("Std Driver Version: ");
+    puts(BL_SDK_STDDRV_VER); // @suppress("Symbol is not resolved")
     puts("\r\n");
 
-    puts("PHY   Version: ");
+    puts("PHY   Version:      ");// @suppress("Symbol is not resolved")
     puts(BL_SDK_PHY_VER); // @suppress("Symbol is not resolved")
     puts("\r\n");
 
-    puts("RF    Version: ");
+    puts("RF    Version:      ");
     puts(BL_SDK_RF_VER); // @suppress("Symbol is not resolved")
     puts("\r\n");
 
-    puts("Build Date: ");
+    puts("Build Date:         ");
     puts(__DATE__);
     puts("\r\n");
-    puts("Build Time: ");
+
+    puts("Build Time:         ");
     puts(__TIME__);
+    puts("\r\n");
+
+    puts("Boot Reason:        ");
+    bl_sys_rstinfo_getsting(print_info);
+    puts(print_info);
     puts("\r\n");
     puts("------------------------------------------------------------\r\n");
 

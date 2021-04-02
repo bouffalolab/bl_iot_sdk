@@ -118,6 +118,7 @@ void wifi_mgmr_get_wifi_channel_conf(wifi_conf_t *wifi_chan_conf);
 
 wifi_interface_t wifi_mgmr_sta_enable(void);
 int wifi_mgmr_sta_disable(wifi_interface_t *interface);
+struct netif *wifi_mgmr_sta_netif_get(void);
 int wifi_mgmr_sta_mac_set(uint8_t mac[6]);
 int wifi_mgmr_sta_mac_get(uint8_t mac[6]);
 int wifi_mgmr_sta_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask);
@@ -157,6 +158,7 @@ int wifi_mgmr_channel_set(int channel, int use_40Mhz);
 int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num);
 int wifi_mgmr_scan_filter_hidden_ssid(int filter);
 int wifi_mgmr_scan(void *data, scan_complete_cb_t cb);
+int wifi_mgmr_scan_fixed_channels(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num);
 int wifi_mgmr_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, uint32_t length, uint32_t *buf);
 int wifi_mgmr_scan_complete_callback();
 int wifi_mgmr_cli_scanlist(void);
@@ -167,4 +169,5 @@ int wifi_mgmr_raw_80211_send(uint8_t *pkt, int len);
 int wifi_mgmr_set_country_code(char *country_code);
 int wifi_mgmr_ext_dump_needed();
 const char* wifi_mgmr_status_code_str(uint16_t status_code);
+int wifi_mgmr_beacon_interval_set(uint16_t beacon_int);
 #endif

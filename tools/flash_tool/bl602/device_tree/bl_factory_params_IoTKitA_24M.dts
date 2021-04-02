@@ -4,7 +4,7 @@
 // boot_cpuid_phys: 0x0
 
 / {
-    model = "bl bl602 AVB board";
+    model = "bl bl602 IOT board";
     compatible = "bl,bl602-sample", "bl,bl602-common";
     #address-cells = <0x1>;
     #size-cells = <0x1>;
@@ -233,6 +233,15 @@
             channel_div_table = <0x1EEC4EC4 0x1EFCB7CB 0x1F0D20D2 0x1F1D89D8 0x1F2DF2DF 0x1F3E5BE5 0x1F4EC4EC 0x1F5F2DF2 0x1F6F96F9 0x1F800000 0x1F906906 0x1FA0D20D 0x1FB13B13 0x1FD89D89 0x201F81F8>;
             channel_cnt_table = <0xA78A 0xA7E3 0xA83C 0xA895 0xA8ED 0xA946 0xA99F 0xA9F8 0xAA51 0xAAAA 0xAB03 0xAB5C 0xABB5 0xAC8A>;
             lo_fcal_div = <0x56B>;
+        };
+        rf_temp {
+            en_tcal = <0>;
+            linear_or_follow = <1>;
+            Tchannels       = <2412 2427 2442 2457 2472>;
+            Tchannel_os     = <180  170  160  140  120>;
+            Tchannel_os_low = <200  190  180  160  130>;
+            Troom_os        = <255>;
+            //negative value is NOT supported. So we use '256' for 0, '255' for -1, '257' for 1,'511' for 256
         };
     };
 };

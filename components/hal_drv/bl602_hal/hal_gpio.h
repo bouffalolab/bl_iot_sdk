@@ -44,4 +44,7 @@ typedef enum {
 
 int hal_gpio_register_handler(void *func, int gpioPin, int intCtrlMod, int intTrgMod, void *arg);
 int hal_gpio_init_from_dts(uint32_t fdt, uint32_t dtb_offset);
+int hal_gpio_led_on(void);
+int hal_gpio_led_off(void);
+
 #endif

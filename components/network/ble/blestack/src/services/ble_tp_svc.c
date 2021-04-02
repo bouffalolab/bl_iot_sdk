@@ -3,12 +3,15 @@ FILE NAME
     ble_tp_svc.c
 
 DESCRIPTION
+    test profile demo
+
 NOTES
 */
 /****************************************************************************/
 
 #include <errno.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <FreeRTOS.h>
 #include <task.h>
 #include <blog.h>
@@ -26,11 +29,15 @@ static void ble_tp_disconnected(struct bt_conn *conn, u8_t reason);
 struct bt_conn *ble_tp_conn;
 struct bt_gatt_exchange_params exchg_mtu;
 TaskHandle_t ble_tp_task_h;
+
 int tx_mtu_size = 20;
+u8_t tp_start = 0;
+static u8_t created_tp_task = 0;
+static u8_t isRegister = 0;
 
 static struct bt_conn_cb ble_tp_conn_callbacks = {
-    .connected  =   ble_tp_connected,
-    .disconnected   =   ble_tp_disconnected,
+	.connected	=   ble_tp_connected,
+	.disconnected	=   ble_tp_disconnected,
 };
 
 /*************************************************************************
@@ -38,17 +45,17 @@ NAME
     ble_tp_tx_mtu_size
 */
 static void ble_tp_tx_mtu_size(struct bt_conn *conn, u8_t err,
-              struct bt_gatt_exchange_params *params)
+			  struct bt_gatt_exchange_params *params)
 {
-       if(!err)
-       {
-                tx_mtu_size = bt_gatt_get_mtu(ble_tp_conn);
-                printf("ble tp echange mtu size success, mtu size: %d\n", tx_mtu_size);
-       }
-       else
-       {
-                printf("ble tp echange mtu size failure, err: %d\n", err);
-       }
+   if(!err)
+   {
+        tx_mtu_size = bt_gatt_get_mtu(ble_tp_conn);
+        printf("ble tp echange mtu size success, mtu size: %d\n", tx_mtu_size);
+   }
+   else
+   {
+        printf("ble tp echange mtu size failure, err: %d\n", err);
+   }
 }
 
 /*************************************************************************
@@ -57,50 +64,142 @@ NAME
 */
 static void ble_tp_connected(struct bt_conn *conn, u8_t err)
 {
-    int tx_octets = 0x00fb;
-    int tx_time = 0x0848;
-    int ret = -1;
+	int tx_octets = 0x00fb;
+	int tx_time = 0x0848;
+	int ret = -1;
 
-    printf("%s\n",__func__);
-    ble_tp_conn = conn;
+    if( err )
+        return;
 
-    //set data length after connected.
-    ret = bt_le_set_data_len(ble_tp_conn, tx_octets, tx_time);
-    if(!ret)
-    {
-        printf("ble tp set data length success.\n");
-    }
-    else
-    {
-        printf("ble tp set data length failure, err: %d\n", ret);
-    }
+	printf("%s\n",__func__);
+	ble_tp_conn = conn;
 
-    //exchange mtu size after connected.
-    exchg_mtu.func = ble_tp_tx_mtu_size;
-    ret = bt_gatt_exchange_mtu(ble_tp_conn, &exchg_mtu);
-    if (!ret) {
-        printf("ble tp exchange mtu size pending.\n");
-    } else {
-        printf("ble tp exchange mtu size failure, err: %d\n", ret);
-    }
+	//set data length after connected.
+	ret = bt_le_set_data_len(ble_tp_conn, tx_octets, tx_time);
+	if(!ret)
+	{
+		printf("ble tp set data length success.\n");
+	}
+	else
+	{
+		printf("ble tp set data length failure, err: %d\n", ret);
+	}
+
+	//exchange mtu size after connected.
+	exchg_mtu.func = ble_tp_tx_mtu_size;
+	ret = bt_gatt_exchange_mtu(ble_tp_conn, &exchg_mtu);
+	if (!ret) {
+		printf("ble tp exchange mtu size pending.\n");
+	} else {
+		printf("ble tp exchange mtu size failure, err: %d\n", ret);
+	}
+}
+
+/*************************************************************************
+NAME    
+    ble_tp_disconnected
+*/
+static void ble_tp_disconnected(struct bt_conn *conn, u8_t reason)
+{ 
+	printf("%s\n",__func__);
+	
+	ble_tp_conn = NULL;
 }
 
 /*************************************************************************
 NAME
-    ble_tp_disconnected
+    ble_tp_recv_rd
 */
-static void ble_tp_disconnected(struct bt_conn *conn, u8_t reason)
+static int ble_tp_recv_rd(struct bt_conn *conn,	const struct bt_gatt_attr *attr,
+                                        void *buf, u16_t len, u16_t offset)
 {
-    printf("%s\n",__func__);
+    int size = 9;
+    char data[9] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};
 
-    ble_tp_conn = NULL;
+    memcpy(buf, data, size);
+
+    return size;
+}
+
+/*************************************************************************
+NAME
+    ble_tp_recv_wr
+*/
+static int ble_tp_recv_wr(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+                                        const void *buf, u16_t len, u16_t offset, u8_t flags)
+{
+    blog_debug("recv data len=%d, offset=%d, flag=%d\r\n", len, offset, flags);
+
+    if (flags & BT_GATT_WRITE_FLAG_PREPARE)
+    {
+        //Don't use prepare write data, execute write will upload data again.
+        printf("rcv prepare write request\n");
+        return 0;
+    }
+
+    if(flags & BT_GATT_WRITE_FLAG_CMD)
+    {
+        //Use write command data.
+        blog_debug("rcv write command\n");
+    }
+    else
+    {
+        //Use write request / execute write data.
+        blog_debug("rcv write request / exce write\n");
+    }
+
+    return len;
+}
+
+/*************************************************************************
+NAME    
+    indicate_rsp /bl_tp_send_indicate
+*/ 
+struct bt_gatt_indicate_params *ind_params;
+
+void indicate_rsp(struct bt_conn *conn, const struct bt_gatt_attr *attr,	u8_t err)
+{
+    free(ind_params);
+    printf("%s, receive comfirmation, err:%d\n", __func__, err);
+}
+
+static int bl_tp_send_indicate(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+				                    const void *data, u16_t len)
+{
+	ind_params = malloc(sizeof(struct bt_gatt_indicate_params));
+	if(ind_params == NULL)
+	{
+	    return -1;
+	}
+
+	ind_params->attr = attr;
+	ind_params->data = data;
+	ind_params->len = len;
+	ind_params->func = indicate_rsp;
+	ind_params->uuid = NULL;
+
+	return bt_gatt_indicate(conn, ind_params);
+}
+
+/*************************************************************************
+NAME
+    ble_tp_ind_ccc_changed
+*/
+static void ble_tp_ind_ccc_changed(const struct bt_gatt_attr *attr, u16_t value)
+{
+    int err = -1;
+    char data[9] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};
+
+    if(value == BT_GATT_CCC_INDICATE) {
+        err = bl_tp_send_indicate(ble_tp_conn, get_attr(BT_CHAR_BLE_TP_IND_ATTR_VAL_INDEX), data, 9);
+        printf("ble tp send indatcate: %d\n", err);
+    }
 }
 
 /*************************************************************************
 NAME
     ble_tp_notify
 */
-
 static void ble_tp_notify_task(void *pvParameters)
 {
     int err = -1;
@@ -108,75 +207,98 @@ static void ble_tp_notify_task(void *pvParameters)
 
     while(1)
     {
-        err = bt_gatt_notify(ble_tp_conn, get_attr(BT_CHAR_BLE_TP_TX_ATTR_VAL_INDEX), data, (tx_mtu_size - 3));
-        blog_debug("bletp tx : %d\n", err);
+        err = bt_gatt_notify(ble_tp_conn, get_attr(BT_CHAR_BLE_TP_NOT_ATTR_VAL_INDEX), data, (tx_mtu_size - 3));
+        blog_debug("ble tp send notify : %d\n", err);
+
     }
 }
 
 /*************************************************************************
-NAME
-    ble_tp_ccc_cfg_changed
-*/
-static void ble_tp_ccc_cfg_changed(const struct bt_gatt_attr *attr, u16_t value)
+NAME    
+    ble_tp_not_ccc_changed
+*/ 
+static void ble_tp_not_ccc_changed(const struct bt_gatt_attr *attr, u16_t value)
 {
-    if(value == BT_GATT_CCC_NOTIFY) {
-        if(xTaskCreate(ble_tp_notify_task, (char*)"bletp", 256, NULL, 15, &ble_tp_task_h) == pdPASS)
-        {
+    printf("ccc:value=[%d]\r\n",value);
+    
+    if(tp_start){
+   
+        if(value == BT_GATT_CCC_NOTIFY) {
+            if(xTaskCreate(ble_tp_notify_task, (char*)"bletp", 256, NULL, 15, &ble_tp_task_h) == pdPASS)
+            {
+                created_tp_task = 1;
                 printf("Create throughput tx task success .\n");
-        }
-        else
-        {
+            }       
+            else        
+            {      
+                created_tp_task = 0;
                 printf("Create throughput tx taskfail .\n");
+            }
+        } else {
+            
+            if(created_tp_task){
+                printf("Delete throughput tx task .\n");
+                vTaskDelete(ble_tp_task_h);
+                created_tp_task = 0;
+            }
         }
-    } else {
-        printf("Delete throughput tx task .\n");
-        vTaskDelete(ble_tp_task_h);
     }
-
+    else if(tp_start == 0){
+        if(created_tp_task){
+            printf("Delete throughput tx task .\n");
+            vTaskDelete(ble_tp_task_h);
+            created_tp_task = 0;
+        }
+    }
 }
 
 /*************************************************************************
-NAME
-    ble_tp_recv
-*/
-static int ble_tp_recv(struct bt_conn *conn,
-              const struct bt_gatt_attr *attr, const void *buf,
-              u16_t len, u16_t offset, u8_t flags)
-{
-    blog_debug("bletp rx\n");
-    return 0;
-}
-
-/*************************************************************************
-*  DEFINE : attrs
+*  DEFINE : attrs 
 */
 static struct bt_gatt_attr attrs[]= {
-    BT_GATT_PRIMARY_SERVICE(BT_UUID_SVC_BLE_TP),
+	BT_GATT_PRIMARY_SERVICE(BT_UUID_SVC_BLE_TP),
 
-    BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_TX,
-                            BT_GATT_CHRC_NOTIFY,
-                            BT_GATT_PERM_READ,
-                            NULL,
-                            NULL,
-                            NULL),
+        BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_RD,
+							BT_GATT_CHRC_READ,
+							BT_GATT_PERM_READ,
+							ble_tp_recv_rd,
+							NULL,
+							NULL),
 
-    BT_GATT_CCC(ble_tp_ccc_cfg_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
+	BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_WR,
+							BT_GATT_CHRC_WRITE |BT_GATT_CHRC_WRITE_WITHOUT_RESP,
+							BT_GATT_PERM_WRITE|BT_GATT_PERM_PREPARE_WRITE,
+							NULL,
+							ble_tp_recv_wr,
+							NULL),
 
-    BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_RX,
-                            BT_GATT_CHRC_WRITE_WITHOUT_RESP,
-                            BT_GATT_PERM_READ | BT_GATT_PERM_WRITE,
-                            NULL,
-                            ble_tp_recv,
-                            NULL)
+	BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_IND,
+							BT_GATT_CHRC_INDICATE,
+							NULL,
+							NULL,
+							NULL,
+							NULL),
+
+	BT_GATT_CCC(ble_tp_ind_ccc_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
+
+	BT_GATT_CHARACTERISTIC(BT_UUID_CHAR_BLE_TP_NOT,
+							BT_GATT_CHRC_NOTIFY,
+							NULL,
+							NULL,
+							NULL,
+							NULL),
+							
+	BT_GATT_CCC(ble_tp_not_ccc_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE)
+
 };
 
 /*************************************************************************
-NAME
+NAME    
     get_attr
 */
 struct bt_gatt_attr *get_attr(u8_t index)
 {
-    return &attrs[index];
+	return &attrs[index];
 }
 
 
@@ -184,13 +306,17 @@ struct bt_gatt_service ble_tp_server = BT_GATT_SERVICE(attrs);
 
 
 /*************************************************************************
-NAME
+NAME    
     ble_tp_init
 */
 void ble_tp_init()
 {
-    bt_conn_cb_register(&ble_tp_conn_callbacks);
-    bt_gatt_service_register(&ble_tp_server);
+    if( !isRegister )
+    {
+        isRegister = 1;
+        bt_conn_cb_register(&ble_tp_conn_callbacks);
+	    bt_gatt_service_register(&ble_tp_server);
+    }
 }
 
 

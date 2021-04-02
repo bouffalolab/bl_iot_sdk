@@ -10,15 +10,22 @@
 #ifndef __ACCESS_H__
 #define __ACCESS_H__
 
-#include "include/access.h"
-#include "net/buf.h"
-#include "net.h"
+#include "include/access.h" /* Modified by bouffalo */
+#include "net/buf.h" /* Modified by bouffalo */
+#include "net.h" /* Modified by bouffalo */
 
 
 enum {
-    BT_MESH_MOD_BIND_PENDING = BIT(0),
-    BT_MESH_MOD_SUB_PENDING = BIT(1),
-    BT_MESH_MOD_PUB_PENDING = BIT(2),
+	BT_MESH_MOD_BIND_PENDING = BIT(0),
+	BT_MESH_MOD_SUB_PENDING = BIT(1),
+	BT_MESH_MOD_PUB_PENDING = BIT(2),
+	BT_MESH_MOD_NEXT_IS_PARENT = BIT(3),
+};
+
+/* Tree walk return codes */
+enum bt_mesh_walk {
+	BT_MESH_WALK_STOP,
+	BT_MESH_WALK_CONTINUE,
 };
 
 void bt_mesh_elem_register(struct bt_mesh_elem *elem, u8_t count);
@@ -28,20 +35,22 @@ u8_t bt_mesh_elem_count(void);
 /* Find local element based on unicast or group address */
 struct bt_mesh_elem *bt_mesh_elem_find(u16_t addr);
 
-struct bt_mesh_model *bt_mesh_model_find_vnd(struct bt_mesh_elem *elem,
-                         u16_t company, u16_t id);
-struct bt_mesh_model *bt_mesh_model_find(struct bt_mesh_elem *elem,
-                     u16_t id);
+struct bt_mesh_model *bt_mesh_model_root(struct bt_mesh_model *mod);
+void bt_mesh_model_tree_walk(struct bt_mesh_model *root,
+			     enum bt_mesh_walk (*cb)(struct bt_mesh_model *mod,
+						     u32_t depth,
+						     void *user_data),
+			     void *user_data);
 
-u16_t *bt_mesh_model_find_group(struct bt_mesh_model *mod, u16_t addr);
+u16_t *bt_mesh_model_find_group(struct bt_mesh_model **mod, u16_t addr);
 
 bool bt_mesh_fixed_group_match(u16_t addr);
 
 void bt_mesh_model_foreach(void (*func)(struct bt_mesh_model *mod,
-                    struct bt_mesh_elem *elem,
-                    bool vnd, bool primary,
-                    void *user_data),
-               void *user_data);
+					struct bt_mesh_elem *elem,
+					bool vnd, bool primary,
+					void *user_data),
+			   void *user_data);
 
 s32_t bt_mesh_model_pub_period_get(struct bt_mesh_model *mod);
 

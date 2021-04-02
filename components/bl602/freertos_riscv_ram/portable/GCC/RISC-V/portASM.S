@@ -225,6 +225,9 @@ is_exception:
 	csrr a1, mepc
 	csrr a2, mtval
 	add  a3, sp, x0
+	load_x  t0, pxCurrentTCB			/* Load pxCurrentTCB. */
+	load_x  a4, 0( t0 )
+	addi a4, a4, (portasmADDITIONAL_CONTEXT_SIZE * portWORD_SIZE)
 	call exception_entry
 	j processed_source
 1:

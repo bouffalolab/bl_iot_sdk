@@ -597,6 +597,12 @@ struct mm_set_beacon_int_req
     u8_l inst_nbr;
 };
 
+/// Structure containing the parameters of the @ref MM_SET_BEACON_INT_CFM message
+struct mm_set_beacon_int_cfm
+{
+    u8_l status;
+};
+
 /// Structure containing the parameters of the @ref MM_SET_BASIC_RATES_REQ message
 struct mm_set_basic_rates_req
 {
@@ -1317,7 +1323,7 @@ enum scan_msg_tag
 };
 
 /// Maximum number of SSIDs in a scan request
-#define SCAN_SSID_MAX   2
+#define SCAN_SSID_MAX  1
 
 /// Maximum number of 2.4GHz channels
 #define SCAN_CHANNEL_2G4 14
@@ -1591,12 +1597,8 @@ struct me_chan_config_req
 {
     /// List of 2.4GHz supported channels
     struct scan_chan_tag chan2G4[SCAN_CHANNEL_2G4];
-    /// List of 5GHz supported channels
-    struct scan_chan_tag chan5G[SCAN_CHANNEL_5G];
     /// Number of 2.4GHz channels in the list
     u8_l chan2G4_cnt;
-    /// Number of 5GHz channels in the list
-    u8_l chan5G_cnt;
 };
 
 /// Structure containing the parameters of the @ref ME_SET_CONTROL_PORT_REQ message
@@ -1701,7 +1703,7 @@ struct me_traffic_ind_req
 struct me_rc_stats_req
 {
     /// Index of the station for which the RC statistics are requested
-    u8_l sta_idx;
+	u8_l sta_idx;
 };
 
 /// Structure containing the structure of a retry chain step
@@ -1818,6 +1820,8 @@ struct sm_connect_req
     u8_l uapsd_queues;
     /// VIF index
     u8_l vif_idx;
+    /// retry counter for auth/aossoc
+    u8_l counter_retry_auth_assoc;
     /// Buffer containing the additional information elements to be put in the
     /// association request
     u32_l ie_buf[64];
@@ -1957,7 +1961,7 @@ enum cfg_msg_tag
 
 struct
 {
-    /// TASK
+    /// TASK 
     uint32_t task;
     /// ELEMENT
     uint32_t element;
@@ -1974,7 +1978,7 @@ struct cfg_start_req
     union {
         /// struct for get ELEMENT
         struct {
-            /// TASK
+            /// TASK 
             uint32_t task;
             /// ELEMENT
             uint32_t element;
@@ -1982,7 +1986,7 @@ struct cfg_start_req
 
         /// struct for reset ELEMENT
         struct {
-            /// TASK
+            /// TASK 
             uint32_t task;
             /// ELEMENT
             uint32_t element;
@@ -1990,7 +1994,7 @@ struct cfg_start_req
 
         /// struct for set ELEMENT with TLV based
         struct {
-            /// TASK
+            /// TASK 
             uint32_t task;
             /// ELEMENT
             uint32_t element;
@@ -2056,6 +2060,7 @@ struct apm_start_req
     uint8_t ap_sec_type;
     /// AP Passphrase
     uint8_t phrase[MAX_PSK_PASS_PHRASE_LEN];
+    uint8_t phrase_tail[1];
 };
 
 /// Structure containing the parameters of the @ref APM_START_CFM message.

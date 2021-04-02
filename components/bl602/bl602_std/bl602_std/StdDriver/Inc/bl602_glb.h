@@ -633,6 +633,8 @@ BL_Err_Type GLB_GPIO_INPUT_Enable(GLB_GPIO_Type gpioPin);
 BL_Err_Type GLB_GPIO_INPUT_Disable(GLB_GPIO_Type gpioPin);
 BL_Err_Type GLB_GPIO_OUTPUT_Enable(GLB_GPIO_Type gpioPin);
 BL_Err_Type GLB_GPIO_OUTPUT_Disable(GLB_GPIO_Type gpioPin);
+BL_Err_Type GLB_GPIO_Set_PullUp(GLB_GPIO_Type gpioPin);
+BL_Err_Type GLB_GPIO_Set_PullDown(GLB_GPIO_Type gpioPin);
 BL_Err_Type GLB_GPIO_Set_HZ(GLB_GPIO_Type gpioPin);
 uint8_t GLB_GPIO_Get_Fun(GLB_GPIO_Type gpioPin);
 GLB_GPIO_REAL_MODE_Type GLB_GPIO_Get_Real_Fun(GLB_GPIO_Type gpioPin);
@@ -645,8 +647,8 @@ BL_Err_Type GLB_Clr_GPIO_IntStatus(GLB_GPIO_Type gpioPin);
 BL_Err_Type GLB_Set_GPIO_IntMod(GLB_GPIO_Type gpioPin,GLB_GPIO_INT_CONTROL_Type intCtlMod,
                                 GLB_GPIO_INT_TRIG_Type intTrgMod);
 GLB_GPIO_INT_CONTROL_Type GLB_Get_GPIO_IntCtlMod(GLB_GPIO_Type gpioPin);
+BL_Err_Type GLB_GPIO_INT0_IRQHandler_Install(void);
 BL_Err_Type GLB_GPIO_INT0_Callback_Install(GLB_GPIO_Type gpioPin,intCallback_Type* cbFun);
-void GPIO_INT0_IRQHandler(void);
 
 /*@} end of group GLB_Public_Functions */
 

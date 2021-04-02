@@ -98,7 +98,7 @@ static DMA_LLI_Ctrl_Type PingPongListArra[DMA_CH_MAX][2];
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ DMA_ALL_IRQHandler(void)
+void DMA_ALL_IRQHandler(void)
 {
     uint32_t tmpVal;
     uint32_t intClr;
@@ -165,6 +165,9 @@ void DMA_Enable(void)
     tmpVal = BL_RD_REG(DMAChs, DMA_TOP_CONFIG);
     tmpVal = BL_SET_REG_BIT(tmpVal, DMA_E);
     BL_WR_REG(DMAChs, DMA_TOP_CONFIG, tmpVal);
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(DMA_ALL_IRQn,DMA_ALL_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -454,7 +457,7 @@ BL_Err_Type DMA_LLI_PpStruct_Init(DMA_LLI_PP_Struct *dmaPpStruct)
     PingPongListArra[dmaPpStruct->dmaChan][PING_INDEX].dmaCtrl = dmaPpStruct->dmaCtrlRegVal;
 
     if(dmaPpStruct->is_single_mode == 1){
-        /*
+        /* 
          * if is is_single_mode is 1 ping-pong will only run once atfer start singal
          * or ping-pong will run forever unless stop singal occour
          */
@@ -522,11 +525,11 @@ BL_Err_Type DMA_LLI_PpStruct_Set_Transfer_Len(DMA_LLI_PP_Struct *dmaPpStruct,uin
 
     dmaCtrlRegVal_temp = PingPongListArra[dmaPpStruct->dmaChan][PING_INDEX].dmaCtrl ;
     dmaCtrlRegVal_temp.TransferSize = Ping_Transfer_len;
-    PingPongListArra[dmaPpStruct->dmaChan][PING_INDEX].dmaCtrl = dmaCtrlRegVal_temp;
+    PingPongListArra[dmaPpStruct->dmaChan][PING_INDEX].dmaCtrl = dmaCtrlRegVal_temp;  
 
     dmaCtrlRegVal_temp = PingPongListArra[dmaPpStruct->dmaChan][PONG_INDEX].dmaCtrl ;
     dmaCtrlRegVal_temp.TransferSize = Pong_Transfer_len;
-    PingPongListArra[dmaPpStruct->dmaChan][PONG_INDEX].dmaCtrl = dmaCtrlRegVal_temp;
+    PingPongListArra[dmaPpStruct->dmaChan][PONG_INDEX].dmaCtrl = dmaCtrlRegVal_temp; 
 
     DMA_LLI_Init(dmaPpStruct->dmaChan, dmaPpStruct->DMA_LLI_Cfg);
     DMA_LLI_Update(dmaPpStruct->dmaChan, (uint32_t)&PingPongListArra[dmaPpStruct->dmaChan][PING_INDEX]);

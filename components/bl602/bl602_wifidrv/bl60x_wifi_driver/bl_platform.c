@@ -33,7 +33,6 @@
 #include "bl_irqs.h"
 #include "bl_utils.h"
 #include "reg_access.h"
-#include "hal_desc.h"
 #include "reg_ipc_app.h"
 
 /**

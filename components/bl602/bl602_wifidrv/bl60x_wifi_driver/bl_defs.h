@@ -35,7 +35,7 @@
 #include "bl_cmds.h"
 #include "bl_mod_params.h"
 
-#define ETH_ALEN    6
+#define ETH_ALEN    6       
 /**
  ****************************************************************************************
  *
@@ -150,11 +150,6 @@ enum RWNX_INTERFACE_STATUS {
 struct bl_stats {
     int cfm_balance;
     unsigned long last_rx, last_tx; /* jiffies */
-    int ampdus_tx[IEEE80211_MAX_AMPDU_BUF];
-    int ampdus_rx[IEEE80211_MAX_AMPDU_BUF];
-    int ampdus_rx_map[4];
-    int ampdus_rx_miss;
-    int amsdus_rx[64];
 };
 
 struct bl_patternbuf {
@@ -171,29 +166,29 @@ struct bl_dbginfo {
 };
 
 struct net_device_stats {
-    unsigned long   rx_packets;
-    unsigned long   tx_packets;
-    unsigned long   rx_bytes;
-    unsigned long   tx_bytes;
-    unsigned long   rx_errors;
-    unsigned long   tx_errors;
-    unsigned long   rx_dropped;
-    unsigned long   tx_dropped;
-    unsigned long   multicast;
-    unsigned long   collisions;
-    unsigned long   rx_length_errors;
-    unsigned long   rx_over_errors;
-    unsigned long   rx_crc_errors;
-    unsigned long   rx_frame_errors;
-    unsigned long   rx_fifo_errors;
-    unsigned long   rx_missed_errors;
-    unsigned long   tx_aborted_errors;
-    unsigned long   tx_carrier_errors;
-    unsigned long   tx_fifo_errors;
-    unsigned long   tx_heartbeat_errors;
-    unsigned long   tx_window_errors;
-    unsigned long   rx_compressed;
-    unsigned long   tx_compressed;
+	unsigned long	rx_packets;
+	unsigned long	tx_packets;
+	unsigned long	rx_bytes;
+	unsigned long	tx_bytes;
+	unsigned long	rx_errors;
+	unsigned long	tx_errors;
+	unsigned long	rx_dropped;
+	unsigned long	tx_dropped;
+	unsigned long	multicast;
+	unsigned long	collisions;
+	unsigned long	rx_length_errors;
+	unsigned long	rx_over_errors;
+	unsigned long	rx_crc_errors;
+	unsigned long	rx_frame_errors;
+	unsigned long	rx_fifo_errors;
+	unsigned long	rx_missed_errors;
+	unsigned long	tx_aborted_errors;
+	unsigned long	tx_carrier_errors;
+	unsigned long	tx_fifo_errors;
+	unsigned long	tx_heartbeat_errors;
+	unsigned long	tx_window_errors;
+	unsigned long	rx_compressed;
+	unsigned long	tx_compressed;
 };
 
 /*
@@ -201,17 +196,17 @@ struct net_device_stats {
  */
 struct bl_sta {
     struct mac_addr sta_addr;
-    u16 aid;                /* association ID */
     u8 is_used;
     u8 sta_idx;             /* Identifier of the station */
     u8 vif_idx;             /* Identifier of the VIF (fw id) the station
                                belongs to */
     u8 vlan_idx;            /* Identifier of the VLAN VIF (fw id) the station
                                belongs to (= vif_idx if no vlan in used) */
+    uint8_t qos;
     int8_t rssi;
+    uint8_t data_rate;
     uint32_t tsflo;
     uint32_t tsfhi;
-    uint8_t data_rate;
 };
 
 /**
@@ -247,19 +242,8 @@ struct bl_bcn {
 struct bl_vif {
     struct list_head list;
     struct netif *dev;
-    struct bl_hw *bl_hw;
-    struct net_device_stats net_stats;
-    u8 drv_vif_index;           /* Identifier of the VIF in driver */
-    u8 vif_index;               /* Identifier of the station in FW */
-    u8 ch_index;                /* Channel context identifier */
     bool up;                    /* Indicate if associated netdev is up
                                    (i.e. Interface is created at fw level) */
-    bool use_4addr;             /* Should we use 4addresses mode */
-    bool is_resending;          /* Indicate if a frame is being resent on this interface */
-    bool user_mpm;              /* In case of Mesh Point VIF, indicate if MPM is handled by userspace */
-    bool roc_tdls;              /* Indicate if the ROC has been called by a
-                                   TDLS station */
-    u8 tdls_status;             /* Status of the TDLS link */
     union
     {
         struct
@@ -270,16 +254,8 @@ struct bl_vif {
         } sta;
         struct
         {
-            u16 flags;                 /* see bl_ap_flags */
             struct list_head sta_list; /* List of STA connected to the AP */
-            struct bl_bcn bcn;       /* beacon */
             u8 bcmc_index;             /* Index of the BCMC sta to use */
-
-            struct list_head mpath_list; /* List of Mesh Paths used on this interface */
-            struct list_head proxy_list; /* List of Proxies Information used on this interface */
-            bool create_path;            /* Indicate if we are waiting for a MESH_CREATE_PATH_CFM
-                                            message */
-            int generation;              /* Increased each time the list of Mesh Paths is updated */
         } ap;
         struct
         {
@@ -293,25 +269,21 @@ struct bl_hw {
     int is_up;
     struct bl_cmd_mgr cmd_mgr;
     struct ipc_host_env_tag *ipc_env;           /* store the IPC environment */
-    struct bl_stats       stats;
     struct list_head vifs;
     struct bl_vif vif_table[NX_VIRT_DEV_MAX + NX_REMOTE_STA_MAX]; /* indexed with fw id */
     struct bl_sta sta_table[NX_REMOTE_STA_MAX + NX_VIRT_DEV_MAX];
     unsigned long drv_flags;
-    struct mm_version_cfm version_cfm;          /* Lower layers versions - obtained via MM_VERSION_REQ */
     struct bl_mod_params *mod_params;
-    enum wiphy_flags flags;
     struct ieee80211_sta_ht_cap ht_cap;
-    u8 vif_started;
     int vif_index_sta;
     int vif_index_ap;
 
     /*custom added id*/
     int sta_idx;
     int ap_bcmc_idx;
-
-    struct phy_cfg_tag phy_config;
-    enum RWNX_INTERFACE_STATUS status;
+#ifdef CFG_BL_STATISTIC
+    struct bl_stats       stats;
+#endif
 };
 
 struct ethhdr {

@@ -17,6 +17,7 @@ int k_work_q_start();
 
 enum {
     K_WORK_STATE_PENDING,
+	K_WORK_STATE_PERIODIC,
 };
 struct k_work;
 /* work define*/
@@ -49,14 +50,12 @@ struct k_delayed_work {
 
 void k_delayed_work_init(struct k_delayed_work *work, k_work_handler_t handler);
 int k_delayed_work_submit(struct k_delayed_work *work, uint32_t delay);
+/* Added by bouffalolab */
 int k_delayed_work_submit_periodic(struct k_delayed_work *work, s32_t period);
 int k_delayed_work_cancel(struct k_delayed_work *work);
 s32_t k_delayed_work_remaining_get(struct k_delayed_work *work);
 void k_delayed_work_del_timer(struct k_delayed_work *work);
+/* Added by bouffalolab */
 int k_delayed_work_free(struct k_delayed_work *work);
-
-int add_timer_record(struct k_delayed_work *delay_work);
-timer_rec_d *get_timer_record(void *hdl);
-int remv_timer_record(struct k_delayed_work *delay_work);
 #endif
 #endif /* WORK_Q_H */

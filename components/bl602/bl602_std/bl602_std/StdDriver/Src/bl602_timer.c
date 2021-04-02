@@ -302,7 +302,7 @@ void TIMER_SetPreloadTrigSrc(TIMER_Chan_Type timerCh, TIMER_PreLoad_Trig_Type pl
  *
 *******************************************************************************/
 void TIMER_SetCountMode(TIMER_Chan_Type timerCh, TIMER_CountMode_Type countMode)
-{
+{  
     uint32_t tmpval;
 
     /* Check the parameters */
@@ -394,6 +394,11 @@ BL_Err_Type TIMER_Init(TIMER_CFG_Type* timerCfg)
     TIMER_SetCompValue(timerCh,TIMER_COMP_ID_0,timerCfg->matchVal0);
     TIMER_SetCompValue(timerCh,TIMER_COMP_ID_1,timerCfg->matchVal1);
     TIMER_SetCompValue(timerCh,TIMER_COMP_ID_2,timerCfg->matchVal2);
+
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(TIMER_CH0_IRQn,TIMER_CH0_IRQHandler);
+    //Interrupt_Handler_Register(TIMER_CH1_IRQn,TIMER_CH1_IRQHandler);
+#endif
 
     return SUCCESS;
 }
@@ -670,6 +675,10 @@ void WDT_Enable(void)
 {
     uint32_t tmpVal;
 
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(TIMER_WDT_IRQn,TIMER_WDT_IRQHandler);
+#endif
+
     WDT_ENABLE_ACCESS();
 
     tmpVal=BL_RD_REG(TIMER_BASE,TIMER_WMER);
@@ -748,7 +757,7 @@ void WDT_IntMask(WDT_INT_Type intType, BL_Mask_Type intMask)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ TIMER_CH0_IRQHandler(void)
+void TIMER_CH0_IRQHandler(void)
 {
    TIMER_IntHandler(TIMER_CH0_IRQn,TIMER_CH0);
 }
@@ -763,7 +772,7 @@ void __IRQ TIMER_CH0_IRQHandler(void)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ TIMER_CH1_IRQHandler(void)
+void TIMER_CH1_IRQHandler(void)
 {
    TIMER_IntHandler(TIMER_CH1_IRQn,TIMER_CH1);
 }
@@ -778,7 +787,7 @@ void __IRQ TIMER_CH1_IRQHandler(void)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ TIMER_WDT_IRQHandler(void)
+void TIMER_WDT_IRQHandler(void)
 {
     uint32_t tmpVal;
 

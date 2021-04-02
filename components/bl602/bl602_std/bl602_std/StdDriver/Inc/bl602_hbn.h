@@ -150,6 +150,14 @@ typedef enum {
 }HBN_INT_Type;
 
 /**
+ *  @brief HBN acomp interrupt type definition
+ */
+typedef enum {
+    HBN_ACOMP_INT_EDGE_POSEDGE=0,           /*!< HBN acomp interrupt edge posedge */
+    HBN_ACOMP_INT_EDGE_NEGEDGE=1,           /*!< HBN acomp interrupt edge negedge */
+}HBN_ACOMP_INT_EDGE_Type;
+
+/**
  *  @brief HBN GPIO interrupt trigger type definition
  */
 typedef enum {
@@ -311,6 +319,12 @@ typedef struct {
                                                           ((type) == HBN_INT_ACOMP0) || \
                                                           ((type) == HBN_INT_ACOMP1))
 
+/** @defgroup  HBN_ACOMP_INT_EDGE_TYPE
+ *  @{
+ */
+#define IS_HBN_ACOMP_INT_EDGE_TYPE(type)                 (((type) == HBN_ACOMP_INT_EDGE_POSEDGE) || \
+                                                          ((type) == HBN_ACOMP_INT_EDGE_NEGEDGE))
+
 /** @defgroup  HBN_GPIO_INT_TRIGGER_TYPE
  *  @{
  */
@@ -394,8 +408,10 @@ void HBN_OUT1_IRQHandler(void);
 #endif
 /*----------*/
 void HBN_Mode_Enter(HBN_APP_CFG_Type *cfg);
+void HBN_Mode_Enter_Ext(HBN_APP_CFG_Type *cfg);
 void HBN_Power_Down_Flash(SPI_Flash_Cfg_Type *flashCfg);
 void HBN_Enable(uint8_t aGPIOIeCfg,HBN_LDO_LEVEL_Type ldoLevel,HBN_LEVEL_Type hbnLevel);
+void HBN_Enable_Ext(uint8_t aGPIOIeCfg,HBN_LDO_LEVEL_Type ldoLevel,HBN_LEVEL_Type hbnLevel);
 BL_Err_Type HBN_Reset(void);
 BL_Err_Type HBN_App_Reset(uint8_t npXtalType,uint8_t bclkDiv,uint8_t apXtalType,uint8_t fclkDiv);
 BL_Err_Type HBN_Disable(void);
@@ -446,16 +462,17 @@ BL_Err_Type HBN_Hw_Pu_Pd_Cfg(uint8_t enable);
 BL_Err_Type HBN_Aon_Pad_IeSmt_Cfg(uint8_t padCfg);
 BL_Err_Type HBN_Pin_WakeUp_Mask(uint8_t maskVal);
 /*----------*/
-BL_Err_Type HBN_Enable_AComp0_IRQ(void);
-BL_Err_Type HBN_Disable_AComp0_IRQ(void);
-BL_Err_Type HBN_Enable_AComp1_IRQ(void);
-BL_Err_Type HBN_Disable_AComp1_IRQ(void);
+BL_Err_Type HBN_Enable_AComp0_IRQ(HBN_ACOMP_INT_EDGE_Type edge);
+BL_Err_Type HBN_Disable_AComp0_IRQ(HBN_ACOMP_INT_EDGE_Type edge);
+BL_Err_Type HBN_Enable_AComp1_IRQ(HBN_ACOMP_INT_EDGE_Type edge);
+BL_Err_Type HBN_Disable_AComp1_IRQ(HBN_ACOMP_INT_EDGE_Type edge);
 /*----------*/
 BL_Err_Type HBN_Enable_BOR_IRQ(void);
 BL_Err_Type HBN_Disable_BOR_IRQ(void);
 /*----------*/
-BL_Err_Type HBN_Out0_Callback_Install(HBN_OUT0_INT_Type intType,
-                                                     intCallback_Type* cbFun);
+BL_Err_Type HBN_Out0_IRQHandler_Install(void);
+BL_Err_Type HBN_Out0_Callback_Install(HBN_OUT0_INT_Type intType,intCallback_Type* cbFun);
+BL_Err_Type HBN_Out1_IRQHandler_Install(void);
 BL_Err_Type HBN_Out1_Callback_Install(HBN_OUT1_INT_Type intType,intCallback_Type* cbFun);
 /*----------*/
 BL_Err_Type HBN_GPIO7_Dbg_Pull_Cfg(BL_Fun_Type pupdEn,BL_Fun_Type iesmtEn,

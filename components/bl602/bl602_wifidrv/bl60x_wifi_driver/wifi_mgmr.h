@@ -36,9 +36,9 @@
 #include "os_hal.h"
 
 #define WIFI_MGMR_SCAN_ITEMS_MAX (50)
-#define WIFI_MGMR_PROFILES_MAX (2)
+#define WIFI_MGMR_PROFILES_MAX (1)
 #define WIFI_MGMR_MQ_MSG_SIZE (128 + 64 + 32)
-#define WIFI_MGMR_MQ_MSG_COUNT (10)
+#define WIFI_MGMR_MQ_MSG_COUNT (1)
 
 /**
  ****************************************************************************************
@@ -163,14 +163,14 @@ typedef struct wifi_mgmr_ap_msg {
 #pragma pack(pop)
 
 typedef struct wifi_mgmr_profile {
-    char ssid[33];
-    uint8_t no_autoconnect;
-    uint32_t ssid_len;
-    char psk[65];
-    uint32_t psk_len;
-    char pmk[65];
-    uint32_t pmk_len;
+    uint16_t ssid_len;
+    uint16_t psk_len;
+    uint16_t pmk_len;
     uint8_t mac[6];
+    char ssid[33];
+    //uint8_t no_autoconnect;
+    char psk[65];
+    char pmk[65];
     uint8_t dhcp_use;
 
     /*reserved field for wifi manager*/
@@ -190,24 +190,25 @@ typedef struct
 } wifi_mgmr_cipher_t;
 
 typedef struct wifi_mgmr_scan_item {
-    char ssid[32];
-    char ssid_tail[1];//always put ssid_tail after ssid
-    uint32_t ssid_len;
-    uint8_t bssid[6];
+    uint32_t timestamp_lastseen;
+    uint16_t ssid_len;
     uint8_t channel;
     int8_t rssi;
+    char ssid[32];
+    char ssid_tail[1];//always put ssid_tail after ssid
+    uint8_t bssid[6];
     int8_t ppm_abs;
     int8_t ppm_rel;
     uint8_t auth;
     uint8_t cipher;
     uint8_t is_used;
-    uint32_t timestamp_lastseen;
 } wifi_mgmr_scan_item_t;
 
 struct wlan_netif {
     int mode;//0: sta; 1: ap
     uint8_t vif_index;
     uint8_t mac[6];
+    uint8_t dhcp_started;
     struct {
         uint32_t ip;
         uint32_t mask;
@@ -223,16 +224,22 @@ struct wlan_netif {
     };
 };
 
+#define MAX_FIXED_CHANNELS_LIMIT (14)
+typedef struct wifi_mgmr_scan_fixed_channels {
+    uint16_t channel_num;
+    uint16_t channels[];
+} wifi_mgmr_scan_fixed_channels_t;
+
 typedef struct wifi_mgmr_connect_ind_stat_info {
     uint16_t status_code;
+    uint16_t chan_freq;
     /*mgmr recv ind event from fw when connect or disconnect  */
 #define WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_CONNECTION (1)
 #define WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_DISCONNECTION (2)
-    uint8_t type_ind;
     char ssid[32];
     char psk[65];
     uint8_t bssid[6];
-    uint16_t chan_freq;
+    uint8_t type_ind;
     uint8_t chan_band;
 } wifi_mgmr_connect_ind_stat_info_t;
 
@@ -247,7 +254,6 @@ typedef struct wifi_mgmr_sta_basic_info {
 } wifi_mgmr_sta_basic_info_t;
 
 typedef struct wifi_mgmr {
-    uint8_t ready;//TODO mgmr init process
     /*filed for PHY*/
     int channel;
     int inf_ap_enabled;
@@ -265,8 +271,10 @@ typedef struct wifi_mgmr {
     struct stateMachine m;
     os_timer_t timer;
     wifi_mgmr_connect_ind_stat_info_t wifi_mgmr_stat_info;
+    uint8_t ready;//TODO mgmr init process
     char country_code[3];
     uint8_t disable_autoreconnect;
+    uint8_t ap_bcn_int;
     int channel_nums;
 
     /*pending task*/
@@ -279,6 +287,9 @@ typedef struct wifi_mgmr {
     /*Manager config*/
     int scan_item_timeout;
 #define WIFI_MGMR_CONFIG_SCAN_ITEM_TIMEOUT      (15000)
+
+#define MAX_HOSTNAME_LEN_CHECK 32
+    char hostname[MAX_HOSTNAME_LEN_CHECK];
 } wifi_mgmr_t;
 
 int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg);

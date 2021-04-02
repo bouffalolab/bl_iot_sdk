@@ -10,7 +10,7 @@ static SPI_Flash_Cfg_Type *pFlashCfg;
 #include "bflb_platform.h"
 #define mfg_print   MSG
 #else
-#define mfg_print   printf
+#define mfg_print(...)   //printf(__VA_ARGS__)
 #endif
 //#define RF_PARA_MAGIC_FLAG      0x41504652
 #define RF_PARA_MAGIC_FLAG      0x41
@@ -43,16 +43,16 @@ int8_t mfg_flash_init( SPI_Flash_Cfg_Type *flashCfg)
         PtTable_Set_Flash_Operation(NULL,NULL,PtTable_Flash_Read);
         activeID=PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
         if(PT_TABLE_ID_INVALID==activeID){
-            mfg_print("No valid PT\r\n");
+            //mfg_print("No valid PT\r\n");
             return -1;
         }
         ret=PtTable_Get_Active_Entries_By_Name(&ptTableStuff[activeID],(uint8_t*)RF_PARA_PART_NAME,&ptEntry);
         if(PT_ERROR_SUCCESS==ret){
             rf_para_addr=ptEntry.Address[0];
-            mfg_print("RF para flash address=%08x\r\n",(unsigned int)rf_para_addr);
+            //mfg_print("RF para flash address=%08x\r\n",(unsigned int)rf_para_addr);
             return 0;
         }else{
-            mfg_print("Not found "RF_PARA_PART_NAME"\r\n");
+            //mfg_print("Not found "RF_PARA_PART_NAME"\r\n");
             return -1;
         }
     }
@@ -63,21 +63,17 @@ static int8_t mfg_flash_program(void)
 {
     BL_Err_Type ret;
 
-    mfg_print("mfg_flash_write\r\n");
+    //mfg_print("mfg_flash_write\r\n");
 
-    __disable_irq();
      ret=XIP_SFlash_Erase_Need_Lock(pFlashCfg,rf_para_addr,rf_para_addr+15);
-     __enable_irq();
      if(ret!=SUCCESS){
-         mfg_print("Flash erase error\r\n");
+         //mfg_print("Flash erase error\r\n");
          return -1;
      }
 
-     __disable_irq();
      ret=XIP_SFlash_Write_Need_Lock(pFlashCfg,rf_para_addr,(uint8_t *)&rf_para,sizeof(rf_para));
-     __enable_irq();
      if(ret!=SUCCESS){
-         mfg_print("Flash write error\r\n");
+         //mfg_print("Flash write error\r\n");
          return -1;
      }
 
@@ -88,13 +84,11 @@ static int8_t mfg_flash_read(void)
 {
     BL_Err_Type ret;
 
-    mfg_print("mfg_flash_read\r\n");
+    //mfg_print("mfg_flash_read\r\n");
 
-     __disable_irq();
      ret=XIP_SFlash_Read_Need_Lock(pFlashCfg,rf_para_addr,(uint8_t *)&rf_para,sizeof(rf_para));
-     __enable_irq();
      if(ret!=SUCCESS){
-         mfg_print("Flash write error\r\n");
+         //mfg_print("Flash write error\r\n");
          return -1;
      }
 
@@ -121,7 +115,7 @@ void mfg_flash_write_xtal_capcode(void)
 }
 
 int8_t mfg_flash_read_xtal_capcode(uint8_t *capcode,uint8_t reload)
-{
+{    
     if((reload!=0)&&(mfg_flash_read()!=0)){
         return -1;
     }
@@ -223,7 +217,7 @@ void mfg_flash_write_macaddr(void)
 int8_t mfg_flash_read_macaddr(uint8_t mac[6],uint8_t reload)
 {
     if((reload!=0)&&(mfg_flash_read()!=0)){
-        mfg_print("mfg_flash_read fail\r\n");
+        //mfg_print("mfg_flash_read fail\r\n");
         return -1;
     }
     if(rf_para.magic==RF_PARA_MAGIC_FLAG){

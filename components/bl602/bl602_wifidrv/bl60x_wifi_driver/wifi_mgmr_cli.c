@@ -326,9 +326,42 @@ static void wifi_capcode_cmd(char *buf, int len, int argc, char **argv)
     }
 }
 
+static void wifi_bcnint_set(char *buf, int len, int argc, char **argv)
+{
+    uint16_t bcnint = 0;
+
+    if (2 != argc) {
+        printf("Usage: %s bcnint\r\n", argv[0]);
+        return;
+    }
+
+    bcnint = atoi(argv[1]);
+    printf("Setting beacon interval to %d\r\n", bcnint);
+
+    if (bcnint > 0) {
+        wifi_mgmr_beacon_interval_set(bcnint);
+    }
+}
+
 static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
 {
-    wifi_mgmr_scan(NULL, NULL);
+    uint16_t channel_num;
+    uint16_t channels[MAX_FIXED_CHANNELS_LIMIT];
+    int i;
+    if (1 == argc) {
+        wifi_mgmr_scan(NULL, NULL);
+    }
+    if (argc > 1) {
+        channel_num = argc - 1;
+        if (channel_num > MAX_FIXED_CHANNELS_LIMIT) {
+            printf("---->scan fixed channels' number limit\r\n");
+            return ;
+        }
+        for(i = 0; i < (argc - 1); i ++) {
+            channels[i] = atoi(argv[i + 1]);
+        }
+        wifi_mgmr_scan_fixed_channels(NULL, NULL, channels, channel_num);
+    }
 }
 
 static void wifi_scan_filter_cmd(char *buf, int len, int argc, char **argv)
@@ -429,7 +462,7 @@ static void wifi_sta_ip_set_cmd(char *buf, int len, int argc, char **argv)
     /* sample input
      *
      * cmd_ip_set 192.168.1.212 255.255.255.0 192.168.1.1 114.114.114.114 114.114.114.114
-     *
+     * 
      * */
     uint32_t ip, mask, gw, dns1, dns2;
     char addr_str[20];
@@ -941,6 +974,7 @@ static void cmd_wifi_power_table_update(char *buf, int len, int argc, char **arg
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "rf_dump", "rf dump", cmd_rf_dump},
+        { "wifi_ap_bcnint_set", "wifi ap bcnin set", wifi_bcnint_set},
         { "wifi_capcode", "wifi capcode", wifi_capcode_cmd},
         { "wifi_scan", "wifi scan", wifi_scan_cmd},
         { "wifi_scan_filter", "wifi scan", wifi_scan_filter_cmd},
@@ -980,13 +1014,13 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_edca_dump", "dump EDCA data", wifi_edca_dump_cmd},
         { "wifi_state", "get wifi_state", cmd_wifi_state_get},
         { "wifi_update_power", "Power table test command", cmd_wifi_power_table_update},
-};
+};                                                                                   
 
 int wifi_mgmr_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
     return 0;
 }

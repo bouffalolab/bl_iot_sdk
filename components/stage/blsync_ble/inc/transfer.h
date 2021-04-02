@@ -56,6 +56,14 @@ typedef enum {
     CMD_WIFI_DATA_GET,
     CMD_PROV_STOP,
     CMD_WIFI_STATE_GET,
+
+#if defined(CONFIG_ZIGBEE_PROV)
+    CMD_ZB_SCAN=0x20,
+    CMD_ZB_JOIN,
+    CMD_ZB_GET_INSTALLCODE,
+    CMD_ZB_RESET,
+#endif
+
 } cmd_id_t;
 
 typedef enum {
@@ -79,6 +87,14 @@ typedef enum {
     DATA_WIFI_LIST,
     DATA_ERROR,
     DATA_CUSTOM_DATA,
+
+#if defined(CONFIG_ZIGBEE_PROV)
+    DATA_ZB_LINKKEY = 0x20,
+    DATA_ZB_PANID,
+    DATA_ZB_INSTALLCODE,
+    DATA_ZB_SCAN_INFO,
+#endif
+
 } data_id_t;
 
 typedef enum  {

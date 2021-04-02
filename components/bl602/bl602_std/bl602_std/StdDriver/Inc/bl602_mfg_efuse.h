@@ -17,8 +17,9 @@ uint8_t mfg_efuse_is_macaddr_slot_empty(uint8_t reload);
 int8_t mfg_efuse_write_macaddr_pre(uint8_t mac[6],uint8_t program);
 void mfg_efuse_write_macaddr(void);
 int8_t mfg_efuse_read_macaddr(uint8_t mac[6],uint8_t reload);
-int8_t mfg_efuse_write_pre(uint32_t addr,uint32_t *data,uint32_t countInword);
 int8_t mfg_efuse_read(uint32_t addr,uint32_t *data,uint32_t countInword,uint8_t reload);
 int8_t mfg_efuse_program(void);
+int8_t mfg_efuse_write_pre(uint32_t addr,uint32_t *data,uint32_t countInword);
+int8_t mfg_efuse_read_poweroffset_ate(int8_t *pwrOffset);
 
 #endif/*__BL602_MFG_EFUSE_H__*/

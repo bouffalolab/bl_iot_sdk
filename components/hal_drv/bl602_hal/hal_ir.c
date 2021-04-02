@@ -35,18 +35,18 @@
 
 #include "hal_ir.h"
 #include "bl_ir.h"
-#include "bl_timer.h"
-#include <bl602_pds.h>
+#include "bl_dma.h"
 
-#define CHIP_WS2812B        0
-#define CHIP_UCS1903        1
-#define WS2812B_RESET_US    50
-#define UCS1903_RESET_US    24
-static int g_chip_type = 0;
+#define SPI_IR_CLK_PIN    11
+#define SPI_IR_TX_PIN     12
+#define SPI_MODE          1
+#define SPI_FREQ          4000000
+#define SPI_POLAR_PHASE   1
 
 #define BL_FDT32_TO_U8(addr, byte_offset)   ((uint8_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))
 #define BL_FDT32_TO_U16(addr, byte_offset)  ((uint16_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))
 #define BL_FDT32_TO_U32(addr, byte_offset)  ((uint32_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))
+
 
 int hal_ir_init_from_dts(uint32_t fdt_input, uint32_t dtb_offset)
 {
@@ -60,8 +60,8 @@ int hal_ir_init_from_dts(uint32_t fdt_input, uint32_t dtb_offset)
     int ctrltype = 0;
 
     uint8_t pin = 0;
-    uint16_t interval = NULL;
-
+    int data_check = 0;
+   
     addr_prop = fdt_getprop(fdt, dtb_offset, "ctrltype", &lentmp);
     if (addr_prop == NULL) {
         log_info("do not find ctrltype \r\n");
@@ -89,69 +89,71 @@ int hal_ir_init_from_dts(uint32_t fdt_input, uint32_t dtb_offset)
                 } else {
                     pin = BL_FDT32_TO_U32(addr_prop, 0);
                     log_info("pin == %d \r\n", pin);
-                    addr_prop = fdt_getprop(fdt, offset1, "interval", &lentmp);
+                    addr_prop = fdt_getprop(fdt, offset1, "data_check", &lentmp);
                     if (addr_prop == NULL) {
-                        log_info("ir rx interval NULL.\r\n");
+                        log_info("ir rx check_data NULL \r\n");
                     } else {
-                        interval = BL_FDT32_TO_U32(addr_prop, 0);
-                        log_info("add here pin = %d, interval = %d\r\n", pin, interval);
+                        data_check = BL_FDT32_TO_U32(addr_prop, 0);
                     }
                 }
             }
         }
     }
-
+     
     //TODO clean out ctrltype
-    bl_ir_init(pin, ctrltype);
-
+    bl_ir_init(pin, ctrltype, data_check);
+    
     return 0;
+}
+
+int hal_ir_config(uint32_t data_check)
+{
+    return bl_ir_data_check_config(data_check);
 }
 
 int hal_irled_init(int chip_type)
 {
-    if (chip_type != 0 && chip_type != 1) {
-        blog_error("not correct chip type \r\n");
+    private_ir_data_t *pstctx;
+
+    pstctx = pvPortMalloc(sizeof(private_ir_data_t));
+    if (pstctx == NULL) {
+        blog_error("malloc ir data failed, ir init failed.\r\n");
 
         return -1;
     }
 
-    bl_irled_gpio_init();
-    bl_irled_init(chip_type);
+    pstctx->dev_spi.pin_clk = SPI_IR_CLK_PIN;
+    pstctx->dev_spi.pin_mosi = SPI_IR_TX_PIN;
+    pstctx->dev_spi.mode = SPI_MODE;
+    pstctx->dev_spi.freq = SPI_FREQ;
+    pstctx->dev_spi.polar_phase = SPI_POLAR_PHASE;
+    pstctx->dev_spi.tx_dma_ch = IR_DMA_CHANNEL;
+    pstctx->chip_type = chip_type;
 
-    g_chip_type = chip_type;
+    bl_spi_hw_init(pstctx);
+    bl_spi_dma_init(pstctx);
 
     return 0;
 }
 
 int hal_irled_send_data(int data_num, uint32_t *buf)
 {
-    int i;
-    static uint64_t last_us = 0;
-    uint64_t reset_us;
+    int ret;
+    private_ir_data_t *pstctx;
 
-    if (data_num <=0 || buf == NULL) {
-        blog_error("not correct para. \r\n");
+    if ((buf == NULL) || (data_num < 0) || (data_num == 0)) {
+        blog_error("not correct para \r\n");
+    }
+    
+    pstctx =  bl_dma_find_ctx_by_channel(IR_DMA_CHANNEL);
+    if (pstctx == NULL) {
+        blog_error("get ctx by dma channel failed. \r\n");
 
         return -1;
     }
 
-    if (g_chip_type == 0) {
-        reset_us = WS2812B_RESET_US;
-    } else {
-        reset_us = UCS1903_RESET_US;
-    }
+    pstctx->p_data = (uint32_t *)buf;
+    ret = bl_spi_dma_trans(pstctx, (uint32_t *)buf, data_num);
 
-    if (bl_timer_now_us64() - last_us < reset_us) {
-         bl_timer_delay_us(reset_us - (bl_timer_now_us64() - last_us));
-    }
-
-    __disable_irq();
-    for (i = 0; i < data_num; i++) {
-        bl_irled_send_one_data(buf[i]);
-    }
-    __enable_irq();
-
-    last_us = bl_timer_now_us64();
-
-    return 0;
+    return ret;
 }

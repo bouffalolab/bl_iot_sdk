@@ -190,6 +190,26 @@ typedef struct {
     uint32_t rsvd                                    : 24;    /*!< Reserved */
 }Efuse_Capcode_Info_Type;
 
+/**
+ *  @brief Efuse Ldo11 Vout Sel Trim definition
+ */
+typedef struct {
+    uint32_t sel_value                              :  4;    /*!< value trim */
+    uint32_t parity                                  :  1;    /*!< Parity of capcode */
+    uint32_t en                                      :  1;    /*!< Enable status */
+    uint32_t rsvd                                    : 26;    /*!< Reserved */
+}Efuse_Ldo11VoutSelTrim_Info_Type;
+
+/**
+ *  @brief Efuse Tx Power definition
+ */
+typedef struct {
+    uint32_t txpower                                 :  5;    /*!< txpower value  */
+    uint32_t parity                                  :  1;    /*!< Parity of capcode */
+    uint32_t en                                      :  1;    /*!< Enable status */
+    uint32_t rsvd                                    : 25;    /*!< Reserved */
+}Efuse_TxPower_Info_Type;
+
 /*@} end of group EF_CTRL_Public_Types */
 
 /** @defgroup  EF_CTRL_Public_Constants
@@ -297,8 +317,6 @@ void EF_Ctrl_Program_Direct_R0(uint32_t index, uint32_t *data, uint32_t len);
 void EF_Ctrl_Read_Direct_R0(uint32_t index, uint32_t *data, uint32_t len);
 void EF_Ctrl_Program_Direct(uint32_t index, uint32_t *data, uint32_t len);
 void EF_Ctrl_Read_Direct(uint32_t index, uint32_t *data, uint32_t len);
-void EF_Ctrl_Write_R0(uint32_t index, uint32_t *data, uint32_t len);
-void EF_Ctrl_Read_R0(uint32_t index, uint32_t *data, uint32_t len);
 void EF_Ctrl_Clear(uint32_t index, uint32_t len);
 void EF_Ctrl_Crc_Enable(void);
 BL_Sts_Type EF_Ctrl_Crc_Is_Busy(void);
@@ -314,6 +332,11 @@ BL_Err_Type EF_Ctrl_Read_CapCode_Opt(uint8_t slot,uint8_t *code,uint8_t reload);
 uint8_t  EF_Ctrl_Is_PowerOffset_Slot_Empty(uint8_t slot,uint8_t reload);
 BL_Err_Type EF_Ctrl_Write_PowerOffset_Opt(uint8_t slot,int8_t pwrOffset[3],uint8_t program);
 BL_Err_Type EF_Ctrl_Read_PowerOffset_Opt(uint8_t slot,int8_t pwrOffset[3],uint8_t reload);
+void EF_Ctrl_Write_R0(uint32_t index, uint32_t *data, uint32_t len);
+void EF_Ctrl_Read_R0(uint32_t index, uint32_t *data, uint32_t len);
+BL_Err_Type EF_Ctrl_Read_Ldo11VoutSel_Opt(uint8_t *Ldo11VoutSelValue);
+BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower);
+
 
 /*@} end of group EF_CTRL_Public_Functions */
 

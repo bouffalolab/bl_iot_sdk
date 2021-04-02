@@ -67,7 +67,7 @@ SECTIONS
 
     *(.gnu.linkonce.r.*)
   } > flash
-  
+
   .preinit_array :
   {
     . = ALIGN(4);
@@ -140,7 +140,7 @@ SECTIONS
     *(.srodata.cst4)
     *(.srodata.cst2)
     *(.srodata .srodata.*)
-
+    
     . = ALIGN(8);
     *(._k_queue.static.*)
     *(._k_sem.static.*)
@@ -213,7 +213,7 @@ SECTIONS
 
   /*BOOT2 sections*/
   PROVIDE ( __boot2_pt_addr_src = BOOT2_PT_ADDR );
-  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR );
+  PROVIDE ( __boot2_flashCfg_src = BOOT2_FLASHCFG_ADDR ); 
 
   PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
 }

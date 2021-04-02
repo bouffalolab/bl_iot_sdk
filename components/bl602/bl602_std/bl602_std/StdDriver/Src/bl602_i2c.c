@@ -301,7 +301,7 @@ void I2C_Init(I2C_ID_Type i2cNo, I2C_Direction_Type direct, I2C_Transfer_Cfg *cf
     /* Set sub address */
     BL_WR_REG(I2Cx, I2C_SUB_ADDR, cfg->subAddr);
 
-#ifndef BL602_USE_HAL_DRIVER
+#ifndef BFLB_USE_HAL_DRIVER
     //Interrupt_Handler_Register(I2C_IRQn,I2C_IRQHandler);
 #endif
 }

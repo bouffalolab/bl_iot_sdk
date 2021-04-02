@@ -19,6 +19,8 @@ extern "C"
 
 #define MAX_FILE_NUM (AOS_CONFIG_VFS_DEV_NODES * 2)
 
+#define FILE_BITMAP_NUM ((MAX_FILE_NUM + 31) / 32)
+
 #ifdef _WIN32
 #define CHECK_IF_NON_VFS_FD(_SOCKET)         \
     ((_SOCKET < AOS_CONFIG_VFS_FD_OFFSET) || \

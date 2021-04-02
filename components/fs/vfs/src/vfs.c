@@ -21,26 +21,29 @@
 #define PATH_MAX 256
 #endif
 
-static uint8_t g_vfs_init;
-static StaticSemaphore_t xMutexBuffer;
-SemaphoreHandle_t g_vfs_mutex;
+SemaphoreHandle_t g_vfs_mutex = NULL;
 
 int vfs_init(void)
 {
     int ret = VFS_SUCCESS;
 
-    if (g_vfs_init == 1) {
-        return ret;
+    if (NULL != g_vfs_mutex) {
+        goto exit;
     }
 
-    if (NULL == (g_vfs_mutex = xSemaphoreCreateMutexStatic(&xMutexBuffer))) {
-        return -1;
+    if (NULL == (g_vfs_mutex = xSemaphoreCreateMutex())) {
+        ret = -1;
+        goto exit;
     }
 
-    inode_init();
+    if (0 != inode_init() || 0 != file_init()) {
+        vSemaphoreDelete(g_vfs_mutex);
+        g_vfs_mutex = NULL;
+        ret = -1;
+        goto exit;
+    }
 
-    g_vfs_init = 1;
-
+exit:
     return ret;
 }
 

@@ -379,8 +379,6 @@ struct mac_scan_result
 {
     /// Network BSSID.
     struct mac_addr bssid;
-    /// Network name.
-    struct mac_ssid ssid;
     /// Network type (IBSS or ESS).
     u16 bsstype;
     /// Network channel number.

@@ -35,7 +35,6 @@
 
 #include "lmac_types.h"
 #include "ipc_shared.h"
-#include "hal_desc.h"
 #include "bl_utils.h"
 
 /**
@@ -54,6 +53,15 @@
  * @sw_hdr: Information from driver
  * @hw_hdr: Information for/from hardware
  */
+union bl_hw_txstatus {
+    struct {
+        u32 tx_done            : 1;
+        u32 retry_required     : 1;
+        u32 sw_retry_required  : 1;
+        u32 reserved           :29;
+    };
+    u32 value;
+};
 struct bl_txhdr {
     struct utils_list_hdr item;
     union bl_hw_txstatus status;

@@ -46,6 +46,7 @@ COMPONENT_SRCS := bl602_hal/bl_uart.c \
                   bl602_hal/bl_pds.c \
                   bl602_hal/hal_pds.c \
                   bl602_hal/bl_rtc.c \
+                  bl602_hal/hal_rtc.c \
                   bl602_hal/hal_hwtimer.c \
                   bl602_hal/hal_spi.c \
                   bl602_hal/hal_adc.c \

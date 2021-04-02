@@ -13,6 +13,15 @@ extern "C" {
 
 #define    VFS_SUCCESS               0u
 
+#define VFS_ASSERT(cond)                                    \
+    do {                                                    \
+        if (!(cond)) {                                      \
+            puts("VFS_ASSERT:" #cond);                      \
+            printf(" %s:%d\r\n", __FILENAME__, __LINE__);   \
+            while(1);                                       \
+        }                                                   \
+    } while(0)
+
 #ifdef __cplusplus
 }
 #endif

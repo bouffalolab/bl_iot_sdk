@@ -10,6 +10,8 @@
    :align: center
 
    Putty下载
+   
+3. 安装App ble connect 版本号为3.3(此APK在评估包内)
 
 ==================
 烧录
@@ -17,37 +19,68 @@
 
 连接
 ========
-BL602模块的相关引脚连接如下图所示，其中图1是模块的正面图，其标号1处用跳线帽短接，标号2处将左边两根排针短接，标号3处将上面的两根排针短接；图2是模块的背面图，烧录时将IO8和HI两根排针短接，烧录完成后将IO8和LOW两根排针短接并重新上电。用USB转串口线连接PC和模块，此时模块上的电源灯常亮，表明模块通电正常。
+BL602模块正面图，如图所示。用USB线连接PC和模块，此时模块上的电源灯常亮，表明模块通电正常。
 
 .. figure:: picture/image2.png
    :align: center
 
    正面
 
-.. figure:: picture/image3.png
-   :align: center
-
-   背面
 
 软件下载
 ==========
-打开解压后文件中的烧写工具flash_tool目录，双击BLDevCube.exe，chip type选择BL602/604，打开后界面参数参考下图配置：
+
+1. 用USB线连接PC和模块，长按框2中的Boot按键，然后短按框1中的Rst按键，最后释放框2中的Boot按键，使芯片进入下载模式
+
+.. figure:: picture/image3.png
+   :align: center
+
+   正面
+   
+2. 打开解压后文件中的烧写工具flash_tool目录，双击BLDevCube.exe，chip type选择BL602/604，打开后界面参数参考下图配置：
 
 .. figure:: picture/image4.png
    :align: center
 
    烧写工具界面
-
-其中图3的框1中COM Port选项根据实际串口情况选择（右击我的电脑->管理->设备管理器->端口，查看端口号，模块是双串口，选择端口号较小的），框2中的相关路径依据实际情况选择。配置完成后点击Download按钮下载。
+   
+其中上图中的框1中COM Port选项根据实际串口情况选择（右击我的电脑->管理->设备管理器->端口，查看端口号，模块是双串口，选择端口号较小的），框2中的相关路径依据实际情况选择。配置完成后点击Download按钮下载。
 
 putty配置
 ===============
-将IO8和LOW两根排针短接并重新上电，打开putty工具，设置对应的端口号，波特率设定为2000000 bps。
+重新上电，打开putty工具，设置对应的端口号，波特率设定为2000000 bps。
 
 .. figure:: picture/image5.png
    :align: center
 
    Putty
+
+
+===================
+功耗测量环境
+===================
+
+软件下载成功后，对iot模块进行电流测试需要进行以下的硬件改动，默认情况下BL602 iot模块的双排插针上不需要装配跳帽;
+
+1. 去掉底板给模组供电的0ohm电阻R12，如下图所示
+
+.. figure:: /picture/image73.png
+   :align: center
+
+2. 用**电流表**串接到底板的以下两根插针VDD33MOD和VDD33，即可测量BL602模组的电流
+
+  说明：电流表量程建议>500mA
+
+.. figure:: /picture/image74.png
+   :align: center
+
+.. figure:: /picture/image75.png
+   :align: center
+
+3. 电流测量完毕后，移走电流表，继续使用模块需要在VDD33MOD和VDD33两根插针上装配一个跳帽，或者恢复之前去掉的0ohm电阻R12
+
+.. figure:: /picture/image76.png
+   :align: center
 
 ===================
 iperf测试准备
@@ -123,3 +156,69 @@ Easylink模式电流测试
 =======================
 重启板子，在putty中输入依次命令“stack_wifi”，“wifi_sniffer_on”后开始测试平均电流和最大电流。
 
+BLE TX模式电流测试(15dBm)
+=======================
+
+1. 在烧录工具中找到dts文件，其路径在评估包的 bl602/device_tree目录下，修改TX Power为15dBm,然后烧录相应的Bin文件
+
+.. figure:: picture/image71.png
+   :align: center
+   
+   DTS路径
+   
+.. figure:: picture/image72.png
+   :align: center
+   
+   修改为15dbm
+
+2. 重启板子，在putty中依次输入命令
+
+   #stack_ble
+   
+   #ble_init
+   
+   #ble_tp_start 1
+   
+   #ble_start_adv 0 0 0x80 0x80
+   
+.. figure:: picture/image64.png
+   :align: center
+   
+3. 打开APP,设置相应的参数
+
+.. figure:: picture/image65.png
+   :align: center 
+   
+   设置选项
+   
+.. figure:: picture/image66.png
+   :align: center 
+   
+   选择相应服务
+   
+4. APP中连接相应的设备
+   
+.. figure:: picture/image67.png
+   :align: center 
+   
+   选择设备
+
+5. App界面中选择读写测试选项:
+
+.. figure:: picture/image69.png
+	:align: center 
+
+	读写测试选项
+     
+6. App中点击接收通知数据选项，查看BLE速率：
+
+.. figure:: picture/image70.png
+   :align: center 
+   
+   Ble速率
+   
+6. 测试此时设备的平均电流和最大电流
+
+BLE RX模式电流测试
+=======================
+重启板子，在putty中依次输入命令“stack_ble”，“ble_start_scan 0 0 0x80 0x80”,后测试平均电流和最大电流。

@@ -223,6 +223,10 @@ void Sec_Eng_SHA256_Init(SEC_Eng_SHA256_Ctx *shaCtx,SEC_ENG_SHA_ID_Type shaNo,SE
     shaCtx->shaPadding=padding;
     BL602_MemSet(shaCtx->shaPadding,0,64);
     BL602_MemSet(shaCtx->shaPadding,0x80,1);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_SHA_IRQn,SEC_SHA_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -543,6 +547,10 @@ void Sec_Eng_SHA256_Link_Init(SEC_Eng_SHA256_Link_Ctx *shaCtx,SEC_ENG_SHA_ID_Typ
     BL602_MemSet(shaCtx->shaPadding,0,64);
     BL602_MemSet(shaCtx->shaPadding,0x80,1);
     shaCtx->linkAddr=linkAddr;
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_SHA_IRQn,SEC_SHA_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -812,7 +820,14 @@ BL_Err_Type Sec_Eng_AES_Init(SEC_Eng_AES_Ctx *aesCtx,SEC_ENG_AES_ID_Type aesNo,S
 
     /* Clear AES context */
     memset(aesCtx,0,sizeof(SEC_Eng_AES_Ctx));
-
+    
+    /* Enable ID0 Access for HW Key */
+    BL_WR_REG(SEC_ENG_BASE,SEC_ENG_SE_AES_0_CTRL_PROT,0x03);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_AES_IRQn,SEC_AES_IRQHandler);
+#endif
+    
     return SUCCESS;
 }
 
@@ -832,6 +847,10 @@ void Sec_Eng_AES_Enable_BE(SEC_ENG_AES_ID_Type aesNo)
     CHECK_PARAM(IS_SEC_ENG_AES_ID_TYPE(aesNo));
 
     BL_WR_REG(AESx,SEC_ENG_SE_AES_ENDIAN,0x0f);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_AES_IRQn,SEC_AES_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -850,6 +869,10 @@ void Sec_Eng_AES_Enable_LE(SEC_ENG_AES_ID_Type aesNo)
     CHECK_PARAM(IS_SEC_ENG_AES_ID_TYPE(aesNo));
 
     BL_WR_REG(AESx,SEC_ENG_SE_AES_ENDIAN,0x00);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_AES_IRQn,SEC_AES_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -871,6 +894,9 @@ void Sec_Eng_AES_Enable_Link(SEC_ENG_AES_ID_Type aesNo)
     /* Enable aes link mode */
     tmpVal = BL_RD_REG(AESx,SEC_ENG_SE_AES_0_CTRL);
     BL_WR_REG(AESx,SEC_ENG_SE_AES_0_CTRL,BL_SET_REG_BIT(tmpVal,SEC_ENG_SE_AES_0_LINK_MODE));
+
+    /* Enable ID0 Access for HW Key */
+    BL_WR_REG(SEC_ENG_BASE,SEC_ENG_SE_AES_0_CTRL_PROT,0x03);
 }
 
 /****************************************************************************//**
@@ -1315,7 +1341,11 @@ BL_Err_Type Sec_Eng_Trng_Enable(void)
     /* Clear trng interrupt */
     tmpVal=BL_SET_REG_BIT(tmpVal,SEC_ENG_SE_TRNG_INT_CLR_1T);
     BL_WR_REG(TRNGx,SEC_ENG_SE_TRNG_CTRL_0,tmpVal);
-
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_TRNG_IRQn,SEC_TRNG_IRQHandler);
+#endif
+    
     return SUCCESS;
 }
 
@@ -1547,6 +1577,10 @@ void Sec_Eng_PKA_BigEndian_Enable(void)
     tmpVal=BL_RD_REG(SEC_ENG_BASE, SEC_ENG_SE_PKA_0_CTRL_0);
     tmpVal=BL_SET_REG_BIT(tmpVal,SEC_ENG_SE_PKA_0_ENDIAN);
     BL_WR_REG(SEC_ENG_BASE, SEC_ENG_SE_PKA_0_CTRL_0, tmpVal);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_PKA_IRQn,SEC_PKA_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -1564,6 +1598,10 @@ void Sec_Eng_PKA_LittleEndian_Enable(void)
     tmpVal=BL_RD_REG(SEC_ENG_BASE, SEC_ENG_SE_PKA_0_CTRL_0);
     tmpVal=BL_CLR_REG_BIT(tmpVal,SEC_ENG_SE_PKA_0_ENDIAN);
     BL_WR_REG(SEC_ENG_BASE, SEC_ENG_SE_PKA_0_CTRL_0, tmpVal);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_PKA_IRQn,SEC_PKA_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -2601,6 +2639,10 @@ void Sec_Eng_GMAC_Enable_LE(void)
     tmpVal = BL_CLR_REG_BIT(tmpVal,SEC_ENG_SE_GMAC_0_H_ENDIAN);
     tmpVal = BL_CLR_REG_BIT(tmpVal,SEC_ENG_SE_GMAC_0_X_ENDIAN);
     BL_WR_REG(SEC_ENG_BASE,SEC_ENG_SE_GMAC_0_CTRL_0,tmpVal);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_GMAC_IRQn,SEC_GMAC_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -2620,6 +2662,10 @@ void Sec_Eng_GMAC_Enable_BE(void)
     tmpVal = BL_SET_REG_BIT(tmpVal,SEC_ENG_SE_GMAC_0_H_ENDIAN);
     tmpVal = BL_SET_REG_BIT(tmpVal,SEC_ENG_SE_GMAC_0_X_ENDIAN);
     BL_WR_REG(SEC_ENG_BASE,SEC_ENG_SE_GMAC_0_CTRL_0,tmpVal);
+    
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(SEC_GMAC_IRQn,SEC_GMAC_IRQHandler);
+#endif
 }
 
 /****************************************************************************//**
@@ -3034,7 +3080,7 @@ BL_Sts_Type SEC_Eng_GetIntStatus(SEC_ENG_INT_Type intType)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_TRNG_IRQHandler(void)
+void SEC_TRNG_IRQHandler(void)
 {
    SEC_Eng_IntHandler(SEC_ENG_INT_TRNG);
 }
@@ -3047,7 +3093,7 @@ void __IRQ SEC_TRNG_IRQHandler(void)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_PKA_IRQHandler(void)
+void SEC_PKA_IRQHandler(void)
 {
     SEC_Eng_IntHandler(SEC_ENG_INT_PKA);
 }
@@ -3060,7 +3106,7 @@ void __IRQ SEC_PKA_IRQHandler(void)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_AES_IRQHandler(void)
+void SEC_AES_IRQHandler(void)
 {
     SEC_Eng_IntHandler(SEC_ENG_INT_AES);
 }
@@ -3073,7 +3119,7 @@ void __IRQ SEC_AES_IRQHandler(void)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_SHA_IRQHandler(void)
+void SEC_SHA_IRQHandler(void)
 {
     SEC_Eng_IntHandler(SEC_ENG_INT_SHA);
 }
@@ -3086,7 +3132,7 @@ void __IRQ SEC_SHA_IRQHandler(void)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_CDET_IRQHandler(void)
+void SEC_CDET_IRQHandler(void)
 {
     SEC_Eng_IntHandler(SEC_ENG_INT_CDET);
 }
@@ -3099,7 +3145,7 @@ void __IRQ SEC_CDET_IRQHandler(void)
  * @return None
  *
 *******************************************************************************/
-void __IRQ SEC_GMAC_IRQHandler(void)
+void SEC_GMAC_IRQHandler(void)
 {
     SEC_Eng_IntHandler(SEC_ENG_INT_GMAC);
 }

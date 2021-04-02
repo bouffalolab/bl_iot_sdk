@@ -211,6 +211,8 @@ int bl_uart_flush(uint8_t id)
     while (UART_FIFO_TX_CNT != UART_GetTxFifoCount(id)) {
     }
 
+    while(UART_GetTxBusBusyStatus(id) == SET){}
+    
     return 0;
 }
 

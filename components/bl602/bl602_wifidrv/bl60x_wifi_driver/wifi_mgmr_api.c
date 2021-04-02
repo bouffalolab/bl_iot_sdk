@@ -31,11 +31,36 @@
 #include <stdio.h>
 
 #include "wifi_mgmr_api.h"
-#include "wifi_mgmr.h"
 #include "bl_defs.h"
 
 #define MAX_SSID_LEN_CHECK 32
-#define MAX_PSK_LEN_CHECK 32
+#define MAX_PSK_LEN_CHECK 64
+
+int wifi_mgmr_api_common(wifi_mgmr_msg_t *msg, WIFI_MGMR_EVENT_T ev, void *data1, void *data2, uint32_t len)
+{
+    msg->ev = ev;
+    msg->data1 = data1;
+    msg->data2 = data2;
+    msg->len = len;
+
+    wifi_mgmr_event_notify(msg);
+
+    return 0;
+}
+
+int wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_T ev, void *data1, void *data2)
+{
+    wifi_mgmr_msg_t msg;
+
+    msg.ev = ev;
+    msg.data1 = data1;
+    msg.data2 = data2;
+    msg.len = sizeof (wifi_mgmr_msg_t);
+
+    wifi_mgmr_event_notify(&msg);
+
+    return 0;
+}
 
 int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
 {
@@ -45,10 +70,7 @@ int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_
 
     memset(buffer, 0, sizeof(buffer));
     msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_CONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t);
+
     profile = (wifi_mgmr_profile_msg_t*)msg->data;
     profile->ssid_len = strlen(ssid);//ssid should never be NULL
     memcpy(profile->ssid, ssid, profile->ssid_len);
@@ -78,9 +100,13 @@ int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_
     }
     profile->dhcp_use = 1;//force use DHCP currently
 
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_APP_CONNECT,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t)
+    );
 }
 
 int wifi_mgmr_api_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, uint32_t length, uint32_t *buf)
@@ -96,10 +122,6 @@ int wifi_mgmr_api_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_
 
     memset(buffer, 0, sizeof(buffer));
     msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_CFG_REQ;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t) + length;
 
     cfg_req = (wifi_mgmr_cfg_element_msg_t*)msg->data;
     cfg_req->ops = ops;
@@ -111,9 +133,13 @@ int wifi_mgmr_api_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_
         memcpy(cfg_req->buf, buf, length);
     }
 
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_FW_CFG_REQ,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t) + length
+    );
 }
 
 int wifi_mgmr_api_ip_got(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1, uint32_t dns2)
@@ -124,10 +150,6 @@ int wifi_mgmr_api_ip_got(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1,
 
     memset(buffer, 0, sizeof(buffer));
     msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_IP_GOT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_ipgot_msg_t);
 
     ipgot = (wifi_mgmr_ipgot_msg_t*)msg->data;
     ipgot->ip = ip;
@@ -135,162 +157,59 @@ int wifi_mgmr_api_ip_got(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1,
     ipgot->gw = gw;
     ipgot->dns1 = dns1;
     ipgot->dns2 = dns2;
-    wifi_mgmr_event_notify(msg);
 
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_APP_IP_GOT,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_ipgot_msg_t)
+    );
 }
 
 int wifi_mgmr_api_ip_update(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_GLB_IP_UPDATE;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_GLB_IP_UPDATE, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_reconnect(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_RECONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_RECONNECT, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_disable_autoreconnect(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_GLB_DISABLE_AUTORECONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_GLB_DISABLE_AUTORECONNECT, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_enable_autoreconnect(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_GLB_ENABLE_AUTORECONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_GLB_ENABLE_AUTORECONNECT, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_disconnect(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_DISCONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_DISCONNECT, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_rate_config(uint16_t config)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_RC_CONFIG;
-    msg->data1 = (void*)(intptr_t)config;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_RC_CONFIG, (void*)(intptr_t)config, (void*)0x2);
 }
 
 int wifi_mgmr_api_conf_max_sta(uint8_t max_sta_supported)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_CONF_MAX_STA;
-    msg->data1 = (void*)(intptr_t)max_sta_supported;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_CONF_MAX_STA, (void*)(intptr_t)max_sta_supported, (void*)0x2);
 }
 
 int wifi_mgmr_api_ifaceup(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_PHY_UP;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_PHY_UP, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_sniffer_enable(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_SNIFFER;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_SNIFFER, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher)
@@ -301,10 +220,7 @@ int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, u
 
     memset(buffer, 0, sizeof(buffer));
     msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_GLB_SCAN_IND_BEACON;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_item_t);
+
     scan = (wifi_mgmr_scan_item_t*)msg->data;
     memcpy(scan->ssid, ssid, len);
     scan->ssid_tail[0] = '\0';
@@ -317,77 +233,53 @@ int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, u
     scan->ppm_abs = ppm_abs;
     scan->ppm_rel = ppm_rel;
 
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_GLB_SCAN_IND_BEACON,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_item_t)
+    );
 }
 
 int wifi_mgmr_api_fw_disconnect(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_DISCONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_DISCONNECT, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_fw_tsen_reload(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_RELOAD_TSEN;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_RELOAD_TSEN, (void*)0x1, (void*)0x2);
 }
 
-int wifi_mgmr_api_fw_scan(void)
+int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num)
 {
     wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
+    wifi_mgmr_scan_fixed_channels_t *ch_req;
+    uint8_t buffer[sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_fixed_channels_t) + sizeof(ch_req->channels[0]) * MAX_FIXED_CHANNELS_LIMIT];//XXX caution for stack overflow
 
     memset(buffer, 0, sizeof(buffer));
     msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_SCAN;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
 
-    wifi_mgmr_event_notify(msg);
+    ch_req = (wifi_mgmr_scan_fixed_channels_t*)msg->data;
+    ch_req->channel_num = channel_num;
+    if (channel_num) {
+        memcpy(ch_req->channels, channels, sizeof(ch_req->channels[0]) * channel_num);
+    }
 
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_FW_SCAN,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_fixed_channels_t) + sizeof(ch_req->channels[0]) * channel_num
+    );
+
 }
 
 int wifi_mgmr_api_fw_powersaving(int mode)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_POWERSAVING;
-    msg->data1 = (void*)mode;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_POWERSAVING, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid)
@@ -410,10 +302,6 @@ int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden
         return -1;
     }
 
-    msg->ev = WIFI_MGMR_EVENT_APP_AP_START;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_ap_msg_t);
     memcpy(ap->ssid, ssid, ap->ssid_len);
     if (passwd) {
         memcpy(ap->psk, passwd, ap->psk_len);
@@ -423,112 +311,60 @@ int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden
     ap->channel = channel;
     ap->hidden_ssid = hidden_ssid ? 1 : 0;
 
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common(
+        msg,
+        WIFI_MGMR_EVENT_APP_AP_START,
+        (void*)0x1,
+        (void*)0x2,
+        sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_ap_msg_t)
+    );
 }
 
 int wifi_mgmr_api_ap_stop(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_AP_STOP;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_AP_STOP, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_idle(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_IDLE;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_IDLE, (void*)0x1, (void*)0x2);
 }
 
 int wifi_mgmr_api_denoise_enable(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_DENOISE;
-    msg->data1 = (void*)0x1;//use non-zero for enable denoise
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(
+        WIFI_MGMR_EVENT_APP_DENOISE,
+        (void*)0x1,//use non-zero for enable denoise
+        (void*)0x2
+    );
 }
 
 int wifi_mgmr_api_denoise_disable(void)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_DENOISE;
-    msg->data1 = (void*)0x0;//use non-zero for enable denoise
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(
+        WIFI_MGMR_EVENT_APP_DENOISE,
+        (void*)0x0,//use non-zero for enable denoise
+        (void*)0x2
+    );
 }
 
 int wifi_mgmr_api_channel_set(int channel, int use_40Mhz)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_CHANNEL_SET;
-    msg->data1 = (void*)channel;
-    msg->data2 = (void*)use_40Mhz;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(
+        WIFI_MGMR_EVENT_FW_CHANNEL_SET,
+        (void*)channel,
+        (void*)use_40Mhz
+    );
 }
 
 /*TODO callback for RAW data send*/
 int wifi_mgmr_api_raw_send(uint8_t *pkt, int len)
 {
-    wifi_mgmr_msg_t *msg;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_FW_DATA_RAW_SEND;
-    msg->data1 = (void*)pkt;
-    msg->data2 = (void*)len;
-    msg->len = sizeof (wifi_mgmr_msg_t);
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+    return wifi_mgmr_api_common_msg(
+        WIFI_MGMR_EVENT_FW_DATA_RAW_SEND,
+        (void*)pkt,
+        (void*)len
+    );
 }
 
 int wifi_mgmr_api_set_country_code(char *country_code)

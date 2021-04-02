@@ -151,7 +151,7 @@ static void bl_rx_mgmt(uint32_t *skb,  struct hw_rxhdr *hw_rxhdr, int len)
 #endif
 
     (void)counter;
-    if (ieee80211_is_beacon(mgmt->frame_control)) {
+	if (ieee80211_is_beacon(mgmt->frame_control)) {
 #if 0
         os_printf("[RX] %04X BCN Received, freq %u, rssi %d\r\n",
                 mgmt->frame_control,
@@ -302,7 +302,7 @@ int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int ms
             (void)hdr;
 
             if (hw_rxhdr->flags_sta_idx != 0xff) {
-                if (hw_rxhdr->flags_is_4addr && !bl_vif->use_4addr) {
+                if (hw_rxhdr->flags_is_4addr) {
                     printf("[RX] Trigger 4addr unexpected frame\r\n");
                 }
             }
@@ -506,7 +506,7 @@ void bl_utils_dump(void)
         txhdr = (struct bl_txhdr*)(((uint32_t)p->payload) + RWNX_HWTXHDR_ALIGN_PADS((uint32_t)p->payload));
         printf("    [%lu]%p(%p:%08lX)\r\n",
                 (ipc_env->txdesc_used_idx + i) & (NX_TXDESC_CNT0 - 1),
-                p,
+                p, 
                 p ? (void*)(txhdr->host.status_addr) : 0,
                 p ? txhdr->status.value : 0
         );

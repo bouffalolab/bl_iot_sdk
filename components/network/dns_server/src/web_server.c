@@ -1,22 +1,15 @@
 
 /* Brief: This demo shows how to use BL602 as a webserver
- *
+ * 
  * - use a sta connect to this ap
  * - open the browser and input the ip_address of this BL602(the default ip_adress is: 192.168.4.1 )
- * - and you can see "Hello World, from BL602!" on this web page
+ * - and you can see "hello,this is BL602" on this web page
  *
  */
+ 
 #include "FreeRTOS.h"
-//#include "esp_wifi.h"
-//#include "esp_system.h"
-//#include "esp_event.h"
-//#include "esp_event_loop.h"
-//#include "nvs_flash.h"
-//#include "driver/gpio.h"
 #include "portmacro.h"
 #include "event_groups.h"
-//#include "esp_log.h"
-//#include "tcpip_adapter.h"
 #include "lwip/err.h"
 #include "string.h"
 #include "lwip/sys.h"
@@ -65,7 +58,7 @@ static void web_http_server(struct netconn *conn)
         netconn_write(conn, http_index_hml, sizeof(http_index_hml)-1, NETCONN_NOCOPY);
       }
 //      else if(buf[5]=='j') {
-//        netconn_write(conn, json_unformatted, strlen(json_unformatted), NETCONN_NOCOPY);
+//    	  netconn_write(conn, json_unformatted, strlen(json_unformatted), NETCONN_NOCOPY);
 //      }
       else {
           netconn_write(conn, http_index_hml, sizeof(http_index_hml)-1, NETCONN_NOCOPY);

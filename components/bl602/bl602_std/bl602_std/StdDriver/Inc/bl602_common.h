@@ -19,9 +19,9 @@
 /**
  * @brief Error type definition
  */
-typedef enum
+typedef enum 
 {
-  SUCCESS  = 0,
+  SUCCESS  = 0, 
   ERROR   = 1,
   TIMEOUT = 2,
 }BL_Err_Type;
@@ -29,27 +29,27 @@ typedef enum
 /**
  * @brief Functional type definition
  */
-typedef enum
+typedef enum 
 {
-  DISABLE  = 0,
+  DISABLE  = 0, 
   ENABLE   = 1,
 }BL_Fun_Type;
 
 /**
  * @brief Status type definition
  */
-typedef enum
+typedef enum 
 {
-  RESET  = 0,
+  RESET  = 0, 
   SET   = 1,
 }BL_Sts_Type;
 
 /**
  * @brief Mask type definition
  */
-typedef enum
+typedef enum 
 {
-  UNMASK = 0,
+  UNMASK = 0, 
   MASK = 1
 }BL_Mask_Type;
 
@@ -58,7 +58,7 @@ typedef enum
 /** @defgroup  COMMON_Public_Constants
  *  @{
  */
-
+ 
 /** @defgroup DRIVER_INT_PERIPH
  *  @{
  */
@@ -66,7 +66,7 @@ typedef enum
 
 /*@} end of group DRIVER_INT_PERIPH */
 
-/** @defgroup DRIVER_INT_MASK
+/** @defgroup DRIVER_INT_MASK     
  *  @{
  */
 #define IS_BL_MASK_TYPE(type)          (((type) == MASK) || ((type) == UNMASK))
@@ -103,25 +103,26 @@ void check_failed(uint8_t *file, uint32_t line);
 /**
  * @brief Logical status Type definition
  */
-typedef enum
+typedef enum 
 {
-  LOGIC_LO = 0,
+  LOGIC_LO = 0, 
   LOGIC_HI = !LOGIC_LO
 }LogicalStatus;
 
 /**
  * @brief Active status Type definition
  */
-typedef enum
+typedef enum 
 {
-  DEACTIVE = 0,
+  DEACTIVE = 0, 
   ACTIVE = !DEACTIVE
 }ActiveStatus;
 
-/**
+/**  
  *  @brief Interrupt callback function type
  */
 typedef void (intCallback_Type)(void);
+typedef void( *pFunc )( void );
 
 /*@} end of group DRIVER_Public_Macro */
 
@@ -129,9 +130,7 @@ typedef void (intCallback_Type)(void);
  *  @brief DRIVER functions declaration
  *  @{
  */
-extern  intCallback_Type ** intCbfArra[];
-void Install_Int_Callback(IRQn_Type intPeriph, uint32_t intType, intCallback_Type * cbFun);
-
+void Interrupt_Handler_Register(IRQn_Type irq,pFunc interruptFun);
 void ASM_Delay_Us(uint32_t core,uint32_t cnt);
 void BL602_Delay_US(uint32_t cnt);
 void BL602_Delay_MS(uint32_t cnt);

@@ -98,8 +98,6 @@ static intCallback_Type * hbnInt1CbfArra[4]={NULL,NULL,NULL,NULL};
  * @return None
  *
 *******************************************************************************/
-#ifndef BL602_USE_ROM_DRIVER
-__WEAK
 void ATTR_TCM_SECTION HBN_Mode_Enter(HBN_APP_CFG_Type *cfg)
 {
     uint32_t valLow=0,valHigh=0;
@@ -114,7 +112,7 @@ void ATTR_TCM_SECTION HBN_Mode_Enter(HBN_APP_CFG_Type *cfg)
 
     /* always disable HBN pin pull up/down to reduce PDS/HBN current, 0x4000F014[16]=0 */
     HBN_Hw_Pu_Pd_Cfg(DISABLE);
-
+    
     HBN_Pin_WakeUp_Mask(~(cfg->gpioWakeupSrc));
     if(cfg->gpioWakeupSrc!=0){
         HBN_Aon_Pad_IeSmt_Cfg(ENABLE);
@@ -140,7 +138,55 @@ void ATTR_TCM_SECTION HBN_Mode_Enter(HBN_APP_CFG_Type *cfg)
 
     HBN_Enable(cfg->gpioWakeupSrc,cfg->ldoLevel,cfg->hbnLevel);
 }
-#endif
+
+/****************************************************************************//**
+ * @brief  Enter HBN
+ *
+ * @param  cfg: HBN APP Config
+ *
+ * @return None
+ *
+*******************************************************************************/
+void ATTR_TCM_SECTION HBN_Mode_Enter_Ext(HBN_APP_CFG_Type *cfg)
+{
+    uint32_t valLow=0,valHigh=0;
+    uint64_t val;
+
+    if(cfg->useXtal32k){
+        HBN_32K_Sel(HBN_32K_XTAL);
+    }else{
+        HBN_32K_Sel(HBN_32K_RC);
+        HBN_Power_Off_Xtal_32K();
+    }
+
+    /* always disable HBN pin pull up/down to reduce PDS/HBN current, 0x4000F014[16]=0 */
+    HBN_Hw_Pu_Pd_Cfg(DISABLE);
+    
+    HBN_Pin_WakeUp_Mask(~(cfg->gpioWakeupSrc));
+    if(cfg->gpioWakeupSrc!=0){
+        HBN_Aon_Pad_IeSmt_Cfg(ENABLE);
+        HBN_GPIO_INT_Enable(cfg->gpioTrigType);
+    }else{
+        HBN_Aon_Pad_IeSmt_Cfg(DISABLE);
+    }
+
+    /* HBN RTC config and enable */
+    if(cfg->sleepTime!=0){
+        HBN_Clear_RTC_Counter();
+        HBN_Get_RTC_Timer_Val(&valLow,&valHigh);
+        val=valLow+((uint64_t)valHigh<<32);
+        val+=cfg->sleepTime;
+        HBN_Set_RTC_Timer(HBN_RTC_INT_DELAY_0T,val&0xffffffff,val>>32,HBN_RTC_COMP_BIT0_39);
+        HBN_Enable_RTC_Counter();
+    }
+
+    HBN_Power_Down_Flash(cfg->flashCfg);
+    HBN_Set_Embedded_Flash_Pullup(ENABLE);      /* E_ITEM_06 */
+
+    GLB_Set_System_CLK(GLB_PLL_XTAL_NONE,GLB_SYS_CLK_RC32M);
+
+    HBN_Enable_Ext(cfg->gpioWakeupSrc,cfg->ldoLevel,cfg->hbnLevel);
+}
 
 /****************************************************************************//**
  * @brief  power down and switch clock
@@ -270,6 +316,88 @@ void ATTR_TCM_SECTION HBN_Enable(uint8_t aGPIOIeCfg,HBN_LDO_LEVEL_Type ldoLevel,
     }
 }
 #endif
+
+/****************************************************************************//**
+ * @brief  Enable HBN mode
+ *
+ * @param  aGPIOIeCfg: AON GPIO input enable config. Bit(s) of Wakeup GPIO(s) must not be set to
+ *                     0(s),say when use GPIO7 as wake up pin,aGPIOIeCfg should be 0x01.
+ * @param  ldoLevel: LDO volatge level
+ * @param  hbnLevel: HBN work level
+ *
+ * @return None
+ *
+*******************************************************************************/
+void ATTR_TCM_SECTION HBN_Enable_Ext(uint8_t aGPIOIeCfg,HBN_LDO_LEVEL_Type ldoLevel,HBN_LEVEL_Type hbnLevel)
+{
+    uint32_t tmpVal;
+
+    CHECK_PARAM(IS_HBN_LDO_LEVEL_TYPE(ldoLevel));
+    CHECK_PARAM(IS_HBN_LEVEL_TYPE(hbnLevel));
+
+    /* Setting from guide */
+    /* RAM Retion */
+    BL_WR_REG(HBN_BASE,HBN_SRAM,0x24);
+    /* AON GPIO IE */
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_IRQ_MODE);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_REG_AON_PAD_IE_SMT,aGPIOIeCfg);
+    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_REG_EN_HW_PU_PD);
+    BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
+    
+    /* HBN mode LDO level */
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_CTL);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_LDO11_AON_VOUT_SEL,ldoLevel);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_LDO11_RT_VOUT_SEL,ldoLevel);
+    BL_WR_REG(HBN_BASE,HBN_CTL,tmpVal);
+    
+    /* Select RC32M */
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_ROOT_CLK_SEL,0);
+    BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
+    __NOP();__NOP();__NOP();__NOP();
+
+    /* Set HBN flag */
+    BL_WR_REG(HBN_BASE,HBN_RSV0,HBN_STATUS_ENTER_FLAG);
+
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_CTL);
+    /* Set HBN level, (HBN_PWRDN_HBN_RAM not use) */
+    switch(hbnLevel){
+        case HBN_LEVEL_0:
+            tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PWRDN_HBN_CORE);
+            tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PWRDN_HBN_RTC);
+            break;
+
+        case HBN_LEVEL_1:
+            tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PWRDN_HBN_CORE);
+            tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PWRDN_HBN_RTC);
+            break;
+
+        case HBN_LEVEL_2:
+            tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PWRDN_HBN_CORE);
+            tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PWRDN_HBN_RTC);
+            break;
+
+        case HBN_LEVEL_3:
+            tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PWRDN_HBN_CORE);
+            tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PWRDN_HBN_RTC);
+            break;
+
+        default :
+            break;
+    }
+    /* Set power on option:0 for por reset twice for robust 1 for reset only once*/
+    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PWR_ON_OPTION);
+    BL_WR_REG(HBN_BASE,HBN_CTL,tmpVal);
+
+    /* Enable HBN mode */
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_CTL);
+    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_MODE);
+    BL_WR_REG(HBN_BASE,HBN_CTL,tmpVal);
+
+    while(1){
+        BL602_Delay_MS(1000);
+    }
+}
 
 /****************************************************************************//**
  * @brief  Reset HBN mode
@@ -686,7 +814,7 @@ BL_Err_Type ATTR_TCM_SECTION HBN_Set_Ldo11_Soc_Vout(HBN_LDO_LEVEL_Type ldoLevel)
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Set_Ldo11_All_Vout(HBN_LDO_LEVEL_Type ldoLevel)
+BL_Err_Type ATTR_TCM_SECTION HBN_Set_Ldo11_All_Vout(HBN_LDO_LEVEL_Type ldoLevel)
 {
     uint32_t tmpVal;
 
@@ -920,22 +1048,19 @@ BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_Off_Xtal_32K(void)
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-#ifndef BL602_USE_ROM_DRIVER
-__WEAK
 BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_On_RC32K(void)
 {
     uint32_t tmpVal = 0;
 
-    tmpVal=BL_RD_REG(HBN_BASE,HBN_RC32K_CTRL0);
-    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PU_RC32K);
-    BL_WR_REG(HBN_BASE,HBN_RC32K_CTRL0,tmpVal);
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
+    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PU_RC32K);
+    BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
 
     /* Delay >800us */
     BL602_Delay_US(880);
 
     return SUCCESS;
 }
-#endif
 
 /****************************************************************************//**
  * @brief  Power off RC3K
@@ -945,19 +1070,16 @@ BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_On_RC32K(void)
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-#ifndef BL602_USE_ROM_DRIVER
-__WEAK
 BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_Off_RC32K(void)
 {
     uint32_t tmpVal = 0;
 
-    tmpVal=BL_RD_REG(HBN_BASE,HBN_RC32K_CTRL0);
-    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_PU_RC32K);
-    BL_WR_REG(HBN_BASE,HBN_RC32K_CTRL0,tmpVal);
+    tmpVal=BL_RD_REG(HBN_BASE,HBN_GLB);
+    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_PU_RC32K);
+    BL_WR_REG(HBN_BASE,HBN_GLB,tmpVal);
 
     return SUCCESS;
 }
-#endif
 
 /****************************************************************************//**
  * @brief  Trim RC32K
@@ -1336,76 +1458,96 @@ BL_Err_Type ATTR_TCM_SECTION HBN_Pin_WakeUp_Mask(uint8_t maskVal)
 /****************************************************************************//**
  * @brief  HBN enable ACOMP0 interrupt
  *
- * @param  None
+ * @param  edge: HBN acomp interrupt edge type
  *
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Enable_AComp0_IRQ(void)
+BL_Err_Type HBN_Enable_AComp0_IRQ(HBN_ACOMP_INT_EDGE_Type edge)
 {
     uint32_t tmpVal;
-
+    uint32_t tmpVal2;
+    
+    CHECK_PARAM(IS_HBN_ACOMP_INT_EDGE_TYPE(edge));
+    
     tmpVal=BL_RD_REG(HBN_BASE,HBN_IRQ_MODE);
-    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_IRQ_ACOMP0_EN);
+    tmpVal2=BL_GET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP0_EN);
+    tmpVal2=tmpVal2|(1<<edge);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP0_EN,tmpVal2);
     BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
-
+    
     return SUCCESS;
 }
 
 /****************************************************************************//**
  * @brief  HBN disable ACOMP0 interrupt
  *
- * @param  None
+ * @param  edge: HBN acomp interrupt edge type
  *
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Disable_AComp0_IRQ(void)
+BL_Err_Type HBN_Disable_AComp0_IRQ(HBN_ACOMP_INT_EDGE_Type edge)
 {
     uint32_t tmpVal;
-
+    uint32_t tmpVal2;
+    
+    CHECK_PARAM(IS_HBN_ACOMP_INT_EDGE_TYPE(edge));
+    
     tmpVal=BL_RD_REG(HBN_BASE,HBN_IRQ_MODE);
-    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_IRQ_ACOMP0_EN);
+    tmpVal2=BL_GET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP0_EN);
+    tmpVal2=tmpVal2&(~(1<<edge));
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP0_EN,tmpVal2);
     BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
-
+    
     return SUCCESS;
 }
 
 /****************************************************************************//**
  * @brief  HBN enable ACOMP1 interrupt
  *
- * @param  None
+ * @param  edge: HBN acomp interrupt edge type
  *
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Enable_AComp1_IRQ(void)
+BL_Err_Type HBN_Enable_AComp1_IRQ(HBN_ACOMP_INT_EDGE_Type edge)
 {
     uint32_t tmpVal;
-
+    uint32_t tmpVal2;
+    
+    CHECK_PARAM(IS_HBN_ACOMP_INT_EDGE_TYPE(edge));
+    
     tmpVal=BL_RD_REG(HBN_BASE,HBN_IRQ_MODE);
-    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_IRQ_ACOMP1_EN);
+    tmpVal2=BL_GET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP1_EN);
+    tmpVal2=tmpVal2|(1<<edge);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP1_EN,tmpVal2);
     BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
-
+    
     return SUCCESS;
 }
 
 /****************************************************************************//**
  * @brief  HBN disable ACOMP1 interrupt
  *
- * @param  None
+ * @param  edge: HBN acomp interrupt edge type
  *
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Disable_AComp1_IRQ(void)
+BL_Err_Type HBN_Disable_AComp1_IRQ(HBN_ACOMP_INT_EDGE_Type edge)
 {
     uint32_t tmpVal;
-
+    uint32_t tmpVal2;
+    
+    CHECK_PARAM(IS_HBN_ACOMP_INT_EDGE_TYPE(edge));
+    
     tmpVal=BL_RD_REG(HBN_BASE,HBN_IRQ_MODE);
-    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_IRQ_ACOMP1_EN);
+    tmpVal2=BL_GET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP1_EN);
+    tmpVal2=tmpVal2&(~(1<<edge));
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,HBN_IRQ_ACOMP1_EN,tmpVal2);
     BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
-
+    
     return SUCCESS;
 }
 
@@ -1448,6 +1590,23 @@ BL_Err_Type HBN_Disable_BOR_IRQ(void)
 }
 
 /****************************************************************************//**
+ * @brief  HBN out0 IRQHandler install
+ *
+ * @param  None
+ *
+ * @return SUCCESS or ERROR
+ *
+*******************************************************************************/
+BL_Err_Type HBN_Out0_IRQHandler_Install(void)
+{
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(HBN_OUT0_IRQn,HBN_OUT0_IRQHandler);
+#endif
+    
+    return SUCCESS;
+}
+
+/****************************************************************************//**
  * @brief  HBN out0 install interrupt callback
  *
  * @param  intType: HBN out0 interrupt type
@@ -1463,6 +1622,23 @@ BL_Err_Type HBN_Out0_Callback_Install(HBN_OUT0_INT_Type intType,intCallback_Type
 
     hbnInt0CbfArra[intType] = cbFun;
 
+    return SUCCESS;
+}
+
+/****************************************************************************//**
+ * @brief  HBN out1 IRQHandler install
+ *
+ * @param  None
+ *
+ * @return SUCCESS or ERROR
+ *
+*******************************************************************************/
+BL_Err_Type HBN_Out1_IRQHandler_Install(void)
+{
+#ifndef BFLB_USE_HAL_DRIVER
+    //Interrupt_Handler_Register(HBN_OUT1_IRQn,HBN_OUT1_IRQHandler);
+#endif
+    
     return SUCCESS;
 }
 
@@ -1587,7 +1763,7 @@ BL_Err_Type HBN_Set_BOR_Cfg(HBN_BOR_CFG_Type *cfg)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ HBN_OUT0_IRQHandler(void)
+void HBN_OUT0_IRQHandler(void)
 {
     /* GPIO7 GPIO8 and RTC */
     if(SET==HBN_Get_INT_State(HBN_INT_GPIO7)){
@@ -1623,7 +1799,7 @@ void __IRQ HBN_OUT0_IRQHandler(void)
  *
 *******************************************************************************/
 #ifndef BL602_USE_HAL_DRIVER
-void __IRQ HBN_OUT1_IRQHandler(void)
+void HBN_OUT1_IRQHandler(void)
 {
     /* PIR */
     if(SET==HBN_Get_INT_State(HBN_INT_PIR)){

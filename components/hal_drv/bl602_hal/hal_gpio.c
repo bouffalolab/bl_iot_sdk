@@ -56,9 +56,18 @@ struct gpio_feature_config {
     uint8_t active;//0: Lo, 1:Hi
 #define GPIO_MODE_BLINK             (0)
 #define GPIO_MODE_HEARTBEAT          (1)
+#define GPIO_MODE_ONOFF             (2)
     uint8_t mode;//0:blink, 1:heartbeat
     unsigned int time;
 };
+
+struct
+{
+    int pin;
+    uint8_t valid;
+    uint8_t active;
+} led_onoff_config;
+
 
 static int _get_gpio_max(const void* fdt, uint32_t dtb_offset)
 {
@@ -137,6 +146,8 @@ static int _get_gpio_config(const void* fdt, uint32_t dtb_offset, const char *na
         gpio_config->mode = GPIO_MODE_BLINK;
     } else if (9 == lentmp && memcmp("heartbeat", result, 9) == 0) {
         gpio_config->mode = GPIO_MODE_HEARTBEAT;
+    } else if (5 == lentmp && memcmp("onoff", result, 5) == 0) {
+        gpio_config->mode = GPIO_MODE_ONOFF;
     } else {
         blog_error("%s: unvalid GPIO config %3s\r\n", name, result);
         return 0;
@@ -168,7 +179,17 @@ static void _dump_gpio_conf(struct gpio_feature_config *config)
 
 static void _apply_gpio_config(struct gpio_feature_config *config)
 {
-    loopset_led_trigger(config->pin, config->time);
+    if(config->mode == GPIO_MODE_ONOFF){
+        led_onoff_config.pin = config->pin;
+        led_onoff_config.valid = 1;
+        led_onoff_config.active = config->active;
+        
+        bl_gpio_enable_output(led_onoff_config.pin, 0, 0);
+        bl_gpio_output_set(led_onoff_config.pin, !led_onoff_config.active);
+        
+    }else{
+        loopset_led_trigger(config->pin, config->time);
+    }
 }
 
 int hal_gpio_init_from_dts(uint32_t fdt, uint32_t dtb_offset)
@@ -234,4 +255,24 @@ int hal_gpio_register_handler(void *func, int gpioPin, int intCtrlMod, int intTr
 
     return 0;
 
+}
+
+int hal_gpio_led_on(void)
+{
+    if(led_onoff_config.valid){
+        bl_gpio_output_set(led_onoff_config.pin, led_onoff_config.active);
+        return 0;
+    }else{
+        return -1;
+    }
+}
+
+int hal_gpio_led_off(void)
+{
+    if(led_onoff_config.valid){
+        bl_gpio_output_set(led_onoff_config.pin, !led_onoff_config.active);
+        return 0;
+    }else{
+        return -1;
+    }
 }

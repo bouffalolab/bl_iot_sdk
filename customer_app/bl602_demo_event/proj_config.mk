@@ -32,9 +32,12 @@ CONFIG_FREERTOS_TICKLESS_MODE:=1
 
 CONFIG_BT:=1
 CONFIG_USE_XTAL32K:=0
+CONFIG_ENABLE_STACK_OVERFLOW_CHECK:=0
 
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hal_drv loopset looprt bloop blestack
-
+ifeq ($(CONFIG_BT_MESH_SYNC),1)
+LOG_ENABLED_COMPONENTS += blsync_ble
+endif
 CONFIG_BL602_USE_ROM_DRIVER:=1
 CONFIG_BT_STACK_PTS:=0

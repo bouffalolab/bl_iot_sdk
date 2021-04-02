@@ -129,7 +129,7 @@ include_path += $(filter %/$(1), $(COMPONENTS_REAL_PATH))
 endef
 $(foreach comp,$(INCLUDE_COMPONENTS),$(eval $(call include_comps_add,$(comp))))
 INCLUDE_COMPONENTS_REAL_PATH := $(include_path)
-# include components
+# include components 
 COMPONENTS := $(filter $(INCLUDE_COMPONENTS), $(COMPONENTS))
 COMPONENTS_REAL_PATH := $(filter $(INCLUDE_COMPONENTS_REAL_PATH), $(COMPONENTS_REAL_PATH))
 endif
@@ -187,34 +187,46 @@ all:
 ifeq ("$(OS)","Windows_NT")
 else
 ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
-	#@cd $(BL60X_SDK_PATH)/image_conf; python3 flash_build.py $(PROJECT_NAME) $(CONFIG_CHIP_NAME)
-	@cd $(BL60X_SDK_PATH)/image_conf; ./flash_build $(PROJECT_NAME) $(CONFIG_CHIP_NAME)
 endif
 endif
 	@echo "Building Finish. To flash build output."
 
+bins: all
+	@cd $(BL60X_SDK_PATH)/image_conf; python3 flash_build.py $(PROJECT_NAME) $(CONFIG_CHIP_NAME)
+info: all
+	@cd $(BL60X_SDK_PATH)/image_conf; env SDK_APP_BIN=$(APP_BIN) SDK_APP_MAP=$(APP_MAP) python3 codesize.py
 
-# If we have `version.txt` then prefer that for extracting BL60x_SP_SDK version
-ifeq ("$(wildcard ${BL60X_SDK_PATH}/version.txt)","")
+# If we have `version.mk` then prefer that for extracting BL60x_SP_SDK version
+ifeq ("$(wildcard ${BL60X_SDK_PATH}/version.mk)","")
 BL_SDK_VER := $(shell cd ${BL60X_SDK_PATH} && git describe --always --tags --dirty)
+EXTRA_CPPFLAGS ?=
+EXTRA_CPPFLAGS += -D BL_SDK_VER=\"$(BL_SDK_VER)\"
 ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
 BL_SDK_PHY_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl602/bl602_wifi/plf/refip/src/driver/phy/bl602_phy_rf/ && git describe --always --tags --dirty)
 BL_SDK_RF_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl602/bl602_wifi/plf/refip/src/driver/phy/bl602_phy_rf/rf && git describe --always --tags --dirty)
+BL_SDK_STDDRV_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl602/bl602_std/bl602_std && git describe --always --tags --dirty)
+EXTRA_CPPFLAGS += -D BL_SDK_PHY_VER=\"$(BL_SDK_PHY_VER)\"
+EXTRA_CPPFLAGS += -D BL_SDK_RF_VER=\"$(BL_SDK_RF_VER)\"
+EXTRA_CPPFLAGS += -D BL_SDK_STDDRV_VER=\"$(BL_SDK_STDDRV_VER)\"
 endif
-$(info use git describe to generate version.txt)
+ifeq ("$(CONFIG_CHIP_NAME)", "BL702")
+BL_SDK_STDDRV_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl702/bl702_std/BSP_Driver && git describe --always --tags --dirty)
+BL_SDK_STDCOM_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl702/bl702_std/BSP_Common && git describe --always --tags --dirty)
+BL_SDK_RF_VER := $(shell cd ${BL60X_SDK_PATH}/components/bl702/bl702_rf && git describe --always --tags --dirty)
+EXTRA_CPPFLAGS += -D BL_SDK_STDDRV_VER=\"$(BL_SDK_STDDRV_VER)\"
+EXTRA_CPPFLAGS += -D BL_SDK_STDCOM_VER=\"$(BL_SDK_STDCOM_VER)\"
+EXTRA_CPPFLAGS += -D BL_SDK_RF_VER=\"$(BL_SDK_RF_VER)\"
+endif
+$(info use git describe to generate Version Define)
 else
-BL_SDK_VER := `cat ${BL60X_SDK_PATH}/version.txt |head -n1`
-ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
-BL_SDK_PHY_VER := `cat ${BL60X_SDK_PATH}/version.txt |head -n2|tail -n1`
-BL_SDK_RF_VER := `cat ${BL60X_SDK_PATH}/version.txt |head -n3|tail -n1`
-endif
-$(info use exsting version.txt file)
+include $(BL60X_SDK_PATH)/version.mk
+$(info use exsting version.mk file)
 endif
 BL_CHIP_NAME := ${CONFIG_CHIP_NAME}
 
 # Set default LDFLAGS
 # -nostdlib
-# --specs=nosys.specs
+# --specs=nosys.specs 
 EXTRA_LDFLAGS ?= -Wl,--cref -nostartfiles
 ifeq ($(CONFIG_ZIGBEE), 1)
 EXTRA_LDFLAGS += --specs=nosys.specs
@@ -242,7 +254,7 @@ LDFLAGS ?=  $(E21_CPU_LDFLAGS) \
 #  before including project.mk. Default flags will be added before the ones provided in application Makefile.
 
 # CPPFLAGS used by C preprocessor
-# If any flags are defined in application Makefile, add them at the end.
+# If any flags are defined in application Makefile, add them at the end. 
 CPPFLAGS ?=
 ifeq ($(CONFIG_ENABLE_ACP),1)
 CPPFLAGS += -DCONF_USER_ENABLE_ACP
@@ -254,10 +266,7 @@ ifeq ($(CONFIG_ENABLE_PSM_RAM),1)
 CPPFLAGS += -DCONF_USER_ENABLE_PSRAM
 endif
 EXTRA_CPPFLAGS ?=
-CPPFLAGS := -D BL_SDK_VER=\"$(BL_SDK_VER)\"
-CPPFLAGS += -D BL_SDK_PHY_VER=\"$(BL_SDK_PHY_VER)\"
-CPPFLAGS += -D BL_SDK_RF_VER=\"$(BL_SDK_RF_VER)\"
-CPPFLAGS += -D BL_CHIP_NAME=\"$(BL_CHIP_NAME)\" -MMD -MP $(CPPFLAGS) $(EXTRA_CPPFLAGS)
+CPPFLAGS += -D BL_CHIP_NAME=\"$(BL_CHIP_NAME)\" -MMD -MP $(EXTRA_CPPFLAGS)
 CPPFLAGS += -DARCH_RISCV
 
 # Warnings-related flags relevant both for C and C++
@@ -291,7 +300,7 @@ COMMON_FLAGS_M4_EXT := 	\
 	-ffreestanding \
 	-fno-strict-aliasing
 
-
+		
 COMMON_FLAGS += $(COMMON_FLAGS_M4_EXT)
 
 ifdef CONFIG_STACK_CHECK_NORM
@@ -305,6 +314,10 @@ COMMON_FLAGS += -fstack-protector-all
 endif
 ifeq ($(CONFIG_ENABLE_FP),1)
 COMMON_FLAGS += -fno-omit-frame-pointer -DCONF_ENABLE_FRAME_PTR
+endif
+
+ifeq ($(CONFIG_ENABLE_STACK_OVERFLOW_CHECK),1)
+COMMON_FLAGS += -finstrument-functions -DCONF_ENABLE_STACK_OVERFLOW_CHECK
 endif
 
 ifdef CONFIG_OPTIMIZATION_LEVEL_RELEASE
@@ -435,7 +448,7 @@ all_binaries: $(APP_BIN)
 $(APP_BIN): $(APP_ELF)
 	@echo "Generating BIN File to $@"
 ifeq ($(CONFIG_ENABLE_ACP),1)
-	$(OBJCOPY) -S -O binary -R .rom.cpu1 $< $(@:.bin=.cpu0.bin)
+	$(OBJCOPY) -S -O binary -R .rom.cpu1 $< $(@:.bin=.cpu0.bin) 
 	$(OBJCOPY) -S -O binary -j .rom.cpu1 $< $(@:.bin=.cpu1.bin)
 	cp $(@:.bin=.cpu0.bin) $(@:.bin=.acp.bin)
 	dd if=$(@:.bin=.cpu1.bin) of=$(@:.bin=.acp.bin) bs=512 seek=2 conv=notrunc
@@ -443,23 +456,23 @@ ifeq ($(CONFIG_ENABLE_ACP),1)
 else
 ifeq ($(CONFIG_LINK_ROM),1)
 	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $@
-	$(OBJCOPY) -S -O binary -j .rom $< $(@:.bin=.rom.bin)
-	$(OBJCOPY) -S -O binary -j .romdata $< $(@:.bin=.romdata.bin)
-	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $(@:.bin=.flash.bin)
+	$(OBJCOPY) -S -O binary -j .rom $< $(@:.bin=.rom.bin) 
+	$(OBJCOPY) -S -O binary -j .romdata $< $(@:.bin=.romdata.bin) 
+	$(OBJCOPY) -S -O binary -R .romdata -R .rom $< $(@:.bin=.flash.bin) 
 else
 ifeq ($(CONFIG_GEN_ROM),1)
 	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $@
-	$(OBJCOPY) -S -O binary -j .bleromro $< $(@:.bin=.bleromro.bin)
-	$(OBJCOPY) -S -O binary -j .bleromrw $< $(@:.bin=.bleromrw.bin)
-	$(OBJCOPY) -S -O binary -j .rtosromro $< $(@:.bin=.rtosromro.bin)
-	$(OBJCOPY) -S -O binary -j .rtosromrw $< $(@:.bin=.rtosromrw.bin)
-	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $(@:.bin=.flash.bin)
+	$(OBJCOPY) -S -O binary -j .bleromro $< $(@:.bin=.bleromro.bin) 
+	$(OBJCOPY) -S -O binary -j .bleromrw $< $(@:.bin=.bleromrw.bin) 
+	$(OBJCOPY) -S -O binary -j .rtosromro $< $(@:.bin=.rtosromro.bin) 
+	$(OBJCOPY) -S -O binary -j .rtosromrw $< $(@:.bin=.rtosromrw.bin) 
+	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw $< $(@:.bin=.flash.bin) 
 else
 	$(OBJCOPY) -S -O binary $< $@
 endif
 endif
 endif
-
+	
 
 $(BUILD_DIR_BASE):
 	mkdir -p $(BUILD_DIR_BASE)
@@ -520,10 +533,10 @@ app-clean: $(addprefix component-,$(addsuffix -clean,$(notdir $(COMPONENT_PATHS)
 	rm -f $(APP_ELF) $(APP_BIN) $(APP_MAP)
 
 flash: all
-	cd $(BL60X_SDK_PATH)/tools/flash_tool && env SDK_APP_BIN=$(APP_BIN) SDK_BOARD=$(PROJECT_BOARD) SDK_NAME=$(PROJECT_NAME) SDK_MEDIA_BIN=$(APP_MEDIA_BIN) SDK_ROMFS_DIR=$(APP_ROMFS_DIR) SDK_DTS=$(PROJECT_DTS) SDK_XTAL=$(PROJECT_BOARD_XTAL) BL_FLASH_TOOL_INPUT_PATH_cfg2_bin_input=$(APP_BIN) python3 core/bl60x_simple_flasher.py bl602 bl602/conf/iot.toml
+	cd $(BL60X_SDK_PATH)/tools/flash_tool && env SDK_APP_BIN=$(APP_BIN) SDK_BOARD=$(PROJECT_BOARD) SDK_NAME=$(PROJECT_NAME) SDK_MEDIA_BIN=$(APP_MEDIA_BIN) SDK_ROMFS_DIR=$(APP_ROMFS_DIR) SDK_DTS=$(PROJECT_DTS) SDK_XTAL=$(PROJECT_BOARD_XTAL) BL_FLASH_TOOL_INPUT_PATH_cfg2_bin_input=$(APP_BIN) python3 core/bflb_simple_flasher.py bl602 bl602/conf/iot.toml
 
 flash_only:
-	cd $(BL60X_SDK_PATH)/tools/flash_tool && env SDK_APP_BIN=$(APP_BIN) SDK_BOARD=$(PROJECT_BOARD) SDK_NAME=$(PROJECT_NAME) SDK_MEDIA_BIN=$(APP_MEDIA_BIN) SDK_ROMFS_DIR=$(APP_ROMFS_DIR) SDK_DTS=$(PROJECT_DTS) SDK_XTAL=$(PROJECT_BOARD_XTAL) BL_FLASH_TOOL_INPUT_PATH_cfg2_bin_input=$(APP_BIN) python3 core/bl60x_simple_flasher.py bl602 bl602/conf/iot.toml
+	cd $(BL60X_SDK_PATH)/tools/flash_tool && env SDK_APP_BIN=$(APP_BIN) SDK_BOARD=$(PROJECT_BOARD) SDK_NAME=$(PROJECT_NAME) SDK_MEDIA_BIN=$(APP_MEDIA_BIN) SDK_ROMFS_DIR=$(APP_ROMFS_DIR) SDK_DTS=$(PROJECT_DTS) SDK_XTAL=$(PROJECT_BOARD_XTAL) BL_FLASH_TOOL_INPUT_PATH_cfg2_bin_input=$(APP_BIN) python3 core/bflb_simple_flasher.py bl602 bl602/conf/iot.toml
 
 clean: app-clean
 
@@ -537,7 +550,7 @@ list-components:
 	$(info $(COMPONENTS))
 	$(info $(call dequote,$(SEPARATOR)))
 	$(info EXCLUDE_COMPONENTS (list of excluded names))
-	$(info $(if $(EXCLUDE_COMPONENTS),$(EXCLUDE_COMPONENTS),(none provided)))
+	$(info $(if $(EXCLUDE_COMPONENTS),$(EXCLUDE_COMPONENTS),(none provided)))	
 	$(info $(call dequote,$(SEPARATOR)))
 	$(info COMPONENT_PATHS (paths to all components):)
 	$(foreach cp,$(COMPONENT_PATHS),$(info $(cp)))

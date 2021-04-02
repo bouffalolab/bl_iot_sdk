@@ -251,10 +251,12 @@ BL_Err_Type ATTR_TCM_SECTION GLB_Swap_Flash_Pin(void){
     return RomDriver_GLB_Swap_Flash_Pin();
 }
 
+#if 0
 __ALWAYS_INLINE
 BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_Init(GLB_GPIO_Cfg_Type *cfg){
     return RomDriver_GLB_GPIO_Init(cfg);
 }
+#endif
 
 __ALWAYS_INLINE
 BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_OUTPUT_Enable(GLB_GPIO_Type gpioPin){
@@ -276,10 +278,12 @@ uint8_t ATTR_TCM_SECTION GLB_GPIO_Get_Fun(GLB_GPIO_Type gpioPin){
     return RomDriver_GLB_GPIO_Get_Fun(gpioPin);
 }
 
+#if 0
 __ALWAYS_INLINE
 void ATTR_TCM_SECTION HBN_Mode_Enter(HBN_APP_CFG_Type *cfg){
     return RomDriver_HBN_Mode_Enter(cfg);
 }
+#endif
 
 __ALWAYS_INLINE
 void ATTR_TCM_SECTION HBN_Power_Down_Flash(SPI_Flash_Cfg_Type *flashCfg){
@@ -331,15 +335,19 @@ BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_Off_Xtal_32K(void){
     return RomDriver_HBN_Power_Off_Xtal_32K();
 }
 
+#if 0
 __ALWAYS_INLINE
 BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_On_RC32K(void){
     return RomDriver_HBN_Power_On_RC32K();
 }
+#endif
 
+#if 0
 __ALWAYS_INLINE
 BL_Err_Type ATTR_CLOCK_SECTION HBN_Power_Off_RC32K(void){
     return RomDriver_HBN_Power_Off_RC32K();
 }
+#endif
 
 __ALWAYS_INLINE
 BL_Err_Type ATTR_CLOCK_SECTION HBN_Trim_RC32K(void){
@@ -386,12 +394,10 @@ BL_Err_Type ATTR_TCM_SECTION PDS_Reset(void){
     return RomDriver_PDS_Reset();
 }
 
-#if 0
 __ALWAYS_INLINE
 BL_Err_Type ATTR_TCM_SECTION PDS_Enable(PDS_CTL_Type *cfg,PDS_CTL4_Type *cfg4,uint32_t pdsSleepCnt){
     return RomDriver_PDS_Enable(cfg,cfg4,pdsSleepCnt);
 }
-#endif
 
 __ALWAYS_INLINE
 BL_Err_Type ATTR_TCM_SECTION PDS_Force_Config(PDS_CTL2_Type *cfg2,PDS_CTL3_Type *cfg3){

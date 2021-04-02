@@ -303,6 +303,7 @@ uint8_t SPI_GetRxFifoCount(SPI_ID_Type spiNo);
 BL_Sts_Type SPI_GetIntStatus(SPI_ID_Type spiNo,SPI_INT_Type intType);
 BL_Sts_Type SPI_GetFifoStatus(SPI_ID_Type spiNo,SPI_FifoStatus_Type fifoSts);
 BL_Sts_Type SPI_GetBusyStatus(SPI_ID_Type spiNo);
+BL_Err_Type SPI_SetClock(SPI_ID_Type spiNo,uint32_t clk);
 
 /*@} end of group SPI_Public_Functions */
 

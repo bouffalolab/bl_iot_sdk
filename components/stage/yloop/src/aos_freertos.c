@@ -12,7 +12,7 @@
 
 #include <aos/kernel.h>
 
-#define ms2tick(ms) (((ms)+portTICK_PERIOD_MS-1)/portTICK_PERIOD_MS)
+#define ms2tick    pdMS_TO_TICKS
 #define bzero(stack, stack_size) memset(stack, 0, stack_size)
 
 void aos_reboot(void)
@@ -422,7 +422,7 @@ void *malloc(size_t size)
 #endif
 
 long long aos_now_ms(void)
-{
+{          
     long long ms;
     TickType_t ticks = 0;
     BaseType_t overflow_count = 0;
@@ -437,5 +437,5 @@ long long aos_now_ms(void)
     ms = ((long long)ticks) + ((TickType_t)(-1) * ((long long)overflow_count));
 
     return ms;
-}
+}          
 

@@ -44,7 +44,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
         dut.write(cmd_wifi_connect)
         dut.expect("Entering wifiConnected_IPOK state", timeout=30)
 
-        #get host ip
+        #get host ip 
 
         ip = get_ip_address(bytes('eth0', encoding = "utf8"))
         print(ip)
@@ -52,13 +52,14 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
         path = os.path.abspath('../../../../..')
         print(path)
         ota_path = path + '/tools/flash_tool/bl602/ota'
-        p = subprocess.Popen('cat FW_OTA.bin.xz.ota | nc -l 3333', shell=True, cwd=ota_path)
+        #p = subprocess.Popen('cat FW_OTA.bin.xz.ota | nc -l 3333', shell=True, cwd=ota_path)
+        p = subprocess.Popen("timeout 60 sh -c 'cat FW_OTA.bin.xz.ota | nc -l 3333'", shell=True, cwd=ota_path)
         print(p.pid)
-
+        
         cmd = 'ota_tcp' + ' ' + ip
         dut.write(cmd)
         time.sleep(0.5)
-        dut.expect("Update PARTITION", timeout=20)
+        dut.expect("Update PARTITION", timeout=50)
         time.sleep(10)
         dut.expect("Booting BL602 Chip...", timeout=0.5)
         list_all = dut.expect(re.compile(r'======= PtTable_Config([\s\S]*?)======= FlashCfg magiccode'), timeout=4)
@@ -68,11 +69,11 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
             new_age = int(dev1.group(5))
             print(new_age)
         else:
-            raise Exception("no match")
+            raise Exception("no match") 
 
         if new_age != old_age + 2:
             raise Exception("ota failed")
-
+        """
         #os.killpg(os.getpgid(p.pid),9)
         nc=processinfo('nc')
         cat=processinfo('cat')
@@ -84,17 +85,20 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
             os.kill(int(cat), signal.SIGKILL)
             cat = False
         p.kill()
+        """
         dut.halt()
     except Exception:
         #os.killpg(os.getpgid(p.pid),9)
+        """
         if (nc) :
             os.kill(int(nc), signal.SIGKILL)
         if (cat) :
             os.kill(int(cat), signal.SIGKILL)
         p.kill()
+        """
         print('ENV_TEST_FAILURE: BL602 ota test failed')
         raise
-
+"""
 def processinfo(processName):
     pids = psutil.pids()
     for pid in pids:
@@ -106,7 +110,7 @@ def processinfo(processName):
             return pid
     print(processName)
     return False
-
+"""
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ip=fcntl.ioctl(s.fileno(),0x8915,struct.pack('256s', ifname[:15]))

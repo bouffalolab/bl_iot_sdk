@@ -7,11 +7,12 @@
 #include <stdint.h>
 #include <string.h>
 #include "types.h"
+#include "bl_port.h"
 
 #define BT_UINT_MAX        0xffffffff
 #define BL_WAIT_FOREVER    0xffffffffu
 #define BL_NO_WAIT         0x0
-#define ms2tick(ms) (((ms)+portTICK_PERIOD_MS-1)/portTICK_PERIOD_MS)
+#define ms2tick            pdMS_TO_TICKS
 
 typedef struct {
     void *hdl;
@@ -40,9 +41,9 @@ typedef uint32_t _task_t;
                 _K_SEM_INITIALIZER(name, initial_count, count_limit)
 
 #define K_MUTEX_DEFINE(name) \
-    struct k_mutex name \
-        __in_section(_k_mutex, static, name) = \
-        _K_MUTEX_INITIALIZER(name)
+	struct k_mutex name \
+		__in_section(_k_mutex, static, name) = \
+		_K_MUTEX_INITIALIZER(name)
 
 typedef sys_dlist_t _wait_q_t;
 
@@ -171,11 +172,15 @@ typedef struct k_timer {
  */
 void k_timer_init(k_timer_t *timer, k_timer_handler_t handle, void *args);
 
+void* k_timer_get_id(void* hdl);
+
 /**
  * @brief Start a timer.
  *
  */
 void k_timer_start(k_timer_t *timer, uint32_t timeout);
+
+void k_timer_reset(k_timer_t *timer);
 
 /**
  * @brief Stop a timer.
@@ -226,7 +231,7 @@ typedef void (*k_thread_entry_t)(void *args);
 int k_thread_create(struct k_thread *new_thread, const char *name,
                     size_t stack_size, k_thread_entry_t entry,
                     int prio);
-
+               
 void k_thread_delete(struct k_thread *new_thread);
 
 /**

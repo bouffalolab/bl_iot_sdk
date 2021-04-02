@@ -18,4 +18,6 @@
 
 struct bt_mesh_net;
 
+int bt_mesh_start(void);
+
 #endif /*__MESH_H__*/

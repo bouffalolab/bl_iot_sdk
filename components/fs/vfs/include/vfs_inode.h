@@ -63,6 +63,7 @@ typedef struct {
     inode_t    *node;   /* node for file */
     void       *f_arg;  /* f_arg for file */
     size_t      offset; /* offset for file */
+    int         fd;     /* file fd */
 } file_t;
 
 struct pollfd;
@@ -103,7 +104,7 @@ struct fs_ops {
 };
 
 int     inode_init(void);
-int     inode_alloc(void);
+int     inode_alloc(inode_t **node);
 int     inode_del(inode_t *node);
 inode_t *inode_open(const char *path);
 int     inode_ptr_get(int fd, inode_t **node);

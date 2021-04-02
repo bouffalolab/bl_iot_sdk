@@ -193,35 +193,33 @@ int aos_fcntl(int fd, int cmd, int val)
 
 int aos_ioctl_in_loop(int cmd, unsigned long arg)
 {
-    int      err = 0;
-    int      fd;
+    size_t file_num;
+    int err = 0 ,i;
+    file_t *f[MAX_FILE_NUM];
+    inode_t *node;
 
-    for (fd = AOS_CONFIG_VFS_FD_OFFSET;
-         fd < AOS_CONFIG_VFS_FD_OFFSET + AOS_CONFIG_VFS_DEV_NODES; fd++) {
-        file_t  *f;
-        inode_t *node;
+    if ((pdTRUE != xSemaphoreTake(g_vfs_mutex, portMAX_DELAY))) {
+        err = -1;
+        return err;
+    }
 
-        if ((pdTRUE != xSemaphoreTake(g_vfs_mutex, portMAX_DELAY))) {
-            err = -1;
-            return err;
-        }
+    file_num = get_all_file(f, MAX_FILE_NUM);
 
-        f = get_file(fd);
+    if (file_num == 0) {
+        xSemaphoreGive(g_vfs_mutex);
+        return -ENOENT;
+    }
 
-        if (f == NULL) {
-            xSemaphoreGive(g_vfs_mutex);
-            return -ENOENT;
-        }
+    if ((pdTRUE != xSemaphoreGive(g_vfs_mutex))) {
+        err = -1;
+        return err;
+    }
 
-        if ((pdTRUE != xSemaphoreGive(g_vfs_mutex))) {
-            err = -1;
-            return err;
-        }
-
-        node = f->node;
+    for (i = 0; i < file_num; i++) {
+        node = f[i]->node;
 
         if ((node->ops.i_ops->ioctl) != NULL) {
-            err = (node->ops.i_ops->ioctl)(f, cmd, arg);
+            err = (node->ops.i_ops->ioctl)(f[i], cmd, arg);
 
             if (err != VFS_SUCCESS) {
                 return err;

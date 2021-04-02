@@ -31,6 +31,8 @@
 
 #define LWIP_TIMEVAL_PRIVATE    0
 
+#define LWIP_HAVE_LOOPIF           1
+
 /**
  * LWIP_TCPIP_CORE_LOCKING_INPUT: when LWIP_TCPIP_CORE_LOCKING is enabled,
  * this lets tcpip_input() grab the mutex for input packets as well,
@@ -71,11 +73,13 @@ a lot of data that needs to be copied, this should be set high. */
 /* NUM of sys_timeout pool*/
 #define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 8 + 3)
 
-#define MEMP_NUM_NETCONN    (MEMP_NUM_TCP_PCB + MEMP_NUM_UDP_PCB + MEMP_NUM_TCP_PCB_LISTEN)
+#define MEMP_NUM_NETCONN    (MEMP_NUM_TCP_PCB + MEMP_NUM_UDP_PCB + MEMP_NUM_TCP_PCB_LISTEN) 
 
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
+#if !defined PBUF_POOL_SIZE
 #define PBUF_POOL_SIZE          0
+#endif
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
 #define PBUF_POOL_BUFSIZE       760
@@ -90,12 +94,12 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_QUEUE_OOSEQ         1
 
 /* TCP Maximum segment size. */
-//#define TCP_MSS                 (1500 - 40)     /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
-//#define TCP_MSS                 (1500 - 80)     /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
-#define TCP_MSS                 (800 - 40 - 80 + 8)   /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+#define TCP_MSS                 (1500 - 40)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+//#define TCP_MSS                 (1500 - 80)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+//#define TCP_MSS                 (800 - 40 - 80 + 8)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 
 /* TCP sender buffer space (bytes). */
-#define TCP_SND_BUF             (8*TCP_MSS)
+#define TCP_SND_BUF             (3*TCP_MSS)
 
 /*  TCP_SND_QUEUELEN: TCP sender buffer space (pbufs). This must be at least
   as much as (2 * TCP_SND_BUF/TCP_MSS) for things to work. */
@@ -178,7 +182,7 @@ a lot of data that needs to be copied, this should be set high. */
   /* CHECKSUM_GEN_UDP==0: Generate checksums by hardware for outgoing UDP packets.*/
   #define CHECKSUM_GEN_UDP                0
   /* CHECKSUM_GEN_TCP==0: Generate checksums by hardware for outgoing TCP packets.*/
-  #define CHECKSUM_GEN_TCP                0
+  #define CHECKSUM_GEN_TCP                0 
   /* CHECKSUM_CHECK_IP==0: Check checksums by hardware for incoming IP packets.*/
   #define CHECKSUM_CHECK_IP               0
   /* CHECKSUM_CHECK_UDP==0: Check checksums by hardware for incoming UDP packets.*/
@@ -243,13 +247,13 @@ a lot of data that needs to be copied, this should be set high. */
 */
 
 #define TCPIP_THREAD_NAME              "TCP/IP"
-#define TCPIP_THREAD_STACKSIZE          4000
+#define TCPIP_THREAD_STACKSIZE          1000
 #define TCPIP_MBOX_SIZE                 50
 #define DEFAULT_UDP_RECVMBOX_SIZE       2000
 #define DEFAULT_TCP_RECVMBOX_SIZE       2000
 #define DEFAULT_ACCEPTMBOX_SIZE         2000
 #define DEFAULT_THREAD_STACKSIZE        500
-#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
+#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2) 
 
 #define LWIP_COMPAT_MUTEX               0
 #define LWIP_TCPIP_CORE_LOCKING         0

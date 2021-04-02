@@ -38,11 +38,11 @@
 /* when an error action is taking place the reason code can indicate  */
 /* what the reason code.                                              */
 /*--------------------------------------------------------------------*/
-#define WLAN_FW_SUCCESSFUL                                        0
-#define WLAN_FW_TX_AUTH_FRAME_ALLOCATE_FAIILURE                   1
+#define WLAN_FW_SUCCESSFUL                                        0 
+#define WLAN_FW_TX_AUTH_FRAME_ALLOCATE_FAIILURE                   1 
 #define WLAN_FW_AUTHENTICATION_FAIILURE                           2
 #define WLAN_FW_AUTH_ALGO_FAIILURE                                3
-#define WLAN_FW_TX_ASSOC_FRAME_ALLOCATE_FAIILURE                  4
+#define WLAN_FW_TX_ASSOC_FRAME_ALLOCATE_FAIILURE                  4 
 #define WLAN_FW_ASSOCIATE_FAIILURE                                5
 #define WLAN_FW_DEAUTH_BY_AP_WHEN_NOT_CONNECTION                  6
 #define WLAN_FW_DEAUTH_BY_AP_WHEN_CONNECTION                      7
@@ -106,5 +106,14 @@ enum task_mm_cfg {
     TASK_MM_CFG_KEEP_ALIVE_STATUS_ENABLED,
     TASK_MM_CFG_KEEP_ALIVE_TIME_LAST_RECEIVED,
     TASK_MM_CFG_KEEP_ALIVE_PACKET_COUNTER,
+};
+
+enum task_sm_cfg {
+    TASK_SM_CFG_AUTH_ASSOC_RETRY_LIMIT,
+};
+
+enum task_scan_cfg {
+    TASK_SCAN_CFG_DURATION_SCAN_PASSIVE,
+    TASK_SCAN_CFG_DURATION_SCAN_ACTIVE,
 };
 #endif /*__BL60x_FW_API_H__*/

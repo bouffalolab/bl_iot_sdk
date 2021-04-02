@@ -35,7 +35,5 @@ CONFIG_BT_CENTRAL:=1
 CONFIG_BT_OBSERVER:=1
 CONFIG_BT_PERIPHERAL:=1
 CONFIG_BT_STACK_CLI:=1
-CONFIG_BT_WIFIPROV_SERVER:=1
-
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hal_drv main sdk_app_heap

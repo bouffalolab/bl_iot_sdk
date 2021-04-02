@@ -75,6 +75,7 @@ typedef struct _spi_hw {
     uint8_t pin_cs;
     uint8_t pin_mosi;
     uint8_t pin_miso;
+    uint8_t rx_enable;
     EventGroupHandle_t spi_dma_event_group;
 } spi_hw_t;
 
@@ -100,7 +101,7 @@ static void hal_gpio_init(spi_hw_t *arg)
     gpiopins[1] = arg->pin_clk;
     gpiopins[2] = arg->pin_mosi;
     gpiopins[3] = arg->pin_miso;
-
+    
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 
     if (arg->mode == 0) {
@@ -118,7 +119,6 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
     uint32_t count;
     uint32_t remainder;
     struct DMA_Control_Reg dmactrl;
-
 
     count = length / LLI_BUFF_SIZE;
     remainder = length % LLI_BUFF_SIZE;
@@ -141,12 +141,13 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
         return -1;
     }
 
-    *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
-    if (*pprxlli == NULL) {
-        blog_error("malloc lli failed.");
-        vPortFree(*pptxlli);
-
-        return -1;
+    if (NULL != prx_data) {
+        *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
+        if (*pprxlli == NULL) {
+            blog_error("malloc lli failed.");
+            vPortFree(*pptxlli);
+            return -1;
+        }
     }
 
     for (i = 0; i < count; i++) {
@@ -162,7 +163,7 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
 
         dmactrl.SI = DMA_MINC_ENABLE;
         dmactrl.DI = DMA_MINC_DISABLE;
-
+            
         if (i == count - 1) {
             dmactrl.I = 1;
         } else {
@@ -173,19 +174,25 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
         (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
         (*pptxlli)[i].dmaCtrl = dmactrl;
 
-        dmactrl.SI = DMA_MINC_DISABLE;
-        dmactrl.DI = DMA_MINC_ENABLE;
-        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
-        (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
-        (*pprxlli)[i].dmaCtrl = dmactrl;
+        if (NULL != prx_data) {
+            dmactrl.SI = DMA_MINC_DISABLE;
+            dmactrl.DI = DMA_MINC_ENABLE;
+            (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
+            (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
+            (*pprxlli)[i].dmaCtrl = dmactrl;
+        }
 
         if (i != 0) {
             (*pptxlli)[i-1].nextLLI = (uint32_t)&(*pptxlli)[i];
-            (*pprxlli)[i-1].nextLLI = (uint32_t)&(*pprxlli)[i];
+            if (NULL != prx_data) {
+                (*pprxlli)[i-1].nextLLI = (uint32_t)&(*pprxlli)[i];
+            }
         }
 
         (*pptxlli)[i].nextLLI = 0;
-        (*pprxlli)[i].nextLLI = 0;
+        if (NULL != prx_data) {
+            (*pprxlli)[i].nextLLI = 0;
+        }
     }
 
     return 0;
@@ -199,7 +206,7 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     SPI_FifoCfg_Type fifocfg;
     SPI_ID_Type spi_id;
     uint8_t clk_div;
-
+    
     spi_id = hw_arg->ssp_id;
 
     /* clock */
@@ -264,7 +271,7 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_ERR, UNMASK);
 
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ALL, MASK);
-    DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
+    DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ERR, UNMASK);
 
     bl_irq_enable(DMA_ALL_IRQn);
@@ -279,8 +286,8 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
     EventBits_t uxBits;
     DMA_LLI_Cfg_Type txllicfg;
     DMA_LLI_Cfg_Type rxllicfg;
-    DMA_LLI_Ctrl_Type *ptxlli;
-    DMA_LLI_Ctrl_Type *prxlli;
+    DMA_LLI_Ctrl_Type *ptxlli = NULL;
+    DMA_LLI_Ctrl_Type *prxlli = NULL;
     int ret;
 
     if (!arg) {
@@ -288,8 +295,14 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
         return;
     }
 
+    if (NULL == RxData) {
+        g_hal_buf->hwspi[0].rx_enable = 0;
+    } else {
+        g_hal_buf->hwspi[0].rx_enable = 1;
+    }
+
     txllicfg.dir = DMA_TRNS_M2P;
-    txllicfg.srcPeriph = DMA_REQ_NONE;
+    txllicfg.srcPeriph = DMA_REQ_NONE; 
     txllicfg.dstPeriph = DMA_REQ_SPI_TX;
 
     rxllicfg.dir = DMA_TRNS_P2M;
@@ -318,12 +331,15 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
         return;
     }
 
+    if (NULL != RxData) {
+        DMA_LLI_Init(arg->rx_dma_ch, &rxllicfg);
+        DMA_LLI_Update(arg->rx_dma_ch,(uint32_t)prxlli);
+        DMA_Channel_Enable(arg->rx_dma_ch);
+    }
+
     DMA_LLI_Init(arg->tx_dma_ch, &txllicfg);
-    DMA_LLI_Init(arg->rx_dma_ch, &rxllicfg);
     DMA_LLI_Update(arg->tx_dma_ch,(uint32_t)ptxlli);
-    DMA_LLI_Update(arg->rx_dma_ch,(uint32_t)prxlli);
     DMA_Channel_Enable(arg->tx_dma_ch);
-    DMA_Channel_Enable(arg->rx_dma_ch);
 
     uxBits = xEventGroupWaitBits(arg->spi_dma_event_group,
                                      EVT_GROUP_SPI_DMA_TR,
@@ -336,7 +352,9 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
     }
 
     vPortFree(ptxlli);
-    vPortFree(prxlli);
+    if (NULL != RxData) {
+        vPortFree(prxlli);
+    }
 }
 
 int32_t hal_spi_init(spi_dev_t *spi)
@@ -758,8 +776,15 @@ void bl_spi0_dma_int_handler_tx(void)
             xResult = xEventGroupSetBitsFromISR(g_hal_buf->hwspi[0].spi_dma_event_group,
                                                 EVT_GROUP_SPI_DMA_TX,
                                                 &xHigherPriorityTaskWoken);
-        }
 
+            if (g_hal_buf->hwspi[0].rx_enable == 0) {
+                xEventGroupSetBitsFromISR(g_hal_buf->hwspi[0].spi_dma_event_group,
+                                                EVT_GROUP_SPI_DMA_RX,
+                                                &xHigherPriorityTaskWoken);
+            }
+
+        }
+ 
         if(xResult != pdFAIL) {
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
         }

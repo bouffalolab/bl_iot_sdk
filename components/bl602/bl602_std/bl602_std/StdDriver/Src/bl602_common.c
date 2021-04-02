@@ -28,6 +28,7 @@
 /** @defgroup DRIVER_Private_Variables
  *  @{
  */
+pFunc __Interrupt_Handlers[IRQn_LAST]={0};
 
 /*@} end of group DRIVER_Private_Variables */
 
@@ -53,15 +54,19 @@
  *  @{
  */
 
-void Default_Handler(void){
-    MSG("Default_Handler\r\n");
-}
 void Trap_Handler(void){
-    unsigned long cause = read_csr(mcause);
+    unsigned long cause;
     unsigned long epc;
+    unsigned long tval;
 
     MSG("Trap_Handler\r\n");
+
+    cause = read_csr(mcause);
     MSG("mcause=%08x\r\n",(uint32_t)cause);
+    epc=read_csr(mepc);
+    MSG("mepc:%08x\r\n",(uint32_t)epc);
+    tval=read_csr(mtval);
+    MSG("mtval:%08x\r\n",(uint32_t)tval);
 
     cause=(cause&0x3ff);
     switch(cause){
@@ -88,30 +93,70 @@ void Trap_Handler(void){
             break;
         case 8:
             MSG("Environment call from U-mode\r\n");
-            epc=read_csr(mepc);
-            MSG("mepc:%08x\r\n",(uint32_t)epc);
             epc+=4;
             write_csr(mepc,epc);
             break;
         case 9:
             MSG("Environment call from M-mode\r\n");
-            epc=read_csr(mepc);
-            MSG("mepc:%08x\r\n",(uint32_t)epc);
             epc+=4;
             write_csr(mepc,epc);
             break;
         default:
             MSG("Cause num=%d\r\n",(uint32_t)cause);
-            epc=read_csr(mepc);
-            MSG("mepc:%08x\r\n",(uint32_t)epc);
             epc+=4;
             write_csr(mepc,epc);
             break;
     }
+    while(1);
+}
+
+void Interrupt_Handler_Register(IRQn_Type irq,pFunc interruptFun)
+{
+    if(irq<IRQn_LAST){
+        __Interrupt_Handlers[irq]=interruptFun;
+    }
+}
+
+void Interrupt_Handler(void)
+{
+    pFunc interruptFun;
+    uint32_t num=0;
+    volatile uint32_t ulMEPC = 0UL, ulMCAUSE = 0UL;
+
+    /* Store a few register values that might be useful when determining why this
+    function was called. */
+    __asm volatile( "csrr %0, mepc" : "=r"( ulMEPC ) );
+    __asm volatile( "csrr %0, mcause" : "=r"( ulMCAUSE ) );
+    
+    if((ulMCAUSE&0x80000000)==0){
+        /*Exception*/
+        MSG("Exception should not be here\r\n");
+    }else{
+        num=ulMCAUSE&0x3FF;
+        if(num<IRQn_LAST){
+            interruptFun=__Interrupt_Handlers[num];
+            if(NULL!=interruptFun){
+                interruptFun();
+            }else{
+                MSG("Interrupt num:%d IRQHandler not installed\r\n",(unsigned int)num);
+                if(num>=IRQ_NUM_BASE){
+                    MSG("Peripheral Interrupt num:%d \r\n",(unsigned int)num-IRQ_NUM_BASE);
+                }
+                while(1);
+            }
+        }else{
+            MSG("Unexpected interrupt num:%d\r\n",(unsigned int)num);
+        }
+    }
+}
+
+void FreeRTOS_Interrupt_Handler(void)
+{
+    Interrupt_Handler();
 }
 
 /****************************************************************************//**
- * @brief      delay us
+ * @brief      delay us 
  *
  * @param[in]  core:  systemcoreclock
  *
@@ -182,9 +227,9 @@ void ATTR_TCM_SECTION ASM_Delay_Us(uint32_t core,uint32_t cnt)
 {
     uint32_t codeAddress = 0;
     uint32_t divVal = 40;
-
+    
     codeAddress = (uint32_t)&ASM_Delay_Us;
-
+    
     /* 1M=100K*10, so multiple is 10 */
     /* loop function take 4 instructions, so instructionNum is 4 */
     /* if codeAddress locate at IROM space and irom_2t_access is 1, then irom2TAccess=2, else irom2TAccess=1 */
@@ -196,7 +241,7 @@ void ATTR_TCM_SECTION ASM_Delay_Us(uint32_t core,uint32_t cnt)
             divVal = 80;
         }
     }
-
+    
     __asm__ __volatile__(
         ".align 4\n\t"
         "lw       a4,%1\n\t"
@@ -235,7 +280,7 @@ void ATTR_TCM_SECTION ASM_Delay_Us(uint32_t core,uint32_t cnt)
 
 
 /****************************************************************************//**
- * @brief      delay us
+ * @brief      delay us 
  *
  * @param[in]  cnt:  delay cnt us
  *
@@ -249,7 +294,7 @@ void ATTR_TCM_SECTION BL602_Delay_US(uint32_t cnt)
 }
 
 /****************************************************************************//**
- * @brief      delay ms
+ * @brief      delay ms 
  *
  * @param[in]  cnt:  delay cnt ms
  *
@@ -261,7 +306,7 @@ void ATTR_TCM_SECTION BL602_Delay_MS(uint32_t cnt)
 {
     uint32_t i = 0;
     uint32_t count = 0;
-
+    
     if(cnt>=1024){
         /* delay (n*1024) ms */
         count = 1024;
@@ -337,7 +382,7 @@ void* ATTR_TCM_SECTION BL602_MemCpy_Fast(void *pdst, const void *psrc, uint32_t 
     uint32_t left,done,i=0;
     uint8_t *dst=(uint8_t *)pdst;
     uint8_t *src=(uint8_t *)psrc;
-
+    
     if(((uint32_t)dst&0x3)==0&&((uint32_t)src&0x3)==0){
         BL602_MemCpy4((uint32_t *)dst,(const uint32_t *)src,n>>2);
         left=n%4;
@@ -436,7 +481,6 @@ void check_failed(uint8_t *file, uint32_t line)
     while(1);
 }
 #endif /* DEBUG */
-
 
 /*@} end of group DRIVER_Public_Functions */
 

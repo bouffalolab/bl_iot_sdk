@@ -136,3 +136,53 @@ int wifi_prov_api_event_trigger_password(const char *password, int len)
 
     return 0;
 }
+
+#if defined(CONFIG_BT_MESH_SYNC)
+int wifi_prov_api_event_trigger_connect_mesh(struct wifi_conn *info)
+{
+    if (aos_post_event(EV_WIFI, CODE_WIFI_ON_PROV_CONNECT, (unsigned long)info) >= 0) {
+        puts("[APP] [PROV] trigger CONNECT event OK\r\n");
+    } else {
+        puts("[APP] [PROV] trigger CONNECT event failed\r\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int wifi_prov_api_event_trigger_disconnect_mesh(void)
+{
+    if (aos_post_event(EV_WIFI, CODE_WIFI_ON_PROV_DISCONNECT, 0) >= 0) {
+        puts("[APP] [PROV] trigger DISCONNECT event OK\r\n");
+    } else {
+        puts("[APP] [PROV] trigger DISCONNECT event failed\r\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int wifi_prov_api_event_trigger_scan_mesh(void(*complete)(void *))
+{
+    if (aos_post_event(EV_WIFI, CODE_WIFI_ON_PROV_SCAN_START, (unsigned long)complete) >= 0) {
+        puts("[APP] [PROV] trigger scan event OK\r\n");
+    } else {
+        puts("[APP] [PROV] trigger scan event failed\r\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int wifi_prov_api_event_state_get_mesh(void(*state_get)(void *))
+{
+    if (aos_post_event(EV_WIFI, CODE_WIFI_ON_PROV_STATE_GET, (unsigned long)state_get) >= 0) {
+        puts("[APP] [PROV] trigger scan event OK\r\n");
+    } else {
+        puts("[APP] [PROV] trigger scan event failed\r\n");
+        return -1;
+    }
+
+    return 0;
+}
+#endif /* CONFIG_BT_MESH_SYNC */

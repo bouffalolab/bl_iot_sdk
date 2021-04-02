@@ -56,17 +56,25 @@
  */
 
 /**
- *  @brief PDS LDO voltage level type definition
+ *  @brief PDS LDO level type definition
  */
 typedef enum {
-    PDS_LDO_LEVEL_0P8V=0,                   /*!< PDS LDO voltage 0.8V */
-    PDS_LDO_LEVEL_0P9V,                     /*!< PDS LDO voltage 0.9V */
-    PDS_LDO_LEVEL_1P00V,                    /*!< PDS LDO voltage 1.00V */
-    PDS_LDO_LEVEL_1P05V,                    /*!< PDS LDO voltage 1.05V */
-    PDS_LDO_LEVEL_1P10V,                    /*!< PDS LDO voltage 1.10V */
-    PDS_LDO_LEVEL_1P15V,                    /*!< PDS LDO voltage 1.15V */
-    PDS_LDO_LEVEL_1P20V,                    /*!< PDS LDO voltage 1.20V */
-    PDS_LDO_LEVEL_1P30V,                    /*!< PDS LDO voltage 1.30V */
+    PDS_LDO_LEVEL_0P60V=0,                  /*!< PDS LDO voltage 0.60V */
+    PDS_LDO_LEVEL_0P65V=1,                  /*!< PDS LDO voltage 0.65V */
+    PDS_LDO_LEVEL_0P70V=2,                  /*!< PDS LDO voltage 0.70V */
+    PDS_LDO_LEVEL_0P75V=3,                  /*!< PDS LDO voltage 0.75V */
+    PDS_LDO_LEVEL_0P80V=4,                  /*!< PDS LDO voltage 0.80V */
+    PDS_LDO_LEVEL_0P85V=5,                  /*!< PDS LDO voltage 0.85V */
+    PDS_LDO_LEVEL_0P90V=6,                  /*!< PDS LDO voltage 0.90V */
+    PDS_LDO_LEVEL_0P95V=7,                  /*!< PDS LDO voltage 0.95V */
+    PDS_LDO_LEVEL_1P00V=8,                  /*!< PDS LDO voltage 1.00V */
+    PDS_LDO_LEVEL_1P05V=9,                  /*!< PDS LDO voltage 1.05V */
+    PDS_LDO_LEVEL_1P10V=10,                 /*!< PDS LDO voltage 1.10V */
+    PDS_LDO_LEVEL_1P15V=11,                 /*!< PDS LDO voltage 1.15V */
+    PDS_LDO_LEVEL_1P20V=12,                 /*!< PDS LDO voltage 1.20V */
+    PDS_LDO_LEVEL_1P25V=13,                 /*!< PDS LDO voltage 1.25V */
+    PDS_LDO_LEVEL_1P30V=14,                 /*!< PDS LDO voltage 1.30V */
+    PDS_LDO_LEVEL_1P35V=15,                 /*!< PDS LDO voltage 1.35V */
 }PDS_LDO_LEVEL_Type;
 
 /**
@@ -296,6 +304,7 @@ typedef enum {
  */
 typedef struct {
     uint8_t pdsLevel;                       /*!< PDS level */
+    uint8_t turnOffRF;                      /*!< Wheather turn off RF */
     uint8_t useXtal32k;                     /*!< Wheather use xtal 32K as 32K clock source,otherwise use rc32k */
     uint8_t pdsAonGpioWakeupSrc;            /*!< PDS level 0/1/2/3 mode always on GPIO Wakeup source(HBN wakeup pin) */
     PDS_AON_GPIO_INT_Trigger_Type pdsAonGpioTrigType;    /*!< PDS level 0/1/2/3 mode always on GPIO Triger type(HBN wakeup pin) */
@@ -307,7 +316,7 @@ typedef struct {
     uint8_t flashContRead;                  /*!< Whether enable flash continue read */
     uint32_t sleepTime;                     /*!< PDS sleep time */
     SPI_Flash_Cfg_Type *flashCfg;           /*!< Flash config pointer, used when power down flash */
-    HBN_LDO_LEVEL_Type ldoLevel;            /*!< LDO level */
+    PDS_LDO_LEVEL_Type ldoLevel;            /*!< LDO level */
     void (*preCbFun)(void);                 /*!< Pre callback function */
     void (*postCbFun)(void);                /*!< Post callback function */
 }PDS_APP_CFG_Type;
@@ -321,14 +330,22 @@ typedef struct {
 /** @defgroup  PDS_LDO_LEVEL_TYPE
  *  @{
  */
-#define IS_PDS_LDO_LEVEL_TYPE(type)                      (((type) == PDS_LDO_LEVEL_0P8V) || \
-                                                          ((type) == PDS_LDO_LEVEL_0P9V) || \
+#define IS_PDS_LDO_LEVEL_TYPE(type)                      (((type) == PDS_LDO_LEVEL_0P60V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P65V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P70V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P75V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P80V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P85V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P90V) || \
+                                                          ((type) == PDS_LDO_LEVEL_0P95V) || \
                                                           ((type) == PDS_LDO_LEVEL_1P00V) || \
                                                           ((type) == PDS_LDO_LEVEL_1P05V) || \
                                                           ((type) == PDS_LDO_LEVEL_1P10V) || \
                                                           ((type) == PDS_LDO_LEVEL_1P15V) || \
                                                           ((type) == PDS_LDO_LEVEL_1P20V) || \
-                                                          ((type) == PDS_LDO_LEVEL_1P30V))
+                                                          ((type) == PDS_LDO_LEVEL_1P25V) || \
+                                                          ((type) == PDS_LDO_LEVEL_1P30V) || \
+                                                          ((type) == PDS_LDO_LEVEL_1P35V))
 
 /** @defgroup  PDS_INT_TYPE
  *  @{
@@ -450,6 +467,7 @@ BL_Err_Type PDS_IntClear(void);
 PDS_PLL_STS_Type PDS_Get_PdsPllStstus(void);
 PDS_RF_STS_Type PDS_Get_PdsRfStstus(void);
 PDS_STS_Type PDS_Get_PdsStstus(void);
+BL_Err_Type PDS_WAKEUP_IRQHandler_Install(void);
 BL_Err_Type PDS_Int_Callback_Install(PDS_INT_Type intType,intCallback_Type* cbFun);
 /*----------*/
 BL_Err_Type PDS_Trim_RC32M(void);

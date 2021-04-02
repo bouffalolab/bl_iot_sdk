@@ -39,30 +39,18 @@
 
 static void cb_connect_ind(void *env, struct wifi_event_sm_connect_ind *ind)
 {
-    wifi_mgmr_msg_t msg_wifi;
-
-    memset(&msg_wifi, 0, sizeof(msg_wifi));
-    msg_wifi.ev = ind->status_code ? WIFI_MGMR_EVENT_FW_IND_DISCONNECT : WIFI_MGMR_EVENT_FW_IND_CONNECTED;
-    msg_wifi.data1 = (void*)0x11223344;
-    msg_wifi.data2 = (void*)0x55667788;
-    msg_wifi.len = sizeof(msg_wifi);
     wifi_mgmr_set_connect_stat_info(ind, WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_CONNECTION);
-    wifi_mgmr_event_notify(&msg_wifi);
+    wifi_mgmr_api_common_msg(
+            (ind->status_code ? WIFI_MGMR_EVENT_FW_IND_DISCONNECT : WIFI_MGMR_EVENT_FW_IND_CONNECTED),
+            (void*)0x1, (void*)0x2);
 }
 
 static void cb_disconnect_ind(void *env, struct wifi_event_sm_disconnect_ind *ind)
 {
-    wifi_mgmr_msg_t msg_wifi;
-
-    memset(&msg_wifi, 0, sizeof(msg_wifi));
     printf("sending disconnect\r\n");
-    msg_wifi.ev = WIFI_MGMR_EVENT_FW_IND_DISCONNECT;
-    msg_wifi.data1 = (void*)0x11223344;
-    msg_wifi.data2 = (void*)0x55667788;
-    msg_wifi.len = sizeof(msg_wifi);
     wifiMgmr.wifi_mgmr_stat_info.type_ind = WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_DISCONNECTION;
     wifiMgmr.wifi_mgmr_stat_info.status_code = ind->reason_code;
-    wifi_mgmr_event_notify(&msg_wifi);
+    wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_IND_DISCONNECT, (void*)0x1, (void*)0x2);
 }
 
 static void cb_beacon_ind(void *env, struct wifi_event_beacon_ind *ind)

@@ -48,7 +48,7 @@ void SystemInit (void)
             .errEn=DISABLE,
             .arbMod=L1C_BMX_ARB_FIX,
     };
-
+    
     /* NP boot log Flag */
     p= (uint32_t *)(BFLB_BOOTROM_NP_BOOT_LOG_ADDR);
     *p=0x5A5AA5A5;
@@ -81,7 +81,10 @@ void SystemInit (void)
     tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_REG_EN_HW_PU_PD);
     BL_WR_REG(HBN_BASE,HBN_IRQ_MODE,tmpVal);
 
-    GLB_Set_EM_Sel(GLB_EM_0KB);
+    /* GLB_Set_EM_Sel(GLB_EM_0KB); */
+    tmpVal=BL_RD_REG(GLB_BASE,GLB_SEAM_MISC);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_EM_SEL,GLB_EM_0KB);
+    BL_WR_REG(GLB_BASE,GLB_SEAM_MISC,tmpVal);
 
     /* Fix 26M xtal clkpll_sdmin */
     tmpVal=BL_RD_REG(PDS_BASE,PDS_CLKPLL_SDM);
@@ -91,8 +94,14 @@ void SystemInit (void)
     }
 
     /* Restore default setting*/
-    GLB_UART_Sig_Swap_Set(UART_SIG_SWAP_NONE);
-    GLB_JTAG_Sig_Swap_Set(JTAG_SIG_SWAP_NONE);
+    /* GLB_UART_Sig_Swap_Set(UART_SIG_SWAP_NONE); */
+    tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_UART_SWAP_SET,UART_SIG_SWAP_NONE);
+    BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
+    /* GLB_JTAG_Sig_Swap_Set(JTAG_SIG_SWAP_NONE); */
+    tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_JTAG_SWAP_SET,JTAG_SIG_SWAP_NONE);
+    BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
 
     /* CLear all interrupt */
     p=(uint32_t *)(CLIC_HART0_ADDR+CLIC_INTIE);

@@ -1,9 +1,9 @@
-==========
+﻿==========
 准备
 ==========
 
-1. 硬件：BL602模块一个，Windows PC一台，装有配网app的安卓手机一台，USB转串口线一根。
-2. 软件：烧写工具，烧录的sdk_app_ble_sync.bin文件，路径：Bouffalolab_BL602_Evaluation_Package/App_Demos/sdk_app_ble_sync/build_out/sdk_app_ble_sync.bin，串口工具putty。(\ `下载链接 <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__\)
+1. 硬件：BL602模块一个，Windows PC一台，装有配网app(app目录：Bouffalolab_BL602_Evaluation_Package\\App_Demos\\sdk_app_ble_sync\\bleapp.apk)的安卓手机一台，USB转串口线一根。
+2. 软件：烧写工具，烧录的sdk_app_ble_sync.bin文件，路径：Bouffalolab_BL602_Evaluation_Package\\App_Demos\\sdk_app_ble_sync\\build_out\\sdk_app_ble_sync.bin，串口工具putty。(\ `下载链接 <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__\)
 
 .. figure:: picture/image1.png
    :align: center
@@ -14,40 +14,31 @@
 烧录
 ===========
 
-连接
-======
-BL602模块的相关引脚连接如下图所示，其中图1是模块的正面图，其标号1处用跳线帽短接，标号2处将左边两根排针短接，标号3处将上面的两根排针短接；图2是模块的背面图，烧录时将IO8和HI两根排针短接，烧录完成后将IO8和LOW两根排针短接并重新上电。用USB转串口线连接PC和模块，此时模块上的电源灯常亮，表明模块通电正常。
+将BL602模组用串口线与电脑连接，打开烧写工具\ ``Bouffalo Lab Dev Cube``\中的\ ``BLFlashEnv.exe``\，\ ``chip type``\选择\ ``BL602/604``\，打开后设置界面参数，配置完后，按住模组上的按键SW2不松，同时按一下按键SW1，松开SW1和SW2，点击烧录工具上的\ ``Creat&Download``\，配置及下载完成效果如下图所示：
 
 .. figure:: picture/image2.png
    :align: center
 
-   正面
+   模组
 
-.. figure:: picture/image3.png
-   :align: center
-
-   背面
-
-软件下载
-============
-打开烧写工具Bouffalo Lab Dev Cube 中的BLFlashEnv.exe，chip type选择BL602/604，打开后界面参数参考下图配置：
 
 .. figure:: picture/image4.png
    :align: center
 
-   烧写工具界面
+   配置
+
 
 .. figure:: picture/image5.png
    :align: center
 
-   烧写成功
+  烧写成功
 
-其中图3的左框中COM Port选项根据实际串口情况选择（右击我的电脑->管理->设备管理器->端口，查看端口号，模块是双串口，选择端口号较小的），右框中的相关路径依据实际情况选择。配置完成后点击Download按钮下载，下载成功如图4所示。
+其中烧写工具的左框中COM Port选项根据实际串口情况选择（右击我的电脑->管理->设备管理器->端口，查看端口号，模块是双串口，选择端口号较小的），右框中的相关路径依据实际情况选择。
 
 putty配置
 =============
 
-将IO8和LOW两根排针短接并重新上电，打开putty工具，设置对应的端口号，波特率设定为2000000 bps。
+打开putty工具，设置对应的端口号，波特率设定为2000000 bps，按一下SW1按键可以重启模组。
 
 .. figure:: picture/image6.png
    :align: center
@@ -83,7 +74,7 @@ App配网步骤
 
    蓝牙连接成功log
 
-4. 点击“扫描”，等待数秒后APP会显示模块扫描到的WiFi设备列表，用户可以通过扫描出来的设备列表选择相应的WiFi进行连接，连接成功后页面红色字体部分为模块的WiFi相关信息（此状态暂时不会自动更新，需要用户点击“状态”选项手动更新)。用户可以点击“断开wifi”选项使模块断开WiFi连接。
+4. 点击“扫描配网”，等待数秒后APP会显示模块扫描到的WiFi设备列表，用户可以通过扫描出来的设备列表选择相应的WiFi进行连接，连接成功后页面红色字体部分为模块的WiFi相关信息。用户可以点击“断开wifi”选项使模块断开WiFi连接。
 
 .. figure:: picture/image11.png
    :align: center
@@ -108,7 +99,7 @@ App配网步骤
 .. figure:: picture/image15.png
    :align: center
 
-   APP显示WiFi连接成功（通过点击“状态”更新后模块的WiFi信息)
+   APP显示WiFi连接成功
 
 .. figure:: picture/image16.png
    :align: center

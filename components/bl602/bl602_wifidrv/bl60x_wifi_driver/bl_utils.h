@@ -57,12 +57,6 @@
 #define RWNX_RXBUFF_DMA_ADDR_GET(skbuff)                \
     skbuff->payload
 
-enum bl_dev_flag {
-    RWNX_DEV_RESTARTING,
-    RWNX_DEV_STACK_RESTARTING,
-    RWNX_DEV_STARTED,
-};
-
 /*
  * Structure used to store information regarding E2A msg buffers in the driver
  */

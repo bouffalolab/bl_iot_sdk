@@ -51,11 +51,11 @@
 #define CONFIG_USER_MAX     1
 
 #define IPC_TXQUEUE_CNT     NX_TXQ_CNT
-#define NX_TXDESC_CNT0      4
-#define NX_TXDESC_CNT1      4
-#define NX_TXDESC_CNT2      4
-#define NX_TXDESC_CNT3      4
-#define NX_TXDESC_CNT4      4
+#define NX_TXDESC_CNT0      CFG_TXDESC
+#define NX_TXDESC_CNT1      CFG_TXDESC
+#define NX_TXDESC_CNT2      CFG_TXDESC
+#define NX_TXDESC_CNT3      CFG_TXDESC
+#define NX_TXDESC_CNT4      CFG_TXDESC
 /*
  * Number of Host buffers available for Data Rx handling (through DMA)
  */

@@ -298,6 +298,10 @@ PtTable_Error_Type PtTable_Update_Entry(PtTable_ID_Type targetTableID,
         return PT_ERROR_TABLE_NOT_VALID;
     }
 
+    if(ptTable->entryCnt>PT_ENTRY_MAX){
+        return PT_ERROR_TABLE_NOT_VALID;
+    }
+
     if(targetTableID==PT_TABLE_ID_0){
         writeAddr=BFLB_PT_TABLE0_ADDRESS;
     }else{

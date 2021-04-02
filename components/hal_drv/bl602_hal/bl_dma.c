@@ -46,10 +46,16 @@
 /*please also change NVIC_SetPriority of DMA channel*/
 #define DMA_DEFAULT_CHANNEL_COPY        (DMA_CH0)
 
-#define MEM_UNIT_SIZE            1024
-
+#define MEM_UNIT_SIZE       1024
 #define DTCM_ADDR_START     0X2014000
-#define DTCM_ADDR_END       (DTCM_ADDR_START + (48 * 1024))
+#define DTCM_ADDR_END       (DTCM_ADDR_START + (48 * 1024)) 
+#define OCRAM_ADDR_START    0X2020000
+#define OCRAM_ADDR_END      (OCRAM_ADDR_START + (64 * 1024))
+#define WRAM_ADDR_START     0X2030000
+#define WRAM_ADDR_END       (WRAM_ADDR_START + (112 * 1024))
+
+#define AVAIBLE_ADDR_START    DTCM_ADDR_START
+#define AVAIBLE_ADDR_END      WRAM_ADDR_END
 
 struct dma_ctx {
     utils_dlist_t *pstqueue;
@@ -175,28 +181,33 @@ void *bl_dma_mem_malloc(uint32_t size)
     uint32_t counts, piece, ptr_piece_num;
     uint32_t *p_heap_addr;
     uint32_t addr_start, addr_end;
+    uint32_t left_size;
 
-    addr_start = DTCM_ADDR_START;
-    addr_end = DTCM_ADDR_END;
-
+    addr_start = AVAIBLE_ADDR_START;
+    addr_end = AVAIBLE_ADDR_END;
+   
     ptr_piece_num = xPortGetFreeHeapSize() / MEM_UNIT_SIZE + 1;
     p_heap_addr = pvPortMalloc(ptr_piece_num * 4);
     memset(p_heap_addr, 0, ptr_piece_num * 4);
     if (p_heap_addr == NULL) {
         return NULL;
     }
-
+    
     ptr = NULL;
     counts = 0;
     while (1) {
-        ptr = pvPortMalloc(MEM_UNIT_SIZE);
+        left_size = xPortGetFreeHeapSize();
+        if (left_size < size || left_size < MEM_UNIT_SIZE) {
+            ptr = NULL;
+            goto __exit;
+        }
 
+        ptr = pvPortMalloc(MEM_UNIT_SIZE);
         if (ptr == NULL) {
             goto __exit;
         }
 
         p_heap_addr[counts++] = (uint32_t)ptr;
-
         if ((uint32_t)((uint32_t)ptr & 0x0fffffff) >= addr_start) {
             if ((uint32_t)((uint32_t)ptr & 0x0fffffff) <= addr_end) {
                 ptr = pvPortMalloc(size);
@@ -204,11 +215,12 @@ void *bl_dma_mem_malloc(uint32_t size)
             }
         }
     }
+
+__exit:
     for (piece = 0; piece < counts; piece++) {
         vPortFree((uint32_t *)p_heap_addr[piece]);
     }
-
-__exit:
+    
     vPortFree(p_heap_addr);
     return ptr;
 }
@@ -223,19 +235,19 @@ static void bl_dma_int_process(void)
     int ch;
     uint32_t intclr;
     uint32_t tmpval;
-    uint32_t interr_val;
+    uint32_t interr_val; 
     struct dma_node *node;
     struct dma_ctx *pstctx;
-    void (*handler)(void) = NULL;
+    void (*handler)(void) = NULL; 
     int tc_flag, interr_flag;
-
+   
     tmpval = BL_RD_REG(DMA_BASE, DMA_INTTCSTATUS);
     interr_val = BL_RD_REG(DMA_BASE, DMA_INTERRORSTATUS);
-    bl_irq_ctx_get(DMA_ALL_IRQn, (void **)&pstctx);
+    bl_irq_ctx_get(DMA_ALL_IRQn, (void **)&pstctx); 
     for (ch = 0; ch < DMA_CH_MAX; ch++) {
         tc_flag = BL_GET_REG_BITS_VAL(tmpval, DMA_INTTCSTATUS) & (1 << ch);
         interr_flag = BL_GET_REG_BITS_VAL(interr_val, DMA_INTERRORSTATUS) & (1 << ch);
-
+        
         if((tc_flag != 0) || (interr_flag != 0)) {
             if (tc_flag != 0) {
                 /* tc int, clear interrupt */
@@ -266,11 +278,11 @@ static void bl_dma_int_process(void)
                         handler = (void(*)(void))node->interr_handler;
                         handler();
                     }
-                }
+                }               
             }
-        }
+        }        
     }
-
+    
     return;
 }
 
@@ -293,7 +305,7 @@ int bl_dma_irq_register(int channel, void *tc_handler, void *interr_handler, voi
             return -1;
         }
     }
-    pstnode = pvPortMalloc(sizeof(struct dma_node));
+    pstnode = pvPortMalloc(sizeof(struct dma_node)); 
     if (pstnode == NULL) {
         blog_error("malloc dma node failed. \r\n");
     }
@@ -317,13 +329,13 @@ void *bl_dma_find_node_by_channel(int channel)
             break;
         }
     }
-
+    
     if (&(node->dlist_item) == pstctx->pstqueue) {
         blog_error("not find channel register. \r\n");
 
         return NULL;
     }
-
+    
     return node;
 }
 
@@ -362,7 +374,7 @@ int bl_dma_irq_unregister(int channel)
         blog_error("not find node \r\n");
         return -1;
     }
-
+    
     return 0;
 }
 

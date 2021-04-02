@@ -9,9 +9,13 @@
 extern "C" {
 #endif
 
+int file_init(void);
+
 int get_fd(file_t *file);
 
 file_t *get_file(int fd);
+
+size_t get_all_file (file_t **file, int size);
 
 file_t *new_file(inode_t *node);
 

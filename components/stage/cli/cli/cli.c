@@ -972,7 +972,7 @@ static void ps_cmd(char *buf, int len, int argc, char **argv)
     char *pcWriteBuffer, *info;
     const char *const pcHeader = "State   Priority  Stack    #          Base\r\n********************************************************\r\n";
     BaseType_t xSpacePadding;
-
+ 
     info = pvPortMalloc(1536);
     if (NULL == info) {
         return;
@@ -982,17 +982,17 @@ static void ps_cmd(char *buf, int len, int argc, char **argv)
     /* Generate a table of task stats. */
     strcpy(pcWriteBuffer, "Task" );
     pcWriteBuffer += strlen(pcWriteBuffer );
-
+ 
     /* Minus three for the null terminator and half the number of characters in
     "Task" so the column lines up with the centre of the heading. */
-    for ( xSpacePadding = strlen( "Task" ); xSpacePadding < ( configMAX_TASK_NAME_LEN - 3 ); xSpacePadding++ ) {
+    for ( xSpacePadding = strlen( "Task" ); xSpacePadding < ( configMAX_TASK_NAME_LEN - 3 ); xSpacePadding++ ) {                                 
         /* Add a space to align columns after the task's name. */
-        *pcWriteBuffer = ' ';
-        pcWriteBuffer++;
-
+        *pcWriteBuffer = ' ';         
+        pcWriteBuffer++;              
+    
         /* Ensure always terminated. */
-        *pcWriteBuffer = 0x00;
-    }
+        *pcWriteBuffer = 0x00;        
+    }                                 
     strcpy(pcWriteBuffer, pcHeader );
     vTaskList(pcWriteBuffer + strlen(pcHeader));
     cli_putstr(info);
@@ -1010,7 +1010,7 @@ static int cb_idnoe(void *arg, inode_t *node)
         printf("----------------------------------------------------------------------------------\r\n");
     }
     printf("%10d\t\t%30s\t\t\t%s\r\n",
-            INODE_IS_CHAR(node) ? sizeof(struct file_ops) : (INODE_IS_BLOCK(node) ? sizeof(struct file_ops) : (INODE_IS_FS(node) ? sizeof(struct fs_ops) : 0)),
+            (int)(INODE_IS_CHAR(node) ? sizeof(struct file_ops) : (INODE_IS_BLOCK(node) ? sizeof(struct file_ops) : (INODE_IS_FS(node) ? sizeof(struct fs_ops) : 0))),
             node->i_name,
             INODE_IS_CHAR(node) ? "Char Device" : (INODE_IS_BLOCK(node) ? "Block Device" : (INODE_IS_FS(node) ? "File System" : "Unknown"))
     );
@@ -1095,7 +1095,7 @@ static void ls_cmd(char *buf, int len, int argc, char **argv)
             inode_forearch_name(cb_idnoe, &env);
         } else {
             aos_cli_printf("invalid parameter!\r\n");
-        }
+        }        
     }
     vPortFree(st);
 }
@@ -1120,7 +1120,7 @@ static void hexdump_cmd(char *buf, int len, int argc, char **argv)
     printf("Found file %s. XIP Addr %p, len %lu\r\n",
             argv[1],
             filebuf.buf,
-            filebuf.bufsize
+            (unsigned long)filebuf.bufsize
     );
     utils_hexdump(filebuf.buf, filebuf.bufsize);
     aos_close(fd);
@@ -1317,12 +1317,12 @@ init_general_err:
     }
 
     return ret;
-#endif
+#endif 
 }
 
 static void console_cb_read(int fd, void *param)
 {
-    char buffer[16];
+    char buffer[64];  /* adapt to usb cdc since usb fifo is 64 bytes */
     int ret;
 
     ret = aos_read(fd, buffer, sizeof(buffer));
@@ -1334,12 +1334,12 @@ static void console_cb_read(int fd, void *param)
             printf("-------------BUG from aos_read for ret\r\n");
         }
     }
-}
+}                                                                                 
 
 static void console_cb_write(int fd, void *param)
 {
     printf("Empty cb\r\n");
-}
+}                                                                                 
 
 void *aos_cli_event_cb_read_get()
 {
