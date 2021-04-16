@@ -859,54 +859,10 @@ static void system_init(void)
     /* board config is set after system is init*/
     hal_board_cfg(0);
 }
-
-static void testc(uint32_t e[4]){
-
-    printf("%d\n",sizeof(e));
-
-}
 static void system_thread_init()
 {
     /*nothing here*/
-    uint32_t a;
-    uint32_t b[2];
-    char *c="Bouffalo Lab";
-    char d[]="Bouffalo Lab";
-    struct s_a
-    {
-        uint32_t mem1;
-        uint8_t  mem2;
-        uint32_t mem3;
-    };
-     struct s_b
-    {
-        uint32_t mem1;
-        uint8_t  mem2;
-        uint16_t mem3;
-    };
-     struct s_c
-    {
-        uint32_t mem1;
-        uint8_t  mem2;
-        uint16_t mem3;
-        uint8_t  mem4;
-    };
-    testc();
-    uint32_t ee[4];
-    uint32_t *heap_ptr=NULL;
-    heap_ptr=pvPortMalloc(5);
-    printf("%d\n",sizeof(a));
-    printf("%d\n",sizeof(b));
-    printf("%d\n",sizeof(c));
-    printf("%d\n",sizeof(d));
-    printf("%d\n",sizeof(s_a));
-    printf("%d\n",sizeof(s_b));
-    printf("%d\n",sizeof(s_c));
-    printf("%d\n",sizeof(heap_ptr));
-    testc(ee);
 }
-
-
 
 void bfl_main()
 {
