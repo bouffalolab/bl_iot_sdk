@@ -39,7 +39,7 @@
 
 /* the DHCP server address */
 #ifndef DHCPD_SERVER_IP
-    #define DHCPD_SERVER_IP "192.168.169.1"
+    #define DHCPD_SERVER_IP "192.168.4.1"
 #endif
 
 #define DHCP_DEBUG_PRINTF

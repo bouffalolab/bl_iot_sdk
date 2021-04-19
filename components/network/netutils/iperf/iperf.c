@@ -52,7 +52,7 @@
 #define IPERF_BUFSZ         (4 * 1300)
 #define IPERF_BUFSZ_UDP     (1 * 1300)
 #define DEBUG_HEADER        "[NET] [IPC] "
-#define DEFAULT_HOST_IP     "192.168.11.1"
+#define DEFAULT_HOST_IP     "192.168.4.1"
 
 typedef struct UDP_datagram {
     uint32_t id;
