@@ -55,7 +55,7 @@ int qcloud_iot_mqtt_network_init(Network *pNetwork)
     pNetwork->type = NETWORK_TCP;
 #endif
 
-    rc                     = network_init(pNetwork);
+    rc                     = qcloud_iot_network_init(pNetwork);
     pNetwork->is_connected = qcloud_iot_mqtt_tls_is_connected;
 
     return rc;

@@ -130,15 +130,9 @@ static int _serialize_connect_packet(unsigned char *buf, size_t buf_len, MQTTCon
     if (cur_timesec <= 0 || MAX_ACCESS_EXPIRE_TIMEOUT <= 0) {
         cur_timesec = LONG_MAX;
     }
-    long cur_timesec_bak = cur_timesec;
-    int  cur_timesec_len = 0;
-    while (cur_timesec_bak != 0) {
-        cur_timesec_bak /= 10;
-        ++cur_timesec_len;
-    }
 
-    int username_len =
-        strlen(options->client_id) + strlen(QCLOUD_IOT_DEVICE_SDK_APPID) + MAX_CONN_ID_LEN + cur_timesec_len + 4;
+    // 20 for timestampe length & delimiter
+    int username_len  = strlen(options->client_id) + QCLOUD_IOT_DEVICE_SDK_APPID_LEN + MAX_CONN_ID_LEN + 20;
     options->username = (char *)HAL_Malloc(username_len);
     if (options->username == NULL) {
         Log_e("malloc username failed!");

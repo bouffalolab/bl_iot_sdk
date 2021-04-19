@@ -25,7 +25,7 @@
 extern "C" {
 #endif
 
-#define PATH_MAX 1024
+#define PATH_MAX 4096
 /* Max size of cert/key file full path */
 #define FILE_PATH_MAX_LEN 256
 

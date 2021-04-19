@@ -22,7 +22,8 @@
 #define QCLOUD_IOT_COMMON_H_
 
 /* IoT C-SDK APPID */
-#define QCLOUD_IOT_DEVICE_SDK_APPID "21010406"
+#define QCLOUD_IOT_DEVICE_SDK_APPID     "21010406"
+#define QCLOUD_IOT_DEVICE_SDK_APPID_LEN (sizeof(QCLOUD_IOT_DEVICE_SDK_APPID) - 1)
 
 /* MQTT server domain */
 #define QCLOUD_IOT_MQTT_DIRECT_DOMAIN  "iotcloud.tencentdevices.com"

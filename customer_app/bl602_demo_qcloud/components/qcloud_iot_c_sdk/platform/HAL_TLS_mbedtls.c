@@ -335,7 +335,7 @@ int HAL_TLS_Write(uintptr_t handle, unsigned char *msg, size_t totalLen, uint32_
         while (!expired(&timer) &&
                (write_rc = mbedtls_ssl_write(&(pParams->ssl), msg + written_so_far, totalLen - written_so_far)) <= 0) {
             if (write_rc != MBEDTLS_ERR_SSL_WANT_READ && write_rc != MBEDTLS_ERR_SSL_WANT_WRITE) {
-                printf("HAL_TLS_write failed 0x%04x", write_rc < 0 ? -write_rc : write_rc);
+                Log_e("HAL_TLS_write failed 0x%04x", write_rc < 0 ? -write_rc : write_rc);
                 errorFlag = true;
                 break;
             }
@@ -349,11 +349,8 @@ int HAL_TLS_Write(uintptr_t handle, unsigned char *msg, size_t totalLen, uint32_
     *written_len = written_so_far;
 
     if (errorFlag) {
-        printf("QCLOUD_ERR_SSL_WRITE");
         return QCLOUD_ERR_SSL_WRITE;
-        
     } else if (expired(&timer) && written_so_far != totalLen) {
-        printf("QCLOUD_ERR_SSL_WRITE_TIMEOUT");
         return QCLOUD_ERR_SSL_WRITE_TIMEOUT;
     }
 

@@ -711,7 +711,7 @@ static int _http_network_init(Network *pNetwork, const char *host, int port, con
     pNetwork->host = host;
     pNetwork->port = port;
 
-    rc = network_init(pNetwork);
+    rc = qcloud_iot_network_init(pNetwork);
 
     return rc;
 }

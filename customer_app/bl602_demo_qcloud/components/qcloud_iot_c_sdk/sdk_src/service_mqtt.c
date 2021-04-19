@@ -69,7 +69,7 @@ static char *_get_service_mqtt_topic_info(void)
 
 static Service_Event_Struct_t *_get_service_event_handle(eServiceEvent evt)
 {
-    if ( evt >= sizeof(sg_service_event_map) / sizeof(sg_service_event_map[0])) {
+    if (evt < 0 || evt >= sizeof(sg_service_event_map) / sizeof(sg_service_event_map[0])) {
         return NULL;
     }
 
@@ -78,7 +78,7 @@ static Service_Event_Struct_t *_get_service_event_handle(eServiceEvent evt)
 
 static int _set_service_event_handle(eServiceEvent evt, OnServiceMessageCallback callback, void *context)
 {
-    if (evt >= sizeof(sg_service_event_map) / sizeof(sg_service_event_map[0])) {
+    if (evt < 0 || evt >= sizeof(sg_service_event_map) / sizeof(sg_service_event_map[0])) {
         return QCLOUD_ERR_INVAL;
     }
 

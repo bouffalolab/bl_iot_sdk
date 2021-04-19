@@ -63,7 +63,7 @@ uintptr_t HAL_TCP_Connect(const char *host, uint16_t port)
 
     ret = getaddrinfo(host, port_str, &hints, &addr_list);
     if (ret) {
-        printf("getaddrinfo(%s:%s) error", STRING_PTR_PRINT_SANITY_CHECK(host), port_str);
+        Log_e("getaddrinfo(%s:%s) error", STRING_PTR_PRINT_SANITY_CHECK(host), port_str);
         return 0;
     }
 
@@ -126,7 +126,7 @@ int HAL_TCP_Write(uintptr_t fd, const unsigned char *buf, uint32_t len, uint32_t
     uint32_t len_sent;
     uint32_t t_end, t_left;
     fd_set   sets;
-    printf("HAL_TCP_Write\n");
+
     fd -= LWIP_SOCKET_FD_SHIFT;
 
     t_end    = HAL_GetTimeMs() + timeout_ms;
