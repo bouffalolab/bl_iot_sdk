@@ -36,6 +36,61 @@
 #endif
 
 // TODO platform dependant
+
+#ifdef WIFI_CONFIG_ENABLED
+void *HAL_QueueCreate(unsigned long queue_length, unsigned long queue_item_size)
+{
+    QueueHandle_t queue_handle = NULL;
+    queue_handle               = xQueueCreate(queue_length, queue_item_size);
+    if (NULL == queue_handle) {
+        return NULL;
+    } else {
+        return (void *)queue_handle;
+    }
+}
+
+void HAL_QueueDestory(void *queue_handle)
+{
+    vQueueDelete(queue_handle);
+}
+
+uint32_t HAL_QueueReset(void *queue_handle)
+{
+    if (pdPASS == xQueueReset(queue_handle)) {
+        return QCLOUD_RET_SUCCESS;
+    } else {
+        return QCLOUD_ERR_FAILURE;
+    }
+}
+
+unsigned long HAL_QueueItemWaitingCount(void *queue_handle)
+{
+    if (pdPASS == uxQueueMessagesWaiting(queue_handle)) {
+        return QCLOUD_RET_SUCCESS;
+    } else {
+        return QCLOUD_ERR_FAILURE;
+    }
+}
+
+unsigned long HAL_QueueItemPop(void *queue_handle, void *const item_buffer, uint32_t wait_timeout)
+{
+    if (pdPASS == xQueueReceive(queue_handle, item_buffer, wait_timeout)) {
+        return QCLOUD_RET_SUCCESS;
+    } else {
+        return QCLOUD_ERR_FAILURE;
+    }
+}
+
+unsigned long HAL_QueueItemPush(void *queue_handle, void *const item_buffer, uint32_t wait_timeout)
+{
+    if (pdPASS == xQueueSend(queue_handle, item_buffer, wait_timeout)) {
+        return QCLOUD_RET_SUCCESS;
+    } else {
+        return QCLOUD_ERR_FAILURE;
+    }
+}
+#endif
+
 void HAL_SleepMs(_IN_ uint32_t ms)
 {
     TickType_t ticks = ms / portTICK_PERIOD_MS;
@@ -159,7 +214,7 @@ void HAL_MutexUnlock(_IN_ void *mutex)
 #endif
 }
 
-#ifdef MULTITHREAD_ENABLED
+#if ((defined MULTITHREAD_ENABLED) || (defined WIFI_CONFIG_ENABLED))
 
 // platform-dependant thread routine/entry function
 static void _HAL_thread_func_wrapper_(void *ptr)
@@ -190,6 +245,12 @@ int HAL_ThreadCreate(ThreadParams *params)
     }
 
     return QCLOUD_RET_SUCCESS;
+}
+
+int HAL_ThreadDestroy(void *thread_t)
+{
+    vTaskDelete(thread_t);
+    return 0;
 }
 
 #endif

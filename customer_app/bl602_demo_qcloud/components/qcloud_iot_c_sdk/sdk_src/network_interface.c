@@ -39,7 +39,7 @@ int is_network_at_connected(Network *pNetwork)
 }
 #endif
 
-int network_init(Network *pNetwork)
+int qcloud_iot_network_init(Network *pNetwork)
 {
     POINTER_SANITY_CHECK(pNetwork, QCLOUD_ERR_INVAL);
 

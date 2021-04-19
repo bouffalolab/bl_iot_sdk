@@ -141,6 +141,42 @@ int HAL_MutexTryLock(_IN_ void *mutex);
  */
 void HAL_MutexUnlock(_IN_ void *mutex);
 
+#ifdef WIFI_CONFIG_ENABLED
+/**
+ * @brief create queue
+ * @param queue_length  queue length
+ * @param queue_item_size   queue item size
+ *
+ * @return NULL or queue handle
+ */
+void *HAL_QueueCreate(unsigned long queue_length, unsigned long queue_item_size);
+/**
+ * @brief destory queue
+ * @param queue_handle
+ *
+ * @return void
+ */
+void HAL_QueueDestory(void *queue_handle);
+/**
+ * @brief destory queue
+ * @param queue_handle
+ *
+ * @return 0 is success other failue
+ */
+uint32_t HAL_QueueReset(void *queue_handle);
+/**
+ * @brief get queue item count
+ * @param queue_handle
+ *
+ * @return 0 is success other failue
+ */
+unsigned long HAL_QueueItemWaitingCount(void *queue_handle);
+
+unsigned long HAL_QueueItemPop(void *queue_handle, void *const item_buffer, uint32_t wait_timeout);
+
+unsigned long HAL_QueueItemPush(void *queue_handle, void *const item_buffer, uint32_t wait_timeout);
+#endif  // WIFI_CONFIG_ENABLED
+
 /**
  * @brief Malloc memory
  *
@@ -551,6 +587,17 @@ int HAL_UDP_Read(uintptr_t fd, unsigned char *data, unsigned int len);
  */
 int HAL_UDP_ReadTimeout(uintptr_t fd, unsigned char *p_data, unsigned int datalen, unsigned int timeout_ms);
 #endif  // COAP_COMM_ENABLED
+
+#ifdef WIFI_CONFIG_ENABLED
+int   HAL_UDP_CreateBind(const char *host, unsigned short port);
+int   HAL_UDP_WriteTo(uintptr_t fd, const unsigned char *p_data, unsigned int datalen, char *host, unsigned short port);
+void  HAL_UDP_Close(uintptr_t fd);
+char *HAL_UDP_GetErrnoStr();
+
+int HAL_UDP_GetErrno();
+int HAL_UDP_ReadTimeoutPeerInfo(uintptr_t fd, unsigned char *p_data, unsigned int datalen, unsigned int timeout_ms,
+                                char *recv_ip_addr, unsigned char recv_addr_len, unsigned short *recv_port);
+#endif  // WIFI_CONFIG_ENABLED
 
 #ifdef LOG_UPLOAD
 /* Functions for saving/reading logs into/from NVS(files/FLASH) after log upload

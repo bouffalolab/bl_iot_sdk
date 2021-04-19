@@ -18,6 +18,17 @@ COMPONENT_SRCS := platform/HAL_Device_freertos.c \
                   platform/HAL_Timer_freertos.c \
                   platform/HAL_TLS_mbedtls.c \
 				  platform/HAL_UDP_lwip.c \
+				  platform/HAL_Airkiss.c \
+				  platform/HAL_BTCombo_config.c \
+				  platform/HAL_Wifi_api.c \
+				  platform/HAL_Soft_ap.c \
+				  platform/HAL_Smart_config.c \
+				  platform/HAL_Simple_config.c \
+				  sdk_src/qcloud_wifi_config.c \
+				  sdk_src/qcloud_wifi_config_comm_service.c \
+				  sdk_src/qcloud_wifi_config_device_bind.c \
+				  sdk_src/qcloud_wifi_config_error_handle.c \
+				  sdk_src/qcloud_wifi_config_log_handle.c \
 				  sdk_src/asr_client.c \
 				  sdk_src/data_template_action.c \
 				  sdk_src/data_template_client.c \

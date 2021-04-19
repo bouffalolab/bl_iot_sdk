@@ -76,7 +76,7 @@ struct Network {
 /*
  * Init network stack
  */
-int network_init(Network *pNetwork);
+int qcloud_iot_network_init(Network *pNetwork);
 
 /* return the handle */
 int is_network_connected(Network *pNetwork);

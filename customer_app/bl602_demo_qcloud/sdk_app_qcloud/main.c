@@ -82,8 +82,6 @@
 #include <libfdt.h>
 #include <blog.h>
 
-#include "blsync_ble_app.h"
-
 #define CODE_CLI_BLSYNC_START 0x01
 #define CODE_CLI_BLSYNC_STOP  0x02
 
@@ -417,41 +415,11 @@ static void wifiprov_wifi_state_get(void *p_arg)
         state_get_cb(&state);
     }
 }
-
-static void event_cb_i2c_event(input_event_t *event, void *private_data)
-{
-    switch (event->code) {
-        case CODE_I2C_END:
-        {
-             printf("TRANS FINISH %lld\r\n", aos_now_ms());
-        }
-        break;
-        case CODE_I2C_ARB:
-        {
-             printf("TRANS ERROR ARB %lld\r\n", aos_now_ms());
-        }
-        break;
-        case CODE_I2C_NAK:
-        {
-            printf("TRANS ERROR NAK %lld\r\n", aos_now_ms());
-        }
-        break;
-        case CODE_I2C_FER:
-        {
-            printf("TRANS ERROR FER %lld\r\n", aos_now_ms());
-        }
-        break;
-        default:
-        {
-             printf("[I2C] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
-            
-        }
-    }
-}
 static void event_cb_wifi_event(input_event_t *event, void *private_data)
 {
-    struct _wifi_conn *conn_info;
-
+    static char *ssid;
+    static char *password;
+    extern bool q_cloud_IsConnected;
     switch (event->code) {
         case CODE_WIFI_ON_INIT_DONE:
         {
@@ -462,16 +430,24 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
         case CODE_WIFI_ON_MGMR_DONE:
         {
             printf("[APP] [EVT] MGMR DONE %lld\r\n", aos_now_ms());
-            _connect_wifi();
+            extern void Q_Cloud_Config_Net_Start(void)  ;
+            Q_Cloud_Config_Net_Start();
+        }   
+        break; 
+        case CODE_WIFI_ON_MGMR_DENOISE:
+        {
+            printf("[APP] [EVT] Microwave Denoise is ON %lld\r\n", aos_now_ms());
         }
         break;
         case CODE_WIFI_ON_SCAN_DONE:
         {
-            printf("[APP] [EVT] SCAN Done %lld, SCAN Result: %s\r\n",
-                aos_now_ms(),
-                WIFI_SCAN_DONE_EVENT_OK == event->value ? "OK" : "Busy now"
-            );
+            printf("[APP] [EVT] SCAN Done %lld\r\n", aos_now_ms());
             wifi_mgmr_cli_scanlist();
+        }
+        break;
+        case CODE_WIFI_ON_SCAN_DONE_ONJOIN:
+        {
+            printf("[APP] [EVT] SCAN On Join %lld\r\n", aos_now_ms());
         }
         break;
         case CODE_WIFI_ON_DISCONNECT:
@@ -480,8 +456,8 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
                 aos_now_ms(),
                 wifi_mgmr_status_code_str(event->value)
             );
-            vTaskDelay(1000);
-            wifi_mgmr_sta_disable(NULL);
+            q_cloud_IsConnected=0;
+		
         }
         break;
         case CODE_WIFI_ON_CONNECTING:
@@ -508,35 +484,72 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
         {
             printf("[APP] [EVT] GOT IP %lld\r\n", aos_now_ms());
             printf("[SYS] Memory left is %d Bytes\r\n", xPortGetFreeHeapSize());
-        
+            q_cloud_IsConnected=1;
+
+        }
+        break;
+        case CODE_WIFI_ON_EMERGENCY_MAC:
+        {
+            printf("[APP] [EVT] EMERGENCY MAC %lld\r\n", aos_now_ms());
+            hal_reboot();//one way of handling emergency is reboot. Maybe we should also consider solutions
+        }
+        break;
+        case CODE_WIFI_ON_PROV_SSID:
+        {
+            printf("[APP] [EVT] [PROV] [SSID] %lld: %s\r\n",
+                    aos_now_ms(),
+                    event->value ? (const char*)event->value : "UNKNOWN"
+            );
+            if (ssid) {
+                vPortFree(ssid);
+                ssid = NULL;
+            }
+            ssid = (char*)event->value;
+        }
+        break;
+        case CODE_WIFI_ON_PROV_BSSID:
+        {
+            printf("[APP] [EVT] [PROV] [BSSID] %lld: %s\r\n",
+                    aos_now_ms(),
+                    event->value ? (const char*)event->value : "UNKNOWN"
+            );
+            if (event->value) {
+                vPortFree((void*)event->value);
+            }
+        }
+        break;
+        case CODE_WIFI_ON_PROV_PASSWD:
+        {
+            printf("[APP] [EVT] [PROV] [PASSWD] %lld: %s\r\n", aos_now_ms(),
+                    event->value ? (const char*)event->value : "UNKNOWN"
+            );
+            if (password) {
+                vPortFree(password);
+                password = NULL;
+            }
+            password = (char*)event->value;
         }
         break;
         case CODE_WIFI_ON_PROV_CONNECT:
         {
             printf("[APP] [EVT] [PROV] [CONNECT] %lld\r\n", aos_now_ms());
-            conn_info = (struct _wifi_conn *)event->value;
-            wifi_sta_connect(conn_info->ssid, conn_info->pask);
+            printf("connecting to %s:%s...\r\n", ssid, password);
+            wifi_sta_connect(ssid, password);
         }
         break;
         case CODE_WIFI_ON_PROV_DISCONNECT:
         {
             printf("[APP] [EVT] [PROV] [DISCONNECT] %lld\r\n", aos_now_ms());
-            wifi_mgmr_sta_disconnect();
-            vTaskDelay(1000);
-            wifi_mgmr_sta_disable(NULL);
-
         }
         break;
-        case CODE_WIFI_ON_PROV_SCAN_START:
+        case CODE_WIFI_ON_AP_STA_ADD:
         {
-            printf("[APP] [EVT] [PROV] [SCAN] %lld\r\n", aos_now_ms());
-            wifiprov_scan((void *)event->value);
+            printf("[APP] [EVT] [AP] [ADD] %lld, sta idx is %lu\r\n", aos_now_ms(), (uint32_t)event->value);
         }
         break;
-        case CODE_WIFI_ON_PROV_STATE_GET:
+        case CODE_WIFI_ON_AP_STA_DEL:
         {
-            printf("[APP] [EVT] [PROV] [STATE] %lld\r\n", aos_now_ms());
-            wifiprov_wifi_state_get((void *)event->value);
+            printf("[APP] [EVT] [AP] [DEL] %lld, sta idx is %lu\r\n", aos_now_ms(), (uint32_t)event->value);
         }
         break;
         default:
@@ -544,27 +557,6 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
             printf("[APP] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
             /*nothing*/
         }
-    }
-}
-
-static void event_cb_cli(input_event_t *event, void *p_arg)
-{
-    char *cmd1 = "ble_init\r\n";
-    char *cmd2 = "ble_start_adv 0 0 0x100 0x100\r\n";
-    char *cmd3 = "ble_stop_adv\r\n";
-
-    switch (event->code) {
-        case CODE_CLI_BLSYNC_START :
-            aos_cli_input_direct(cmd1, strlen(cmd1));
-            aos_cli_input_direct(cmd2, strlen(cmd2));
-            break;
-        case CODE_CLI_BLSYNC_STOP :
-            aos_cli_input_direct(cmd3, strlen(cmd3));
-            blsync_ble_stop();
-            printf("blsync ble stop\r\n");
-            break;
-        default :
-            break;
     }
 }
 
@@ -576,9 +568,6 @@ void aws_main_entry(void *arg);
 
 static void __attribute__((unused)) cmd_tencent(char *buf, int len, int argc, char **argv){
 
-    extern int bl_qcloud_main(void *arg);
-    xTaskCreate(bl_qcloud_main, (char*)"tencent cloud", 4096, NULL, 16, NULL);
-    //my_light_main();
 }
 #define MAXBUF          128
 #define BUFFER_SIZE     (12*1024)
@@ -609,20 +598,9 @@ static void stack_wifi(void)
 
 }
 
-static void stack_ble (void)
-{
-    blsync_ble_start();
-}
 
-static void cmd_blsync_ble_start(char *buf, int len, int argc, char **argv)
-{
-    stack_wifi();
-    vTaskDelay(1000);
-    stack_ble();
-    vTaskDelay(1000);
 
-    aos_post_event(EV_CLI, CODE_CLI_BLSYNC_START, 0);
-}
+
 
 static void cmd_blsync_ble_stop(char *buf, int len, int argc, char **argv)
 {
@@ -630,8 +608,6 @@ static void cmd_blsync_ble_stop(char *buf, int len, int argc, char **argv)
 }
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
-    { "blsync_ble_start", "blsync ble start", cmd_blsync_ble_start},
-    { "blsync_ble_stop", "blsync ble stop", cmd_blsync_ble_stop},
     {   "tencent" ,  "tencent test",   cmd_tencent       },
 };
 
@@ -667,27 +643,6 @@ static void __opt_feature_init(void)
 #ifdef CONF_USER_ENABLE_VFS_ROMFS
     romfs_register();
 #endif
-}
-
-static void app_delayed_action_bleadv(void *arg)
-{
-    char *cmd1 = "ble_init\r\n";
-    char *cmd2 = "ble_start_adv 0 0 0x100 0x100\r\n";
-
-    aos_cli_input_direct(cmd1, strlen(cmd1));
-    aos_cli_input_direct(cmd2, strlen(cmd2));
-}
-
-static void app_delayed_action_wifi(void *arg)
-{
-    stack_wifi();
-    aos_post_delayed_action(1000, app_delayed_action_bleadv, NULL);
-}
-
-static void app_delayed_action_ble(void *arg)
-{
-    stack_ble();
-    aos_post_delayed_action(1000, app_delayed_action_wifi, NULL);
 }
 
 static void aos_loop_proc(void *pvParameters)
@@ -730,12 +685,8 @@ static void aos_loop_proc(void *pvParameters)
 
     aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
 
-    aos_register_event_filter(EV_CLI, event_cb_cli, NULL);
-
-    aos_post_delayed_action(1000, app_delayed_action_ble, NULL);
-
-
-    aos_register_event_filter(EV_I2C, event_cb_i2c_event, NULL);
+    stack_wifi();
+    vTaskDelay(1000);
     hal_i2c_init(0, 500);
     aos_loop_run();
 
