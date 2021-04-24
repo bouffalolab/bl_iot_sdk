@@ -49,8 +49,8 @@
 #include <wifi_mgmr_ext.h>
 #include <hal_wifi.h>
 
-#define HWCLOUD_SSID "BouffaloLab"
-#define HWCLOUD_PWD  "bouffalo"
+char  HWCLOUD_SSID[33]={0};
+char  HWCLOUD_PWD[32]={0};
 static int wifi_state_hw = WIFI_STATE_UNKNOWN;
 
 static void hwcloud_wifi_sta_connect(char *ssid, char *password)  //

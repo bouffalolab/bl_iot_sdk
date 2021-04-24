@@ -45,7 +45,7 @@ int hal_i2c_read_block(int address, char *data, int length, int subaddr_len, int
 int hal_i2c_write_block(int address, const char *data, int length, int subaddr_len, int subaddr);
 int hal_i2c_write_no_block(int address, const char *data, int length, int subaddr_len, int subaddr);
 int hal_i2c_read_no_block(int address, const char *data, int length, int subaddr_len, int subaddr);
-
+int  hal_i2c_gpio_form_dts(const void *fdt, uint32_t dtb_offset);
 int i2c_transfer_msgs_block(i2c_msg_t *pstmsg, int num, int support_ins);
 void i2c_msgs_process(i2c_msg_t *pstmsg);
 void i2c_insert_msgs_process(i2c_msg_t *pstmsg);
