@@ -34,14 +34,16 @@
 #include <looprt.h>
 #include <loopset.h>
 #include <loopset_i2c.h>
-
+#include <libfdt.h>
 #include <bl602.h>
 #include <bl_i2c.h>
 #include <bl602_i2c.h>
 #include <bl_irq.h>
 #include <hal_i2c.h>
 #include <blog.h>
-
+#include <bl_gpio.h>
+#include <bl602.h>
+#include <bl602_glb.h>
 i2c_msg_t *gpstmsg;
 SemaphoreHandle_t i2c_hd_handle = NULL;
 SemaphoreHandle_t i2c_msgs_handle = NULL;
@@ -268,10 +270,65 @@ int i2c_transfer_onemsg_no_block(i2c_msg_t *pstmsg)
     i2c_transfer_no_block(pstmsg);
     return 0;
 }
+#define BL_FDT32_TO_U8(addr, byte_offset)   ((uint8_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))
+int  hal_i2c_gpio_form_dts(const void *fdt, uint32_t dtb_offset)
+{
+    const char *i2c_node[1] = {"i2c@40011000"};
+    int offset1 = 0;
+    int offset2 = 0;
+    uint8_t gpiopins[2];
 
+    const uint32_t *addr_prop = 0;
+    int lentmp = 0;
+    const char *result = 0;
+    int countindex = 0;
+    offset1 = fdt_subnode_offset(fdt, dtb_offset, i2c_node[0]);
+    if (0 >= offset1) {
+        blog_info("i2c node is NULL.\r\n");
+        return 1;
+
+    }
+    countindex = fdt_stringlist_count(fdt, offset1, "status");
+    if (countindex != 1) {
+        blog_info("i2c status_countindex = NULL.\r\n");
+        return 1;
+    }
+    result = fdt_stringlist_get(fdt, offset1, "status", 0, &lentmp);
+    if ((lentmp != 4) || (memcmp("okay", result, 4) != 0)) {
+        blog_info("i2c status = %s\r\n", result);
+        
+        return 1;
+    }
+    offset2 = fdt_subnode_offset(fdt, offset1, "pin");
+    if (0 >= offset2) {
+        blog_info("i2c  pin NULL.\r\n");
+        return 1;
+    }
+    addr_prop = fdt_getprop(fdt, offset2,"scl", &lentmp);
+    if (addr_prop == NULL) {
+        blog_info("i2c scl pin is NULL.\r\n");
+         return 1;
+    }else{
+
+       gpiopins[0]=BL_FDT32_TO_U8(addr_prop, 0);
+    }
+    addr_prop = fdt_getprop(fdt, offset2,"sda", &lentmp);
+    if (addr_prop == NULL) {
+        blog_info("i2c sda pin is NULL.\r\n");
+         return 1;
+    }else{
+
+       gpiopins[1]=BL_FDT32_TO_U8(addr_prop, 0);
+    }
+
+    GLB_GPIO_Func_Init(GPIO_FUN_I2C, gpiopins, sizeof(gpiopins) / sizeof(gpiopins[0]));
+    return 0;
+}
 int hal_i2c_init(int i2cx, int freq)
 {
+    #if 0
     i2c_gpio_init(i2cx);
+    #endif
     i2c_set_freq(freq, i2cx);
     I2C_Disable(i2cx);       
     bl_irq_enable(I2C_IRQn);

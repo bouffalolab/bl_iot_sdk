@@ -82,6 +82,14 @@
 #include <libfdt.h>
 #include <blog.h>
 
+#include <looprt.h>
+#include <loopset.h>
+#include <loopset_i2c.h>
+#include <hal_i2c.h>
+#include <bl_i2c.h>
+#include <semphr.h>
+#include <hal_hwtimer.h>
+
 #ifdef CONFIG_HWCLOUD_IOT_LINK
 #include <example_hwcloud_iot_link.h> 
 #endif
@@ -155,14 +163,90 @@ void vApplicationIdleHook(void)
     (void)uxTopUsedPriority;
 #endif
 }
+extern int hw_sensoremperature;
+extern int hw_sensorhumidity;
+static hw_timer_t *sensor_timer = NULL; 
+int GXHT3X_test(void)
+{
+
+    i2c_msg_t init_msg[2];
+    uint8_t   init_buf[2];
+    uint8_t   sensor_buf[6];
+    
+    uint16_t tem;
+    uint16_t hum;
+
+    memset(sensor_buf, 0, 6);
+    init_buf[0]=0x2C;
+    init_buf[1]=0x10;
+
+ 
+    init_msg[0].addr = 0x45;
+    init_msg[0].subflag = 0;
+    init_msg[0].subaddr = 0;
+    init_msg[0].buf = init_buf;
+    init_msg[0].direct = I2C_M_WRITE;
+    init_msg[0].block = I2C_M_NO_BLOCK;
+    init_msg[0].len = 2;
+    init_msg[0].idex = 0;
+    init_msg[0].sublen = 0;
+    init_msg[0].i2cx = 0;
+    i2c_transfer_msgs_block(init_msg, 1, 0);
+
+    vTaskDelay(500);
+    
+    init_msg[0].addr = 0x45;
+    init_msg[0].subflag = 0;
+    init_msg[0].subaddr = 0;
+    init_msg[0].buf = sensor_buf;
+    init_msg[0].direct = I2C_M_READ;
+    init_msg[0].block = I2C_M_NO_BLOCK;
+    init_msg[0].len = 6;
+    init_msg[0].idex = 0;
+    init_msg[0].sublen = 0;
+    init_msg[0].i2cx = 0;
+    i2c_transfer_msgs_block(init_msg, 1, 0);
+
+    tem = ((sensor_buf[0]<<8) | sensor_buf[1]);//温度拼接
+	hum = ((sensor_buf[3]<<8) | sensor_buf[4]);//湿度拼接
+    
+    printf("recv data = %x ,%x %x ,%x\n",sensor_buf[0],sensor_buf[1],sensor_buf[3],sensor_buf[4]);
+    hw_sensoremperature= (((175.0*(float)tem)/65535.0)-45.0) ;// T = -45 + 175 * tem / (2^16-1)
+	hw_sensorhumidity= ((100.0*(float)hum)/65535.0);// RH = hum*100 / (2^16-1)
+
+    
+    if((hw_sensoremperature>=-20)&&(hw_sensoremperature<=125)&&(hw_sensorhumidity>=0)&&(hw_sensorhumidity<=100))//过滤错误数据
+	{
+        printf("sensor data ok\n");
+	
+        printf("Temperature:%d*C Humidity%d %% \n",hw_sensoremperature,hw_sensorhumidity);
+        return 0;
+	
+	}else{
+
+        hw_sensoremperature=0;
+        hw_sensorhumidity=0;
+        printf("sensor data error\n");
+        return 1;
+    }
+     return 0;
+
+}
+
+static void sensor_timer_handle(void)
+{
+	GXHT3X_test();
+}
+
 
 static void proc_hellow_entry(void *pvParameters)
 {
     vTaskDelay(500);
-
+    sensor_timer = hal_hwtimer_create(1000, sensor_timer_handle, 0);
     while (1) {
         printf("%s: RISC-V rv32imafc\r\n", __func__);
         vTaskDelay(10000);
+      
     }
     vTaskDelete(NULL);
 }
@@ -515,11 +599,10 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
     }
 }
 
-#if 0  //
-static void __attribute__((unused)) cmd_aws(char *buf, int len, int argc, char **argv)
+#if 1  
+static void cmd_sensor_data(char *buf, int len, int argc, char **argv)
 {
-void aws_main_entry(void *arg);
-    xTaskCreate(aws_main_entry, (char*)"aws_iot", 4096, NULL, 10, NULL);
+   
 }
 #endif 
 
@@ -753,7 +836,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
 }
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
-        // { "aws", "aws iot demo", cmd_aws},  //
+        { "cmd_sensor_data", "cmd_sensor_data", cmd_sensor_data},  //
         { "pka", "pka iot demo", cmd_pka},
         { "wifi", "wifi", cmd_wifi},
         { "sha", "sha iot demo", cmd_sha},
@@ -821,6 +904,120 @@ static void __opt_feature_init(void)
     romfs_register();
 #endif
 }
+static void event_cb_i2c_event(input_event_t *event, void *private_data)
+{
+    switch (event->code) {
+        case CODE_I2C_END:
+        {
+             printf("TRANS FINISH %lld\r\n", aos_now_ms());
+        }
+        break;
+        case CODE_I2C_ARB:
+        {
+             printf("TRANS ERROR ARB %lld\r\n", aos_now_ms());
+        }
+        break;
+        case CODE_I2C_NAK:
+        {
+            printf("TRANS ERROR NAK %lld\r\n", aos_now_ms());
+        }
+        break;
+        case CODE_I2C_FER:
+        {
+            printf("TRANS ERROR FER %lld\r\n", aos_now_ms());
+        }
+        break;
+        default:
+        {
+             printf("[I2C] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
+            
+        }
+    }
+}
+extern char CN_EP_DEVICEID[128];
+extern char CN_EP_PASSWD[32];
+extern char HWCLOUD_SSID[33];
+extern char HWCLOUD_PWD[32];
+static int fdt_huawei_module_init(const void *fdt, int huawei_offset)
+{
+	const uint32_t *result = NULL;
+	int lentmp = 0;
+	
+	result = fdt_getprop(fdt, huawei_offset, "ssid", &lentmp);
+    if (result!=NULL) {
+        printf("get ssid value = %s,%d\r\n", result,lentmp);
+        memset(HWCLOUD_SSID,0,sizeof(HWCLOUD_SSID)); 
+        memcpy(HWCLOUD_SSID,result,lentmp);
+    }
+	else 
+    {
+		printf("get ssid value fail\r\n");
+        return 1;
+	}
+    result = NULL;
+    result = fdt_getprop(fdt, huawei_offset, "psk", &lentmp);
+    if (result!=NULL) {
+        printf("get ssid psk = %s,%d\r\n", result,lentmp); 
+        memset(HWCLOUD_PWD,0,sizeof(HWCLOUD_PWD)); 
+        memcpy(HWCLOUD_PWD,result,lentmp);
+    }
+	else 
+    {
+		printf("get ssid psk fail\r\n");
+         return 1;
+	}
+    result = NULL;
+    result = fdt_getprop(fdt, huawei_offset, "devid", &lentmp);
+    if (result!=NULL) {
+        printf("get ssid devid = %s,%d\r\n", result,lentmp); 
+        memset(CN_EP_DEVICEID,0,sizeof(CN_EP_DEVICEID)); 
+        memcpy(CN_EP_DEVICEID,result,lentmp);
+    }
+	else 
+    {
+		printf("get ssid devid fail\r\n");
+         return 1;
+	}
+    result = NULL;
+    result = fdt_getprop(fdt, huawei_offset, "devpsw", &lentmp);
+    if (result!=NULL) {
+        printf("get ssid devpsw = %s,%d\r\n", result,lentmp); 
+        memset(CN_EP_PASSWD,0,sizeof(CN_EP_PASSWD)); 
+        memcpy(CN_EP_PASSWD,result,lentmp);
+    }
+	else 
+    {
+		printf("get ssid devpsw fail\r\n");
+         return 1;
+	}
+    return 0;
+}
+
+static void get_huawei_para(uint32_t fdt, uint32_t dtb_offset)
+{
+	if(0==fdt_huawei_module_init((const void *)fdt, (int)dtb_offset)){
+
+    #ifdef CONFIG_HWCLOUD_IOT_LINK
+    example_hwcloud_iot_link(); 
+    #endif
+    }
+}
+static void i2c_init_form_dts(uint32_t fdt, uint32_t dtb_offset)
+{
+   if( 0== hal_i2c_gpio_form_dts((const void *)fdt, (int)dtb_offset)){
+
+       printf("hal_i2c_gpio_form_dts ok\r\n");
+       hal_i2c_init(0, 500);
+   }
+}
+static void start_huawei_cloud(void)
+{
+   uint32_t fdt = 0, offset = 0;
+   if (0 == get_dts_addr("huawei", &fdt, &offset)) {
+        get_huawei_para(fdt, offset);
+    }
+
+}
 
 static void aos_loop_proc(void *pvParameters)
 {
@@ -832,7 +1029,7 @@ static void aos_loop_proc(void *pvParameters)
     /*Init bloop stuff*/
     looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
     loopset_led_hook_on_looprt();
-
+    loopset_i2c_hook_on_looprt();
     easyflash_init();
     vfs_init();
     vfs_device_init();
@@ -848,6 +1045,10 @@ static void aos_loop_proc(void *pvParameters)
     if (0 == get_dts_addr("gpio", &fdt, &offset)) {
         hal_gpio_init_from_dts(fdt, offset);
     }
+    if (0 == get_dts_addr("i2c", &fdt, &offset)) {
+        i2c_init_form_dts(fdt, offset);
+    }
+   
 
     __opt_feature_init();
     aos_loop_init();
@@ -862,7 +1063,7 @@ static void aos_loop_proc(void *pvParameters)
 
     aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
     cmd_stack_wifi(NULL, 0, 0, NULL);
-
+    aos_register_event_filter(EV_I2C, event_cb_i2c_event, NULL);
     aos_loop_run();
 
     puts("------------------------------------------\r\n");
@@ -1013,10 +1214,9 @@ void bfl_main()
 
     puts("[OS] Starting proc_hellow_entry task...\r\n");
     xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
+    
+    start_huawei_cloud();
 
-    #ifdef CONFIG_HWCLOUD_IOT_LINK
-    example_hwcloud_iot_link(); 
-    #endif
     
     puts("[OS] Starting aos_loop_proc task...\r\n");
     xTaskCreateStatic(aos_loop_proc, (char*)"event_loop", 1024, NULL, 15, aos_loop_proc_stack, &aos_loop_proc_task);

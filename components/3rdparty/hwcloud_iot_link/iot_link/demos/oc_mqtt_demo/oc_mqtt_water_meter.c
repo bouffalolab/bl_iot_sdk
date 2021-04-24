@@ -31,7 +31,7 @@
  * Import, export and usage of Huawei LiteOS in any manner by you shall be in compliance with such
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
-
+#if 1
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -89,12 +89,9 @@ static const char s_server_ca[] =
 "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\r\n"
 "-----END CERTIFICATE-----\r\n";
 
-#define CN_EP_DEVICEID        "60056c19aaafca02dbd25786_bl602_mqtt_12345678" //  watermeter水表模型
-#define CN_EP_PASSWD          "12345678" // 
+char CN_EP_DEVICEID[128]={0}; 
+char CN_EP_PASSWD[32]={0};
 
-///< the client use the cert mode  SHA-256
-//72DC0E75D88CEC38A025E9C48C79D222F608B039D080BCEFC0007DAD1AFFAD00
-//#define CN_EP_DEVICEID         "5d0c76788a48f95ac41bcb9c_ca002"
 
 #define CN_BOOT_MODE            0
 #define CN_LIFE_TIME            60                         ///< the platform need more
@@ -283,6 +280,8 @@ static int  oc_cmd_normal(oc_mqtt_profile_msgrcv_t *demo_msg)
 }
 
 /*数据上报处理函数*/ 
+int hw_sensoremperature=0;
+int hw_sensorhumidity=0;
 static void  oc_report_normal(void)
 {
     static int times = 1;
@@ -301,46 +300,42 @@ static void  oc_report_normal(void)
     }
     else if(times == EN_OC_MQTT_PROFILE_MSG_TYPE_UP_PROPERTYREPORT)
     {
-        //  用于拼装JSON数据的变量
-	    oc_mqtt_profile_kv_t dailyActivityTime_List;
-
-        //  添加初始化服务代码
-        ///< initialize the service
-        s_device_service.event_time = NULL;
-        s_device_service.service_id = "Connectivity";
-        s_device_service.service_property = &dailyActivityTime_List;
-        s_device_service.nxt = NULL;
-
-        //  添加数据所需要的变量
-	    int dailyActivityTime = 66;
-
-        while(1)
+        oc_mqtt_profile_service_t    service;
+        oc_mqtt_profile_kv_t         temperature;
+        oc_mqtt_profile_kv_t         humidity;
+  
+         while(1)
         {
+            
+            service.event_time = NULL;
+            service.service_id = "Agriculture";
+            service.service_property = &temperature;
+            service.nxt = NULL;
+
+            temperature.key = "Temperature";
+            temperature.value =&hw_sensoremperature;
+            temperature.type = EN_OC_MQTT_PROFILE_VALUE_INT;
+            temperature.nxt = &humidity;
+
+            humidity.key = "Humidity";
+            humidity.value =&hw_sensorhumidity;
+            humidity.type = EN_OC_MQTT_PROFILE_VALUE_INT;
+            humidity.nxt =NULL;
             osal_task_sleep(10000);
-            if(1)//默认有效 // 
+            //  添加数据上报代码
+            ret = oc_mqtt_profile_propertyreport(NULL,&service);
+            if(!ret)
             {
-
-                /*组装JSON数据*/ 
-                dailyActivityTime = rand()%10;
-                dailyActivityTime_List.key = "dailyActivityTime";
-                dailyActivityTime_List.value = (char *)&dailyActivityTime;
-                dailyActivityTime_List.type = EN_OC_MQTT_PROFILE_VALUE_INT;
-                dailyActivityTime_List.nxt = NULL;
-
-                //  添加数据上报代码
-                ret = oc_mqtt_profile_propertyreport(NULL,&s_device_service);
-                if(!ret)
-                {
-                    printf("%s\r\n","max.su -> My report success");
-                }
-                else
-                {
-                    printf("max.su -> error code %d\r\n", ret);
-                }
-                        
-
+                printf("%s\r\n","max.su -> My report success");
             }
+            else
+            {
+                printf("max.su -> error code %d\r\n", ret);
+            }
+            
         }
+        
+    
     }
     return;
 }
@@ -429,3 +424,5 @@ int standard_app_demo_main()
 
     return 0;
 }
+#endif
+

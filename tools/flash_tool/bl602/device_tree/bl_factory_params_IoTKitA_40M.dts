@@ -9,78 +9,15 @@
     compatible = "bl,bl602-sample", "bl,bl602-common";
     #address-cells = <0x1>;
     #size-cells = <0x1>;
-    gpio {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        max_num = <40>;
-        gpio0 {                                  
-            status = "okay";                     
-            pin  = <5>;                          
-            feature = "led";                     
-            active = "Hi"; //Hi or Lo
-            mode = "blink"; //blink or hearbeat
-            time = <100>; //duration for this mode
-        };
-        gpio1 {                                  
-            status = "disable";                     
-            pin  = <6>;                          
-            feature = "led";                     
-            active = "Hi"; //Hi or Lo
-            mode = "blink"; //blink or hearbeat
-            time = <100>; //duration for this mode
-        };
-        gpio2 {
-            status = "okay";
-            pin = <2>;
-            feature = "button";
-            active = "Hi";
-            mode = "multipress";
-            button {
-                debounce = <10>;
-                short_press_ms {
-                    start = <100>;
-                    end = <3000>;
-                    kevent = <2>;
-                };
-                long_press_ms {
-                    start = <6000>;
-                    end = <10000>;
-                    kevent = <3>;
-                };
-                longlong_press_ms {
-                    start = <15000>;
-                    kevent = <4>;
-                };
-                trig_level = "Hi";
-            };
-            hbn_use = "disable";
-        };
-    };
-    i2s {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        i2s@40017000 {
-            status = "okay";
-            compatible = "bl602_i2s";
-            reg = <0x40017000 0x100>;
-            mclk_only = "okay";
-            pin {
-                mclk = <11>;
-            };
-        };
-        i2s@40017100 {
-            status = "okay";
-            compatible = "bl602_i2s";
-            reg = <0x40017100 0x100>;
-            mclk_only = "disable";
-            pin {
-                bclk = <12>;
-                fs = <29>;
-                do = <30>;
-                di = <31>;
-            };
-        };
-    };
+	huawei {
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	ssid = "BouffaloLab";
+	psk  = "bouffalo";
+	devid ="6080bf90f4b59002c0d9c955_bl602";
+	devpsw="12345678";
+	};
     i2c {
         #address-cells = <1>;
         #size-cells = <1>;
@@ -89,20 +26,8 @@
             compatible = "bl602_i2c";
             reg = <0x40011000 0x100>;
             pin {
-                scl = <32>;
-                sda = <13>;
-            };
-            devices {
-                list_addr = <0x18 0x21>;
-                list_driver = "i2c_es8311", "i2c_gc0308>";
-            };
-        };
-        i2c@40011100 {
-            status = "disable";
-            compatible = "bl602_i2c";
-            reg = <0x40011100 0x100>;
-            pin {
-                /*empty here*/
+                scl = <12>;
+                sda = <11>;
             };
         };
     };
@@ -169,26 +94,7 @@
             freq = <5000>;
             duty = <50>;
         };
-    };
-    ir {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        ctrltype = <0>;
-        tx {
-            status = "disable";
-            pin = <11>;         // only support 11
-            mode = "NEC";       // NEC、ExtenedNEC、RC5、SWM
-            interval = <100>;   // ms
-            active_mode = "Hi"; //Hi、Lo
-        };
-        rx {
-            status = "okay";
-            pin = <12>;         // only support 12 13
-            mode = "NEC";       // NEC、ExtenedNEC、RC5、SWM
-            active_mode = "Hi"; //Hi、Lo
-            data_check = <2>;   //bit 0:check cmd, bit 1:check addr
-        };
-    };
+    }; 
     uart {
         #address-cells = <1>;
         #size-cells = <1>;
@@ -214,14 +120,14 @@
             };
         };
         uart@4000A100 {
-            status = "okay";
+            status = "disable";
             id = <1>;
             compatible = "bl602_uart";
             path = "/dev/ttyS1";
             baudrate = <115200>;
             pin {
-                rx = <3>;
-                tx = <4>;
+                rx = <11>;
+                tx = <12>;
             };
             buf_size {
                 rx_size = <512>;
@@ -256,19 +162,6 @@
                 tx_dma_ch = <2>;
                 rx_dma_ch = <3>;
             };
-        };
-    };
-    gpip {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        adc_key {
-            status = "disable";
-            pin = <9>;
-            interrupt  = <3>;
-            key_vol = <0 100 400 300 500>;
-            key_pcb = "SW1", "SW2", "SW3", "SW4","SW5";
-            key_event = "Usr1", "Usr2", "Start", "Up", "Down";
-            key_raw = <1 2 3 4 5>;
         };
     };
     qspi {
@@ -348,4 +241,5 @@
             pwr_table_ble = <13>;  //range:-3~15dbm; if set -3, please set 253 here
         };
     };
+	
 };
