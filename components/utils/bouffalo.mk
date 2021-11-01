@@ -7,7 +7,7 @@ COMPONENT_ADD_INCLUDEDIRS +=
 COMPONENT_PRIV_INCLUDEDIRS :=
 
 ## This component's src
-ifeq ("$(CONFIG_CHIP_NAME)", "BL606p")
+ifneq (,$(filter "$(CONFIG_CHIP_NAME)", "BL606p" "BL616"))
 COMPONENT_SRCS := src/utils_hex.c \
                   src/utils_fec.c \
                   src/utils_log.c \
@@ -56,13 +56,18 @@ COMPONENT_SRCS := src/utils_hex.c \
                   src/utils_psk_fast.c \
                   src/utils_memp.c \
                   src/utils_tlv_bl.c \
+                  src/utils_base64.c \
+                  src/test/test_utils_base64.c \
 
 endif
 endif
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
-COMPONENT_SRCDIRS := src
+COMPONENT_SRCDIRS := src src/test
 
 
 ##
 #CPPFLAGS +=
+ifeq ($(CONFIG_UTIL_BASE64_ENABLE),1)
+CPPFLAGS += -DUTILS_BASE64
+endif

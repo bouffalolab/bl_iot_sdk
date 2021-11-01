@@ -21,6 +21,9 @@ extern "C" {
 #define IOCTL_UART_IOC_READ_NOBLOCK              7 /* read noblock */
 #define IOCTL_UART_IOC_CONFIG_MODE               8 /* config baud parity */
 
+#define UART_READ_CFG_BLOCK   1
+#define UART_READ_CFG_NOBLOCK 2
+
 typedef enum {
     IO_UART_PARITY_NONE,
     IO_UART_PARITY_ODD,
@@ -83,12 +86,15 @@ ssize_t vfs_uart_read(file_t *fp, void *buf, size_t nbytes);
  */
 ssize_t vfs_uart_write(file_t *fp, const void *buf, size_t nbytes);
 
+int vfs_uart_init(uint32_t fdt, uint32_t dtb_uart_offset, const char *node[], int node_max);
 
 int vfs_uart_poll(file_t *fp, bool setup, poll_notify_t notify, struct pollfd *fd, void *opa);
 
 int vfs_uart_ioctl(file_t *fp, int cmd, unsigned long arg);
 
 int vfs_uart_sync(file_t *fp);
+
+int vfs_uart_init_simple_mode(uint8_t id, uint8_t pin_tx, uint8_t pin_rx, int baudrate, const char *path);
 
 #ifdef __cplusplus
 }

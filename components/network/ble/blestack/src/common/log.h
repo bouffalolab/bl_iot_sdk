@@ -11,6 +11,10 @@
 #ifndef __BT_LOG_H
 #define __BT_LOG_H
 
+#if defined(BL_MCU_SDK)
+#include "bflb_platform.h"
+#endif
+
 #include <zephyr.h>
 
 #include <bluetooth.h>
@@ -38,13 +42,25 @@ extern "C" {
 
 #if defined(BFLB_BLE)
 
-#define BT_DBG(fmt, ...)    //printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#if defined(BL_MCU_SDK)
+#define BT_DBG(fmt, ...)   //bflb_platform_printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#define BT_ERR(fmt, ...)   bflb_platform_printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#define BT_WARN(fmt, ...)  bflb_platform_printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#define BT_INFO(fmt, ...)   //bflb_platform_printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#else
+#define BT_DBG(fmt, ...)   //printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
 #define BT_ERR(fmt, ...)   printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
-#if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_BT_MESH_PTS)
-#define BT_PTS(fmt, ...)   printf(fmt"\r\n", ##__VA_ARGS__)
-#endif
 #define BT_WARN(fmt, ...)  printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
 #define BT_INFO(fmt, ...)   //printf(fmt", %s\r\n", ##__VA_ARGS__, __func__)
+#endif
+
+#if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_BT_MESH_PTS)
+#if defined(BL_MCU_SDK)
+#define BT_PTS(fmt, ...)   bflb_platform_printf(fmt"\r\n", ##__VA_ARGS__)
+#else
+#define BT_PTS(fmt, ...)   printf(fmt"\r\n", ##__VA_ARGS__)
+#endif
+#endif
 
 #else /*BFLB_BLE*/
 

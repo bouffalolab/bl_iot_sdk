@@ -21,8 +21,11 @@
 #include <string.h>
 #include <misc/byteorder.h>
 #include <net/buf.h>
+#if defined(BFLB_BLE)
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
 #include "bl_port.h"
+#endif
+#include "bl_hci_wrapper.h"
 #endif
 
 #if defined(CONFIG_NET_BUF_LOG)
@@ -80,10 +83,16 @@ extern struct net_buf_pool friend_buf_pool;
 extern struct net_buf_pool br_sig_pool;
 extern struct net_buf_pool sdp_pool;
 extern struct net_buf_pool hf_pool;
+extern struct net_buf_pool dummy_pool;
 #endif
-struct net_buf_pool *_net_buf_pool_list[] = {
-    &hci_cmd_pool,
-    &hci_rx_pool,
+
+#if defined(CONFIG_AUTO_PTS)
+extern struct net_buf_pool server_pool;
+extern struct net_buf_pool data_pool;
+#endif
+
+struct net_buf_pool *_net_buf_pool_list[] = {&hci_cmd_pool, &hci_rx_pool,
+
     #if defined(CONFIG_BT_CONN)
     &acl_tx_pool,
     &num_complete_pool,
@@ -107,15 +116,21 @@ struct net_buf_pool *_net_buf_pool_list[] = {
     &friend_buf_pool,
     #endif
     #endif
-    #if defined(CONFIG_BT_BREDR)
-    &br_sig_pool,
-    &sdp_pool,
-    &hf_pool,
-    #endif
+	#if defined(CONFIG_BT_BREDR)
+	&sdp_pool,
+	&br_sig_pool,
+	&hf_pool,
+	&dummy_pool,
+	#endif
+	#if defined(CONFIG_AUTO_PTS)
+	&server_pool,
+	&data_pool,
+	#endif
 };
-#else //defined(BFLB_DYNAMIC_ALLOC_MEM)
+
+#else 
 extern struct net_buf_pool _net_buf_pool_list[];
-#endif //BFLB_BLE
+#endif //BFLB_DYNAMIC_ALLOC_MEM
 
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
 void net_buf_init(struct net_buf_pool *buf_pool, u16_t buf_count, size_t data_size, destroy_cb_t destroy)
@@ -136,10 +151,15 @@ void net_buf_init(struct net_buf_pool *buf_pool, u16_t buf_count, size_t data_si
     buf_pool->avail_count = buf_count;
     #endif
     buf_pool->destroy = destroy;  
+
+    k_lifo_init(&(buf_pool->free), buf_count);
 }
 
 void net_buf_deinit(struct net_buf_pool *buf_pool)
 {
+    extern void bt_delete_queue(struct k_fifo *queue_to_del);
+    bt_delete_queue((struct k_fifo *)(&(buf_pool->free)));
+
     struct net_buf_pool_fixed *buf_fixed = (struct net_buf_pool_fixed *)buf_pool->alloc->alloc_data;
     k_free(buf_fixed->data_pool);
     k_free(buf_pool->__bufs);
@@ -279,7 +299,7 @@ const struct net_buf_data_cb net_buf_fixed_cb = {
 	.unref = fixed_data_unref,
 };
 
-#if (CONFIG_HEAP_MEM_POOL_SIZE > 0)
+#if defined (CONFIG_HEAP_MEM_POOL_SIZE) && (CONFIG_HEAP_MEM_POOL_SIZE > 0)
 
 static u8_t *heap_data_alloc(struct net_buf *buf, size_t *size, s32_t timeout)
 {
@@ -628,11 +648,6 @@ void net_buf_put(struct k_fifo *fifo, struct net_buf *buf)
 	k_fifo_put_list(fifo, buf, tail);
 }
 
-#if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
-extern struct net_buf_pool hci_rx_pool;
-extern void bl_handle_queued_msg(void);
-#endif
-
 #if defined(CONFIG_NET_BUF_LOG)
 void net_buf_unref_debug(struct net_buf *buf, const char *func, int line)
 #else
@@ -644,18 +659,14 @@ void net_buf_unref(struct net_buf *buf)
 	while (buf) {
 		struct net_buf *frags = buf->frags;
 		struct net_buf_pool *pool;
-#if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
-        u8_t buf_type = bt_buf_get_type(buf);
-		bool adv_report = bt_buf_check_rx_adv(buf);
-#endif
 
-#if defined(CONFIG_NET_BUF_LOG)
+	#if defined(CONFIG_NET_BUF_LOG)
 		if (!buf->ref) {
 			NET_BUF_ERR("%s():%d: buf %p double free", func, line,
 				    buf);
 			return;
 		}
-#endif
+	#endif
 		NET_BUF_DBG("buf %p ref %u pool_id %u frags %p", buf, buf->ref,
 			    buf->pool_id, buf->frags);
 
@@ -676,10 +687,10 @@ void net_buf_unref(struct net_buf *buf)
 
 		pool = net_buf_pool_get(buf->pool_id); 
 
-#if defined(CONFIG_NET_BUF_POOL_USAGE)
+	#if defined(CONFIG_NET_BUF_POOL_USAGE)
 		pool->avail_count++;
 		NET_BUF_ASSERT(pool->avail_count <= pool->buf_count);
-#endif
+	#endif
 
 		if (pool->destroy) {
 			pool->destroy(buf);
@@ -689,12 +700,13 @@ void net_buf_unref(struct net_buf *buf)
 
 		buf = frags;
 
-        #if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
-        if(pool == &hci_rx_pool && (buf_type == BT_BUF_ACL_IN || adv_report == true)){
-            bl_handle_queued_msg();
-            return;
-        }
-        #endif  
+	#if defined(BFLB_BLE)
+		if (pool == &hci_rx_pool)
+		{
+			bl_trigger_queued_msg();
+			return;
+		}
+	#endif
 	}
 }
 

@@ -100,117 +100,123 @@ static int fault_test(struct bt_mesh_model *model, uint8_t test_id, uint16_t cid
 static void attn_on(struct bt_mesh_model *model);
 static void attn_off(struct bt_mesh_model *model);
 
-static void blemesh_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_pvnr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_pvnr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
-static void blemesh_set_dev_uuid(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_input_num(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_input_str(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_set_dev_uuid(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_input_num(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_input_str(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #if defined(CONFIG_BT_MESH_MODEL)
 #if defined(CONFIG_BT_MESH_MODEL_GEN_CLI)
-static void blemesh_gen_oo_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_gen_oo_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
 #if defined(CONFIG_BT_MESH_MODEL_LIGHT_CLI)
-static void blemesh_light_lgn_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_light_ctl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_light_hsl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_light_lgn_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_light_ctl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_light_hsl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
 #if defined(CONFIG_BT_MESH_MODEL_VENDOR_CLI)
-static void blemesh_vendor_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_vendor_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
 #endif /* CONFIG_BT_MESH_MODEL */
-static void blemesh_pb(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_pb(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #if defined(CONFIG_BT_MESH_PB_ADV)
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_provision_adv(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_provision_adv(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif /* CONFIG_BT_MESH_PROVISIONER */
 #endif /* CONFIG_BT_MESH_PB_ADV */
-static void blemesh_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_net_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_seg_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_rpl_clr(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_ivu_test(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_iv_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
-static void blemesh_fault_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_net_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_seg_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_rpl_clr(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_ivu_test(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_iv_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_fault_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 
 #if defined(CONFIG_BT_MESH_LOW_POWER)
-static void blemesh_lpn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blemeshcli_lpn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
 
 #if defined(CONFIG_BT_MESH_CDB)
-static void blemesh_cdb_create(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_clear(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_show(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_node_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_node_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_subnet_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_subnet_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cdb_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_create(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_clear(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_show(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_node_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_node_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_subnet_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_subnet_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cdb_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 #endif /* CONFIG_BT_MESH_CDB */
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_beacon_listen(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_provision(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_node_cfg(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_beacon_listen(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_provision(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_node_cfg(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 #endif /* CONFIG_BT_MESH_PROVISIONER */
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_get_comp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_set_dst(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_krp_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_krp_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_bcn_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_bcn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_dttl_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_dttl_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_gpxy_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_cfg_gpxy_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_friend(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_relay(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_node_identify(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_node_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_network_trans(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_lpn_timeout_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_net_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_get_comp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_set_dst(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_krp_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_krp_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_bcn_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_bcn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_dttl_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_dttl_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_gpxy_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_cfg_gpxy_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_friend(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_relay(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_node_identify(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_node_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_network_trans(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_lpn_timeout_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_net_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 /* Added by bouffalo */
-static void blemesh_net_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_net_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_net_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_net_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_net_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_net_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 /* Added by bouffalo */
-static void blemesh_app_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_app_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_app_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_app_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 /* Added by bouffalo */
-static void blemesh_kr_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_app_bind(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_app_unbind(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_app_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_ow(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_del_all(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_add_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_ow_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_del_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_sub_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_mod_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_kr_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_app_bind(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_app_unbind(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_app_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_ow(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_del_all(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_add_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_ow_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_del_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_sub_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 /* Added by bouffalo */
-static void blemesh_mod_pub_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_hb_sub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_hb_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_mod_pub_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_hb_sub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_hb_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 
-static void blemesh_clhm_fault(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_clhm_period(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_clhm_ats(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_clhm_fault(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_clhm_period(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_clhm_ats(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 #endif
 #if defined(CFG_NODE_SEND_CFGCLI_MSG) && defined(CONFIG_BT_MESH_CDB)
-static void blemesh_pvnr_devkey(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_pvnr_devkey(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 #endif
 #if defined(CONFIG_BT_MESH_SYNC)
-static void blemesh_sync_start(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
-static void blemesh_sync_stop(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_sync_start(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+static void blemeshcli_sync_stop(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
 #endif
+
+#if defined(CONFIG_BT_MESH_TEST)
+static int nodelist_check(uint16_t addr);
+static int nodelist_check_clear();
+static void blemeshcli_nodelist_op(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[]);
+#endif /* CONFIG_BT_MESH_TEST */
 
 #if defined(CONFIG_BT_MESH_PROVISIONER)
 static void print_node_added(u16_t net_idx, u8_t uuid[16], u16_t addr, u8_t num_elem);
@@ -478,132 +484,131 @@ const struct cli_command btMeshCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
 #else
 const struct cli_command btMeshCmdSet[] = {
 #endif
-    {"blemesh_init", "\r\nblemesh_init:[Initialize]\r\n Parameter[Null]\r\n", blemesh_init},
+    {"blemesh_init", "blemesh_init:[Initialize]\r\n Parameter[Null]", blemeshcli_init},
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-    {"blemesh_pvnr_init", "\r\nblemesh_init:[Initialize]\r\n Parameter[Null]\r\n", blemesh_pvnr_init},
+    {"blemesh_pvnr_init", "blemesh_pvnr_init:[Initialize]\r\n Parameter[Null]", blemeshcli_pvnr_init},
 #endif
-	{"blemesh_set_dev_uuid", "\r\nblemesh_input_num:[input number in provisionging procedure]\r\n\
-     [Size:16 Octets, e.g.112233445566778899AA]\r\n", blemesh_set_dev_uuid},
-    {"blemesh_pb", "\r\nblemesh_pb:[Enable or disable provisioning]\r\n\
+	{"blemesh_set_dev_uuid", "blemesh_input_num:[input number in provisionging procedure]\r\n\
+     [Size:16 Octets, e.g.112233445566778899AA]", blemeshcli_set_dev_uuid},
+    {"blemesh_pb", "blemesh_pb:[Enable or disable provisioning]\r\n\
      [bear, 1:adv bear, 2:gatt bear]\r\n\
-     [enable, 0:disable provisioning, 1:enable provisioning]\r\n", blemesh_pb},
+     [enable, 0:disable provisioning, 1:enable provisioning]", blemeshcli_pb},
 #if defined(CONFIG_BT_MESH_PB_ADV)
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-	{"blemesh_provision_adv", "\r\nblemesh_pb:[Enable or disable provisioning]\r\n\
+	{"blemesh_provision_adv", "blemesh_pb:[Enable or disable provisioning]\r\n\
 		 [bear, 1:adv bear, 2:gatt bear]\r\n\
-		 [enable, 0:disable provisioning, 1:enable provisioning]\r\n", blemesh_provision_adv},
+		 [enable, 0:disable provisioning, 1:enable provisioning]", blemeshcli_provision_adv},
 #endif /* CONFIG_BT_MESH_PROVISIONER */
 #endif /* CONFIG_BT_MESH_PB_ADV */
     
-    {"blemesh_reset", "\r\nblemesh_reset:[Reset the state of the local mesh node]\r\n Parameter[Null]\r\n", blemesh_reset},
-    {"blemesh_net_send", "\r\nblemesh_net_send:[Send a network packet]\r\n Parameter[TTL CTL SRC DST]\r\n", blemesh_net_send},
-    {"blemesh_seg_send", "\r\nblemesh_seg_send:[Send a segmented message]\r\n Parameter[SRC DST]\r\n", blemesh_seg_send},
-    {"blemesh_rpl_clr", "\r\nblemesh_rpl_clr:[Clear replay protection list]\r\n Parameter[Null]\r\n", blemesh_rpl_clr},
-    {"blemesh_ivu_test", "\r\nblemesh_ivu_test:[Enable or disable iv update test mode]\r\n\
-     [enable, 0:disable, 1:enable]\r\n", blemesh_ivu_test},
-    {"blemesh_iv_update", "\r\nblemesh_iv_update:[Enable or disable iv update procedure]\r\n\
-     [enable, 0:disable, 1:enable by sending secure network beacons]\r\n", blemesh_iv_update},
-    {"blemesh_fault_set", "\r\nblemesh_fault_set:[Set current fault or registered fault values]\r\n\
+    {"blemesh_reset", "blemesh_reset:[Reset the state of the local mesh node]\r\n Parameter[Null]", blemeshcli_reset},
+    {"blemesh_net_send", "blemesh_net_send:[Send a network packet]\r\n Parameter[TTL CTL SRC DST]", blemeshcli_net_send},
+    {"blemesh_seg_send", "blemesh_seg_send:[Send a segmented message]\r\n Parameter[SRC DST]", blemeshcli_seg_send},
+    {"blemesh_rpl_clr", "blemesh_rpl_clr:[Clear replay protection list]\r\n Parameter[Null]", blemeshcli_rpl_clr},
+    {"blemesh_ivu_test", "blemesh_ivu_test:[Enable or disable iv update test mode]\r\n\
+     [enable, 0:disable, 1:enable]", blemeshcli_ivu_test},
+    {"blemesh_iv_update", "blemesh_iv_update:[Enable or disable iv update procedure]\r\n\
+     [enable, 0:disable, 1:enable by sending secure network beacons]", blemeshcli_iv_update},
+    {"blemesh_fault_set", "blemesh_fault_set:[Set current fault or registered fault values]\r\n\
      [type, 0:current fault, 1:registered fault]\r\n\
-     [fault, fault array in hex format]\r\n", blemesh_fault_set},
+     [fault, fault array in hex format]", blemeshcli_fault_set},
     #if defined(CONFIG_BT_MESH_LOW_POWER)
-    {"blemesh_lpn_set", "\r\nblemesh_lpn_set:[Enable or disable low power node]\r\n\
-     [enable, 0:disable lpn, 1:enable lpn]\r\n", blemesh_lpn_set},
+    {"blemesh_lpn_set", "blemesh_lpn_set:[Enable or disable low power node]\r\n\
+     [enable, 0:disable lpn, 1:enable lpn]", blemeshcli_lpn_set},
     #endif
-    {"blemesh_input_num", "\r\nblemesh_input_num:[input number in provisionging procedure]\r\n\
-     [Max Size:16 Octets, e.g.112233445566778899AA]\r\n", blemesh_input_num},
+    {"blemesh_input_num", "blemesh_input_num:[input number in provisionging procedure]\r\n\
+     [Max Size:16 Octets, e.g.112233445566778899AA]", blemeshcli_input_num},
      
-    {"blemesh_input_str", "\r\nblemesh_input_str:[input Alphanumeric in provisionging procedure]\r\n\
-     [Max Size:16 Characters, e.g.123ABC]\r\n", blemesh_input_str},
+    {"blemesh_input_str", "blemesh_input_str:[input Alphanumeric in provisionging procedure]\r\n\
+     [Max Size:16 Characters, e.g.123ABC]", blemeshcli_input_str},
 #if defined(CONFIG_BT_MESH_MODEL)
 #if defined(CONFIG_BT_MESH_MODEL_GEN_CLI)
-	{"blemesh_gen_oo_cli", "\r\blemesh_gen_oo_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t onoff tid trans_time delay]\r\n\
-     []\r\n", blemesh_gen_oo_cli},
+	{"blemesh_gen_oo_cli", "blemesh_gen_oo_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t onoff tid trans_time delay]\r\n\
+     []", blemeshcli_gen_oo_cli},
 #endif
 #if defined(CONFIG_BT_MESH_MODEL_LIGHT_CLI)
-     {"blemesh_light_lgn_cli", "\r\blemesh_light_lgn_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t lightness tid trans_time delay]\r\n\
-     []\r\n", blemesh_light_lgn_cli},
-     {"blemesh_light_ctl_cli", "\r\blemesh_light_ctl_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t ctl_lightness ctl_temperatrue ctl_delta_uv tid trans_time delay]\r\n\
-     []\r\n", blemesh_light_ctl_cli},
-     {"blemesh_light_hsl_cli", "\r\blemesh_light_hsl_cli:[cmd op app_idx opcode msg_role addr net_idx op_en lightness hue saturation tid trans_time delay]\r\n\
-     []\r\n", blemesh_light_hsl_cli},
+     {"blemesh_light_lgn_cli", "blemesh_light_lgn_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t lightness tid trans_time delay]", blemeshcli_light_lgn_cli},
+     {"blemesh_light_ctl_cli", "blemesh_light_ctl_cli:[cmd op app_idx opcode msg_role addr net_idx op_en_t ctl_lightness ctl_temperatrue ctl_delta_uv tid trans_time delay]", blemeshcli_light_ctl_cli},
+     {"blemesh_light_hsl_cli", "blemesh_light_hsl_cli:[cmd op app_idx opcode msg_role addr net_idx op_en lightness hue saturation tid trans_time delay]", blemeshcli_light_hsl_cli},
 #endif
 #if defined(CONFIG_BT_MESH_MODEL_VENDOR_CLI)
-	{"blemesh_vendor_cli", "\r\blemesh_vendor_cli:[cmd op app_idx opcode msg_role addr net_idx]\r\n\
-		[]\r\n", blemesh_vendor_cli},
+	{"blemesh_vendor_cli", "blemesh_vendor_cli:[cmd op app_idx opcode msg_role addr net_idx]", blemeshcli_vendor_cli},
 #endif
 #endif /* CONFIG_BT_MESH_MODEL */
 #if defined(CONFIG_BT_MESH_CDB)
-	{"blemesh_cdb_create", "\r\n\r\n", blemesh_cdb_create},
-	{"blemesh_cdb_clear", "\r\n\r\n", blemesh_cdb_clear},
-	{"blemesh_cdb_show", "\r\n\r\n", blemesh_cdb_show},
-	{"blemesh_cdb_node_add", "\r\n\r\n", blemesh_cdb_node_add},
-	{"blemesh_cdb_node_del", "\r\n\r\n", blemesh_cdb_node_del},
-	{"blemesh_cdb_subnet_add", "\r\n\r\n", blemesh_cdb_subnet_add},
-	{"blemesh_cdb_subnet_del", "\r\n\r\n", blemesh_cdb_subnet_del},
-	{"blemesh_cdb_app_key_add", "\r\n\r\n", blemesh_cdb_app_key_add},
-	{"blemesh_cdb_app_key_del", "\r\n\r\n", blemesh_cdb_app_key_del},
+	{"blemesh_cdb_create", "", blemeshcli_cdb_create},
+	{"blemesh_cdb_clear", "", blemeshcli_cdb_clear},
+	{"blemesh_cdb_show", "", blemeshcli_cdb_show},
+	{"blemesh_cdb_node_add", "", blemeshcli_cdb_node_add},
+	{"blemesh_cdb_node_del", "", blemeshcli_cdb_node_del},
+	{"blemesh_cdb_subnet_add", "", blemeshcli_cdb_subnet_add},
+	{"blemesh_cdb_subnet_del", "", blemeshcli_cdb_subnet_del},
+	{"blemesh_cdb_app_key_add", "", blemeshcli_cdb_app_key_add},
+	{"blemesh_cdb_app_key_del", "", blemeshcli_cdb_app_key_del},
 #endif /* CONFIG_BT_MESH_CDB */
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-	{"blemesh_beacon_listen", "\r\n\r\n", blemesh_beacon_listen},
-	{"blemesh_provision", "\r\n\r\n", blemesh_provision},
-	{"blemesh_node_cfg", "\r\n\r\n", blemesh_node_cfg},
+	{"blemesh_beacon_listen", "", blemeshcli_beacon_listen},
+	{"blemesh_provision", "", blemeshcli_provision},
+	{"blemesh_node_cfg", "", blemeshcli_node_cfg},
 #endif /* CONFIG_BT_MESH_PROVISIONER */
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-	{"blemesh_get_comp", "\r\n\r\n", blemesh_get_comp},
-	{"blemesh_set_dst", "\r\n\r\n", blemesh_set_dst},
-	{"blemesh_net_key_add", "\r\n\r\n", blemesh_net_key_add},
+	{"blemesh_get_comp", "", blemeshcli_get_comp},
+	{"blemesh_set_dst", "", blemeshcli_set_dst},
+	{"blemesh_net_key_add", "", blemeshcli_net_key_add},
 	/* Added by bouffalo */
-	{"blemesh_net_key_update", "\r\n\r\n", blemesh_net_key_update},
-	{"blemesh_net_key_get", "\r\n\r\n", blemesh_net_key_get},
-	{"blemesh_net_key_del", "\r\n\r\n", blemesh_net_key_del},
-	{"blemesh_app_key_add", "\r\n\r\n", blemesh_app_key_add},
+	{"blemesh_net_key_update", "", blemeshcli_net_key_update},
+	{"blemesh_net_key_get", "", blemeshcli_net_key_get},
+	{"blemesh_net_key_del", "", blemeshcli_net_key_del},
+	{"blemesh_app_key_add", "", blemeshcli_app_key_add},
 	/* Added by bouffalo */
-	{"blemesh_app_key_update", "\r\n\r\n", blemesh_app_key_update},
-	{"blemesh_app_key_get", "\r\n\r\n", blemesh_app_key_get},
-	{"blemesh_app_key_del", "\r\n\r\n", blemesh_app_key_del},
+	{"blemesh_app_key_update", "", blemeshcli_app_key_update},
+	{"blemesh_app_key_get", "", blemeshcli_app_key_get},
+	{"blemesh_app_key_del", "", blemeshcli_app_key_del},
 	/* Added by bouffalo */
-	{"blemesh_kr_update", "\r\n\r\n", blemesh_kr_update},
-	{"blemesh_mod_app_bind", "\r\n\r\n", blemesh_mod_app_bind},
-	{"blemesh_mod_app_unbind", "\r\n\r\n", blemesh_mod_app_unbind},
-	{"blemesh_mod_app_get", "\r\n\r\n", blemesh_mod_app_get},
-	{"blemesh_mod_sub_add", "\r\n\r\n", blemesh_mod_sub_add},
-	{"blemesh_mod_sub_ow", "\r\n\r\n", blemesh_mod_sub_ow},
-	{"blemesh_mod_sub_del", "\r\n\r\n", blemesh_mod_sub_del},
-	{"blemesh_mod_sub_del_all", "\r\n\r\n", blemesh_mod_sub_del_all},
-	{"blemesh_mod_sub_add_va", "\r\n\r\n", blemesh_mod_sub_add_va},
-	{"blemesh_mod_sub_ow_va", "\r\n\r\n", blemesh_mod_sub_ow_va},
-	{"blemesh_mod_sub_del_va", "\r\n\r\n", blemesh_mod_sub_del_va},
-	{"blemesh_mod_sub_get", "\r\n\r\n", blemesh_mod_sub_get},
-	{"blemesh_mod_pub", "\r\n\r\n", blemesh_mod_pub},
-	{"blemesh_mod_pub_va", "\r\n\r\n", blemesh_mod_pub_va},
-	{"blemesh_hb_sub", "\r\n\r\n", blemesh_hb_sub},
-	{"blemesh_hb_pub", "\r\n\r\n", blemesh_hb_pub},
-	{"blemesh_krp_get", "\r\n\r\n", blemesh_krp_get},
-	{"blemesh_krp_set", "\r\n\r\n", blemesh_krp_set},
-	{"blemesh_cfg_bcn_get", "\r\n\r\n", blemesh_cfg_bcn_get},
-	{"blemesh_cfg_bcn_set", "\r\n\r\n", blemesh_cfg_bcn_set},
-	{"blemesh_cfg_dttl_get", "\r\n\r\n", blemesh_cfg_dttl_get},
-	{"blemesh_cfg_dttl_set", "\r\n\r\n", blemesh_cfg_dttl_set},
-	{"blemesh_cfg_gpxy_get", "\r\n\r\n", blemesh_cfg_gpxy_get},
-	{"blemesh_cfg_gpxy_set", "\r\n\r\n", blemesh_cfg_gpxy_set},
-	{"blemesh_friend", "\r\n\r\n", blemesh_friend},
-	{"blemesh_relay", "\r\n\r\n", blemesh_relay},
-	{"blemesh_node_identify", "\r\n\r\n", blemesh_node_identify},
-	{"blemesh_node_reset", "\r\n[0]net_idx; [1]dst addr\r\n", blemesh_node_reset},
-	{"blemesh_network_trans", "\r\n\r\n", blemesh_network_trans},
-	{"blemesh_lpn_timeout_get", "\r\n\r\n", blemesh_lpn_timeout_get},
-	{"blemesh_clhm_fault", "\r\n\r\n", blemesh_clhm_fault},
-	{"blemesh_clhm_period", "\r\n\r\n", blemesh_clhm_period},
-	{"blemesh_clhm_ats", "\r\n\r\n", blemesh_clhm_ats},
+	{"blemesh_kr_update", "", blemeshcli_kr_update},
+	{"blemesh_mod_app_bind", "", blemeshcli_mod_app_bind},
+	{"blemesh_mod_app_unbind", "", blemeshcli_mod_app_unbind},
+	{"blemesh_mod_app_get", "", blemeshcli_mod_app_get},
+	{"blemesh_mod_sub_add", "", blemeshcli_mod_sub_add},
+	{"blemesh_mod_sub_ow", "", blemeshcli_mod_sub_ow},
+	{"blemesh_mod_sub_del", "", blemeshcli_mod_sub_del},
+	{"blemesh_mod_sub_del_all", "", blemeshcli_mod_sub_del_all},
+	{"blemesh_mod_sub_add_va", "", blemeshcli_mod_sub_add_va},
+	{"blemesh_mod_sub_ow_va", "", blemeshcli_mod_sub_ow_va},
+	{"blemesh_mod_sub_del_va", "", blemeshcli_mod_sub_del_va},
+	{"blemesh_mod_sub_get", "", blemeshcli_mod_sub_get},
+	{"blemesh_mod_pub", "", blemeshcli_mod_pub},
+	{"blemesh_mod_pub_va", "", blemeshcli_mod_pub_va},
+	{"blemesh_hb_sub", "", blemeshcli_hb_sub},
+	{"blemesh_hb_pub", "", blemeshcli_hb_pub},
+	{"blemesh_krp_get", "", blemeshcli_krp_get},
+	{"blemesh_krp_set", "", blemeshcli_krp_set},
+	{"blemesh_cfg_bcn_get", "", blemeshcli_cfg_bcn_get},
+	{"blemesh_cfg_bcn_set", "", blemeshcli_cfg_bcn_set},
+	{"blemesh_cfg_dttl_get", "", blemeshcli_cfg_dttl_get},
+	{"blemesh_cfg_dttl_set", "", blemeshcli_cfg_dttl_set},
+	{"blemesh_cfg_gpxy_get", "", blemeshcli_cfg_gpxy_get},
+	{"blemesh_cfg_gpxy_set", "", blemeshcli_cfg_gpxy_set},
+	{"blemesh_friend", "", blemeshcli_friend},
+	{"blemesh_relay", "", blemeshcli_relay},
+	{"blemesh_node_identify", "", blemeshcli_node_identify},
+	{"blemesh_node_reset", "[0]net_idx; [1]dst addr", blemeshcli_node_reset},
+	{"blemesh_network_trans", "", blemeshcli_network_trans},
+	{"blemesh_lpn_timeout_get", "", blemeshcli_lpn_timeout_get},
+	{"blemesh_clhm_fault", "", blemeshcli_clhm_fault},
+	{"blemesh_clhm_period", "", blemeshcli_clhm_period},
+	{"blemesh_clhm_ats", "", blemeshcli_clhm_ats},
 #endif
 #if defined(CFG_NODE_SEND_CFGCLI_MSG) && defined(CONFIG_BT_MESH_CDB)
-	{"blemesh_pvnr_devkey", "\r\n\r\n", blemesh_pvnr_devkey},
+	{"blemesh_pvnr_devkey", "", blemeshcli_pvnr_devkey},
 #endif
 #if defined(CONFIG_BT_MESH_SYNC)
-	{"blemesh_sync_start", "\r\nNo parameter\r\n", blemesh_sync_start},
-	{"blemesh_sync_stop", "\r\nNo parameter\r\n", blemesh_sync_stop},
+	{"blemesh_sync_start", "No parameter", blemeshcli_sync_start},
+	{"blemesh_sync_stop", "No parameter", blemeshcli_sync_stop},
 #endif
+#if defined(CONFIG_BT_MESH_TEST)
+    {"blemesh_nodelist_op", "", blemeshcli_nodelist_op},
+#endif /* CONFIG_BT_MESH_TEST */
     #if defined(BL70X)
     {NULL, NULL, "No handler / Invalid command", NULL}
     #endif
@@ -626,7 +631,7 @@ static void read_str(char* str, u8_t size)
 }
 
 #if defined(CONFIG_BT_MESH_LOW_POWER)
-static void blemesh_lpn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_lpn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     static bool lpn_enabled;
     u8_t enable;
@@ -674,7 +679,7 @@ static void lpn_cb(u16_t friend_addr, bool established)
 }
 #endif
 
-static void blemesh_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     int err;
 
@@ -758,7 +763,7 @@ static void setup_cdb(void)
 	}
 }
 
-static void blemesh_pvnr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_pvnr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	u8_t net_key[16], dev_key[16];
 	int err;
@@ -851,7 +856,7 @@ static const char *bearer2str(bt_mesh_prov_bearer_t bearer)
 }
 
 #if defined(CONFIG_BT_MESH_PROV)
-static void blemesh_pb(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_pb(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     int err;
     uint8_t bearer;
@@ -886,7 +891,7 @@ static void blemesh_pb(char *pcWriteBuffer, int xWriteBufferLen, int argc, char 
 
 #if defined(CONFIG_BT_MESH_PB_ADV)
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_provision_adv(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_provision_adv(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	u8_t uuid[16];
 	u8_t attention_duration;
@@ -1079,7 +1084,7 @@ static void gen_dev_uuid(void)
 
 }
 
-static void blemesh_set_dev_uuid(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_set_dev_uuid(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     if(argc != 2){
         vOutputString("Number of Parameters is not correct\r\n");
@@ -1090,7 +1095,7 @@ static void blemesh_set_dev_uuid(char *pcWriteBuffer, int xWriteBufferLen, int a
     get_bytearray_from_string(&argv[1], dev_uuid,16);
 }
 
-static void blemesh_input_num(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_input_num(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err;
     uint32_t num;
@@ -1121,7 +1126,7 @@ static void blemesh_input_num(char *pcWriteBuffer, int xWriteBufferLen, int argc
 	input_act = BT_MESH_NO_INPUT;
 }
 
-static void blemesh_input_str(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_input_str(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err;
 
@@ -1156,8 +1161,8 @@ void ble_mesh_generic_onoff_client_model_cb(bfl_ble_mesh_generic_client_cb_event
 {
     uint32_t opcode = param->params->opcode;
 
-    vOutputString("enter %s: event is %d, error code is %d, opcode is 0x%x\n",
-             __func__, event, param->error_code, opcode);
+    //vOutputString("enter %s: event is %d, error code is %d, opcode is 0x%x\n",
+    //         __func__, event, param->error_code, opcode);
 
     switch (event) {
     case BFL_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT: {
@@ -1188,7 +1193,8 @@ void ble_mesh_generic_onoff_client_model_cb(bfl_ble_mesh_generic_client_cb_event
             break;
         case BFL_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
             if (param->error_code == BFL_OK) {
-                vOutputString("GenOnOffClient:SetUNACK,OK\n");
+                vOutputString("GenOnOffClient:SetUNACK,OK, opcode[%x] raddr[%x]\n", 
+                                opcode, param->params->ctx.addr);
             } else {
                 vOutputString("GenOnOffClient:SetUNACK,Fail[%x]\n", param->error_code);
             }
@@ -1200,7 +1206,17 @@ void ble_mesh_generic_onoff_client_model_cb(bfl_ble_mesh_generic_client_cb_event
     }
     case BFL_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT: {
         if (param->error_code == BFL_OK) {
-            vOutputString("GenOnOffClient:Publish,OK\n");
+            switch (opcode) {
+                case BFL_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS:
+                    vOutputString("Recv onoff status, raddr[%x]\n", 
+                                        param->params->ctx.addr);
+					#if defined(CONFIG_BT_MESH_TEST)
+                    if(nodelist_check(param->params->ctx.addr)){
+                        vOutputString("Recv all response\r\n");
+                    }
+					#endif /* CONFIG_BT_MESH_TEST */
+                break;
+                }
         } else {
             vOutputString("GenOnOffClient:Publish,Fail[%x]\n", param->error_code);
         }
@@ -1215,11 +1231,11 @@ void ble_mesh_generic_onoff_client_model_cb(bfl_ble_mesh_generic_client_cb_event
     default:
         break;
     }
-    vOutputString("exit %s \n", __func__);
+    //vOutputString("exit %s \n", __func__);
 }
 
 
-static void blemesh_gen_oo_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_gen_oo_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err = BFL_OK;
 
@@ -1291,6 +1307,13 @@ static void blemesh_gen_oo_cli(char *pcWriteBuffer, int xWriteBufferLen, int arg
 		unsigned int key = irq_lock();
 		vOutputString("%sSetStart\n", __func__);
 		irq_unlock(key);
+
+#if defined(CONFIG_BT_MESH_TEST)
+        if(onoff_common.opcode == BFL_BLE_MESH_MODEL_OP_GEN_ONOFF_SET
+            && BT_MESH_ADDR_IS_GROUP(onoff_common.ctx.addr)){
+            nodelist_check_clear();
+        }
+#endif /* CONFIG_BT_MESH_TEST */
         err = bfl_ble_mesh_generic_client_set_state(&onoff_common, &gen_client_set);
     } else if (strcmp(argv[1], "reg") == 0) {
         err = bfl_ble_mesh_register_generic_client_callback(ble_mesh_generic_onoff_client_model_cb);
@@ -1467,7 +1490,7 @@ void ble_mesh_light_client_model_cb(bfl_ble_mesh_light_client_cb_event_t event,
     vOutputString("exit %s \n", __func__);
 }
 
-static void blemesh_light_lgn_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_light_lgn_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err = BFL_OK;
 
@@ -1538,7 +1561,7 @@ static void blemesh_light_lgn_cli(char *pcWriteBuffer, int xWriteBufferLen, int 
     vOutputString("exit %s\n", __func__);
 }
 
-static void blemesh_light_ctl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_light_ctl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err = BFL_OK;
 
@@ -1613,7 +1636,7 @@ static void blemesh_light_ctl_cli(char *pcWriteBuffer, int xWriteBufferLen, int 
 	vOutputString("exit %s\n", __func__);
 }
 
-static void blemesh_light_hsl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_light_hsl_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err = BFL_OK;
 
@@ -1687,7 +1710,7 @@ static void blemesh_light_hsl_cli(char *pcWriteBuffer, int xWriteBufferLen, int 
 }
 #endif
 #if defined(CONFIG_BT_MESH_MODEL_VENDOR_CLI)
-static void blemesh_vendor_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_vendor_cli(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     u16_t id;
     struct bt_mesh_msg_ctx ctx = {.send_ttl = 3};
@@ -1764,7 +1787,7 @@ static int input(bt_mesh_input_action_t act, u8_t size)
 	return 0;
 }
 
-static void blemesh_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	if(!blemesh_inited){
 		vOutputString("blemesh not init\n");
@@ -1778,7 +1801,7 @@ static void blemesh_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
 #endif
 }
 
-static void blemesh_net_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_net_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     uint8_t ttl;
     uint8_t ctl;
@@ -1846,7 +1869,7 @@ static uint16_t get_app_idx(void)
     return BT_MESH_KEY_UNUSED;
 }
 
-static void blemesh_seg_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_seg_send(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     NET_BUF_SIMPLE_DEFINE(sdu, BT_MESH_TX_SDU_MAX);
     uint16_t src;
@@ -1889,7 +1912,7 @@ static void blemesh_seg_send(char *pcWriteBuffer, int xWriteBufferLen, int argc,
     bt_mesh_trans_send(&tx, &sdu, NULL, NULL);
 }
 
-static void blemesh_rpl_clr(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_rpl_clr(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 #if defined(CONFIG_BT_SETTINGS)
 
@@ -1901,7 +1924,7 @@ static void blemesh_rpl_clr(char *pcWriteBuffer, int xWriteBufferLen, int argc, 
     memset(bt_mesh.rpl, 0, sizeof(bt_mesh.rpl));
 }
 
-static void blemesh_ivu_test(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_ivu_test(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     uint8_t enable;
     
@@ -1923,7 +1946,7 @@ static void blemesh_ivu_test(char *pcWriteBuffer, int xWriteBufferLen, int argc,
     }
 }
 
-static void blemesh_iv_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_iv_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     uint8_t enable;
     
@@ -1958,7 +1981,7 @@ static void blemesh_iv_update(char *pcWriteBuffer, int xWriteBufferLen, int argc
     }
 }
 
-static void blemesh_fault_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void blemeshcli_fault_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     uint8_t type;
     int i;
@@ -2104,7 +2127,7 @@ static void attn_off(struct bt_mesh_model *model)
 }
 
 #if defined(CONFIG_BT_MESH_GATT_PROXY)
-static void __attribute__((unused)) blemesh_ident(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+static void __attribute__((unused)) blemeshcli_ident(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	int err;
 
@@ -2116,7 +2139,7 @@ static void __attribute__((unused)) blemesh_ident(char *pcWriteBuffer, int xWrit
 #endif /* MESH_GATT_PROXY */
 
 #if defined(CONFIG_BT_MESH_CDB)
-static void blemesh_cdb_create(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_create(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t net_key[16];
 	size_t len;
@@ -2137,7 +2160,7 @@ static void blemesh_cdb_create(char *pcWriteBuffer, int xWriteBufferLen, int arg
 	vOutputString("Net key:%s\n", bt_hex(net_key, 16));
 }
 
-static void blemesh_cdb_clear(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_clear(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if(!blemesh_inited){
 		vOutputString("blemesh not init\n");
@@ -2225,7 +2248,7 @@ static void cdb_print_app_keys(void)
 	vOutputString("> Total app-keys: %d\n", total);
 }
 
-static void blemesh_cdb_show(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_show(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (!atomic_test_bit(bt_mesh_cdb.flags, BT_MESH_CDB_VALID)) {
 		vOutputString("No valid networks\n");
@@ -2242,7 +2265,7 @@ static void blemesh_cdb_show(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 	cdb_print_app_keys();
 }
 
-static void blemesh_cdb_node_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_node_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_node *node;
 	u8_t uuid[16], dev_key[16];
@@ -2280,7 +2303,7 @@ static void blemesh_cdb_node_add(char *pcWriteBuffer, int xWriteBufferLen, int a
 	vOutputString("Added node 0x%04x\n", addr);
 }
 
-static void blemesh_cdb_node_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_node_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_node *node;
 	u16_t addr;
@@ -2298,7 +2321,7 @@ static void blemesh_cdb_node_del(char *pcWriteBuffer, int xWriteBufferLen, int a
 	vOutputString("Deleted node 0x%04x\n", addr);
 }
 
-static void blemesh_cdb_subnet_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_subnet_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_subnet *sub;
 	u8_t net_key[16];
@@ -2330,7 +2353,7 @@ static void blemesh_cdb_subnet_add(char *pcWriteBuffer, int xWriteBufferLen, int
 	vOutputString("Added Subnet 0x%03x\n", net_idx);
 }
 
-static void blemesh_cdb_subnet_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_subnet_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_subnet *sub;
 	u16_t net_idx;
@@ -2348,7 +2371,7 @@ static void blemesh_cdb_subnet_del(char *pcWriteBuffer, int xWriteBufferLen, int
 	vOutputString("Deleted subnet 0x%03x\n", net_idx);
 }
 
-static void blemesh_cdb_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_app_key *key;
 	u16_t net_idx, app_idx;
@@ -2381,7 +2404,7 @@ static void blemesh_cdb_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, in
 	vOutputString("Added AppKey 0x%03x\n", app_idx);
 }
 
-static void blemesh_cdb_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cdb_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cdb_app_key *key;
 	u16_t app_idx;
@@ -2429,7 +2452,7 @@ static void print_node_added(u16_t net_idx, u8_t uuid[16], u16_t addr, u8_t num_
 	
 }
 
-static void blemesh_beacon_listen(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_beacon_listen(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t val;
 	if(argc != 2){
@@ -2452,7 +2475,7 @@ static const u8_t default_key[16] = {
 	0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
 	0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
 };
-static void blemesh_provision(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_provision(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	const u8_t *net_key = default_key;
 	u16_t net_idx, addr;
@@ -2622,7 +2645,7 @@ static u8_t check_unconfigured(struct bt_mesh_cdb_node *node, void *data)
 }
 
 /*CONFIG node*/
-static void blemesh_node_cfg(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_node_cfg(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (argc < 1) {
 		return;
@@ -2636,7 +2659,7 @@ static void blemesh_node_cfg(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 #endif /* CONFIG_BT_MESH_PROVISIONER */
 
 #if defined(CONFIG_BT_MESH_PROVISIONER)
-static void blemesh_get_comp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_get_comp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (argc != 4) {
 		vOutputString("Number of Parameters is not correct\r\n");
@@ -2722,7 +2745,7 @@ static void blemesh_get_comp(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 }
 
 /* Add by bouffalo */
-static void blemesh_set_dst(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_set_dst(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (argc != 2) {
 		return;
@@ -2732,7 +2755,7 @@ static void blemesh_set_dst(char *pcWriteBuffer, int xWriteBufferLen, int argc, 
 }
 
 #define CID_NVAL   0xffff
-static void blemesh_net_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_net_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	bool has_key_val = (argc > 2);
 	u8_t key_val[16];
@@ -2808,7 +2831,7 @@ static const u8_t default_new_key[16] = {
 };
 
 /* Added by bouffalo */
-static void blemesh_net_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_net_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	bool has_key_val = (argc > 2);
 	u8_t key_val[16];
@@ -2850,7 +2873,7 @@ static void blemesh_net_key_update(char *pcWriteBuffer, int xWriteBufferLen, int
 	return;
 }
 
-static void blemesh_net_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_net_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t keys[16], net_idx, dst;
 	size_t cnt;
@@ -2874,7 +2897,7 @@ static void blemesh_net_key_get(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	return;
 }
 
-static void blemesh_net_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_net_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t key_net_idx, net_idx, dst;
 	u8_t status;
@@ -2901,7 +2924,7 @@ static void blemesh_net_key_del(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	return;
 }
 
-static void blemesh_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t key_val[16];
 	u16_t net_idx, dst, key_net_idx, key_app_idx;
@@ -2972,7 +2995,7 @@ static void blemesh_app_key_add(char *pcWriteBuffer, int xWriteBufferLen, int ar
 }
 
 /* Added by bouffalo */
-static void blemesh_app_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_app_key_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t key_val[16];
 	u16_t key_net_idx, key_app_idx, net_idx, dst;
@@ -3017,7 +3040,7 @@ static void blemesh_app_key_update(char *pcWriteBuffer, int xWriteBufferLen, int
 	return;
 }
 
-static void blemesh_app_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_app_key_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t key_net_idx, net_idx, dst;
 	u16_t keys[16];
@@ -3052,7 +3075,7 @@ static void blemesh_app_key_get(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	return;
 }
 
-static void blemesh_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t key_net_idx, key_app_idx, net_idx, dst;
 	u8_t status;
@@ -3086,7 +3109,7 @@ static void blemesh_app_key_del(char *pcWriteBuffer, int xWriteBufferLen, int ar
 }
 
 /* Added bouffalo */
-static void blemesh_kr_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_kr_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t idx;
 	u8_t kr;
@@ -3103,7 +3126,7 @@ static void blemesh_kr_update(char *pcWriteBuffer, int xWriteBufferLen, int argc
 	}
 }
 
-static void blemesh_mod_app_bind(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_app_bind(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			    char *argv[])
 {
 	u16_t elem_addr, mod_app_idx, mod_id, cid;
@@ -3149,7 +3172,7 @@ static void blemesh_mod_app_bind(char *pcWriteBuffer, int xWriteBufferLen, int a
 }
 
 
-static void blemesh_mod_app_unbind(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_app_unbind(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			    char *argv[])
 {
 	u16_t elem_addr, mod_app_idx, mod_id, cid;
@@ -3194,7 +3217,7 @@ static void blemesh_mod_app_unbind(char *pcWriteBuffer, int xWriteBufferLen, int
 	return;
 }
 
-static void blemesh_mod_app_get(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_app_get(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			      char *argv[])
 {
 	u16_t elem_addr, mod_id, cid, net_idx, dst;
@@ -3244,7 +3267,7 @@ static void blemesh_mod_app_get(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	return;
 }
 
-static void blemesh_mod_sub_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_sub_add(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t elem_addr, sub_addr, mod_id, cid, net_idx, dst;
 	u8_t status;
@@ -3289,7 +3312,7 @@ static void blemesh_mod_sub_add(char *pcWriteBuffer, int xWriteBufferLen, int ar
 /** Added by bouffalo 
  * Config Model Subscription Overwrite.
  **/
-static void blemesh_mod_sub_ow(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_sub_ow(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t elem_addr, sub_addr, mod_id, cid, net_idx, dst;
 	u8_t status;
@@ -3331,7 +3354,7 @@ static void blemesh_mod_sub_ow(char *pcWriteBuffer, int xWriteBufferLen, int arg
 }
 
 
-static void blemesh_mod_sub_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_sub_del(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t elem_addr, sub_addr, mod_id, cid, net_idx, dst;
 	u8_t status;
@@ -3372,7 +3395,7 @@ static void blemesh_mod_sub_del(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	return;
 }
 
-static void blemesh_mod_sub_del_all(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_sub_del_all(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t elem_addr, mod_id, cid, net_idx, dst;
 	u8_t status;
@@ -3412,7 +3435,7 @@ static void blemesh_mod_sub_del_all(char *pcWriteBuffer, int xWriteBufferLen, in
 	return;
 }
 
-static void blemesh_mod_sub_add_va(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_sub_add_va(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			      char *argv[])
 {
 	u16_t elem_addr, sub_addr, mod_id, cid, net_idx, dst;
@@ -3466,7 +3489,7 @@ static void blemesh_mod_sub_add_va(char *pcWriteBuffer, int xWriteBufferLen, int
 /** Added by bouffalo 
  * Config Model Subscription Overwrite.
  **/
-static void blemesh_mod_sub_ow_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_sub_ow_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t elem_addr, mod_id, cid, net_idx, dst;
 	u8_t status;
@@ -3515,7 +3538,7 @@ static void blemesh_mod_sub_ow_va(char *pcWriteBuffer, int xWriteBufferLen, int 
 }
 
 
-static void blemesh_mod_sub_del_va(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_sub_del_va(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			      char *argv[])
 {
 	u16_t elem_addr, sub_addr, mod_id, cid, net_idx, dst;
@@ -3564,7 +3587,7 @@ static void blemesh_mod_sub_del_va(char *pcWriteBuffer, int xWriteBufferLen, int
 	return;
 }
 
-static void blemesh_mod_sub_get(char *pcWriteBuffer, int xWriteBufferLen, int argc,
+static void blemeshcli_mod_sub_get(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 			      char *argv[])
 {
 	u16_t elem_addr, mod_id, cid, net_idx, dst;
@@ -3769,7 +3792,7 @@ static void mod_pub_va_set(u16_t addr, u16_t mod_id,
 	return;
 }
 
-static void blemesh_mod_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t addr, mod_id, cid;
 
@@ -3802,7 +3825,7 @@ static void blemesh_mod_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, 
 	}
 }
 
-static void blemesh_mod_pub_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_mod_pub_va(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t addr, mod_id, cid;
 
@@ -3904,7 +3927,7 @@ static void hb_sub_set(size_t argc, char *argv[])
 	return;
 }
 
-static void blemesh_hb_sub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_hb_sub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (argc > 1) {
 		if (argc < 4) {
@@ -3981,7 +4004,7 @@ static void hb_pub_set(size_t argc, char *argv[])
 	return;
 }
 
-static void blemesh_hb_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_hb_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	if (argc > 1) {
 		if (argc < 7) {
@@ -3995,7 +4018,7 @@ static void blemesh_hb_pub(char *pcWriteBuffer, int xWriteBufferLen, int argc, c
 }
 
 /* Add by bouffalo */
-static void blemesh_krp_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_krp_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cfg_krp krp_buf;
 	u8_t status;
@@ -4030,7 +4053,7 @@ static void blemesh_krp_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, 
 }
 
 /* Add by bouffalo */
-static void blemesh_krp_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_krp_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	struct bt_mesh_cfg_krp krp_buf;
 	u8_t status;
@@ -4066,7 +4089,7 @@ static void blemesh_krp_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, 
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_bcn_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_bcn_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t status = 0;
 	int err;
@@ -4091,7 +4114,7 @@ static void blemesh_cfg_bcn_get(char *pcWriteBuffer, int xWriteBufferLen, int ar
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_bcn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_bcn_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t status = 0;
 	int err;
@@ -4118,7 +4141,7 @@ static void blemesh_cfg_bcn_set(char *pcWriteBuffer, int xWriteBufferLen, int ar
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_dttl_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_dttl_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	int err;
 	if (argc != 3) {
@@ -4143,7 +4166,7 @@ static void blemesh_cfg_dttl_get(char *pcWriteBuffer, int xWriteBufferLen, int a
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_dttl_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_dttl_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	int err;
 	if (argc != 4) {
@@ -4170,7 +4193,7 @@ static void blemesh_cfg_dttl_set(char *pcWriteBuffer, int xWriteBufferLen, int a
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_gpxy_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_gpxy_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t status = 0;
 	int err;
@@ -4195,7 +4218,7 @@ static void blemesh_cfg_gpxy_get(char *pcWriteBuffer, int xWriteBufferLen, int a
 }
 
 /* Add by bouffalo */
-static void blemesh_cfg_gpxy_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_cfg_gpxy_set(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t status = 0;
 	int err;
@@ -4221,7 +4244,7 @@ static void blemesh_cfg_gpxy_set(char *pcWriteBuffer, int xWriteBufferLen, int a
 		    status);
 }
 
-static void blemesh_friend(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_friend(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t frnd;
 	int err = -1;
@@ -4255,7 +4278,7 @@ static void blemesh_friend(char *pcWriteBuffer, int xWriteBufferLen, int argc, c
 	return;
 }
 
-static void blemesh_relay(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_relay(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t relay, transmit;
 	int err;
@@ -4313,7 +4336,7 @@ static void blemesh_relay(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
 }
 
 /* Added by bouffalo */
-static void blemesh_node_identify(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_node_identify(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t status, identity;
 	u16_t netkeyindex, net_idx, dst;
@@ -4345,7 +4368,7 @@ static void blemesh_node_identify(char *pcWriteBuffer, int xWriteBufferLen, int 
 }
 
 /* Added by bouffalo */
-static void blemesh_node_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_node_reset(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t net_idx, dst;
 	if (argc != 3) {
@@ -4379,7 +4402,7 @@ static void blemesh_node_reset(char *pcWriteBuffer, int xWriteBufferLen, int arg
 }
 
 /* Added by bouffalo */
-static void blemesh_network_trans(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_network_trans(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t count, interval;
 	u16_t net_idx, dst;
@@ -4409,7 +4432,7 @@ static void blemesh_network_trans(char *pcWriteBuffer, int xWriteBufferLen, int 
 }
 
 /* Added by bouffalo */
-static void blemesh_lpn_timeout_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_lpn_timeout_get(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u16_t lpn_addr, net_idx, dst;
 	u32_t poll_timeout;
@@ -4435,7 +4458,7 @@ static void blemesh_lpn_timeout_get(char *pcWriteBuffer, int xWriteBufferLen, in
 }
 
 /* Added by bouffalo for health client fault state*/
-static void blemesh_clhm_fault(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_clhm_fault(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	int err = 0;
 	u16_t app_idx, cid, dst;
@@ -4486,7 +4509,7 @@ static void blemesh_clhm_fault(char *pcWriteBuffer, int xWriteBufferLen, int arg
 }
 
 /* Added by bouffalo for health client period state*/
-static void blemesh_clhm_period(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_clhm_period(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t divisor, updated_divisor;
 	u16_t app_idx, dst;
@@ -4518,7 +4541,7 @@ static void blemesh_clhm_period(char *pcWriteBuffer, int xWriteBufferLen, int ar
 	}
 }
 /* Added by bouffalo for health client attention timer state*/
-static void blemesh_clhm_ats(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_clhm_ats(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t attention, updated_attention;
 	int err = -1;
@@ -4552,7 +4575,7 @@ static void blemesh_clhm_ats(char *pcWriteBuffer, int xWriteBufferLen, int argc,
 #endif
 
 #if defined(CFG_NODE_SEND_CFGCLI_MSG) && defined(CONFIG_BT_MESH_CDB)
-static void blemesh_pvnr_devkey(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_pvnr_devkey(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	u8_t key[16], num_elem;
 	u16_t addr;
@@ -4572,16 +4595,98 @@ static void blemesh_pvnr_devkey(char *pcWriteBuffer, int xWriteBufferLen, int ar
 #endif /* CFG_NODE_SEND_CFGCLI_MSG */
 
 #if defined(CONFIG_BT_MESH_SYNC)
-static void blemesh_sync_start(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_sync_start(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	return blsync_blemesh_start();
 }
 
-static void blemesh_sync_stop(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+static void blemeshcli_sync_stop(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
 {
 	return blsync_blemesh_stop();
 }
 #endif
+
+
+#if defined(CONFIG_BT_MESH_TEST)
+#define CONFIG_NODE_SIZE_BUFF (CONFIG_BT_MESH_NODE_COUNT<<1)
+uint16_t node_list[CONFIG_NODE_SIZE_BUFF];
+
+#define NODE_ADDR_FUN_MSK (0x8000)
+
+/* check all nodelist is check*/
+static int nodelist_check(uint16_t addr)
+{
+    int i = 0;
+
+    if((node_list[addr] & (NODE_ADDR_FUN_MSK-1)) == addr){
+        node_list[addr] |=  NODE_ADDR_FUN_MSK;
+        for(i = 0; i < CONFIG_NODE_SIZE_BUFF; ++i){
+            if(node_list[i] == 0)
+                continue;
+            if((node_list[i] & NODE_ADDR_FUN_MSK) == 0)
+                return 0;
+        }
+    }
+
+    return 1;
+}
+
+
+static int nodelist_check_clear()
+{
+    int i = 0;
+    for(i = 0; i < CONFIG_NODE_SIZE_BUFF; ++i){
+        if(node_list[i] == 0)
+            continue;
+        node_list[i] &= NODE_ADDR_FUN_MSK-1;
+    }
+    return 0;
+}
+
+
+static void blemeshcli_nodelist_op(char *pcWriteBuffer, int xWriteBufferLen, int argc, char *argv[])
+{
+    /** arg1: 1,add address from start to end; 2,add single address, 3,delete single address
+     *  arg2: start address or single address.
+     *  arg3: end address.
+     **/
+    u8_t type = 0;
+    u16_t i, saddr = 0, eaddr = 0;
+
+    if (argc >= 3) {
+        get_uint8_from_string(&argv[1], &type);
+        get_uint16_from_string(&argv[2], &saddr);
+        if(saddr >= CONFIG_NODE_SIZE_BUFF){
+            vOutputString("node_list cache is small\r\n");
+            return;
+        }
+        if(type == 1 && argc == 4){
+            get_uint16_from_string(&argv[3], &eaddr);
+            if(eaddr >= CONFIG_NODE_SIZE_BUFF){
+                vOutputString("node_list cache is small\r\n");
+                return;
+            }
+            if(eaddr <= saddr){
+                vOutputString("Start address isn't bigger than end address\r\n");
+                return;
+            }
+            for(i = saddr; i <= eaddr; ++i){
+                node_list[i] = i;
+            }
+        }
+        else if(type == 2){
+            node_list[saddr] = saddr;
+        }
+        else{
+            node_list[saddr] = 0;
+        }
+	}
+    else{
+        vOutputString("invalid parameter\r\n");
+        return;
+    }
+}
+#endif /* CONFIG_BT_MESH_TEST */
 
 int blemesh_cli_register(void)
 {

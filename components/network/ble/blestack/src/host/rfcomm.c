@@ -68,6 +68,7 @@ struct net_buf_pool dummy_pool;
 					 struct bt_rfcomm_session, br_chan.chan)
 
 static struct bt_rfcomm_session bt_rfcomm_pool[CONFIG_BT_MAX_CONN];
+static struct k_thread *rfcomm_tx_thread;
 static struct bt_rfcomm_dlc *thread_dlc;
 
 /* reversed, 8-bit, poly=0x07 */
@@ -534,7 +535,7 @@ static void rfcomm_check_fc(struct bt_rfcomm_dlc *dlc)
 	k_sem_give(&dlc->tx_credits);
 }
 
-static void rfcomm_dlc_tx_thread(void *p1, void *p2, void *p3)
+static void rfcomm_dlc_tx_thread(void *p1)
 {
 	struct bt_rfcomm_dlc *dlc = thread_dlc;
 	s32_t timeout = K_FOREVER;
@@ -595,6 +596,7 @@ static void rfcomm_dlc_tx_thread(void *p1, void *p2, void *p3)
 	}
 
 	BT_DBG("dlc %p exiting", dlc);
+	k_thread_delete(rfcomm_tx_thread);
 }
 
 static int rfcomm_send_ua(struct bt_rfcomm_session *session, uint8_t dlci)
@@ -757,8 +759,9 @@ static void rfcomm_dlc_connected(struct bt_rfcomm_dlc *dlc)
 	k_delayed_work_cancel(&dlc->rtx_work);
 
 	k_fifo_init(&dlc->tx_queue, 20);
+	rfcomm_tx_thread = &dlc->tx_thread;
 	thread_dlc = dlc;
-	k_thread_create(&dlc->tx_thread, "rfcomm_dlc",
+	k_thread_create(rfcomm_tx_thread, "rfcomm_dlc",
 			CONFIG_BT_RFCOMM_TX_STACK_SIZE,
 			rfcomm_dlc_tx_thread,
 			CONFIG_BT_RFCOMM_TX_PRIO);
@@ -1729,6 +1732,9 @@ static int rfcomm_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
 
 void bt_rfcomm_init(void)
 {
+#if defined(BFLB_DYNAMIC_ALLOC_MEM)
+	net_buf_init(&dummy_pool, CONFIG_BT_MAX_CONN, 1, NULL);
+#endif
 	static struct bt_l2cap_server server = {
 		.psm       = BT_L2CAP_PSM_RFCOMM,
 		.accept    = rfcomm_accept,
@@ -1736,10 +1742,4 @@ void bt_rfcomm_init(void)
 	};
 
 	bt_l2cap_br_server_register(&server);
-
-	if (IS_ENABLED(CONFIG_BT_HFP)) {
-		struct bt_hfp_hf_cb hf_cb;
-
-		bt_hfp_hf_register(&hf_cb);
-	}
 }

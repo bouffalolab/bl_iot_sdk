@@ -43,13 +43,13 @@ Function prototypes and macro definitions used internally by the codec.
 
 #ifdef CODEC_DEBUG
 #include <stdio.h>
-#define ERROR(x) do { printf x; printf("\n"); } while (0)
+#define ERROR(x) do {BT_WARN x; BT_WARN("\n"); } while (0)
 #else
 #define ERROR(x)
 #endif
 
 #ifdef TRACE_EXECUTION
-#define TRACE(x) do { printf x; printf("\n"); } while (0)
+#define TRACE(x) do { BT_WARN x; BT_WARN("\n"); } while (0)
 #else
 #define TRACE(x)
 #endif

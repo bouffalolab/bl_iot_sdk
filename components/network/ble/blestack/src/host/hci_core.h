@@ -18,6 +18,7 @@
 
 /* SCO  settings */
 #define BT_VOICE_CVSD_16BIT     0x0060
+#define BT_VOICE_MSBC_16BIT     0x0063
 
 /* k_poll event tags */
 enum {
@@ -262,8 +263,9 @@ int set_adv_channel_map(u8_t channel);
 int bt_get_local_public_address(bt_addr_le_t *adv_addr);
 int bt_get_local_ramdon_address(bt_addr_le_t *adv_addr);
 int bt_le_set_data_len(struct bt_conn *conn, u16_t tx_octets, u16_t tx_time);
-int hci_le_set_phy(struct bt_conn *conn);
-int hci_le_set_default_phy(struct bt_conn *conn,u8_t default_phy);
+int hci_le_set_phy(struct bt_conn *conn, uint8_t all_phys,
+		  uint8_t pref_tx_phy, uint8_t pref_rx_phy, uint8_t phy_opts);
+int hci_le_set_default_phy(u8_t default_phy);
 
 
 #if defined(CONFIG_SET_TX_PWR)

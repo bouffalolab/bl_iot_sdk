@@ -52,7 +52,7 @@
 
 /* the string ENV value buffer size for legacy ef_get_env() function */
 #ifndef EF_STR_ENV_VALUE_MAX_SIZE
-#define EF_STR_ENV_VALUE_MAX_SIZE                (3980)
+#define EF_STR_ENV_VALUE_MAX_SIZE                (3979)
 #endif
 
 /* the sector remain threshold before full status */
@@ -87,6 +87,8 @@
 #define SECTOR_NOT_COMBINED                      0xFFFFFFFF
 /* the next address is get failed */
 #define FAILED_ADDR                              0xFFFFFFFF
+/* default sector hdr gc_flag*/
+#define DEFAULT_GC_FLAG                          0xFFFFFFFF
 
 /* Return the most contiguous size aligned at specified width. RT_ALIGN(13, 4)
  * would return 16.
@@ -124,6 +126,7 @@
 #endif
 
 #define SECTOR_HDR_DATA_SIZE                     (EF_WG_ALIGN(sizeof(struct sector_hdr_data)))
+#define SECTOR_HDR_GC_FLAG_OFFSET                ((unsigned long)(&((struct sector_hdr_data *)0)->gc_flag))
 #define SECTOR_DIRTY_OFFSET                      ((unsigned long)(&((struct sector_hdr_data *)0)->status_table.dirty))
 #define ENV_HDR_DATA_SIZE                        (EF_WG_ALIGN(sizeof(struct env_hdr_data)))
 #define ENV_MAGIC_OFFSET                         ((unsigned long)(&((struct env_hdr_data *)0)->magic))
@@ -157,7 +160,7 @@ struct sector_hdr_data {
     } status_table;
     uint32_t magic;                              /**< magic word(`E`, `F`, `4`, `0`) */
     uint32_t combined;                           /**< the combined next sector number, 0xFFFFFFFF: not combined */
-    uint32_t reserved;
+    uint32_t gc_flag;                            /**< sector gc_flag 0xFFFFFFFF-NO GC  0-NEED GC */
 };
 typedef struct sector_hdr_data *sector_hdr_data_t;
 
@@ -172,6 +175,7 @@ struct sector_meta_data {
     uint32_t combined;                           /**< the combined next sector number, 0xFFFFFFFF: not combined */
     size_t remain;                               /**< remain size */
     uint32_t empty_env;                          /**< the next empty ENV node start address */
+    uint32_t gc_flag;                            /**< sector gc_flag 0xFFFFFFFF-NO GC  0-NEED GC */
 };
 typedef struct sector_meta_data *sector_meta_data_t;
 
@@ -206,6 +210,8 @@ static uint32_t env_start_addr = 0;
 static ef_env const *default_env_set;
 /* default ENV set size, must be initialized by user */
 static size_t default_env_set_size = 0;
+/* sector hdr gc_flag */
+static uint32_t sector_hdr_gc_flag = DEFAULT_GC_FLAG;
 /* initialize OK flag */
 static bool init_ok = false;
 /* request a GC check */
@@ -602,6 +608,7 @@ static EfErrCode read_sector_meta_data(uint32_t addr, sector_meta_data_t sector,
     sector->combined = sec_hdr.combined;
     sector->status.store = (sector_store_status_t) get_status(sec_hdr.status_table.store, SECTOR_STORE_STATUS_NUM);
     sector->status.dirty = (sector_dirty_status_t) get_status(sec_hdr.status_table.dirty, SECTOR_DIRTY_STATUS_NUM);
+    sector->gc_flag = sec_hdr.gc_flag;
     /* traversal all ENV and calculate the remain space size */
     if (traversal) {
         sector->remain = 0;
@@ -787,6 +794,8 @@ static size_t get_env(const char *key, void *value_buf, size_t buf_len, size_t *
         }
         if (value_buf){
             ef_port_read(env.addr.value, (uint32_t *) value_buf, read_len);
+        } else if (value_len) {
+            *value_len = 0;
         }
     }
 
@@ -956,7 +965,7 @@ static EfErrCode format_sector(uint32_t addr, uint32_t combined_value)
         set_status(sec_hdr.status_table.dirty, SECTOR_DIRTY_STATUS_NUM, SECTOR_DIRTY_FALSE);
         sec_hdr.magic = SECTOR_MAGIC_WORD;
         sec_hdr.combined = combined_value;
-        sec_hdr.reserved = 0xFFFFFFFF;
+        sec_hdr.gc_flag = 0xFFFFFFFF;
         /* save the header */
         result = ef_port_write(addr, (uint32_t *)&sec_hdr, sizeof(struct sector_hdr_data));
 
@@ -1202,11 +1211,16 @@ static uint32_t new_env(sector_meta_data_t sector, size_t env_size)
 
 __retry:
 
-    if ((empty_env = alloc_env(sector, env_size)) == FAILED_ADDR && gc_request && !already_gc) {
-        EF_DEBUG("Warning: Alloc an ENV (size %d) failed when new ENV. Now will GC then retry.\r\n", env_size);
-        gc_collect();
-        already_gc = true;
-        goto __retry;
+    if ((empty_env = alloc_env(sector, env_size)) == FAILED_ADDR) {
+        if (gc_request && !already_gc) {
+            EF_DEBUG("Warning: Alloc an ENV (size %d) failed when new ENV. Now will GC then retry.\n", env_size);
+            gc_collect();
+            already_gc = true;
+            goto __retry;
+        } else {
+            EF_DEBUG("Error: Alloc an ENV (size %d) failed after GC. ENV full.\n", env_size);
+            gc_request = false;
+        }
     }
 
     return empty_env;
@@ -1234,8 +1248,11 @@ static bool gc_check_cb(sector_meta_data_t sector, void *arg1, void *arg2)
 static bool do_gc(sector_meta_data_t sector, void *arg1, void *arg2)
 {
     struct env_node_obj env;
+    uint32_t *first_gc = arg1;
 
-    if (sector->check_ok && (sector->status.dirty == SECTOR_DIRTY_TRUE || sector->status.dirty == SECTOR_DIRTY_GC)) {
+    if (sector->check_ok && 
+       (sector->status.dirty == SECTOR_DIRTY_TRUE || sector->status.dirty == SECTOR_DIRTY_GC) &&
+       (sector->gc_flag != DEFAULT_GC_FLAG)) {
         uint8_t status_table[DIRTY_STATUS_TABLE_SIZE];
         /* change the sector status to GC */
         write_status(sector->addr + SECTOR_DIRTY_OFFSET, status_table, SECTOR_DIRTY_STATUS_NUM, SECTOR_DIRTY_GC);
@@ -1252,11 +1269,39 @@ static bool do_gc(sector_meta_data_t sector, void *arg1, void *arg2)
         }
         format_sector(sector->addr, SECTOR_NOT_COMBINED);
         EF_DEBUG("Collect a sector @0x%08X\r\n", sector->addr);
+        if(*first_gc == 1) {
+            *first_gc = 0;
+        } else {
+            return true;
+        }
     }
 
     return false;
 }
 
+static bool read_hdr_gc(sector_meta_data_t sector, void *arg1, void *arg2){
+
+    ef_port_read(sector->addr+SECTOR_HDR_GC_FLAG_OFFSET, (uint32_t *)&sector_hdr_gc_flag, sizeof(sector_hdr_gc_flag));
+    if(sector_hdr_gc_flag == DEFAULT_GC_FLAG){
+        return false;
+    }
+    else{
+        EF_DEBUG("Have sector to gc @0x%08x\r\n", sector->addr);
+        return true;
+    }
+}
+
+static bool write_hdr_gc(sector_meta_data_t sector, void *arg1, void *arg2){
+    uint32_t data = 0;
+
+    if (sector->check_ok && 
+       (sector->status.dirty == SECTOR_DIRTY_TRUE || sector->status.dirty == SECTOR_DIRTY_GC)) {
+        EF_DEBUG("Write sector hdr gc flag @0x%08x\r\n", sector->addr);
+        ef_port_write(sector->addr+SECTOR_HDR_GC_FLAG_OFFSET, (uint32_t *)&data, sizeof(data));
+    }
+
+    return false;
+}
 /*
  * The GC will be triggered on the following scene:
  * 1. alloc an ENV when the flash not has enough space
@@ -1266,14 +1311,21 @@ static void gc_collect(void)
 {
     struct sector_meta_data sector;
     size_t empty_sec = 0;
+    uint32_t first_gc = 0;
 
     /* GC check the empty sector number */
     sector_iterator(&sector, SECTOR_STORE_EMPTY, &empty_sec, NULL, gc_check_cb, false);
 
     /* do GC collect */
     EF_DEBUG("The remain empty sector is %d, GC threshold is %d.\r\n", empty_sec, EF_GC_EMPTY_SEC_THRESHOLD);
-    if (empty_sec <= EF_GC_EMPTY_SEC_THRESHOLD) {
-        sector_iterator(&sector, SECTOR_STORE_UNUSED, NULL, NULL, do_gc, false);
+    if (empty_sec <= EF_GC_EMPTY_SEC_THRESHOLD || sector_hdr_gc_flag != DEFAULT_GC_FLAG) {
+        if((empty_sec <= EF_GC_EMPTY_SEC_THRESHOLD) && sector_hdr_gc_flag == DEFAULT_GC_FLAG) {
+            sector_iterator(&sector, SECTOR_STORE_UNUSED, NULL, NULL, write_hdr_gc, false);
+            first_gc = 1;
+        }
+            
+        sector_iterator(&sector, SECTOR_STORE_UNUSED, &first_gc, NULL, do_gc, false);
+
     }
 
     gc_request = false;
@@ -1459,8 +1511,9 @@ static EfErrCode set_env(const char *key, const void *value_buf, size_t buf_len)
         if (env_is_found && result == EF_NO_ERR) {
             result = del_env(key, &env, true);
         }
+        sector_iterator(&sector, SECTOR_STORE_UNUSED, NULL, NULL, read_hdr_gc, false);
         /* process the GC after set ENV */
-        if (gc_request) {
+        if (gc_request || (sector_hdr_gc_flag != DEFAULT_GC_FLAG)) {
             gc_collect();
         }
     }

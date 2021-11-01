@@ -81,7 +81,7 @@ extern "C" {
     } while (0)
 
 
-#define LOG_USE_COLOR
+#define LOG_USE_COLOR  (0)
 typedef enum LOG_BUF_OUT_DATA_TYPE {
     LOG_BUF_OUT_DATA_TYPE_HEX,
     LOG_BUF_OUT_DATA_TYPE_INT8,
@@ -124,13 +124,13 @@ typedef enum LOG_BUF_OUT_DATA_TYPE {
                                     } while(0==1)
 #endif
 
-#ifdef LOG_USE_COLOR
+#if LOG_USE_COLOR
 #define log_buf_pri(file, line, M, ...)   custom_buf_pri(file, line, "\x1b[36mBUF\x1b[0m", M, ##__VA_ARGS__)
 #else
 #define log_buf_pri(file, line, M, ...)   custom_buf_pri(file, line, "BUF", M, ##__VA_ARGS__)
 #endif
 
-#ifdef LOG_USE_COLOR
+#if LOG_USE_COLOR
 #define log_trace(M, ...)   custom_log("\x1b[94mTRACE \x1b[0m", M, ##__VA_ARGS__)
 #define log_debug(M, ...)   custom_log("\x1b[36mDEBUG \x1b[0m", M, ##__VA_ARGS__)
 #define log_info(M, ...)    custom_log("\x1b[32mINFO  \x1b[0m", M, ##__VA_ARGS__)

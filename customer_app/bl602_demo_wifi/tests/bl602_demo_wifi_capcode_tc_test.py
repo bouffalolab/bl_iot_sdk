@@ -24,11 +24,14 @@ def bl602_demo_wifi_capcode_tc(env, extra_data):
         print('BL602 booted')
         dut.expect('Init CLI with event Driven', timeout=0.5)
         print('BL602 CLI init done')
-        time.sleep(0.1)
+        time.sleep(1)
 
         dut.write('stack_wifi')
         time.sleep(0.5)
 
+        dut.write('wifi_capcode 34')
+        time.sleep(0.5)
+        
         dut.write('wifi_scan')
         list_all = dut.expect(re.compile(r"cached scan list([\s\S]*?)-----"), timeout=20)
         regexp_str = "ppm abs:rel(.*)(-?\d*) :(.*)(-?\d*), auth(.*)SSID"
@@ -78,6 +81,9 @@ def bl602_demo_wifi_capcode_tc(env, extra_data):
         dut.halt()
 
     except Exception:
+        dut.write('p 0')
+        result_text = dut.read()
+        print(result_text)
         print('ENV_TEST_FAILURE: BL602 wifi capcode test failed')
         raise
 

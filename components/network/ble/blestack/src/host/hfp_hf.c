@@ -32,6 +32,7 @@
 #define MAX_IND_STR_LEN 17
 
 struct bt_hfp_hf_cb *bt_hf;
+bool hfp_codec_msbc = 0;
 
 #if !defined(BFLB_DYNAMIC_ALLOC_MEM) 
 NET_BUF_POOL_FIXED_DEFINE(hf_pool, CONFIG_BT_MAX_CONN + 1,
@@ -90,7 +91,7 @@ static struct bt_sdp_attribute hfp_attrs[] = {
 			},
 			{
 				BT_SDP_TYPE_SIZE(BT_SDP_UINT8),
-				BT_SDP_ARRAY_16(0x01)
+				BT_SDP_ARRAY_16(BT_RFCOMM_CHAN_HFP_HF)
 			}
 			)
 		},
@@ -116,6 +117,18 @@ static struct bt_sdp_attribute hfp_attrs[] = {
 		)
 	),
 	BT_SDP_SERVICE_NAME("hands-free"),
+	/*
+	"SupportedFeatures" attribute bit mapping for the HF
+	bit 0: EC and/or NR function
+	bit 1: Call waiting or three-way calling
+	bit 2: CLI presentation capability
+	bit 3: Voice recognition activation
+	bit 4: Remote volume control
+	bit 5: Wide band speech
+	bit 6: Enhanced Voice Recognition Status
+	bit 7: Voice Recognition Text
+	*/
+	BT_SDP_SUPPORTED_FEATURES(0x0035),
 };
 
 static struct bt_sdp_record hfp_rec = BT_SDP_RECORD(hfp_attrs);
@@ -134,6 +147,71 @@ static const struct {
 	{"roam", 0, 1}, /* HF_ROAM_IND */
 	{"battchg", 0, 5} /* HF_BATTERY_IND */
 };
+
+
+static void connected(struct bt_conn *conn)
+{
+	BT_DBG("HFP HF Connected!");
+}
+
+static void disconnected(struct bt_conn *conn)
+{
+	BT_DBG("HFP HF Disconnected!");
+}
+
+static void service(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Service indicator value: %u", value);
+}
+
+static void call(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Call indicator value: %u", value);
+}
+
+static void call_setup(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Call Setup indicator value: %u", value);
+}
+
+static void call_held(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Call Held indicator value: %u", value);
+}
+
+static void signal(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Signal indicator value: %u", value);
+}
+
+static void roam(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Roaming indicator value: %u", value);
+}
+
+static void battery(struct bt_conn *conn, uint32_t value)
+{
+	BT_DBG("Battery indicator value: %u", value);
+}
+
+static void ring_cb(struct bt_conn *conn)
+{
+	BT_DBG("Incoming Call...");
+}
+
+static struct bt_hfp_hf_cb hf_cb = {
+	.connected = connected,
+	.disconnected = disconnected,
+	.service = service,
+	.call = call,
+	.call_setup = call_setup,
+	.call_held = call_held,
+	.signal = signal,
+	.roam = roam,
+	.battery = battery,
+	.ring_indication = ring_cb,
+};
+
 
 void hf_slc_error(struct at_client *hf_at)
 {
@@ -164,7 +242,6 @@ int hfp_hf_send_cmd(struct bt_hfp_hf *hf, at_resp_cb_t resp,
 	}
 
 	va_start(vargs, format);
-       //ret = vsnprintk(buf->data, (net_buf_tailroom(buf) - 1), format, vargs); //zephyr
 	ret = vsnprintf((char*)buf->data, (net_buf_tailroom(buf) - 1), format, vargs);
 	if (ret < 0) {
 		BT_ERR("Unable to format variable arguments");
@@ -442,13 +519,45 @@ int ring_handle(struct at_client *hf_at)
 	return 0;
 }
 
+int bcs_handle(struct at_client *hf_at)
+{
+	uint32_t value;
+	int ret;
+
+	struct bt_hfp_hf *hf = CONTAINER_OF(hf_at, struct bt_hfp_hf, at);
+
+	ret = at_get_number(hf_at, &value);
+	if (ret < 0) {
+		BT_ERR("could not get the value");
+		return ret;
+	}
+	if (value == 1) {
+		if (hfp_hf_send_cmd(hf, NULL, NULL, "AT+BCS=1") < 0) {
+			BT_ERR("Error Sending AT+BCS=1");
+		}
+	}
+	else if (value == 2) {
+		if (hfp_hf_send_cmd(hf, NULL, NULL, "AT+BCS=2") < 0) {
+			BT_ERR("Error Sending AT+BCS=2");
+		} else {
+			hfp_codec_msbc = 1;
+		}
+        }
+	else {
+		BT_WARN("Invail BCS value !");
+	}
+
+	return 0;
+}
+
 static const struct unsolicited {
 	const char *cmd;
 	enum at_cmd_type type;
 	int (*func)(struct at_client *hf_at);
 } handlers[] = {
 	{ "CIEV", AT_CMD_TYPE_UNSOLICITED, ciev_handle },
-	{ "RING", AT_CMD_TYPE_OTHER, ring_handle }
+	{ "RING", AT_CMD_TYPE_OTHER, ring_handle },
+	{ "BCS", AT_CMD_TYPE_UNSOLICITED, bcs_handle }
 };
 
 static const struct unsolicited *hfp_hf_unsol_lookup(struct at_client *hf_at)
@@ -519,9 +628,15 @@ int cmd_complete(struct at_client *hf_at, enum at_result result,
 int cmee_finish(struct at_client *hf_at, enum at_result result,
 		enum at_cme cme_err)
 {
+	struct bt_hfp_hf *hf = CONTAINER_OF(hf_at, struct bt_hfp_hf, at);
+
 	if (result != AT_RESULT_OK) {
 		BT_ERR("SLC Connection ERROR in response");
 		return -EINVAL;
+	}
+
+	if (hfp_hf_send_cmd(hf, NULL, NULL, "AT+NREC=0") < 0) {
+		BT_ERR("Error Sending AT+NREC");
 	}
 
 	return 0;
@@ -599,7 +714,7 @@ int cind_finish(struct at_client *hf_at, enum at_result result,
 	return 0;
 }
 
-int brsf_finish(struct at_client *hf_at, enum at_result result,
+int bac_finish(struct at_client *hf_at, enum at_result result,
 		enum at_cme cme_err)
 {
 	struct bt_hfp_hf *hf = CONTAINER_OF(hf_at, struct bt_hfp_hf, at);
@@ -612,6 +727,27 @@ int brsf_finish(struct at_client *hf_at, enum at_result result,
 	}
 
 	err = hfp_hf_send_cmd(hf, cind_resp, cind_finish, "AT+CIND=?");
+	if (err < 0) {
+		hf_slc_error(hf_at);
+		return err;
+	}
+
+	return 0;
+}
+
+int brsf_finish(struct at_client *hf_at, enum at_result result,
+		enum at_cme cme_err)
+{
+	struct bt_hfp_hf *hf = CONTAINER_OF(hf_at, struct bt_hfp_hf, at);
+	int err;
+
+	if (result != AT_RESULT_OK) {
+		BT_ERR("SLC Connection ERROR in response");
+		hf_slc_error(hf_at);
+		return -EINVAL;
+	}
+
+	err = hfp_hf_send_cmd(hf, NULL, bac_finish, "AT+BAC=1,2");
 	if (err < 0) {
 		hf_slc_error(hf_at);
 		return err;
@@ -763,12 +899,16 @@ static int bt_hfp_hf_accept(struct bt_conn *conn, struct bt_rfcomm_dlc **dlc)
 	return -ENOMEM;
 }
 
-static void hfp_hf_init(void)
+int bt_hfp_hf_init(void)
 {
+	int err;
+
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
-    k_lifo_init(&hf_pool.free, CONFIG_BT_MAX_CONN + 1);
-    net_buf_init(&hf_pool, CONFIG_BT_MAX_CONN + 1, BT_RFCOMM_BUF_SIZE(BT_HF_CLIENT_MAX_PDU), NULL);
+	net_buf_init(&hf_pool, CONFIG_BT_MAX_CONN + 1, BT_RFCOMM_BUF_SIZE(BT_HF_CLIENT_MAX_PDU), NULL);
 #endif
+
+	bt_hf = &hf_cb;
+
 	static struct bt_rfcomm_server chan = {
 		.channel = BT_RFCOMM_CHAN_HFP_HF,
 		.accept = bt_hfp_hf_accept,
@@ -777,26 +917,12 @@ static void hfp_hf_init(void)
 	bt_rfcomm_server_register(&chan);
 
 	/* Register SDP record */
-	int err = bt_sdp_register_service(&hfp_rec);
+	err = bt_sdp_register_service(&hfp_rec);
 	if(err < 0)
 	{
 		BT_ERR("HFP regist sdp record failed");
 	}
+	BT_DBG("HFP initialized successfully.");
+	return err;
 }
 
-int bt_hfp_hf_register(struct bt_hfp_hf_cb *cb)
-{
-	if (!cb) {
-		return -EINVAL;
-	}
-
-	if (bt_hf) {
-		return -EALREADY;
-	}
-
-	bt_hf = cb;
-
-	hfp_hf_init();
-
-	return 0;
-}

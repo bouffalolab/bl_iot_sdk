@@ -1,14 +1,14 @@
 default:
-    port0: '/dev/ttyUSB0'
+    port0: '/dev/ttyUSB1'
     port0_port_config:
         baudrate: 2000000
     flash:
         flasher_root: "${SDK_ROOT}/tools/flash_tool"
-        flasher_exe: "${FLASHER_ROOT}/core/bflb_simple_flasher.py"
+        flasher_exe: "${FLASHER_ROOT}/bflb_iot_tool_Rasp"
         flash_config:
             param:
                 interface_type: "Uart"
-                comport_uart: "/dev/ttyUSB0"
+                comport_uart: "/dev/ttyUSB1"
                 speed_uart: "2000000"
                 speed_jlink: "1000"
                 bl60x_brd: "IoTKitA"

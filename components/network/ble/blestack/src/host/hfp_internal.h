@@ -38,8 +38,10 @@
 #define BT_HFP_HF_FEATURE_ESCO_S4       0x00000200 /* eSCO S4 Settings */
 
 /* HFP HF Supported features */
-#define BT_HFP_HF_SUPPORTED_FEATURES    (BT_HFP_HF_FEATURE_CLI | \
-					 BT_HFP_HF_FEATURE_VOLUME)
+#define BT_HFP_HF_SUPPORTED_FEATURES    (BT_HFP_HF_FEATURE_ECNR | \
+                                                                           BT_HFP_HF_FEATURE_CLI | \
+                                                                           BT_HFP_HF_FEATURE_VOLUME | \
+                                                                           BT_HFP_HF_FEATURE_CODEC_NEG)
 
 #define HF_MAX_BUF_LEN                  BT_HF_CLIENT_MAX_PDU
 #define HF_MAX_AG_INDICATORS            20

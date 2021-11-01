@@ -39,7 +39,7 @@
 
 /* the DHCP server address */
 #ifndef DHCPD_SERVER_IP
-    #define DHCPD_SERVER_IP "192.168.4.1"
+    #define DHCPD_SERVER_IP "192.168.169.1"
 #endif
 
 #define DHCP_DEBUG_PRINTF
@@ -135,7 +135,7 @@ static struct dhcp_client_node *
 dhcp_client_find_by_ip(struct dhcp_server *dhcpserver, const uint8_t *ip)
 {
     struct dhcp_client_node *node;
-    ip_addr_t ipaddr;
+    ip4_addr_t ipaddr;//FIXME we only support IPv4, so we use ip4_addr_t here
     uint32_t ipval;
 
     // Copy ipaddr to avoid aligment issue
@@ -355,6 +355,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
             msg->op = DHCP_BOOTREPLY;
             msg->hops = 0;
             msg->secs = 0;
+            //FIXME we use ip_addr_t as ip4_addr_t here
             SMEMCPY(&msg->siaddr, &(dhcp_server->netif->ip_addr), 4);
             msg->sname[0] = '\0';
             msg->file[0] = '\0';
@@ -370,6 +371,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
             /* add server id */
             *opt_buf++ = DHCP_OPTION_SERVER_ID;
             *opt_buf++ = 4;
+            //FIXME we use ip_addr_t as ip4_addr_t here
             SMEMCPY(opt_buf, &(dhcp_server->netif->ip_addr), 4);
             opt_buf += 4;
 
@@ -383,6 +385,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
             /* add config */
             *opt_buf++ = DHCP_OPTION_SUBNET_MASK;
             *opt_buf++ = 4;
+            //FIXME we use ip_addr_t as ip4_addr_t here
             SMEMCPY(opt_buf, &ip_2_ip4(&dhcp_server->netif->netmask)->addr, 4);
             opt_buf += 4;
 
@@ -396,12 +399,14 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
             }
 #else
             /* default use gatewary dns server */
+            //FIXME we use ip_addr_t as ip4_addr_t here
             SMEMCPY(opt_buf, &(dhcp_server->netif->ip_addr), 4);
 #endif /* DHCP_DNS_SERVER_IP */
             opt_buf += 4;
 
             *opt_buf++ = DHCP_OPTION_ROUTER;
             *opt_buf++ = 4;
+            //FIXME we use ip_addr_t as ip4_addr_t here
             SMEMCPY(opt_buf, &ip_2_ip4(&dhcp_server->netif->ip_addr)->addr, 4);
             opt_buf += 4;
 
@@ -432,6 +437,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         msg->op = DHCP_BOOTREPLY;
                         msg->hops = 0;
                         msg->secs = 0;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(&msg->siaddr, &(dhcp_server->netif->ip_addr), 4);
                         msg->sname[0] = '\0';
                         msg->file[0] = '\0';
@@ -447,6 +453,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         /* add server id */
                         *opt_buf++ = DHCP_OPTION_SERVER_ID;
                         *opt_buf++ = 4;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(opt_buf, &(dhcp_server->netif->ip_addr), 4);
                         opt_buf += 4;
 
@@ -460,6 +467,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         /* add config */
                         *opt_buf++ = DHCP_OPTION_SUBNET_MASK;
                         *opt_buf++ = 4;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(opt_buf, &ip_2_ip4(&dhcp_server->netif->netmask)->addr, 4);
                         opt_buf += 4;
 
@@ -473,12 +481,14 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         }
 #else
                         /* default use gatewary dns server */
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(opt_buf, &(dhcp_server->netif->ip_addr), 4);
 #endif /* DHCP_DNS_SERVER_IP */
                         opt_buf += 4;
 
                         *opt_buf++ = DHCP_OPTION_ROUTER;
                         *opt_buf++ = 4;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(opt_buf, &ip_2_ip4(&dhcp_server->netif->ip_addr)->addr, 4);
                         opt_buf += 4;
 
@@ -501,6 +511,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         msg->op = DHCP_BOOTREPLY;
                         msg->hops = 0;
                         msg->secs = 0;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(&msg->siaddr, &(dhcp_server->netif->ip_addr), 4);
                         msg->sname[0] = '\0';
                         msg->file[0] = '\0';
@@ -516,6 +527,7 @@ dhcp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t
                         /* add server id */
                         *opt_buf++ = DHCP_OPTION_SERVER_ID;
                         *opt_buf++ = 4;
+                        //FIXME we use ip_addr_t as ip4_addr_t here
                         SMEMCPY(opt_buf, &(dhcp_server->netif->ip_addr), 4);
                         opt_buf += 4;
 

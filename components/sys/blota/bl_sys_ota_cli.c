@@ -43,9 +43,11 @@
 #include <cli.h>
 #include <hal_boot2.h>
 #include <hal_sys.h>
+#include <hosal_ota.h>
 #include <utils_sha256.h>
 #include <bl_sys_ota.h>
 #include <bl_mtd.h>
+#include <bl_wdt.h>
 
 typedef struct ota_header {
     union {
@@ -112,6 +114,120 @@ static int _check_ota_header(ota_header_t *ota_header, uint32_t *ota_len, int *u
     puts("\r\n");
 
     return 0;
+}
+
+#define OTA_PROGRAM_SIZE (512)
+static void ota_tcp_api_cmd(char *buf, int len, int argc, char **argv)
+{
+    int sockfd;
+    struct hostent *hostinfo;
+    struct sockaddr_in dest;
+    uint8_t *recv_buffer;
+    
+    if (3 != argc) {
+        printf("Usage: %s IP\r\n", argv[0]);
+        return;
+    }
+    hostinfo = gethostbyname(argv[1]);
+    if (!hostinfo) {
+        puts("gethostbyname Failed\r\n");
+        return;
+    }
+   
+    /* Create a socket */
+    /*---Open socket for streaming---*/
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("Error in socket\r\n");
+        return;
+    }
+
+    /*---Initialize server address/port struct---*/
+    memset(&dest, 0, sizeof(dest));
+    dest.sin_family = AF_INET;
+    dest.sin_port = htons(3333);
+    dest.sin_addr = *((struct in_addr *) hostinfo->h_addr);
+    uint32_t address = dest.sin_addr.s_addr;
+    char *ip = inet_ntoa(address);
+
+    int total = 0;
+    int file_size = atoi(argv[2]);
+    int ret;
+    ret = hosal_ota_start(file_size);
+    if (ret) {
+        printf("start ota failed\r\n");
+        return;
+    }
+    
+    recv_buffer = pvPortMalloc(OTA_PROGRAM_SIZE);
+
+    unsigned int buffer_offset = 0, flash_offset = 0;
+    
+    printf("Server ip Address : %s\r\n", ip); 
+    /*---Connect to server---*/
+    if (connect(sockfd, (struct sockaddr *)&dest, sizeof(dest)) != 0) {
+        printf("Error in connect\r\n");
+        close(sockfd);
+        vPortFree(recv_buffer);
+        return;
+    }
+    
+    bl_wdt_disable();
+    
+    while (1) {
+        /*first 512 bytes of TCP stream is OTA header*/
+        ret = read(sockfd, recv_buffer + buffer_offset, OTA_PROGRAM_SIZE - buffer_offset);
+        if (ret < 0) {
+            printf("ret = %d, err = %d\n\r", ret, errno);
+            break;
+        } else {
+            total += ret;
+            if (0 == ret) {
+                printf("[OTA] [TEST] seems ota file ends unexpectedly, already transfer %u\r\n", total);
+                break;
+            }
+            printf("total = %d, ret = %d\n\r", total, ret);
+            buffer_offset += ret;
+
+            if (file_size != total) {
+                if (buffer_offset < OTA_PROGRAM_SIZE) {
+                    continue;
+                } else if (buffer_offset > OTA_PROGRAM_SIZE) {
+                    printf("[OTA] [TCP] Assert for unexpected error %d\r\n", buffer_offset);
+                    while (1) {
+                        /*empty*/
+                    }
+                }
+            } else if (total > file_size) {
+                printf("[OTA] [TCP] Server has bug?\r\n");
+                while (1) {
+                }
+            }
+
+            printf("Will Write %u to %08X from %p\r\n", buffer_offset, flash_offset, recv_buffer);
+            ret = hosal_ota_update(file_size, flash_offset, recv_buffer, buffer_offset);        
+            if (ret) {
+                printf("update error\r\n");
+                close(sockfd);
+                vPortFree(recv_buffer);
+                return;
+            }
+            flash_offset += buffer_offset;
+            buffer_offset = 0;
+            if (file_size == total) {
+                close(sockfd);
+                vPortFree(recv_buffer);
+                ret = hosal_ota_finish(1, 1);    
+                if (ret) {
+                    printf("finish error\r\n");
+                    close(sockfd);
+                    vPortFree(recv_buffer);
+                    return;
+                }
+            }
+        }
+    }
+    close(sockfd);
+    vPortFree(recv_buffer);
 }
 
 #define OTA_PROGRAM_SIZE (512)
@@ -322,6 +438,7 @@ static void ota_dump_cmd(char *buf, int len, int argc, char **argv)
 
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 static const struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
+    {"ota_tcp_api", "OTA from TCP server port 3333", ota_tcp_api_cmd},
     {"ota_tcp", "OTA from TCP server port 3333", ota_tcp_cmd},
     {"ota_dump", "dump partitions for ota related", ota_dump_cmd},
 };

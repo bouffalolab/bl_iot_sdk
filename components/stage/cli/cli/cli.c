@@ -33,6 +33,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <cli.h>
 #include <stdio.h>
 #include <aos/kernel.h>
@@ -1135,20 +1137,20 @@ static void cat_cmd(char *buf, int len, int argc, char **argv)
         printf("invalid parameter!\r\n");
     }
 
-    fd = aos_open(argv[1], 0);
+    fd = open(argv[1], 0);
     if (fd < 0) {
         printf("open %s failed!\r\n", argv[1]);
         return;
     }
 
     while (1) {
-        if(1 != aos_read(fd, &ch, 1)) {
+        if(1 != read(fd, &ch, 1)) {
             break;
         }
         printf("%c", ch);
     }
     printf("\r\n");
-    aos_close(fd);
+    close(fd);
 }
 /* ------------------------------------------------------------------------- */
 
@@ -1413,17 +1415,19 @@ int cli_putstr(char *msg)
 int cli_getchar(char *inbuf)
 {
     int        ret       = -1;
-    uint32_t   recv_size = 0;
-    uart_dev_t uart_stdio;
+    extern hosal_uart_dev_t uart_stdio;
 
-    memset(&uart_stdio, 0, sizeof(uart_stdio));
-    uart_stdio.port = 0;
+    ret = hosal_uart_receive(&uart_stdio, inbuf, 1);
 
-    ret = hal_uart_recv_II(&uart_stdio, inbuf, 1, &recv_size, HAL_WAIT_FOREVER);
-
-    if ((ret == 0) && (recv_size == 1)) {
+    if (ret == 1) {
         return 1;
     } else {
         return 0;
     }
 }
+
+int aos_cli_device_fd_get(void)
+{
+    return fd_console;
+}
+

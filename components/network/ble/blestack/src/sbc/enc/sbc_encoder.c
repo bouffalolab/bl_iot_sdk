@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "log.h"
 #include "sbc_encoder.h"
 #include "sbc_enc_func_declare.h"
 
@@ -324,7 +325,7 @@ void SBC_Encoder_Init(SBC_ENC_PARAMS *pstrEncParams)
         }
     }
 
-    printf("SBC_Encoder_Init : bitrate %d, bitpool %d\n", pstrEncParams->u16BitRate, pstrEncParams->s16BitPool);
+    BT_WARN("SBC_Encoder_Init : bitrate %d, bitpool %d\n", pstrEncParams->u16BitRate, pstrEncParams->s16BitPool);
 
     SbcAnalysisInit();
 }

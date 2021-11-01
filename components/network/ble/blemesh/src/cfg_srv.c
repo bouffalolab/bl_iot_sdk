@@ -458,6 +458,11 @@ static void app_key_add(struct bt_mesh_model *model,
 	bt_mesh_model_msg_init(&msg, OP_APP_KEY_STATUS);
 
 	status = app_key_set(key_net_idx, key_app_idx, buf->data, false);
+
+#ifdef CONFIG_BT_MESH_APPKEY_ADD_CB
+    bt_mesh_app_key_add_cb(key_net_idx, key_app_idx);
+#endif /* CONFIG_BT_MESH_APPKEY_ADD_CB */
+    
 	BT_DBG("status 0x%02x", status);
 	net_buf_simple_add_u8(&msg, status);
 
@@ -1425,6 +1430,10 @@ static void mod_sub_add(struct bt_mesh_model *model,
 
 	*entry = sub_addr;
 	status = STATUS_SUCCESS;
+
+#ifdef CONFIG_BT_MESH_MOD_SUB_ADD_CB
+    bt_mesh_mod_sub_add_cb(mod, elem_addr, sub_addr);
+#endif /* CONFIG_BT_MESH_MOD_SUB_ADD_CB */
 
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 		bt_mesh_store_mod_sub(mod);
@@ -2518,6 +2527,10 @@ static void mod_app_bind(struct bt_mesh_model *model,
 	}
 
 	status = mod_bind(mod, key_app_idx);
+
+#ifdef CONFIG_BT_MESH_MOD_BIND_CB
+    bt_mesh_mod_bind_cb(mod, ctx->net_idx, key_app_idx);
+#endif /* CONFIG_BT_MESH_MOD_BIND_CB */
 
     #if defined (CONFIG_BT_TESTING)/* Modified by bouffalo */
 	if (/*IS_ENABLED(CONFIG_BT_TESTING) && */status == STATUS_SUCCESS) {

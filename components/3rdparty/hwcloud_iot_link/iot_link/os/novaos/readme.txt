@@ -1,1 +1,0 @@
-https://github.com/LiteOS/LiteOS_Lab/tree/iot_link/iot_link/os/novaos

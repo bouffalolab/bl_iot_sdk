@@ -139,16 +139,10 @@ struct bt_hfp_hf_cb {
 			      struct bt_hfp_hf_cmd_complete *cmd);
 };
 
-/** @brief Register HFP HF profile
- *
- *  Register Handsfree profile callbacks to monitor the state and get the
- *  required HFP details to display.
- *
- *  @param cb callback structure.
- *
- *  @return 0 in case of success or negative value in case of error.
- */
-int bt_hfp_hf_register(struct bt_hfp_hf_cb *cb);
+/**
+* @brief Initialize HFP_HF layer
+*/
+int bt_hfp_hf_init(void);
 
 /** @brief Handsfree client Send AT
  *

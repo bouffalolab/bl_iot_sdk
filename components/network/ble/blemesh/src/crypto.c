@@ -29,6 +29,9 @@
 
 #include "mesh.h"
 #include "crypto.h"
+#ifdef BFLB_CRYPT_HARDWARE
+#include "bl_sec.h"
+#endif
 
 #define NET_MIC_LEN(pdu) (((pdu)[1] & 0x80) ? 8 : 4)
 #define APP_MIC_LEN(aszmic) ((aszmic) ? 8 : 4)
@@ -208,6 +211,14 @@ static int bt_mesh_ccm_decrypt(const u8_t key[16], u8_t nonce[13],
 			       const u8_t *aad, size_t aad_len,
 			       u8_t *out_msg, size_t mic_size)
 {
+#ifdef BFLB_CRYPT_HARDWARE
+    int err;
+    err = bl_sec_ccm_auth_decrypt(key, 16, msg_len, nonce, 13, aad, aad_len, enc_msg, out_msg, enc_msg + msg_len, mic_size);
+	if(err)
+    {
+		return err;
+	}
+#else
 	u8_t msg[16], pmsg[16], cmic[16], cmsg[16], Xn[16], mic[16];
 	u16_t last_blk, blk_cnt;
 	size_t i, j;
@@ -357,7 +368,7 @@ static int bt_mesh_ccm_decrypt(const u8_t key[16], u8_t nonce[13],
 	if (memcmp(mic, enc_msg + msg_len, mic_size)) {
 		return -EBADMSG;
 	}
-
+#endif
 	return 0;
 }
 
@@ -366,6 +377,16 @@ static int bt_mesh_ccm_encrypt(const u8_t key[16], u8_t nonce[13],
 			       const u8_t *aad, size_t aad_len,
 			       u8_t *out_msg, size_t mic_size)
 {
+#ifdef BFLB_CRYPT_HARDWARE
+    u8_t mic[16];
+    int err;
+	err = bl_sec_ccm_encrypt_and_tag(key, 16, msg_len,nonce, 13, aad, aad_len, msg, out_msg, mic, mic_size);
+	if(err)
+	{
+		return err;
+	}
+	memcpy(out_msg + msg_len, mic, mic_size);
+#else
 	u8_t pmsg[16], cmic[16], cmsg[16], mic[16], Xn[16];
 	u16_t blk_cnt, last_blk;
 	size_t i, j;
@@ -515,9 +536,9 @@ static int bt_mesh_ccm_encrypt(const u8_t key[16], u8_t nonce[13],
 
 		}
 	}
-
+    
 	memcpy(out_msg + msg_len, mic, mic_size);
-
+#endif
 	return 0;
 }
 

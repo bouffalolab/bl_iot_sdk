@@ -51,7 +51,7 @@ void oad_send_data_to_uart(uint8_t cmd_type, uint8_t *data, uint8_t len)
     final_data[1] = len;
     memcpy(&final_data[2], data, len);
 
-    printf("cmd_data:%s\r\n",bt_hex(final_data,len + 2));
+    BT_WARN("cmd_data:%s\r\n",bt_hex(final_data,len + 2));
 
 }
 
@@ -105,7 +105,7 @@ static void oad_start_identity(char *pcWriteBuffer, int xWriteBufferLen, int arg
     get_bytearray_from_string(&argv[1],buf,50);
     len = buf[1];
     if(len + 2 >= 50){
-        printf("Failed to receved data\r\n");
+        BT_WARN("Failed to receved data\r\n");
         return;
     }
     
@@ -137,8 +137,8 @@ static u8_t oad_discover_func(struct bt_conn *conn, const struct bt_gatt_attr *a
 	char str[37];
 
 	if (!attr) {
-		printf("Discover complete\r\n");
-        printf("in handle = (0x%x) out_handle = (0x%x)\r\n",in_handle,out_handle);
+		BT_WARN("Discover complete\r\n");
+        BT_WARN("in handle = (0x%x) out_handle = (0x%x)\r\n",in_handle,out_handle);
 		(void)memset(params, 0, sizeof(*params));
 		return BT_GATT_ITER_STOP;
 	}
@@ -148,19 +148,19 @@ static u8_t oad_discover_func(struct bt_conn *conn, const struct bt_gatt_attr *a
 	case BT_GATT_DISCOVER_PRIMARY:
 		gatt_service = attr->user_data;
 		bt_uuid_to_str(gatt_service->uuid, str, sizeof(str));
-		printf("Service %s found: attr handle %x, end_handle %x\r\n", str, attr->handle, gatt_service->end_handle);
+		BT_WARN("Service %s found: attr handle %x, end_handle %x\r\n", str, attr->handle, gatt_service->end_handle);
         
 		break;
 	case BT_GATT_DISCOVER_CHARACTERISTIC:
 		gatt_chrc = attr->user_data;
 		bt_uuid_to_str(gatt_chrc->uuid, str, sizeof(str));
-		printf("Characteristic %s found: attr->handle %x  chrcval->handle %x \r\n", str, attr->handle,gatt_chrc->value_handle);
+		BT_WARN("Characteristic %s found: attr->handle %x  chrcval->handle %x \r\n", str, attr->handle,gatt_chrc->value_handle);
 		//print_chrc_props(gatt_chrc->properties);
 		break;
 	case BT_GATT_DISCOVER_INCLUDE:
 		gatt_include = attr->user_data;
 		bt_uuid_to_str(gatt_include->uuid, str, sizeof(str));
-		printf("Include %s found: attr handle %x, start %x, end %x\r\n", str, attr->handle,
+		BT_WARN("Include %s found: attr handle %x, start %x, end %x\r\n", str, attr->handle,
 			    gatt_include->start_handle, gatt_include->end_handle);
 		break;
 	default:
@@ -172,7 +172,7 @@ static u8_t oad_discover_func(struct bt_conn *conn, const struct bt_gatt_attr *a
             out_handle = attr->handle;
         }
         
-		printf("Descriptor %s found: handle %x\r\n", str, attr->handle);
+		BT_WARN("Descriptor %s found: handle %x\r\n", str, attr->handle);
 		break;
 	}
 
@@ -186,7 +186,7 @@ static void oad_discovery(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
     u8_t disc_type;
     
     if (!default_conn) {
-		printf("Not connected\r\n");
+		BT_WARN("Not connected\r\n");
 		return;
 	}
     
@@ -196,7 +196,7 @@ static void oad_discovery(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
     discover_params.uuid = NULL;
     
     get_uint8_from_string(&argv[1], &disc_type);
-    printf("disc_type = [%d]\r\n",disc_type);
+    BT_WARN("disc_type = [%d]\r\n",disc_type);
     if(disc_type == 0){
         discover_params.type = BT_GATT_DISCOVER_PRIMARY;
     }else if(disc_type == 1){
@@ -208,15 +208,15 @@ static void oad_discovery(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
     }else if(disc_type == 4){
         discover_params.type = BT_GATT_DISCOVER_DESCRIPTOR;
     }else{
-        printf("Invalid discovery type\r\n");
+        BT_WARN("Invalid discovery type\r\n");
         return;
     }
     //discover_params.type = BT_GATT_DISCOVER_DESCRIPTOR;
     err = bt_gatt_discover(default_conn, &discover_params);
 	if (err) {
-		printf("Discover failed (err %d)\r\n", err);
+		BT_WARN("Discover failed (err %d)\r\n", err);
 	} else {
-		printf("Discover pending\r\n");
+		BT_WARN("Discover pending\r\n");
 	}
 }
 
@@ -229,11 +229,11 @@ static u8_t oad_client_recv_data(struct bt_conn *conn,
     u8_t *pdata = data;
         
     if (!params->value) {
-        printf("Unsubscribed\r\n");
+        BT_WARN("Unsubscribed\r\n");
         params->value_handle = 0U;
         return BT_GATT_ITER_STOP;
     }
-    printf("oad_client_recv_data:%s\r\n",bt_hex(pdata,length));
+    BT_WARN("oad_client_recv_data:%s\r\n",bt_hex(pdata,length));
     oad_client_notify_handler(data,length);
     
     return BT_GATT_ITER_CONTINUE;
@@ -243,7 +243,7 @@ static void oad_subscribe(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
 {
     int err;
     if (!default_conn) {
-        printf("Not connected\r\n");
+        BT_WARN("Not connected\r\n");
         return;
     }
     
@@ -255,9 +255,9 @@ static void oad_subscribe(char *pcWriteBuffer, int xWriteBufferLen, int argc, ch
 
     err = bt_gatt_subscribe(default_conn, &subscribe_params);
     if (err) {
-        printf("Subscribe failed (err %d)\r\n", err);
+        BT_WARN("Subscribe failed (err %d)\r\n", err);
     } else {
-        printf("Subscribed\r\n");
+        BT_WARN("Subscribed\r\n");
     }
 
 }
@@ -271,7 +271,7 @@ void oad_client_notify_handler(void *buf,u16_t len)
     struct oad_upgrd_end_t upgrd_end;
     
     if(!buf){
-        printf("BUF is NULL\r\n");
+        BT_WARN("BUF is NULL\r\n");
         return; 
     }
     
@@ -281,10 +281,10 @@ void oad_client_notify_handler(void *buf,u16_t len)
             if(len == sizeof(struct oad_image_identity_t) + 1){
                 memset(&identity,0,sizeof(struct oad_image_identity_t));
                 memcpy(&identity,buf+1,sizeof(struct oad_image_identity_t));
-                printf("manu_code = [0x%x] file ver = [0x%x]\r\n",identity.file_info.manu_code,identity.file_info.file_ver);
+                BT_WARN("manu_code = [0x%x] file ver = [0x%x]\r\n",identity.file_info.manu_code,identity.file_info.file_ver);
                 oad_image_identity_to_uart(&(identity.file_info));
             }else{
-                printf("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_image_identity_t));
+                BT_WARN("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_image_identity_t));
             }
         break;
 
@@ -292,10 +292,10 @@ void oad_client_notify_handler(void *buf,u16_t len)
             if(len == sizeof(struct oad_block_req_t) + 1){
                 memset(&req,0,sizeof(struct oad_block_req_t));
                 memcpy(&req,buf+1,sizeof(struct oad_block_req_t));
-                printf("OAD_CMD_IMAG_BLOCK_REQ: manu_code = [0x%x] file ver = [0x%x]\r\n",req.file_info.manu_code,req.file_info.file_ver);
+                BT_WARN("OAD_CMD_IMAG_BLOCK_REQ: manu_code = [0x%x] file ver = [0x%x]\r\n",req.file_info.manu_code,req.file_info.file_ver);
                 oad_block_req_to_uart(&(req.file_info), req.file_offset, TRANSPORT_FILE_SIZE);
             }else{
-                printf("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_block_req_t));
+                BT_WARN("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_block_req_t));
             }
         break;
 
@@ -305,7 +305,7 @@ void oad_client_notify_handler(void *buf,u16_t len)
                 memcpy(&upgrd_end,buf+1,sizeof(struct oad_upgrd_end_t));
                 oad_upgrd_end_to_uart(upgrd_end.status, &(upgrd_end.file_info));
             }else{
-                printf("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_upgrd_end_t));
+                BT_WARN("Length (%d) sizeof (%d) errors\r\n",len,sizeof(struct oad_upgrd_end_t));
             }
         break;
 

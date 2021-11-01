@@ -1425,7 +1425,6 @@ static int bt_sdp_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
 void bt_sdp_init(void)
 {
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
-    k_lifo_init(&sdp_pool.free, CONFIG_BT_MAX_CONN);
     net_buf_init(&sdp_pool, CONFIG_BT_MAX_CONN, BT_L2CAP_BUF_SIZE(SDP_MTU), NULL);
 #endif
 	static struct bt_l2cap_server server = {

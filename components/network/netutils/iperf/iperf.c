@@ -27,6 +27,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
 * iperf-liked network performance tool
 *
@@ -52,7 +53,9 @@
 #define IPERF_BUFSZ         (4 * 1300)
 #define IPERF_BUFSZ_UDP     (1 * 1300)
 #define DEBUG_HEADER        "[NET] [IPC] "
-#define DEFAULT_HOST_IP     "192.168.4.1"
+#define DEFAULT_HOST_IP     "192.168.11.1"
+
+volatile int exit_flag = 0;
 
 typedef struct UDP_datagram {
     uint32_t id;
@@ -104,6 +107,8 @@ static void iperf_client_tcp(void *arg)
     char speed[32] = { 0 };
     float f_min = 8000.0, f_max = 0.0;
 
+    exit_flag = 0;
+
     send_buf = (uint8_t *) pvPortMalloc (IPERF_BUFSZ);
     if (!send_buf) {
         vPortFree(arg);
@@ -114,7 +119,7 @@ static void iperf_client_tcp(void *arg)
         send_buf[i] = i & 0xff;
     }
 
-    while (1) {
+    while (!exit_flag) {
         sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (sock < 0)
         {
@@ -153,7 +158,7 @@ static void iperf_client_tcp(void *arg)
 
         tick0 = xTaskGetTickCount();
         tick1 = tick0;
-        while(1) {
+        while(!exit_flag) {
             tick2 = xTaskGetTickCount();
             if (tick2 - tick1 >= 1000 * 5)
             {
@@ -196,6 +201,7 @@ static void iperf_client_tcp(void *arg)
         vTaskDelay(1000*2);
         printf("disconnected!\r\n");
     }
+    exit_flag = 0;
     printf("iper stop\r\n");
     vPortFree(send_buf);
 }
@@ -227,6 +233,8 @@ static void iperf_client_udp(void *arg)
 
     char speed[64] = { 0 };
     float f_min = 8000.0, f_max = 0.0;
+
+    exit_flag = 0;
 
     send_buf = (uint8_t *) pvPortMalloc (IPERF_BUFSZ_UDP);
     if (!send_buf) {
@@ -278,7 +286,7 @@ static void iperf_client_udp(void *arg)
         udp_header.tv_usec = 0;
         tick0 = xTaskGetTickCount();
         tick1 = tick0;
-        while (1) {
+        while (!exit_flag) {
             tick2 = xTaskGetTickCount();
             if (tick2 - tick1 >= 1000 * 5)
             {
@@ -329,7 +337,7 @@ retry:
 
         vTaskDelay(1000*2);
         printf("disconnected! ret %d\r\n",  ret);
-        vTaskDelete(NULL);
+        exit_flag = 0;
 }
 
 struct iperf_server_udp_ctx {
@@ -458,21 +466,18 @@ static void iperf_server_udp(void *arg)
     struct udp_pcb *server;
     err_t ret;
     ip_addr_t source_ip;
-    //StaticSemaphore_t comp_signal;
     struct iperf_server_udp_ctx context;
 
     configASSERT(arg != NULL);
 
-    //context.comp_sig_handle = xSemaphoreCreateBinaryStatic(&comp_signal);
-
-    // 创建pcb控制块
+    // FIXME bug here: lwip thread context 创建pcb控制块
     server = udp_new();
     if (!server) {
         printf("Create UDP Control block failed!\r\n");
         goto _exit_1;
     }
 
-    source_ip.addr = inet_addr(host);
+    ipaddr_aton(host, &source_ip);
     ret = udp_bind(server, &source_ip, IPERF_PORT);
     if (ret != ERR_OK) {
         printf("Bind failed!\r\n");
@@ -487,7 +492,6 @@ static void iperf_server_udp(void *arg)
     udp_recv(server, iperf_server_udp_recv_fn, (void *)&context);
 
     // 等待接收退出信号
-    //xSemaphoreTake(context.comp_sig_handle, portMAX_DELAY);
     while (!context.exit_flag) {
         vTaskDelay(1000);
     }
@@ -533,6 +537,7 @@ static void iperf_server(void *arg)
     char *host = (char*)arg;
     uint64_t bytes_transfered = 0;
     float f_min = 8000.0, f_max = 0.0;
+    exit_flag = 0;
 
     recv_data = (uint8_t *)pvPortMalloc(IPERF_BUFSZ);
     if (recv_data == NULL)
@@ -563,7 +568,7 @@ static void iperf_server(void *arg)
         goto __exit;
     }
 
-    while (1) {
+    while (!exit_flag) {
         sin_size = sizeof(struct sockaddr_in);
 
         connected = accept(sock, (struct sockaddr *)&client_addr, (socklen_t *)&sin_size);
@@ -584,7 +589,7 @@ static void iperf_server(void *arg)
         recvlen = 0;
         tick0 = xTaskGetTickCount();
         tick1 = tick0;
-        while (1) {
+        while (!exit_flag) {
             bytes_received = recv(connected, recv_data, IPERF_BUFSZ, 0);
             if (bytes_received <= 0) break;
 
@@ -627,6 +632,7 @@ __exit:
     if (sock >= 0) closesocket(sock);
     if (recv_data) vPortFree(recv_data);
     if (arg) vPortFree(arg);
+    exit_flag = 0;
 }
 
 static void iperf_server_entry(const char *name)
@@ -689,12 +695,18 @@ static void ipus_test_cmd(char *buf, int len, int argc, char **argv)
     }
 }
 
+static void iperf_exit_cmd(char *buf, int len, int argc, char **argv)
+{
+    exit_flag = 1;
+}
+
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "ipc", "iperf TCP client", ipc_test_cmd},
     { "ips", "iperf TCP server", ips_test_cmd},
     { "ipu", "iperf UDP client", ipu_test_cmd},
     { "ipus", "iperf UDP server", ipus_test_cmd},
+    { "iperf_stop", "stop iperf", iperf_exit_cmd},
 };
 
 int network_netutils_iperf_cli_register()

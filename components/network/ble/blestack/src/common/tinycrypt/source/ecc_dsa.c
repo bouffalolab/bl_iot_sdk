@@ -56,6 +56,9 @@
 #include "constants.h"
 #include "ecc.h"
 #include "ecc_dsa.h"
+#if defined(BL_MCU_SDK)
+#include "ecc_platform_specific.h"
+#endif 
 
 #if default_RNG_defined
 static uECC_RNG_Function g_rng_function = &default_CSPRNG;

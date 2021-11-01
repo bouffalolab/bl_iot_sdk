@@ -33,6 +33,7 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 #include <bl_mtd.h>
+#include <ef_cfg.h>
 
 static bl_mtd_handle_t handle;
 
@@ -64,10 +65,15 @@ EfErrCode ef_port_init(ef_env const **default_env, size_t *default_env_size) {
     }
     memset(&info, 0, sizeof(info));
     bl_mtd_info(handle, &info);
-    EF_INFO("[EF] Found Valid PSM partition, XIP Addr %08x, flash addr %08x\r\n",
+    EF_INFO("[EF] Found Valid PSM partition, XIP Addr %08x, flash addr %08x, size %d\r\n",
             info.xip_addr,
-            info.offset
+            info.offset,
+            info.size
     );
+    if (info.size < ENV_AREA_SIZE) {
+        printf("[EASYFLASH] error: psm size is smaller than the value you set, note taht CONFIG_ENABLE_PSM_EF_SIZE should be set no more than half of psm size ");
+        while(1);
+    }
 
     *default_env = default_env_set;
     *default_env_size = sizeof(default_env_set) / sizeof(default_env_set[0]);

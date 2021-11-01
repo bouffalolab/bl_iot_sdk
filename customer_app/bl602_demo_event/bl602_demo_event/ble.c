@@ -34,6 +34,7 @@
 #include "bluetooth.h"
 #include "ble_cli_cmds.h"
 #include "hci_driver.h"
+#include "hci_core.h"
 #include "log.h"
 #if defined(CONFIG_BLE_TP_SERVER)
 #include "ble_tp_svc.h"
@@ -307,11 +308,18 @@ static void example_ble_mesh_lighting_server_cb(bfl_ble_mesh_lighting_server_cb_
 #ifndef CONFIG_BT_TL
 void bt_enable_cb(int err)
 {
-    if (!err) {     
+    if (!err) {
+        bt_addr_le_t bt_addr;
+        bt_get_local_public_address(&bt_addr);
+        printf("BD_ADDR:(MSB)%02x:%02x:%02x:%02x:%02x:%02x(LSB) \n",
+            bt_addr.a.val[5], bt_addr.a.val[4], bt_addr.a.val[3], bt_addr.a.val[2], bt_addr.a.val[1], bt_addr.a.val[0]);
+
+#ifdef CONFIG_BT_STACK_CLI 
         ble_cli_register();
 #if defined(CONFIG_BT_STACK_PTS)
         pts_cli_register();
 #endif
+#endif /* CONFIG_BT_STACK_CLI */
 
 #if defined(CONFIG_BT_MESH)
         blemesh_cli_register();

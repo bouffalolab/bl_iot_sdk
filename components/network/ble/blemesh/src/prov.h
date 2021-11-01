@@ -63,5 +63,17 @@ int bt_mesh_prov_init(const struct bt_mesh_prov *prov);
 void bt_mesh_prov_complete(u16_t net_idx, u16_t addr);
 void bt_mesh_prov_node_added(u16_t net_idx, u16_t addr, u8_t num_elem);
 void bt_mesh_prov_reset(void);
+#ifdef CONFIG_BT_MESH_MOD_BIND_CB
+void bt_mesh_prov_mod_bind_cb(struct bt_mesh_model *model, u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_MOD_BIND_CB */
+
+#ifdef CONFIG_BT_MESH_APPKEY_ADD_CB
+void bt_mesh_prov_app_key_add_cb(u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_APPKEY_ADD_CB */
+
+#ifdef CONFIG_BT_MESH_MOD_SUB_ADD_CB
+void bt_mesh_prov_mod_sub_add_cb(struct bt_mesh_model *model, 
+            u16_t elem_addr, u16_t group_addr);
+#endif /* CONFIG_BT_MESH_MOD_SUB_ADD_CB */
 
 #endif /*__PROV_H__*/

@@ -9,6 +9,10 @@ PROJECT_BOARD := evb
 export PROJECT_PATH PROJECT_BOARD
 #CONFIG_TOOLPREFIX :=
 
+BLECONTROLLER_LIBS := std m0s1 m0s1s
+BLECONTROLLER_LIB_DEFAULT := std
+BLECONTROLLER_LIB_PREFIX := blecontroller_602_
+
 -include ./proj_config.mk
 
 ifeq ($(origin BL60X_SDK_PATH), undefined)
@@ -21,29 +25,52 @@ endif
 COMPONENTS_NETWORK := sntp dns_server
 COMPONENTS_BLSYS   := bltime blfdt blmtd blota bloop loopadc looprt loopset
 COMPONENTS_VFS     := romfs cjson
-ifeq ($(CONFIG_BT_TL),1)
-COMPONENTS_BLE     := blecontroller
+
+ifeq ($(CONFIG_BLECONTROLLER_LIB),all)
+COMPONENTS_BLECONTROLLER := $(addprefix $(BLECONTROLLER_LIB_PREFIX), $(BLECONTROLLER_LIBS))
 else
-COMPONENTS_BLE     := blecontroller blestack
+ifeq ($(findstring $(CONFIG_BLECONTROLLER_LIB), $(BLECONTROLLER_LIBS)),)
+COMPONENTS_BLECONTROLLER := $(addprefix $(BLECONTROLLER_LIB_PREFIX), $(BLECONTROLLER_LIB_DEFAULT))
+else
+COMPONENTS_BLECONTROLLER := $(addprefix $(BLECONTROLLER_LIB_PREFIX), $(CONFIG_BLECONTROLLER_LIB))
+endif
 endif
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std bl602_wifi blcrypto_suite bl602_wifidrv hal_drv lwip lwip_dhcpd mbedtls vfs yloop utils cli aws-iot httpc netutils blog blog_testc
-INCLUDE_COMPONENTS += easyflash4 lwip_altcp_tls_mbedtls
+ifeq ($(CONFIG_BT_TL),1)
+COMPONENTS_BLE     := $(COMPONENTS_BLECONTROLLER)
+else
+COMPONENTS_BLE     := $(COMPONENTS_BLECONTROLLER) blestack
+endif
+
+INCLUDE_COMPONENTS += freertos_riscv_ram newlibc bl602 bl602_std newlibc wifi blcrypto_suite wifi_manager hosal lwip lwip_dhcpd mbedtls vfs yloop utils cli aws-iot httpc netutils blog blog_testc
+INCLUDE_COMPONENTS += easyflash4 lwip_altcp_tls_mbedtls coredump
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
 INCLUDE_COMPONENTS += $(PROJECT_NAME)
 
+ifeq ($(CONFIG_COMPONENT_BUGKILLER_ENABLE),1)
+INCLUDE_COMPONENTS += bugkiller_freertos
+endif
+
 ifeq ($(CONFIG_BT),1)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLE)
 ifeq ($(CONFIG_BT_MESH),1)
 INCLUDE_COMPONENTS += blemesh
-endif
 ifeq ($(CONFIG_BT_MESH_MODEL),1)
 INCLUDE_COMPONENTS += blemesh_model
 endif
+endif
+
 ifeq ($(CONFIG_BT_MESH_SYNC),1)
 INCLUDE_COMPONENTS += blsync_ble
 endif
+ifeq ($(CONFIG_AUTO_PTS),1)
+INCLUDE_COMPONENTS += bleptstest
+endif
 endif
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk
+
+ifeq ($(CONFIG_BLECONTROLLER_LIB),all)
+LDFLAGS := $(filter-out $(addprefix -l$(BLECONTROLLER_LIB_PREFIX), $(filter-out $(BLECONTROLLER_LIB_DEFAULT), $(BLECONTROLLER_LIBS))), $(LDFLAGS))
+endif

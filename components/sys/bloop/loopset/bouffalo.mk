@@ -11,7 +11,7 @@ COMPONENT_SRCS := src/loopset_led.c \
                   src/loopset_led_cli.c \
                   src/loopset_ir.c \
                   src/loopset_pwm.c \
-                  src/loopset_i2c.c \
+                  #src/loopset_i2c.c \
 
 
 

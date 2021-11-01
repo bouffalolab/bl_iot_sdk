@@ -86,6 +86,15 @@ struct bt_conn_sco {
 };
 #endif
 
+struct bt_conn_iso {
+	/* Reference to ACL Connection */
+	struct bt_conn          *acl;
+	/* CIG ID */
+	uint8_t			cig_id;
+	/* CIS ID */
+	uint8_t			cis_id;
+};
+
 typedef void (*bt_conn_tx_cb_t)(struct bt_conn *conn, void *user_data);
 
 struct bt_conn_tx {
@@ -151,6 +160,9 @@ struct bt_conn {
 		struct bt_conn_br	br;
 		struct bt_conn_sco	sco;
 #endif
+#if defined(CONFIG_BT_AUDIO)
+		struct bt_conn_iso	iso;
+#endif
 	};
 
 #if defined(CONFIG_BT_REMOTE_VERSION)
@@ -161,6 +173,8 @@ struct bt_conn {
 	} rv;
 #endif
 };
+
+void bt_conn_reset_rx_state(struct bt_conn *conn);
 
 /* Process incoming data for a connection */
 void bt_conn_recv(struct bt_conn *conn, struct net_buf *buf, u8_t flags);
@@ -176,6 +190,29 @@ static inline int bt_conn_send(struct bt_conn *conn, struct net_buf *buf)
 
 /* Add a new LE connection */
 struct bt_conn *bt_conn_add_le(u8_t id, const bt_addr_le_t *peer);
+
+/** Connection parameters for ISO connections */
+struct bt_iso_create_param {
+	uint8_t			id;
+	uint8_t			num_conns;
+	struct bt_conn		**conns;
+	struct bt_iso_chan	**chans;
+};
+
+/* Bind ISO connections parameters */
+int bt_conn_bind_iso(struct bt_iso_create_param *param);
+
+/* Connect ISO connections */
+int bt_conn_connect_iso(struct bt_conn **conns, uint8_t num_conns);
+
+/* Add a new ISO connection */
+struct bt_conn *bt_conn_add_iso(struct bt_conn *acl);
+
+/* Cleanup ISO references */
+void bt_iso_cleanup(struct bt_conn *iso_conn);
+
+/* Allocate new ISO connection */
+struct bt_conn *iso_conn_new(struct bt_conn *conns, size_t size);
 
 /* Add a new BR/EDR connection */
 struct bt_conn *bt_conn_add_br(const bt_addr_t *peer);
@@ -229,6 +266,8 @@ int bt_conn_le_conn_update(struct bt_conn *conn,
 void notify_remote_info(struct bt_conn *conn);
 
 void notify_le_param_updated(struct bt_conn *conn);
+
+void notify_le_phy_updated(struct bt_conn *conn, u8_t tx_phy, u8_t rx_phy);
 
 bool le_param_req(struct bt_conn *conn, struct bt_le_conn_param *param);
 

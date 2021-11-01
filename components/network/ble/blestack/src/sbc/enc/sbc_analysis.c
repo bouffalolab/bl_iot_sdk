@@ -840,7 +840,7 @@ static SINT16   *s16X;   /* s16X must be 32 bits aligned cf  SHIFTUP_X8_2*/
     s64Temp+=((SINT64)gas32CoeffFor4SBs[(i+24)] * (SINT64)s16X[ChOffset+i+24]);                                    \
     s64Temp+=((SINT64)gas32CoeffFor4SBs[(i+32)] * (SINT64)s16X[ChOffset+i+32]);                                    \
     s32DCTY[i]=(SINT32)(s64Temp>>16);\
-    /*printf("s32DCTY4: 0x%x \n", s32DCTY[i]);*/\
+    /*BT_WARN("s32DCTY4: 0x%x \n", s32DCTY[i]);*/\
 }
 #else
 #define WINDOW_ACCU_4(i) \
@@ -873,7 +873,7 @@ static SINT16   *s16X;   /* s16X must be 32 bits aligned cf  SHIFTUP_X8_2*/
     s64Temp+= ((((SINT64)gas32CoeffFor8SBs[(i+32)] * (SINT64)s16X[ChOffset+i+32])));                 \
     s64Temp+= ((((SINT64)gas32CoeffFor8SBs[(i+48)] * (SINT64)s16X[ChOffset+i+48])));                 \
     s64Temp+= ((((SINT64)gas32CoeffFor8SBs[(i+64)] * (SINT64)s16X[ChOffset+i+64])));                 \
-    /*printf("s32DCTY8: %d= 0x%x * %d\n", s32DCTY[i], gas32CoeffFor8SBs[i], s16X[ChOffset+i]);*/     \
+    /*BT_WARN("s32DCTY8: %d= 0x%x * %d\n", s32DCTY[i], gas32CoeffFor8SBs[i], s16X[ChOffset+i]);*/     \
     s32DCTY[i]=(SINT32)(s64Temp>>16);\
 }
 #else
@@ -889,7 +889,7 @@ static SINT16   *s16X;   /* s16X must be 32 bits aligned cf  SHIFTUP_X8_2*/
             +  (((SINT32)(UINT16)(gas32CoeffFor8SBs[((i+48) * 2) + 1]) * s16X[ChOffset+i+48]) >> 16);   \
     s32DCTY[i]+=(gas32CoeffFor8SBs[(i+64) * 2] * s16X[ChOffset+i+64])                                    \
             +  (((SINT32)(UINT16)(gas32CoeffFor8SBs[((i+64) * 2) + 1]) * s16X[ChOffset+i+64]) >> 16);   \
-    /*printf("s32DCTY8: %d = 0x%4x%4x * %d\n", s32DCTY[i], gas32CoeffFor8SBs[i * 2], (gas32CoeffFor8SBs[(i * 2) + 1]), s16X[ChOffset+i]);*/\
+    /*BT_WARN("s32DCTY8: %d = 0x%4x%4x * %d\n", s32DCTY[i], gas32CoeffFor8SBs[i * 2], (gas32CoeffFor8SBs[(i * 2) + 1]), s16X[ChOffset+i]);*/\
     /*s32DCTY[i]=(SINT32)(s64Temp>>16);*/\
 }
 #endif

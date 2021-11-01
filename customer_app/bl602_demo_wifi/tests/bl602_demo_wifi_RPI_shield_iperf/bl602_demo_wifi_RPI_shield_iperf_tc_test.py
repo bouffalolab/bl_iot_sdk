@@ -17,6 +17,8 @@ def bl602_demo_wifi_RPI_shield_iperf_tc(env, extra_data):
     print('Starting app')
     dut.start_app()
 
+    time.sleep(2)
+
     try:
         RPI_ip = get_ip_address(bytes('eth0', encoding="utf8"))
         board_log_name = env.log_path + '/port0.log'
@@ -73,7 +75,7 @@ def bl602_demo_wifi_RPI_shield_iperf_tc(env, extra_data):
                 time.sleep(1)
                 dut.write(board_cmd)
                 print("ipc_test {}".format(board_cmd))
-                dut.expect('Connect to iperf server successful!', timeout=0.5)
+                dut.expect('Connect to iperf server successful!', timeout=10)
                 write_log(iperf_log_name, result, implement_time)
                 check_result = check_iperf_log_result(env, action_cmd, iperf_log_name)
                 if check_result == 'failed':
@@ -188,7 +190,11 @@ def find_iperf_speed_line(action_cmd, lines_data):
 
 def check_board_log_result(action_cmd, log_name):
     with open(log_name, 'rb') as f:
-        lines_data = f.readlines()
+        lines_date = ''
+        try:
+            lines_data = f.readlines()
+        except:
+            print('device reports readiness to read but returned no data ')
         if action_cmd == 'ipc':
             find_iperf_speed_line('ipc ', lines_data)
         elif action_cmd == 'ips':
@@ -213,7 +219,12 @@ def standard_output(env, action_cmd, average_):
 
 def check_iperf_log_result(env, action_cmd, log_name):
     with open(log_name, 'r') as f:
-        lines_date = f.readlines()
+        lines_date = ''
+        try:
+            lines_date = f.readlines()
+        except:
+            print('device reports readiness to read but returned no data ')
+
         str_lines_data = str(lines_date)
 
         if action_cmd == 'ips' or action_cmd == 'ipc' or action_cmd == 'ipus':

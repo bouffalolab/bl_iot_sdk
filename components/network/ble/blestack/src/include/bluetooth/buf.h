@@ -32,6 +32,10 @@ enum bt_buf_type {
 	BT_BUF_ACL_OUT,
 	/** Incoming ACL data */
 	BT_BUF_ACL_IN,
+	/** Outgoing ISO data */
+	BT_BUF_ISO_OUT,
+	/** Incoming ISO data */
+	BT_BUF_ISO_IN,
 };
 
 /** Minimum amount of user data size for buffers passed to the stack. */
@@ -95,7 +99,7 @@ static inline void bt_buf_set_type(struct net_buf *buf, enum bt_buf_type type)
 	*(u8_t *)net_buf_user_data(buf) = type;
 }
 
-#if defined(OPTIMIZE_DATA_EVT_FLOW_FROM_CONTROLLER)
+#if defined(BFLB_BLE)
 static inline void bt_buf_set_rx_adv(struct net_buf *buf, bool is_adv)
 {
 	u8_t *usr_data = (u8_t *)net_buf_user_data(buf);

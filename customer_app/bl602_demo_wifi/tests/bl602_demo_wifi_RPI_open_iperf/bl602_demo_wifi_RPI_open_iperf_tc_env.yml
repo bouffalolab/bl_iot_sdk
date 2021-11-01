@@ -1,14 +1,14 @@
 default:
-    port0: '/dev/ttyUSB0'
+    port0: '/dev/ttyUSB1'
     port0_port_config:
         baudrate: 2000000
     flash:
         flasher_root: "${SDK_ROOT}/tools/flash_tool"
-        flasher_exe: "${FLASHER_ROOT}/core/bflb_simple_flasher.py"
+        flasher_exe: "${FLASHER_ROOT}/bflb_iot_tool_Rasp"
         flash_config:
             param:
                 interface_type: "Uart"
-                comport_uart: "/dev/ttyUSB0"
+                comport_uart: "/dev/ttyUSB1"
                 speed_uart: "2000000"
                 speed_jlink: "1000"
                 bl60x_brd: "IoTKitA"
@@ -29,8 +29,8 @@ default:
                 encrypt: false
                 download_single: false
             input_path:
-                pt_bin_input: "${FLASHER_ROOT}/bl602/partition/partition_cfg_2M.toml"
-                boot2_bin_input: "${FLASHER_ROOT}/bl602/builtin_imgs/blsp_boot2.bin"
+                pt_bin_input: ""
+                boot2_bin_input: ""
                 cfg2_bin_input: "${SDK_ROOT}/customer_app/bl602_demo_wifi/build_out/bl602_demo_wifi.bin"
                 meida_bin_input: ""
                 romfs_dir_input: ""

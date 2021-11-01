@@ -36,9 +36,9 @@
 // ---------------- POPULAR POLYNOMIALS ----------------
 // CCITT:      x^16 + x^12 + x^5 + x^0                 (0x1021,init 0x0000)
 // CRC-16:     x^16 + x^15 + x^2 + x^0                 (0x8005,init 0xFFFF)
-// we use 0x8005 here and 
+// we use 0x8005 here and
 
-static const uint8_t chCRCHTalbe[] = 
+static const uint8_t chCRCHTalbe[] =
 {
 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
@@ -64,7 +64,7 @@ static const uint8_t chCRCHTalbe[] =
 0x00, 0xC1, 0x81, 0x40
 };
 
-static const uint8_t chCRCLTalbe[] = 
+static const uint8_t chCRCLTalbe[] =
 {
 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7,
 0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E,
@@ -92,10 +92,10 @@ static const uint8_t chCRCLTalbe[] =
 
 uint16_t utils_crc16(void * dataIn, uint32_t len)
 {
-	uint8_t chCRCHi = 0xFF; 
-	uint8_t chCRCLo = 0xFF; 
-	uint16_t wIndex;   
-  uint8_t* data=(uint8_t *) dataIn;	
+	uint8_t chCRCHi = 0xFF;
+	uint8_t chCRCLo = 0xFF;
+	uint16_t wIndex;
+  uint8_t* data=(uint8_t *) dataIn;
 
 	while (len--)
 	{
@@ -160,11 +160,32 @@ uint32_t utils_crc32(void *dataIn, uint32_t len)
 {
 	uint32_t crc=0;
   uint8_t *data=(uint8_t *)dataIn;
-	
+
 	crc = crc ^ 0xffffffff;
 
 	while (len--)
 		crc = crc32Tab[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
 
 	return crc ^ 0xffffffff;
+}
+
+void utils_crc32_stream_init(struct crc32_stream_ctx *ctx)
+{
+  ctx->crc = 0xffffffff;
+}
+
+void utils_crc32_stream_feed(struct crc32_stream_ctx *ctx, uint8_t data)
+{
+	ctx->crc = crc32Tab[(ctx->crc ^ data) & 0xFF] ^ (ctx->crc >> 8);
+}
+
+void utils_crc32_stream_feed_block(struct crc32_stream_ctx *ctx, uint8_t *data, uint32_t len)
+{
+  while (len--)
+	  ctx->crc = crc32Tab[(ctx->crc ^ *data++) & 0xFF] ^ (ctx->crc >> 8);
+}
+
+uint32_t utils_crc32_stream_results(struct crc32_stream_ctx *ctx)
+{
+  return ctx->crc ^ 0xffffffff;
 }

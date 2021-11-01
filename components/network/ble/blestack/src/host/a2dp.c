@@ -31,6 +31,7 @@
 #include "conn_internal.h"
 #include "avdtp_internal.h"
 #include "a2dp_internal.h"
+#include "a2dp-codec.h"
 #include "oi_codec_sbc.h"
 
 #define A2DP_NO_SPACE (-1)
@@ -122,27 +123,35 @@ static struct bt_sdp_record a2dp_rec = BT_SDP_RECORD(a2dp_attrs);
 struct bt_a2dp_endpoint endpoint_1;
 struct bt_a2dp_endpoint endpoint_2;
 
-struct bt_a2dp_codec_info sbc_info;
-struct bt_a2dp_codec_capability codec_cap;
+struct bt_a2dp_codec_sbc_params sbc_info;
 
 void bt_a2dp_set_sbc_codec_info()
 {
-    sbc_info.sampling_frequency = 0x0f;
-    sbc_info.channel_mode = 0x0f;
-    sbc_info.block_length = 0x0f;
-    sbc_info.subbands = 0x03;
-    sbc_info.allocation_method = 0x03;
-    sbc_info.minimum_bitpool = 2;
-    sbc_info.maximum_bitpool = 53;
-    /*
-    sbc_info.sampling_frequency = SBC_FREQ_48000|SBC_FREQ_44100|SBC_FREQ_32000|SBC_FREQ_16000;
-    sbc_info.channel_mode = SBC_JOINT_STEREO|SBC_STEREO|SBC_DUAL_CHANNEL|SBC_MONO;
-    sbc_info.block_length = SBC_BLOCKS_16|SBC_BLOCKS_12|SBC_BLOCKS_8|SBC_BLOCKS_4;
-    sbc_info.subbands = SBC_SUBBANDS_8|SBC_SUBBANDS_4;
-    sbc_info.allocation_method = SBC_SNR|SBC_LOUDNESS;
-    sbc_info.minimum_bitpool = SBC_MIN_BITPOOL;
-    sbc_info.maximum_bitpool = 53;
-    */
+	sbc_info.config[0] =
+					//Sampling Frequency
+					A2DP_SBC_SAMP_FREQ_48000 |
+					A2DP_SBC_SAMP_FREQ_44100 |
+					A2DP_SBC_SAMP_FREQ_32000 |
+					A2DP_SBC_SAMP_FREQ_16000 |
+					//Channel Mode
+					A2DP_SBC_CH_MODE_JOINT |
+					A2DP_SBC_CH_MODE_STREO |
+					A2DP_SBC_CH_MODE_DUAL |
+					A2DP_SBC_CH_MODE_MONO;
+	sbc_info.config[1] =
+					//Block Length
+					A2DP_SBC_BLK_LEN_16 |
+					A2DP_SBC_BLK_LEN_12 |
+					A2DP_SBC_BLK_LEN_8 |
+					A2DP_SBC_BLK_LEN_4 |
+					//Subbands
+					 A2DP_SBC_SUBBAND_8 |
+					A2DP_SBC_SUBBAND_4 |
+					//Allocation Method
+					A2DP_SBC_ALLOC_MTHD_SNR |
+					A2DP_SBC_ALLOC_MTHD_LOUDNESS;
+	sbc_info.min_bitpool = 2;
+	sbc_info.max_bitpool = 53;
 }
 
 void a2d_reset(struct bt_a2dp *a2dp_conn)
@@ -228,7 +237,7 @@ int a2dp_sbc_decode_init()
                                                                                     false);
     if (!OI_SUCCESS(status))
     {
-        BT_ERR("decode init failed with error: %d\n", status);
+        BT_ERR("decode init failed with error: %d", status);
         return status;
     }
 
@@ -246,20 +255,20 @@ int a2dp_sbc_decode_process(uint8_t media_data[], uint16_t data_len)
     OI_UINT32 data_size = data_len - 12 - 1;
 
     if (data_size <= 0) {
-        BT_ERR("empty packet\n");
+        BT_ERR("empty packet");
         return -1;
     }
 
     if(data[0] != 0x9c)
     {
-        BT_ERR("sbc frame syncword error \n");
+        BT_ERR("sbc frame syncword error");
     }
 
     OI_INT16* pcm = sbc_decoder.decode_buf;
     OI_UINT32 pcm_size = sizeof(sbc_decoder.decode_buf);
 
     OI_INT16 frame_count = OI_CODEC_SBC_FrameCount((OI_BYTE *)data, data_size);
-    BT_DBG("frame_count: %d\n", frame_count);
+    BT_DBG("frame_count: %d", frame_count);
 
     for (int i = 0; i < frame_count; i++)
     {
@@ -270,7 +279,7 @@ int a2dp_sbc_decode_process(uint8_t media_data[], uint16_t data_len)
                                                                                         &pcm_size);
         if (!OI_SUCCESS(status))
         {
-            BT_ERR("decoding failure with error: %d \n", status);
+            BT_ERR("decoding failure with error: %d", status);
             return -1;
         }
 

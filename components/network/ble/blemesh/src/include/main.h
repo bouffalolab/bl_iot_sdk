@@ -47,6 +47,8 @@ typedef enum {
 typedef enum {
 	BT_MESH_PROV_ADV   = BIT(0),
 	BT_MESH_PROV_GATT  = BIT(1),
+	/* Add by bouffalolab */
+	BT_MESH_PROV_GATT_ADV  = BIT(0)|BIT(1),
 } bt_mesh_prov_bearer_t;
 
 /** Out of Band information location. */
@@ -223,6 +225,20 @@ struct bt_mesh_prov {
 	 */
 	u8_t role;
 #endif
+    /* Add by bouffalolab */
+#ifdef CONFIG_BT_MESH_MOD_BIND_CB
+	int (*mod_bind_cb)(struct bt_mesh_model *model, 
+            u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_MOD_BIND_CB */
+    /* Add by bouffalolab */
+#ifdef CONFIG_BT_MESH_APPKEY_ADD_CB
+	int (*app_key_add_cb)(u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_APPKEY_ADD_CB */
+    /* Add by bouffalolab */
+#ifdef CONFIG_BT_MESH_MOD_SUB_ADD_CB
+    int (*mod_sub_add_cb)(struct bt_mesh_model *model, 
+                u16_t elem_addr, u16_t group_addr);
+#endif /* CONFIG_BT_MESH_MOD_SUB_ADD_CB */
 };
 
 /** @brief Provide provisioning input OOB string.
@@ -455,6 +471,19 @@ int bt_mesh_lpn_poll(void);
  *  @param cb Function to call when the Friendship status changes.
  */
 void bt_mesh_lpn_set_cb(void (*cb)(u16_t friend_addr, bool established));
+
+#ifdef CONFIG_BT_MESH_MOD_BIND_CB
+void bt_mesh_mod_bind_cb(struct bt_mesh_model *model, u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_MOD_BIND_CB */
+
+#ifdef CONFIG_BT_MESH_APPKEY_ADD_CB
+void bt_mesh_app_key_add_cb(u16_t net_idx, u16_t mod_app_idx);
+#endif /* CONFIG_BT_MESH_APPKEY_ADD_CB */
+
+#ifdef CONFIG_BT_MESH_MOD_SUB_ADD_CB
+void bt_mesh_mod_sub_add_cb(struct bt_mesh_model *model, u16_t elem_addr, 
+            u16_t group_addr);
+#endif /* CONFIG_BT_MESH_MOD_SUB_ADD_CB */
 
 #ifdef __cplusplus
 }

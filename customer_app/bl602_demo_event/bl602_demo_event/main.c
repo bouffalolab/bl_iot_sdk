@@ -64,7 +64,8 @@
 #include <bl_dma.h>
 #include <bl_gpio_cli.h>
 #include <bl_wdt_cli.h>
-#include <hal_uart.h>
+#include <hosal_uart.h>
+#include <hosal_adc.h>
 #include <hal_sys.h>
 #include <hal_gpio.h>
 #include <hal_hbn.h>
@@ -78,6 +79,7 @@
 #include <bl_sys_ota.h>
 #include <bl_romfs.h>
 #include <fdt.h>
+#include <device/vfs_uart.h>
 
 //#include <easyflash.h>
 #include <bl60x_fw_api.h>
@@ -89,6 +91,11 @@
 #include "hal_pds.h"
 #include "bl_rtc.h"
 #include "utils_string.h"
+
+#if defined(CONFIG_AUTO_PTS)
+#include "bttester.h"
+#include "autopts_uart.h"
+#endif
 
 #define TASK_PRIORITY_FW            ( 30 )
 #define mainHELLO_TASK_PRIORITY     ( 20 )
@@ -111,44 +118,15 @@
 #define TIME_5MS_IN_32768CYCLE  (164) // (5000/(1000000/32768))
 
 bool pds_start = false;
-
 extern void ble_stack_start(void);
 
+static wifi_interface_t wifi_interface;
 static wifi_conf_t conf =
 {
     .country_code = "CN",
 };
-extern uint8_t _heap_start;
-extern uint8_t _heap_size; // @suppress("Type cannot be resolved")
-extern uint8_t _heap_wifi_start;
-extern uint8_t _heap_wifi_size; // @suppress("Type cannot be resolved")
-static HeapRegion_t xHeapRegions[] =
-{
-        { &_heap_start,  (unsigned int) &_heap_size}, //set on runtime
-        { &_heap_wifi_start, (unsigned int) &_heap_wifi_size },
-        { NULL, 0 }, /* Terminates the array. */
-        { NULL, 0 } /* Terminates the array. */
-};
-static wifi_interface_t wifi_interface;
 
-void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName )
-{
-    puts("Stack Overflow checked\r\n");
-    while (1) {
-        /*empty here*/
-    }
-}
-
-void vApplicationMallocFailedHook(void)
-{
-    printf("Memory Allocate Failed. Current left size is %d bytes\r\n",
-        xPortGetFreeHeapSize()
-    );
-    while (1) {
-        /*empty here*/
-    }
-}
-
+#if defined(CFG_BLE_PDS)
 void vApplicationIdleHook(void)
 {
     if(!pds_start){
@@ -158,6 +136,7 @@ void vApplicationIdleHook(void)
         /*empty*/
     }
 }
+#endif
 
 #if ( configUSE_TICKLESS_IDLE != 0 )
 void vApplicationSleep( TickType_t xExpectedIdleTime_ms )
@@ -1173,35 +1152,6 @@ int codex_debug_cli_init(void);
     looprt_test_cli_init();
 }
 
-static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
-{
-    uint32_t addr = hal_board_get_factory_addr();
-    const void *fdt = (const void *)addr;
-    uint32_t offset;
-
-    if (!name || !start || !off) {
-        return -1;
-    }
-
-    offset = fdt_subnode_offset(fdt, 0, name);
-    if (offset <= 0) {
-       log_error("%s NULL.\r\n", name);
-       return -1;
-    }
-
-    *start = (uint32_t)fdt;
-    *off = offset;
-
-    return 0;
-}
-
-static void __opt_feature_init(void)
-{
-#ifdef CONF_USER_ENABLE_VFS_ROMFS
-    romfs_register();
-#endif
-}
-
 static void event_cb_key_event(input_event_t *event, void *private_data)
 {
     switch (event->code) {
@@ -1232,67 +1182,44 @@ static void event_cb_key_event(input_event_t *event, void *private_data)
 }
 
 #if defined(CONFIG_BT_TL)
-extern void uart_init(uint8_t uartid);
+extern void ble_uart_init(uint8_t uartid);
 #endif
 
-static void aos_loop_proc(void *pvParameters)
+static void proc_main_entry(void *pvParameters)
 {
-    int fd_console;
-    uint32_t fdt = 0, offset = 0;
-    static StackType_t proc_stack_looprt[512];
-    static StaticTask_t proc_task_looprt;
-    
-    /*Init bloop stuff*/
-    looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
-    loopset_led_hook_on_looprt();
-
-//    easyflash_init();
-    vfs_init();
-    vfs_device_init();
-
-    /* uart */
-#if 1
-    if (0 == get_dts_addr("uart", &fdt, &offset)) {
-        vfs_uart_init(fdt, offset);
-    }
-#else
-    vfs_uart_init_simple_mode(0, 7, 16, 2 * 1000 * 1000, "/dev/ttyS0");
-#endif
+#if 0
     if (0 == get_dts_addr("gpio", &fdt, &offset)) {
         hal_gpio_init_from_dts(fdt, offset);
         fdt_button_module_init((const void *)fdt, (int)offset);
     }
-
-    __opt_feature_init();
-    aos_loop_init();
-
-    fd_console = aos_open("/dev/ttyS0", 0);
-    if (fd_console >= 0) {
-        printf("Init CLI with event Driven\r\n");
-        aos_cli_init(0);
-        aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
-        _cli_init();
-    }
+#endif
+    _cli_init();
 
     aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
     aos_register_event_filter(EV_KEY, event_cb_key_event, NULL);
 
-    //tsen_adc_init();
-
     #if defined(CONFIG_BT_TL)
     //uart's pinmux has been configured in vfs_uart_init(load uart1's pin info from devicetree)
-    uart_init(1);
+    ble_uart_init(1);
     ble_controller_init(configMAX_PRIORITIES - 1);
     #endif
 
-    aos_loop_run();
+    #if defined(CONFIG_AUTO_PTS)
+    pts_uart_init(1,115200,8,1,0,0);
+    // Initialize BLE controller
+    ble_controller_init(configMAX_PRIORITIES - 1);
+    extern int hci_driver_init(void);
+    // Initialize BLE Host stack
+    hci_driver_init();
 
-    puts("------------------------------------------\r\n");
-    puts("+++++++++Critical Exit From Loop++++++++++\r\n");
-    puts("******************************************\r\n");
+    tester_send(BTP_SERVICE_ID_CORE, CORE_EV_IUT_READY, BTP_INDEX_NONE,
+		    NULL, 0);
+    #endif
+
     vTaskDelete(NULL);
 }
 
+#if defined(CFG_BLE_PDS)
 void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
 {
     /* If the buffers to be provided to the Idle task are declared inside this
@@ -1315,146 +1242,60 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
     //*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE; 
     *pulIdleTaskStackSize = 512;//size 512 words is For ble pds mode, otherwise stack overflow of idle task will happen.
 }
-
-/* configSUPPORT_STATIC_ALLOCATION and configUSE_TIMERS are both set to 1, so the
-application must provide an implementation of vApplicationGetTimerTaskMemory()
-to provide the memory that is used by the Timer service task. */
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize)
-{
-    /* If the buffers to be provided to the Timer task are declared inside this
-    function then they must be declared static - otherwise they will be allocated on
-    the stack and so not exists after this function exits. */
-    static StaticTask_t xTimerTaskTCB;
-    static StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
-
-    /* Pass out a pointer to the StaticTask_t structure in which the Timer
-    task's state will be stored. */
-    *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-
-    /* Pass out the array that will be used as the Timer task's stack. */
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-
-    /* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
-    Note that, as the array is necessarily of type StackType_t,
-    configTIMER_TASK_STACK_DEPTH is specified in words, not bytes. */
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
-}
-
-void user_vAssertCalled(void) __attribute__ ((weak, alias ("vAssertCalled")));
-void vAssertCalled(void)
-{
-    volatile uint32_t ulSetTo1ToExitFunction = 0;
-
-    taskDISABLE_INTERRUPTS();
-    while( ulSetTo1ToExitFunction != 1 ) {
-        __asm volatile( "NOP" );
-    }
-}
-
-static void _dump_boot_info(void)
-{
-    char print_info[40];
-    const char *banner;
-
-    puts("Booting BL602 Chip...\r\n");
-
-    /*Display Banner*/
-    if (0 == bl_chip_banner(&banner)) {
-        puts(banner);
-    }
-    puts("\r\n");
-    /*Chip Feature list*/
-    puts("\r\n");
-    puts("------------------------------------------------------------\r\n");
-    puts("RISC-V Core Feature:");
-    bl_chip_info(print_info);
-    puts(print_info);
-    puts("\r\n");
-
-    puts("Build Version:      ");
-    puts(BL_SDK_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("Std Driver Version: ");
-    puts(BL_SDK_STDDRV_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("PHY   Version:      ");// @suppress("Symbol is not resolved")
-    puts(BL_SDK_PHY_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("RF    Version:      ");
-    puts(BL_SDK_RF_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("Build Date:         ");
-    puts(__DATE__);
-    puts("\r\n");
-
-    puts("Build Time:         ");
-    puts(__TIME__);
-    puts("\r\n");
-
-    puts("Boot Reason:        ");
-    bl_sys_rstinfo_getsting(print_info);
-    puts(print_info);
-    puts("\r\n");
-    puts("------------------------------------------------------------\r\n");
-
-}
-
-static void system_init(void)
-{
-    blog_init();
-    bl_irq_init();
-    bl_sec_init();
-    bl_sec_test();
-    bl_dma_init();
-    bl_rtc_init();
-    hal_boot2_init();
-
-    /* board config is set after system is init*/
-    hal_board_cfg(0);
-}
+#endif
 
 static void system_thread_init()
 {
     /*nothing here*/
 }
 
-void bfl_main()
+/* init adc for tsen*/
+#ifdef CONF_ADC_ENABLE_TSEN
+static hosal_adc_dev_t adc0;
+
+static void adc_tsen_init()
 {
-    static StackType_t aos_loop_proc_stack[1024];
-    static StaticTask_t aos_loop_proc_task;
+    int ret = -1;
+
+    adc0.port = 0;
+    adc0.config.sampling_freq = 300;
+    adc0.config.pin = 4;
+    adc0.config.mode = 0;
+
+    ret = hosal_adc_init(&adc0);
+    if (ret) {
+        log_error("adc init error!\r\n");
+        return;
+    }
+}
+#endif
+
+void rijndael_aes_test(void);
+
+void main()
+{
+    static StackType_t proc_main_stack[1024];
+    static StaticTask_t proc_main_task;
     static StackType_t proc_hellow_stack[512];
     static StaticTask_t proc_hellow_task;
 
-    bl_sys_early_init();
-
-    /*Init UART In the first place*/
-    bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
-    puts("Starting bl602 now....\r\n");
-
     bl_sys_init();
 
-    _dump_boot_info();
-
-    vPortDefineHeapRegions(xHeapRegions);
-    printf("Heap %u@%p, %u@%p\r\n",
-            (unsigned int)&_heap_size, &_heap_start,
-            (unsigned int)&_heap_wifi_size, &_heap_wifi_start
-    );
-
-    system_init();
     system_thread_init();
+    
+#ifdef CONF_ADC_ENABLE_TSEN
+    adc_tsen_init();
+#endif
 
     puts("[OS] Starting proc_hellow_entry task...\r\n");
     xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
     puts("[OS] Starting aos_loop_proc task...\r\n");
-    xTaskCreateStatic(aos_loop_proc, (char*)"event_loop", 1024, NULL, 15, aos_loop_proc_stack, &aos_loop_proc_task);
+    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);
 
-    puts("[OS] Starting OS Scheduler...\r\n");
-    vTaskStartScheduler();
+    //rijndael_aes_test();
+#if defined(CONFIG_AUTO_PTS)
+    tester_init();
+#endif
 }

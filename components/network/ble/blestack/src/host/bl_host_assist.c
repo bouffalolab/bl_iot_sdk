@@ -1,8 +1,8 @@
 #include "ble_lib_api.h"
 #include "bluetooth.h"
+#include "conn.h"
 #include "hci_core.h"
 #include "hci_driver.h"
-#include "conn.h"
 #include "byteorder.h"
 #include "log.h"
 #include "errno.h"
@@ -325,7 +325,7 @@ static void blhast_host_state_restore(void)
     #if defined(CONFIG_BT_OBSERVER)
 	if(atomic_test_bit(bt_dev.flags, BT_DEV_EXPLICIT_SCAN))
 	{
-	    printf("Restore BLE scan\r\n");
+	     BT_WARN("Restore BLE scan\r\n");
         atomic_clear_bit(bt_dev.flags, BT_DEV_EXPLICIT_SCAN);
 	    atomic_clear_bit(bt_dev.flags, BT_DEV_SCANNING);
 		bt_le_scan_start((const struct bt_le_scan_param *)&blhast_le_scan_param, blhast_le_scan_cb);
@@ -334,7 +334,7 @@ static void blhast_host_state_restore(void)
 	
 	if(atomic_test_and_clear_bit(bt_dev.flags, BT_DEV_ADVERTISING))
 	{
-	    printf("Restore BLE advertising\r\n");
+	     BT_WARN("Restore BLE advertising\r\n");
 	    if(blhast_le_ad.ad_len > 0)
 	    {
 	        ad = k_malloc(sizeof(struct bt_data) * blhast_le_ad.ad_len);

@@ -12,6 +12,7 @@
 #include <net/buf.h>
 #include <bluetooth.h>
 #include <conn.h>
+#include "conn_internal.h"
 #include <gatt.h>
 #include <include/mesh.h>
 
@@ -564,6 +565,11 @@ static int conn_count;
 
 static void proxy_connected(struct bt_conn *conn, u8_t err)
 {
+	if(err || conn->type != BT_CONN_TYPE_LE)
+	{
+		return;
+	}
+
 	struct bt_mesh_proxy_client *client;
 	int i;
 
@@ -572,11 +578,11 @@ static void proxy_connected(struct bt_conn *conn, u8_t err)
 	conn_count++;
 
 	/* Since we use ADV_OPT_ONE_TIME */
-    #if !defined(CONFIG_BLE_MULTI_ADV)
+	#if !defined(CONFIG_BLE_MULTI_ADV)
 	proxy_adv_enabled = false;
-    #else
-    bt_mesh_proxy_adv_stop();
-    #endif
+	#else
+	bt_mesh_proxy_adv_stop();
+	#endif
 
 	/* Try to re-enable advertising in case it's possible */
 	if (conn_count < CONFIG_BT_MAX_CONN) {
@@ -603,6 +609,11 @@ static void proxy_connected(struct bt_conn *conn, u8_t err)
 
 static void proxy_disconnected(struct bt_conn *conn, u8_t reason)
 {
+	if(conn->type != BT_CONN_TYPE_LE)
+	{
+		return;
+	}
+
 	int i;
 
 	BT_WARN("proxy_disconnected conn %p reason 0x%02x", conn, reason);

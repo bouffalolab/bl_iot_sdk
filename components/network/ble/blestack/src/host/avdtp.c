@@ -26,8 +26,8 @@
 #include "hci_core.h"
 #include "conn_internal.h"
 #include "l2cap_internal.h"
-#include "a2dp_internal.h"
 #include "avdtp_internal.h"
+#include "a2dp-codec.h"
 
 #define AVDTP_MSG_POISTION 0x00
 #define AVDTP_PKT_POSITION 0x02
@@ -43,8 +43,9 @@ static struct bt_avdtp_event_cb *event_cb;
 
 static struct bt_avdtp_seid_lsep *lseps;
 
-extern struct bt_a2dp_codec_info sbc_info;
-extern struct bt_a2dp_codec_capability codec_cap;
+static uint8_t tid;
+
+extern struct bt_a2dp_codec_sbc_params sbc_info;
 
 #define AVDTP_CHAN(_ch) CONTAINER_OF(_ch, struct bt_avdtp, br_chan.chan)
 
@@ -118,10 +119,9 @@ static struct net_buf *avdtp_create_pdu(uint8_t msg_type,
 					uint8_t sig_id)
 {
 	struct net_buf *buf;
-	static uint8_t tid;
 	struct bt_avdtp_single_sig_hdr *hdr;
 
-	BT_DBG("");
+	BT_DBG("tid = %d", tid);
 
 	buf = bt_l2cap_create_pdu(NULL, 0);
 
@@ -154,7 +154,7 @@ static int avdtp_parsing_capability(struct net_buf *buf)
     while (buf->len)
     {
         uint8_t svc_cat = net_buf_pull_u8(buf);
-        uint8_t cat_len = 0;
+        uint8_t cat_len = net_buf_pull_u8(buf);;
         switch (svc_cat)
         {
             case BT_AVDTP_SERVICE_CAT_MEDIA_TRANSPORT:
@@ -182,10 +182,6 @@ static int avdtp_parsing_capability(struct net_buf *buf)
             break;
 
             case BT_AVDTP_SERVICE_CAT_MEDIA_CODEC:
-                cat_len = net_buf_pull_u8(buf);
-                codec_cap.media_type = net_buf_pull_u8(buf) >> 4;
-                codec_cap.codec_type = net_buf_pull_u8(buf);
-                memcpy(&codec_cap.codec_info, buf, sizeof(struct bt_a2dp_codec_info));
 
             break;
 
@@ -233,9 +229,9 @@ static void handle_avdtp_discover_cmd(struct bt_avdtp *session, struct net_buf *
     BT_DBG("rsp_buf len: %d \n", rsp_buf->len);
     for(int i = 0; i < rsp_buf->len; i++)
     {
-        printf("0x%02x, ", rsp_buf->data[i]);
+         BT_WARN("0x%02x, ", rsp_buf->data[i]);
     }
-    printf("\n");
+     BT_WARN("\n");
 #endif
 
     int result = bt_l2cap_chan_send(&session->br_chan.chan, rsp_buf);
@@ -273,10 +269,10 @@ static void handle_avdtp_get_cap_cmd(struct bt_avdtp *session, struct net_buf *b
     svc_cat_2[1] = 6;
     svc_cat_2[2] = BT_A2DP_AUDIO;
     svc_cat_2[3] = BT_A2DP_CODEC_TYPE_SBC;
-    svc_cat_2[4] = sbc_info.sampling_frequency << 4 | sbc_info.channel_mode;
-    svc_cat_2[5] = sbc_info.block_length << 4 | sbc_info.subbands << 2 | sbc_info.allocation_method;
-    svc_cat_2[6] = sbc_info.minimum_bitpool;
-    svc_cat_2[7] = sbc_info.maximum_bitpool;
+    svc_cat_2[4] = sbc_info.config[0];
+    svc_cat_2[5] = sbc_info.config[1];
+    svc_cat_2[6] = sbc_info.min_bitpool;
+    svc_cat_2[7] = sbc_info.max_bitpool;
     memcpy(rsp_buf->data + rsp_buf->len, svc_cat_2, 8);
     rsp_buf->len += 8;
 
@@ -292,9 +288,9 @@ static void handle_avdtp_get_cap_cmd(struct bt_avdtp *session, struct net_buf *b
     BT_DBG("rsp_buf len: %d \n", rsp_buf->len);
     for(int i = 0; i < rsp_buf->len; i++)
     {
-        printf("0x%02x, ", rsp_buf->data[i]);
+         BT_WARN("0x%02x, ", rsp_buf->data[i]);
     }
-    printf("\n");
+     BT_WARN("\n");
 #endif
 
     int result = bt_l2cap_chan_send(&session->br_chan.chan, rsp_buf);
@@ -533,9 +529,9 @@ int bt_avdtp_l2cap_recv(struct bt_l2cap_chan *chan, struct net_buf *buf)
 	BT_DBG("avdtp payload len: %d \n", buf->len);
 	for(int i = 0; i < buf->len; i++)
 	{
-		printf("0x%02x, ", buf->data[i]);
+		 BT_WARN("0x%02x, ", buf->data[i]);
 	}
-	printf("\n");
+	 BT_WARN("\n");
 #endif
 
 	/* validate if there is an outstanding resp expected*/
@@ -570,15 +566,15 @@ int bt_avdtp_l2cap_media_stream_recv(struct bt_l2cap_chan *chan, struct net_buf 
 	BT_DBG("avdtp payload len: %d \n", buf->len);
 	for(int i = 0; i < buf->len; i++)
 	{
-		printf("0x%02x, ", buf->data[i]);
+		 BT_WARN("0x%02x, ", buf->data[i]);
 	}
-	printf("\n");
+	 BT_WARN("\n");
 #endif
 
 	int res = a2dp_sbc_decode_process(buf->data, buf->len);
 	if(res)
 	{
-		BT_DBG("decode fail, error: %d \n", res);
+		BT_DBG("decode fail, error: %d", res);
 	}
 
 	return 0;
@@ -645,6 +641,7 @@ int bt_avdtp_l2cap_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
 		session->br_chan.chan.ops = &ops;
 		session->br_chan.rx.mtu = BT_AVDTP_MAX_MTU;
 		*chan = &session->br_chan.chan;
+		tid = 0;
 	}
 	else
 	{

@@ -10,6 +10,7 @@
 #include <bluetooth.h>
 #include <hci_host.h>
 #include <conn.h>
+#include <conn_internal.h>
 #include <l2cap.h>
 
 #include "cli.h"
@@ -40,7 +41,7 @@ static void bredr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char 
 static void bredr_write_eir(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 static void bredr_discoverable(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 static void bredr_connectable(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
-
+static void bredr_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 
 
 const struct cli_command bredr_cmd_set[] STATIC_CLI_CMD_ATTRIBUTE = {
@@ -51,6 +52,7 @@ const struct cli_command bredr_cmd_set[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"bredr_eir", "", bredr_write_eir},
     {"bredr_connectable", "", bredr_connectable},
     {"bredr_discoverable", "", bredr_discoverable},
+    {"bredr_disconnect", "", bredr_disconnect},
 
 };
 
@@ -102,6 +104,11 @@ static void bredr_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char 
 
 static void bredr_connected(struct bt_conn *conn, u8_t err)
 {
+    if(err || conn->type != BT_CONN_TYPE_BR)
+    {
+        return;
+    }
+
     char addr[BT_ADDR_STR_LEN];
 
     bt_conn_get_info(conn, &conn_info);
@@ -118,10 +125,18 @@ static void bredr_connected(struct bt_conn *conn, u8_t err)
     {
         default_conn = conn;
     }
+
+    bt_br_set_connectable(false);
+    bt_br_set_discoverable(false);
 }
 
 static void bredr_disconnected(struct bt_conn *conn, u8_t reason)
 {
+    if(conn->type != BT_CONN_TYPE_BR)
+    {
+        return;
+    }
+
     char addr[BT_ADDR_STR_LEN];
 
     bt_conn_get_info(conn, &conn_info);
@@ -138,7 +153,7 @@ static void bredr_disconnected(struct bt_conn *conn, u8_t reason)
 static void bredr_write_eir(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
 {
     int err;
-    char *name = "Bouffalolab-bl606p-classic-bt";
+    char *name = "Bouffalolab-classic-bluetooth";
     uint8_t rec = 1;
     uint8_t data[32] = {0};
 
@@ -213,6 +228,20 @@ static void bredr_connectable(char *p_write_buffer, int write_buffer_len, int ar
         printf("BR/EDR set connectable failed, (err %d)\n", err);
     } else {
     	printf("BR/EDR set connectable done.\n");
+    }
+}
+
+static void bredr_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    if(!default_conn){
+        printf("Not connected.\n");
+        return;
+    }
+
+    if(bt_conn_disconnect(default_conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN)){
+        printf("Disconnection failed.\n");
+    }else{
+        printf("Disconnect successfully.\n");
     }
 }
 

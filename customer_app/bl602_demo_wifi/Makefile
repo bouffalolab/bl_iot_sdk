@@ -22,8 +22,8 @@ COMPONENTS_NETWORK := sntp dns_server
 COMPONENTS_BLSYS   := bltime blfdt blmtd blota bloop loopadc looprt loopset
 COMPONENTS_VFS     := romfs
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std bl602_wifi blcrypto_suite bl602_wifidrv hal_drv lwip lwip_dhcpd mbedtls vfs yloop utils cli aws-iot httpc netutils blog blog_testc
-INCLUDE_COMPONENTS += easyflash4
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi blcrypto_suite wifi_manager hosal lwip lwip_dhcpd mbedtls_lts vfs yloop utils cli aws-iot httpc netutils blog blog_testc
+INCLUDE_COMPONENTS += easyflash4 coredump
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)

@@ -23,14 +23,14 @@ def bl602_demo_wifi_sta_ap_tc(env, extra_data):
         print('BL602 booted')
         dut.expect('Init CLI with event Driven', timeout=0.5)
         print('BL602 CLI init done')
-        time.sleep(0.1)
+        time.sleep(1)
 
         for i in range(2):
             print('To reboot BL602')
             dut.write('reboot')
             dut.expect("Booting BL602 Chip...", timeout=0.5)
             print('BL602 rebooted')
-            time.sleep(0.2)
+            time.sleep(1)
 
             dut.write('stack_wifi')
             time.sleep(0.5)
@@ -78,6 +78,9 @@ def bl602_demo_wifi_sta_ap_tc(env, extra_data):
             dut.expect("wifi state with ap connected ip got", timeout=1)
         dut.halt()
     except DUT.ExpectTimeout:
+        dut.write('p 0')
+        result_text = dut.read()
+        print(result_text)
         print('ENV_TEST_FAILURE: BL602 wifi test failed')
         raise
 

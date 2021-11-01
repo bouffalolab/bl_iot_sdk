@@ -1,4 +1,10 @@
 # Component Makefile
+
+ifeq ($(CONFIG_ETHERNET), 1)
+CFLAGS   += -DCFG_ETHERNET_ENABLE
+CPPFLAGS += -DCFG_ETHERNET_ENABLE
+endif
+
 #
 ## These include paths would be exported to project level
 COMPONENT_ADD_INCLUDEDIRS += src/include lwip-port lwip-port/config lwip-port/FreeRTOS lwip-port/arch

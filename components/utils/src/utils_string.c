@@ -121,3 +121,30 @@ void get_uint32_from_string(char** params, uint32_t *result)
 		*result = 0;
 }
 
+void utils_parse_number(const char *str, char sep, uint8_t *buf, int buflen, int base)
+{
+  int i;
+  for (i = 0; i < buflen; i++) {
+    buf[i] = (uint8_t)strtol(str, NULL, base);
+    str = strchr(str, sep);
+    if (str == NULL || *str == '\0') {
+      break;
+    }
+    str++;
+  }
+}
+
+void utils_parse_number_adv(const char *str, char sep, uint8_t *buf, int buflen, int base, int *count)
+{
+  int i;
+
+  for (i = 0; i < buflen; i++) {
+    buf[i] = (uint8_t)strtol(str, NULL, base);
+    str = strchr(str, sep);
+    if (str == NULL || *str == '\0') {
+      break;
+    }
+    str++;
+  }
+  *count = (i + 1);
+}

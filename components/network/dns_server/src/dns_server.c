@@ -3,6 +3,7 @@
 #include <FreeRTOS.h>
 #include <lwip/pbuf.h>
 #include <lwip/udp.h>
+#include <lwip/netifapi.h>
 #include <dns_server.h>
 #include <utils_dns.h>
 
@@ -48,8 +49,8 @@ struct dns_ans_ans {
     uint16_t cls;
     uint16_t point;
     uint16_t antyp;
-    uint16_t antypp; 
-    uint16_t len;    
+    uint16_t antypp;
+    uint16_t len;
     uint32_t time;
     uint32_t addr;
 };
@@ -80,7 +81,7 @@ static void dns_server_send(struct dns_server_ctx *dns_ctx)
     uint16_t query_idx, copy_len;
     const char *hostname, *hostname_part;
     struct dns_table_entry dns_server_table = {
-    	.txid     = DNS_SERVER_ID,
+        .txid     = DNS_SERVER_ID,
         .flags    = DNS_SERVER_FLAGS,
         .numque   = DNS_SERVER_NUMQUE,
         .ansrrs   = DNS_SERVER_ANSRRS,
@@ -131,14 +132,14 @@ static void dns_server_send(struct dns_server_ctx *dns_ctx)
         qry.point  = htons(entry->poiname);
         qry.antyp  = htons(entry->anstype);
         qry.antypp = htons(entry->anstypee);
-        qry.len    = htons(entry->datalen);        
+        qry.len    = htons(entry->datalen);
         qry.time   = htonl(entry->anstime);
         qry.addr   = htonl(entry->adress);
         pbuf_take_at(rp, &qry, SIZEOF_DNSANS_HDRQUE, query_idx);
-        
+
         pbuf_realloc(rp, query_idx + SIZEOF_DNSANS_HDRQUE);//shrink to the real size
         udp_sendto(dns_ctx->upcb1, rp, dns_ctx->addr1, dns_ctx->port1);
-        pbuf_free(rp);  
+        pbuf_free(rp);
     }
 }
 
@@ -148,7 +149,6 @@ void get_dns_request(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_a
     struct dns_server_ctx *dns_ctx = (struct dns_server_ctx*)arg;
     int len;
 
-    dns_ctx->upcb1 = upcb;
     dns_ctx->addr1 = addr;
     dns_ctx->port1 = port;
 
@@ -156,7 +156,7 @@ void get_dns_request(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_a
         LWIP_DEBUGF(DNS_DEBUG, ("dns_recv: pbuf too small\r\n"));
          /* free pbuf and return */
     } else {
-        pbuf_copy_partial(p, &hdr, SIZEOF_DNSANS_HDR, 0); 
+        pbuf_copy_partial(p, &hdr, SIZEOF_DNSANS_HDR, 0);
         dns_ctx->txid = ntohs(hdr.id);
         dns_ctx->nquestions = ntohs(hdr.numquestions);
         pbuf_copy_partial(
@@ -164,7 +164,7 @@ void get_dns_request(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_a
             dns_ctx->name,
             len = p->tot_len > sizeof(dns_ctx->name) - 1 ? sizeof(dns_ctx->name) - 1 : p->tot_len,
             SIZEOF_DNSANS_HDR
-        ); 
+        );
         if (0 == utils_dns_domain_get(dns_ctx->name, dns_ctx->name, &len)) {
             if (len > 0 && '.' == dns_ctx->name[len - 1]) {
                 len--;
@@ -177,31 +177,58 @@ void get_dns_request(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_a
     dns_server_send(dns_ctx);
 }
 
-void dns_server_init(void)
+static err_t dns_server_init_internal(struct netif *arg)
 {
-    struct udp_pcb *upcb;  
-    struct dns_server_ctx *dns_ctx;
-    err_t err;
-  
-    upcb = udp_new();  
-    if (NULL == upcb) {
-        goto failed_out_1;
-    }
-    err = udp_bind(upcb, IP_ADDR_ANY, 53);  
-    if (err != ERR_OK) {
-        goto failed_out_2;
-    } 
-    dns_ctx = pvPortMalloc(sizeof(struct dns_server_ctx));
-    if (NULL == dns_ctx) {
-        goto failed_out_3;
-    }
-    memset(dns_ctx, 0, sizeof(dns_ctx));
-    udp_recv(upcb, get_dns_request, dns_ctx);
-    return;
+    err_t ret = ERR_OK;
+    struct udp_pcb *upcb;
+    struct dns_server_ctx *server = (struct dns_server_ctx *)arg;
 
-failed_out_3:
-failed_out_2:
+    upcb = udp_new();
+    if (NULL == upcb) {
+        ret = ERR_MEM;
+        goto out;
+    }
+    if (ERR_OK != udp_bind(upcb, IP_ADDR_ANY, 53)) {
+        ret = ERR_USE;
+        goto err;
+    }
+    udp_recv(upcb, get_dns_request, server);
+    server->upcb1 = upcb;
+    goto out;
+
+err:
     udp_remove(upcb);
-failed_out_1:
-    return;
+out:
+    return ret;
+}
+
+void *dns_server_init(void)
+{
+    struct dns_server_ctx *server;
+
+    server = pvPortMalloc(sizeof(struct dns_server_ctx));
+    if (NULL == server) {
+        goto out;
+    }
+    if (ERR_OK != netifapi_netif_common((struct netif *)server, NULL, dns_server_init_internal)) {
+        vPortFree(server);
+        server = NULL;
+    }
+out:
+    return server;
+}
+
+static void dns_server_deinit_internal(struct netif *arg)
+{
+    struct dns_server_ctx *server = (struct dns_server_ctx *)arg;
+    udp_remove(server->upcb1);
+}
+
+void dns_server_deinit(void *server)
+{
+    if (!server) {
+        return;
+    }
+    netifapi_netif_common((struct netif *)server, dns_server_deinit_internal, NULL);
+    vPortFree(server);
 }

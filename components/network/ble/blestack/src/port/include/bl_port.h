@@ -1,5 +1,8 @@
 #ifndef BL_PORT_H
 #define BL_PORT_H
+#if defined(BL_MCU_SDK)
+#include "misc.h"
+#endif
 #include "config.h"
 #include <misc/dlist.h>
 #include <assert.h>
@@ -257,7 +260,13 @@ void irq_unlock(unsigned int key);
 
 int k_is_in_isr(void);
 
+#ifdef  BIT
+#undef BIT
 #define BIT(n)  (1UL << (n))
+#else
+#define BIT(n)  (1UL << (n))
+#endif
+
 long long k_now_ms(void);
 void k_get_random_byte_array(uint8_t *buf, size_t len);
 void *k_malloc(size_t size);

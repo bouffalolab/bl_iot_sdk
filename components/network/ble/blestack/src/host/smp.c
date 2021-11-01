@@ -269,11 +269,76 @@ static bool bondable = IS_ENABLED(CONFIG_BT_BONDABLE);
 static bool oobd_present;
 static bool sc_supported;
 static const u8_t *sc_public_key;
+
+#if defined(BFLB_BLE_SMP_LOCAL_AUTH)
+#define SMP_INVALID_AUTH 0xFF
+u8_t local_auth = SMP_INVALID_AUTH;
+#endif
+
 #if defined(BFLB_BLE)
 struct k_sem sc_local_pkey_ready;
 #else
 static K_SEM_DEFINE(sc_local_pkey_ready, 0, 1);
 #endif
+
+#if defined(CONFIG_AUTO_PTS)
+static int smp_error(struct bt_smp *smp, u8_t reason);
+static u8_t legacy_pairing_confirm(struct bt_smp *smp);
+static struct bt_smp *smp_chan_get(struct bt_conn *conn);
+
+static void legacy_user_tk_entry(struct bt_smp *smp)
+{
+	if (!atomic_test_and_clear_bit(smp->flags, SMP_FLAG_CFM_DELAYED)) {
+		return;
+	}
+
+	/* if confirm failed ie. due to invalid passkey, cancel pairing */
+	if (legacy_pairing_confirm(smp)) {
+		smp_error(smp, BT_SMP_ERR_PASSKEY_ENTRY_FAILED);
+		return;
+	}
+
+	if (IS_ENABLED(CONFIG_BT_CENTRAL) &&
+	    smp->chan.chan.conn->role == BT_HCI_ROLE_MASTER) {
+		atomic_set_bit(&smp->allowed_cmds, BT_SMP_CMD_PAIRING_CONFIRM);
+		return;
+	}
+
+	if (IS_ENABLED(CONFIG_BT_PERIPHERAL)) {
+		atomic_set_bit(&smp->allowed_cmds, BT_SMP_CMD_PAIRING_RANDOM);
+	}
+}
+
+#if !defined(CONFIG_BT_SMP_SC_PAIR_ONLY)
+int bt_smp_le_oob_set_tk(struct bt_conn *conn, const uint8_t *tk)
+{
+	struct bt_smp *smp;
+
+	smp = smp_chan_get(conn);
+	if (!smp || !tk) {
+		return -EINVAL;
+	}
+
+	BT_DBG("%s", bt_hex(tk, 16));
+
+	if (!atomic_test_and_clear_bit(smp->flags, SMP_FLAG_USER)) {
+		return -EINVAL;
+	}
+
+	memcpy(smp->tk, tk, 16*sizeof(uint8_t));
+
+	legacy_user_tk_entry(smp);
+
+	return 0;
+}
+
+int bt_le_oob_set_legacy_tk(struct bt_conn *conn, const uint8_t *tk)
+{
+	return bt_smp_le_oob_set_tk(conn, tk);
+}
+
+#endif /* !defined(CONFIG_BT_SMP_SC_PAIR_ONLY) */
+#endif //CONFIG_AUTO_PTS
 
 #if defined(CONFIG_BLE_AT_CMD)
 static u8_t get_io_capa(void);
@@ -1853,8 +1918,15 @@ static void smp_timeout(struct k_work *work)
 	}
 
 	atomic_set_bit(smp->flags, SMP_FLAG_TIMEOUT);
+    //case SM/MAS/PROT/BV-01-C
+    //If smp timeout does not respond to it or close the connection.
+    /*If the Security Manager Timer reaches 30 seconds, the procedure shall be
+		considered to have failed, and the local higher layer shall be notified. No further
+		SMP commands shall be sent over the L2CAP Security Manager Channel. A
+		new Pairing process shall only be performed when a new physical link has
+		been established*/
 
-	smp_pairing_complete(smp, BT_SMP_ERR_UNSPECIFIED);
+    //smp_pairing_complete(smp, BT_SMP_ERR_UNSPECIFIED);
 }
 
 static void smp_send(struct bt_smp *smp, struct net_buf *buf,
@@ -2490,8 +2562,14 @@ static u8_t smp_master_ident(struct bt_smp *smp, struct net_buf *buf)
 		memcpy(keys->ltk.ediv, req->ediv, sizeof(keys->ltk.ediv));
 		memcpy(keys->ltk.rand, req->rand, sizeof(req->rand));
 
+		#if !defined(BFLB_BLE_PATCH_CLEAR_REMOTE_KEY_BIT)
 		smp->remote_dist &= ~BT_SMP_DIST_ENC_KEY;
+		#endif
 	}
+
+     #if defined(BFLB_BLE_PATCH_CLEAR_REMOTE_KEY_BIT)
+     smp->remote_dist &= ~BT_SMP_DIST_ENC_KEY;
+     #endif
 
 	if (smp->remote_dist & BT_SMP_DIST_ID_KEY) {
 		atomic_set_bit(&smp->allowed_cmds, BT_SMP_CMD_IDENT_INFO);
@@ -2576,7 +2654,8 @@ static int smp_init(struct bt_smp *smp)
 
 	sc_public_key = bt_pub_key_get();
     #if defined(BFLB_BLE)
-    k_sem_init(&sc_local_pkey_ready, 0, 1);
+    if(!sc_local_pkey_ready.sem.hdl)
+        k_sem_init(&sc_local_pkey_ready, 0, 1);
     #endif
 	return 0;
 }
@@ -2608,6 +2687,13 @@ void bt_set_oob_data_flag(bool enable)
 	oobd_present = enable;
 }
 
+#if defined(BFLB_BLE_SMP_LOCAL_AUTH)
+void smp_set_auth(u8_t auth)
+{
+    local_auth = auth;
+}
+#endif
+
 static u8_t get_auth(struct bt_conn *conn, u8_t auth)
 {
 #if defined(CONFIG_BLE_AT_CMD)
@@ -2615,6 +2701,13 @@ static u8_t get_auth(struct bt_conn *conn, u8_t auth)
        return user_smp_paras.auth;
     else{
 #endif
+        #if defined(BFLB_BLE_SMP_LOCAL_AUTH)
+        if(local_auth != SMP_INVALID_AUTH)
+        {
+            return local_auth;
+        }
+        #endif
+            
     	if (sc_supported) {
     		auth &= BT_SMP_AUTH_MASK_SC;
     	} else {

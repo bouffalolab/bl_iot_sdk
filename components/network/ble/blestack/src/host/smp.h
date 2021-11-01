@@ -164,6 +164,10 @@ int bt_smp_sign_verify(struct bt_conn *conn, struct net_buf *buf);
  */
 int bt_smp_sign(struct bt_conn *conn, struct net_buf *buf);
 
+#if defined(CONFIG_AUTO_PTS)
+int bt_le_oob_set_legacy_tk(struct bt_conn *conn, const uint8_t *tk);
+#endif
+
 #if defined(CONFIG_BLE_AT_CMD)
 struct smp_parameters{
     u8_t auth;
@@ -178,4 +182,6 @@ struct smp_parameters user_smp_paras;
 int ble_set_smp_paramters(const struct smp_parameters *paras);
 int ble_get_smp_paramters(const struct bt_conn *conn,struct smp_parameters *paras);
 #endif
-
+#if defined(BFLB_BLE_SMP_LOCAL_AUTH)
+void smp_set_auth(u8_t auth);
+#endif

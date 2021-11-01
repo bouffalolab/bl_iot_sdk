@@ -41,15 +41,15 @@ const OI_CHAR *const OI_CODEC_SBC_AllocText[] =    { "SBC_LOUDNESS", "SBC_SNR" }
 #ifdef OI_DEBUG
 void OI_CODEC_SBC_DumpConfig(OI_CODEC_SBC_FRAME_INFO *frameInfo)
 {
-    printf("SBC configuration\n");
-    printf("  enhanced:  %s\n", frameInfo->enhanced ? "TRUE" : "FALSE");
-    printf("  frequency: %d\n", frameInfo->frequency);
-    printf("  subbands:  %d\n", frameInfo->nrof_subbands);
-    printf("  blocks:    %d\n", frameInfo->nrof_blocks);
-    printf("  channels:  %d\n", frameInfo->nrof_channels);
-    printf("  mode:      %s\n", OI_CODEC_SBC_ModeText[frameInfo->mode]);
-    printf("  alloc:     %s\n", OI_CODEC_SBC_AllocText[frameInfo->alloc]);
-    printf("  bitpool:   %d\n", frameInfo->bitpool);
+    BT_WARN("SBC configuration\n");
+    BT_WARN("  enhanced:  %s\n", frameInfo->enhanced ? "TRUE" : "FALSE");
+    BT_WARN("  frequency: %d\n", frameInfo->frequency);
+    BT_WARN("  subbands:  %d\n", frameInfo->nrof_subbands);
+    BT_WARN("  blocks:    %d\n", frameInfo->nrof_blocks);
+    BT_WARN("  channels:  %d\n", frameInfo->nrof_channels);
+    BT_WARN("  mode:      %s\n", OI_CODEC_SBC_ModeText[frameInfo->mode]);
+    BT_WARN("  alloc:     %s\n", OI_CODEC_SBC_AllocText[frameInfo->alloc]);
+    BT_WARN("  bitpool:   %d\n", frameInfo->bitpool);
 }
 #endif /* OI_DEBUG */
 

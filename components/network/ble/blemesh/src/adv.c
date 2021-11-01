@@ -113,7 +113,12 @@ static void adv_send_timeout_ck(struct k_work *work)
 {
     BT_DBG("%s [%p]", __func__, work);
     /* Get buff for work */
-    struct bt_mesh_adv * adv = BT_MESH_ADV_FROM_WORK(work);
+    struct bt_mesh_adv* adv = BT_MESH_ADV_FROM_WORK(work);
+    struct k_delayed_work *dwork = (struct k_delayed_work *)work;
+    if(0 != k_delayed_work_free(dwork)){
+        BT_ERR("Unable to free timer\r\n");
+        return;
+    }
     
     int err = bt_le_multi_adv_stop(adv->adv_id);
     adv_send_end(err, adv->cb, adv->cb_data);
@@ -175,11 +180,12 @@ static inline void adv_send(struct net_buf *buf)
     if(err){
         // TODO adv_send_sem
         k_sem_give(&adv_send_sem);
+        net_buf_unref(buf);
         BT_ERR("Advertising failed: err %d", err);
         return;
     }
     adv_send_start(duration, err, cb, cb_data);
-
+    
     k_delayed_work_init(&adv->d_work, adv_send_timeout_ck);
     k_delayed_work_submit(&adv->d_work, duration);
 
@@ -395,7 +401,6 @@ void bt_mesh_adv_init(void)
     net_buf_init(&adv_buf_pool, CONFIG_BT_MESH_ADV_BUF_COUNT, BT_MESH_ADV_DATA_SIZE, NULL);
 #endif
 
-    k_lifo_init(&adv_buf_pool.free, CONFIG_BT_MESH_ADV_BUF_COUNT);
     k_fifo_init(&adv_queue, 20);
     k_thread_create(&adv_thread_data, "BT Mesh adv", CONFIG_MESH_ADV_STACK_SIZE,
         adv_thread, CONFIG_BT_MESH_ADV_PRIO);

@@ -365,3 +365,25 @@ int bt_mesh_start(void)
 
 	return 0;
 }
+
+#ifdef CONFIG_BT_MESH_MOD_BIND_CB
+void bt_mesh_mod_bind_cb(struct bt_mesh_model *model,u16_t net_idx, u16_t mod_app_idx)
+{
+    bt_mesh_prov_mod_bind_cb(model, net_idx, mod_app_idx);
+}
+#endif /* CONFIG_BT_MESH_MOD_BIND_CB */
+
+#ifdef CONFIG_BT_MESH_APPKEY_ADD_CB
+void bt_mesh_app_key_add_cb(u16_t net_idx, u16_t mod_app_idx)
+{
+    bt_mesh_prov_app_key_add_cb(net_idx, mod_app_idx);
+}
+#endif /* CONFIG_BT_MESH_APPKEY_ADD_CB */
+
+#ifdef CONFIG_BT_MESH_MOD_SUB_ADD_CB
+void bt_mesh_mod_sub_add_cb(struct bt_mesh_model *model, u16_t elem_addr, u16_t group_addr)
+{
+    bt_mesh_prov_mod_sub_add_cb(model, elem_addr, group_addr);
+}
+#endif /* CONFIG_BT_MESH_MOD_SUB_ADD_CB */
+

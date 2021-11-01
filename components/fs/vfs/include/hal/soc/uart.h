@@ -5,7 +5,8 @@
 #ifndef HAL_UART_H
 #define HAL_UART_H
 
-#include <hal_uart.h>
+#include <hosal_uart.h>
+#if 0
 /*
  * UART data width
  */
@@ -223,5 +224,6 @@ int32_t hal_uart_notify_register(uart_dev_t *uart, hal_uart_int_t type, void (*c
  */
 int32_t hal_uart_notify_unregister(uart_dev_t *uart, hal_uart_int_t type, void (*cb)(void *arg));
 
+#endif
 #endif /* HAL_UART_H */
 

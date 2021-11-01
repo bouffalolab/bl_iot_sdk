@@ -19,6 +19,8 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
     print('Starting app')
     dut.start_app()
 
+    time.sleep(2)
+
     try:
         RPI_ip = get_ip_address(bytes('eth0', encoding = "utf8"))
         board_log_name = env.log_path + '/port0.log'
@@ -27,6 +29,7 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
         for action_cmd in test_cmd:
             default_cmd_list = ['stack_wifi', 'wifi_sta_connect']
             dut.start_app()
+            time.sleep(1)
             for default_cmd in default_cmd_list:
                 print("------Executing default command {}, please wait...".format(default_cmd))
                 if default_cmd == 'wifi_sta_connect':
@@ -35,7 +38,7 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
                     cmd = ("wifi_sta_connect", bssid, pwd)
                     cmd_wifi_connect = ' '.join(cmd)
                     dut.write(cmd_wifi_connect)
-                    ip = dut.expect(re.compile(r"IP GOT IP:(.*), MASK:"), timeout=30)
+                    ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
                     board_ip = ''.join(ip)
                     print(f'board ip is {board_ip}')
                 else:
@@ -75,13 +78,13 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
 
                 dut.write(board_cmd)
                 print("ipc_test {}".format(board_cmd))
-                dut.expect('Connect to iperf server successful!', timeout=1)
+                dut.expect('Connect to iperf server successful!', timeout=10)
                 write_log(iperf_log_name, result, implement_time)
                 check_result = check_iperf_log_result(env, action_cmd, iperf_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num += 1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -104,7 +107,7 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num += 1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -126,7 +129,7 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
                 if check_result == 'failed':
                     print("ipc failed!")
                     test_num+=1
-                    
+
                 check_result = check_board_log_result(action_cmd, board_log_name)
                 if check_result == 'failed':
                     print("ipc failed!")
@@ -140,6 +143,9 @@ def bl602_demo_wifi_RPI_open_iperf_tc(env, extra_data):
 
         dut.halt()
     except Exception:
+        dut.write('p 0')
+        result_text = dut.read()
+        print(result_text)
         print('ENV_TEST_FAILURE: BL602 demo_wifi test failed')
         raise
 
@@ -189,7 +195,11 @@ def find_iperf_speed_line(action_cmd, lines_data):
 
 def check_board_log_result(action_cmd, log_name):
     with open(log_name, 'rb') as f:
-        lines_data = f.readlines()
+        lines_date = ''
+        try:
+            lines_data = f.readlines()
+        except:
+            print('device reports readiness to read but returned no data ')
         if action_cmd == 'ipc':
             find_iperf_speed_line('ipc ', lines_data) 
         elif action_cmd == 'ips':
@@ -213,8 +223,13 @@ def standard_output(env, action_cmd, average_):
 
 
 def check_iperf_log_result(env, action_cmd, log_name):
+    time.sleep(5)
     with open(log_name, 'r') as f:
-        lines_date = f.readlines()
+        lines_date = ''
+        try:
+            lines_date = f.readlines()
+        except:
+            print('device reports readiness to read but returned no data ')
         str_lines_data = str(lines_date)
 
         if action_cmd == 'ips' or action_cmd == 'ipc' or action_cmd == 'ipus':

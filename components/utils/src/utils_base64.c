@@ -28,17 +28,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef UTILS_BASE64
-
-
 #include <stdint.h>
 #include <stdlib.h>
-
-#include "iot_import.h"
-#include "iot_export.h"
-
-#include "iotx_utils_internal.h"
 #include "utils_base64.h"
+#include <utils_log.h>
 
 static int8_t g_encodingTable[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -77,14 +70,14 @@ iotx_err_t utils_base64encode(const uint8_t *data, uint32_t inputLength, uint32_
     uint32_t j = 0;
 
     if (NULL == encodedData) {
-        utils_err("pointer of encodedData is NULL!");
+        log_error("pointer of encodedData is NULL!\r\n");
         return FAIL_RETURN;
     }
 
     *outputLength = 4 * ((inputLength + 2) / 3);
 
     if (outputLenMax < *outputLength) {
-        utils_err("the length of output memory is not enough!");
+        log_error("the length of output memory is not enough!\r\n");
         return FAIL_RETURN;
     }
 
@@ -108,6 +101,49 @@ iotx_err_t utils_base64encode(const uint8_t *data, uint32_t inputLength, uint32_
     return SUCCESS_RETURN;
 }
 
+/*
+ * Streaming Base64 encoder
+ * param:
+ *  read_data: The callback function when the encoder absorbs data.
+ *             A non-zero return indicates the end of the data.
+ *  write_data: The callback function when the encoder releases data.
+ *  opaque: Callback function context.
+ */
+void utils_base64_encode_stream(int (*read_data)(uint8_t *data, void *opaque), void (*write_data)(const uint8_t data[4], void *opaque), void *opaque)
+{
+  uint8_t encodedData[4], c;
+  int end = 0, remainder = -1, i;
+
+  while (!end) {
+    uint32_t octet_a = (end = read_data(&c, opaque)) ? (remainder = (remainder >= 0 ? remainder : 0), 0) : c;
+    uint32_t octet_b = (end = read_data(&c, opaque)) ? (remainder = (remainder >= 0 ? remainder : 1), 0) : c;
+    uint32_t octet_c = (end = read_data(&c, opaque)) ? (remainder = (remainder >= 0 ? remainder : 2), 0) : c;
+
+    uint32_t triple = (octet_a << 0x10) + (octet_b << 0x08) + octet_c;
+
+    if (end && remainder == 0) {
+      return;
+    }
+
+    encodedData[0] = g_encodingTable[(triple >> 3 * 6) & 0x3F];
+    encodedData[1] = g_encodingTable[(triple >> 2 * 6) & 0x3F];
+    encodedData[2] = g_encodingTable[(triple >> 1 * 6) & 0x3F];
+    encodedData[3] = g_encodingTable[(triple >> 0 * 6) & 0x3F];
+
+    if (!end) {
+      write_data(encodedData, opaque);
+    }
+  }
+
+  for (i = 0; i < g_modTable[remainder]; i++) {
+    encodedData[3 - i] = '=';
+  }
+
+  write_data(encodedData, opaque);
+
+  return;
+}
+
 iotx_err_t utils_base64decode(const uint8_t *data, uint32_t inputLength, uint32_t outputLenMax,
                               uint8_t *decodedData, uint32_t *outputLength)
 {
@@ -117,7 +153,7 @@ iotx_err_t utils_base64decode(const uint8_t *data, uint32_t inputLength, uint32_
     build_decoding_table();
 
     if (inputLength % 4 != 0) {
-        utils_err("the input length is error!");
+        log_error("the input length is error!\r\n");
         return FAIL_RETURN;
     }
 
@@ -133,7 +169,7 @@ iotx_err_t utils_base64decode(const uint8_t *data, uint32_t inputLength, uint32_
     }
 
     if (outputLenMax < *outputLength) {
-        utils_err("the length of output memory is not enough!");
+        log_error("the length of output memory is not enough!\r\n");
         return FAIL_RETURN;
     }
 
@@ -167,4 +203,4 @@ iotx_err_t utils_base64decode(const uint8_t *data, uint32_t inputLength, uint32_
     return SUCCESS_RETURN;
 }
 
-#endif
+

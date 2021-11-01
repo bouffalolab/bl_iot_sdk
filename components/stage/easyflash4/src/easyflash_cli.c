@@ -24,11 +24,6 @@ static void psm_unset_cmd(char *buf, int len, int argc, char **argv)
     ef_save_env();
 }
 
-static void psm_get_cmd(char *buf, int len, int argc, char **argv)
-{
-    /* You can add your code here. */
-}
-
 static void psm_dump_cmd(char *buf, int len, int argc, char **argv)
 {
     ef_print_env();
@@ -45,7 +40,7 @@ void psm_test_cmd(char *buf, int len, int argc, char **argv)
     uint8_t *data_src = NULL;
     uint8_t *data_buf = NULL;
     uint32_t data_len = 0;
-    uint32_t tbuf[] = {1, 1024, 2048, 3979, 3980, 3981};
+    uint32_t tbuf[] = {1, 1024, 2048, 3978, 3979, 3980};
     uint32_t i, j;
 
     size_t read_len;
@@ -100,7 +95,6 @@ kvbin_exit:
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "psm_set", "psm set", psm_set_cmd },
         { "psm_unset", "psm unset", psm_unset_cmd },
-        { "psm_get", "psm get", psm_get_cmd },
         { "psm_dump", "psm dump", psm_dump_cmd },
         { "psm_erase", "psm dump", psm_erase_cmd },
         { "psm_test", "psm test", psm_test_cmd },

@@ -38,6 +38,11 @@ int bt_gatt_store_ccc(u8_t id, const bt_addr_le_t *addr);
 
 int bt_gatt_clear(u8_t id, const bt_addr_le_t *addr);
 
+#if defined(BFLB_BLE_MTU_CHANGE_CB)
+void bt_gatt_mtu_changed(struct bt_conn *conn, u16_t mtu);
+#endif
+
+
 #if defined(CONFIG_BT_GATT_CLIENT)
 void bt_gatt_notification(struct bt_conn *conn, u16_t handle,
 			  const void *data, u16_t length);

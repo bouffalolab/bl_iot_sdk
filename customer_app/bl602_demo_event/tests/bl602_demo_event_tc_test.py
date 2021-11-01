@@ -36,6 +36,9 @@ def bl602_demo_event_tc(env, extra_data):
         print('Started AP with SSID: {}'.format(ap_ssid[0]))
         dut.halt()
     except DUT.ExpectTimeout:
+        dut.write('p 0')
+        result_text = dut.read()
+        print(result_text)
         print('ENV_TEST_FAILURE: BL602 example test failed')
         raise
 

@@ -180,8 +180,13 @@ do {                                                                    \
 #endif
 #define ARG_UNUSED(x) (void)(x)
 
-#define likely(x)   __builtin_expect((bool)!!(x), true)
-#define unlikely(x) __builtin_expect((bool)!!(x), false)
+#ifndef  likely
+#define  likely(x)   __builtin_expect((bool)!!(x), true)
+#endif
+#ifndef unlikely
+#define  unlikely(x) __builtin_expect((bool)!!(x), false)
+#endif
+
 
 #define popcount(x) __builtin_popcount(x)
 

@@ -676,6 +676,20 @@ dhcp_handle_ack(struct netif *netif, struct dhcp_msg *msg_in)
     dns_setserver(n, &dns_addr);
   }
 #endif /* LWIP_DHCP_PROVIDE_DNS_SERVERS */
+            printf( " IP:%u.%u.%u.%u\r\n MASK: %u.%u.%u.%u\r\n Gateway: %u.%u.%u.%u\r\n",
+                    (unsigned int)((dhcp->offered_ip_addr.addr & 0x000000FF) >> 0),
+                    (unsigned int)((dhcp->offered_ip_addr.addr & 0x0000FF00) >> 8),
+                    (unsigned int)((dhcp->offered_ip_addr.addr & 0x00FF0000) >> 16),
+                    (unsigned int)((dhcp->offered_ip_addr.addr & 0xFF000000) >> 24),
+                    (unsigned int)((dhcp->offered_sn_mask.addr & 0x000000FF) >> 0),
+                    (unsigned int)((dhcp->offered_sn_mask.addr & 0x0000FF00) >> 8),
+                    (unsigned int)((dhcp->offered_sn_mask.addr & 0x00FF0000) >> 16),
+                    (unsigned int)((dhcp->offered_sn_mask.addr & 0xFF000000) >> 24),
+                    (unsigned int)((dhcp->offered_gw_addr.addr & 0x000000FF) >> 0),
+                    (unsigned int)((dhcp->offered_gw_addr.addr & 0x0000FF00) >> 8),
+                    (unsigned int)((dhcp->offered_gw_addr.addr & 0x00FF0000) >> 16),
+                    (unsigned int)((dhcp->offered_gw_addr.addr & 0xFF000000) >> 24)
+                  );
 }
 
 /**
