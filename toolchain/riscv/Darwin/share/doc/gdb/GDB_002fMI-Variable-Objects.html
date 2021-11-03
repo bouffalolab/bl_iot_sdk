@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GDB/MI Variable Objects (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB_002fMI.html#GDB_002fMI" rel="up" title="GDB/MI">
-<link href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" rel="next" title="GDB/MI Data Manipulation">
-<link href="GDB_002fMI-Stack-Manipulation.html#GDB_002fMI-Stack-Manipulation" rel="prev" title="GDB/MI Stack Manipulation">
+<link href="GDB_002fMI.html" rel="up" title="GDB/MI">
+<link href="GDB_002fMI-Data-Manipulation.html" rel="next" title="GDB/MI Data Manipulation">
+<link href="GDB_002fMI-Stack-Manipulation.html" rel="prev" title="GDB/MI Stack Manipulation">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,20 +51,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GDB_002fMI-Variable-Objects"></a>
-<div class="header">
+<span id="GDB_002fMI-Variable-Objects"></span><div class="header">
 <p>
-Next: <a href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" accesskey="n" rel="next">GDB/MI Data Manipulation</a>, Previous: <a href="GDB_002fMI-Stack-Manipulation.html#GDB_002fMI-Stack-Manipulation" accesskey="p" rel="prev">GDB/MI Stack Manipulation</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Data-Manipulation.html" accesskey="n" rel="next">GDB/MI Data Manipulation</a>, Previous: <a href="GDB_002fMI-Stack-Manipulation.html" accesskey="p" rel="prev">GDB/MI Stack Manipulation</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GDB_002fMI-Variable-Objects-1"></a>
-<h3 class="section">27.15 <small>GDB/MI</small> Variable Objects</h3>
+<span id="GDB_002fMI-Variable-Objects-1"></span><h3 class="section">27.15 <small>GDB/MI</small> Variable Objects</h3>
 
 
-<a name="Introduction-to-Variable-Objects"></a>
-<h4 class="subheading">Introduction to Variable Objects</h4>
+<span id="Introduction-to-Variable-Objects"></span><h4 class="subheading">Introduction to Variable Objects</h4>
 
-<a name="index-variable-objects-in-GDB_002fMI"></a>
+<span id="index-variable-objects-in-GDB_002fMI"></span>
 
 <p>Variable objects are &quot;object-oriented&quot; MI interface for examining and
 changing values of expressions.  Unlike some other MI interfaces that
@@ -129,8 +117,8 @@ variable object the values of variables whose names appear in the
 expressions are re-evaluated every time in the context of the current
 frame.  Consider this example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void do_work(...)
+<div class="example">
+<pre class="example">void do_work(...)
 {
         struct work_state state;
 
@@ -171,22 +159,20 @@ access this functionality:
 <tr><td width="40%"><code>-var-evaluate-expression</code></td><td width="60%">get the value of this variable</td></tr>
 <tr><td width="40%"><code>-var-assign</code></td><td width="60%">set the value of this variable</td></tr>
 <tr><td width="40%"><code>-var-update</code></td><td width="60%">update the variable and its children</td></tr>
-<tr><td width="40%"><code>-var-set-frozen</code></td><td width="60%">set frozeness attribute</td></tr>
+<tr><td width="40%"><code>-var-set-frozen</code></td><td width="60%">set frozenness attribute</td></tr>
 <tr><td width="40%"><code>-var-set-update-range</code></td><td width="60%">set range of children to display on update</td></tr>
 </table>
 
 <p>In the next subsection we describe each operation in detail and suggest
 how it can be used.
 </p>
-<a name="Description-And-Use-of-Operations-on-Variable-Objects"></a>
-<h4 class="subheading">Description And Use of Operations on Variable Objects</h4>
+<span id="Description-And-Use-of-Operations-on-Variable-Objects"></span><h4 class="subheading">Description And Use of Operations on Variable Objects</h4>
 
-<a name="The-_002denable_002dpretty_002dprinting-Command"></a>
-<h4 class="subheading">The <code>-enable-pretty-printing</code> Command</h4>
-<a name="index-_002denable_002dpretty_002dprinting"></a>
+<span id="The-_002denable_002dpretty_002dprinting-Command"></span><h4 class="subheading">The <code>-enable-pretty-printing</code> Command</h4>
+<span id="index-_002denable_002dpretty_002dprinting"></span>
 
-<div class="smallexample">
-<pre class="smallexample">-enable-pretty-printing
+<div class="example">
+<pre class="example">-enable-pretty-printing
 </pre></div>
 
 <p><small>GDB</small> allows Python-based visualizers to affect the output of the
@@ -202,15 +188,13 @@ this command will still succeed (and do nothing).
 <p>This feature is currently (as of <small>GDB</small> 7.0) experimental, and
 may work differently in future versions of <small>GDB</small>.
 </p>
-<a name="The-_002dvar_002dcreate-Command"></a>
-<h4 class="subheading">The <code>-var-create</code> Command</h4>
-<a name="index-_002dvar_002dcreate"></a>
+<span id="The-_002dvar_002dcreate-Command"></span><h4 class="subheading">The <code>-var-create</code> Command</h4>
+<span id="index-_002dvar_002dcreate"></span>
 
-<a name="Synopsis-45"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-48"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-create {<var>name</var> | &quot;-&quot;}
+<div class="example">
+<pre class="example"> -var-create {<var>name</var> | &quot;-&quot;}
     {<var>frame-addr</var> | &quot;*&quot; | &quot;@&quot;} <var>expression</var>
 </pre></div>
 
@@ -240,7 +224,7 @@ begin with a &lsquo;<samp>*</samp>&rsquo;), or one of the following:
 </li><li> &lsquo;<samp>$<var>regname</var></samp>&rsquo; &mdash; a CPU register name
 </li></ul>
 
-<a name="index-dynamic-varobj"></a>
+<span id="index-dynamic-varobj"></span>
 <p>A varobj&rsquo;s contents may be provided by a Python-based pretty-printer.  In this
 case the varobj is known as a <em>dynamic varobj</em>.  Dynamic varobjs
 have slightly different semantics in some cases.  If the
@@ -248,8 +232,7 @@ have slightly different semantics in some cases.  If the
 will never create a dynamic varobj.  This ensures backward
 compatibility for existing clients.
 </p>
-<a name="Result-5"></a>
-<h4 class="subsubheading">Result</h4>
+<span id="Result-5"></span><h4 class="subsubheading">Result</h4>
 
 <p>This operation returns attributes of the newly-created varobj.  These
 are:
@@ -274,7 +257,7 @@ will not be interesting.
 <dt>&lsquo;<samp>type</samp>&rsquo;</dt>
 <dd><p>The varobj&rsquo;s type.  This is a string representation of the type, as
 would be printed by the <small>GDB</small> CLI.  If &lsquo;<samp>print object</samp>&rsquo;
-(see <a href="Print-Settings.html#Print-Settings">set print object</a>) is set to <code>on</code>, the
+(see <a href="Print-Settings.html">set print object</a>) is set to <code>on</code>, the
 <em>actual</em> (derived) type of the object is shown rather than the
 <em>declared</em> one.
 </p>
@@ -298,27 +281,25 @@ then this attribute will not be present.
 <dt>&lsquo;<samp>displayhint</samp>&rsquo;</dt>
 <dd><p>A dynamic varobj can supply a display hint to the front end.  The
 value comes directly from the Python pretty-printer object&rsquo;s
-<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>.
+<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html">Pretty Printing API</a>.
 </p></dd>
 </dl>
 
 <p>Typical output will look like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> name=&quot;<var>name</var>&quot;,numchild=&quot;<var>N</var>&quot;,type=&quot;<var>type</var>&quot;,thread-id=&quot;<var>M</var>&quot;,
+<div class="example">
+<pre class="example"> name=&quot;<var>name</var>&quot;,numchild=&quot;<var>N</var>&quot;,type=&quot;<var>type</var>&quot;,thread-id=&quot;<var>M</var>&quot;,
   has_more=&quot;<var>has_more</var>&quot;
 </pre></div>
 
 
-<a name="The-_002dvar_002ddelete-Command"></a>
-<h4 class="subheading">The <code>-var-delete</code> Command</h4>
-<a name="index-_002dvar_002ddelete"></a>
+<span id="The-_002dvar_002ddelete-Command"></span><h4 class="subheading">The <code>-var-delete</code> Command</h4>
+<span id="index-_002dvar_002ddelete"></span>
 
-<a name="Synopsis-46"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-49"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-delete [ -c ] <var>name</var>
+<div class="example">
+<pre class="example"> -var-delete [ -c ] <var>name</var>
 </pre></div>
 
 <p>Deletes a previously created variable object and all of its children.
@@ -327,24 +308,22 @@ With the &lsquo;<samp>-c</samp>&rsquo; option, just deletes the children.
 <p>Returns an error if the object <var>name</var> is not found.
 </p>
 
-<a name="The-_002dvar_002dset_002dformat-Command"></a>
-<h4 class="subheading">The <code>-var-set-format</code> Command</h4>
-<a name="index-_002dvar_002dset_002dformat"></a>
+<span id="The-_002dvar_002dset_002dformat-Command"></span><h4 class="subheading">The <code>-var-set-format</code> Command</h4>
+<span id="index-_002dvar_002dset_002dformat"></span>
 
-<a name="Synopsis-47"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-50"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-set-format <var>name</var> <var>format-spec</var>
+<div class="example">
+<pre class="example"> -var-set-format <var>name</var> <var>format-spec</var>
 </pre></div>
 
 <p>Sets the output format for the value of the object <var>name</var> to be
 <var>format-spec</var>.
 </p>
-<a name="g_t_002dvar_002dset_002dformat"></a><p>The syntax for the <var>format-spec</var> is as follows:
+<span id="g_t_002dvar_002dset_002dformat"></span><p>The syntax for the <var>format-spec</var> is as follows:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> <var>format-spec</var> &rarr;
+<div class="example">
+<pre class="example"> <var>format-spec</var> &rarr;
  {binary | decimal | hexadecimal | octal | natural | zero-hexadecimal}
 </pre></div>
 
@@ -360,40 +339,36 @@ zero-hexadecimal format.
 <p>For a variable with children, the format is set only on the 
 variable itself, and the children are not affected.  
 </p>
-<a name="The-_002dvar_002dshow_002dformat-Command"></a>
-<h4 class="subheading">The <code>-var-show-format</code> Command</h4>
-<a name="index-_002dvar_002dshow_002dformat"></a>
+<span id="The-_002dvar_002dshow_002dformat-Command"></span><h4 class="subheading">The <code>-var-show-format</code> Command</h4>
+<span id="index-_002dvar_002dshow_002dformat"></span>
 
-<a name="Synopsis-48"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-51"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-show-format <var>name</var>
+<div class="example">
+<pre class="example"> -var-show-format <var>name</var>
 </pre></div>
 
 <p>Returns the format used to display the value of the object <var>name</var>.
 </p>
-<div class="smallexample">
-<pre class="smallexample"> <var>format</var> &rarr;
+<div class="example">
+<pre class="example"> <var>format</var> &rarr;
  <var>format-spec</var>
 </pre></div>
 
 
-<a name="The-_002dvar_002dinfo_002dnum_002dchildren-Command"></a>
-<h4 class="subheading">The <code>-var-info-num-children</code> Command</h4>
-<a name="index-_002dvar_002dinfo_002dnum_002dchildren"></a>
+<span id="The-_002dvar_002dinfo_002dnum_002dchildren-Command"></span><h4 class="subheading">The <code>-var-info-num-children</code> Command</h4>
+<span id="index-_002dvar_002dinfo_002dnum_002dchildren"></span>
 
-<a name="Synopsis-49"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-52"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-info-num-children <var>name</var>
+<div class="example">
+<pre class="example"> -var-info-num-children <var>name</var>
 </pre></div>
 
 <p>Returns the number of children of a variable object <var>name</var>:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> numchild=<var>n</var>
+<div class="example">
+<pre class="example"> numchild=<var>n</var>
 </pre></div>
 
 <p>Note that this number is not completely reliable for a dynamic varobj.
@@ -401,17 +376,15 @@ It will return the current number of children, but more children may
 be available.
 </p>
 
-<a name="The-_002dvar_002dlist_002dchildren-Command"></a>
-<h4 class="subheading">The <code>-var-list-children</code> Command</h4>
-<a name="index-_002dvar_002dlist_002dchildren"></a>
+<span id="The-_002dvar_002dlist_002dchildren-Command"></span><h4 class="subheading">The <code>-var-list-children</code> Command</h4>
+<span id="index-_002dvar_002dlist_002dchildren"></span>
 
-<a name="Synopsis-50"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-53"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-list-children [<var>print-values</var>] <var>name</var> [<var>from</var> <var>to</var>]
+<div class="example">
+<pre class="example"> -var-list-children [<var>print-values</var>] <var>name</var> [<var>from</var> <var>to</var>]
 </pre></div>
-<a name="g_t_002dvar_002dlist_002dchildren"></a>
+<span id="g_t_002dvar_002dlist_002dchildren"></span>
 <p>Return a list of the children of the specified variable object and
 create variable objects for them, if they do not already exist.  With
 a single argument or if <var>print-values</var> has a value of 0 or
@@ -468,7 +441,7 @@ available at all with a dynamic varobj.
 </dd>
 <dt><var>type</var></dt>
 <dd><p>The type of the child.  If &lsquo;<samp>print object</samp>&rsquo;
-(see <a href="Print-Settings.html#Print-Settings">set print object</a>) is set to <code>on</code>, the
+(see <a href="Print-Settings.html">set print object</a>) is set to <code>on</code>, the
 <em>actual</em> (derived) type of the object is shown rather than the
 <em>declared</em> one.
 </p>
@@ -489,7 +462,7 @@ thread&rsquo;s global thread id.  Otherwise this result is not present.
 <dt><var>displayhint</var></dt>
 <dd><p>A dynamic varobj can supply a display hint to the front end.  The
 value comes directly from the Python pretty-printer object&rsquo;s
-<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>.
+<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html">Pretty Printing API</a>.
 </p>
 </dd>
 <dt><var>dynamic</var></dt>
@@ -506,7 +479,7 @@ then this attribute will not be present.
 <dt>&lsquo;<samp>displayhint</samp>&rsquo;</dt>
 <dd><p>A dynamic varobj can supply a display hint to the front end.  The
 value comes directly from the Python pretty-printer object&rsquo;s
-<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>.
+<code>display_hint</code> method.  See <a href="Pretty-Printing-API.html">Pretty Printing API</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>has_more</samp>&rsquo;</dt>
@@ -515,11 +488,10 @@ remaining after the end of the selected range.
 </p></dd>
 </dl>
 
-<a name="Example-43"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-46"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
  -var-list-children n
  ^done,numchild=<var>n</var>,children=[child={name=<var>name</var>,exp=<var>exp</var>,
  numchild=<var>n</var>,type=<var>type</var>},<span class="roman">(repeats N times)</span>]
@@ -530,35 +502,31 @@ remaining after the end of the selected range.
 </pre></div>
 
 
-<a name="The-_002dvar_002dinfo_002dtype-Command"></a>
-<h4 class="subheading">The <code>-var-info-type</code> Command</h4>
-<a name="index-_002dvar_002dinfo_002dtype"></a>
+<span id="The-_002dvar_002dinfo_002dtype-Command"></span><h4 class="subheading">The <code>-var-info-type</code> Command</h4>
+<span id="index-_002dvar_002dinfo_002dtype"></span>
 
-<a name="Synopsis-51"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-54"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-info-type <var>name</var>
+<div class="example">
+<pre class="example"> -var-info-type <var>name</var>
 </pre></div>
 
 <p>Returns the type of the specified variable <var>name</var>.  The type is
 returned as a string in the same format as it is output by the
 <small>GDB</small> CLI:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> type=<var>typename</var>
+<div class="example">
+<pre class="example"> type=<var>typename</var>
 </pre></div>
 
 
-<a name="The-_002dvar_002dinfo_002dexpression-Command"></a>
-<h4 class="subheading">The <code>-var-info-expression</code> Command</h4>
-<a name="index-_002dvar_002dinfo_002dexpression"></a>
+<span id="The-_002dvar_002dinfo_002dexpression-Command"></span><h4 class="subheading">The <code>-var-info-expression</code> Command</h4>
+<span id="index-_002dvar_002dinfo_002dexpression"></span>
 
-<a name="Synopsis-52"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-55"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-info-expression <var>name</var>
+<div class="example">
+<pre class="example"> -var-info-expression <var>name</var>
 </pre></div>
 
 <p>Returns a string that is suitable for presenting this
@@ -568,27 +536,25 @@ not valid expression in the current language, and cannot be evaluated.
 <p>For example, if <code>a</code> is an array, and variable object
 <code>A</code> was created for <code>a</code>, then we&rsquo;ll get this output:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) -var-info-expression A.1
+<div class="example">
+<pre class="example">(gdb) -var-info-expression A.1
 ^done,lang=&quot;C&quot;,exp=&quot;1&quot;
 </pre></div>
 
 <p>Here, the value of <code>lang</code> is the language name, which can be
-found in <a href="Supported-Languages.html#Supported-Languages">Supported Languages</a>.
+found in <a href="Supported-Languages.html">Supported Languages</a>.
 </p>
 <p>Note that the output of the <code>-var-list-children</code> command also
 includes those expressions, so the <code>-var-info-expression</code> command
 is of limited use.
 </p>
-<a name="The-_002dvar_002dinfo_002dpath_002dexpression-Command"></a>
-<h4 class="subheading">The <code>-var-info-path-expression</code> Command</h4>
-<a name="index-_002dvar_002dinfo_002dpath_002dexpression"></a>
+<span id="The-_002dvar_002dinfo_002dpath_002dexpression-Command"></span><h4 class="subheading">The <code>-var-info-path-expression</code> Command</h4>
+<span id="index-_002dvar_002dinfo_002dpath_002dexpression"></span>
 
-<a name="Synopsis-53"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-56"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-info-path-expression <var>name</var>
+<div class="example">
+<pre class="example"> -var-info-path-expression <var>name</var>
 </pre></div>
 
 <p>Returns an expression that can be evaluated in the current
@@ -606,39 +572,35 @@ and will give an error when invoked on one.
 <code>m_size</code>.  Assume a variable <code>c</code> is has the type of
 <code>C</code> and a variable object <code>C</code> was created for variable
 <code>c</code>.  Then, we&rsquo;ll get this output:
-</p><div class="smallexample">
-<pre class="smallexample">(gdb) -var-info-path-expression C.Base.public.m_size
+</p><div class="example">
+<pre class="example">(gdb) -var-info-path-expression C.Base.public.m_size
 ^done,path_expr=((Base)c).m_size)
 </pre></div>
 
-<a name="The-_002dvar_002dshow_002dattributes-Command"></a>
-<h4 class="subheading">The <code>-var-show-attributes</code> Command</h4>
-<a name="index-_002dvar_002dshow_002dattributes"></a>
+<span id="The-_002dvar_002dshow_002dattributes-Command"></span><h4 class="subheading">The <code>-var-show-attributes</code> Command</h4>
+<span id="index-_002dvar_002dshow_002dattributes"></span>
 
-<a name="Synopsis-54"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-57"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-show-attributes <var>name</var>
+<div class="example">
+<pre class="example"> -var-show-attributes <var>name</var>
 </pre></div>
 
 <p>List attributes of the specified variable object <var>name</var>:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> status=<var>attr</var> [ ( ,<var>attr</var> )* ]
+<div class="example">
+<pre class="example"> status=<var>attr</var> [ ( ,<var>attr</var> )* ]
 </pre></div>
 
 <p>where <var>attr</var> is <code>{ { editable | noneditable } | TBD }</code>.
 </p>
-<a name="The-_002dvar_002devaluate_002dexpression-Command"></a>
-<h4 class="subheading">The <code>-var-evaluate-expression</code> Command</h4>
-<a name="index-_002dvar_002devaluate_002dexpression"></a>
+<span id="The-_002dvar_002devaluate_002dexpression-Command"></span><h4 class="subheading">The <code>-var-evaluate-expression</code> Command</h4>
+<span id="index-_002dvar_002devaluate_002dexpression"></span>
 
-<a name="Synopsis-55"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-58"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-evaluate-expression [-f <var>format-spec</var>] <var>name</var>
+<div class="example">
+<pre class="example"> -var-evaluate-expression [-f <var>format-spec</var>] <var>name</var>
 </pre></div>
 
 <p>Evaluates the expression that is represented by the specified variable
@@ -649,22 +611,20 @@ this option are the same as for <code>-var-set-format</code>
 the current display format will be used.  The current display format 
 can be changed using the <code>-var-set-format</code> command.
 </p>
-<div class="smallexample">
-<pre class="smallexample"> value=<var>value</var>
+<div class="example">
+<pre class="example"> value=<var>value</var>
 </pre></div>
 
 <p>Note that one must invoke <code>-var-list-children</code> for a variable
 before the value of a child variable can be evaluated.
 </p>
-<a name="The-_002dvar_002dassign-Command"></a>
-<h4 class="subheading">The <code>-var-assign</code> Command</h4>
-<a name="index-_002dvar_002dassign"></a>
+<span id="The-_002dvar_002dassign-Command"></span><h4 class="subheading">The <code>-var-assign</code> Command</h4>
+<span id="index-_002dvar_002dassign"></span>
 
-<a name="Synopsis-56"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-59"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-assign <var>name</var> <var>expression</var>
+<div class="example">
+<pre class="example"> -var-assign <var>name</var> <var>expression</var>
 </pre></div>
 
 <p>Assigns the value of <var>expression</var> to the variable object specified
@@ -672,11 +632,10 @@ by <var>name</var>.  The object must be &lsquo;<samp>editable</samp>&rsquo;.  If
 value is altered by the assign, the variable will show up in any
 subsequent <code>-var-update</code> list.
 </p>
-<a name="Example-44"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-47"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-assign var1 3
 ^done,value=&quot;3&quot;
 (gdb)
@@ -685,15 +644,13 @@ subsequent <code>-var-update</code> list.
 (gdb)
 </pre></div>
 
-<a name="The-_002dvar_002dupdate-Command"></a>
-<h4 class="subheading">The <code>-var-update</code> Command</h4>
-<a name="index-_002dvar_002dupdate"></a>
+<span id="The-_002dvar_002dupdate-Command"></span><h4 class="subheading">The <code>-var-update</code> Command</h4>
+<span id="index-_002dvar_002dupdate"></span>
 
-<a name="Synopsis-57"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-60"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-update [<var>print-values</var>] {<var>name</var> | &quot;*&quot;}
+<div class="example">
+<pre class="example"> -var-update [<var>print-values</var>] {<var>name</var> | &quot;*&quot;}
 </pre></div>
 
 <p>Reevaluate the expressions corresponding to the variable object
@@ -733,7 +690,7 @@ present and will hold the value of the varobj.
 </p>
 </dd>
 <dt>&lsquo;<samp>in_scope</samp>&rsquo;</dt>
-<dd><a name="g_t_002dvar_002dupdate"></a><p>This field is a string which may take one of three values:
+<dd><span id="g_t_002dvar_002dupdate"></span><p>This field is a string which may take one of three values:
 </p>
 <dl compact="compact">
 <dt><code>&quot;true&quot;</code></dt>
@@ -756,7 +713,7 @@ objects.
 </dl>
 
 <p>In the future new values may be added to this list so the front should
-be prepared for this possibility.  See <a href="GDB_002fMI-Development-and-Front-Ends.html#GDB_002fMI-Development-and-Front-Ends"><small>GDB/MI</small> Development and Front Ends</a>.
+be prepared for this possibility.  See <a href="GDB_002fMI-Development-and-Front-Ends.html"><small>GDB/MI</small> Development and Front Ends</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>type_changed</samp>&rsquo;</dt>
@@ -814,11 +771,10 @@ be listed in this attribute.
 </p></dd>
 </dl>
 
-<a name="Example-45"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-48"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-assign var1 3
 ^done,value=&quot;3&quot;
 (gdb)
@@ -828,15 +784,13 @@ type_changed=&quot;false&quot;}]
 (gdb)
 </pre></div>
 
-<a name="The-_002dvar_002dset_002dfrozen-Command"></a>
-<h4 class="subheading">The <code>-var-set-frozen</code> Command</h4>
-<a name="index-_002dvar_002dset_002dfrozen"></a>
-<a name="g_t_002dvar_002dset_002dfrozen"></a>
-<a name="Synopsis-58"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="The-_002dvar_002dset_002dfrozen-Command"></span><h4 class="subheading">The <code>-var-set-frozen</code> Command</h4>
+<span id="index-_002dvar_002dset_002dfrozen"></span>
+<span id="g_t_002dvar_002dset_002dfrozen"></span>
+<span id="Synopsis-61"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-set-frozen <var>name</var> <var>flag</var>
+<div class="example">
+<pre class="example"> -var-set-frozen <var>name</var> <var>flag</var>
 </pre></div>
 
 <p>Set the frozenness flag on the variable object <var>name</var>.  The
@@ -851,25 +805,22 @@ implicitly updated by all subsequent <code>-var-update</code> operations.
 Unfreezing a variable does not update it, only subsequent
 <code>-var-update</code> does.
 </p>
-<a name="Example-46"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-49"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-set-frozen V 1
 ^done
 (gdb)
 </pre></div>
 
-<a name="The-_002dvar_002dset_002dupdate_002drange-command"></a>
-<h4 class="subheading">The <code>-var-set-update-range</code> command</h4>
-<a name="index-_002dvar_002dset_002dupdate_002drange"></a>
-<a name="g_t_002dvar_002dset_002dupdate_002drange"></a>
-<a name="Synopsis-59"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="The-_002dvar_002dset_002dupdate_002drange-command"></span><h4 class="subheading">The <code>-var-set-update-range</code> command</h4>
+<span id="index-_002dvar_002dset_002dupdate_002drange"></span>
+<span id="g_t_002dvar_002dset_002dupdate_002drange"></span>
+<span id="Synopsis-62"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-set-update-range <var>name</var> <var>from</var> <var>to</var>
+<div class="example">
+<pre class="example"> -var-set-update-range <var>name</var> <var>from</var> <var>to</var>
 </pre></div>
 
 <p>Set the range of children to be returned by future invocations of
@@ -880,24 +831,21 @@ Unfreezing a variable does not update it, only subsequent
 children will be reported.  Otherwise, children starting at <var>from</var>
 (zero-based) and up to and excluding <var>to</var> will be reported.
 </p>
-<a name="Example-47"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-50"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-set-update-range V 1 2
 ^done
 </pre></div>
 
-<a name="The-_002dvar_002dset_002dvisualizer-command"></a>
-<h4 class="subheading">The <code>-var-set-visualizer</code> command</h4>
-<a name="index-_002dvar_002dset_002dvisualizer"></a>
-<a name="g_t_002dvar_002dset_002dvisualizer"></a>
-<a name="Synopsis-60"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="The-_002dvar_002dset_002dvisualizer-command"></span><h4 class="subheading">The <code>-var-set-visualizer</code> command</h4>
+<span id="index-_002dvar_002dset_002dvisualizer"></span>
+<span id="g_t_002dvar_002dset_002dvisualizer"></span>
+<span id="Synopsis-63"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -var-set-visualizer <var>name</var> <var>visualizer</var>
+<div class="example">
+<pre class="example"> -var-set-visualizer <var>name</var> <var>visualizer</var>
 </pre></div>
 
 <p>Set a visualizer for the variable object <var>name</var>.
@@ -911,32 +859,31 @@ single argument.  <small>GDB</small> will call this object with the value of
 the varobj <var>name</var> as an argument (this is done so that the same
 Python pretty-printing code can be used for both the CLI and MI).
 When called, this object must return an object which conforms to the
-pretty-printing interface (see <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>).
+pretty-printing interface (see <a href="Pretty-Printing-API.html">Pretty Printing API</a>).
 </p>
 <p>The pre-defined function <code>gdb.default_visualizer</code> may be used to
 select a visualizer by following the built-in process
-(see <a href="Selecting-Pretty_002dPrinters.html#Selecting-Pretty_002dPrinters">Selecting Pretty-Printers</a>).  This is done automatically when
+(see <a href="Selecting-Pretty_002dPrinters.html">Selecting Pretty-Printers</a>).  This is done automatically when
 a varobj is created, and so ordinarily is not needed.
 </p>
 <p>This feature is only available if Python support is enabled.  The MI
-command <code>-list-features</code> (see <a href="GDB_002fMI-Support-Commands.html#GDB_002fMI-Support-Commands">GDB/MI Support Commands</a>)
+command <code>-list-features</code> (see <a href="GDB_002fMI-Support-Commands.html">GDB/MI Support Commands</a>)
 can be used to check this.
 </p>
-<a name="Example-48"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-51"></span><h4 class="subsubheading">Example</h4>
 
 <p>Resetting the visualizer:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-set-visualizer V None
 ^done
 </pre></div>
 
 <p>Reselecting the default (type-based) visualizer:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-set-visualizer V gdb.default_visualizer
 ^done
 </pre></div>
@@ -944,8 +891,8 @@ can be used to check this.
 <p>Suppose <code>SomeClass</code> is a visualizer class.  A lambda expression
 can be used to instantiate this class for a varobj:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -var-set-visualizer V &quot;lambda val: SomeClass()&quot;
 ^done
 </pre></div>
@@ -953,7 +900,7 @@ can be used to instantiate this class for a varobj:
 <hr>
 <div class="header">
 <p>
-Next: <a href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" accesskey="n" rel="next">GDB/MI Data Manipulation</a>, Previous: <a href="GDB_002fMI-Stack-Manipulation.html#GDB_002fMI-Stack-Manipulation" accesskey="p" rel="prev">GDB/MI Stack Manipulation</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Data-Manipulation.html" accesskey="n" rel="next">GDB/MI Data Manipulation</a>, Previous: <a href="GDB_002fMI-Stack-Manipulation.html" accesskey="p" rel="prev">GDB/MI Stack Manipulation</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

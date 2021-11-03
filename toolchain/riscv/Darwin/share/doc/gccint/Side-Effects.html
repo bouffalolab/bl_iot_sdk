@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Side Effects (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="RTL.html#RTL" rel="up" title="RTL">
-<link href="Incdec.html#Incdec" rel="next" title="Incdec">
-<link href="RTL-Declarations.html#RTL-Declarations" rel="prev" title="RTL Declarations">
+<link href="RTL.html" rel="up" title="RTL">
+<link href="Incdec.html" rel="next" title="Incdec">
+<link href="RTL-Declarations.html" rel="prev" title="RTL Declarations">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Side-Effects"></a>
-<div class="header">
+<span id="Side-Effects"></span><div class="header">
 <p>
-Next: <a href="Incdec.html#Incdec" accesskey="n" rel="next">Incdec</a>, Previous: <a href="RTL-Declarations.html#RTL-Declarations" accesskey="p" rel="prev">RTL Declarations</a>, Up: <a href="RTL.html#RTL" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Incdec.html" accesskey="n" rel="next">Incdec</a>, Previous: <a href="RTL-Declarations.html" accesskey="p" rel="prev">RTL Declarations</a>, Up: <a href="RTL.html" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Side-Effect-Expressions"></a>
-<h3 class="section">14.15 Side Effect Expressions</h3>
-<a name="index-RTL-side-effect-expressions"></a>
+<span id="Side-Effect-Expressions"></span><h3 class="section">14.15 Side Effect Expressions</h3>
+<span id="index-RTL-side-effect-expressions"></span>
 
 <p>The expression codes described so far represent values, not actions.
 But machine instructions never produce values; they are meaningful
@@ -87,7 +76,7 @@ the codes described above, which represent values, appear only as
 the operands of these.
 </p>
 <dl compact="compact">
-<dd><a name="index-set"></a>
+<dd><span id="index-set"></span>
 </dd>
 <dt><code>(set <var>lval</var> <var>x</var>)</code></dt>
 <dd><p>Represents the action of storing the value of <var>x</var> into the place
@@ -114,7 +103,7 @@ given the value <var>x</var> and the rest of the register is not changed.
 <p>If <var>lval</var> is a <code>zero_extract</code>, then the referenced part of
 the bit-field (a memory or register reference) specified by the
 <code>zero_extract</code> is given the value <var>x</var> and the rest of the
-bit-field is not changed.  Note that <code>sign_extract</code> can not
+bit-field is not changed.  Note that <code>sign_extract</code> cannot
 appear in <var>lval</var>.
 </p>
 <p>If <var>lval</var> is <code>(cc0)</code>, it has no machine mode, and <var>x</var> may
@@ -132,8 +121,8 @@ offset (in bytes) into the structure at which the data in that register
 corresponds.  The first element may be null to indicate that the structure
 is also passed partly in memory.
 </p>
-<a name="index-jump-instructions-and-set"></a>
-<a name="index-if_005fthen_005felse-usage"></a>
+<span id="index-jump-instructions-and-set"></span>
+<span id="index-if_005fthen_005felse-usage"></span>
 <p>If <var>lval</var> is <code>(pc)</code>, we have a jump instruction, and the
 possibilities for <var>x</var> are very limited.  It may be a
 <code>label_ref</code> expression (unconditional jump).  It may be an
@@ -149,12 +138,12 @@ branch tables.
 <var>lval</var> must not be <code>VOIDmode</code> and the mode of <var>x</var> must be
 valid for the mode of <var>lval</var>.
 </p>
-<a name="index-SET_005fDEST"></a>
-<a name="index-SET_005fSRC"></a>
+<span id="index-SET_005fDEST"></span>
+<span id="index-SET_005fSRC"></span>
 <p><var>lval</var> is customarily accessed with the <code>SET_DEST</code> macro and
 <var>x</var> with the <code>SET_SRC</code> macro.
 </p>
-<a name="index-return"></a>
+<span id="index-return"></span>
 </dd>
 <dt><code>(return)</code></dt>
 <dd><p>As the sole expression in a pattern, represents a return from the
@@ -170,7 +159,7 @@ placed in <code>pc</code> to return to the caller.
 <p>Note that an insn pattern of <code>(return)</code> is logically equivalent to
 <code>(set (pc) (return))</code>, but the latter form is never used.
 </p>
-<a name="index-simple_005freturn"></a>
+<span id="index-simple_005freturn"></span>
 </dd>
 <dt><code>(simple_return)</code></dt>
 <dd><p>Like <code>(return)</code>, but truly represents only a function return, while
@@ -178,7 +167,7 @@ placed in <code>pc</code> to return to the caller.
 of the function epilogue.  Like <code>(return)</code>, this may also occur in
 conditional jumps.
 </p>
-<a name="index-call-1"></a>
+<span id="index-call-1"></span>
 </dd>
 <dt><code>(call <var>function</var> <var>nargs</var>)</code></dt>
 <dd><p>Represents a function call.  <var>function</var> is a <code>mem</code> expression
@@ -194,7 +183,7 @@ specify what kind of addressing is allowed, on machines where the
 allowed kinds of addressing depend on the machine mode being
 addressed.
 </p>
-<a name="index-clobber"></a>
+<span id="index-clobber"></span>
 </dd>
 <dt><code>(clobber <var>x</var>)</code></dt>
 <dd><p>Represents the storing or possible storing of an unpredictable,
@@ -221,7 +210,7 @@ unless the function is declared <code>const</code>.
 </p>
 <p>If the last group of expressions in a <code>parallel</code> are each a
 <code>clobber</code> expression whose arguments are <code>reg</code> or
-<code>match_scratch</code> (see <a href="RTL-Template.html#RTL-Template">RTL Template</a>) expressions, the combiner
+<code>match_scratch</code> (see <a href="RTL-Template.html">RTL Template</a>) expressions, the combiner
 phase can add the appropriate <code>clobber</code> expressions to an insn it
 has constructed when doing so will cause a pattern to be matched.
 </p>
@@ -237,7 +226,7 @@ guarantees that the register is unoccupied both before and after that
 insn if it is a hard register clobber.  For pseudo-register clobber,
 the register allocator and the reload pass do not assign the same hard
 register to the clobber and the input operands if there is an insn
-alternative containing the &lsquo;<samp>&amp;</samp>&rsquo; constraint (see <a href="Modifiers.html#Modifiers">Modifiers</a>) for
+alternative containing the &lsquo;<samp>&amp;</samp>&rsquo; constraint (see <a href="Modifiers.html">Modifiers</a>) for
 the clobber and the hard register is in register classes of the
 clobber in the alternative.  You can clobber either a specific hard
 register, a pseudo register, or a <code>scratch</code> expression; in the
@@ -256,7 +245,7 @@ a new one each time.  Otherwise, you may confuse CSE.
 clobbered by the insn.  In this case, using the same pseudo register in
 the clobber and elsewhere in the insn produces the expected results.
 </p>
-<a name="index-use"></a>
+<span id="index-use"></span>
 </dd>
 <dt><code>(use <var>x</var>)</code></dt>
 <dd><p>Represents the use of the value of <var>x</var>.  It indicates that the
@@ -272,8 +261,8 @@ A hypothetical example might be a pattern for an addition that can
 either wrap around or use saturating addition depending on the value
 of a special control register:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(parallel [(set (reg:SI 2) (unspec:SI [(reg:SI 3)
+<div class="example">
+<pre class="example">(parallel [(set (reg:SI 2) (unspec:SI [(reg:SI 3)
                                        (reg:SI 4)] 0))
            (use (reg:SI 1))])
 </pre></div>
@@ -290,7 +279,7 @@ that the register is live.  You should think twice before adding
 instead.  The <code>use</code> RTX is most commonly useful to describe that
 a fixed register is implicitly used in an insn.  It is also safe to use
 in patterns where the compiler knows for other reasons that the result
-of the whole pattern is variable, such as &lsquo;<samp>movmem<var>m</var></samp>&rsquo; or
+of the whole pattern is variable, such as &lsquo;<samp>cpymem<var>m</var></samp>&rsquo; or
 &lsquo;<samp>call</samp>&rsquo; patterns.
 </p>
 <p>During the reload phase, an insn that has a <code>use</code> as pattern
@@ -303,7 +292,7 @@ code and its data dependencies need to be taken into account.  These
 <code>use</code> insns will be deleted before the delayed branch scheduling
 phase exits.
 </p>
-<a name="index-parallel"></a>
+<span id="index-parallel"></span>
 </dd>
 <dt><code>(parallel [<var>x0</var> <var>x1</var> &hellip;])</code></dt>
 <dd><p>Represents several side effects performed in parallel.  The square
@@ -316,8 +305,8 @@ side effect expressions&mdash;expressions of code <code>set</code>, <code>call</
 side-effects are computed, and second all the actual side-effects are
 performed.  For example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">(parallel [(set (reg:SI 1) (mem:SI (reg:SI 1)))
+<div class="example">
+<pre class="example">(parallel [(set (reg:SI 1) (mem:SI (reg:SI 1)))
            (set (mem:SI (reg:SI 1)) (reg:SI 1))])
 </pre></div>
 
@@ -331,8 +320,8 @@ expect the result of one <code>set</code> to be available for the next one.
 For example, people sometimes attempt to represent a jump-if-zero
 instruction this way:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(parallel [(set (cc0) (reg:SI 34))
+<div class="example">
+<pre class="example">(parallel [(set (cc0) (reg:SI 34))
            (set (pc) (if_then_else
                         (eq (cc0) (const_int 0))
                         (label_ref &hellip;)
@@ -343,7 +332,7 @@ instruction this way:
 on the condition code value <em>before</em> this instruction, not on the
 new value that is set by this instruction.
 </p>
-<a name="index-peephole-optimization_002c-RTL-representation"></a>
+<span id="index-peephole-optimization_002c-RTL-representation"></span>
 <p>Peephole optimization, which takes place together with final assembly
 code output, can produce insns whose patterns consist of a <code>parallel</code>
 whose elements are the operands needed to output the resulting
@@ -353,7 +342,7 @@ but it is OK then because no further optimization remains to be done.
 However, the definition of the macro <code>NOTICE_UPDATE_CC</code>, if
 any, must deal with such insns if you define any peephole optimizations.
 </p>
-<a name="index-cond_005fexec"></a>
+<span id="index-cond_005fexec"></span>
 </dd>
 <dt><code>(cond_exec [<var>cond</var> <var>expr</var>])</code></dt>
 <dd><p>Represents a conditionally executed expression.  The <var>expr</var> is
@@ -361,7 +350,7 @@ executed only if the <var>cond</var> is nonzero.  The <var>cond</var> expression
 must not have side-effects, but the <var>expr</var> may very well have
 side-effects.
 </p>
-<a name="index-sequence"></a>
+<span id="index-sequence"></span>
 </dd>
 <dt><code>(sequence [<var>insns</var> &hellip;])</code></dt>
 <dd><p>Represents a sequence of insns.  If a <code>sequence</code> appears in the
@@ -380,7 +369,7 @@ the effect of the insns in the delay slots.  In such a case,
 <code>INSN_FROM_TARGET_P</code> indicates that the insn is from the target of
 the branch and should be executed only if the branch is taken; otherwise
 the insn should be executed only if the branch is not taken.
-See <a href="Delay-Slots.html#Delay-Slots">Delay Slots</a>.
+See <a href="Delay-Slots.html">Delay Slots</a>.
 </p>
 <p>Some back ends also use <code>sequence</code> objects for purposes other than
 delay-slot groups.  This is not supported in the common parts of the
@@ -402,13 +391,13 @@ an insn, though strictly speaking they do not always describe side
 effects as such:
 </p>
 <dl compact="compact">
-<dd><a name="index-asm_005finput"></a>
+<dd><span id="index-asm_005finput"></span>
 </dd>
 <dt><code>(asm_input <var>s</var>)</code></dt>
 <dd><p>Represents literal assembler code as described by the string <var>s</var>.
 </p>
-<a name="index-unspec"></a>
-<a name="index-unspec_005fvolatile"></a>
+<span id="index-unspec"></span>
+<span id="index-unspec_005fvolatile"></span>
 </dd>
 <dt><code>(unspec [<var>operands</var> &hellip;] <var>index</var>)</code></dt>
 <dt><code>(unspec_volatile [<var>operands</var> &hellip;] <var>index</var>)</code></dt>
@@ -420,7 +409,7 @@ that may trap; <code>unspec</code> is used for other operations.
 <p>These codes may appear inside a <code>pattern</code> of an
 insn, inside a <code>parallel</code>, or inside an expression.
 </p>
-<a name="index-addr_005fvec"></a>
+<span id="index-addr_005fvec"></span>
 </dd>
 <dt><code>(addr_vec:<var>m</var> [<var>lr0</var> <var>lr1</var> &hellip;])</code></dt>
 <dd><p>Represents a table of jump addresses.  The vector elements <var>lr0</var>,
@@ -428,7 +417,7 @@ etc., are <code>label_ref</code> expressions.  The mode <var>m</var> specifies
 how much space is given to each address; normally <var>m</var> would be
 <code>Pmode</code>.
 </p>
-<a name="index-addr_005fdiff_005fvec"></a>
+<span id="index-addr_005fdiff_005fvec"></span>
 </dd>
 <dt><code>(addr_diff_vec:<var>m</var> <var>base</var> [<var>lr0</var> <var>lr1</var> &hellip;] <var>min</var> <var>max</var> <var>flags</var>)</code></dt>
 <dd><p>Represents a table of jump addresses expressed as offsets from
@@ -440,7 +429,7 @@ maximum address, respectively.  <var>flags</var> indicates the relative
 position of <var>base</var>, <var>min</var> and <var>max</var> to the containing insn
 and of <var>min</var> and <var>max</var> to <var>base</var>.  See rtl.def for details.
 </p>
-<a name="index-prefetch"></a>
+<span id="index-prefetch"></span>
 </dd>
 <dt><code>(prefetch:<var>m</var> <var>addr</var> <var>rw</var> <var>locality</var>)</code></dt>
 <dd><p>Represents prefetch of memory at address <var>addr</var>.
@@ -460,7 +449,7 @@ instructions.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Incdec.html#Incdec" accesskey="n" rel="next">Incdec</a>, Previous: <a href="RTL-Declarations.html#RTL-Declarations" accesskey="p" rel="prev">RTL Declarations</a>, Up: <a href="RTL.html#RTL" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Incdec.html" accesskey="n" rel="next">Incdec</a>, Previous: <a href="RTL-Declarations.html" accesskey="p" rel="prev">RTL Declarations</a>, Up: <a href="RTL.html" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

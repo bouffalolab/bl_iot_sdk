@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>REGION_ALIAS (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Simple-Commands.html#Simple-Commands" rel="up" title="Simple Commands">
-<link href="Miscellaneous-Commands.html#Miscellaneous-Commands" rel="next" title="Miscellaneous Commands">
-<link href="Format-Commands.html#Format-Commands" rel="prev" title="Format Commands">
+<link href="Simple-Commands.html" rel="up" title="Simple Commands">
+<link href="Miscellaneous-Commands.html" rel="next" title="Miscellaneous Commands">
+<link href="Format-Commands.html" rel="prev" title="Format Commands">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,23 +51,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="REGION_005fALIAS"></a>
-<div class="header">
+<span id="REGION_005fALIAS"></span><div class="header">
 <p>
-Next: <a href="Miscellaneous-Commands.html#Miscellaneous-Commands" accesskey="n" rel="next">Miscellaneous Commands</a>, Previous: <a href="Format-Commands.html#Format-Commands" accesskey="p" rel="prev">Format Commands</a>, Up: <a href="Simple-Commands.html#Simple-Commands" accesskey="u" rel="up">Simple Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous-Commands.html" accesskey="n" rel="next">Miscellaneous Commands</a>, Previous: <a href="Format-Commands.html" accesskey="p" rel="prev">Format Commands</a>, Up: <a href="Simple-Commands.html" accesskey="u" rel="up">Simple Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Assign-alias-names-to-memory-regions"></a>
-<h4 class="subsection">3.4.4 Assign alias names to memory regions</h4>
-<a name="index-REGION_005fALIAS_0028alias_002c-region_0029"></a>
-<a name="index-region-alias"></a>
-<a name="index-region-names"></a>
+<span id="Assign-alias-names-to-memory-regions"></span><h4 class="subsection">3.4.4 Assign alias names to memory regions</h4>
+<span id="index-REGION_005fALIAS_0028alias_002c-region_0029"></span>
+<span id="index-region-alias"></span>
+<span id="index-region-names"></span>
 
 <p>Alias names can be added to existing memory regions created with the
-<a href="MEMORY.html#MEMORY">MEMORY</a> command.  Each name corresponds to at most one memory region.
+<a href="MEMORY.html">MEMORY</a> command.  Each name corresponds to at most one memory region.
 </p>
-<div class="smallexample">
-<pre class="smallexample">REGION_ALIAS(<var>alias</var>, <var>region</var>)
+<div class="example">
+<pre class="example">REGION_ALIAS(<var>alias</var>, <var>region</var>)
 </pre></div>
 
 <p>The <code>REGION_ALIAS</code> function creates an alias name <var>alias</var> for the
@@ -118,8 +107,8 @@ the end of the <code>.rodata</code> section.
 <p>The base linker script that deals with the output sections follows.  It
 includes the system dependent <code>linkcmds.memory</code> file that describes the
 memory layout:
-</p><div class="smallexample">
-<pre class="smallexample">INCLUDE linkcmds.memory
+</p><div class="example">
+<pre class="example">INCLUDE linkcmds.memory
 
 SECTIONS
   {
@@ -152,8 +141,8 @@ variants <code>A</code>, <code>B</code> and <code>C</code>:
 </p><dl compact="compact">
 <dt><code>A</code></dt>
 <dd><p>Here everything goes into the <code>RAM</code>.
-</p><div class="smallexample">
-<pre class="smallexample">MEMORY
+</p><div class="example">
+<pre class="example">MEMORY
   {
     RAM : ORIGIN = 0, LENGTH = 4M
   }
@@ -168,8 +157,8 @@ REGION_ALIAS(&quot;REGION_BSS&quot;, RAM);
 <dd><p>Program code and read-only data go into the <code>ROM</code>.  Read-write data goes
 into the <code>RAM</code>.  An image of the initialized data is loaded into the
 <code>ROM</code> and will be copied during system start into the <code>RAM</code>.
-</p><div class="smallexample">
-<pre class="smallexample">MEMORY
+</p><div class="example">
+<pre class="example">MEMORY
   {
     ROM : ORIGIN = 0, LENGTH = 3M
     RAM : ORIGIN = 0x10000000, LENGTH = 1M
@@ -186,8 +175,8 @@ REGION_ALIAS(&quot;REGION_BSS&quot;, RAM);
 <code>ROM2</code>.  Read-write data goes into the <code>RAM</code>.  An image of the
 initialized data is loaded into the <code>ROM2</code> and will be copied during
 system start into the <code>RAM</code>.
-</p><div class="smallexample">
-<pre class="smallexample">MEMORY
+</p><div class="example">
+<pre class="example">MEMORY
   {
     ROM : ORIGIN = 0, LENGTH = 2M
     ROM2 : ORIGIN = 0x10000000, LENGTH = 1M
@@ -205,8 +194,8 @@ REGION_ALIAS(&quot;REGION_BSS&quot;, RAM);
 <p>It is possible to write a common system initialization routine to copy the
 <code>.data</code> section from <code>ROM</code> or <code>ROM2</code> into the <code>RAM</code> if
 necessary:
-</p><div class="smallexample">
-<pre class="smallexample">#include &lt;string.h&gt;
+</p><div class="example">
+<pre class="example">#include &lt;string.h&gt;
 
 extern char data_start [];
 extern char data_size [];
@@ -224,7 +213,7 @@ void copy_data(void)
 <hr>
 <div class="header">
 <p>
-Next: <a href="Miscellaneous-Commands.html#Miscellaneous-Commands" accesskey="n" rel="next">Miscellaneous Commands</a>, Previous: <a href="Format-Commands.html#Format-Commands" accesskey="p" rel="prev">Format Commands</a>, Up: <a href="Simple-Commands.html#Simple-Commands" accesskey="u" rel="up">Simple Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous-Commands.html" accesskey="n" rel="next">Miscellaneous Commands</a>, Previous: <a href="Format-Commands.html" accesskey="p" rel="prev">Format Commands</a>, Up: <a href="Simple-Commands.html" accesskey="u" rel="up">Simple Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Integer Logic and Bit Fiddling (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Integer-Functions.html#Integer-Functions" rel="up" title="Integer Functions">
-<link href="I_002fO-of-Integers.html#I_002fO-of-Integers" rel="next" title="I/O of Integers">
-<link href="Integer-Comparisons.html#Integer-Comparisons" rel="prev" title="Integer Comparisons">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Integer-Functions.html" rel="up" title="Integer Functions">
+<link href="I_002fO-of-Integers.html" rel="next" title="I/O of Integers">
+<link href="Integer-Comparisons.html" rel="prev" title="Integer Comparisons">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,45 +50,43 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Integer-Logic-and-Bit-Fiddling"></a>
-<div class="header">
+<span id="Integer-Logic-and-Bit-Fiddling"></span><div class="header">
 <p>
-Next: <a href="I_002fO-of-Integers.html#I_002fO-of-Integers" accesskey="n" rel="next">I/O of Integers</a>, Previous: <a href="Integer-Comparisons.html#Integer-Comparisons" accesskey="p" rel="prev">Integer Comparisons</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="I_002fO-of-Integers.html" accesskey="n" rel="next">I/O of Integers</a>, Previous: <a href="Integer-Comparisons.html" accesskey="p" rel="prev">Integer Comparisons</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Logical-and-Bit-Manipulation-Functions"></a>
-<h3 class="section">5.11 Logical and Bit Manipulation Functions</h3>
-<a name="index-Logical-functions"></a>
-<a name="index-Bit-manipulation-functions"></a>
-<a name="index-Integer-logical-functions"></a>
-<a name="index-Integer-bit-manipulation-functions"></a>
+<span id="Logical-and-Bit-Manipulation-Functions"></span><h3 class="section">5.11 Logical and Bit Manipulation Functions</h3>
+<span id="index-Logical-functions"></span>
+<span id="index-Bit-manipulation-functions"></span>
+<span id="index-Integer-logical-functions"></span>
+<span id="index-Integer-bit-manipulation-functions"></span>
 
 <p>These functions behave as if twos complement arithmetic were used (although
 sign-magnitude is the actual implementation).  The least significant bit is
 number 0.
 </p>
 <dl>
-<dt><a name="index-mpz_005fand"></a>Function: <em>void</em> <strong>mpz_and</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
+<dt id="index-mpz_005fand">Function: <em>void</em> <strong>mpz_and</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
 <dd><p>Set <var>rop</var> to <var>op1</var> bitwise-and <var>op2</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fior"></a>Function: <em>void</em> <strong>mpz_ior</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
+<dt id="index-mpz_005fior">Function: <em>void</em> <strong>mpz_ior</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
 <dd><p>Set <var>rop</var> to <var>op1</var> bitwise inclusive-or <var>op2</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fxor"></a>Function: <em>void</em> <strong>mpz_xor</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
+<dt id="index-mpz_005fxor">Function: <em>void</em> <strong>mpz_xor</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
 <dd><p>Set <var>rop</var> to <var>op1</var> bitwise exclusive-or <var>op2</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fcom"></a>Function: <em>void</em> <strong>mpz_com</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op</var>)</em></dt>
+<dt id="index-mpz_005fcom">Function: <em>void</em> <strong>mpz_com</strong> <em>(mpz_t <var>rop</var>, const mpz_t <var>op</var>)</em></dt>
 <dd><p>Set <var>rop</var> to the one&rsquo;s complement of <var>op</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fpopcount"></a>Function: <em>mp_bitcnt_t</em> <strong>mpz_popcount</strong> <em>(const mpz_t <var>op</var>)</em></dt>
+<dt id="index-mpz_005fpopcount">Function: <em>mp_bitcnt_t</em> <strong>mpz_popcount</strong> <em>(const mpz_t <var>op</var>)</em></dt>
 <dd><p>If <em><var>op</var>&gt;=0</em>, return the population count of <var>op</var>, which is the
 number of 1 bits in the binary representation.  If <em><var>op</var>&lt;0</em>, the
 number of 1s is infinite, and the return value is the largest possible
@@ -105,7 +94,7 @@ number of 1s is infinite, and the return value is the largest possible
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fhamdist"></a>Function: <em>mp_bitcnt_t</em> <strong>mpz_hamdist</strong> <em>(const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
+<dt id="index-mpz_005fhamdist">Function: <em>mp_bitcnt_t</em> <strong>mpz_hamdist</strong> <em>(const mpz_t <var>op1</var>, const mpz_t <var>op2</var>)</em></dt>
 <dd><p>If <var>op1</var> and <var>op2</var> are both <em>&gt;=0</em> or both <em>&lt;0</em>, return the
 hamming distance between the two operands, which is the number of bit positions
 where <var>op1</var> and <var>op2</var> have different bit values.  If one operand is
@@ -114,10 +103,10 @@ infinite, and the return value is the largest possible <code>mp_bitcnt_t</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fscan0"></a>Function: <em>mp_bitcnt_t</em> <strong>mpz_scan0</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>starting_bit</var>)</em></dt>
-<dt><a name="index-mpz_005fscan1"></a>Function: <em>mp_bitcnt_t</em> <strong>mpz_scan1</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>starting_bit</var>)</em></dt>
-<dd><a name="index-Bit-scanning-functions"></a>
-<a name="index-Scan-bit-functions"></a>
+<dt id="index-mpz_005fscan0">Function: <em>mp_bitcnt_t</em> <strong>mpz_scan0</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>starting_bit</var>)</em></dt>
+<dt id="index-mpz_005fscan1">Function: <em>mp_bitcnt_t</em> <strong>mpz_scan1</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>starting_bit</var>)</em></dt>
+<dd><span id="index-Bit-scanning-functions"></span>
+<span id="index-Scan-bit-functions"></span>
 <p>Scan <var>op</var>, starting from bit <var>starting_bit</var>, towards more significant
 bits, until the first 0 or 1 bit (respectively) is found.  Return the index of
 the found bit.
@@ -131,29 +120,29 @@ number, or <code>mpz_scan1</code> past the end of a nonnegative number.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fsetbit"></a>Function: <em>void</em> <strong>mpz_setbit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
+<dt id="index-mpz_005fsetbit">Function: <em>void</em> <strong>mpz_setbit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
 <dd><p>Set bit <var>bit_index</var> in <var>rop</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fclrbit"></a>Function: <em>void</em> <strong>mpz_clrbit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
+<dt id="index-mpz_005fclrbit">Function: <em>void</em> <strong>mpz_clrbit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
 <dd><p>Clear bit <var>bit_index</var> in <var>rop</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fcombit"></a>Function: <em>void</em> <strong>mpz_combit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
+<dt id="index-mpz_005fcombit">Function: <em>void</em> <strong>mpz_combit</strong> <em>(mpz_t <var>rop</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
 <dd><p>Complement bit <var>bit_index</var> in <var>rop</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005ftstbit"></a>Function: <em>int</em> <strong>mpz_tstbit</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
+<dt id="index-mpz_005ftstbit">Function: <em>int</em> <strong>mpz_tstbit</strong> <em>(const mpz_t <var>op</var>, mp_bitcnt_t <var>bit_index</var>)</em></dt>
 <dd><p>Test bit <var>bit_index</var> in <var>op</var> and return 0 or 1 accordingly.
 </p></dd></dl>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="I_002fO-of-Integers.html#I_002fO-of-Integers" accesskey="n" rel="next">I/O of Integers</a>, Previous: <a href="Integer-Comparisons.html#Integer-Comparisons" accesskey="p" rel="prev">Integer Comparisons</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="I_002fO-of-Integers.html" accesskey="n" rel="next">I/O of Integers</a>, Previous: <a href="Integer-Comparisons.html" accesskey="p" rel="prev">Integer Comparisons</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

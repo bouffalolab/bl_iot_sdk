@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -105,6 +105,27 @@ Other attributes are defined using:
 <pre class="smallexample">(define_code_attr <var>name</var> [(<var>code1</var> &quot;<var>value1</var>&quot;) &hellip; (<var>coden</var> &quot;<var>valuen</var>&quot;)])
 </pre></div>
 
+<p>Instruction patterns can use code attributes as rtx codes, which can be
+useful if two sets of codes act in tandem.  For example, the following
+<code>define_insn</code> defines two patterns, one calculating a signed absolute
+difference and another calculating an unsigned absolute difference:
+</p>
+<div class="smallexample">
+<pre class="smallexample">(define_code_iterator any_max [smax umax])
+(define_code_attr paired_min [(smax &quot;smin&quot;) (umax &quot;umin&quot;)])
+(define_insn &hellip;
+  [(set (match_operand:SI 0 &hellip;)
+        (minus:SI (any_max:SI (match_operand:SI 1 &hellip;)
+                              (match_operand:SI 2 &hellip;))
+                  (&lt;paired_min&gt;:SI (match_dup 1) (match_dup 2))))]
+  &hellip;)
+</pre></div>
+
+<p>The signed version of the instruction uses <code>smax</code> and <code>smin</code>
+while the unsigned version uses <code>umax</code> and <code>umin</code>.  There
+are no versions that pair <code>smax</code> with <code>umin</code> or <code>umax</code>
+with <code>smin</code>.
+</p>
 <p>Here&rsquo;s an example of code iterators in action, taken from the MIPS port:
 </p>
 <div class="smallexample">

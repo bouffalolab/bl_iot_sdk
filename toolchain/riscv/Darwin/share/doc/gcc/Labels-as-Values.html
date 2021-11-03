@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Labels as Values (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C-Extensions.html#C-Extensions" rel="up" title="C Extensions">
-<link href="Nested-Functions.html#Nested-Functions" rel="next" title="Nested Functions">
-<link href="Local-Labels.html#Local-Labels" rel="prev" title="Local Labels">
+<link href="C-Extensions.html" rel="up" title="C Extensions">
+<link href="Nested-Functions.html" rel="next" title="Nested Functions">
+<link href="Local-Labels.html" rel="prev" title="Local Labels">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,35 +58,33 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Labels-as-Values"></a>
-<div class="header">
+<span id="Labels-as-Values"></span><div class="header">
 <p>
-Next: <a href="Nested-Functions.html#Nested-Functions" accesskey="n" rel="next">Nested Functions</a>, Previous: <a href="Local-Labels.html#Local-Labels" accesskey="p" rel="prev">Local Labels</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nested-Functions.html" accesskey="n" rel="next">Nested Functions</a>, Previous: <a href="Local-Labels.html" accesskey="p" rel="prev">Local Labels</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Labels-as-Values-1"></a>
-<h3 class="section">6.3 Labels as Values</h3>
-<a name="index-labels-as-values"></a>
-<a name="index-computed-gotos"></a>
-<a name="index-goto-with-computed-label"></a>
-<a name="index-address-of-a-label"></a>
+<span id="Labels-as-Values-1"></span><h3 class="section">6.3 Labels as Values</h3>
+<span id="index-labels-as-values"></span>
+<span id="index-computed-gotos"></span>
+<span id="index-goto-with-computed-label"></span>
+<span id="index-address-of-a-label"></span>
 
 <p>You can get the address of a label defined in the current function
 (or a containing function) with the unary operator &lsquo;<samp>&amp;&amp;</samp>&rsquo;.  The
 value has type <code>void *</code>.  This value is a constant and can be used
 wherever a constant of that type is valid.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void *ptr;
+<div class="example">
+<pre class="example">void *ptr;
 /* <span class="roman">&hellip;</span> */
 ptr = &amp;&amp;foo;
 </pre></div>
 
 <p>To use these values, you need to be able to jump to one.  This is done
-with the computed goto statement<a name="DOCF3" href="#FOOT3"><sup>3</sup></a>, <code>goto *<var>exp</var>;</code>.  For example,
+with the computed goto statement<a id="DOCF3" href="#FOOT3"><sup>3</sup></a>, <code>goto *<var>exp</var>;</code>.  For example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">goto *ptr;
+<div class="example">
+<pre class="example">goto *ptr;
 </pre></div>
 
 <p>Any expression of type <code>void *</code> is allowed.
@@ -103,14 +92,14 @@ with the computed goto statement<a name="DOCF3" href="#FOOT3"><sup>3</sup></a>, 
 <p>One way of using these constants is in initializing a static array that
 serves as a jump table:
 </p>
-<div class="smallexample">
-<pre class="smallexample">static void *array[] = { &amp;&amp;foo, &amp;&amp;bar, &amp;&amp;hack };
+<div class="example">
+<pre class="example">static void *array[] = { &amp;&amp;foo, &amp;&amp;bar, &amp;&amp;hack };
 </pre></div>
 
 <p>Then you can select a label with indexing, like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">goto *array[i];
+<div class="example">
+<pre class="example">goto *array[i];
 </pre></div>
 
 <p>Note that this does not check whether the subscript is in bounds&mdash;array
@@ -132,8 +121,8 @@ never pass it as an argument.
 </p>
 <p>An alternate way to write the above example is
 </p>
-<div class="smallexample">
-<pre class="smallexample">static const int array[] = { &amp;&amp;foo - &amp;&amp;foo, &amp;&amp;bar - &amp;&amp;foo,
+<div class="example">
+<pre class="example">static const int array[] = { &amp;&amp;foo - &amp;&amp;foo, &amp;&amp;bar - &amp;&amp;foo,
                              &amp;&amp;hack - &amp;&amp;foo };
 goto *(&amp;&amp;foo + array[i]);
 </pre></div>
@@ -155,7 +144,7 @@ variable initializer, inlining and cloning is forbidden.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT3" href="#DOCF3">(3)</a></h3>
+<h5><a id="FOOT3" href="#DOCF3">(3)</a></h3>
 <p>The analogous feature in
 Fortran is called an assigned goto, but that name seems inappropriate in
 C, where one can do more than simply store label addresses in label
@@ -164,7 +153,7 @@ variables.</p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Nested-Functions.html#Nested-Functions" accesskey="n" rel="next">Nested Functions</a>, Previous: <a href="Local-Labels.html#Local-Labels" accesskey="p" rel="prev">Local Labels</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nested-Functions.html" accesskey="n" rel="next">Nested Functions</a>, Previous: <a href="Local-Labels.html" accesskey="p" rel="prev">Local Labels</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

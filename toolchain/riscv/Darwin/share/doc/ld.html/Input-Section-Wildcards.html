@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Input Section Wildcards (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Input-Section.html#Input-Section" rel="up" title="Input Section">
-<link href="Input-Section-Common.html#Input-Section-Common" rel="next" title="Input Section Common">
-<link href="Input-Section-Basics.html#Input-Section-Basics" rel="prev" title="Input Section Basics">
+<link href="Input-Section.html" rel="up" title="Input Section">
+<link href="Input-Section-Common.html" rel="next" title="Input Section Common">
+<link href="Input-Section-Basics.html" rel="prev" title="Input Section Basics">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Input-Section-Wildcards"></a>
-<div class="header">
+<span id="Input-Section-Wildcards"></span><div class="header">
 <p>
-Next: <a href="Input-Section-Common.html#Input-Section-Common" accesskey="n" rel="next">Input Section Common</a>, Previous: <a href="Input-Section-Basics.html#Input-Section-Basics" accesskey="p" rel="prev">Input Section Basics</a>, Up: <a href="Input-Section.html#Input-Section" accesskey="u" rel="up">Input Section</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Input-Section-Common.html" accesskey="n" rel="next">Input Section Common</a>, Previous: <a href="Input-Section-Basics.html" accesskey="p" rel="prev">Input Section Basics</a>, Up: <a href="Input-Section.html" accesskey="u" rel="up">Input Section</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Input-Section-Wildcard-Patterns"></a>
-<h4 class="subsubsection">3.6.4.2 Input Section Wildcard Patterns</h4>
-<a name="index-input-section-wildcards"></a>
-<a name="index-wildcard-file-name-patterns"></a>
-<a name="index-file-name-wildcard-patterns"></a>
-<a name="index-section-name-wildcard-patterns"></a>
+<span id="Input-Section-Wildcard-Patterns"></span><h4 class="subsubsection">3.6.4.2 Input Section Wildcard Patterns</h4>
+<span id="index-input-section-wildcards"></span>
+<span id="index-wildcard-file-name-patterns"></span>
+<span id="index-file-name-wildcard-patterns"></span>
+<span id="index-section-name-wildcard-patterns"></span>
 <p>In an input section description, either the file name or the section
 name or both may be wildcard patterns.
 </p>
@@ -113,12 +102,12 @@ appears explicitly and is also matched by a wildcard pattern, the linker
 will use the first match in the linker script.  For example, this
 sequence of input section descriptions is probably in error, because the
 <samp>data.o</samp> rule will not be used:
-</p><div class="smallexample">
-<pre class="smallexample">.data : { *(.data) }
+</p><div class="example">
+<pre class="example">.data : { *(.data) }
 .data1 : { data.o(.data) }
 </pre></div>
 
-<a name="index-SORT_005fBY_005fNAME"></a>
+<span id="index-SORT_005fBY_005fNAME"></span>
 <p>Normally, the linker will place files and sections matched by wildcards
 in the order in which they are seen during the link.  You can change
 this by using the <code>SORT_BY_NAME</code> keyword, which appears before a wildcard
@@ -126,20 +115,23 @@ pattern in parentheses (e.g., <code>SORT_BY_NAME(.text*)</code>).  When the
 <code>SORT_BY_NAME</code> keyword is used, the linker will sort the files or sections
 into ascending order by name before placing them in the output file.
 </p>
-<a name="index-SORT_005fBY_005fALIGNMENT"></a>
-<p><code>SORT_BY_ALIGNMENT</code> is very similar to <code>SORT_BY_NAME</code>. The
-difference is <code>SORT_BY_ALIGNMENT</code> will sort sections into
-descending order by alignment before placing them in the output file.
-Larger alignments are placed before smaller alignments in order to
-reduce the amount of padding necessary.
+<span id="index-SORT_005fBY_005fALIGNMENT"></span>
+<p><code>SORT_BY_ALIGNMENT</code> is similar to <code>SORT_BY_NAME</code>.
+<code>SORT_BY_ALIGNMENT</code> will sort sections into descending order of
+alignment before placing them in the output file.  Placing larger
+alignments before smaller alignments can reduce the amount of padding
+needed.
 </p>
-<a name="index-SORT_005fBY_005fINIT_005fPRIORITY"></a>
-<p><code>SORT_BY_INIT_PRIORITY</code> is very similar to <code>SORT_BY_NAME</code>. The
-difference is <code>SORT_BY_INIT_PRIORITY</code> will sort sections into
-ascending order by numerical value of the GCC init_priority attribute
-encoded in the section name before placing them in the output file.
+<span id="index-SORT_005fBY_005fINIT_005fPRIORITY"></span>
+<p><code>SORT_BY_INIT_PRIORITY</code> is also similar to <code>SORT_BY_NAME</code>.
+<code>SORT_BY_INIT_PRIORITY</code> will sort sections into ascending
+numerical order of the GCC init_priority attribute encoded in the
+section name before placing them in the output file.  In
+<code>.init_array.NNNNN</code> and <code>.fini_array.NNNNN</code>, <code>NNNNN</code> is
+the init_priority.  In <code>.ctors.NNNNN</code> and <code>.dtors.NNNNN</code>,
+<code>NNNNN</code> is 65535 minus the init_priority.
 </p>
-<a name="index-SORT"></a>
+<span id="index-SORT"></span>
 <p><code>SORT</code> is an alias for <code>SORT_BY_NAME</code>.
 </p>
 <p>When there are nested section sorting commands in linker script, there
@@ -179,7 +171,7 @@ treated as nested sorting command.
 <p>If the section sorting command in linker script is nested, the
 command-line option will be ignored.
 </p>
-<a name="index-SORT_005fNONE"></a>
+<span id="index-SORT_005fNONE"></span>
 <p><code>SORT_NONE</code> disables section sorting by ignoring the command-line
 section sorting option.
 </p>
@@ -193,8 +185,8 @@ sections in &lsquo;<samp>.text</samp>&rsquo; and all &lsquo;<samp>.bss</samp>&rs
 The linker will place the &lsquo;<samp>.data</samp>&rsquo; section from all files beginning
 with an upper case character in &lsquo;<samp>.DATA</samp>&rsquo;; for all other files, the
 linker will place the &lsquo;<samp>.data</samp>&rsquo; section in &lsquo;<samp>.data</samp>&rsquo;.
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS {
+</p><div class="example">
+<pre class="example">SECTIONS {
   .text : { *(.text) }
   .DATA : { [A-Z]*(.data) }
   .data : { *(.data) }
@@ -205,7 +197,7 @@ linker will place the &lsquo;<samp>.data</samp>&rsquo; section in &lsquo;<samp>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Input-Section-Common.html#Input-Section-Common" accesskey="n" rel="next">Input Section Common</a>, Previous: <a href="Input-Section-Basics.html#Input-Section-Basics" accesskey="p" rel="prev">Input Section Basics</a>, Up: <a href="Input-Section.html#Input-Section" accesskey="u" rel="up">Input Section</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Input-Section-Common.html" accesskey="n" rel="next">Input Section Common</a>, Previous: <a href="Input-Section-Basics.html" accesskey="p" rel="prev">Input Section Basics</a>, Up: <a href="Input-Section.html" accesskey="u" rel="up">Input Section</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

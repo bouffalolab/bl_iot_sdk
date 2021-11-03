@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -9,7 +9,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>strings (GNU Binary Utilities)</title>
@@ -19,33 +19,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Binutils-Index.html#Binutils-Index" rel="index" title="Binutils Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Binutils-Index.html" rel="index" title="Binutils Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="strip.html#strip" rel="next" title="strip">
-<link href="size.html#size" rel="prev" title="size">
+<link href="index.html" rel="up" title="Top">
+<link href="strip.html" rel="next" title="strip">
+<link href="size.html" rel="prev" title="size">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -57,22 +48,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="strings"></a>
-<div class="header">
+<span id="strings"></span><div class="header">
 <p>
-Next: <a href="strip.html#strip" accesskey="n" rel="next">strip</a>, Previous: <a href="size.html#size" accesskey="p" rel="prev">size</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="strip.html" accesskey="n" rel="next">strip</a>, Previous: <a href="size.html" accesskey="p" rel="prev">size</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="strings-1"></a>
-<h2 class="chapter">7 strings</h2>
-<a name="index-strings"></a>
-<a name="index-listings-strings"></a>
-<a name="index-printing-strings"></a>
-<a name="index-strings_002c-printing"></a>
+<span id="strings-1"></span><h2 class="chapter">7 strings</h2>
+<span id="index-strings"></span>
+<span id="index-listings-strings"></span>
+<span id="index-printing-strings"></span>
+<span id="index-strings_002c-printing"></span>
 
 
-<div class="smallexample">
-<pre class="smallexample">strings [<samp>-afovV</samp>] [<samp>-</samp><var>min-len</var>]
+<div class="example">
+<pre class="example">strings [<samp>-afovV</samp>] [<samp>-</samp><var>min-len</var>]
         [<samp>-n</samp> <var>min-len</var>] [<samp>--bytes=</samp><var>min-len</var>]
         [<samp>-t</samp> <var>radix</var>] [<samp>--radix=</samp><var>radix</var>]
         [<samp>-e</samp> <var>encoding</var>] [<samp>--encoding=</samp><var>encoding</var>]
@@ -92,13 +81,13 @@ unprintable character.
 <p>Depending upon how the strings program was configured it will default
 to either displaying all the printable sequences that it can find in
 each file, or only those sequences that are in loadable, initialized
-data sections.  If the file type in unrecognizable, or if strings is
+data sections.  If the file type is unrecognizable, or if strings is
 reading from stdin then it will always display all of the printable
 sequences that it can find.
 </p>
 <p>For backwards compatibility any file that occurs after a command-line
 option of just <samp>-</samp> will also be scanned in full, regardless of
-the presence of any <samp>-d</samp> option. 
+the presence of any <samp>-d</samp> option.
 </p>
 <p><code>strings</code> is mainly useful for determining the contents of
 non-text files.
@@ -173,9 +162,9 @@ and &lsquo;<samp>b</samp>&rsquo; apply to, for example, Unicode UTF-16/UCS-2 enc
 </dd>
 <dt><code>-T <var>bfdname</var></code></dt>
 <dt><code>--target=<var>bfdname</var></code></dt>
-<dd><a name="index-object-code-format-3"></a>
+<dd><span id="index-object-code-format-3"></span>
 <p>Specify an object code format other than your system&rsquo;s default format.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-v</code></dt>
@@ -206,7 +195,7 @@ may contain new-lines internally.
 <hr>
 <div class="header">
 <p>
-Next: <a href="strip.html#strip" accesskey="n" rel="next">strip</a>, Previous: <a href="size.html#size" accesskey="p" rel="prev">size</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="strip.html" accesskey="n" rel="next">strip</a>, Previous: <a href="size.html" accesskey="p" rel="prev">size</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

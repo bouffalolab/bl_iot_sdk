@@ -1,70 +1,103 @@
-<html lang="en">
-<head>
-<title>s390 Syntax - Using as</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Using as">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="S_002f390_002dDependent.html#S_002f390_002dDependent" title="S/390-Dependent">
-<link rel="prev" href="s390-Characters.html#s390-Characters" title="s390 Characters">
-<link rel="next" href="s390-Directives.html#s390-Directives" title="s390 Directives">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-This file documents the GNU Assembler "as".
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
-section entitled ``GNU Free Documentation License''.
+section entitled "GNU Free Documentation License".
+ -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Using as: s390 Syntax</title>
 
+<meta name="description" content="Using as: s390 Syntax">
+<meta name="keywords" content="Using as: s390 Syntax">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="S_002f390_002dDependent.html#S_002f390_002dDependent" rel="up" title="S/390-Dependent">
+<link href="s390-Register.html#s390-Register" rel="next" title="s390 Register">
+<link href="s390-Characters.html#s390-Characters" rel="prev" title="s390 Characters">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
 -->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="s390-Syntax"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="s390-Directives.html#s390-Directives">s390 Directives</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="s390-Characters.html#s390-Characters">s390 Characters</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="S_002f390_002dDependent.html#S_002f390_002dDependent">S/390-Dependent</a>
-<hr>
+Next: <a href="s390-Directives.html#s390-Directives" accesskey="n" rel="next">s390 Directives</a>, Previous: <a href="s390-Characters.html#s390-Characters" accesskey="p" rel="prev">s390 Characters</a>, Up: <a href="S_002f390_002dDependent.html#S_002f390_002dDependent" accesskey="u" rel="up">S/390-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Instruction-syntax"></a>
+<h4 class="subsection">9.41.3 Instruction syntax</h4>
+<a name="index-instruction-syntax_002c-s390"></a>
+<a name="index-s390-instruction-syntax"></a>
 
-<h4 class="subsection">9.40.3 Instruction syntax</h4>
-
-<p><a name="index-instruction-syntax_002c-s390-2043"></a><a name="index-s390-instruction-syntax-2044"></a>
-The assembler syntax closely follows the syntax outlined in
+<p>The assembler syntax closely follows the syntax outlined in
 Enterprise Systems Architecture/390 Principles of Operation (SA22-7201)
 and the z/Architecture Principles of Operation (SA22-7832).
-
-   <p>Each instruction has two major parts, the instruction mnemonic
+</p>
+<p>Each instruction has two major parts, the instruction mnemonic
 and the instruction operands. The instruction format varies.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="s390-Register.html#s390-Register" accesskey="1">s390 Register</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Register Naming
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Mnemonics.html#s390-Mnemonics" accesskey="2">s390 Mnemonics</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Mnemonics
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Operands.html#s390-Operands" accesskey="3">s390 Operands</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Operands
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Formats.html#s390-Formats" accesskey="4">s390 Formats</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Formats
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Aliases.html#s390-Aliases" accesskey="5">s390 Aliases</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Aliases
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Operand-Modifier.html#s390-Operand-Modifier" accesskey="6">s390 Operand Modifier</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Operand Modifier
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Instruction-Marker.html#s390-Instruction-Marker" accesskey="7">s390 Instruction Marker</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Instruction Marker
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="s390-Literal-Pool-Entries.html#s390-Literal-Pool-Entries" accesskey="8">s390 Literal Pool Entries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Literal Pool Entries
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="s390-Register.html#s390-Register">s390 Register</a>:                Register Naming
-<li><a accesskey="2" href="s390-Mnemonics.html#s390-Mnemonics">s390 Mnemonics</a>:               Instruction Mnemonics
-<li><a accesskey="3" href="s390-Operands.html#s390-Operands">s390 Operands</a>:                Instruction Operands
-<li><a accesskey="4" href="s390-Formats.html#s390-Formats">s390 Formats</a>:                 Instruction Formats
-<li><a accesskey="5" href="s390-Aliases.html#s390-Aliases">s390 Aliases</a>: 		Instruction Aliases
-<li><a accesskey="6" href="s390-Operand-Modifier.html#s390-Operand-Modifier">s390 Operand Modifier</a>:        Instruction Operand Modifier
-<li><a accesskey="7" href="s390-Instruction-Marker.html#s390-Instruction-Marker">s390 Instruction Marker</a>:      Instruction Marker
-<li><a accesskey="8" href="s390-Literal-Pool-Entries.html#s390-Literal-Pool-Entries">s390 Literal Pool Entries</a>:    Literal Pool Entries
-</ul>
 
-   </body></html>
 
+
+</body>
+</html>

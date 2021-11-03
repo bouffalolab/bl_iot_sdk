@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -66,9 +66,9 @@ Next: <a href="i386_002dRegs.html#i386_002dRegs" accesskey="n" rel="next">i386-R
 </div>
 <hr>
 <a name="i386_002dMnemonics-1"></a>
-<h4 class="subsection">9.15.4 i386-Mnemonics</h4>
+<h4 class="subsection">9.16.4 i386-Mnemonics</h4>
 <a name="Instruction-Naming"></a>
-<h4 class="subsubsection">9.15.4.1 Instruction Naming</h4>
+<h4 class="subsubsection">9.16.4.1 Instruction Naming</h4>
 
 <a name="index-i386-instruction-naming"></a>
 <a name="index-instruction-naming_002c-i386"></a>
@@ -87,22 +87,27 @@ assembler which assumes that a missing mnemonic suffix implies long
 operand size.  (This incompatibility does not affect compiler output
 since compilers always explicitly specify the mnemonic suffix.)
 </p>
-<p>Almost all instructions have the same names in AT&amp;T and Intel format.
-There are a few exceptions.  The sign extend and zero extend
-instructions need two sizes to specify them.  They need a size to
-sign/zero extend <em>from</em> and a size to zero extend <em>to</em>.  This
-is accomplished by using two instruction mnemonic suffixes in AT&amp;T
-syntax.  Base names for sign extend and zero extend are
-&lsquo;<samp>movs&hellip;</samp>&rsquo; and &lsquo;<samp>movz&hellip;</samp>&rsquo; in AT&amp;T syntax (&lsquo;<samp>movsx</samp>&rsquo;
-and &lsquo;<samp>movzx</samp>&rsquo; in Intel syntax).  The instruction mnemonic suffixes
-are tacked on to this base name, the <em>from</em> suffix before the
-<em>to</em> suffix.  Thus, &lsquo;<samp>movsbl %al, %edx</samp>&rsquo; is AT&amp;T syntax for
-&ldquo;move sign extend <em>from</em> %al <em>to</em> %edx.&rdquo;  Possible suffixes,
-thus, are &lsquo;<samp>bl</samp>&rsquo; (from byte to long), &lsquo;<samp>bw</samp>&rsquo; (from byte to word),
-&lsquo;<samp>wl</samp>&rsquo; (from word to long), &lsquo;<samp>bq</samp>&rsquo; (from byte to quadruple word),
-&lsquo;<samp>wq</samp>&rsquo; (from word to quadruple word), and &lsquo;<samp>lq</samp>&rsquo; (from long to
-quadruple word).
+<p>When there is no sizing suffix and no (suitable) register operands to
+deduce the size of memory operands, with a few exceptions and where long
+operand size is possible in the first place, operand size will default
+to long in 32- and 64-bit modes.  Similarly it will default to short in
+16-bit mode. Noteworthy exceptions are
 </p>
+<ul>
+<li> Instructions with an implicit on-stack operand as well as branches,
+which default to quad in 64-bit mode.
+
+</li><li> Sign- and zero-extending moves, which default to byte size source
+operands.
+
+</li><li> Floating point insns with integer operands, which default to short (for
+perhaps historical reasons).
+
+</li><li> CRC32 with a 64-bit destination, which defaults to a quad source
+operand.
+
+</li></ul>
+
 <a name="index-encoding-options_002c-i386"></a>
 <a name="index-encoding-options_002c-x86_002d64"></a>
 
@@ -117,9 +122,9 @@ quadruple word).
 
 </li><li> &lsquo;<samp>{store}</samp>&rsquo; &ndash; prefer store-form instruction.
 
-</li><li> &lsquo;<samp>{vex2}</samp>&rsquo; &ndash; prefer 2-byte VEX prefix for VEX instruction.
+</li><li> &lsquo;<samp>{vex}</samp>&rsquo; &ndash;  encode with VEX prefix.
 
-</li><li> &lsquo;<samp>{vex3}</samp>&rsquo; &ndash; prefer 3-byte VEX prefix for VEX instruction.
+</li><li> &lsquo;<samp>{vex3}</samp>&rsquo; &ndash; encode with 3-byte VEX prefix.
 
 </li><li> &lsquo;<samp>{evex}</samp>&rsquo; &ndash;  encode with EVEX prefix.
 
@@ -156,6 +161,47 @@ prefix which generates REX prefix unconditionally.
 &lsquo;<samp>cqto</samp>&rsquo; in AT&amp;T naming.  <code>as</code> accepts either naming for these
 instructions.
 </p>
+<a name="index-extension-instructions_002c-i386"></a>
+<a name="index-i386-extension-instructions"></a>
+<a name="index-extension-instructions_002c-x86_002d64"></a>
+<a name="index-x86_002d64-extension-instructions"></a>
+<p>The Intel-syntax extension instructions
+</p>
+<ul>
+<li> &lsquo;<samp>movsx</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg16</samp>&rsquo;.
+
+</li><li> &lsquo;<samp>movsx</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg32</samp>&rsquo;.
+
+</li><li> &lsquo;<samp>movsx</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg64</samp>&rsquo;
+(x86-64 only).
+
+</li><li> &lsquo;<samp>movsx</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg16/mem16</samp>&rsquo; to &lsquo;<samp>reg32</samp>&rsquo;
+
+</li><li> &lsquo;<samp>movsx</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg16/mem16</samp>&rsquo; to &lsquo;<samp>reg64</samp>&rsquo;
+(x86-64 only).
+
+</li><li> &lsquo;<samp>movsxd</samp>&rsquo; &mdash; sign-extend &lsquo;<samp>reg32/mem32</samp>&rsquo; to &lsquo;<samp>reg64</samp>&rsquo;
+(x86-64 only).
+
+</li><li> &lsquo;<samp>movzx</samp>&rsquo; &mdash; zero-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg16</samp>&rsquo;.
+
+</li><li> &lsquo;<samp>movzx</samp>&rsquo; &mdash; zero-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg32</samp>&rsquo;.
+
+</li><li> &lsquo;<samp>movzx</samp>&rsquo; &mdash; zero-extend &lsquo;<samp>reg8/mem8</samp>&rsquo; to &lsquo;<samp>reg64</samp>&rsquo;
+(x86-64 only).
+
+</li><li> &lsquo;<samp>movzx</samp>&rsquo; &mdash; zero-extend &lsquo;<samp>reg16/mem16</samp>&rsquo; to &lsquo;<samp>reg32</samp>&rsquo;
+
+</li><li> &lsquo;<samp>movzx</samp>&rsquo; &mdash; zero-extend &lsquo;<samp>reg16/mem16</samp>&rsquo; to &lsquo;<samp>reg64</samp>&rsquo;
+(x86-64 only).
+</li></ul>
+
+<p>are called &lsquo;<samp>movsbw/movsxb/movsx</samp>&rsquo;, &lsquo;<samp>movsbl/movsxb/movsx</samp>&rsquo;,
+&lsquo;<samp>movsbq/movsb/movsx</samp>&rsquo;, &lsquo;<samp>movswl/movsxw</samp>&rsquo;, &lsquo;<samp>movswq/movsxw</samp>&rsquo;,
+&lsquo;<samp>movslq/movsxl</samp>&rsquo;, &lsquo;<samp>movzbw/movzxb/movzx</samp>&rsquo;,
+&lsquo;<samp>movzbl/movzxb/movzx</samp>&rsquo;, &lsquo;<samp>movzbq/movzxb/movzx</samp>&rsquo;,
+&lsquo;<samp>movzwl/movzxw</samp>&rsquo; and &lsquo;<samp>movzwq/movzxw</samp>&rsquo; in AT&amp;T syntax.
+</p>
 <a name="index-jump-instructions_002c-i386"></a>
 <a name="index-call-instructions_002c-i386"></a>
 <a name="index-jump-instructions_002c-x86_002d64"></a>
@@ -165,7 +211,7 @@ AT&amp;T syntax, but are &lsquo;<samp>call far</samp>&rsquo; and &lsquo;<samp>ju
 convention.
 </p>
 <a name="AT_0026T-Mnemonic-versus-Intel-Mnemonic"></a>
-<h4 class="subsubsection">9.15.4.2 AT&amp;T Mnemonic versus Intel Mnemonic</h4>
+<h4 class="subsubsection">9.16.4.2 AT&amp;T Mnemonic versus Intel Mnemonic</h4>
 
 <a name="index-i386-mnemonic-compatibility"></a>
 <a name="index-mnemonic-compatibility_002c-i386"></a>
@@ -180,6 +226,12 @@ Several x87 instructions, &lsquo;<samp>fadd</samp>&rsquo;, &lsquo;<samp>fdiv</sa
 assembler with different mnemonics from those in Intel IA32 specification.
 <code>gcc</code> generates those instructions with AT&amp;T mnemonic.
 </p>
+<ul>
+<li> &lsquo;<samp>movslq</samp>&rsquo; with AT&amp;T mnemonic only accepts 64-bit destination
+register.  &lsquo;<samp>movsxd</samp>&rsquo; should be used to encode 16-bit or 32-bit
+destination register with both AT&amp;T and Intel mnemonics.
+</li></ul>
+
 <hr>
 <div class="header">
 <p>

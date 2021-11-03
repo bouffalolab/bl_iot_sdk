@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -89,7 +89,7 @@ of multi-word commands.  For example, <small>GDB</small> provides the
 <dd>
 <a name="index-alias"></a>
 </dd>
-<dt><code>alias [-a] [--] <var>ALIAS</var> = <var>COMMAND</var></code></dt>
+<dt><code>alias [-a] [--] <var>ALIAS</var> = <var>COMMAND</var> [DEFAULT-ARGS...]</code></dt>
 </dl>
 
 <p><var>ALIAS</var> specifies the name of the new alias.
@@ -99,12 +99,26 @@ underscores.
 <p><var>COMMAND</var> specifies the name of an existing command
 that is being aliased.
 </p>
+<p><var>COMMAND</var> can also be the name of an existing alias.  In this case,
+<var>COMMAND</var> cannot be an alias that has default arguments.
+</p>
 <p>The &lsquo;<samp>-a</samp>&rsquo; option specifies that the new alias is an abbreviation
-of the command.  Abbreviations are not shown in command
-lists displayed by the &lsquo;<samp>help</samp>&rsquo; command.
+of the command.  Abbreviations are not used in command completion.
 </p>
 <p>The &lsquo;<samp>--</samp>&rsquo; option specifies the end of options,
 and is useful when <var>ALIAS</var> begins with a dash.
+</p>
+<p>You can specify <var>default-args</var> for your alias.
+These <var>default-args</var> will be automatically added before the alias
+arguments typed explicitly on the command line.
+</p>
+<p>For example, the below defines an alias <code>btfullall</code> that shows all local
+variables and all frame arguments:
+</p><div class="smallexample">
+<pre class="smallexample">(gdb) alias btfullall = backtrace -full -frame-arguments all
+</pre></div>
+
+<p>For more information about <var>default-args</var>, see <a href="Command-aliases-default-args.html#Command-aliases-default-args">Automatically prepend default arguments to user-defined aliases</a>.
 </p>
 <p>Here is a simple example showing how to make an abbreviation
 of a command so that there is less to type.

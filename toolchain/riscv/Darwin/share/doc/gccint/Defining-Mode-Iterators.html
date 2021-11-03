@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Defining Mode Iterators (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Mode-Iterators.html#Mode-Iterators" rel="up" title="Mode Iterators">
-<link href="Substitutions.html#Substitutions" rel="next" title="Substitutions">
-<link href="Mode-Iterators.html#Mode-Iterators" rel="prev" title="Mode Iterators">
+<link href="Mode-Iterators.html" rel="up" title="Mode Iterators">
+<link href="Substitutions.html" rel="next" title="Substitutions">
+<link href="Mode-Iterators.html" rel="prev" title="Mode Iterators">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,20 +58,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Defining-Mode-Iterators"></a>
-<div class="header">
+<span id="Defining-Mode-Iterators"></span><div class="header">
 <p>
-Next: <a href="Substitutions.html#Substitutions" accesskey="n" rel="next">Substitutions</a>, Up: <a href="Mode-Iterators.html#Mode-Iterators" accesskey="u" rel="up">Mode Iterators</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Substitutions.html" accesskey="n" rel="next">Substitutions</a>, Up: <a href="Mode-Iterators.html" accesskey="u" rel="up">Mode Iterators</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Defining-Mode-Iterators-1"></a>
-<h4 class="subsubsection">17.23.1.1 Defining Mode Iterators</h4>
-<a name="index-define_005fmode_005fiterator"></a>
+<span id="Defining-Mode-Iterators-1"></span><h4 class="subsubsection">17.23.1.1 Defining Mode Iterators</h4>
+<span id="index-define_005fmode_005fiterator"></span>
 
 <p>The syntax for defining a mode iterator is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_mode_iterator <var>name</var> [(<var>mode1</var> &quot;<var>cond1</var>&quot;) &hellip; (<var>moden</var> &quot;<var>condn</var>&quot;)])
+<div class="example">
+<pre class="example">(define_mode_iterator <var>name</var> [(<var>mode1</var> &quot;<var>cond1</var>&quot;) &hellip; (<var>moden</var> &quot;<var>condn</var>&quot;)])
 </pre></div>
 
 <p>This allows subsequent <samp>.md</samp> file constructs to use the mode suffix
@@ -92,8 +81,8 @@ C condition will also require that <var>condi</var> be true.
 </p>
 <p>For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_mode_iterator P [(SI &quot;Pmode == SImode&quot;) (DI &quot;Pmode == DImode&quot;)])
+<div class="example">
+<pre class="example">(define_mode_iterator P [(SI &quot;Pmode == SImode&quot;) (DI &quot;Pmode == DImode&quot;)])
 </pre></div>
 
 <p>defines a new mode suffix <code>:P</code>.  Every construct that uses
@@ -106,8 +95,8 @@ the <code>:DI</code> version will only apply if <code>Pmode == DImode</code>.
 as &ldquo;always true&rdquo;.  <code>(<var>mode</var> &quot;&quot;)</code> can also be abbreviated
 to <code><var>mode</var></code>.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_mode_iterator GPR [SI (DI &quot;TARGET_64BIT&quot;)])
+<div class="example">
+<pre class="example">(define_mode_iterator GPR [SI (DI &quot;TARGET_64BIT&quot;)])
 </pre></div>
 
 <p>means that the <code>:DI</code> expansion only applies if <code>TARGET_64BIT</code>
@@ -115,7 +104,7 @@ but that the <code>:SI</code> expansion has no such constraint.
 </p>
 <p>Iterators are applied in the order they are defined.  This can be
 significant if two iterators are used in a construct that requires
-substitutions.  See <a href="Substitutions.html#Substitutions">Substitutions</a>.
+substitutions.  See <a href="Substitutions.html">Substitutions</a>.
 </p>
 
 

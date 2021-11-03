@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Ada Glitches (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Ada.html#Ada" rel="up" title="Ada">
-<link href="Unsupported-Languages.html#Unsupported-Languages" rel="next" title="Unsupported Languages">
-<link href="Ada-Settings.html#Ada-Settings" rel="prev" title="Ada Settings">
+<link href="Ada.html" rel="up" title="Ada">
+<link href="Unsupported-Languages.html" rel="next" title="Unsupported Languages">
+<link href="Ada-Settings.html" rel="prev" title="Ada Settings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Ada-Glitches"></a>
-<div class="header">
+<span id="Ada-Glitches"></span><div class="header">
 <p>
-Previous: <a href="Ada-Settings.html#Ada-Settings" accesskey="p" rel="prev">Ada Settings</a>, Up: <a href="Ada.html#Ada" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Ada-Settings.html" accesskey="p" rel="prev">Ada Settings</a>, Up: <a href="Ada.html" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Known-Peculiarities-of-Ada-Mode"></a>
-<h4 class="subsubsection">15.4.10.11 Known Peculiarities of Ada Mode</h4>
-<a name="index-Ada_002c-problems"></a>
+<span id="Known-Peculiarities-of-Ada-Mode"></span><h4 class="subsubsection">15.4.10.11 Known Peculiarities of Ada Mode</h4>
+<span id="index-Ada_002c-problems"></span>
 
-<p>Besides the omissions listed previously (see <a href="Omissions-from-Ada.html#Omissions-from-Ada">Omissions from Ada</a>),
+<p>Besides the omissions listed previously (see <a href="Omissions-from-Ada.html">Omissions from Ada</a>),
 we know of several problems with and limitations of Ada mode in
 <small>GDB</small>,
 some of which will be fixed with planned future releases of the debugger 
@@ -109,8 +98,8 @@ around an issue automatically. In other cases, the debugger is able
 to work around the issue, but the work-around has to be specifically
 enabled.
 </p>
-<a name="index-set-ada-trust_002dPAD_002dover_002dXVS"></a>
-<a name="index-show-ada-trust_002dPAD_002dover_002dXVS"></a>
+<span id="index-set-ada-trust_002dPAD_002dover_002dXVS"></span>
+<span id="index-show-ada-trust_002dPAD_002dover_002dXVS"></span>
 <dl compact="compact">
 <dt><code>set ada trust-PAD-over-XVS on</code></dt>
 <dd><p>Configure GDB to strictly follow the GNAT encoding when computing the
@@ -131,8 +120,8 @@ recommended to leave this setting to <code>on</code> unless necessary.
 </dd>
 </dl>
 
-<a name="index-GNAT-descriptive-types"></a>
-<a name="index-GNAT-encoding"></a>
+<span id="index-GNAT-descriptive-types"></span>
+<span id="index-GNAT-encoding"></span>
 <p>Internally, the debugger also relies on the compiler following a number
 of conventions known as the &lsquo;<samp>GNAT Encoding</samp>&rsquo;, all documented in
 <samp>gcc/ada/exp_dbug.ads</samp> in the GCC sources. This encoding describes
@@ -151,13 +140,13 @@ well <small>GDB</small> works without them.
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-maint-ada-set-ignore_002ddescriptive_002dtypes"></a>
+<span id="index-maint-ada-set-ignore_002ddescriptive_002dtypes"></span>
 </dd>
 <dt><code>maintenance ada set ignore-descriptive-types [on|off]</code></dt>
 <dd><p>Control whether the debugger should ignore descriptive types.
 The default is not to ignore descriptives types (<code>off</code>).
 </p>
-<a name="index-maint-ada-show-ignore_002ddescriptive_002dtypes"></a>
+<span id="index-maint-ada-show-ignore_002ddescriptive_002dtypes"></span>
 </dd>
 <dt><code>maintenance ada show ignore-descriptive-types</code></dt>
 <dd><p>Show if descriptive types are ignored by <small>GDB</small>.
@@ -168,7 +157,7 @@ The default is not to ignore descriptives types (<code>off</code>).
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Ada-Settings.html#Ada-Settings" accesskey="p" rel="prev">Ada Settings</a>, Up: <a href="Ada.html#Ada" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Ada-Settings.html" accesskey="p" rel="prev">Ada Settings</a>, Up: <a href="Ada.html" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

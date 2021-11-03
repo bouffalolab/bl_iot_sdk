@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Divide and Conquer Division (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Division-Algorithms.html#Division-Algorithms" rel="up" title="Division Algorithms">
-<link href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division" rel="next" title="Block-Wise Barrett Division">
-<link href="Basecase-Division.html#Basecase-Division" rel="prev" title="Basecase Division">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Division-Algorithms.html" rel="up" title="Division Algorithms">
+<link href="Block_002dWise-Barrett-Division.html" rel="next" title="Block-Wise Barrett Division">
+<link href="Basecase-Division.html" rel="prev" title="Basecase Division">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,24 +50,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Divide-and-Conquer-Division"></a>
-<div class="header">
+<span id="Divide-and-Conquer-Division"></span><div class="header">
 <p>
-Next: <a href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division" accesskey="n" rel="next">Block-Wise Barrett Division</a>, Previous: <a href="Basecase-Division.html#Basecase-Division" accesskey="p" rel="prev">Basecase Division</a>, Up: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Block_002dWise-Barrett-Division.html" accesskey="n" rel="next">Block-Wise Barrett Division</a>, Previous: <a href="Basecase-Division.html" accesskey="p" rel="prev">Basecase Division</a>, Up: <a href="Division-Algorithms.html" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Divide-and-Conquer-Division-1"></a>
-<h4 class="subsection">15.2.3 Divide and Conquer Division</h4>
+<span id="Divide-and-Conquer-Division-1"></span><h4 class="subsection">15.2.3 Divide and Conquer Division</h4>
 
 <p>For divisors larger than <code>DC_DIV_QR_THRESHOLD</code>, division is done by dividing.
 Or to be precise by a recursive divide and conquer algorithm based on work by
-Moenck and Borodin, Jebelean, and Burnikel and Ziegler (see <a href="References.html#References">References</a>).
+Moenck and Borodin, Jebelean, and Burnikel and Ziegler (see <a href="References.html">References</a>).
 </p>
 <p>The algorithm consists essentially of recognising that a 2NxN division
-can be done with the basecase division algorithm (see <a href="Basecase-Division.html#Basecase-Division">Basecase Division</a>),
+can be done with the basecase division algorithm (see <a href="Basecase-Division.html">Basecase Division</a>),
 but using N/2 limbs as a base, not just a single limb.  This way the
 multiplications that arise are (N/2)x(N/2) and can take advantage of
-Karatsuba and higher multiplication algorithms (see <a href="Multiplication-Algorithms.html#Multiplication-Algorithms">Multiplication Algorithms</a>).  The two &ldquo;digits&rdquo; of the quotient are formed by recursive
+Karatsuba and higher multiplication algorithms (see <a href="Multiplication-Algorithms.html">Multiplication Algorithms</a>).  The two &ldquo;digits&rdquo; of the quotient are formed by recursive
 Nx(N/2) divisions.
 </p>
 <p>If the (N/2)x(N/2) multiplies are done with a basecase multiplication
@@ -103,7 +92,7 @@ is about 2 to 4 times slower than an NxN multiplication.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Block_002dWise-Barrett-Division.html#Block_002dWise-Barrett-Division" accesskey="n" rel="next">Block-Wise Barrett Division</a>, Previous: <a href="Basecase-Division.html#Basecase-Division" accesskey="p" rel="prev">Basecase Division</a>, Up: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Block_002dWise-Barrett-Division.html" accesskey="n" rel="next">Block-Wise Barrett Division</a>, Previous: <a href="Basecase-Division.html" accesskey="p" rel="prev">Basecase Division</a>, Up: <a href="Division-Algorithms.html" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GDB/MI Tracepoint Commands (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB_002fMI.html#GDB_002fMI" rel="up" title="GDB/MI">
-<link href="GDB_002fMI-Symbol-Query.html#GDB_002fMI-Symbol-Query" rel="next" title="GDB/MI Symbol Query">
-<link href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" rel="prev" title="GDB/MI Data Manipulation">
+<link href="GDB_002fMI.html" rel="up" title="GDB/MI">
+<link href="GDB_002fMI-Symbol-Query.html" rel="next" title="GDB/MI Symbol Query">
+<link href="GDB_002fMI-Data-Manipulation.html" rel="prev" title="GDB/MI Data Manipulation">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,32 +51,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GDB_002fMI-Tracepoint-Commands"></a>
-<div class="header">
+<span id="GDB_002fMI-Tracepoint-Commands"></span><div class="header">
 <p>
-Next: <a href="GDB_002fMI-Symbol-Query.html#GDB_002fMI-Symbol-Query" accesskey="n" rel="next">GDB/MI Symbol Query</a>, Previous: <a href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" accesskey="p" rel="prev">GDB/MI Data Manipulation</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Symbol-Query.html" accesskey="n" rel="next">GDB/MI Symbol Query</a>, Previous: <a href="GDB_002fMI-Data-Manipulation.html" accesskey="p" rel="prev">GDB/MI Data Manipulation</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GDB_002fMI-Tracepoint-Commands-1"></a>
-<h3 class="section">27.17 <small>GDB/MI</small> Tracepoint Commands</h3>
+<span id="GDB_002fMI-Tracepoint-Commands-1"></span><h3 class="section">27.17 <small>GDB/MI</small> Tracepoint Commands</h3>
 
 <p>The commands defined in this section implement MI support for
-tracepoints.  For detailed introduction, see <a href="Tracepoints.html#Tracepoints">Tracepoints</a>.
+tracepoints.  For detailed introduction, see <a href="Tracepoints.html">Tracepoints</a>.
 </p>
-<a name="The-_002dtrace_002dfind-Command"></a>
-<h4 class="subheading">The <code>-trace-find</code> Command</h4>
-<a name="index-_002dtrace_002dfind"></a>
+<span id="The-_002dtrace_002dfind-Command"></span><h4 class="subheading">The <code>-trace-find</code> Command</h4>
+<span id="index-_002dtrace_002dfind"></span>
 
-<a name="Synopsis-69"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-72"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-find <var>mode</var> [<var>parameters</var>&hellip;]
+<div class="example">
+<pre class="example"> -trace-find <var>mode</var> [<var>parameters</var>&hellip;]
 </pre></div>
 
 <p>Find a trace frame using criteria defined by <var>mode</var> and
 <var>parameters</var>.  The following table lists permissible
-modes and their parameters.  For details of operation, see <a href="tfind.html#tfind">tfind</a>.
+modes and their parameters.  For details of operation, see <a href="tfind.html">tfind</a>.
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>none</samp>&rsquo;</dt>
@@ -121,7 +108,7 @@ the specified range.  Both bounds are considered to be inside the range.
 </p>
 </dd>
 <dt>&lsquo;<samp>line</samp>&rsquo;</dt>
-<dd><p>Line specification is required as parameter.  See <a href="Specify-Location.html#Specify-Location">Specify Location</a>.
+<dd><p>Line specification is required as parameter.  See <a href="Specify-Location.html">Specify Location</a>.
 Finds next trace frame that corresponds to a tracepoint at
 the specified location.
 </p>
@@ -150,25 +137,22 @@ the &lsquo;<samp>found</samp>&rsquo; field has value of &lsquo;<samp>1</samp>&rs
 <dt>&lsquo;<samp>frame</samp>&rsquo;</dt>
 <dd><p>The information about the frame corresponding to the found trace
 frame.  This field is present only if a trace frame was found.
-See <a href="GDB_002fMI-Frame-Information.html#GDB_002fMI-Frame-Information">GDB/MI Frame Information</a>, for description of this field.
+See <a href="GDB_002fMI-Frame-Information.html">GDB/MI Frame Information</a>, for description of this field.
 </p>
 </dd>
 </dl>
 
-<a name="GDB-Command-51"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-54"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tfind</samp>&rsquo;.
 </p>
-<a name="g_t_002dtrace_002ddefine_002dvariable"></a>
-<h4 class="subheading">-trace-define-variable</h4>
-<a name="index-_002dtrace_002ddefine_002dvariable"></a>
+<span id="g_t_002dtrace_002ddefine_002dvariable"></span><h4 class="subheading">-trace-define-variable</h4>
+<span id="index-_002dtrace_002ddefine_002dvariable"></span>
 
-<a name="Synopsis-70"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-73"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-define-variable <var>name</var> [ <var>value</var> ]
+<div class="example">
+<pre class="example"> -trace-define-variable <var>name</var> [ <var>value</var> ]
 </pre></div>
 
 <p>Create trace variable <var>name</var> if it does not exist.  If
@@ -176,20 +160,17 @@ See <a href="GDB_002fMI-Frame-Information.html#GDB_002fMI-Frame-Information">GDB
 trace variable to that value.  Note that the <var>name</var> should start
 with the &lsquo;<samp>$</samp>&rsquo; character.
 </p>
-<a name="GDB-Command-52"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-55"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tvariable</samp>&rsquo;.
 </p>
-<a name="The-_002dtrace_002dframe_002dcollected-Command"></a>
-<h4 class="subheading">The <code>-trace-frame-collected</code> Command</h4>
-<a name="index-_002dtrace_002dframe_002dcollected"></a>
+<span id="The-_002dtrace_002dframe_002dcollected-Command"></span><h4 class="subheading">The <code>-trace-frame-collected</code> Command</h4>
+<span id="index-_002dtrace_002dframe_002dcollected"></span>
 
-<a name="Synopsis-71"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-74"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-frame-collected
+<div class="example">
+<pre class="example"> -trace-frame-collected
     [--var-print-values <var>var_pval</var>]
     [--comp-print-values <var>comp_pval</var>]
     [--registers-format <var>regformat</var>]
@@ -209,8 +190,8 @@ which is a register, which is a trace state variable, which is a
 memory range and which is a computed expression.
 </p>
 <p>For instance, if the actions were
-</p><div class="smallexample">
-<pre class="smallexample">collect myVar, myArray[myIndex], myObj.field, myPtr-&gt;field, myCount + 2
+</p><div class="example">
+<pre class="example">collect myVar, myArray[myIndex], myObj.field, myPtr-&gt;field, myCount + 2
 collect *(int*)0xaf02bef0@40
 </pre></div>
 
@@ -221,8 +202,8 @@ objects would be computed expressions.
 </p>
 <p>An example output would be:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -trace-frame-collected
 ^done,
   explicit-variables=[{name=&quot;myVar&quot;,value=&quot;1&quot;}],
@@ -301,23 +282,19 @@ if the <code>--memory-contents</code> option is specified.
 </dd>
 </dl>
 
-<a name="GDB-Command-53"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-56"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>There is no corresponding <small>GDB</small> command.
 </p>
-<a name="Example-57"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-60"></span><h4 class="subsubheading">Example</h4>
 
-<a name="g_t_002dtrace_002dlist_002dvariables"></a>
-<h4 class="subheading">-trace-list-variables</h4>
-<a name="index-_002dtrace_002dlist_002dvariables"></a>
+<span id="g_t_002dtrace_002dlist_002dvariables"></span><h4 class="subheading">-trace-list-variables</h4>
+<span id="index-_002dtrace_002dlist_002dvariables"></span>
 
-<a name="Synopsis-72"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-75"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-list-variables
+<div class="example">
+<pre class="example"> -trace-list-variables
 </pre></div>
 
 <p>Return a table of all defined trace variables.  Each element of the
@@ -342,16 +319,14 @@ presently running.
 </dd>
 </dl>
 
-<a name="GDB-Command-54"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-57"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tvariables</samp>&rsquo;.
 </p>
-<a name="Example-58"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-61"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -trace-list-variables
 ^done,trace-variables={nr_rows=&quot;1&quot;,nr_cols=&quot;3&quot;,
 hdr=[{width=&quot;15&quot;,alignment=&quot;-1&quot;,col_name=&quot;name&quot;,colhdr=&quot;Name&quot;},
@@ -362,15 +337,13 @@ body=[variable={name=&quot;$trace_timestamp&quot;,initial=&quot;0&quot;}
 (gdb)
 </pre></div>
 
-<a name="g_t_002dtrace_002dsave"></a>
-<h4 class="subheading">-trace-save</h4>
-<a name="index-_002dtrace_002dsave"></a>
+<span id="g_t_002dtrace_002dsave"></span><h4 class="subheading">-trace-save</h4>
+<span id="index-_002dtrace_002dsave"></span>
 
-<a name="Synopsis-73"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-76"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-save [ -r ] [ -ctf ] <var>filename</var>
+<div class="example">
+<pre class="example"> -trace-save [ -r ] [ -ctf ] <var>filename</var>
 </pre></div>
 
 <p>Saves the collected trace data to <var>filename</var>.  Without the
@@ -380,42 +353,36 @@ to perform the save.
 </p>
 <p>By default, this command will save the trace in the tfile format.  You can
 supply the optional &lsquo;<samp>-ctf</samp>&rsquo; argument to save it the CTF format. See
-<a href="Trace-Files.html#Trace-Files">Trace Files</a> for more information about CTF.
+<a href="Trace-Files.html">Trace Files</a> for more information about CTF.
 </p>
-<a name="GDB-Command-55"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-58"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tsave</samp>&rsquo;.
 </p>
 
-<a name="g_t_002dtrace_002dstart"></a>
-<h4 class="subheading">-trace-start</h4>
-<a name="index-_002dtrace_002dstart"></a>
+<span id="g_t_002dtrace_002dstart"></span><h4 class="subheading">-trace-start</h4>
+<span id="index-_002dtrace_002dstart"></span>
 
-<a name="Synopsis-74"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-77"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-start
+<div class="example">
+<pre class="example"> -trace-start
 </pre></div>
 
 <p>Starts a tracing experiment.  The result of this command does not
 have any fields.
 </p>
-<a name="GDB-Command-56"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-59"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tstart</samp>&rsquo;.
 </p>
-<a name="g_t_002dtrace_002dstatus"></a>
-<h4 class="subheading">-trace-status</h4>
-<a name="index-_002dtrace_002dstatus"></a>
+<span id="g_t_002dtrace_002dstatus"></span><h4 class="subheading">-trace-status</h4>
+<span id="index-_002dtrace_002dstatus"></span>
 
-<a name="Synopsis-75"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-78"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-status
+<div class="example">
+<pre class="example"> -trace-status
 </pre></div>
 
 <p>Obtains the status of a tracing experiment.  The result may include
@@ -488,28 +455,24 @@ optional, and only present when examining a trace file.
 </dd>
 </dl>
 
-<a name="GDB-Command-57"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-60"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tstatus</samp>&rsquo;.
 </p>
-<a name="g_t_002dtrace_002dstop"></a>
-<h4 class="subheading">-trace-stop</h4>
-<a name="index-_002dtrace_002dstop"></a>
+<span id="g_t_002dtrace_002dstop"></span><h4 class="subheading">-trace-stop</h4>
+<span id="index-_002dtrace_002dstop"></span>
 
-<a name="Synopsis-76"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-79"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -trace-stop
+<div class="example">
+<pre class="example"> -trace-stop
 </pre></div>
 
 <p>Stops a tracing experiment.  The result of this command has the same
 fields as <code>-trace-status</code>, except that the &lsquo;<samp>supported</samp>&rsquo; and
 &lsquo;<samp>running</samp>&rsquo; fields are not output.
 </p>
-<a name="GDB-Command-58"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-61"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>tstop</samp>&rsquo;.
 </p>
@@ -517,7 +480,7 @@ fields as <code>-trace-status</code>, except that the &lsquo;<samp>supported</sa
 <hr>
 <div class="header">
 <p>
-Next: <a href="GDB_002fMI-Symbol-Query.html#GDB_002fMI-Symbol-Query" accesskey="n" rel="next">GDB/MI Symbol Query</a>, Previous: <a href="GDB_002fMI-Data-Manipulation.html#GDB_002fMI-Data-Manipulation" accesskey="p" rel="prev">GDB/MI Data Manipulation</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Symbol-Query.html" accesskey="n" rel="next">GDB/MI Symbol Query</a>, Previous: <a href="GDB_002fMI-Data-Manipulation.html" accesskey="p" rel="prev">GDB/MI Data Manipulation</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

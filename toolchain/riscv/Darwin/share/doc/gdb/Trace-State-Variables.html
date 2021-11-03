@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Trace State Variables (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Set-Tracepoints.html#Set-Tracepoints" rel="up" title="Set Tracepoints">
-<link href="Tracepoint-Actions.html#Tracepoint-Actions" rel="next" title="Tracepoint Actions">
-<link href="Tracepoint-Conditions.html#Tracepoint-Conditions" rel="prev" title="Tracepoint Conditions">
+<link href="Set-Tracepoints.html" rel="up" title="Set Tracepoints">
+<link href="Tracepoint-Actions.html" rel="next" title="Tracepoint Actions">
+<link href="Tracepoint-Conditions.html" rel="prev" title="Tracepoint Conditions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Trace-State-Variables"></a>
-<div class="header">
+<span id="Trace-State-Variables"></span><div class="header">
 <p>
-Next: <a href="Tracepoint-Actions.html#Tracepoint-Actions" accesskey="n" rel="next">Tracepoint Actions</a>, Previous: <a href="Tracepoint-Conditions.html#Tracepoint-Conditions" accesskey="p" rel="prev">Tracepoint Conditions</a>, Up: <a href="Set-Tracepoints.html#Set-Tracepoints" accesskey="u" rel="up">Set Tracepoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Tracepoint-Actions.html" accesskey="n" rel="next">Tracepoint Actions</a>, Previous: <a href="Tracepoint-Conditions.html" accesskey="p" rel="prev">Tracepoint Conditions</a>, Up: <a href="Set-Tracepoints.html" accesskey="u" rel="up">Set Tracepoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Trace-State-Variables-1"></a>
-<h4 class="subsection">13.1.5 Trace State Variables</h4>
-<a name="index-trace-state-variables"></a>
+<span id="Trace-State-Variables-1"></span><h4 class="subsection">13.1.5 Trace State Variables</h4>
+<span id="index-trace-state-variables"></span>
 
 <p>A <em>trace state variable</em> is a special type of variable that is
 created and managed by target-side code.  The syntax is the same as
@@ -82,7 +71,7 @@ to the target along with tracepoint information when the trace
 experiment starts.  There are no intrinsic limits on the number of
 trace state variables, beyond memory limitations of the target.
 </p>
-<a name="index-convenience-variables_002c-and-trace-state-variables"></a>
+<span id="index-convenience-variables_002c-and-trace-state-variables"></span>
 <p>Although trace state variables are managed by the target, you can use
 them in print commands and expressions as if they were convenience
 variables; <small>GDB</small> will get the current value from the target
@@ -94,7 +83,7 @@ variable with the same name.
 </p>
 <dl compact="compact">
 <dt><code>tvariable $<var>name</var> [ = <var>expression</var> ]</code></dt>
-<dd><a name="index-tvariable"></a>
+<dd><span id="index-tvariable"></span>
 <p>The <code>tvariable</code> command creates a new trace state variable named
 <code>$<var>name</var></code>, and optionally gives it an initial value of
 <var>expression</var>.  The <var>expression</var> is evaluated when this command is
@@ -107,14 +96,14 @@ value. The default initial value is 0.
 </p>
 </dd>
 <dt><code>info tvariables</code></dt>
-<dd><a name="index-info-tvariables"></a>
+<dd><span id="index-info-tvariables"></span>
 <p>List all the trace state variables along with their initial values.
 Their current values may also be displayed, if the trace experiment is
 currently running.
 </p>
 </dd>
 <dt><code>delete tvariable <span class="roman">[</span> $<var>name</var> &hellip; <span class="roman">]</span></code></dt>
-<dd><a name="index-delete-tvariable"></a>
+<dd><span id="index-delete-tvariable"></span>
 <p>Delete the given trace state variables, or all of them if no arguments
 are specified.
 </p>
@@ -124,7 +113,7 @@ are specified.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Tracepoint-Actions.html#Tracepoint-Actions" accesskey="n" rel="next">Tracepoint Actions</a>, Previous: <a href="Tracepoint-Conditions.html#Tracepoint-Conditions" accesskey="p" rel="prev">Tracepoint Conditions</a>, Up: <a href="Set-Tracepoints.html#Set-Tracepoints" accesskey="u" rel="up">Set Tracepoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Tracepoint-Actions.html" accesskey="n" rel="next">Tracepoint Actions</a>, Previous: <a href="Tracepoint-Conditions.html" accesskey="p" rel="prev">Tracepoint Conditions</a>, Up: <a href="Set-Tracepoints.html" accesskey="u" rel="up">Set Tracepoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

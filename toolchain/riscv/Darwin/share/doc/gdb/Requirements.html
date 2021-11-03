@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Requirements (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Installing-GDB.html#Installing-GDB" rel="up" title="Installing GDB">
-<link href="Running-Configure.html#Running-Configure" rel="next" title="Running Configure">
-<link href="Installing-GDB.html#Installing-GDB" rel="prev" title="Installing GDB">
+<link href="Installing-GDB.html" rel="up" title="Installing GDB">
+<link href="Running-Configure.html" rel="next" title="Running Configure">
+<link href="Installing-GDB.html" rel="prev" title="Installing GDB">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,21 +51,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Requirements"></a>
-<div class="header">
+<span id="Requirements"></span><div class="header">
 <p>
-Next: <a href="Running-Configure.html#Running-Configure" accesskey="n" rel="next">Running Configure</a>, Up: <a href="Installing-GDB.html#Installing-GDB" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Running-Configure.html" accesskey="n" rel="next">Running Configure</a>, Up: <a href="Installing-GDB.html" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Requirements-for-Building-GDB"></a>
-<h3 class="section">C.1 Requirements for Building <small>GDB</small></h3>
-<a name="index-building-GDB_002c-requirements-for"></a>
+<span id="Requirements-for-Building-GDB"></span><h3 class="section">C.1 Requirements for Building <small>GDB</small></h3>
+<span id="index-building-GDB_002c-requirements-for"></span>
 
 <p>Building <small>GDB</small> requires various tools and packages to be available.
 Other packages will be used only if they are found.
 </p>
-<a name="Tools_002fPackages-Necessary-for-Building-GDB"></a>
-<h3 class="heading">Tools/Packages Necessary for Building <small>GDB</small></h3>
+<span id="Tools_002fPackages-Necessary-for-Building-GDB"></span><h3 class="heading">Tools/Packages Necessary for Building <small>GDB</small></h3>
 <dl compact="compact">
 <dt>C<tt>++</tt>11 compiler</dt>
 <dd><p><small>GDB</small> is written in C<tt>++</tt>11.  It should be buildable with any
@@ -87,11 +75,10 @@ make program.  Other variants of <code>make</code> will not work.
 </p></dd>
 </dl>
 
-<a name="Tools_002fPackages-Optional-for-Building-GDB"></a>
-<h3 class="heading">Tools/Packages Optional for Building <small>GDB</small></h3>
+<span id="Tools_002fPackages-Optional-for-Building-GDB"></span><h3 class="heading">Tools/Packages Optional for Building <small>GDB</small></h3>
 <dl compact="compact">
 <dt>Expat</dt>
-<dd><a name="Expat"></a><p><small>GDB</small> can use the Expat XML parsing library.  This library may be
+<dd><span id="Expat"></span><p><small>GDB</small> can use the Expat XML parsing library.  This library may be
 included with your operating system distribution; if it is not, you
 can get the latest version from <a href="http://expat.sourceforge.net">http://expat.sourceforge.net</a>.
 The <samp>configure</samp> script will search for this library in several
@@ -101,19 +88,19 @@ use the <samp>--with-libexpat-prefix</samp> option to specify its location.
 <p>Expat is used for:
 </p>
 <ul>
-<li> Remote protocol memory maps (see <a href="Memory-Map-Format.html#Memory-Map-Format">Memory Map Format</a>)
-</li><li> Target descriptions (see <a href="Target-Descriptions.html#Target-Descriptions">Target Descriptions</a>)
-</li><li> Remote shared library lists (See <a href="Library-List-Format.html#Library-List-Format">Library List Format</a>,
-or alternatively see <a href="Library-List-Format-for-SVR4-Targets.html#Library-List-Format-for-SVR4-Targets">Library List Format for SVR4 Targets</a>)
+<li> Remote protocol memory maps (see <a href="Memory-Map-Format.html">Memory Map Format</a>)
+</li><li> Target descriptions (see <a href="Target-Descriptions.html">Target Descriptions</a>)
+</li><li> Remote shared library lists (See <a href="Library-List-Format.html">Library List Format</a>,
+or alternatively see <a href="Library-List-Format-for-SVR4-Targets.html">Library List Format for SVR4 Targets</a>)
 </li><li> MS-Windows shared libraries (see <a href="Files.html#Shared-Libraries">Shared Libraries</a>)
-</li><li> Traceframe info (see <a href="Traceframe-Info-Format.html#Traceframe-Info-Format">Traceframe Info Format</a>)
-</li><li> Branch trace (see <a href="Branch-Trace-Format.html#Branch-Trace-Format">Branch Trace Format</a>,
-see <a href="Branch-Trace-Configuration-Format.html#Branch-Trace-Configuration-Format">Branch Trace Configuration Format</a>)
+</li><li> Traceframe info (see <a href="Traceframe-Info-Format.html">Traceframe Info Format</a>)
+</li><li> Branch trace (see <a href="Branch-Trace-Format.html">Branch Trace Format</a>,
+see <a href="Branch-Trace-Configuration-Format.html">Branch Trace Configuration Format</a>)
 </li></ul>
 
 </dd>
 <dt>Guile</dt>
-<dd><p><small>GDB</small> can be scripted using GNU Guile.  See <a href="Guile.html#Guile">Guile</a>.  By
+<dd><p><small>GDB</small> can be scripted using GNU Guile.  See <a href="Guile.html">Guile</a>.  By
 default, <small>GDB</small> will be compiled if the Guile libraries are
 installed and are found by <samp>configure</samp>.  You can use the
 <code>--with-guile</code> option to request Guile, and pass either the Guile
@@ -122,7 +109,7 @@ program to choose a particular version of Guile.
 </p>
 </dd>
 <dt>iconv</dt>
-<dd><p><small>GDB</small>&rsquo;s features related to character sets (see <a href="Character-Sets.html#Character-Sets">Character Sets</a>) require a functioning <code>iconv</code> implementation.  If you are
+<dd><p><small>GDB</small>&rsquo;s features related to character sets (see <a href="Character-Sets.html">Character Sets</a>) require a functioning <code>iconv</code> implementation.  If you are
 on a GNU system, then this is provided by the GNU C Library.  Some
 other systems also provide a working <code>iconv</code>.
 </p>
@@ -151,7 +138,7 @@ code to &lsquo;<samp>libiconv</samp>&rsquo;.
 </dd>
 <dt>lzma</dt>
 <dd><p><small>GDB</small> can support debugging sections that are compressed with
-the LZMA library.  See <a href="MiniDebugInfo.html#MiniDebugInfo">MiniDebugInfo</a>.  If this library is not
+the LZMA library.  See <a href="MiniDebugInfo.html">MiniDebugInfo</a>.  If this library is not
 included with your operating system, you can find it in the xz package
 at <a href="http://tukaani.org/xz/">http://tukaani.org/xz/</a>.  If the LZMA library is available in
 the usual place, then the <samp>configure</samp> script will use it
@@ -160,7 +147,7 @@ automatically.  If it is installed in an unusual path, you can use the
 </p>
 </dd>
 <dt>MPFR</dt>
-<dd><a name="MPFR"></a><p><small>GDB</small> can use the GNU MPFR multiple-precision floating-point
+<dd><span id="MPFR"></span><p><small>GDB</small> can use the GNU MPFR multiple-precision floating-point
 library.  This library may be included with your operating system
 distribution; if it is not, you can get the latest version from
 <a href="http://www.mpfr.org">http://www.mpfr.org</a>.  The <samp>configure</samp> script will search
@@ -175,7 +162,7 @@ will fall back to using host floating-point arithmetic.
 </p>
 </dd>
 <dt>Python</dt>
-<dd><p><small>GDB</small> can be scripted using Python language.  See <a href="Python.html#Python">Python</a>.
+<dd><p><small>GDB</small> can be scripted using Python language.  See <a href="Python.html">Python</a>.
 By default, <small>GDB</small> will be compiled if the Python libraries are
 installed and are found by <samp>configure</samp>.  You can use the
 <code>--with-python</code> option to request Python, and pass either the
@@ -185,7 +172,7 @@ installation of Python.
 </p>
 </dd>
 <dt>zlib</dt>
-<dd><a name="index-compressed-debug-sections"></a>
+<dd><span id="index-compressed-debug-sections"></span>
 <p><small>GDB</small> will use the &lsquo;<samp>zlib</samp>&rsquo; library, if available, to read
 compressed debug sections.  Some linkers, such as GNU gold, are capable
 of producing binaries with compressed debug sections.  If <small>GDB</small>
@@ -201,7 +188,7 @@ distribution; if it is not, you can get the latest version from
 <hr>
 <div class="header">
 <p>
-Next: <a href="Running-Configure.html#Running-Configure" accesskey="n" rel="next">Running Configure</a>, Up: <a href="Installing-GDB.html#Installing-GDB" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Running-Configure.html" accesskey="n" rel="next">Running Configure</a>, Up: <a href="Installing-GDB.html" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

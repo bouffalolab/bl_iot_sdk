@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -96,7 +96,7 @@ parameters by a &lsquo;<samp>:</samp>&rsquo;; the parameters themselves should b
 separated by &lsquo;<samp>,</samp>&rsquo; or &lsquo;<samp>;</samp>&rsquo;.  Stubs must be careful to match the
 full packet name, and check for a separator or the end of the packet,
 in case two packet names share a common prefix.  New packets should not begin
-with &lsquo;<samp>qC</samp>&rsquo;, &lsquo;<samp>qP</samp>&rsquo;, or &lsquo;<samp>qL</samp>&rsquo;<a name="DOCF19" href="#FOOT19"><sup>19</sup></a>.
+with &lsquo;<samp>qC</samp>&rsquo;, &lsquo;<samp>qP</samp>&rsquo;, or &lsquo;<samp>qL</samp>&rsquo;<a name="DOCF20" href="#FOOT20"><sup>20</sup></a>.
 </p>
 <p>Like the descriptions of the other packets, each description here
 has a template showing the packet&rsquo;s overall syntax, followed by an
@@ -785,7 +785,7 @@ protocol acknowledgments (see <a href="Packet-Acknowledgment.html#Packet-Acknowl
 </p><dl compact="compact">
 <dt>&lsquo;<samp>OK</samp>&rsquo;</dt>
 <dd><p>The stub has switched to no-acknowledgment mode.
-<small>GDB</small> acknowledges this reponse,
+<small>GDB</small> acknowledges this response,
 but neither the stub nor <small>GDB</small> shall send or expect further
 &lsquo;<samp>+</samp>&rsquo;/&lsquo;<samp>-</samp>&rsquo; acknowledgments in the current connection.
 </p></dd>
@@ -966,8 +966,6 @@ stubs which may be configured for multiple targets.
 <tr><td width="35%">&lsquo;<samp>augmented-libraries-svr4-read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">No</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:memory-map:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:sdata:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
-<tr><td width="35%">&lsquo;<samp>qXfer:spu:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
-<tr><td width="35%">&lsquo;<samp>qXfer:spu:write</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:siginfo:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:siginfo:write</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:threads:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
@@ -1070,16 +1068,6 @@ packet (see <a href="#qXfer-btrace_002dconf-read">qXfer btrace-conf read</a>).
 <dt>&lsquo;<samp>qXfer:sdata:read</samp>&rsquo;</dt>
 <dd><p>The remote stub understands the &lsquo;<samp>qXfer:sdata:read</samp>&rsquo; packet
 (see <a href="#qXfer-sdata-read">qXfer sdata read</a>).
-</p>
-</dd>
-<dt>&lsquo;<samp>qXfer:spu:read</samp>&rsquo;</dt>
-<dd><p>The remote stub understands the &lsquo;<samp>qXfer:spu:read</samp>&rsquo; packet
-(see <a href="#qXfer-spu-read">qXfer spu read</a>).
-</p>
-</dd>
-<dt>&lsquo;<samp>qXfer:spu:write</samp>&rsquo;</dt>
-<dd><p>The remote stub understands the &lsquo;<samp>qXfer:spu:write</samp>&rsquo; packet
-(see <a href="#qXfer-spu-write">qXfer spu write</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:siginfo:read</samp>&rsquo;</dt>
@@ -1584,18 +1572,6 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
 (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>qXfer:spu:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-spu-read"></a><p>Read contents of an <code>spufs</code> file on the target system.  The
-annex specifies which file to read; it must be of the form 
-<samp><var>id</var>/<var>name</var></samp>, where <var>id</var> specifies an SPU context ID
-in the target process, and <var>name</var> identifes the <code>spufs</code> file
-in that context to be accessed.
-</p>
-<p>This packet is not probed by default; the remote stub must request it,
-by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
-(see <a href="#qSupported">qSupported</a>).
-</p>
-</dd>
 <dt>&lsquo;<samp>qXfer:threads:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
 <dd><a name="qXfer-threads-read"></a><p>Access the list of threads on target.  See <a href="Thread-List-Format.html#Thread-List-Format">Thread List Format</a>.  The
 annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty
@@ -1684,17 +1660,6 @@ empty (see <a href="#qXfer-write">qXfer write</a>).
 <p>This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
 (see <a href="#qSupported">qSupported</a>).
-</p>
-</dd>
-<dt>&lsquo;<samp>qXfer:spu:write:<var>annex</var>:<var>offset</var>:<var>data</var>&hellip;</samp>&rsquo;</dt>
-<dd><a name="qXfer-spu-write"></a><p>Write <var>data</var> to an <code>spufs</code> file on the target system.  The
-annex specifies which file to write; it must be of the form
-<samp><var>id</var>/<var>name</var></samp>, where <var>id</var> specifies an SPU context ID
-in the target process, and <var>name</var> identifes the <code>spufs</code> file
-in that context to be accessed.
-</p>
-<p>This packet is not probed by default; the remote stub must request it,
-by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p></dd>
 </dl>
 
@@ -1812,7 +1777,7 @@ btrace recording method in pt format.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT19" href="#DOCF19">(19)</a></h3>
+<h3><a name="FOOT20" href="#DOCF20">(20)</a></h3>
 <p>The &lsquo;<samp>qP</samp>&rsquo; and &lsquo;<samp>qL</samp>&rsquo;
 packets predate these conventions, and have arguments without any terminator
 for the packet name; we suspect they are in widespread use in places that

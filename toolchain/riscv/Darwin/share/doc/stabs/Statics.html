@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Statics (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Variables.html#Variables" rel="up" title="Variables">
-<link href="Based-Variables.html#Based-Variables" rel="next" title="Based Variables">
-<link href="Common-Blocks.html#Common-Blocks" rel="prev" title="Common Blocks">
+<link href="Variables.html" rel="up" title="Variables">
+<link href="Based-Variables.html" rel="next" title="Based Variables">
+<link href="Common-Blocks.html" rel="prev" title="Common Blocks">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Statics"></a>
-<div class="header">
+<span id="Statics"></span><div class="header">
 <p>
-Next: <a href="Based-Variables.html#Based-Variables" accesskey="n" rel="next">Based Variables</a>, Previous: <a href="Common-Blocks.html#Common-Blocks" accesskey="p" rel="prev">Common Blocks</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Based-Variables.html" accesskey="n" rel="next">Based Variables</a>, Previous: <a href="Common-Blocks.html" accesskey="p" rel="prev">Common Blocks</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Static-Variables"></a>
-<h3 class="section">4.5 Static Variables</h3>
+<span id="Static-Variables"></span><h3 class="section">4.5 Static Variables</h3>
 
 <p>Initialized static variables are represented by the &lsquo;<samp>S</samp>&rsquo; and
 &lsquo;<samp>V</samp>&rsquo; symbol descriptors.  &lsquo;<samp>S</samp>&rsquo; means file scope static, and
@@ -73,10 +62,10 @@ Next: <a href="Based-Variables.html#Based-Variables" accesskey="n" rel="next">Ba
 xlc compiler always uses &lsquo;<samp>V</samp>&rsquo;, and whether it is file scope or not
 is distinguished by whether the stab is located within a function.
 </p>
-<a name="index-N_005fSTSYM"></a>
-<a name="index-N_005fLCSYM"></a>
-<a name="index-N_005fFUN_002c-for-variables"></a>
-<a name="index-N_005fROSYM"></a>
+<span id="index-N_005fSTSYM"></span>
+<span id="index-N_005fLCSYM"></span>
+<span id="index-N_005fFUN_002c-for-variables"></span>
+<span id="index-N_005fROSYM"></span>
 <p>In a.out files, <code>N_STSYM</code> means the data section, <code>N_FUN</code>
 means the text section, and <code>N_LCSYM</code> means the bss section.  For
 those systems with a read-only data section separate from the text
@@ -100,9 +89,9 @@ static int var_noinit;
 .stabs &quot;var_noinit:S1&quot;,40,0,0,_var_noinit    # <span class="roman">40 is N_LCSYM</span>
 </pre></div>
 
-<a name="index-C_005fSTSYM"></a>
-<a name="index-C_005fBSTAT"></a>
-<a name="index-C_005fESTAT"></a>
+<span id="index-C_005fSTSYM"></span>
+<span id="index-C_005fBSTAT"></span>
+<span id="index-C_005fESTAT"></span>
 <p>In XCOFF files, the stab type need not indicate the section;
 <code>C_STSYM</code> can be used for all statics.  Also, each static variable
 is enclosed in a static block.  A <code>C_BSTAT</code> (emitted with a
@@ -127,12 +116,12 @@ The clean way to do all this would be to have the value of a symbol
 descriptor &lsquo;<samp>S</samp>&rsquo; symbol be an offset relative to the start of the
 file, just like everything else, but that introduces obvious
 compatibility problems.  For more information on linker stab relocation,
-See <a href="ELF-Linker-Relocation.html#ELF-Linker-Relocation">ELF Linker Relocation</a>.
+See <a href="ELF-Linker-Relocation.html">ELF Linker Relocation</a>.
 </p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Based-Variables.html#Based-Variables" accesskey="n" rel="next">Based Variables</a>, Previous: <a href="Common-Blocks.html#Common-Blocks" accesskey="p" rel="prev">Common Blocks</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Based-Variables.html" accesskey="n" rel="next">Based Variables</a>, Previous: <a href="Common-Blocks.html" accesskey="p" rel="prev">Common Blocks</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

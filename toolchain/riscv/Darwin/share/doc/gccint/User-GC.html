@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>User GC (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Type-Information.html#Type-Information" rel="up" title="Type Information">
-<link href="GGC-Roots.html#GGC-Roots" rel="next" title="GGC Roots">
-<link href="Inheritance-and-GTY.html#Inheritance-and-GTY" rel="prev" title="Inheritance and GTY">
+<link href="Type-Information.html" rel="up" title="Type Information">
+<link href="GGC-Roots.html" rel="next" title="GGC Roots">
+<link href="Inheritance-and-GTY.html" rel="prev" title="Inheritance and GTY">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="User-GC"></a>
-<div class="header">
+<span id="User-GC"></span><div class="header">
 <p>
-Next: <a href="GGC-Roots.html#GGC-Roots" accesskey="n" rel="next">GGC Roots</a>, Previous: <a href="Inheritance-and-GTY.html#Inheritance-and-GTY" accesskey="p" rel="prev">Inheritance and GTY</a>, Up: <a href="Type-Information.html#Type-Information" accesskey="u" rel="up">Type Information</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GGC-Roots.html" accesskey="n" rel="next">GGC Roots</a>, Previous: <a href="Inheritance-and-GTY.html" accesskey="p" rel="prev">Inheritance and GTY</a>, Up: <a href="Type-Information.html" accesskey="u" rel="up">Type Information</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Support-for-user_002dprovided-GC-marking-routines"></a>
-<h3 class="section">23.3 Support for user-provided GC marking routines</h3>
-<a name="index-user-gc"></a>
+<span id="Support-for-user_002dprovided-GC-marking-routines"></span><h3 class="section">23.3 Support for user-provided GC marking routines</h3>
+<span id="index-user-gc"></span>
 <p>The garbage collector supports types for which no automatic marking
 code is generated.  For these types, the user is required to provide
 three functions: one to act as a marker for garbage collection, and
@@ -85,8 +74,8 @@ headers.
 <p>Given a structure <code>struct GTY((user)) my_struct</code>, the following functions
 should be defined to mark <code>my_struct</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void gt_ggc_mx (my_struct *p)
+<div class="example">
+<pre class="example">void gt_ggc_mx (my_struct *p)
 {
   /* This marks field 'fld'.  */
   gt_ggc_mx (p-&gt;fld);
@@ -118,8 +107,7 @@ it.
 case, the operation <code>op</code> must be applied to the <em>address</em> of
 every pointer field.
 </p>
-<a name="User_002dprovided-marking-routines-for-template-types"></a>
-<h4 class="subsection">23.3.1 User-provided marking routines for template types</h4>
+<span id="User_002dprovided-marking-routines-for-template-types"></span><h4 class="subsection">23.3.1 User-provided marking routines for template types</h4>
 <p>When a template type <code>TP</code> is marked with <code>GTY</code>, all
 instances of that type are considered user-provided types.  This means
 that the individual instances of <code>TP</code> do not need to be marked
@@ -131,8 +119,8 @@ be provided. Note that type <code>TP</code> may reference to more than one
 type. In these snippets, there is only one type <code>T</code>, but there
 could be more.
 </p>
-<div class="smallexample">
-<pre class="smallexample">template&lt;typename T&gt;
+<div class="example">
+<pre class="example">template&lt;typename T&gt;
 void gt_ggc_mx (TP&lt;T&gt; *tp)
 {
   extern void gt_ggc_mx (T&amp;);
@@ -190,7 +178,7 @@ pointer (see the code snippets above).
 <hr>
 <div class="header">
 <p>
-Next: <a href="GGC-Roots.html#GGC-Roots" accesskey="n" rel="next">GGC Roots</a>, Previous: <a href="Inheritance-and-GTY.html#Inheritance-and-GTY" accesskey="p" rel="prev">Inheritance and GTY</a>, Up: <a href="Type-Information.html#Type-Information" accesskey="u" rel="up">Type Information</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GGC-Roots.html" accesskey="n" rel="next">GGC Roots</a>, Previous: <a href="Inheritance-and-GTY.html" accesskey="p" rel="prev">Inheritance and GTY</a>, Up: <a href="Type-Information.html" accesskey="u" rel="up">Type Information</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

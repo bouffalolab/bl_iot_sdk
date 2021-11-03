@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -77,8 +77,8 @@ Next: <a href="Gcov-Data-Files.html#Gcov-Data-Files" accesskey="n" rel="next">Gc
 <h3 class="section">10.3 Using <code>gcov</code> with GCC Optimization</h3>
 
 <p>If you plan to use <code>gcov</code> to help optimize your code, you must
-first compile your program with two special GCC options:
-&lsquo;<samp>-fprofile-arcs -ftest-coverage</samp>&rsquo;.  Aside from that, you can use any
+first compile your program with a special GCC option
+&lsquo;<samp>--coverage</samp>&rsquo;.  Aside from that, you can use any
 other GCC options; but if you want to prove that every single line
 in your program was executed, you should not compile with optimization
 at the same time.  On some machines the optimizer can eliminate some
@@ -143,6 +143,14 @@ is executed after all user defined static destructors,
 as well as handlers registered with <code>atexit</code>.
 If an executable loads a dynamic shared object via dlopen functionality,
 <samp>-Wl,--dynamic-list-data</samp> is needed to dump all profile data.
+</p>
+<p>Profiling run-time library reports various errors related to profile
+manipulation and profile saving.  Errors are printed into standard error output
+or &lsquo;<samp>GCOV_ERROR_FILE</samp>&rsquo; file, if environment variable is used.
+In order to terminate immediately after an errors occurs
+set &lsquo;<samp>GCOV_EXIT_AT_ERROR</samp>&rsquo; environment variable.
+That can help users to find profile clashing which leads
+to a misleading profile.
 </p>
 
 <hr>

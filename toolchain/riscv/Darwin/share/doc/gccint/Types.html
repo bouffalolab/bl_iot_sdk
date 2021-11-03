@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Types (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GENERIC.html#GENERIC" rel="up" title="GENERIC">
-<link href="Declarations.html#Declarations" rel="next" title="Declarations">
-<link href="Containers.html#Containers" rel="prev" title="Containers">
+<link href="GENERIC.html" rel="up" title="GENERIC">
+<link href="Declarations.html" rel="next" title="Declarations">
+<link href="Containers.html" rel="prev" title="Containers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,57 +58,55 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Types"></a>
-<div class="header">
+<span id="Types"></span><div class="header">
 <p>
-Next: <a href="Declarations.html#Declarations" accesskey="n" rel="next">Declarations</a>, Previous: <a href="Tree-overview.html#Tree-overview" accesskey="p" rel="prev">Tree overview</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Declarations.html" accesskey="n" rel="next">Declarations</a>, Previous: <a href="Tree-overview.html" accesskey="p" rel="prev">Tree overview</a>, Up: <a href="GENERIC.html" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Types-1"></a>
-<h3 class="section">11.3 Types</h3>
-<a name="index-type"></a>
-<a name="index-pointer"></a>
-<a name="index-reference"></a>
-<a name="index-fundamental-type"></a>
-<a name="index-array"></a>
-<a name="index-VOID_005fTYPE"></a>
-<a name="index-INTEGER_005fTYPE"></a>
-<a name="index-TYPE_005fMIN_005fVALUE"></a>
-<a name="index-TYPE_005fMAX_005fVALUE"></a>
-<a name="index-REAL_005fTYPE"></a>
-<a name="index-FIXED_005fPOINT_005fTYPE"></a>
-<a name="index-COMPLEX_005fTYPE"></a>
-<a name="index-ENUMERAL_005fTYPE"></a>
-<a name="index-BOOLEAN_005fTYPE"></a>
-<a name="index-POINTER_005fTYPE"></a>
-<a name="index-REFERENCE_005fTYPE"></a>
-<a name="index-FUNCTION_005fTYPE"></a>
-<a name="index-METHOD_005fTYPE"></a>
-<a name="index-ARRAY_005fTYPE"></a>
-<a name="index-RECORD_005fTYPE"></a>
-<a name="index-UNION_005fTYPE"></a>
-<a name="index-UNKNOWN_005fTYPE"></a>
-<a name="index-OFFSET_005fTYPE"></a>
-<a name="index-TYPE_005fUNQUALIFIED"></a>
-<a name="index-TYPE_005fQUAL_005fCONST"></a>
-<a name="index-TYPE_005fQUAL_005fVOLATILE"></a>
-<a name="index-TYPE_005fQUAL_005fRESTRICT"></a>
-<a name="index-TYPE_005fMAIN_005fVARIANT"></a>
-<a name="index-qualified-type"></a>
-<a name="index-TYPE_005fSIZE"></a>
-<a name="index-TYPE_005fALIGN"></a>
-<a name="index-TYPE_005fPRECISION"></a>
-<a name="index-TYPE_005fARG_005fTYPES"></a>
-<a name="index-TYPE_005fMETHOD_005fBASETYPE"></a>
-<a name="index-TYPE_005fOFFSET_005fBASETYPE"></a>
-<a name="index-TREE_005fTYPE-1"></a>
-<a name="index-TYPE_005fCONTEXT"></a>
-<a name="index-TYPE_005fNAME"></a>
-<a name="index-TYPENAME_005fTYPE_005fFULLNAME"></a>
-<a name="index-TYPE_005fFIELDS"></a>
-<a name="index-TYPE_005fCANONICAL"></a>
-<a name="index-TYPE_005fSTRUCTURAL_005fEQUALITY_005fP"></a>
-<a name="index-SET_005fTYPE_005fSTRUCTURAL_005fEQUALITY"></a>
+<span id="Types-1"></span><h3 class="section">11.3 Types</h3>
+<span id="index-type"></span>
+<span id="index-pointer"></span>
+<span id="index-reference"></span>
+<span id="index-fundamental-type"></span>
+<span id="index-array"></span>
+<span id="index-VOID_005fTYPE"></span>
+<span id="index-INTEGER_005fTYPE"></span>
+<span id="index-TYPE_005fMIN_005fVALUE"></span>
+<span id="index-TYPE_005fMAX_005fVALUE"></span>
+<span id="index-REAL_005fTYPE"></span>
+<span id="index-FIXED_005fPOINT_005fTYPE"></span>
+<span id="index-COMPLEX_005fTYPE"></span>
+<span id="index-ENUMERAL_005fTYPE"></span>
+<span id="index-BOOLEAN_005fTYPE"></span>
+<span id="index-POINTER_005fTYPE"></span>
+<span id="index-REFERENCE_005fTYPE"></span>
+<span id="index-FUNCTION_005fTYPE"></span>
+<span id="index-METHOD_005fTYPE"></span>
+<span id="index-ARRAY_005fTYPE"></span>
+<span id="index-RECORD_005fTYPE"></span>
+<span id="index-UNION_005fTYPE"></span>
+<span id="index-UNKNOWN_005fTYPE"></span>
+<span id="index-OFFSET_005fTYPE"></span>
+<span id="index-TYPE_005fUNQUALIFIED"></span>
+<span id="index-TYPE_005fQUAL_005fCONST"></span>
+<span id="index-TYPE_005fQUAL_005fVOLATILE"></span>
+<span id="index-TYPE_005fQUAL_005fRESTRICT"></span>
+<span id="index-TYPE_005fMAIN_005fVARIANT"></span>
+<span id="index-qualified-type"></span>
+<span id="index-TYPE_005fSIZE"></span>
+<span id="index-TYPE_005fALIGN"></span>
+<span id="index-TYPE_005fPRECISION"></span>
+<span id="index-TYPE_005fARG_005fTYPES"></span>
+<span id="index-TYPE_005fMETHOD_005fBASETYPE"></span>
+<span id="index-TYPE_005fOFFSET_005fBASETYPE"></span>
+<span id="index-TREE_005fTYPE-1"></span>
+<span id="index-TYPE_005fCONTEXT"></span>
+<span id="index-TYPE_005fNAME"></span>
+<span id="index-TYPENAME_005fTYPE_005fFULLNAME"></span>
+<span id="index-TYPE_005fFIELDS"></span>
+<span id="index-TYPE_005fCANONICAL"></span>
+<span id="index-TYPE_005fSTRUCTURAL_005fEQUALITY_005fP"></span>
+<span id="index-SET_005fTYPE_005fSTRUCTURAL_005fEQUALITY"></span>
 
 <p>All types have corresponding tree nodes.  However, you should not assume
 that there is exactly one tree node corresponding to each type.  There
@@ -134,7 +123,7 @@ functions under the <code>RECORD_TYPE</code> case label.
 <p>The following functions and macros deal with cv-qualification of types:
 </p><dl compact="compact">
 <dt><code>TYPE_MAIN_VARIANT</code>
-<a name="index-TYPE_005fMAIN_005fVARIANT-1"></a>
+<span id="index-TYPE_005fMAIN_005fVARIANT-1"></span>
 </dt>
 <dd><p>This macro returns the unqualified version of a type.  It may be applied
 to an unqualified type, but it is not always the identity function in
@@ -145,7 +134,7 @@ that case.
 <p>A few other macros and functions are usable with all types:
 </p><dl compact="compact">
 <dt><code>TYPE_SIZE</code>
-<a name="index-TYPE_005fSIZE-1"></a>
+<span id="index-TYPE_005fSIZE-1"></span>
 </dt>
 <dd><p>The number of bits required to represent the type, represented as an
 <code>INTEGER_CST</code>.  For an incomplete type, <code>TYPE_SIZE</code> will be
@@ -153,13 +142,13 @@ that case.
 </p>
 </dd>
 <dt><code>TYPE_ALIGN</code>
-<a name="index-TYPE_005fALIGN-1"></a>
+<span id="index-TYPE_005fALIGN-1"></span>
 </dt>
 <dd><p>The alignment of the type, in bits, represented as an <code>int</code>.
 </p>
 </dd>
 <dt><code>TYPE_NAME</code>
-<a name="index-TYPE_005fNAME-1"></a>
+<span id="index-TYPE_005fNAME-1"></span>
 </dt>
 <dd><p>This macro returns a declaration (in the form of a <code>TYPE_DECL</code>) for
 the type.  (Note this macro does <em>not</em> return an
@@ -171,7 +160,7 @@ named class type.
 </p>
 </dd>
 <dt><code>TYPE_CANONICAL</code>
-<a name="index-TYPE_005fCANONICAL-1"></a>
+<span id="index-TYPE_005fCANONICAL-1"></span>
 </dt>
 <dd><p>This macro returns the &ldquo;canonical&rdquo; type for the given type
 node. Canonical types are used to improve performance in the C++ and
@@ -210,14 +199,14 @@ the canonical types miscompare.
 </p>
 </dd>
 <dt><code>TYPE_STRUCTURAL_EQUALITY_P</code>
-<a name="index-TYPE_005fSTRUCTURAL_005fEQUALITY_005fP-1"></a>
+<span id="index-TYPE_005fSTRUCTURAL_005fEQUALITY_005fP-1"></span>
 </dt>
 <dd><p>This predicate holds when the node requires structural equality
 checks, e.g., when <code>TYPE_CANONICAL</code> is <code>NULL_TREE</code>.
 </p>
 </dd>
 <dt><code>SET_TYPE_STRUCTURAL_EQUALITY</code>
-<a name="index-SET_005fTYPE_005fSTRUCTURAL_005fEQUALITY-1"></a>
+<span id="index-SET_005fTYPE_005fSTRUCTURAL_005fEQUALITY-1"></span>
 </dt>
 <dd><p>This macro states that the type node it is given requires structural
 equality checks, e.g., it sets <code>TYPE_CANONICAL</code> to
@@ -225,7 +214,7 @@ equality checks, e.g., it sets <code>TYPE_CANONICAL</code> to
 </p>
 </dd>
 <dt><code>same_type_p</code>
-<a name="index-same_005ftype_005fp"></a>
+<span id="index-same_005ftype_005fp"></span>
 </dt>
 <dd><p>This predicate takes two types as input, and holds if they are the same
 type.  For example, if one type is a <code>typedef</code> for the other, or
@@ -427,7 +416,7 @@ in hand, using <code>same_type_p</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Declarations.html#Declarations" accesskey="n" rel="next">Declarations</a>, Previous: <a href="Tree-overview.html#Tree-overview" accesskey="p" rel="prev">Tree overview</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Declarations.html" accesskey="n" rel="next">Declarations</a>, Previous: <a href="Tree-overview.html" accesskey="p" rel="prev">Tree overview</a>, Up: <a href="GENERIC.html" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

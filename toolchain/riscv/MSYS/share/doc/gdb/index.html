@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -25,7 +25,6 @@ developing GNU and promoting software freedom." -->
 <link href="#Top" rel="start" title="Top">
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="../dir/index.html" rel="up" title="(dir)">
 <link href="Summary.html#Summary" rel="next" title="Summary">
 <style type="text/css">
 <!--
@@ -73,10 +72,10 @@ ul.no-bullet {list-style: none}
 </p>
 <p>This is the Tenth Edition, of <cite>Debugging with
 <small>GDB</small>: the <small>GNU</small> Source-Level Debugger</cite> for <small>GDB</small>
-(SiFive GDB 8.3.0-2019.08.0)
-Version 8.3.
+(SiFive GDB-Metal 10.1.0-2020.12.7)
+Version 10.1.
 </p>
-<p>Copyright &copy; 1988-2019 Free Software Foundation, Inc.
+<p>Copyright &copy; 1988-2020 Free Software Foundation, Inc.
 </p>
 <p>Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -94,7 +93,7 @@ developing GNU and promoting software freedom.&rdquo;
 <a name="Top"></a>
 <div class="header">
 <p>
-Next: <a href="Summary.html#Summary" accesskey="n" rel="next">Summary</a>, Previous: <a href="../dir/index.html" accesskey="p" rel="prev">(dir)</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Summary.html#Summary" accesskey="n" rel="next">Summary</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 
@@ -104,10 +103,10 @@ Next: <a href="Summary.html#Summary" accesskey="n" rel="next">Summary</a>, Previ
 <p>This file describes <small>GDB</small>, the <small>GNU</small> symbolic debugger.
 </p>
 <p>This is the Tenth Edition, for <small>GDB</small>
-(SiFive GDB 8.3.0-2019.08.0)
-Version 8.3.
+(SiFive GDB-Metal 10.1.0-2020.12.7)
+Version 10.1.
 </p>
-<p>Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<p>Copyright (C) 1988-2020 Free Software Foundation, Inc.
 </p>
 <p>This edition of the GDB manual is dedicated to the memory of Fred
 Fish.  Fred was a long-standing contributor to GDB and to Free
@@ -257,8 +256,11 @@ software in general.  We will miss him.
   <li><a name="toc-GDB-Commands" href="Commands.html#Commands">3 <small>GDB</small> Commands</a>
   <ul class="no-bullet">
     <li><a name="toc-Command-Syntax-1" href="Command-Syntax.html#Command-Syntax">3.1 Command Syntax</a></li>
-    <li><a name="toc-Command-Completion" href="Completion.html#Completion">3.2 Command Completion</a></li>
-    <li><a name="toc-Getting-Help" href="Help.html#Help">3.3 Getting Help</a></li>
+    <li><a name="toc-Command-Settings-1" href="Command-Settings.html#Command-Settings">3.2 Command Settings</a></li>
+    <li><a name="toc-Command-Completion" href="Completion.html#Completion">3.3 Command Completion</a></li>
+    <li><a name="toc-Command-options" href="Command-Options.html#Command-Options">3.4 Command options</a></li>
+    <li><a name="toc-Automatically-prepend-default-arguments-to-user_002ddefined-aliases" href="Command-aliases-default-args.html#Command-aliases-default-args">3.5 Automatically prepend default arguments to user-defined aliases</a></li>
+    <li><a name="toc-Getting-Help" href="Help.html#Help">3.6 Getting Help</a></li>
   </ul></li>
   <li><a name="toc-Running-Programs-Under-GDB" href="Running.html#Running">4 Running Programs Under <small>GDB</small></a>
   <ul class="no-bullet">
@@ -270,7 +272,7 @@ software in general.  We will miss him.
     <li><a name="toc-Your-Program_0027s-Input-and-Output" href="Input_002fOutput.html#Input_002fOutput">4.6 Your Program&rsquo;s Input and Output</a></li>
     <li><a name="toc-Debugging-an-Already_002drunning-Process" href="Attach.html#Attach">4.7 Debugging an Already-running Process</a></li>
     <li><a name="toc-Killing-the-Child-Process" href="Kill-Process.html#Kill-Process">4.8 Killing the Child Process</a></li>
-    <li><a name="toc-Debugging-Multiple-Inferiors-and-Programs" href="Inferiors-and-Programs.html#Inferiors-and-Programs">4.9 Debugging Multiple Inferiors and Programs</a></li>
+    <li><a name="toc-Debugging-Multiple-Inferiors-Connections-and-Programs" href="Inferiors-Connections-and-Programs.html#Inferiors-Connections-and-Programs">4.9 Debugging Multiple Inferiors Connections and Programs</a></li>
     <li><a name="toc-Debugging-Programs-with-Multiple-Threads" href="Threads.html#Threads">4.10 Debugging Programs with Multiple Threads</a></li>
     <li><a name="toc-Debugging-Forks" href="Forks.html#Forks">4.11 Debugging Forks</a></li>
     <li><a name="toc-Setting-a-Bookmark-to-Return-to-Later" href="Checkpoint_002fRestart.html#Checkpoint_002fRestart">4.12 Setting a <em>Bookmark</em> to Return to Later</a>
@@ -579,20 +581,22 @@ software in general.  We will miss him.
     <ul class="no-bullet">
       <li><a name="toc-Synopsys-ARC" href="ARC.html#ARC">21.3.1 Synopsys ARC</a></li>
       <li><a name="toc-ARM-1" href="ARM.html#ARM">21.3.2 ARM</a></li>
-      <li><a name="toc-M68k" href="M68K.html#M68K">21.3.3 M68k</a></li>
-      <li><a name="toc-MicroBlaze-1" href="MicroBlaze.html#MicroBlaze">21.3.4 MicroBlaze</a></li>
-      <li><a name="toc-MIPS-Embedded-1" href="MIPS-Embedded.html#MIPS-Embedded">21.3.5 <acronym>MIPS</acronym> Embedded</a></li>
-      <li><a name="toc-OpenRISC-1000-1" href="OpenRISC-1000.html#OpenRISC-1000">21.3.6 OpenRISC 1000</a></li>
-      <li><a name="toc-PowerPC-Embedded-1" href="PowerPC-Embedded.html#PowerPC-Embedded">21.3.7 PowerPC Embedded</a></li>
-      <li><a name="toc-Atmel-AVR" href="AVR.html#AVR">21.3.8 Atmel AVR</a></li>
-      <li><a name="toc-CRIS-1" href="CRIS.html#CRIS">21.3.9 CRIS</a></li>
-      <li><a name="toc-Renesas-Super_002dH" href="Super_002dH.html#Super_002dH">21.3.10 Renesas Super-H</a></li>
+      <li><a name="toc-BPF-1" href="BPF.html#BPF">21.3.3 BPF</a></li>
+      <li><a name="toc-M68k" href="M68K.html#M68K">21.3.4 M68k</a></li>
+      <li><a name="toc-MicroBlaze-1" href="MicroBlaze.html#MicroBlaze">21.3.5 MicroBlaze</a></li>
+      <li><a name="toc-MIPS-Embedded-1" href="MIPS-Embedded.html#MIPS-Embedded">21.3.6 <acronym>MIPS</acronym> Embedded</a></li>
+      <li><a name="toc-OpenRISC-1000-1" href="OpenRISC-1000.html#OpenRISC-1000">21.3.7 OpenRISC 1000</a></li>
+      <li><a name="toc-PowerPC-Embedded-1" href="PowerPC-Embedded.html#PowerPC-Embedded">21.3.8 PowerPC Embedded</a></li>
+      <li><a name="toc-Atmel-AVR" href="AVR.html#AVR">21.3.9 Atmel AVR</a></li>
+      <li><a name="toc-CRIS-1" href="CRIS.html#CRIS">21.3.10 CRIS</a></li>
+      <li><a name="toc-Renesas-Super_002dH" href="Super_002dH.html#Super_002dH">21.3.11 Renesas Super-H</a></li>
     </ul></li>
     <li><a name="toc-Architectures-1" href="Architectures.html#Architectures">21.4 Architectures</a>
     <ul class="no-bullet">
       <li><a name="toc-AArch64-1" href="AArch64.html#AArch64">21.4.1 AArch64</a>
       <ul class="no-bullet">
         <li><a name="toc-AArch64-SVE_002e" href="AArch64.html#AArch64-SVE_002e">21.4.1.1 AArch64 SVE.</a></li>
+        <li><a name="toc-AArch64-Pointer-Authentication_002e" href="AArch64.html#AArch64-Pointer-Authentication_002e">21.4.1.2 AArch64 Pointer Authentication.</a></li>
       </ul></li>
       <li><a name="toc-x86-Architecture_002dspecific-Issues" href="i386.html#i386">21.4.2 x86 Architecture-specific Issues</a>
       <ul class="no-bullet">
@@ -601,14 +605,13 @@ software in general.  We will miss him.
       <li><a name="toc-Alpha-1" href="Alpha.html#Alpha">21.4.3 Alpha</a></li>
       <li><a name="toc-MIPS-1" href="MIPS.html#MIPS">21.4.4 <acronym>MIPS</acronym></a></li>
       <li><a name="toc-HPPA-1" href="HPPA.html#HPPA">21.4.5 HPPA</a></li>
-      <li><a name="toc-Cell-Broadband-Engine-SPU-architecture" href="SPU.html#SPU">21.4.6 Cell Broadband Engine SPU architecture</a></li>
-      <li><a name="toc-PowerPC-1" href="PowerPC.html#PowerPC">21.4.7 PowerPC</a></li>
-      <li><a name="toc-Nios-II-1" href="Nios-II.html#Nios-II">21.4.8 Nios II</a></li>
-      <li><a name="toc-Sparc64-1" href="Sparc64.html#Sparc64">21.4.9 Sparc64</a>
+      <li><a name="toc-PowerPC-1" href="PowerPC.html#PowerPC">21.4.6 PowerPC</a></li>
+      <li><a name="toc-Nios-II-1" href="Nios-II.html#Nios-II">21.4.7 Nios II</a></li>
+      <li><a name="toc-Sparc64-1" href="Sparc64.html#Sparc64">21.4.8 Sparc64</a>
       <ul class="no-bullet">
-        <li><a name="toc-ADI-Support" href="Sparc64.html#ADI-Support">21.4.9.1 ADI Support</a></li>
+        <li><a name="toc-ADI-Support" href="Sparc64.html#ADI-Support">21.4.8.1 ADI Support</a></li>
       </ul></li>
-      <li><a name="toc-S12Z-1" href="S12Z.html#S12Z">21.4.10 S12Z</a></li>
+      <li><a name="toc-S12Z-1" href="S12Z.html#S12Z">21.4.9 S12Z</a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Controlling-GDB-1" href="Controlling-GDB.html#Controlling-GDB">22 Controlling <small>GDB</small></a>
@@ -679,6 +682,8 @@ software in general.  We will miss him.
         <li><a name="toc-Finish-Breakpoints" href="Finish-Breakpoints-in-Python.html#Finish-Breakpoints-in-Python">23.2.2.31 Finish Breakpoints</a></li>
         <li><a name="toc-Python-representation-of-lazy-strings" href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python">23.2.2.32 Python representation of lazy strings</a></li>
         <li><a name="toc-Python-representation-of-architectures" href="Architectures-In-Python.html#Architectures-In-Python">23.2.2.33 Python representation of architectures</a></li>
+        <li><a name="toc-Registers-In-Python-1" href="Registers-In-Python.html#Registers-In-Python">23.2.2.34 Registers In Python</a></li>
+        <li><a name="toc-Implementing-new-TUI-windows" href="TUI-Windows-In-Python.html#TUI-Windows-In-Python">23.2.2.35 Implementing new TUI windows</a></li>
       </ul></li>
       <li><a name="toc-Python-Auto_002dloading-1" href="Python-Auto_002dloading.html#Python-Auto_002dloading">23.2.3 Python Auto-loading</a></li>
       <li><a name="toc-Python-modules-1" href="Python-modules.html#Python-modules">23.2.4 Python modules</a>
@@ -791,6 +796,7 @@ software in general.  We will miss him.
     <ul class="no-bullet">
       <li><a name="toc-Shared-Library-GDB_002fMI-Catchpoints" href="Shared-Library-GDB_002fMI-Catchpoint-Commands.html#Shared-Library-GDB_002fMI-Catchpoint-Commands">27.9.1 Shared Library <small>GDB/MI</small> Catchpoints</a></li>
       <li><a name="toc-Ada-Exception-GDB_002fMI-Catchpoints" href="Ada-Exception-GDB_002fMI-Catchpoint-Commands.html#Ada-Exception-GDB_002fMI-Catchpoint-Commands">27.9.2 Ada Exception <small>GDB/MI</small> Catchpoints</a></li>
+      <li><a name="toc-C_002b_002b-Exception-GDB_002fMI-Catchpoints" href="C_002b_002b-Exception-GDB_002fMI-Catchpoint-Commands.html#C_002b_002b-Exception-GDB_002fMI-Catchpoint-Commands">27.9.3 C<tt>++</tt> Exception <small>GDB/MI</small> Catchpoints</a></li>
     </ul></li>
     <li><a name="toc-GDB_002fMI-Program-Context-1" href="GDB_002fMI-Program-Context.html#GDB_002fMI-Program-Context">27.10 <small>GDB/MI</small>  Program Context</a></li>
     <li><a name="toc-GDB_002fMI-Thread-Commands-1" href="GDB_002fMI-Thread-Commands.html#GDB_002fMI-Thread-Commands">27.11 <small>GDB/MI</small> Thread Commands</a></li>
@@ -1009,9 +1015,10 @@ software in general.  We will miss him.
       <li><a name="toc-Openrisc-1000-Features" href="OpenRISC-1000-Features.html#OpenRISC-1000-Features">G.5.10 Openrisc 1000 Features</a></li>
       <li><a name="toc-PowerPC-Features-1" href="PowerPC-Features.html#PowerPC-Features">G.5.11 PowerPC Features</a></li>
       <li><a name="toc-RISC_002dV-Features-1" href="RISC_002dV-Features.html#RISC_002dV-Features">G.5.12 RISC-V Features</a></li>
-      <li><a name="toc-S_002f390-and-System-z-Features-1" href="S_002f390-and-System-z-Features.html#S_002f390-and-System-z-Features">G.5.13 S/390 and System z Features</a></li>
-      <li><a name="toc-Sparc-Features-1" href="Sparc-Features.html#Sparc-Features">G.5.14 Sparc Features</a></li>
-      <li><a name="toc-TMS320C6x-Features" href="TIC6x-Features.html#TIC6x-Features">G.5.15 TMS320C6x Features</a></li>
+      <li><a name="toc-RX-Features-1" href="RX-Features.html#RX-Features">G.5.13 RX Features</a></li>
+      <li><a name="toc-S_002f390-and-System-z-Features-1" href="S_002f390-and-System-z-Features.html#S_002f390-and-System-z-Features">G.5.14 S/390 and System z Features</a></li>
+      <li><a name="toc-Sparc-Features-1" href="Sparc-Features.html#Sparc-Features">G.5.15 Sparc Features</a></li>
+      <li><a name="toc-TMS320C6x-Features" href="TIC6x-Features.html#TIC6x-Features">G.5.16 TMS320C6x Features</a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Operating-System-Information-1" href="Operating-System-Information.html#Operating-System-Information">Appendix H Operating System Information</a>
@@ -1032,7 +1039,7 @@ software in general.  We will miss him.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Summary.html#Summary" accesskey="n" rel="next">Summary</a>, Previous: <a href="../dir/index.html" accesskey="p" rel="prev">(dir)</a>, Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Summary.html#Summary" accesskey="n" rel="next">Summary</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

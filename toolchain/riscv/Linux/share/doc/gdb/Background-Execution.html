@@ -1,109 +1,174 @@
-<html lang="en">
-<head>
-<title>Background Execution - Debugging with GDB</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Debugging with GDB">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Thread-Stops.html#Thread-Stops" title="Thread Stops">
-<link rel="prev" href="Non_002dStop-Mode.html#Non_002dStop-Mode" title="Non-Stop Mode">
-<link rel="next" href="Thread_002dSpecific-Breakpoints.html#Thread_002dSpecific-Breakpoints" title="Thread-Specific Breakpoints">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Free Software'' and ``Free Software Needs
-Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+Invariant Sections being "Free Software" and "Free Software Needs
+Free Documentation", with the Front-Cover Texts being "A GNU Manual,"
 and with the Back-Cover Texts as in (a) below.
 
-(a) The FSF's Back-Cover Text is: ``You are free to copy and modify
+(a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
-developing GNU and promoting software freedom.''
--->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Background-Execution"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Thread_002dSpecific-Breakpoints.html#Thread_002dSpecific-Breakpoints">Thread-Specific Breakpoints</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Non_002dStop-Mode.html#Non_002dStop-Mode">Non-Stop Mode</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Thread-Stops.html#Thread-Stops">Thread Stops</a>
-<hr>
-</div>
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Debugging with GDB: Background Execution</title>
 
+<meta name="description" content="Debugging with GDB: Background Execution">
+<meta name="keywords" content="Debugging with GDB: Background Execution">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Thread-Stops.html#Thread-Stops" rel="up" title="Thread Stops">
+<link href="Thread_002dSpecific-Breakpoints.html#Thread_002dSpecific-Breakpoints" rel="next" title="Thread-Specific Breakpoints">
+<link href="Non_002dStop-Mode.html#Non_002dStop-Mode" rel="prev" title="Non-Stop Mode">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Background-Execution"></a>
+<div class="header">
+<p>
+Next: <a href="Thread_002dSpecific-Breakpoints.html#Thread_002dSpecific-Breakpoints" accesskey="n" rel="next">Thread-Specific Breakpoints</a>, Previous: <a href="Non_002dStop-Mode.html#Non_002dStop-Mode" accesskey="p" rel="prev">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Background-Execution-1"></a>
 <h4 class="subsection">5.5.3 Background Execution</h4>
 
-<p><a name="index-foreground-execution-413"></a><a name="index-background-execution-414"></a><a name="index-asynchronous-execution-415"></a><a name="index-execution_002c-foreground_002c-background-and-asynchronous-416"></a>
-<span class="sc">gdb</span>'s execution commands have two variants:  the normal
+<a name="index-foreground-execution"></a>
+<a name="index-background-execution"></a>
+<a name="index-asynchronous-execution"></a>
+<a name="index-execution_002c-foreground_002c-background-and-asynchronous"></a>
+
+<p><small>GDB</small>&rsquo;s execution commands have two variants:  the normal
 foreground (synchronous) behavior, and a background
-(asynchronous) behavior.  In foreground execution, <span class="sc">gdb</span> waits for
+(asynchronous) behavior.  In foreground execution, <small>GDB</small> waits for
 the program to report that some thread has stopped before prompting for
-another command.  In background execution, <span class="sc">gdb</span> immediately gives
+another command.  In background execution, <small>GDB</small> immediately gives
 a command prompt so that you can issue other commands while your program runs.
-
-   <p>If the target doesn't support async mode, <span class="sc">gdb</span> issues an error
+</p>
+<p>If the target doesn&rsquo;t support async mode, <small>GDB</small> issues an error
 message if you attempt to use the background execution commands.
-
-   <p><a name="index-g_t_0040code_007b_0026_007d_002c-background-execution-of-commands-417"></a>To specify background execution, add a <code>&amp;</code> to the command.  For example,
+</p>
+<a name="index-_0026_002c-background-execution-of-commands"></a>
+<p>To specify background execution, add a <code>&amp;</code> to the command.  For example,
 the background form of the <code>continue</code> command is <code>continue&amp;</code>, or
 just <code>c&amp;</code>.  The execution commands that accept background execution
 are:
+</p>
+<dl compact="compact">
+<dd><a name="index-run_0026"></a>
+</dd>
+<dt><code>run</code></dt>
+<dd><p>See <a href="Starting.html#Starting">Starting your Program</a>.
+</p>
+</dd>
+<dt><code>attach</code></dt>
+<dd><a name="index-attach_0026"></a>
+<p>See <a href="Attach.html#Attach">Debugging an Already-running Process</a>.
+</p>
+</dd>
+<dt><code>step</code></dt>
+<dd><a name="index-step_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">step</a>.
+</p>
+</dd>
+<dt><code>stepi</code></dt>
+<dd><a name="index-stepi_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">stepi</a>.
+</p>
+</dd>
+<dt><code>next</code></dt>
+<dd><a name="index-next_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">next</a>.
+</p>
+</dd>
+<dt><code>nexti</code></dt>
+<dd><a name="index-nexti_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">nexti</a>.
+</p>
+</dd>
+<dt><code>continue</code></dt>
+<dd><a name="index-continue_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">continue</a>.
+</p>
+</dd>
+<dt><code>finish</code></dt>
+<dd><a name="index-finish_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">finish</a>.
+</p>
+</dd>
+<dt><code>until</code></dt>
+<dd><a name="index-until_0026"></a>
+<p>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">until</a>.
+</p>
+</dd>
+</dl>
 
-     
-<a name="index-run_0026-418"></a>
-<dl><dt><code>run</code><dd>See <a href="Starting.html#Starting">Starting your Program</a>.
-
-     <br><dt><code>attach</code><dd><a name="index-attach_0026-419"></a>See <a href="Attach.html#Attach">Debugging an Already-running Process</a>.
-
-     <br><dt><code>step</code><dd><a name="index-step_0026-420"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">step</a>.
-
-     <br><dt><code>stepi</code><dd><a name="index-stepi_0026-421"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">stepi</a>.
-
-     <br><dt><code>next</code><dd><a name="index-next_0026-422"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">next</a>.
-
-     <br><dt><code>nexti</code><dd><a name="index-nexti_0026-423"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">nexti</a>.
-
-     <br><dt><code>continue</code><dd><a name="index-continue_0026-424"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">continue</a>.
-
-     <br><dt><code>finish</code><dd><a name="index-finish_0026-425"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">finish</a>.
-
-     <br><dt><code>until</code><dd><a name="index-until_0026-426"></a>See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">until</a>.
-
-   </dl>
-
-   <p>Background execution is especially useful in conjunction with non-stop
-mode for debugging programs with multiple threads; see <a href="Non_002dStop-Mode.html#Non_002dStop-Mode">Non-Stop Mode</a>. 
+<p>Background execution is especially useful in conjunction with non-stop
+mode for debugging programs with multiple threads; see <a href="Non_002dStop-Mode.html#Non_002dStop-Mode">Non-Stop Mode</a>.
 However, you can also use these commands in the normal all-stop mode with
 the restriction that you cannot issue another execution command until the
 previous one finishes.  Examples of commands that are valid in all-stop
 mode while the program is running include <code>help</code> and <code>info break</code>.
-
-   <p>You can interrupt your program while it is running in the background by
+</p>
+<p>You can interrupt your program while it is running in the background by
 using the <code>interrupt</code> command.
-
-     
-<a name="index-interrupt-427"></a>
-<dl><dt><code>interrupt</code><dt><code>interrupt -a</code><dd>
-Suspend execution of the running program.  In all-stop mode,
+</p>
+<dl compact="compact">
+<dd><a name="index-interrupt-1"></a>
+</dd>
+<dt><code>interrupt</code></dt>
+<dt><code>interrupt -a</code></dt>
+<dd>
+<p>Suspend execution of the running program.  In all-stop mode,
 <code>interrupt</code> stops the whole process, but in non-stop mode, it stops
 only the current thread.  To stop the whole program in non-stop mode,
-use <code>interrupt -a</code>. 
+use <code>interrupt -a</code>.
+</p></dd>
 </dl>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Thread_002dSpecific-Breakpoints.html#Thread_002dSpecific-Breakpoints" accesskey="n" rel="next">Thread-Specific Breakpoints</a>, Previous: <a href="Non_002dStop-Mode.html#Non_002dStop-Mode" accesskey="p" rel="prev">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

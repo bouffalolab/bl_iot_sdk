@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>The Language (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Match-and-Simplify.html#Match-and-Simplify" rel="up" title="Match and Simplify">
-<link href="Funding.html#Funding" rel="next" title="Funding">
-<link href="GIMPLE-API.html#GIMPLE-API" rel="prev" title="GIMPLE API">
+<link href="Match-and-Simplify.html" rel="up" title="Match and Simplify">
+<link href="Static-Analyzer.html" rel="next" title="Static Analyzer">
+<link href="GIMPLE-API.html" rel="prev" title="GIMPLE API">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,22 +58,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="The-Language"></a>
-<div class="header">
+<span id="The-Language"></span><div class="header">
 <p>
-Previous: <a href="GIMPLE-API.html#GIMPLE-API" accesskey="p" rel="prev">GIMPLE API</a>, Up: <a href="Match-and-Simplify.html#Match-and-Simplify" accesskey="u" rel="up">Match and Simplify</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="GIMPLE-API.html" accesskey="p" rel="prev">GIMPLE API</a>, Up: <a href="Match-and-Simplify.html" accesskey="u" rel="up">Match and Simplify</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="The-Language-1"></a>
-<h3 class="section">26.2 The Language</h3>
-<a name="index-The-Language"></a>
+<span id="The-Language-1"></span><h3 class="section">26.2 The Language</h3>
+<span id="index-The-Language"></span>
 
 <p>The language to write expression simplifications in resembles other
 domain-specific languages GCC uses.  Thus it is lispy.  Lets start
 with an example from the match.pd file:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
   (bit_and @0 integer_all_onesp)
   @0)
 </pre></div>
@@ -102,8 +91,8 @@ you refer to it in other places of the match-and-simplify.  In the
 above example it is refered to in the replacement expression.  Captures
 are <code>@</code> followed by a number or an identifier.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
   (bit_xor @0 @0)
   { build_zero_cst (type); })
 </pre></div>
@@ -118,8 +107,8 @@ operands written in C code.  These can be used in the expression
 replacements and are supposed to evaluate to a tree node which has to
 be a valid GIMPLE operand (so you cannot generate expressions in C code).
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
   (trunc_mod integer_zerop@0 @1)
   (if (!integer_zerop (@1))
    @0))
@@ -143,8 +132,8 @@ expression that is enabled when the condition evaluates to false.
 for multiple simplify patterns, avoiding the need
 to repeat that multiple times:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(if (!TYPE_SATURATING (type)
+<div class="example">
+<pre class="example">(if (!TYPE_SATURATING (type)
      &amp;&amp; !FLOAT_TYPE_P (type) &amp;&amp; !FIXED_POINT_TYPE_P (type))
   (simplify
     (minus (plus @0 @1) @0)
@@ -162,8 +151,8 @@ else clause but instead have multiple then clauses.
 <p>There exists a <code>switch</code> expression which can be used to
 chain conditions avoiding nesting <code>if</code>s too much:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
  (simple_comparison @0 REAL_CST@1)
  (switch
   /* a CMP (-0) -&gt; a CMP 0  */
@@ -177,8 +166,8 @@ chain conditions avoiding nesting <code>if</code>s too much:
 
 <p>Is equal to
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
  (simple_comparison @0 REAL_CST@1)
  (switch
   /* a CMP (-0) -&gt; a CMP 0  */
@@ -198,8 +187,8 @@ no other condition evaluated to true.
 </p>
 <p>Captures can also be used for capturing results of sub-expressions.
 </p>
-<div class="smallexample">
-<pre class="smallexample">#if GIMPLE
+<div class="example">
+<pre class="example">#if GIMPLE
 (simplify
   (pointer_plus (addr@2 @0) INTEGER_CST_P@1)
   (if (is_gimple_min_invariant (@2)))
@@ -225,8 +214,8 @@ to <code>GIMPLE</code> or <code>GENERIC</code> by means of using the pre-defined
 preprocessor macros <code>GIMPLE</code> and <code>GENERIC</code> and using
 preprocessor directives.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
   (bit_and:c integral_op_p@0 (bit_ior:c (bit_not @0) @1))
   (bit_and @1 @0))
 </pre></div>
@@ -236,8 +225,8 @@ above, <code>c</code>, denotes that the expression should
 be also matched commutated.  Thus the above match expression
 is really the following four match expressions:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  (bit_and integral_op_p@0 (bit_ior (bit_not @0) @1))
+<div class="example">
+<pre class="example">  (bit_and integral_op_p@0 (bit_ior (bit_not @0) @1))
   (bit_and (bit_ior (bit_not @0) @1) integral_op_p@0)
   (bit_and integral_op_p@0 (bit_ior @1 (bit_not @0)))
   (bit_and (bit_ior @1 (bit_not @0)) integral_op_p@0)
@@ -249,10 +238,12 @@ come second in commutative expressions.
 </p>
 <p>The second supported flag is <code>s</code> which tells the code
 generator to fail the pattern if the expression marked with
-<code>s</code> does have more than one use.  For example in
+<code>s</code> does have more than one use and the simplification
+results in an expression with more than one operator.
+For example in
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
   (pointer_plus (pointer_plus:s @0 @1) @3)
   (pointer_plus @0 (plus @1 @3)))
 </pre></div>
@@ -260,11 +251,19 @@ generator to fail the pattern if the expression marked with
 <p>this avoids the association if <code>(pointer_plus @0 @1)</code> is
 used outside of the matched expression and thus it would stay
 live and not trivially removed by dead code elimination.
+Now consider <code>((x + 3) + -3)</code> with the temporary
+holding <code>(x + 3)</code> used elsewhere.  This simplifies down
+to <code>x</code> which is desirable and thus flagging with <code>s</code>
+does not prevent the transform.  Now consider <code>((x + 3) + 1)</code>
+which simplifies to <code>(x + 4)</code>.  Despite being flagged with
+<code>s</code> the simplification will be performed.  The
+simplification of <code>((x + a) + 1)</code> to <code>(x + (a + 1))</code> will
+not performed in this case though.
 </p>
 <p>More features exist to avoid too much repetition.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(for op (plus pointer_plus minus bit_ior bit_xor)
+<div class="example">
+<pre class="example">(for op (plus pointer_plus minus bit_ior bit_xor)
   (simplify
     (op @0 integer_zerop)
     @0))
@@ -274,29 +273,29 @@ live and not trivially removed by dead code elimination.
 operator specified, substituting <code>op</code>.  <code>for</code> can be
 nested and a <code>for</code> can have multiple operators to iterate.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(for opa (plus minus)
+<div class="example">
+<pre class="example">(for opa (plus minus)
      opb (minus plus)
   (for opc (plus minus)
     (simplify...
 </pre></div>
 
 <p>In this example the pattern will be repeated four times with
-<code>opa, opb, opc</code> being <code>plus, minus, plus</code>,
-<code>plus, minus, minus</code>, <code>minus, plus, plus</code>,
+<code>opa, opb, opc</code> being <code>plus, minus, plus</code>;
+<code>plus, minus, minus</code>; <code>minus, plus, plus</code>;
 <code>minus, plus, minus</code>.
 </p>
 <p>To avoid repeating operator lists in <code>for</code> you can name
 them via
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_operator_list pmm plus minus mult)
+<div class="example">
+<pre class="example">(define_operator_list pmm plus minus mult)
 </pre></div>
 
 <p>and use them in <code>for</code> operator lists where they get expanded.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(for opa (pmm trunc_div)
+<div class="example">
+<pre class="example">(for opa (pmm trunc_div)
  (simplify...
 </pre></div>
 
@@ -308,8 +307,8 @@ a <code>for</code>.  All operator list uses that appear in a <code>simplify</cod
 or <code>match</code> pattern in operator positions will implicitely
 be added to a new <code>for</code>.  For example
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_operator_list SQRT BUILT_IN_SQRTF BUILT_IN_SQRT BUILT_IN_SQRTL)
+<div class="example">
+<pre class="example">(define_operator_list SQRT BUILT_IN_SQRTF BUILT_IN_SQRT BUILT_IN_SQRTL)
 (define_operator_list POW BUILT_IN_POWF BUILT_IN_POW BUILT_IN_POWL)
 (simplify
  (SQRT (POW @0 @1))
@@ -318,8 +317,8 @@ be added to a new <code>for</code>.  For example
 
 <p>is the same as
 </p>
-<div class="smallexample">
-<pre class="smallexample">(for SQRT (BUILT_IN_SQRTF BUILT_IN_SQRT BUILT_IN_SQRTL)
+<div class="example">
+<pre class="example">(for SQRT (BUILT_IN_SQRTF BUILT_IN_SQRT BUILT_IN_SQRTL)
      POW (BUILT_IN_POWF BUILT_IN_POW BUILT_IN_POWL)
  (simplify
   (SQRT (POW @0 @1))
@@ -335,8 +334,8 @@ even if there isn&rsquo;t a suitable operator for every form.
 result expression which nest the generated code in a new C block
 followed by its argument:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
  (convert (mult @0 @1))
  (with { tree utype = unsigned_type_for (type); }
   (convert (mult (convert:utype @0) (convert:utype @1)))))
@@ -355,8 +354,8 @@ avoid the need to repeat patterns both with and without such
 conversions.  Namely you can mark a conversion as being optional
 with a <code>?</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
  (eq (convert@0 @1) (convert? @2))
  (eq @1 (convert @2)))
 </pre></div>
@@ -369,19 +368,22 @@ patterns only.  If you want to match all four combinations you
 have access to two additional conditional converts as in
 <code>(eq (convert1? @1) (convert2? @2))</code>.
 </p>
+<p>The support for <code>?</code> marking extends to all unary operations
+including predicates you declare yourself with <code>match</code>.
+</p>
 <p>Predicates available from the GCC middle-end need to be made
 available explicitely via <code>define_predicates</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_predicates
+<div class="example">
+<pre class="example">(define_predicates
  integer_onep integer_zerop integer_all_onesp)
 </pre></div>
 
 <p>You can also define predicates using the pattern matching language
 and the <code>match</code> form:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(match negate_expr_p
+<div class="example">
+<pre class="example">(match negate_expr_p
  INTEGER_CST
  (if (TYPE_OVERFLOW_WRAPS (type)
       || may_negate_without_overflow_p (t))))
@@ -401,8 +403,8 @@ matches.
 to provide a template specifying the identifier and where to
 get its operands from:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(match (logical_inverted_value @0)
+<div class="example">
+<pre class="example">(match (logical_inverted_value @0)
  (eq @0 integer_zerop))
 (match (logical_inverted_value @0)
  (bit_not truth_valued_p@0))
@@ -410,8 +412,8 @@ get its operands from:
 
 <p>You can use the above predicate like
 </p>
-<div class="smallexample">
-<pre class="smallexample">(simplify
+<div class="example">
+<pre class="example">(simplify
  (bit_and @0 (logical_inverted_value @0))
  { build_zero_cst (type); })
 </pre></div>
@@ -423,7 +425,7 @@ inverted value.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="GIMPLE-API.html#GIMPLE-API" accesskey="p" rel="prev">GIMPLE API</a>, Up: <a href="Match-and-Simplify.html#Match-and-Simplify" accesskey="u" rel="up">Match and Simplify</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="GIMPLE-API.html" accesskey="p" rel="prev">GIMPLE API</a>, Up: <a href="Match-and-Simplify.html" accesskey="u" rel="up">Match and Simplify</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -20,7 +20,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Implementation-defined behavior (The C Preprocessor)</title>
@@ -30,33 +30,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index-of-Directives.html#Index-of-Directives" rel="index" title="Index of Directives">
+<link href="index.html" rel="start" title="Top">
+<link href="Index-of-Directives.html" rel="index" title="Index of Directives">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Implementation-Details.html#Implementation-Details" rel="up" title="Implementation Details">
-<link href="Implementation-limits.html#Implementation-limits" rel="next" title="Implementation limits">
-<link href="Implementation-Details.html#Implementation-Details" rel="prev" title="Implementation Details">
+<link href="Implementation-Details.html" rel="up" title="Implementation Details">
+<link href="Implementation-limits.html" rel="next" title="Implementation limits">
+<link href="Implementation-Details.html" rel="prev" title="Implementation Details">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -68,15 +59,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Implementation_002ddefined-behavior"></a>
-<div class="header">
+<span id="Implementation_002ddefined-behavior"></span><div class="header">
 <p>
-Next: <a href="Implementation-limits.html#Implementation-limits" accesskey="n" rel="next">Implementation limits</a>, Up: <a href="Implementation-Details.html#Implementation-Details" accesskey="u" rel="up">Implementation Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Implementation-limits.html" accesskey="n" rel="next">Implementation limits</a>, Up: <a href="Implementation-Details.html" accesskey="u" rel="up">Implementation Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Implementation_002ddefined-behavior-1"></a>
-<h3 class="section">11.1 Implementation-defined behavior</h3>
-<a name="index-implementation_002ddefined-behavior"></a>
+<span id="Implementation_002ddefined-behavior-1"></span><h3 class="section">11.1 Implementation-defined behavior</h3>
+<span id="index-implementation_002ddefined-behavior"></span>
 
 <p>This is how CPP behaves in all the cases which the C standard
 describes as <em>implementation-defined</em>.  This term means that the
@@ -93,11 +82,14 @@ be controlled using the <samp>-fexec-charset</samp> and
 <samp>-fwide-exec-charset</samp> options.
 </p>
 </li><li> Identifier characters.
-<a name="Identifier-characters"></a>
+<span id="Identifier-characters"></span>
 <p>The C and C++ standards allow identifiers to be composed of &lsquo;<samp>_</samp>&rsquo;
 and the alphanumeric characters.  C++ also allows universal character
 names.  C99 and later C standards permit both universal character
-names and implementation-defined characters.
+names and implementation-defined characters.  In both C and C++ modes,
+GCC accepts in identifiers exactly those extended characters that
+correspond to universal character names permitted by the chosen
+standard.
 </p>
 <p>GCC allows the &lsquo;<samp>$</samp>&rsquo; character in identifiers as an extension for
 most targets.  This is true regardless of the <samp>std=</samp> switch,
@@ -142,12 +134,12 @@ interpreted as &lsquo;<samp>(int)&nbsp;((unsigned&nbsp;char)&nbsp;'a'&nbsp;*&nbs
 </li><li> Source file inclusion.
 
 <p>For a discussion on how the preprocessor locates header files,
-<a href="Include-Operation.html#Include-Operation">Include Operation</a>.
+<a href="Include-Operation.html">Include Operation</a>.
 </p>
 </li><li> Interpretation of the filename resulting from a macro-expanded
 &lsquo;<samp>#include</samp>&rsquo; directive.
 
-<p>See <a href="Computed-Includes.html#Computed-Includes">Computed Includes</a>.
+<p>See <a href="Computed-Includes.html">Computed Includes</a>.
 </p>
 </li><li> Treatment of a &lsquo;<samp>#pragma</samp>&rsquo; directive that after macro-expansion
 results in a standard pragma.
@@ -163,7 +155,7 @@ pragmas.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Implementation-limits.html#Implementation-limits" accesskey="n" rel="next">Implementation limits</a>, Up: <a href="Implementation-Details.html#Implementation-Details" accesskey="u" rel="up">Implementation Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Implementation-limits.html" accesskey="n" rel="next">Implementation limits</a>, Up: <a href="Implementation-Details.html" accesskey="u" rel="up">Implementation Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

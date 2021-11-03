@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Custom Allocation (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Language-Bindings.html#Language-Bindings" rel="next" title="Language Bindings">
-<link href="C_002b_002b-Interface-Limitations.html#C_002b_002b-Interface-Limitations" rel="prev" title="C++ Interface Limitations">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html" rel="up" title="Top">
+<link href="Language-Bindings.html" rel="next" title="Language Bindings">
+<link href="C_002b_002b-Interface-Limitations.html" rel="prev" title="C++ Interface Limitations">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,17 +50,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Custom-Allocation"></a>
-<div class="header">
+<span id="Custom-Allocation"></span><div class="header">
 <p>
-Next: <a href="Language-Bindings.html#Language-Bindings" accesskey="n" rel="next">Language Bindings</a>, Previous: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Language-Bindings.html" accesskey="n" rel="next">Language Bindings</a>, Previous: <a href="C_002b_002b-Class-Interface.html" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Custom-Allocation-1"></a>
-<h2 class="chapter">13 Custom Allocation</h2>
-<a name="index-Custom-allocation"></a>
-<a name="index-Memory-allocation"></a>
-<a name="index-Allocation-of-memory"></a>
+<span id="Custom-Allocation-1"></span><h2 class="chapter">13 Custom Allocation</h2>
+<span id="index-Custom-allocation"></span>
+<span id="index-Memory-allocation"></span>
+<span id="index-Allocation-of-memory"></span>
 
 <p>By default GMP uses <code>malloc</code>, <code>realloc</code> and <code>free</code> for memory
 allocation, and if they fail GMP prints a message to the standard error output
@@ -79,13 +68,13 @@ and terminates the program.
 to have a different error action on running out of memory.
 </p>
 <dl>
-<dt><a name="index-mp_005fset_005fmemory_005ffunctions"></a>Function: <em>void</em> <strong>mp_set_memory_functions</strong> <em>(<br> void *(*<var>alloc_func_ptr</var>) (size_t), <br> void *(*<var>realloc_func_ptr</var>) (void *, size_t, size_t), <br> void (*<var>free_func_ptr</var>) (void *, size_t))</em></dt>
+<dt id="index-mp_005fset_005fmemory_005ffunctions">Function: <em>void</em> <strong>mp_set_memory_functions</strong> <em>(<br> void *(*<var>alloc_func_ptr</var>) (size_t), <br> void *(*<var>realloc_func_ptr</var>) (void *, size_t, size_t), <br> void (*<var>free_func_ptr</var>) (void *, size_t))</em></dt>
 <dd><p>Replace the current allocation functions from the arguments.  If an argument
 is <code>NULL</code>, the corresponding default function is used.
 </p>
 <p>These functions will be used for all memory allocation done by GMP, apart from
 temporary space from <code>alloca</code> if that function is available and GMP is
-configured to use it (see <a href="Build-Options.html#Build-Options">Build Options</a>).
+configured to use it (see <a href="Build-Options.html">Build Options</a>).
 </p>
 <p><strong>Be sure to call <code>mp_set_memory_functions</code> only when there are no
 active GMP objects allocated using the previous memory functions!  Usually
@@ -95,13 +84,13 @@ that means calling it before any other GMP function.</strong>
 <p>The functions supplied should fit the following declarations:
 </p>
 <dl>
-<dt><a name="index-allocate_005ffunction"></a>Function: <em>void *</em> <strong>allocate_function</strong> <em>(size_t <var>alloc_size</var>)</em></dt>
+<dt id="index-allocate_005ffunction">Function: <em>void *</em> <strong>allocate_function</strong> <em>(size_t <var>alloc_size</var>)</em></dt>
 <dd><p>Return a pointer to newly allocated space with at least <var>alloc_size</var>
 bytes.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-reallocate_005ffunction"></a>Function: <em>void *</em> <strong>reallocate_function</strong> <em>(void *<var>ptr</var>, size_t <var>old_size</var>, size_t <var>new_size</var>)</em></dt>
+<dt id="index-reallocate_005ffunction">Function: <em>void *</em> <strong>reallocate_function</strong> <em>(void *<var>ptr</var>, size_t <var>old_size</var>, size_t <var>new_size</var>)</em></dt>
 <dd><p>Resize a previously allocated block <var>ptr</var> of <var>old_size</var> bytes to be
 <var>new_size</var> bytes.
 </p>
@@ -115,7 +104,7 @@ new location if moved or just <var>ptr</var> if not.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-free_005ffunction"></a>Function: <em>void</em> <strong>free_function</strong> <em>(void *<var>ptr</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-free_005ffunction">Function: <em>void</em> <strong>free_function</strong> <em>(void *<var>ptr</var>, size_t <var>size</var>)</em></dt>
 <dd><p>De-allocate the space pointed to by <var>ptr</var>.
 </p>
 <p><var>ptr</var> is never <code>NULL</code>, it&rsquo;s always a previously allocated block of
@@ -154,7 +143,7 @@ this is a problem.
 </p>
 <br>
 <dl>
-<dt><a name="index-mp_005fget_005fmemory_005ffunctions"></a>Function: <em>void</em> <strong>mp_get_memory_functions</strong> <em>(<br> void *(**<var>alloc_func_ptr</var>) (size_t), <br> void *(**<var>realloc_func_ptr</var>) (void *, size_t, size_t), <br> void (**<var>free_func_ptr</var>) (void *, size_t))</em></dt>
+<dt id="index-mp_005fget_005fmemory_005ffunctions">Function: <em>void</em> <strong>mp_get_memory_functions</strong> <em>(<br> void *(**<var>alloc_func_ptr</var>) (size_t), <br> void *(**<var>realloc_func_ptr</var>) (void *, size_t, size_t), <br> void (**<var>free_func_ptr</var>) (void *, size_t))</em></dt>
 <dd><p>Get the current allocation functions, storing function pointers to the
 locations given by the arguments.  If an argument is <code>NULL</code>, that
 function pointer is not stored.
@@ -171,7 +160,7 @@ mp_get_memory_functions (NULL, NULL, &amp;freefunc);
 <hr>
 <div class="header">
 <p>
-Next: <a href="Language-Bindings.html#Language-Bindings" accesskey="n" rel="next">Language Bindings</a>, Previous: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Language-Bindings.html" accesskey="n" rel="next">Language Bindings</a>, Previous: <a href="C_002b_002b-Class-Interface.html" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

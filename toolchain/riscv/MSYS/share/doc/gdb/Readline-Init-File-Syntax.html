@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -119,9 +119,34 @@ the terminal&rsquo;s bell.
 </dd>
 <dt><code>bind-tty-special-chars</code></dt>
 <dd><a name="index-bind_002dtty_002dspecial_002dchars"></a>
-<p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline attempts to bind the control characters  
-treated specially by the kernel&rsquo;s terminal driver to their Readline
-equivalents.
+<p>If set to &lsquo;<samp>on</samp>&rsquo; (the default), Readline attempts to bind the control
+characters   treated specially by the kernel&rsquo;s terminal driver to their
+Readline equivalents.
+</p>
+</dd>
+<dt><code>blink-matching-paren</code></dt>
+<dd><a name="index-blink_002dmatching_002dparen"></a>
+<p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline attempts to briefly move the cursor to an
+opening parenthesis when a closing parenthesis is inserted.  The default
+is &lsquo;<samp>off</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>colored-completion-prefix</code></dt>
+<dd><a name="index-colored_002dcompletion_002dprefix"></a>
+<p>If set to &lsquo;<samp>on</samp>&rsquo;, when listing completions, Readline displays the
+common prefix of the set of possible completions using a different color.
+The color definitions are taken from the value of the <code>LS_COLORS</code>
+environment variable.
+The default is &lsquo;<samp>off</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>colored-stats</code></dt>
+<dd><a name="index-colored_002dstats"></a>
+<p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline displays possible completions using different
+colors to indicate their file type.
+The color definitions are taken from the value of the <code>LS_COLORS</code>
+environment variable.
+The default is &lsquo;<samp>off</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>comment-begin</code></dt>
@@ -153,6 +178,7 @@ The default value is &lsquo;<samp>off</samp>&rsquo;.
 <p>If set to &lsquo;<samp>on</samp>&rsquo;, and <var>completion-ignore-case</var> is enabled, Readline
 treats hyphens (&lsquo;<samp>-</samp>&rsquo;) and underscores (&lsquo;<samp>_</samp>&rsquo;) as equivalent when
 performing case-insensitive filename matching and completion.
+The default value is &lsquo;<samp>off</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>completion-prefix-display-length</code></dt>
@@ -180,7 +206,9 @@ The default limit is <code>100</code>.
 <p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline will convert characters with the
 eighth bit set to an <small>ASCII</small> key sequence by stripping the eighth
 bit and prefixing an <tt class="key">ESC</tt> character, converting them to a
-meta-prefixed key sequence.  The default value is &lsquo;<samp>on</samp>&rsquo;.
+meta-prefixed key sequence.  The default value is &lsquo;<samp>on</samp>&rsquo;, but
+will be set to &lsquo;<samp>off</samp>&rsquo; if the locale is one that contains
+eight-bit characters.
 </p>
 </dd>
 <dt><code>disable-completion</code></dt>
@@ -188,6 +216,13 @@ meta-prefixed key sequence.  The default value is &lsquo;<samp>on</samp>&rsquo;.
 <p>If set to &lsquo;<samp>On</samp>&rsquo;, Readline will inhibit word completion.
 Completion  characters will be inserted into the line as if they had
 been mapped to <code>self-insert</code>.  The default is &lsquo;<samp>off</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>echo-control-characters</code></dt>
+<dd><a name="index-echo_002dcontrol_002dcharacters"></a>
+<p>When set to &lsquo;<samp>on</samp>&rsquo;, on operating systems that indicate they support it,
+readline echoes a character corresponding to a signal generated from the
+keyboard.  The default is &lsquo;<samp>on</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>editing-mode</code></dt>
@@ -198,10 +233,26 @@ mode, where the keystrokes are most similar to Emacs.  This variable can be
 set to either &lsquo;<samp>emacs</samp>&rsquo; or &lsquo;<samp>vi</samp>&rsquo;.
 </p>
 </dd>
-<dt><code>echo-control-characters</code></dt>
-<dd><p>When set to &lsquo;<samp>on</samp>&rsquo;, on operating systems that indicate they support it,
-readline echoes a character corresponding to a signal generated from the
-keyboard.  The default is &lsquo;<samp>on</samp>&rsquo;.
+<dt><code>emacs-mode-string</code></dt>
+<dd><a name="index-emacs_002dmode_002dstring"></a>
+<p>If the <var>show-mode-in-prompt</var> variable is enabled,
+this string is displayed immediately before the last line of the primary
+prompt when emacs editing mode is active.  The value is expanded like a
+key binding, so the standard set of meta- and control prefixes and
+backslash escape sequences is available.
+Use the &lsquo;<samp>\1</samp>&rsquo; and &lsquo;<samp>\2</samp>&rsquo; escapes to begin and end sequences of
+non-printing characters, which can be used to embed a terminal control
+sequence into the mode string.
+The default is &lsquo;<samp>@</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>enable-bracketed-paste</code></dt>
+<dd><a name="index-enable_002dbracketed_002dpaste"></a>
+<p>When set to &lsquo;<samp>On</samp>&rsquo;, Readline will configure the terminal in a way
+that will enable it to insert each paste into the editing buffer as a
+single string of characters, instead of treating each character as if
+it had been read from the keyboard.  This can prevent pasted characters
+from being interpreted as editing commands.  The default is &lsquo;<samp>off</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>enable-keypad</code></dt>
@@ -234,8 +285,14 @@ or <code>next-history</code>.  The default is &lsquo;<samp>off</samp>&rsquo;.
 </dd>
 <dt><code>history-size</code></dt>
 <dd><a name="index-history_002dsize"></a>
-<p>Set the maximum number of history entries saved in the history list.  If
-set to zero, the number of entries in the history list is not limited.
+<p>Set the maximum number of history entries saved in the history list.
+If set to zero, any existing history entries are deleted and no new entries
+are saved.
+If set to a value less than zero, the number of history entries is not
+limited.
+By default, the number of history entries is not limited.
+If an attempt is made to set <var>history-size</var> to a non-numeric value,
+the maximum number of history entries will be set to 500.
 </p>
 </dd>
 <dt><code>horizontal-scroll-mode</code></dt>
@@ -253,8 +310,9 @@ this variable is set to &lsquo;<samp>off</samp>&rsquo;.
 <p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline will enable eight-bit input (it
 will not clear the eighth bit in the characters it reads),
 regardless of what the terminal claims it can support.  The
-default value is &lsquo;<samp>off</samp>&rsquo;.  The name <code>meta-flag</code> is a
-synonym for this variable.
+default value is &lsquo;<samp>off</samp>&rsquo;, but Readline will set it to &lsquo;<samp>on</samp>&rsquo; if the 
+locale contains eight-bit characters.
+The name <code>meta-flag</code> is a synonym for this variable.
 </p>
 </dd>
 <dt><code>isearch-terminators</code></dt>
@@ -268,7 +326,7 @@ If this variable has not been given a value, the characters <tt class="key">ESC<
 <dt><code>keymap</code></dt>
 <dd><a name="index-keymap"></a>
 <p>Sets Readline&rsquo;s idea of the current keymap for key binding commands.
-Acceptable <code>keymap</code> names are
+Built-in <code>keymap</code> names are
 <code>emacs</code>,
 <code>emacs-standard</code>,
 <code>emacs-meta</code>,
@@ -277,10 +335,29 @@ Acceptable <code>keymap</code> names are
 <code>vi-move</code>,
 <code>vi-command</code>, and
 <code>vi-insert</code>.
-<code>vi</code> is equivalent to <code>vi-command</code>; <code>emacs</code> is
-equivalent to <code>emacs-standard</code>.  The default value is <code>emacs</code>.
+<code>vi</code> is equivalent to <code>vi-command</code> (<code>vi-move</code> is also a
+synonym); <code>emacs</code> is equivalent to <code>emacs-standard</code>.
+Applications may add additional names.
+The default value is <code>emacs</code>.
 The value of the <code>editing-mode</code> variable also affects the
 default keymap.
+</p>
+</dd>
+<dt><code>keyseq-timeout</code></dt>
+<dd><p>Specifies the duration Readline will wait for a character when reading an
+ambiguous key sequence (one that can form a complete key sequence using
+the input read so far, or can take additional input to complete a longer
+key sequence).
+If no input is received within the timeout, Readline will use the shorter
+but complete key sequence.
+Readline uses this value to determine whether or not input is
+available on the current input source (<code>rl_instream</code> by default).
+The value is specified in milliseconds, so a value of 1000 means that
+Readline will wait one second for additional input.
+If this variable is set to a value less than or equal to zero, or to a
+non-numeric value, Readline will wait until another key is pressed to
+decide which key sequence to complete.
+The default value is <code>500</code>.
 </p>
 </dd>
 <dt><code>mark-directories</code></dt>
@@ -324,7 +401,9 @@ the list.  The default is &lsquo;<samp>off</samp>&rsquo;.
 <dd><a name="index-output_002dmeta"></a>
 <p>If set to &lsquo;<samp>on</samp>&rsquo;, Readline will display characters with the
 eighth bit set directly rather than as a meta-prefixed escape
-sequence.  The default is &lsquo;<samp>off</samp>&rsquo;.
+sequence.
+The default is &lsquo;<samp>off</samp>&rsquo;, but Readline will set it to &lsquo;<samp>on</samp>&rsquo; if the
+locale contains eight-bit characters.
 </p>
 </dd>
 <dt><code>page-completions</code></dt>
@@ -369,6 +448,14 @@ of ringing the bell.
 The default value is &lsquo;<samp>off</samp>&rsquo;.
 </p>
 </dd>
+<dt><code>show-mode-in-prompt</code></dt>
+<dd><a name="index-show_002dmode_002din_002dprompt"></a>
+<p>If set to &lsquo;<samp>on</samp>&rsquo;, add a string to the beginning of the prompt
+indicating the editing mode: emacs, vi command, or vi insertion.
+The mode strings are user-settable (e.g., <var>emacs-mode-string</var>).
+The default value is &lsquo;<samp>off</samp>&rsquo;.
+</p>
+</dd>
 <dt><code>skip-completed-text</code></dt>
 <dd><a name="index-skip_002dcompleted_002dtext"></a>
 <p>If set to &lsquo;<samp>on</samp>&rsquo;, this alters the default completion behavior when
@@ -382,6 +469,34 @@ is after the &lsquo;<samp>e</samp>&rsquo; in &lsquo;<samp>Makefile</samp>&rsquo;
 rather than &lsquo;<samp>Makefilefile</samp>&rsquo;, assuming there is a single possible
 completion.
 The default value is &lsquo;<samp>off</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>vi-cmd-mode-string</code></dt>
+<dd><a name="index-vi_002dcmd_002dmode_002dstring"></a>
+<p>If the <var>show-mode-in-prompt</var> variable is enabled,
+this string is displayed immediately before the last line of the primary
+prompt when vi editing mode is active and in command mode.
+The value is expanded like a
+key binding, so the standard set of meta- and control prefixes and
+backslash escape sequences is available.
+Use the &lsquo;<samp>\1</samp>&rsquo; and &lsquo;<samp>\2</samp>&rsquo; escapes to begin and end sequences of
+non-printing characters, which can be used to embed a terminal control
+sequence into the mode string.
+The default is &lsquo;<samp>(cmd)</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>vi-ins-mode-string</code></dt>
+<dd><a name="index-vi_002dins_002dmode_002dstring"></a>
+<p>If the <var>show-mode-in-prompt</var> variable is enabled,
+this string is displayed immediately before the last line of the primary
+prompt when vi editing mode is active and in insertion mode.
+The value is expanded like a
+key binding, so the standard set of meta- and control prefixes and
+backslash escape sequences is available.
+Use the &lsquo;<samp>\1</samp>&rsquo; and &lsquo;<samp>\2</samp>&rsquo; escapes to begin and end sequences of
+non-printing characters, which can be used to embed a terminal control
+sequence into the mode string.
+The default is &lsquo;<samp>(ins)</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>visible-stats</code></dt>
@@ -423,7 +538,7 @@ Meta-Rubout: backward-kill-word
 Control-o: &quot;&gt; output&quot;
 </pre></div>
 
-<p>In the above example, <kbd>C-u</kbd> is bound to the function
+<p>In the example above, <kbd>C-u</kbd> is bound to the function
 <code>universal-argument</code>,
 <kbd>M-DEL</kbd> is bound to the function <code>backward-kill-word</code>, and
 <kbd>C-o</kbd> is bound to run the macro

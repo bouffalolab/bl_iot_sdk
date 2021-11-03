@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -9,7 +9,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>strip (GNU Binary Utilities)</title>
@@ -19,33 +19,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Binutils-Index.html#Binutils-Index" rel="index" title="Binutils Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Binutils-Index.html" rel="index" title="Binutils Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="c_002b_002bfilt.html#c_002b_002bfilt" rel="next" title="c++filt">
-<link href="strings.html#strings" rel="prev" title="strings">
+<link href="index.html" rel="up" title="Top">
+<link href="c_002b_002bfilt.html" rel="next" title="c++filt">
+<link href="strings.html" rel="prev" title="strings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -57,23 +48,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="strip"></a>
-<div class="header">
+<span id="strip"></span><div class="header">
 <p>
-Next: <a href="c_002b_002bfilt.html#c_002b_002bfilt" accesskey="n" rel="next">c++filt</a>, Previous: <a href="strings.html#strings" accesskey="p" rel="prev">strings</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="c_002b_002bfilt.html" accesskey="n" rel="next">c++filt</a>, Previous: <a href="strings.html" accesskey="p" rel="prev">strings</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="strip-1"></a>
-<h2 class="chapter">8 strip</h2>
+<span id="strip-1"></span><h2 class="chapter">8 strip</h2>
 
-<a name="index-strip"></a>
-<a name="index-removing-symbols"></a>
-<a name="index-discarding-symbols"></a>
-<a name="index-symbols_002c-discarding"></a>
+<span id="index-strip"></span>
+<span id="index-removing-symbols"></span>
+<span id="index-discarding-symbols"></span>
+<span id="index-symbols_002c-discarding"></span>
 
 
-<div class="smallexample">
-<pre class="smallexample">strip [<samp>-F</samp> <var>bfdname</var> |<samp>--target=</samp><var>bfdname</var>]
+<div class="example">
+<pre class="example">strip [<samp>-F</samp> <var>bfdname</var> |<samp>--target=</samp><var>bfdname</var>]
       [<samp>-I</samp> <var>bfdname</var> |<samp>--input-target=</samp><var>bfdname</var>]
       [<samp>-O</samp> <var>bfdname</var> |<samp>--output-target=</samp><var>bfdname</var>]
       [<samp>-s</samp>|<samp>--strip-all</samp>]
@@ -85,6 +74,7 @@ Next: <a href="c_002b_002bfilt.html#c_002b_002bfilt" accesskey="n" rel="next">c+
       [<samp>-w</samp>|<samp>--wildcard</samp>]
       [<samp>-x</samp>|<samp>--discard-all</samp>] [<samp>-X</samp> |<samp>--discard-locals</samp>]
       [<samp>-R</samp> <var>sectionname</var> |<samp>--remove-section=</samp><var>sectionname</var>]
+      [<samp>--keep-section=</samp><var>sectionpattern</var>]
       [<samp>--remove-relocations=</samp><var>sectionpattern</var>]
       [<samp>-o</samp> <var>file</var>] [<samp>-p</samp>|<samp>--preserve-dates</samp>]
       [<samp>-D</samp>|<samp>--enable-deterministic-archives</samp>]
@@ -111,7 +101,7 @@ rather than writing modified copies under different names.
 <dt><code>--target=<var>bfdname</var></code></dt>
 <dd><p>Treat the original <var>objfile</var> as a file with the object
 code format <var>bfdname</var>, and rewrite it in the same format.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>--help</code></dt>
@@ -126,13 +116,13 @@ See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for m
 <dt><code>--input-target=<var>bfdname</var></code></dt>
 <dd><p>Treat the original <var>objfile</var> as a file with the object
 code format <var>bfdname</var>.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-O <var>bfdname</var></code></dt>
 <dt><code>--output-target=<var>bfdname</var></code></dt>
 <dd><p>Replace <var>objfile</var> with a file in the output format <var>bfdname</var>.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-R <var>sectionname</var></code></dt>
@@ -149,12 +139,17 @@ point (!) then matching sections will not be removed even if an
 earlier use of <samp>--remove-section</samp> on the same command line
 would otherwise remove it.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-section=.text.* --remove-section=!.text.foo
+<div class="example">
+<pre class="example">  --remove-section=.text.* --remove-section=!.text.foo
 </pre></div>
 
 <p>will remove all sections matching the pattern &rsquo;.text.*&rsquo;, but will not
 remove the section &rsquo;.text.foo&rsquo;.
+</p>
+</dd>
+<dt><code>--keep-section=<var>sectionpattern</var></code></dt>
+<dd><p>When removing sections from the output file, keep sections that match
+<var>sectionpattern</var>.
 </p>
 </dd>
 <dt><code>--remove-relocations=<var>sectionpattern</var></code></dt>
@@ -164,8 +159,8 @@ that using this option inappropriately may make the output file
 unusable.  Wildcard characters are accepted in <var>sectionpattern</var>.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-relocations=.text.*
+<div class="example">
+<pre class="example">  --remove-relocations=.text.*
 </pre></div>
 
 <p>will remove the relocations for all sections matching the patter
@@ -177,8 +172,8 @@ removed even if an earlier use of <samp>--remove-relocations</samp> on the
 same command line would otherwise cause the relocations to be removed.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-relocations=.text.* --remove-relocations=!.text.foo
+<div class="example">
+<pre class="example">  --remove-relocations=.text.* --remove-relocations=!.text.foo
 </pre></div>
 
 <p>will remove all relocations for sections matching the pattern
@@ -220,7 +215,7 @@ normally be stripped.  This option may be given more than once.
 <dt><code>--no-merge-notes</code></dt>
 <dd><p>For ELF files, attempt (or do not attempt) to reduce the size of any
 SHT_NOTE type sections by removing duplicate notes.  The default is to
-attempt this reduction.
+attempt this reduction unless stripping debug or DWO information.
 </p>
 </dd>
 <dt><code>-N <var>symbolname</var></code></dt>
@@ -243,8 +238,8 @@ argument may be specified.
 </dd>
 <dt><code>-D</code></dt>
 <dt><code>--enable-deterministic-archives</code></dt>
-<dd><a name="index-deterministic-archives-6"></a>
-<a name="index-_002d_002denable_002ddeterministic_002darchives-6"></a>
+<dd><span id="index-deterministic-archives-6"></span>
+<span id="index-_002d_002denable_002ddeterministic_002darchives-6"></span>
 <p>Operate in <em>deterministic</em> mode.  When copying archive members
 and writing the archive index, use zero for UIDs, GIDs, timestamps,
 and use consistent file modes for all files.
@@ -256,8 +251,8 @@ It can be disabled with the &lsquo;<samp>-U</samp>&rsquo; option, below.
 </dd>
 <dt><code>-U</code></dt>
 <dt><code>--disable-deterministic-archives</code></dt>
-<dd><a name="index-deterministic-archives-7"></a>
-<a name="index-_002d_002denable_002ddeterministic_002darchives-7"></a>
+<dd><span id="index-deterministic-archives-7"></span>
+<span id="index-_002d_002denable_002ddeterministic_002darchives-7"></span>
 <p>Do <em>not</em> operate in <em>deterministic</em> mode.  This is the
 inverse of the <samp>-D</samp> option, above: when copying archive members
 and writing the archive index, use their actual UID, GID, timestamp,
@@ -276,8 +271,8 @@ name.  If the first character of the symbol name is the exclamation
 point (!) then the sense of the switch is reversed for that symbol.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  -w -K !foo -K fo*
+<div class="example">
+<pre class="example">  -w -K !foo -K fo*
 </pre></div>
 
 <p>would cause strip to only keep symbols that start with the letters
@@ -371,7 +366,7 @@ archives, &lsquo;<samp>strip -v</samp>&rsquo; lists all members of the archive.
 <hr>
 <div class="header">
 <p>
-Next: <a href="c_002b_002bfilt.html#c_002b_002bfilt" accesskey="n" rel="next">c++filt</a>, Previous: <a href="strings.html#strings" accesskey="p" rel="prev">strings</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="c_002b_002bfilt.html" accesskey="n" rel="next">c++filt</a>, Previous: <a href="strings.html" accesskey="p" rel="prev">strings</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

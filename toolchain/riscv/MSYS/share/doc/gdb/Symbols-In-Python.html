@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -118,6 +118,57 @@ module and described later in this chapter.
 </p>
 <p>The result is a <code>gdb.Symbol</code> object or <code>None</code> if the symbol
 is not found.
+</p></dd></dl>
+
+<a name="index-gdb_002elookup_005fstatic_005fsymbol"></a>
+<dl>
+<dt><a name="index-gdb_002elookup_005fstatic_005fsymbol-1"></a>Function: <strong>gdb.lookup_static_symbol</strong> <em>(name <span class="roman">[</span>, domain<span class="roman">]</span>)</em></dt>
+<dd><p>This function searches for a global symbol with static linkage by name.
+The search scope can be restricted to by the domain argument.
+</p>
+<p><var>name</var> is the name of the symbol.  It must be a string.
+The optional <var>domain</var> argument restricts the search to the domain type.
+The <var>domain</var> argument must be a domain constant defined in the <code>gdb</code>
+module and described later in this chapter.
+</p>
+<p>The result is a <code>gdb.Symbol</code> object or <code>None</code> if the symbol
+is not found.
+</p>
+<p>Note that this function will not find function-scoped static variables. To look
+up such variables, iterate over the variables of the function&rsquo;s
+<code>gdb.Block</code> and check that <code>block.addr_class</code> is
+<code>gdb.SYMBOL_LOC_STATIC</code>.
+</p>
+<p>There can be multiple global symbols with static linkage with the same
+name.  This function will only return the first matching symbol that
+it finds.  Which symbol is found depends on where <small>GDB</small> is
+currently stopped, as <small>GDB</small> will first search for matching
+symbols in the current object file, and then search all other object
+files.  If the application is not yet running then <small>GDB</small> will
+search all object files in the order they appear in the debug
+information.
+</p></dd></dl>
+
+<a name="index-gdb_002elookup_005fstatic_005fsymbols"></a>
+<dl>
+<dt><a name="index-gdb_002elookup_005fstatic_005fsymbols-1"></a>Function: <strong>gdb.lookup_static_symbols</strong> <em>(name <span class="roman">[</span>, domain<span class="roman">]</span>)</em></dt>
+<dd><p>Similar to <code>gdb.lookup_static_symbol</code>, this function searches for
+global symbols with static linkage by name, and optionally restricted
+by the domain argument.  However, this function returns a list of all
+matching symbols found, not just the first one.
+</p>
+<p><var>name</var> is the name of the symbol.  It must be a string.
+The optional <var>domain</var> argument restricts the search to the domain type.
+The <var>domain</var> argument must be a domain constant defined in the <code>gdb</code>
+module and described later in this chapter.
+</p>
+<p>The result is a list of <code>gdb.Symbol</code> objects which could be empty
+if no matching symbols were found.
+</p>
+<p>Note that this function will not find function-scoped static variables. To look
+up such variables, iterate over the variables of the function&rsquo;s
+<code>gdb.Block</code> and check that <code>block.addr_class</code> is
+<code>gdb.SYMBOL_LOC_STATIC</code>.
 </p></dd></dl>
 
 <p>A <code>gdb.Symbol</code> object has the following attributes:

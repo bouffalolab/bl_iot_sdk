@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -20,7 +20,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Standard Predefined Macros (The C Preprocessor)</title>
@@ -30,33 +30,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index-of-Directives.html#Index-of-Directives" rel="index" title="Index of Directives">
+<link href="index.html" rel="start" title="Top">
+<link href="Index-of-Directives.html" rel="index" title="Index of Directives">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Predefined-Macros.html#Predefined-Macros" rel="up" title="Predefined Macros">
-<link href="Common-Predefined-Macros.html#Common-Predefined-Macros" rel="next" title="Common Predefined Macros">
-<link href="Predefined-Macros.html#Predefined-Macros" rel="prev" title="Predefined Macros">
+<link href="Predefined-Macros.html" rel="up" title="Predefined Macros">
+<link href="Common-Predefined-Macros.html" rel="next" title="Common Predefined Macros">
+<link href="Predefined-Macros.html" rel="prev" title="Predefined Macros">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -68,15 +59,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Standard-Predefined-Macros"></a>
-<div class="header">
+<span id="Standard-Predefined-Macros"></span><div class="header">
 <p>
-Next: <a href="Common-Predefined-Macros.html#Common-Predefined-Macros" accesskey="n" rel="next">Common Predefined Macros</a>, Up: <a href="Predefined-Macros.html#Predefined-Macros" accesskey="u" rel="up">Predefined Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Common-Predefined-Macros.html" accesskey="n" rel="next">Common Predefined Macros</a>, Up: <a href="Predefined-Macros.html" accesskey="u" rel="up">Predefined Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Standard-Predefined-Macros-1"></a>
-<h4 class="subsection">3.7.1 Standard Predefined Macros</h4>
-<a name="index-standard-predefined-macros_002e"></a>
+<span id="Standard-Predefined-Macros-1"></span><h4 class="subsection">3.7.1 Standard Predefined Macros</h4>
+<span id="index-standard-predefined-macros_002e"></span>
 
 <p>The standard predefined macros are specified by the relevant
 language standards, so they are available with all compilers that
@@ -106,8 +95,8 @@ message to report an inconsistency detected by the program; the message
 can state the source line at which the inconsistency was detected.  For
 example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">fprintf (stderr, &quot;Internal error: &quot;
+<div class="example">
+<pre class="example">fprintf (stderr, &quot;Internal error: &quot;
                  &quot;negative string length &quot;
                  &quot;%d at %s, line %d.&quot;,
          length, __FILE__, __LINE__);
@@ -122,7 +111,7 @@ the &lsquo;<samp>#include</samp>&rsquo; directive, the expansions of <code>__FIL
 processing moves to the line after the &lsquo;<samp>#include</samp>&rsquo;).
 </p>
 <p>A &lsquo;<samp>#line</samp>&rsquo; directive changes <code>__LINE__</code>, and may change
-<code>__FILE__</code> as well.  See <a href="Line-Control.html#Line-Control">Line Control</a>.
+<code>__FILE__</code> as well.  See <a href="Line-Control.html">Line Control</a>.
 </p>
 <p>C99 introduced <code>__func__</code>, and GCC has provided <code>__FUNCTION__</code>
 for a long time.  Both of these are strings containing the name of the
@@ -168,7 +157,7 @@ conformance to the C Standard.  CPP follows the host convention when
 processing system header files, but when processing user files
 <code>__STDC__</code> is always 1.  This has been reported to cause problems;
 for instance, some versions of Solaris provide X Windows headers that
-expect <code>__STDC__</code> to be either undefined or 1.  See <a href="Invocation.html#Invocation">Invocation</a>.
+expect <code>__STDC__</code> to be either undefined or 1.  See <a href="Invocation.html">Invocation</a>.
 </p>
 </dd>
 <dt><code>__STDC_VERSION__</code></dt>
@@ -185,7 +174,8 @@ the 1999 revision of the C standard; the value <code>201112L</code>
 signifies the 2011 revision of the C standard; the value
 <code>201710L</code> signifies the 2017 revision of the C standard (which is
 otherwise identical to the 2011 version apart from correction of
-defects).
+defects).  An unspecified value larger than <code>201710L</code> is used for
+the experimental <samp>-std=c2x</samp> and <samp>-std=gnu2x</samp> modes.
 </p>
 <p>This macro is not defined if the <samp>-traditional-cpp</samp> option is
 used, nor when compiling C++ or Objective-C.
@@ -228,7 +218,7 @@ language.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Common-Predefined-Macros.html#Common-Predefined-Macros" accesskey="n" rel="next">Common Predefined Macros</a>, Up: <a href="Predefined-Macros.html#Predefined-Macros" accesskey="u" rel="up">Predefined Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Common-Predefined-Macros.html" accesskey="n" rel="next">Common Predefined Macros</a>, Up: <a href="Predefined-Macros.html" accesskey="u" rel="up">Predefined Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

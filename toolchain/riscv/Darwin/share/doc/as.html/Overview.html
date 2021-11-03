@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Overview (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Manual.html#Manual" rel="next" title="Manual">
-<link href="index.html#Top" rel="prev" title="Top">
+<link href="index.html" rel="up" title="Top">
+<link href="Manual.html" rel="next" title="Manual">
+<link href="index.html" rel="prev" title="Top">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,29 +50,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Overview"></a>
-<div class="header">
+<span id="Overview"></span><div class="header">
 <p>
-Next: <a href="Invoking.html#Invoking" accesskey="n" rel="next">Invoking</a>, Previous: <a href="index.html#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Invoking.html" accesskey="n" rel="next">Invoking</a>, Previous: <a href="index.html" accesskey="p" rel="prev">Top</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Overview-1"></a>
-<h2 class="chapter">1 Overview</h2>
+<span id="Overview-1"></span><h2 class="chapter">1 Overview</h2>
 
-<a name="index-invocation-summary"></a>
-<a name="index-option-summary"></a>
-<a name="index-summary-of-options"></a>
+<span id="index-invocation-summary"></span>
+<span id="index-option-summary"></span>
+<span id="index-summary-of-options"></span>
 <p>Here is a brief summary of how to invoke <code>as</code>.  For details,
-see <a href="Invoking.html#Invoking">Command-Line Options</a>.
+see <a href="Invoking.html">Command-Line Options</a>.
 </p>
 
 
-<div class="smallexample">
-<pre class="smallexample">as [<b>-a</b>[<b>cdghlns</b>][=<var>file</var>]] [<b>&ndash;alternate</b>] [<b>-D</b>]
+<div class="example">
+<pre class="example">as [<b>-a</b>[<b>cdghlns</b>][=<var>file</var>]] [<b>&ndash;alternate</b>] [<b>-D</b>]
  [<b>&ndash;compress-debug-sections</b>]  [<b>&ndash;nocompress-debug-sections</b>]
  [<b>&ndash;debug-prefix-map</b> <var>old</var>=<var>new</var>]
  [<b>&ndash;defsym</b> <var>sym</var>=<var>val</var>] [<b>-f</b>] [<b>-g</b>] [<b>&ndash;gstabs</b>]
- [<b>&ndash;gstabs+</b>] [<b>&ndash;gdwarf-2</b>] [<b>&ndash;gdwarf-sections</b>]
+ [<b>&ndash;gstabs+</b>] [<b>&ndash;gdwarf-&lt;N&gt;</b>] [<b>&ndash;gdwarf-sections</b>]
+ [<b>&ndash;gdwarf-cie-version</b>=<var>VERSION</var>]
  [<b>&ndash;help</b>] [<b>-I</b> <var>dir</var>] [<b>-J</b>]
  [<b>-K</b>] [<b>-L</b>] [<b>&ndash;listing-lhs-width</b>=<var>NUM</var>]
  [<b>&ndash;listing-lhs-width2</b>=<var>NUM</var>] [<b>&ndash;listing-rhs-width</b>=<var>NUM</var>]
@@ -134,6 +124,9 @@ see <a href="Invoking.html#Invoking">Command-Line Options</a>.
    [<b>-mfdpic</b>]
    [<b>-mno-fdpic</b>]
    [<b>-mnopic</b>]
+
+<em>Target BPF options:</em>
+   [<b>-EL</b>] [<b>-EB</b>]
 
 <em>Target CRIS options:</em>
    [<b>&ndash;underscore</b> | <b>&ndash;no-underscore</b>]
@@ -373,15 +366,15 @@ see <a href="Invoking.html#Invoking">Command-Line Options</a>.
  [<b>&ndash;[no-]transform</b>]
  [<b>&ndash;rename-section</b> <var>oldname</var>=<var>newname</var>]
  [<b>&ndash;[no-]trampolines</b>]
+ [<b>&ndash;abi-windowed</b>|<b>&ndash;abi-call0</b>]
 
 <em>Target Z80 options:</em>
-  [<b>-z80</b>] [<b>-r800</b>]
-  [<b> -ignore-undocumented-instructions</b>] [<b>-Wnud</b>]
-  [<b> -ignore-unportable-instructions</b>] [<b>-Wnup</b>]
-  [<b> -warn-undocumented-instructions</b>] [<b>-Wud</b>]
-  [<b> -warn-unportable-instructions</b>] [<b>-Wup</b>]
-  [<b> -forbid-undocumented-instructions</b>] [<b>-Fud</b>]
-  [<b> -forbid-unportable-instructions</b>] [<b>-Fup</b>]
+  [<b>-march=<var>CPU</var><var>[-EXT]</var><var>[+EXT]</var></b>]
+  [<b>-local-prefix=</b><var>PREFIX</var>]
+  [<b>-colonless</b>]
+  [<b>-sdcc</b>]
+  [<b>-fp-s=</b><var>FORMAT</var>]
+  [<b>-fp-d=</b><var>FORMAT</var>]
 
 
 </pre></div>
@@ -450,7 +443,7 @@ the last one.  By itself, &lsquo;<samp>-a</samp>&rsquo; defaults to &lsquo;<samp
 </dd>
 <dt><code>--alternate</code></dt>
 <dd><p>Begin in alternate macro mode.
-See <a href="Altmacro.html#Altmacro"><code>.altmacro</code></a>.
+See <a href="Altmacro.html"><code>.altmacro</code></a>.
 </p>
 </dd>
 <dt><code>--compress-debug-sections</code></dt>
@@ -459,7 +452,7 @@ ELF ABI.  The resulting object file may not be compatible with older
 linkers and object file utilities.  Note if compression would make a
 given section <em>larger</em> then it is not compressed.
 </p>
-<a name="index-_002d_002dcompress_002ddebug_002dsections_003d-option"></a>
+<span id="index-_002d_002dcompress_002ddebug_002dsections_003d-option"></span>
 </dd>
 <dt><code>--compress-debug-sections=none</code></dt>
 <dt><code>--compress-debug-sections=zlib</code></dt>
@@ -533,6 +526,30 @@ may help debugging assembler code, if the debugger can handle it.  Note&mdash;th
 option is only supported by some targets, not all of them.
 </p>
 </dd>
+<dt><code>--gdwarf-3</code></dt>
+<dd><p>This option is the same as the <samp>--gdwarf-2</samp> option, except that it
+allows for the possibility of the generation of extra debug information as per
+version 3 of the DWARF specification.  Note - enabling this option does not
+guarantee the generation of any extra infortmation, the choice to do so is on a
+per target basis.
+</p>
+</dd>
+<dt><code>--gdwarf-4</code></dt>
+<dd><p>This option is the same as the <samp>--gdwarf-2</samp> option, except that it
+allows for the possibility of the generation of extra debug information as per
+version 4 of the DWARF specification.  Note - enabling this option does not
+guarantee the generation of any extra infortmation, the choice to do so is on a
+per target basis.
+</p>
+</dd>
+<dt><code>--gdwarf-5</code></dt>
+<dd><p>This option is the same as the <samp>--gdwarf-2</samp> option, except that it
+allows for the possibility of the generation of extra debug information as per
+version 5 of the DWARF specification.  Note - enabling this option does not
+guarantee the generation of any extra infortmation, the choice to do so is on a
+per target basis.
+</p>
+</dd>
 <dt><code>--gdwarf-sections</code></dt>
 <dd><p>Instead of creating a .debug_line section, create a series of
 .debug_line.<var>foo</var> sections where <var>foo</var> is the name of the
@@ -541,6 +558,12 @@ will have its dwarf line number information placed into a section called
 <var>.debug_line.text.func</var>.  If the code section is just called <var>.text</var>
 then debug line section will still be called just <var>.debug_line</var> without any
 suffix.
+</p>
+</dd>
+<dt><code>--gdwarf-cie-version=<var>version</var></code></dt>
+<dd><p>Control which version of DWARF Common Information Entries (CIEs) are produced.
+When this flag is not specificed the default is version 1, though some targets
+can modify this default.  Other possible values for <var>version</var> are 3 or 4.
 </p>
 </dd>
 <dt><code>--size-check=error</code></dt>
@@ -589,7 +612,7 @@ configure option.
 <dd><p>Keep (in the symbol table) local symbols.  These symbols start with
 system-specific local label prefixes, typically &lsquo;<samp>.L</samp>&rsquo; for ELF systems
 or &lsquo;<samp>L</samp>&rsquo; for traditional a.out systems.
-See <a href="Symbol-Names.html#Symbol-Names">Symbol Names</a>.
+See <a href="Symbol-Names.html">Symbol Names</a>.
 </p>
 </dd>
 <dt><code>--listing-lhs-width=<var>number</var></code></dt>
@@ -695,13 +718,13 @@ assembly.
 </dl>
 
 
-<p>See <a href="AArch64-Options.html#AArch64-Options">AArch64 Options</a>, for the options available when as is configured
+<p>See <a href="AArch64-Options.html">AArch64 Options</a>, for the options available when as is configured
 for the 64-bit mode of the ARM Architecture (AArch64).
 </p>
 
 
 
-<p>See <a href="Alpha-Options.html#Alpha-Options">Alpha Options</a>, for the options available when as is configured
+<p>See <a href="Alpha-Options.html">Alpha Options</a>, for the options available when as is configured
 for an Alpha processor.
 </p>
 
@@ -759,15 +782,21 @@ ARM code in mind.
 </dl>
 
 
-<p>See <a href="Blackfin-Options.html#Blackfin-Options">Blackfin Options</a>, for the options available when as is
+<p>See <a href="Blackfin-Options.html">Blackfin Options</a>, for the options available when as is
 configured for the Blackfin processor family.
+</p>
+
+
+
+<p>See <a href="BPF-Options.html">BPF Options</a>, for the options available when as is
+configured for the Linux kernel BPF processor family.
 </p>
 
 
 <p>See the info pages for documentation of the CRIS-specific options.
 </p>
 
-<p>See <a href="C_002dSKY-Options.html#C_002dSKY-Options">C-SKY Options</a>, for the options available when as is
+<p>See <a href="C_002dSKY-Options.html">C-SKY Options</a>, for the options available when as is
 configured for the C-SKY processor family.
 </p>
 
@@ -775,8 +804,8 @@ configured for the C-SKY processor family.
 <p>The following options are available when as is configured for
 a D10V processor.
 </p><dl compact="compact">
-<dd><a name="index-D10V-optimization"></a>
-<a name="index-optimization_002c-D10V"></a>
+<dd><span id="index-D10V-optimization"></span>
+<span id="index-optimization_002c-D10V"></span>
 </dd>
 <dt><code>-O</code></dt>
 <dd><p>Optimize output by parallelizing instructions.
@@ -786,18 +815,18 @@ a D10V processor.
 <p>The following options are available when as is configured for a D30V
 processor.
 </p><dl compact="compact">
-<dd><a name="index-D30V-optimization"></a>
-<a name="index-optimization_002c-D30V"></a>
+<dd><span id="index-D30V-optimization"></span>
+<span id="index-optimization_002c-D30V"></span>
 </dd>
 <dt><code>-O</code></dt>
 <dd><p>Optimize output by parallelizing instructions.
 </p>
-<a name="index-D30V-nops"></a>
+<span id="index-D30V-nops"></span>
 </dd>
 <dt><code>-n</code></dt>
 <dd><p>Warn when nops are generated.
 </p>
-<a name="index-D30V-nops-after-32_002dbit-multiply"></a>
+<span id="index-D30V-nops-after-32_002dbit-multiply"></span>
 </dd>
 <dt><code>-N</code></dt>
 <dd><p>Warn when a nop after a 32-bit multiply instruction is generated.
@@ -807,14 +836,14 @@ processor.
 <p>The following options are available when as is configured for the
 Adapteva EPIPHANY series.
 </p>
-<p>See <a href="Epiphany-Options.html#Epiphany-Options">Epiphany Options</a>, for the options available when as is
+<p>See <a href="Epiphany-Options.html">Epiphany Options</a>, for the options available when as is
 configured for an Epiphany processor.
 </p>
 
 
 
 
-<p>See <a href="i386_002dOptions.html#i386_002dOptions">i386-Options</a>, for the options available when as is
+<p>See <a href="i386_002dOptions.html">i386-Options</a>, for the options available when as is
 configured for an i386 processor.
 </p>
 
@@ -908,13 +937,13 @@ unit coprocessor.  The default is to assume an MMU for 68020 and up.
 </dl>
 
 
-<p>See <a href="Nios-II-Options.html#Nios-II-Options">Nios II Options</a>, for the options available when as is configured
+<p>See <a href="Nios-II-Options.html">Nios II Options</a>, for the options available when as is configured
 for an Altera Nios II processor.
 </p>
 
 
 <p>For details about the PDP-11 machine dependent features options,
-see <a href="PDP_002d11_002dOptions.html#PDP_002d11_002dOptions">PDP-11-Options</a>.
+see <a href="PDP_002d11_002dOptions.html">PDP-11-Options</a>.
 </p>
 <dl compact="compact">
 <dt><code>-mpic | -mno-pic</code></dt>
@@ -952,14 +981,14 @@ a picoJava processor.
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-PJ-endianness"></a>
-<a name="index-endianness_002c-PJ"></a>
-<a name="index-big-endian-output_002c-PJ"></a>
+<span id="index-PJ-endianness"></span>
+<span id="index-endianness_002c-PJ"></span>
+<span id="index-big-endian-output_002c-PJ"></span>
 </dd>
 <dt><code>-mb</code></dt>
 <dd><p>Generate &ldquo;big endian&rdquo; format output.
 </p>
-<a name="index-little-endian-output_002c-PJ"></a>
+<span id="index-little-endian-output_002c-PJ"></span>
 </dd>
 <dt><code>-ml</code></dt>
 <dd><p>Generate &ldquo;little endian&rdquo; format output.
@@ -968,7 +997,7 @@ a picoJava processor.
 </dl>
 
 
-<p>See <a href="PRU-Options.html#PRU-Options">PRU Options</a>, for the options available when as is configured
+<p>See <a href="PRU-Options.html">PRU Options</a>, for the options available when as is configured
 for a PRU processor.
 </p>
 
@@ -1084,19 +1113,19 @@ a MIPS processor.
 implicitly with the <code>gp</code> register.  It is only accepted for targets that
 use ECOFF format, such as a DECstation running Ultrix.  The default value is 8.
 </p>
-<a name="index-MIPS-endianness"></a>
-<a name="index-endianness_002c-MIPS"></a>
-<a name="index-big-endian-output_002c-MIPS"></a>
+<span id="index-MIPS-endianness"></span>
+<span id="index-endianness_002c-MIPS"></span>
+<span id="index-big-endian-output_002c-MIPS"></span>
 </dd>
 <dt><code>-EB</code></dt>
 <dd><p>Generate &ldquo;big endian&rdquo; format output.
 </p>
-<a name="index-little-endian-output_002c-MIPS"></a>
+<span id="index-little-endian-output_002c-MIPS"></span>
 </dd>
 <dt><code>-EL</code></dt>
 <dd><p>Generate &ldquo;little endian&rdquo; format output.
 </p>
-<a name="index-MIPS-ISA"></a>
+<span id="index-MIPS-ISA"></span>
 </dd>
 <dt><code>-mips1</code></dt>
 <dt><code>-mips2</code></dt>
@@ -1376,7 +1405,7 @@ branch requiring a transition between ISA modes to produce an error.
 <dd><p>Select between the IEEE 754-2008 (<samp>-mnan=2008</samp>) or the legacy
 (<samp>-mnan=legacy</samp>) NaN encoding format.  The latter is the default.
 </p>
-<a name="index-emulation"></a>
+<span id="index-emulation"></span>
 </dd>
 <dt><code>--emulation=<var>name</var></code></dt>
 <dd><p>This option was formerly used to switch between ELF and ECOFF output
@@ -1449,7 +1478,7 @@ can be assembled.
 </dl>
 
 
-<p>See <a href="Meta-Options.html#Meta-Options">Meta Options</a>, for the options available when as is configured
+<p>See <a href="Meta-Options.html">Meta Options</a>, for the options available when as is configured
 for a Meta processor.
 </p>
 
@@ -1457,18 +1486,18 @@ for a Meta processor.
 <p>See the info pages for documentation of the MMIX-specific options.
 </p>
 
-<p>See <a href="NDS32-Options.html#NDS32-Options">NDS32 Options</a>, for the options available when as is configured
+<p>See <a href="NDS32-Options.html">NDS32 Options</a>, for the options available when as is configured
 for a NDS32 processor.
 </p>
 
 
-<p>See <a href="PowerPC_002dOpts.html#PowerPC_002dOpts">PowerPC-Opts</a>, for the options available when as is configured
+<p>See <a href="PowerPC_002dOpts.html">PowerPC-Opts</a>, for the options available when as is configured
 for a PowerPC processor.
 </p>
 
 
 
-<p>See <a href="RISC_002dV_002dOptions.html#RISC_002dV_002dOptions">RISC-V-Options</a>, for the options available when as is configured
+<p>See <a href="RISC_002dV_002dOptions.html">RISC-V-Options</a>, for the options available when as is configured
 for a RISC-V processor.
 </p>
 
@@ -1493,7 +1522,8 @@ Architecture (esa) or the z/Architecture mode (zarch).
 &lsquo;<samp>arch3</samp>&rsquo;), &lsquo;<samp>g6</samp>&rsquo;, &lsquo;<samp>z900</samp>&rsquo; (or &lsquo;<samp>arch5</samp>&rsquo;), &lsquo;<samp>z990</samp>&rsquo; (or
 &lsquo;<samp>arch6</samp>&rsquo;), &lsquo;<samp>z9-109</samp>&rsquo;, &lsquo;<samp>z9-ec</samp>&rsquo; (or &lsquo;<samp>arch7</samp>&rsquo;), &lsquo;<samp>z10</samp>&rsquo; (or
 &lsquo;<samp>arch8</samp>&rsquo;), &lsquo;<samp>z196</samp>&rsquo; (or &lsquo;<samp>arch9</samp>&rsquo;), &lsquo;<samp>zEC12</samp>&rsquo; (or &lsquo;<samp>arch10</samp>&rsquo;),
-&lsquo;<samp>z13</samp>&rsquo; (or &lsquo;<samp>arch11</samp>&rsquo;), or &lsquo;<samp>z14</samp>&rsquo; (or &lsquo;<samp>arch12</samp>&rsquo;).
+&lsquo;<samp>z13</samp>&rsquo; (or &lsquo;<samp>arch11</samp>&rsquo;), &lsquo;<samp>z14</samp>&rsquo; (or &lsquo;<samp>arch12</samp>&rsquo;), or &lsquo;<samp>z15</samp>&rsquo;
+(or &lsquo;<samp>arch13</samp>&rsquo;).
 </p></dd>
 <dt><code>-mregnames</code></dt>
 <dt><code>-mno-regnames</code></dt>
@@ -1506,87 +1536,56 @@ but evaluates to zero.
 </dl>
 
 
-<p>See <a href="TIC6X-Options.html#TIC6X-Options">TIC6X Options</a>, for the options available when as is configured
+<p>See <a href="TIC6X-Options.html">TIC6X Options</a>, for the options available when as is configured
 for a TMS320C6000 processor.
 </p>
 
 
 
-<p>See <a href="TILE_002dGx-Options.html#TILE_002dGx-Options">TILE-Gx Options</a>, for the options available when as is configured
+<p>See <a href="TILE_002dGx-Options.html">TILE-Gx Options</a>, for the options available when as is configured
 for a TILE-Gx processor.
 </p>
 
 
 
-<p>See <a href="Visium-Options.html#Visium-Options">Visium Options</a>, for the options available when as is configured
+<p>See <a href="Visium-Options.html">Visium Options</a>, for the options available when as is configured
 for a Visium processor.
 </p>
 
 
 
-<p>See <a href="Xtensa-Options.html#Xtensa-Options">Xtensa Options</a>, for the options available when as is configured
+<p>See <a href="Xtensa-Options.html">Xtensa Options</a>, for the options available when as is configured
 for an Xtensa processor.
 </p>
 
 
 
-<p>The following options are available when as is configured for
-a Z80 family processor.
-</p><dl compact="compact">
-<dt><code>-z80</code></dt>
-<dd><p>Assemble for Z80 processor.
-</p></dd>
-<dt><code>-r800</code></dt>
-<dd><p>Assemble for R800 processor.
-</p></dd>
-<dt><code>-ignore-undocumented-instructions</code></dt>
-<dt><code>-Wnud</code></dt>
-<dd><p>Assemble undocumented Z80 instructions that also work on R800 without warning.
-</p></dd>
-<dt><code>-ignore-unportable-instructions</code></dt>
-<dt><code>-Wnup</code></dt>
-<dd><p>Assemble all undocumented Z80 instructions without warning.
-</p></dd>
-<dt><code>-warn-undocumented-instructions</code></dt>
-<dt><code>-Wud</code></dt>
-<dd><p>Issue a warning for undocumented Z80 instructions that also work on R800.
-</p></dd>
-<dt><code>-warn-unportable-instructions</code></dt>
-<dt><code>-Wup</code></dt>
-<dd><p>Issue a warning for undocumented Z80 instructions that do not work on R800.
-</p></dd>
-<dt><code>-forbid-undocumented-instructions</code></dt>
-<dt><code>-Fud</code></dt>
-<dd><p>Treat all undocumented instructions as errors.
-</p></dd>
-<dt><code>-forbid-unportable-instructions</code></dt>
-<dt><code>-Fup</code></dt>
-<dd><p>Treat undocumented Z80 instructions that do not work on R800 as errors.
-</p></dd>
-</dl>
+<p>See <a href="Z80-Options.html">Z80 Options</a>, for the options available when as is configured
+for an Z80 processor.
+</p>
 
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Manual.html#Manual" accesskey="1">Manual</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Structure of this Manual
+<tr><td align="left" valign="top">&bull; <a href="Manual.html" accesskey="1">Manual</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Structure of this Manual
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="GNU-Assembler.html#GNU-Assembler" accesskey="2">GNU Assembler</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The GNU Assembler
+<tr><td align="left" valign="top">&bull; <a href="GNU-Assembler.html" accesskey="2">GNU Assembler</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The GNU Assembler
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Object-Formats.html#Object-Formats" accesskey="3">Object Formats</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Object File Formats
+<tr><td align="left" valign="top">&bull; <a href="Object-Formats.html" accesskey="3">Object Formats</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Object File Formats
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Command-Line.html#Command-Line" accesskey="4">Command Line</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Command Line
+<tr><td align="left" valign="top">&bull; <a href="Command-Line.html" accesskey="4">Command Line</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Command Line
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Input-Files.html#Input-Files" accesskey="5">Input Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Input Files
+<tr><td align="left" valign="top">&bull; <a href="Input-Files.html" accesskey="5">Input Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Input Files
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Object.html#Object" accesskey="6">Object</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output (Object) File
+<tr><td align="left" valign="top">&bull; <a href="Object.html" accesskey="6">Object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output (Object) File
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Errors.html#Errors" accesskey="7">Errors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Error and Warning Messages
+<tr><td align="left" valign="top">&bull; <a href="Errors.html" accesskey="7">Errors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Error and Warning Messages
 </td></tr>
 </table>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Invoking.html#Invoking" accesskey="n" rel="next">Invoking</a>, Previous: <a href="index.html#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Invoking.html" accesskey="n" rel="next">Invoking</a>, Previous: <a href="index.html" accesskey="p" rel="prev">Top</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

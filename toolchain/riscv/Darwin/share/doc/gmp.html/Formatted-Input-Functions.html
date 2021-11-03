@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Formatted Input Functions (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Formatted-Input.html#Formatted-Input" rel="up" title="Formatted Input">
-<link href="C_002b_002b-Formatted-Input.html#C_002b_002b-Formatted-Input" rel="next" title="C++ Formatted Input">
-<link href="Formatted-Input-Strings.html#Formatted-Input-Strings" rel="prev" title="Formatted Input Strings">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Formatted-Input.html" rel="up" title="Formatted Input">
+<link href="C_002b_002b-Formatted-Input.html" rel="next" title="C++ Formatted Input">
+<link href="Formatted-Input-Strings.html" rel="prev" title="Formatted Input Strings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Formatted-Input-Functions"></a>
-<div class="header">
+<span id="Formatted-Input-Functions"></span><div class="header">
 <p>
-Next: <a href="C_002b_002b-Formatted-Input.html#C_002b_002b-Formatted-Input" accesskey="n" rel="next">C++ Formatted Input</a>, Previous: <a href="Formatted-Input-Strings.html#Formatted-Input-Strings" accesskey="p" rel="prev">Formatted Input Strings</a>, Up: <a href="Formatted-Input.html#Formatted-Input" accesskey="u" rel="up">Formatted Input</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Formatted-Input.html" accesskey="n" rel="next">C++ Formatted Input</a>, Previous: <a href="Formatted-Input-Strings.html" accesskey="p" rel="prev">Formatted Input Strings</a>, Up: <a href="Formatted-Input.html" accesskey="u" rel="up">Formatted Input</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Formatted-Input-Functions-1"></a>
-<h3 class="section">11.2 Formatted Input Functions</h3>
-<a name="index-Input-functions-3"></a>
+<span id="Formatted-Input-Functions-1"></span><h3 class="section">11.2 Formatted Input Functions</h3>
+<span id="index-Input-functions-3"></span>
 
 <p>Each of the following functions is similar to the corresponding C library
 function.  The plain <code>scanf</code> forms take a variable argument list.  The
-<code>vscanf</code> forms take an argument pointer, see <a href="http://www.gnu.org/software/libc/manual/html_node/Variadic-Functions.html#Variadic-Functions">Variadic Functions</a> in <cite>The GNU C Library Reference Manual</cite>, or &lsquo;<samp>man 3
+<code>vscanf</code> forms take an argument pointer, see <a href="https://www.gnu.org/software/libc/manual/html_node/Variadic-Functions.html#Variadic-Functions">Variadic Functions</a> in <cite>The GNU C Library Reference Manual</cite>, or &lsquo;<samp>man 3
 va_start</samp>&rsquo;.
 </p>
 <p>It should be emphasised that if a format string is invalid, or the arguments
@@ -83,20 +72,20 @@ since it doesn&rsquo;t recognise the GMP extensions.
 produced.
 </p>
 <dl>
-<dt><a name="index-gmp_005fscanf"></a>Function: <em>int</em> <strong>gmp_scanf</strong> <em>(const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvscanf"></a>Function: <em>int</em> <strong>gmp_vscanf</strong> <em>(const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fscanf">Function: <em>int</em> <strong>gmp_scanf</strong> <em>(const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvscanf">Function: <em>int</em> <strong>gmp_vscanf</strong> <em>(const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Read from the standard input <code>stdin</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005ffscanf"></a>Function: <em>int</em> <strong>gmp_fscanf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvfscanf"></a>Function: <em>int</em> <strong>gmp_vfscanf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005ffscanf">Function: <em>int</em> <strong>gmp_fscanf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvfscanf">Function: <em>int</em> <strong>gmp_vfscanf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Read from the stream <var>fp</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005fsscanf"></a>Function: <em>int</em> <strong>gmp_sscanf</strong> <em>(const char *<var>s</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvsscanf"></a>Function: <em>int</em> <strong>gmp_vsscanf</strong> <em>(const char *<var>s</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fsscanf">Function: <em>int</em> <strong>gmp_sscanf</strong> <em>(const char *<var>s</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvsscanf">Function: <em>int</em> <strong>gmp_vsscanf</strong> <em>(const char *<var>s</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Read from a null-terminated string <var>s</var>.
 </p></dd></dl>
 
@@ -134,7 +123,7 @@ way C99 <code>sscanf</code> is the same as <code>fscanf</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="C_002b_002b-Formatted-Input.html#C_002b_002b-Formatted-Input" accesskey="n" rel="next">C++ Formatted Input</a>, Previous: <a href="Formatted-Input-Strings.html#Formatted-Input-Strings" accesskey="p" rel="prev">Formatted Input Strings</a>, Up: <a href="Formatted-Input.html#Formatted-Input" accesskey="u" rel="up">Formatted Input</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Formatted-Input.html" accesskey="n" rel="next">C++ Formatted Input</a>, Previous: <a href="Formatted-Input-Strings.html" accesskey="p" rel="prev">Formatted Input Strings</a>, Up: <a href="Formatted-Input.html" accesskey="u" rel="up">Formatted Input</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

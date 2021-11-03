@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Output Styling (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Controlling-GDB.html#Controlling-GDB" rel="up" title="Controlling GDB">
-<link href="Numbers.html#Numbers" rel="next" title="Numbers">
-<link href="Screen-Size.html#Screen-Size" rel="prev" title="Screen Size">
+<link href="Controlling-GDB.html" rel="up" title="Controlling GDB">
+<link href="Numbers.html" rel="next" title="Numbers">
+<link href="Screen-Size.html" rel="prev" title="Screen Size">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,22 +51,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Output-Styling"></a>
-<div class="header">
+<span id="Output-Styling"></span><div class="header">
 <p>
-Next: <a href="Numbers.html#Numbers" accesskey="n" rel="next">Numbers</a>, Previous: <a href="Screen-Size.html#Screen-Size" accesskey="p" rel="prev">Screen Size</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Numbers.html" accesskey="n" rel="next">Numbers</a>, Previous: <a href="Screen-Size.html" accesskey="p" rel="prev">Screen Size</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Output-Styling-1"></a>
-<h3 class="section">22.5 Output Styling</h3>
-<a name="index-styling"></a>
-<a name="index-colors"></a>
+<span id="Output-Styling-1"></span><h3 class="section">22.5 Output Styling</h3>
+<span id="index-styling"></span>
+<span id="index-colors"></span>
 
-<a name="index-set-style"></a>
-<a name="index-show-style"></a>
+<span id="index-set-style"></span>
+<span id="index-show-style"></span>
 <p><small>GDB</small> can style its output on a capable terminal.  This is
 enabled by default on most systems, but disabled by default when in
-batch mode (see <a href="Mode-Options.html#Mode-Options">Mode Options</a>).  Various style settings are available;
+batch mode (see <a href="Mode-Options.html">Mode Options</a>).  Various style settings are available;
 and styles can also be disabled entirely.
 </p>
 <dl compact="compact">
@@ -130,6 +119,11 @@ and&lsquo;<samp>white</samp>&rsquo;.
 </p></dd>
 </dl>
 
+<p>The <code>show style</code> command and its subcommands are styling
+a style name in their output using its own style.
+So, use <code>show style</code> to see the complete list of styles,
+their characteristics and the visual aspect of each style.
+</p>
 <p>The style-able objects are:
 </p><dl compact="compact">
 <dt><code>filename</code></dt>
@@ -153,13 +147,45 @@ foreground color is cyan.
 <dd><p>Control the styling of addresses.  These are managed with the
 <code>set style address</code> family of commands.  By default, this style&rsquo;s
 foreground color is blue.
-</p></dd>
+</p>
+</dd>
+<dt><code>title</code></dt>
+<dd><p>Control the styling of titles.  These are managed with the
+<code>set style title</code> family of commands.  By default, this style&rsquo;s
+intensity is bold.  Commands are using the title style to improve
+the readability of large output.  For example, the commands
+<code>apropos</code> and <code>help</code> are using the title style
+for the command names.
+</p>
+</dd>
+<dt><code>highlight</code></dt>
+<dd><p>Control the styling of highlightings.  These are managed with the
+<code>set style highlight</code> family of commands.  By default, this style&rsquo;s
+foreground color is red.  Commands are using the highlight style to draw
+the user attention to some specific parts of their output.  For example,
+the command <code>apropos -v REGEXP</code> uses the highlight style to
+mark the documentation parts matching <var>regexp</var>.
+</p>
+</dd>
+<dt><code>tui-border</code></dt>
+<dd><p>Control the styling of the TUI border.  Note that, unlike other
+styling options, only the color of the border can be controlled via
+<code>set style</code>.  This was done for compatibility reasons, as TUI
+controls to set the border&rsquo;s intensity predated the addition of
+general styling to <small>GDB</small>.  See <a href="TUI-Configuration.html">TUI Configuration</a>.
+</p>
+</dd>
+<dt><code>tui-active-border</code></dt>
+<dd><p>Control the styling of the active TUI border; that is, the TUI window
+that has the focus.
+</p>
+</dd>
 </dl>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Numbers.html#Numbers" accesskey="n" rel="next">Numbers</a>, Previous: <a href="Screen-Size.html#Screen-Size" accesskey="p" rel="prev">Screen Size</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Numbers.html" accesskey="n" rel="next">Numbers</a>, Previous: <a href="Screen-Size.html" accesskey="p" rel="prev">Screen Size</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

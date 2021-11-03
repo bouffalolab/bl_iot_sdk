@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Integer Functions (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Initializing-Integers.html#Initializing-Integers" rel="next" title="Initializing Integers">
-<link href="Reporting-Bugs.html#Reporting-Bugs" rel="prev" title="Reporting Bugs">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html" rel="up" title="Top">
+<link href="Initializing-Integers.html" rel="next" title="Initializing Integers">
+<link href="Reporting-Bugs.html" rel="prev" title="Reporting Bugs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,15 +50,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Integer-Functions"></a>
-<div class="header">
+<span id="Integer-Functions"></span><div class="header">
 <p>
-Next: <a href="Rational-Number-Functions.html#Rational-Number-Functions" accesskey="n" rel="next">Rational Number Functions</a>, Previous: <a href="Reporting-Bugs.html#Reporting-Bugs" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rational-Number-Functions.html" accesskey="n" rel="next">Rational Number Functions</a>, Previous: <a href="Reporting-Bugs.html" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Integer-Functions-1"></a>
-<h2 class="chapter">5 Integer Functions</h2>
-<a name="index-Integer-functions"></a>
+<span id="Integer-Functions-1"></span><h2 class="chapter">5 Integer Functions</h2>
+<span id="index-Integer-functions"></span>
 
 <p>This chapter describes the GMP functions for performing integer arithmetic.
 These functions start with the prefix <code>mpz_</code>.
@@ -75,37 +64,37 @@ These functions start with the prefix <code>mpz_</code>.
 <p>GMP integers are stored in objects of type <code>mpz_t</code>.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Initializing-Integers.html#Initializing-Integers" accesskey="1">Initializing Integers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Initializing-Integers.html" accesskey="1">Initializing Integers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assigning-Integers.html#Assigning-Integers" accesskey="2">Assigning Integers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assigning-Integers.html" accesskey="2">Assigning Integers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Simultaneous-Integer-Init-_0026-Assign.html#Simultaneous-Integer-Init-_0026-Assign" accesskey="3">Simultaneous Integer Init &amp; Assign</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Simultaneous-Integer-Init-_0026-Assign.html" accesskey="3">Simultaneous Integer Init &amp; Assign</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Converting-Integers.html#Converting-Integers" accesskey="4">Converting Integers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Converting-Integers.html" accesskey="4">Converting Integers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Arithmetic.html#Integer-Arithmetic" accesskey="5">Integer Arithmetic</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Arithmetic.html" accesskey="5">Integer Arithmetic</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Division.html#Integer-Division" accesskey="6">Integer Division</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Division.html" accesskey="6">Integer Division</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Exponentiation.html#Integer-Exponentiation" accesskey="7">Integer Exponentiation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Exponentiation.html" accesskey="7">Integer Exponentiation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Roots.html#Integer-Roots" accesskey="8">Integer Roots</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Roots.html" accesskey="8">Integer Roots</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Number-Theoretic-Functions.html#Number-Theoretic-Functions" accesskey="9">Number Theoretic Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Number-Theoretic-Functions.html" accesskey="9">Number Theoretic Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Comparisons.html#Integer-Comparisons">Integer Comparisons</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Comparisons.html">Integer Comparisons</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling">Integer Logic and Bit Fiddling</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Logic-and-Bit-Fiddling.html">Integer Logic and Bit Fiddling</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="I_002fO-of-Integers.html#I_002fO-of-Integers">I/O of Integers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="I_002fO-of-Integers.html">I/O of Integers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Random-Numbers.html#Integer-Random-Numbers">Integer Random Numbers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Random-Numbers.html">Integer Random Numbers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Import-and-Export.html#Integer-Import-and-Export">Integer Import and Export</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Import-and-Export.html">Integer Import and Export</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions">Miscellaneous Integer Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Miscellaneous-Integer-Functions.html">Miscellaneous Integer Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Integer-Special-Functions.html#Integer-Special-Functions">Integer Special Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Integer-Special-Functions.html">Integer Special Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 

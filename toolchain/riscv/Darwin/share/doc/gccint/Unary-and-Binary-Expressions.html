@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Unary and Binary Expressions (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Expression-trees.html#Expression-trees" rel="up" title="Expression trees">
-<link href="Vectors.html#Vectors" rel="next" title="Vectors">
-<link href="Storage-References.html#Storage-References" rel="prev" title="Storage References">
+<link href="Expression-trees.html" rel="up" title="Expression trees">
+<link href="Vectors.html" rel="next" title="Vectors">
+<link href="Storage-References.html" rel="prev" title="Storage References">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,89 +58,88 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Unary-and-Binary-Expressions"></a>
-<div class="header">
+<span id="Unary-and-Binary-Expressions"></span><div class="header">
 <p>
-Next: <a href="Vectors.html#Vectors" accesskey="n" rel="next">Vectors</a>, Previous: <a href="Storage-References.html#Storage-References" accesskey="p" rel="prev">Storage References</a>, Up: <a href="Expression-trees.html#Expression-trees" accesskey="u" rel="up">Expression trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Vectors.html" accesskey="n" rel="next">Vectors</a>, Previous: <a href="Storage-References.html" accesskey="p" rel="prev">Storage References</a>, Up: <a href="Expression-trees.html" accesskey="u" rel="up">Expression trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Unary-and-Binary-Expressions-1"></a>
-<h4 class="subsection">11.6.3 Unary and Binary Expressions</h4>
-<a name="index-NEGATE_005fEXPR"></a>
-<a name="index-ABS_005fEXPR"></a>
-<a name="index-BIT_005fNOT_005fEXPR"></a>
-<a name="index-TRUTH_005fNOT_005fEXPR"></a>
-<a name="index-PREDECREMENT_005fEXPR"></a>
-<a name="index-PREINCREMENT_005fEXPR"></a>
-<a name="index-POSTDECREMENT_005fEXPR"></a>
-<a name="index-POSTINCREMENT_005fEXPR"></a>
-<a name="index-FIX_005fTRUNC_005fEXPR"></a>
-<a name="index-FLOAT_005fEXPR"></a>
-<a name="index-COMPLEX_005fEXPR"></a>
-<a name="index-CONJ_005fEXPR"></a>
-<a name="index-REALPART_005fEXPR"></a>
-<a name="index-IMAGPART_005fEXPR"></a>
-<a name="index-NON_005fLVALUE_005fEXPR"></a>
-<a name="index-NOP_005fEXPR"></a>
-<a name="index-CONVERT_005fEXPR"></a>
-<a name="index-FIXED_005fCONVERT_005fEXPR"></a>
-<a name="index-THROW_005fEXPR"></a>
-<a name="index-LSHIFT_005fEXPR"></a>
-<a name="index-RSHIFT_005fEXPR"></a>
-<a name="index-BIT_005fIOR_005fEXPR"></a>
-<a name="index-BIT_005fXOR_005fEXPR"></a>
-<a name="index-BIT_005fAND_005fEXPR"></a>
-<a name="index-TRUTH_005fANDIF_005fEXPR"></a>
-<a name="index-TRUTH_005fORIF_005fEXPR"></a>
-<a name="index-TRUTH_005fAND_005fEXPR"></a>
-<a name="index-TRUTH_005fOR_005fEXPR"></a>
-<a name="index-TRUTH_005fXOR_005fEXPR"></a>
-<a name="index-POINTER_005fPLUS_005fEXPR"></a>
-<a name="index-POINTER_005fDIFF_005fEXPR"></a>
-<a name="index-PLUS_005fEXPR"></a>
-<a name="index-MINUS_005fEXPR"></a>
-<a name="index-MULT_005fEXPR"></a>
-<a name="index-MULT_005fHIGHPART_005fEXPR"></a>
-<a name="index-RDIV_005fEXPR"></a>
-<a name="index-TRUNC_005fDIV_005fEXPR"></a>
-<a name="index-FLOOR_005fDIV_005fEXPR"></a>
-<a name="index-CEIL_005fDIV_005fEXPR"></a>
-<a name="index-ROUND_005fDIV_005fEXPR"></a>
-<a name="index-TRUNC_005fMOD_005fEXPR"></a>
-<a name="index-FLOOR_005fMOD_005fEXPR"></a>
-<a name="index-CEIL_005fMOD_005fEXPR"></a>
-<a name="index-ROUND_005fMOD_005fEXPR"></a>
-<a name="index-EXACT_005fDIV_005fEXPR"></a>
-<a name="index-LT_005fEXPR"></a>
-<a name="index-LE_005fEXPR"></a>
-<a name="index-GT_005fEXPR"></a>
-<a name="index-GE_005fEXPR"></a>
-<a name="index-EQ_005fEXPR"></a>
-<a name="index-NE_005fEXPR"></a>
-<a name="index-ORDERED_005fEXPR"></a>
-<a name="index-UNORDERED_005fEXPR"></a>
-<a name="index-UNLT_005fEXPR"></a>
-<a name="index-UNLE_005fEXPR"></a>
-<a name="index-UNGT_005fEXPR"></a>
-<a name="index-UNGE_005fEXPR"></a>
-<a name="index-UNEQ_005fEXPR"></a>
-<a name="index-LTGT_005fEXPR"></a>
-<a name="index-MODIFY_005fEXPR"></a>
-<a name="index-INIT_005fEXPR"></a>
-<a name="index-COMPOUND_005fEXPR"></a>
-<a name="index-COND_005fEXPR"></a>
-<a name="index-CALL_005fEXPR"></a>
-<a name="index-STMT_005fEXPR"></a>
-<a name="index-BIND_005fEXPR"></a>
-<a name="index-LOOP_005fEXPR"></a>
-<a name="index-EXIT_005fEXPR"></a>
-<a name="index-CLEANUP_005fPOINT_005fEXPR"></a>
-<a name="index-CONSTRUCTOR"></a>
-<a name="index-COMPOUND_005fLITERAL_005fEXPR"></a>
-<a name="index-SAVE_005fEXPR"></a>
-<a name="index-TARGET_005fEXPR"></a>
-<a name="index-VA_005fARG_005fEXPR"></a>
-<a name="index-ANNOTATE_005fEXPR"></a>
+<span id="Unary-and-Binary-Expressions-1"></span><h4 class="subsection">11.6.3 Unary and Binary Expressions</h4>
+<span id="index-NEGATE_005fEXPR"></span>
+<span id="index-ABS_005fEXPR"></span>
+<span id="index-ABSU_005fEXPR"></span>
+<span id="index-BIT_005fNOT_005fEXPR"></span>
+<span id="index-TRUTH_005fNOT_005fEXPR"></span>
+<span id="index-PREDECREMENT_005fEXPR"></span>
+<span id="index-PREINCREMENT_005fEXPR"></span>
+<span id="index-POSTDECREMENT_005fEXPR"></span>
+<span id="index-POSTINCREMENT_005fEXPR"></span>
+<span id="index-FIX_005fTRUNC_005fEXPR"></span>
+<span id="index-FLOAT_005fEXPR"></span>
+<span id="index-COMPLEX_005fEXPR"></span>
+<span id="index-CONJ_005fEXPR"></span>
+<span id="index-REALPART_005fEXPR"></span>
+<span id="index-IMAGPART_005fEXPR"></span>
+<span id="index-NON_005fLVALUE_005fEXPR"></span>
+<span id="index-NOP_005fEXPR"></span>
+<span id="index-CONVERT_005fEXPR"></span>
+<span id="index-FIXED_005fCONVERT_005fEXPR"></span>
+<span id="index-THROW_005fEXPR"></span>
+<span id="index-LSHIFT_005fEXPR"></span>
+<span id="index-RSHIFT_005fEXPR"></span>
+<span id="index-BIT_005fIOR_005fEXPR"></span>
+<span id="index-BIT_005fXOR_005fEXPR"></span>
+<span id="index-BIT_005fAND_005fEXPR"></span>
+<span id="index-TRUTH_005fANDIF_005fEXPR"></span>
+<span id="index-TRUTH_005fORIF_005fEXPR"></span>
+<span id="index-TRUTH_005fAND_005fEXPR"></span>
+<span id="index-TRUTH_005fOR_005fEXPR"></span>
+<span id="index-TRUTH_005fXOR_005fEXPR"></span>
+<span id="index-POINTER_005fPLUS_005fEXPR"></span>
+<span id="index-POINTER_005fDIFF_005fEXPR"></span>
+<span id="index-PLUS_005fEXPR"></span>
+<span id="index-MINUS_005fEXPR"></span>
+<span id="index-MULT_005fEXPR"></span>
+<span id="index-MULT_005fHIGHPART_005fEXPR"></span>
+<span id="index-RDIV_005fEXPR"></span>
+<span id="index-TRUNC_005fDIV_005fEXPR"></span>
+<span id="index-FLOOR_005fDIV_005fEXPR"></span>
+<span id="index-CEIL_005fDIV_005fEXPR"></span>
+<span id="index-ROUND_005fDIV_005fEXPR"></span>
+<span id="index-TRUNC_005fMOD_005fEXPR"></span>
+<span id="index-FLOOR_005fMOD_005fEXPR"></span>
+<span id="index-CEIL_005fMOD_005fEXPR"></span>
+<span id="index-ROUND_005fMOD_005fEXPR"></span>
+<span id="index-EXACT_005fDIV_005fEXPR"></span>
+<span id="index-LT_005fEXPR"></span>
+<span id="index-LE_005fEXPR"></span>
+<span id="index-GT_005fEXPR"></span>
+<span id="index-GE_005fEXPR"></span>
+<span id="index-EQ_005fEXPR"></span>
+<span id="index-NE_005fEXPR"></span>
+<span id="index-ORDERED_005fEXPR"></span>
+<span id="index-UNORDERED_005fEXPR"></span>
+<span id="index-UNLT_005fEXPR"></span>
+<span id="index-UNLE_005fEXPR"></span>
+<span id="index-UNGT_005fEXPR"></span>
+<span id="index-UNGE_005fEXPR"></span>
+<span id="index-UNEQ_005fEXPR"></span>
+<span id="index-LTGT_005fEXPR"></span>
+<span id="index-MODIFY_005fEXPR"></span>
+<span id="index-INIT_005fEXPR"></span>
+<span id="index-COMPOUND_005fEXPR"></span>
+<span id="index-COND_005fEXPR"></span>
+<span id="index-CALL_005fEXPR"></span>
+<span id="index-STMT_005fEXPR"></span>
+<span id="index-BIND_005fEXPR"></span>
+<span id="index-LOOP_005fEXPR"></span>
+<span id="index-EXIT_005fEXPR"></span>
+<span id="index-CLEANUP_005fPOINT_005fEXPR"></span>
+<span id="index-CONSTRUCTOR"></span>
+<span id="index-COMPOUND_005fLITERAL_005fEXPR"></span>
+<span id="index-SAVE_005fEXPR"></span>
+<span id="index-TARGET_005fEXPR"></span>
+<span id="index-VA_005fARG_005fEXPR"></span>
+<span id="index-ANNOTATE_005fEXPR"></span>
 
 <dl compact="compact">
 <dt><code>NEGATE_EXPR</code></dt>
@@ -174,6 +164,12 @@ or complex abs of a complex value, use the <code>BUILT_IN_CABS</code>,
 <code>BUILT_IN_CABSF</code> or <code>BUILT_IN_CABSL</code> builtins, as used
 to implement the C99 <code>cabs</code>, <code>cabsf</code> and <code>cabsl</code>
 built-in functions.
+</p>
+</dd>
+<dt><code>ABSU_EXPR</code></dt>
+<dd><p>These nodes represent the absolute value of the single operand in
+equivalent unsigned type such that <code>ABSU_EXPR</code> of <code>TYPE_MIN</code>
+is well defined.
 </p>
 </dd>
 <dt><code>BIT_NOT_EXPR</code></dt>
@@ -388,21 +384,23 @@ allows the backend to choose between the faster of <code>TRUNC_DIV_EXPR</code>,
 <dt><code>LE_EXPR</code></dt>
 <dt><code>GT_EXPR</code></dt>
 <dt><code>GE_EXPR</code></dt>
+<dt><code>LTGT_EXPR</code></dt>
 <dt><code>EQ_EXPR</code></dt>
 <dt><code>NE_EXPR</code></dt>
-<dd><p>These nodes represent the less than, less than or equal to, greater
-than, greater than or equal to, equal, and not equal comparison
-operators.  The first and second operands will either be both of integral
-type, both of floating type or both of vector type.  The result type of
-these expressions will always be of integral, boolean or signed integral
-vector type.  These operations return the result type&rsquo;s zero value for
-false, the result type&rsquo;s one value for true, and a vector whose elements
-are zero (false) or minus one (true) for vectors.
+<dd><p>These nodes represent the less than, less than or equal to, greater than,
+greater than or equal to, less or greater than, equal, and not equal
+comparison operators.  The first and second operands will either be both
+of integral type, both of floating type or both of vector type, except for
+LTGT_EXPR where they will only be both of floating type.  The result type
+of these expressions will always be of integral, boolean or signed integral
+vector type.  These operations return the result type&rsquo;s zero value for false,
+the result type&rsquo;s one value for true, and a vector whose elements are zero
+(false) or minus one (true) for vectors.
 </p>
 <p>For floating point comparisons, if we honor IEEE NaNs and either operand
 is NaN, then <code>NE_EXPR</code> always returns true and the remaining operators
 always return false.  On some targets, comparisons against an IEEE NaN,
-other than equality and inequality, may generate a floating point exception.
+other than equality and inequality, may generate a floating-point exception.
 </p>
 </dd>
 <dt><code>ORDERED_EXPR</code></dt>
@@ -422,15 +420,13 @@ and the result type&rsquo;s one value for true.
 <dt><code>UNGT_EXPR</code></dt>
 <dt><code>UNGE_EXPR</code></dt>
 <dt><code>UNEQ_EXPR</code></dt>
-<dt><code>LTGT_EXPR</code></dt>
 <dd><p>These nodes represent the unordered comparison operators.
 These operations take two floating point operands and determine whether
 the operands are unordered or are less than, less than or equal to,
 greater than, greater than or equal to, or equal respectively.  For
 example, <code>UNLT_EXPR</code> returns true if either operand is an IEEE
-NaN or the first operand is less than the second.  With the possible
-exception of <code>LTGT_EXPR</code>, all of these operations are guaranteed
-not to generate a floating point exception.  The result
+NaN or the first operand is less than the second.  All these operations
+are guaranteed not to generate a floating point exception.  The result
 type of these expressions will always be of integral or boolean type.
 These operations return the result type&rsquo;s zero value for false,
 and the result type&rsquo;s one value for true.
@@ -502,8 +498,8 @@ while the arguments themselves can be accessed with the <code>CALL_EXPR_ARG</cod
 macro.  The arguments are zero-indexed and numbered left-to-right.
 You can iterate over the arguments using <code>FOR_EACH_CALL_EXPR_ARG</code>, as in:
 </p>
-<div class="smallexample">
-<pre class="smallexample">tree call, arg;
+<div class="example">
+<pre class="example">tree call, arg;
 call_expr_arg_iterator iter;
 FOR_EACH_CALL_EXPR_ARG (arg, iter, call)
   /* arg is bound to successive arguments of call.  */
@@ -557,8 +553,8 @@ undefined.
 </p>
 </dd>
 <dt><code>COMPOUND_LITERAL_EXPR</code></dt>
-<dd><a name="index-COMPOUND_005fLITERAL_005fEXPR_005fDECL_005fEXPR"></a>
-<a name="index-COMPOUND_005fLITERAL_005fEXPR_005fDECL"></a>
+<dd><span id="index-COMPOUND_005fLITERAL_005fEXPR_005fDECL_005fEXPR"></span>
+<span id="index-COMPOUND_005fLITERAL_005fEXPR_005fDECL"></span>
 <p>These nodes represent ISO C99 compound literals.  The
 <code>COMPOUND_LITERAL_EXPR_DECL_EXPR</code> is a <code>DECL_EXPR</code>
 containing an anonymous <code>VAR_DECL</code> for
@@ -624,7 +620,7 @@ a value from <code>enum annot_expr_kind</code>, the third is an <code>INTEGER_CS
 <hr>
 <div class="header">
 <p>
-Next: <a href="Vectors.html#Vectors" accesskey="n" rel="next">Vectors</a>, Previous: <a href="Storage-References.html#Storage-References" accesskey="p" rel="prev">Storage References</a>, Up: <a href="Expression-trees.html#Expression-trees" accesskey="u" rel="up">Expression trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Vectors.html" accesskey="n" rel="next">Vectors</a>, Previous: <a href="Storage-References.html" accesskey="p" rel="prev">Storage References</a>, Up: <a href="Expression-trees.html" accesskey="u" rel="up">Expression trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

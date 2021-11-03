@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -229,6 +229,12 @@ The program has exited
 thrown at an exception-related catchpoint.  See <a href="Set-Catchpoints.html#Set-Catchpoints">Set Catchpoints</a>.
 </p>
 </dd>
+<dt><code>$_ada_exception</code></dt>
+<dd><p>The variable <code>$_ada_exception</code> is set to the address of the
+exception being caught or thrown at an Ada exception-related
+catchpoint.  See <a href="Set-Catchpoints.html#Set-Catchpoints">Set Catchpoints</a>.
+</p>
+</dd>
 <dt><code>$_probe_argc</code></dt>
 <dt><code>$_probe_arg0&hellip;$_probe_arg11</code></dt>
 <dd><p>Arguments to a static probe.  See <a href="Static-Probe-Points.html#Static-Probe-Points">Static Probe Points</a>.
@@ -254,13 +260,13 @@ For example, it will be empty before you execute the <code>run</code> command.
 <dd><a name="index-_0024_005ftlb_002c-convenience-variable"></a>
 <p>The variable <code>$_tlb</code> is automatically set when debugging
 applications running on MS-Windows in native mode or connected to
-gdbserver that supports the <code>qGetTIBAddr</code> request. 
+gdbserver that supports the <code>qGetTIBAddr</code> request.
 See <a href="General-Query-Packets.html#General-Query-Packets">General Query Packets</a>.
 This variable contains the address of the thread information block.
 </p>
 </dd>
 <dt><code>$_inferior</code></dt>
-<dd><p>The number of the current inferior.  See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Debugging Multiple Inferiors and Programs</a>.
+<dd><p>The number of the current inferior.  See <a href="Inferiors-Connections-and-Programs.html#Inferiors-Connections-and-Programs">Debugging Multiple Inferiors Connections and Programs</a>.
 </p>
 </dd>
 <dt><code>$_thread</code></dt>
@@ -269,6 +275,34 @@ This variable contains the address of the thread information block.
 </dd>
 <dt><code>$_gthread</code></dt>
 <dd><p>The global number of the current thread.  See <a href="Threads.html#global-thread-numbers">global thread numbers</a>.
+</p>
+</dd>
+<dt><code>$_gdb_major</code></dt>
+<dt><code>$_gdb_minor</code></dt>
+<dd><a name="index-_0024_005fgdb_005fmajor_002c-convenience-variable"></a>
+<a name="index-_0024_005fgdb_005fminor_002c-convenience-variable"></a>
+<p>The major and minor version numbers of the running <small>GDB</small>.
+Development snapshots and pretest versions have their minor version
+incremented by one; thus, <small>GDB</small> pretest 9.11.90 will produce
+the value 12 for <code>$_gdb_minor</code>.  These variables allow you to
+write scripts that work with different versions of <small>GDB</small>
+without errors caused by features unavailable in some of those
+versions.
+</p>
+</dd>
+<dt><code>$_shell_exitcode</code></dt>
+<dt><code>$_shell_exitsignal</code></dt>
+<dd><a name="index-_0024_005fshell_005fexitcode_002c-convenience-variable"></a>
+<a name="index-_0024_005fshell_005fexitsignal_002c-convenience-variable"></a>
+<a name="index-shell-command_002c-exit-code"></a>
+<a name="index-shell-command_002c-exit-signal"></a>
+<a name="index-exit-status-of-shell-commands"></a>
+<p><small>GDB</small> commands such as <code>shell</code> and <code>|</code> are launching
+shell commands.  When a launched command terminates, <small>GDB</small>
+automatically maintains the variables <code>$_shell_exitcode</code>
+and <code>$_shell_exitsignal</code> according to the exit status of the last
+launched command.  These variables are set and used similarly to
+the variables <code>$_exitcode</code> and <code>$_exitsignal</code>.
 </p>
 </dd>
 </dl>

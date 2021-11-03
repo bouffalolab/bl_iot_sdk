@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>AVR Opcodes (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="AVR_002dDependent.html#AVR_002dDependent" rel="up" title="AVR-Dependent">
-<link href="AVR-Pseudo-Instructions.html#AVR-Pseudo-Instructions" rel="next" title="AVR Pseudo Instructions">
-<link href="AVR_002dModifiers.html#AVR_002dModifiers" rel="prev" title="AVR-Modifiers">
+<link href="AVR_002dDependent.html" rel="up" title="AVR-Dependent">
+<link href="AVR-Pseudo-Instructions.html" rel="next" title="AVR Pseudo Instructions">
+<link href="AVR_002dModifiers.html" rel="prev" title="AVR-Modifiers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,27 +50,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="AVR-Opcodes"></a>
-<div class="header">
+<span id="AVR-Opcodes"></span><div class="header">
 <p>
-Next: <a href="AVR-Pseudo-Instructions.html#AVR-Pseudo-Instructions" accesskey="n" rel="next">AVR Pseudo Instructions</a>, Previous: <a href="AVR-Syntax.html#AVR-Syntax" accesskey="p" rel="prev">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html#AVR_002dDependent" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR-Pseudo-Instructions.html" accesskey="n" rel="next">AVR Pseudo Instructions</a>, Previous: <a href="AVR-Syntax.html" accesskey="p" rel="prev">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Opcodes-4"></a>
-<h4 class="subsection">9.5.3 Opcodes</h4>
+<span id="Opcodes-4"></span><h4 class="subsection">9.5.3 Opcodes</h4>
 
-<a name="index-AVR-opcode-summary"></a>
-<a name="index-opcode-summary_002c-AVR"></a>
-<a name="index-mnemonics_002c-AVR"></a>
-<a name="index-instruction-summary_002c-AVR"></a>
+<span id="index-AVR-opcode-summary"></span>
+<span id="index-opcode-summary_002c-AVR"></span>
+<span id="index-mnemonics_002c-AVR"></span>
+<span id="index-instruction-summary_002c-AVR"></span>
 <p>For detailed information on the AVR machine instruction set, see
 <a href="www.atmel.com/products/AVR">www.atmel.com/products/AVR</a>.
 </p>
 <p><code>as</code> implements all the standard AVR opcodes.
 The following table summarizes the AVR opcodes, and their arguments.
 </p>
-<div class="smallexample">
-<pre class="smallexample"><i>Legend:</i>
+<div class="example">
+<pre class="example"><i>Legend:</i>
    r   <span class="roman">any register</span>
    d   <span class="roman">&lsquo;ldi&rsquo; register (r16-r31)</span>
    v   <span class="roman">&lsquo;movw&rsquo; even register (r0, r2, ..., r28, r30)</span>
@@ -222,7 +211,7 @@ The following table summarizes the AVR opcodes, and their arguments.
 <hr>
 <div class="header">
 <p>
-Next: <a href="AVR-Pseudo-Instructions.html#AVR-Pseudo-Instructions" accesskey="n" rel="next">AVR Pseudo Instructions</a>, Previous: <a href="AVR-Syntax.html#AVR-Syntax" accesskey="p" rel="prev">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html#AVR_002dDependent" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR-Pseudo-Instructions.html" accesskey="n" rel="next">AVR Pseudo Instructions</a>, Previous: <a href="AVR-Syntax.html" accesskey="p" rel="prev">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

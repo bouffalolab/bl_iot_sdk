@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Scalar evolutions (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Loop-Analysis-and-Representation.html#Loop-Analysis-and-Representation" rel="up" title="Loop Analysis and Representation">
-<link href="loop_002div.html#loop_002div" rel="next" title="loop-iv">
-<link href="LCSSA.html#LCSSA" rel="prev" title="LCSSA">
+<link href="Loop-Analysis-and-Representation.html" rel="up" title="Loop Analysis and Representation">
+<link href="loop_002div.html" rel="next" title="loop-iv">
+<link href="LCSSA.html" rel="prev" title="LCSSA">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,16 +58,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Scalar-evolutions"></a>
-<div class="header">
+<span id="Scalar-evolutions"></span><div class="header">
 <p>
-Next: <a href="loop_002div.html#loop_002div" accesskey="n" rel="next">loop-iv</a>, Previous: <a href="LCSSA.html#LCSSA" accesskey="p" rel="prev">LCSSA</a>, Up: <a href="Loop-Analysis-and-Representation.html#Loop-Analysis-and-Representation" accesskey="u" rel="up">Loop Analysis and Representation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="loop_002div.html" accesskey="n" rel="next">loop-iv</a>, Previous: <a href="LCSSA.html" accesskey="p" rel="prev">LCSSA</a>, Up: <a href="Loop-Analysis-and-Representation.html" accesskey="u" rel="up">Loop Analysis and Representation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Scalar-evolutions-1"></a>
-<h3 class="section">16.5 Scalar evolutions</h3>
-<a name="index-Scalar-evolutions"></a>
-<a name="index-IV-analysis-on-GIMPLE"></a>
+<span id="Scalar-evolutions-1"></span><h3 class="section">16.5 Scalar evolutions</h3>
+<span id="index-Scalar-evolutions"></span>
+<span id="index-IV-analysis-on-GIMPLE"></span>
 
 <p>Scalar evolutions (SCEV) are used to represent results of induction
 variable analysis on GIMPLE.  They enable us to represent variables with
@@ -118,8 +107,8 @@ and step must be the same.  A variable has evolution
 <code>POLYNOMIAL_CHREC(base, step, loop)</code> if it is (in the specified
 loop) equivalent to <code>x_1</code> in the following example
 </p>
-<div class="smallexample">
-<pre class="smallexample">while (&hellip;)
+<div class="example">
+<pre class="example">while (&hellip;)
   {
     x_1 = phi (base, x_2);
     x_2 = x_1 + step;
@@ -141,7 +130,7 @@ is a loop-invariant base and step.
 <hr>
 <div class="header">
 <p>
-Next: <a href="loop_002div.html#loop_002div" accesskey="n" rel="next">loop-iv</a>, Previous: <a href="LCSSA.html#LCSSA" accesskey="p" rel="prev">LCSSA</a>, Up: <a href="Loop-Analysis-and-Representation.html#Loop-Analysis-and-Representation" accesskey="u" rel="up">Loop Analysis and Representation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="loop_002div.html" accesskey="n" rel="next">loop-iv</a>, Previous: <a href="LCSSA.html" accesskey="p" rel="prev">LCSSA</a>, Up: <a href="Loop-Analysis-and-Representation.html" accesskey="u" rel="up">Loop Analysis and Representation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Maintaining the CFG (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Control-Flow.html#Control-Flow" rel="up" title="Control Flow">
-<link href="Liveness-information.html#Liveness-information" rel="next" title="Liveness information">
-<link href="Profile-information.html#Profile-information" rel="prev" title="Profile information">
+<link href="Control-Flow.html" rel="up" title="Control Flow">
+<link href="Liveness-information.html" rel="next" title="Liveness information">
+<link href="Profile-information.html" rel="prev" title="Profile information">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Maintaining-the-CFG"></a>
-<div class="header">
+<span id="Maintaining-the-CFG"></span><div class="header">
 <p>
-Next: <a href="Liveness-information.html#Liveness-information" accesskey="n" rel="next">Liveness information</a>, Previous: <a href="Profile-information.html#Profile-information" accesskey="p" rel="prev">Profile information</a>, Up: <a href="Control-Flow.html#Control-Flow" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Liveness-information.html" accesskey="n" rel="next">Liveness information</a>, Previous: <a href="Profile-information.html" accesskey="p" rel="prev">Profile information</a>, Up: <a href="Control-Flow.html" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Maintaining-the-CFG-1"></a>
-<h3 class="section">15.4 Maintaining the CFG</h3>
-<a name="index-cfghooks_002eh"></a>
+<span id="Maintaining-the-CFG-1"></span><h3 class="section">15.4 Maintaining the CFG</h3>
+<span id="index-cfghooks_002eh"></span>
 
 <p>An important task of each compiler pass is to keep both the control
 flow graph and all profile information up-to-date.  Reconstruction of
@@ -100,14 +89,14 @@ when modifying instructions, so there rarely is a need to move them
 manually (such as in case someone wants to output instruction outside
 basic block explicitly).
 </p>
-<a name="index-BLOCK_005fFOR_005fINSN_002c-gimple_005fbb"></a>
+<span id="index-BLOCK_005fFOR_005fINSN_002c-gimple_005fbb"></span>
 <p>In the RTL representation, each instruction has a
 <code>BLOCK_FOR_INSN</code> value that represents pointer to the basic block
 that contains the instruction.  In the <code>GIMPLE</code> representation, the
 function <code>gimple_bb</code> returns a pointer to the basic block
 containing the queried statement.
 </p>
-<a name="index-GIMPLE-statement-iterators-1"></a>
+<span id="index-GIMPLE-statement-iterators-1"></span>
 <p>When changes need to be applied to a function in its <code>GIMPLE</code>
 representation, <em>GIMPLE statement iterators</em> should be used.  These
 iterators provide an integrated abstraction of the flow graph and the
@@ -117,42 +106,42 @@ available, including the following:
 </p>
 <dl compact="compact">
 <dt><code>gsi_start</code>
-<a name="index-gsi_005fstart-1"></a>
+<span id="index-gsi_005fstart-1"></span>
 </dt>
 <dd><p>This function initializes a <code>gimple_stmt_iterator</code> that points to
 the first non-empty statement in a basic block.
 </p>
 </dd>
 <dt><code>gsi_last</code>
-<a name="index-gsi_005flast-1"></a>
+<span id="index-gsi_005flast-1"></span>
 </dt>
 <dd><p>This function initializes a <code>gimple_stmt_iterator</code> that points to
 the last statement in a basic block.
 </p>
 </dd>
 <dt><code>gsi_end_p</code>
-<a name="index-gsi_005fend_005fp-1"></a>
+<span id="index-gsi_005fend_005fp-1"></span>
 </dt>
 <dd><p>This predicate is <code>true</code> if a <code>gimple_stmt_iterator</code>
 represents the end of a basic block.
 </p>
 </dd>
 <dt><code>gsi_next</code>
-<a name="index-gsi_005fnext-1"></a>
+<span id="index-gsi_005fnext-1"></span>
 </dt>
 <dd><p>This function takes a <code>gimple_stmt_iterator</code> and makes it point to
 its successor.
 </p>
 </dd>
 <dt><code>gsi_prev</code>
-<a name="index-gsi_005fprev-1"></a>
+<span id="index-gsi_005fprev-1"></span>
 </dt>
 <dd><p>This function takes a <code>gimple_stmt_iterator</code> and makes it point to
 its predecessor.
 </p>
 </dd>
 <dt><code>gsi_insert_after</code>
-<a name="index-gsi_005finsert_005fafter-1"></a>
+<span id="index-gsi_005finsert_005fafter-1"></span>
 </dt>
 <dd><p>This function inserts a statement after the <code>gimple_stmt_iterator</code>
 passed in.  The final parameter determines whether the statement
@@ -161,7 +150,7 @@ pointing to the original statement.
 </p>
 </dd>
 <dt><code>gsi_insert_before</code>
-<a name="index-gsi_005finsert_005fbefore-1"></a>
+<span id="index-gsi_005finsert_005fbefore-1"></span>
 </dt>
 <dd><p>This function inserts a statement before the <code>gimple_stmt_iterator</code>
 passed in.  The final parameter determines whether the statement
@@ -170,20 +159,20 @@ pointing to the original  statement.
 </p>
 </dd>
 <dt><code>gsi_remove</code>
-<a name="index-gsi_005fremove-1"></a>
+<span id="index-gsi_005fremove-1"></span>
 </dt>
 <dd><p>This function removes the <code>gimple_stmt_iterator</code> passed in and
 rechains the remaining statements in a basic block, if any.
 </p></dd>
 </dl>
 
-<a name="index-BB_005fHEAD_002c-BB_005fEND"></a>
+<span id="index-BB_005fHEAD_002c-BB_005fEND"></span>
 <p>In the RTL representation, the macros <code>BB_HEAD</code> and <code>BB_END</code>
 may be used to get the head and end <code>rtx</code> of a basic block.  No
 abstract iterators are defined for traversing the insn chain, but you
-can just use <code>NEXT_INSN</code> and <code>PREV_INSN</code> instead.  See <a href="Insns.html#Insns">Insns</a>.
+can just use <code>NEXT_INSN</code> and <code>PREV_INSN</code> instead.  See <a href="Insns.html">Insns</a>.
 </p>
-<a name="index-purge_005fdead_005fedges-1"></a>
+<span id="index-purge_005fdead_005fedges-1"></span>
 <p>Usually a code manipulating pass simplifies the instruction stream and
 the flow of control, possibly eliminating some edges.  This may for
 example happen when a conditional jump is replaced with an
@@ -193,7 +182,7 @@ manually.  However only few cases occur in practice.  The pass may
 call <code>purge_dead_edges</code> on a given basic block to remove
 superfluous edges, if any.
 </p>
-<a name="index-redirect_005fedge_005fand_005fbranch_002c-redirect_005fjump"></a>
+<span id="index-redirect_005fedge_005fand_005fbranch_002c-redirect_005fjump"></span>
 <p>Another common scenario is redirection of branch instructions, but
 this is best modeled as redirection of edges in the control flow graph
 and thus use of <code>redirect_edge_and_branch</code> is preferred over more
@@ -201,7 +190,7 @@ low level functions, such as <code>redirect_jump</code> that operate on RTL
 chain only.  The CFG hooks defined in <samp>cfghooks.h</samp> should provide
 the complete API required for manipulating and maintaining the CFG.
 </p>
-<a name="index-split_005fblock"></a>
+<span id="index-split_005fblock"></span>
 <p>It is also possible that a pass has to insert control flow instruction
 into the middle of a basic block, thus creating an entry point in the
 middle of the basic block, which is impossible by definition: The
@@ -210,11 +199,11 @@ head of the basic block.  The CFG hook <code>split_block</code> may be used
 when an instruction in the middle of a basic block has to become the
 target of a jump or branch instruction.
 </p>
-<a name="index-insert_005finsn_005fon_005fedge"></a>
-<a name="index-commit_005fedge_005finsertions"></a>
-<a name="index-gsi_005finsert_005fon_005fedge-1"></a>
-<a name="index-gsi_005fcommit_005fedge_005finserts-1"></a>
-<a name="index-edge-splitting"></a>
+<span id="index-insert_005finsn_005fon_005fedge"></span>
+<span id="index-commit_005fedge_005finsertions"></span>
+<span id="index-gsi_005finsert_005fon_005fedge-1"></span>
+<span id="index-gsi_005fcommit_005fedge_005finserts-1"></span>
+<span id="index-edge-splitting"></span>
 <p>For a global optimizer, a common operation is to split edges in the
 flow graph and insert instructions on them.  In the RTL
 representation, this can be easily done using the
@@ -228,8 +217,8 @@ includes the creation of new basic blocks where needed.  In the
 iterator on an edge, and <code>gsi_commit_edge_inserts</code> which flushes
 the instruction to actual instruction stream.
 </p>
-<a name="index-verify_005fflow_005finfo"></a>
-<a name="index-CFG-verification"></a>
+<span id="index-verify_005fflow_005finfo"></span>
+<span id="index-CFG-verification"></span>
 <p>While debugging the optimization pass, the <code>verify_flow_info</code>
 function may be useful to find bugs in the control flow graph updating
 code.
@@ -238,7 +227,7 @@ code.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Liveness-information.html#Liveness-information" accesskey="n" rel="next">Liveness information</a>, Previous: <a href="Profile-information.html#Profile-information" accesskey="p" rel="prev">Profile information</a>, Up: <a href="Control-Flow.html#Control-Flow" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Liveness-information.html" accesskey="n" rel="next">Liveness information</a>, Previous: <a href="Profile-information.html" accesskey="p" rel="prev">Profile information</a>, Up: <a href="Control-Flow.html" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

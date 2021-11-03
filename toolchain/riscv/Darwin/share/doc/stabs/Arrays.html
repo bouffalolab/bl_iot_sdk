@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Arrays (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Types.html#Types" rel="up" title="Types">
-<link href="Strings.html#Strings" rel="next" title="Strings">
-<link href="Subranges.html#Subranges" rel="prev" title="Subranges">
+<link href="Types.html" rel="up" title="Types">
+<link href="Strings.html" rel="next" title="Strings">
+<link href="Subranges.html" rel="prev" title="Subranges">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Arrays"></a>
-<div class="header">
+<span id="Arrays"></span><div class="header">
 <p>
-Next: <a href="Strings.html#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href="Subranges.html#Subranges" accesskey="p" rel="prev">Subranges</a>, Up: <a href="Types.html#Types" accesskey="u" rel="up">Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Strings.html" accesskey="n" rel="next">Strings</a>, Previous: <a href="Subranges.html" accesskey="p" rel="prev">Subranges</a>, Up: <a href="Types.html" accesskey="u" rel="up">Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Array-Types"></a>
-<h3 class="section">5.5 Array Types</h3>
+<span id="Array-Types"></span><h3 class="section">5.5 Array Types</h3>
 
 <p>Arrays use the &lsquo;<samp>a</samp>&rsquo; type descriptor.  Following the type descriptor
 is the type of the index and the type of the array elements.  If the
@@ -75,7 +64,7 @@ appear to be any way to tell where the types are separated.  In an
 effort to clean up this mess, IBM documents the two types as being
 separated by a semicolon, and a range type as not ending in a semicolon
 (but this is not right for range types which are not array indexes,
-see <a href="Subranges.html#Subranges">Subranges</a>).  I think probably the best solution is to specify
+see <a href="Subranges.html">Subranges</a>).  I think probably the best solution is to specify
 that a semicolon ends a range type, and that the index type and element
 type of an array are separated by a semicolon, but that if the index
 type is a range type, the extra semicolon can be omitted.  GDB (at least
@@ -84,7 +73,7 @@ range anyway; I&rsquo;m not sure about dbx.
 </p>
 <p>It is well established, and widely used, that the type of the index,
 unlike most types found in the stabs, is merely a type definition, not
-type information (see <a href="String-Field.html#String-Field">String Field</a>) (that is, it need not start with
+type information (see <a href="String-Field.html">String Field</a>) (that is, it need not start with
 &lsquo;<samp><var>type-number</var>=</samp>&rsquo; if it is defining a new type).  According to a
 comment in GDB, this is also true of the type of the array elements; it
 gives &lsquo;<samp>ar1;1;10;ar1;1;10;4</samp>&rsquo; as a legitimate way to express a two
@@ -121,7 +110,7 @@ closely than normal, saving memory at the expense of speed.  For
 example, an array of 3-byte objects might, if unpacked, have each
 element aligned on a 4-byte boundary, but if packed, have no padding.
 One way to specify that something is packed is with type attributes
-(see <a href="String-Field.html#String-Field">String Field</a>).  In the case of arrays, another is to use the
+(see <a href="String-Field.html">String Field</a>).  In the case of arrays, another is to use the
 &lsquo;<samp>P</samp>&rsquo; type descriptor instead of &lsquo;<samp>a</samp>&rsquo;.  Other than specifying a
 packed array, &lsquo;<samp>P</samp>&rsquo; is identical to &lsquo;<samp>a</samp>&rsquo;.
 </p>
@@ -149,7 +138,7 @@ specifies the type of the array elements.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Strings.html#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href="Subranges.html#Subranges" accesskey="p" rel="prev">Subranges</a>, Up: <a href="Types.html#Types" accesskey="u" rel="up">Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Strings.html" accesskey="n" rel="next">Strings</a>, Previous: <a href="Subranges.html" accesskey="p" rel="prev">Subranges</a>, Up: <a href="Types.html" accesskey="u" rel="up">Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Rational Conversions (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Rational-Number-Functions.html#Rational-Number-Functions" rel="up" title="Rational Number Functions">
-<link href="Rational-Arithmetic.html#Rational-Arithmetic" rel="next" title="Rational Arithmetic">
-<link href="Initializing-Rationals.html#Initializing-Rationals" rel="prev" title="Initializing Rationals">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Rational-Number-Functions.html" rel="up" title="Rational Number Functions">
+<link href="Rational-Arithmetic.html" rel="next" title="Rational Arithmetic">
+<link href="Initializing-Rationals.html" rel="prev" title="Initializing Rationals">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Rational-Conversions"></a>
-<div class="header">
+<span id="Rational-Conversions"></span><div class="header">
 <p>
-Next: <a href="Rational-Arithmetic.html#Rational-Arithmetic" accesskey="n" rel="next">Rational Arithmetic</a>, Previous: <a href="Initializing-Rationals.html#Initializing-Rationals" accesskey="p" rel="prev">Initializing Rationals</a>, Up: <a href="Rational-Number-Functions.html#Rational-Number-Functions" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rational-Arithmetic.html" accesskey="n" rel="next">Rational Arithmetic</a>, Previous: <a href="Initializing-Rationals.html" accesskey="p" rel="prev">Initializing Rationals</a>, Up: <a href="Rational-Number-Functions.html" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Conversion-Functions-1"></a>
-<h3 class="section">6.2 Conversion Functions</h3>
-<a name="index-Rational-conversion-functions"></a>
-<a name="index-Conversion-functions-1"></a>
+<span id="Conversion-Functions-1"></span><h3 class="section">6.2 Conversion Functions</h3>
+<span id="index-Rational-conversion-functions"></span>
+<span id="index-Conversion-functions-1"></span>
 
 <dl>
-<dt><a name="index-mpq_005fget_005fd"></a>Function: <em>double</em> <strong>mpq_get_d</strong> <em>(const mpq_t <var>op</var>)</em></dt>
+<dt id="index-mpq_005fget_005fd">Function: <em>double</em> <strong>mpq_get_d</strong> <em>(const mpq_t <var>op</var>)</em></dt>
 <dd><p>Convert <var>op</var> to a <code>double</code>, truncating if necessary (i.e. rounding
 towards zero).
 </p>
@@ -82,20 +71,20 @@ Hardware overflow, underflow and denorm traps may or may not occur.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpq_005fset_005fd"></a>Function: <em>void</em> <strong>mpq_set_d</strong> <em>(mpq_t <var>rop</var>, double <var>op</var>)</em></dt>
-<dt><a name="index-mpq_005fset_005ff"></a>Function: <em>void</em> <strong>mpq_set_f</strong> <em>(mpq_t <var>rop</var>, const mpf_t <var>op</var>)</em></dt>
+<dt id="index-mpq_005fset_005fd">Function: <em>void</em> <strong>mpq_set_d</strong> <em>(mpq_t <var>rop</var>, double <var>op</var>)</em></dt>
+<dt id="index-mpq_005fset_005ff">Function: <em>void</em> <strong>mpq_set_f</strong> <em>(mpq_t <var>rop</var>, const mpf_t <var>op</var>)</em></dt>
 <dd><p>Set <var>rop</var> to the value of <var>op</var>.  There is no rounding, this conversion
 is exact.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpq_005fget_005fstr"></a>Function: <em>char *</em> <strong>mpq_get_str</strong> <em>(char *<var>str</var>, int <var>base</var>, const mpq_t <var>op</var>)</em></dt>
+<dt id="index-mpq_005fget_005fstr">Function: <em>char *</em> <strong>mpq_get_str</strong> <em>(char *<var>str</var>, int <var>base</var>, const mpq_t <var>op</var>)</em></dt>
 <dd><p>Convert <var>op</var> to a string of digits in base <var>base</var>.  The base may vary
 from 2 to 36.  The string will be of the form &lsquo;<samp>num/den</samp>&rsquo;, or if the
 denominator is 1 then just &lsquo;<samp>num</samp>&rsquo;.
 </p>
 <p>If <var>str</var> is <code>NULL</code>, the result string is allocated using the current
-allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be
+allocation function (see <a href="Custom-Allocation.html">Custom Allocation</a>).  The block will be
 <code>strlen(str)+1</code> bytes, that being exactly enough for the string and
 null-terminator.
 </p>

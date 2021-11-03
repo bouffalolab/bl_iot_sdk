@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>I/O of Integers (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Integer-Functions.html#Integer-Functions" rel="up" title="Integer Functions">
-<link href="Integer-Random-Numbers.html#Integer-Random-Numbers" rel="next" title="Integer Random Numbers">
-<link href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling" rel="prev" title="Integer Logic and Bit Fiddling">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Integer-Functions.html" rel="up" title="Integer Functions">
+<link href="Integer-Random-Numbers.html" rel="next" title="Integer Random Numbers">
+<link href="Integer-Logic-and-Bit-Fiddling.html" rel="prev" title="Integer Logic and Bit Fiddling">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="I_002fO-of-Integers"></a>
-<div class="header">
+<span id="I_002fO-of-Integers"></span><div class="header">
 <p>
-Next: <a href="Integer-Random-Numbers.html#Integer-Random-Numbers" accesskey="n" rel="next">Integer Random Numbers</a>, Previous: <a href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling" accesskey="p" rel="prev">Integer Logic and Bit Fiddling</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Integer-Random-Numbers.html" accesskey="n" rel="next">Integer Random Numbers</a>, Previous: <a href="Integer-Logic-and-Bit-Fiddling.html" accesskey="p" rel="prev">Integer Logic and Bit Fiddling</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Input-and-Output-Functions"></a>
-<h3 class="section">5.12 Input and Output Functions</h3>
-<a name="index-Integer-input-and-output-functions"></a>
-<a name="index-Input-functions"></a>
-<a name="index-Output-functions"></a>
-<a name="index-I_002fO-functions"></a>
+<span id="Input-and-Output-Functions"></span><h3 class="section">5.12 Input and Output Functions</h3>
+<span id="index-Integer-input-and-output-functions"></span>
+<span id="index-Input-functions"></span>
+<span id="index-Output-functions"></span>
+<span id="index-I_002fO-functions"></span>
 
 <p>Functions that perform input from a stdio stream, and functions that output to
 a stdio stream, of <code>mpz</code> numbers.  Passing a <code>NULL</code> pointer for a
@@ -81,10 +70,10 @@ a stdio stream, of <code>mpz</code> numbers.  Passing a <code>NULL</code> pointe
 before <samp>gmp.h</samp>, since that will allow <samp>gmp.h</samp> to define prototypes
 for these functions.
 </p>
-<p>See also <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a> and <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>.
+<p>See also <a href="Formatted-Output.html">Formatted Output</a> and <a href="Formatted-Input.html">Formatted Input</a>.
 </p>
 <dl>
-<dt><a name="index-mpz_005fout_005fstr"></a>Function: <em>size_t</em> <strong>mpz_out_str</strong> <em>(FILE *<var>stream</var>, int <var>base</var>, const mpz_t <var>op</var>)</em></dt>
+<dt id="index-mpz_005fout_005fstr">Function: <em>size_t</em> <strong>mpz_out_str</strong> <em>(FILE *<var>stream</var>, int <var>base</var>, const mpz_t <var>op</var>)</em></dt>
 <dd><p>Output <var>op</var> on stdio stream <var>stream</var>, as a string of digits in base
 <var>base</var>.  The base argument may vary from 2 to 62 or from -2 to
 -36.
@@ -98,7 +87,7 @@ are used.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005finp_005fstr"></a>Function: <em>size_t</em> <strong>mpz_inp_str</strong> <em>(mpz_t <var>rop</var>, FILE *<var>stream</var>, int <var>base</var>)</em></dt>
+<dt id="index-mpz_005finp_005fstr">Function: <em>size_t</em> <strong>mpz_inp_str</strong> <em>(mpz_t <var>rop</var>, FILE *<var>stream</var>, int <var>base</var>)</em></dt>
 <dd><p>Input a possibly white-space preceded string in base <var>base</var> from stdio
 stream <var>stream</var>, and put the read integer in <var>rop</var>.
 </p>
@@ -114,7 +103,7 @@ the same value.  For bases 37 to 62, upper-case letter represent the usual
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fout_005fraw"></a>Function: <em>size_t</em> <strong>mpz_out_raw</strong> <em>(FILE *<var>stream</var>, const mpz_t <var>op</var>)</em></dt>
+<dt id="index-mpz_005fout_005fraw">Function: <em>size_t</em> <strong>mpz_out_raw</strong> <em>(FILE *<var>stream</var>, const mpz_t <var>op</var>)</em></dt>
 <dd><p>Output <var>op</var> on stdio stream <var>stream</var>, in raw binary format.  The
 integer is written in a portable format, with 4 bytes of size information, and
 that many bytes of limbs.  Both the size and the limbs are written in
@@ -129,7 +118,7 @@ of changes necessary for compatibility between 32-bit and 64-bit machines.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005finp_005fraw"></a>Function: <em>size_t</em> <strong>mpz_inp_raw</strong> <em>(mpz_t <var>rop</var>, FILE *<var>stream</var>)</em></dt>
+<dt id="index-mpz_005finp_005fraw">Function: <em>size_t</em> <strong>mpz_inp_raw</strong> <em>(mpz_t <var>rop</var>, FILE *<var>stream</var>)</em></dt>
 <dd><p>Input from stdio stream <var>stream</var> in the format written by
 <code>mpz_out_raw</code>, and put the result in <var>rop</var>.  Return the number of
 bytes read, or if an error occurred, return 0.
@@ -143,7 +132,7 @@ machines.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Integer-Random-Numbers.html#Integer-Random-Numbers" accesskey="n" rel="next">Integer Random Numbers</a>, Previous: <a href="Integer-Logic-and-Bit-Fiddling.html#Integer-Logic-and-Bit-Fiddling" accesskey="p" rel="prev">Integer Logic and Bit Fiddling</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Integer-Random-Numbers.html" accesskey="n" rel="next">Integer Random Numbers</a>, Previous: <a href="Integer-Logic-and-Bit-Fiddling.html" accesskey="p" rel="prev">Integer Logic and Bit Fiddling</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

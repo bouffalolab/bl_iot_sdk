@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>RTL Classes (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="RTL.html#RTL" rel="up" title="RTL">
-<link href="Accessors.html#Accessors" rel="next" title="Accessors">
-<link href="RTL-Objects.html#RTL-Objects" rel="prev" title="RTL Objects">
+<link href="RTL.html" rel="up" title="RTL">
+<link href="Accessors.html" rel="next" title="Accessors">
+<link href="RTL-Objects.html" rel="prev" title="RTL Objects">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,18 +58,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="RTL-Classes"></a>
-<div class="header">
+<span id="RTL-Classes"></span><div class="header">
 <p>
-Next: <a href="Accessors.html#Accessors" accesskey="n" rel="next">Accessors</a>, Previous: <a href="RTL-Objects.html#RTL-Objects" accesskey="p" rel="prev">RTL Objects</a>, Up: <a href="RTL.html#RTL" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accessors.html" accesskey="n" rel="next">Accessors</a>, Previous: <a href="RTL-Objects.html" accesskey="p" rel="prev">RTL Objects</a>, Up: <a href="RTL.html" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="RTL-Classes-and-Formats"></a>
-<h3 class="section">14.2 RTL Classes and Formats</h3>
-<a name="index-RTL-classes"></a>
-<a name="index-classes-of-RTX-codes"></a>
-<a name="index-RTX-codes_002c-classes-of"></a>
-<a name="index-GET_005fRTX_005fCLASS"></a>
+<span id="RTL-Classes-and-Formats"></span><h3 class="section">14.2 RTL Classes and Formats</h3>
+<span id="index-RTL-classes"></span>
+<span id="index-classes-of-RTX-codes"></span>
+<span id="index-RTX-codes_002c-classes-of"></span>
+<span id="index-GET_005fRTX_005fCLASS"></span>
 
 <p>The various expression codes are divided into several <em>classes</em>,
 which are represented by single characters.  You can determine the class
@@ -90,7 +79,8 @@ Currently, <samp>rtl.def</samp> defines these classes:
 <dd><p>An RTX code that represents an actual object, such as a register
 (<code>REG</code>) or a memory location (<code>MEM</code>, <code>SYMBOL_REF</code>).
 <code>LO_SUM</code>) is also included; instead, <code>SUBREG</code> and
-<code>STRICT_LOW_PART</code> are not in this class, but in class <code>x</code>.
+<code>STRICT_LOW_PART</code> are not in this class, but in class
+<code>RTX_EXTRA</code>.
 </p>
 </dd>
 <dt><code>RTX_CONST_OBJ</code></dt>
@@ -117,7 +107,7 @@ or <code>ORDERED</code>.
 <dt><code>RTX_COMM_ARITH</code></dt>
 <dd><p>An RTX code for a commutative binary operation, such as <code>PLUS</code> or
 <code>AND</code>.  <code>NE</code> and <code>EQ</code> are comparisons, so they have class
-<code>&lt;</code>.
+<code>RTX_COMM_COMPARE</code>.
 </p>
 </dd>
 <dt><code>RTX_BIN_ARITH</code></dt>
@@ -129,7 +119,7 @@ or <code>ORDERED</code>.
 <dd><p>An RTX code for a bit-field operation.  Currently only
 <code>ZERO_EXTRACT</code> and <code>SIGN_EXTRACT</code>.  These have three inputs
 and are lvalues (so they can be used for insertion as well).
-See <a href="Bit_002dFields.html#Bit_002dFields">Bit-Fields</a>.
+See <a href="Bit_002dFields.html">Bit-Fields</a>.
 </p>
 </dd>
 <dt><code>RTX_TERNARY</code></dt>
@@ -140,7 +130,7 @@ See <a href="Bit_002dFields.html#Bit_002dFields">Bit-Fields</a>.
 </dd>
 <dt><code>RTX_INSN</code></dt>
 <dd><p>An RTX code for an entire instruction:  <code>INSN</code>, <code>JUMP_INSN</code>, and
-<code>CALL_INSN</code>.  See <a href="Insns.html#Insns">Insns</a>.
+<code>CALL_INSN</code>.  See <a href="Insns.html">Insns</a>.
 </p>
 </dd>
 <dt><code>RTX_MATCH</code></dt>
@@ -164,13 +154,13 @@ chain, such as <code>NOTE</code>, <code>BARRIER</code>, and <code>CODE_LABEL</co
 </p></dd>
 </dl>
 
-<a name="index-RTL-format"></a>
+<span id="index-RTL-format"></span>
 <p>For each expression code, <samp>rtl.def</samp> specifies the number of
 contained objects and their kinds using a sequence of characters
 called the <em>format</em> of the expression code.  For example,
 the format of <code>subreg</code> is &lsquo;<samp>ep</samp>&rsquo;.
 </p>
-<a name="index-RTL-format-characters"></a>
+<span id="index-RTL-format-characters"></span>
 <p>These are the most commonly used format characters:
 </p>
 <dl compact="compact">
@@ -242,12 +232,12 @@ special ways by small parts of the compiler.
 of an expression code:
 </p>
 <dl compact="compact">
-<dd><a name="index-GET_005fRTX_005fLENGTH"></a>
+<dd><span id="index-GET_005fRTX_005fLENGTH"></span>
 </dd>
 <dt><code>GET_RTX_LENGTH (<var>code</var>)</code></dt>
 <dd><p>Number of operands of an RTX of code <var>code</var>.
 </p>
-<a name="index-GET_005fRTX_005fFORMAT"></a>
+<span id="index-GET_005fRTX_005fFORMAT"></span>
 </dd>
 <dt><code>GET_RTX_FORMAT (<var>code</var>)</code></dt>
 <dd><p>The format of an RTX of code <var>code</var>, as a C string.
@@ -258,30 +248,32 @@ of an expression code:
 is safe to assume that all comparison operations have format <code>ee</code>.
 </p>
 <dl compact="compact">
-<dt><code>1</code></dt>
+<dt><code>RTX_UNARY</code></dt>
 <dd><p>All codes of this class have format <code>e</code>.
 </p>
 </dd>
-<dt><code>&lt;</code></dt>
-<dt><code>c</code></dt>
-<dt><code>2</code></dt>
+<dt><code>RTX_BIN_ARITH</code></dt>
+<dt><code>RTX_COMM_ARITH</code></dt>
+<dt><code>RTX_COMM_COMPARE</code></dt>
+<dt><code>RTX_COMPARE</code></dt>
 <dd><p>All codes of these classes have format <code>ee</code>.
 </p>
 </dd>
-<dt><code>b</code></dt>
-<dt><code>3</code></dt>
+<dt><code>RTX_BITFIELD_OPS</code></dt>
+<dt><code>RTX_TERNARY</code></dt>
 <dd><p>All codes of these classes have format <code>eee</code>.
 </p>
 </dd>
-<dt><code>i</code></dt>
+<dt><code>RTX_INSN</code></dt>
 <dd><p>All codes of this class have formats that begin with <code>iuueiee</code>.
-See <a href="Insns.html#Insns">Insns</a>.  Note that not all RTL objects linked onto an insn chain
-are of class <code>i</code>.
+See <a href="Insns.html">Insns</a>.  Note that not all RTL objects linked onto an insn chain
+are of class <code>RTX_INSN</code>.
 </p>
 </dd>
-<dt><code>o</code></dt>
-<dt><code>m</code></dt>
-<dt><code>x</code></dt>
+<dt><code>RTX_CONST_OBJ</code></dt>
+<dt><code>RTX_OBJ</code></dt>
+<dt><code>RTX_MATCH</code></dt>
+<dt><code>RTX_EXTRA</code></dt>
 <dd><p>You can make no assumptions about the format of these codes.
 </p></dd>
 </dl>
@@ -289,7 +281,7 @@ are of class <code>i</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Accessors.html#Accessors" accesskey="n" rel="next">Accessors</a>, Previous: <a href="RTL-Objects.html#RTL-Objects" accesskey="p" rel="prev">RTL Objects</a>, Up: <a href="RTL.html#RTL" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accessors.html" accesskey="n" rel="next">Accessors</a>, Previous: <a href="RTL-Objects.html" accesskey="p" rel="prev">RTL Objects</a>, Up: <a href="RTL.html" accesskey="u" rel="up">RTL</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

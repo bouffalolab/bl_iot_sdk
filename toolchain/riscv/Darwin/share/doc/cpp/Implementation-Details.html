@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -20,7 +20,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Implementation Details (The C Preprocessor)</title>
@@ -30,33 +30,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index-of-Directives.html#Index-of-Directives" rel="index" title="Index of Directives">
+<link href="index.html" rel="start" title="Top">
+<link href="Index-of-Directives.html" rel="index" title="Index of Directives">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Implementation_002ddefined-behavior.html#Implementation_002ddefined-behavior" rel="next" title="Implementation-defined behavior">
-<link href="Traditional-warnings.html#Traditional-warnings" rel="prev" title="Traditional warnings">
+<link href="index.html" rel="up" title="Top">
+<link href="Implementation_002ddefined-behavior.html" rel="next" title="Implementation-defined behavior">
+<link href="Traditional-warnings.html" rel="prev" title="Traditional warnings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -68,14 +59,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Implementation-Details"></a>
-<div class="header">
+<span id="Implementation-Details"></span><div class="header">
 <p>
-Next: <a href="Invocation.html#Invocation" accesskey="n" rel="next">Invocation</a>, Previous: <a href="Traditional-Mode.html#Traditional-Mode" accesskey="p" rel="prev">Traditional Mode</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Invocation.html" accesskey="n" rel="next">Invocation</a>, Previous: <a href="Traditional-Mode.html" accesskey="p" rel="prev">Traditional Mode</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Implementation-Details-1"></a>
-<h2 class="chapter">11 Implementation Details</h2>
+<span id="Implementation-Details-1"></span><h2 class="chapter">11 Implementation Details</h2>
 
 <p>Here we document details of how the preprocessor&rsquo;s implementation
 affects its user-visible behavior.  You should try to avoid undue
@@ -85,11 +74,11 @@ change subtly in future implementations.
 <p>Also documented here are obsolete features still supported by CPP.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Implementation_002ddefined-behavior.html#Implementation_002ddefined-behavior" accesskey="1">Implementation-defined behavior</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Implementation_002ddefined-behavior.html" accesskey="1">Implementation-defined behavior</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Implementation-limits.html#Implementation-limits" accesskey="2">Implementation limits</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Implementation-limits.html" accesskey="2">Implementation limits</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Obsolete-Features.html#Obsolete-Features" accesskey="3">Obsolete Features</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Obsolete-Features.html" accesskey="3">Obsolete Features</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Name lookup (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C_002b_002b-Misunderstandings.html#C_002b_002b-Misunderstandings" rel="up" title="C++ Misunderstandings">
-<link href="Temporaries.html#Temporaries" rel="next" title="Temporaries">
-<link href="Static-Definitions.html#Static-Definitions" rel="prev" title="Static Definitions">
+<link href="C_002b_002b-Misunderstandings.html" rel="up" title="C++ Misunderstandings">
+<link href="Temporaries.html" rel="next" title="Temporaries">
+<link href="Static-Definitions.html" rel="prev" title="Static Definitions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,26 +58,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Name-lookup"></a>
-<div class="header">
+<span id="Name-lookup"></span><div class="header">
 <p>
-Next: <a href="Temporaries.html#Temporaries" accesskey="n" rel="next">Temporaries</a>, Previous: <a href="Static-Definitions.html#Static-Definitions" accesskey="p" rel="prev">Static Definitions</a>, Up: <a href="C_002b_002b-Misunderstandings.html#C_002b_002b-Misunderstandings" accesskey="u" rel="up">C++ Misunderstandings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Temporaries.html" accesskey="n" rel="next">Temporaries</a>, Previous: <a href="Static-Definitions.html" accesskey="p" rel="prev">Static Definitions</a>, Up: <a href="C_002b_002b-Misunderstandings.html" accesskey="u" rel="up">C++ Misunderstandings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Name-Lookup_002c-Templates_002c-and-Accessing-Members-of-Base-Classes"></a>
-<h4 class="subsection">13.7.2 Name Lookup, Templates, and Accessing Members of Base Classes</h4>
+<span id="Name-Lookup_002c-Templates_002c-and-Accessing-Members-of-Base-Classes"></span><h4 class="subsection">14.7.2 Name Lookup, Templates, and Accessing Members of Base Classes</h4>
 
-<a name="index-base-class-members"></a>
-<a name="index-two_002dstage-name-lookup"></a>
-<a name="index-dependent-name-lookup"></a>
+<span id="index-base-class-members"></span>
+<span id="index-two_002dstage-name-lookup"></span>
+<span id="index-dependent-name-lookup"></span>
 
 <p>The C++ standard prescribes that all names that are not dependent on
 template parameters are bound to their present definitions when parsing
-a template function or class.<a name="DOCF5" href="#FOOT5"><sup>5</sup></a>  Only names that are dependent are looked up at the point
+a template function or class.<a id="DOCF5" href="#FOOT5"><sup>5</sup></a>  Only names that are dependent are looked up at the point
 of instantiation.  For example, consider
 </p>
-<div class="smallexample">
-<pre class="smallexample">  void foo(double);
+<div class="example">
+<pre class="example">  void foo(double);
 
   struct A {
     template &lt;typename T&gt;
@@ -124,8 +113,8 @@ since version 3.4.
 <p>Two-stage name lookup sometimes leads to situations with behavior
 different from non-template codes.  The most common is probably this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  template &lt;typename T&gt; struct Base {
+<div class="example">
+<pre class="example">  template &lt;typename T&gt; struct Base {
     int i;
   };
 
@@ -153,8 +142,8 @@ into scope by a <code>using</code>-declaration.
 <p>Another, similar example involves calling member functions of a base
 class:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  template &lt;typename T&gt; struct Base {
+<div class="example">
+<pre class="example">  template &lt;typename T&gt; struct Base {
       int f();
   };
 
@@ -170,8 +159,8 @@ Thus a global declaration of such a function must be available, since
 the one in the base class is not visible until instantiation time.  The
 compiler will consequently produce the following error message:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  x.cc: In member function `int Derived&lt;T&gt;::g()':
+<div class="example">
+<pre class="example">  x.cc: In member function `int Derived&lt;T&gt;::g()':
   x.cc:6: error: there are no arguments to `f' that depend on a template
      parameter, so a declaration of `f' must be available
   x.cc:6: error: (if you use `-fpermissive', G++ will accept your code, but
@@ -197,7 +186,7 @@ do not implement two-stage name lookup correctly.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT5" href="#DOCF5">(5)</a></h3>
+<h5><a id="FOOT5" href="#DOCF5">(5)</a></h3>
 <p>The C++ standard just uses the
 term &ldquo;dependent&rdquo; for names that depend on the type or value of
 template parameters.  This shorter term will also be used in the rest of
@@ -206,7 +195,7 @@ this section.</p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Temporaries.html#Temporaries" accesskey="n" rel="next">Temporaries</a>, Previous: <a href="Static-Definitions.html#Static-Definitions" accesskey="p" rel="prev">Static Definitions</a>, Up: <a href="C_002b_002b-Misunderstandings.html#C_002b_002b-Misunderstandings" accesskey="u" rel="up">C++ Misunderstandings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Temporaries.html" accesskey="n" rel="next">Temporaries</a>, Previous: <a href="Static-Definitions.html" accesskey="p" rel="prev">Static Definitions</a>, Up: <a href="C_002b_002b-Misunderstandings.html" accesskey="u" rel="up">C++ Misunderstandings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

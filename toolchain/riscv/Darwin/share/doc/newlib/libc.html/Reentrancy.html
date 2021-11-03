@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Reentrancy (The Red Hat newlib C Library)</title>
@@ -11,32 +11,23 @@
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
 <link href="index.html#Top" rel="start" title="Top">
-<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html" rel="index" title="Document Index">
 <link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html#Top" rel="up" title="Top">
-<link href="Misc.html#Misc" rel="next" title="Misc">
-<link href="setlocale.html#setlocale" rel="prev" title="setlocale">
+<link href="Misc.html" rel="next" title="Misc">
+<link href="setlocale.html" rel="prev" title="setlocale">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,16 +39,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Reentrancy"></a>
-<div class="header">
+<span id="Reentrancy"></span><div class="header">
 <p>
-Next: <a href="Misc.html#Misc" accesskey="n" rel="next">Misc</a>, Previous: <a href="Locale.html#Locale" accesskey="p" rel="prev">Locale</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Misc.html" accesskey="n" rel="next">Misc</a>, Previous: <a href="Locale.html" accesskey="p" rel="prev">Locale</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Reentrancy-1"></a>
-<h2 class="chapter">10 Reentrancy</h2>
+<span id="Reentrancy-1"></span><h2 class="chapter">10 Reentrancy</h2>
 
-<a name="index-reentrancy"></a>
+<span id="index-reentrancy"></span>
 <p>Reentrancy is a characteristic of library functions which allows multiple
 processes to use the same address space with assurance that the values stored
 in those spaces will remain constant between calls. The Red Hat
@@ -67,9 +56,9 @@ there are some functions that can not be trivially made reentrant.
 Hooks have been provided to allow you to use these functions in a fully
 reentrant fashion.
 </p>
-<a name="index-_005freent"></a>
-<a name="index-reent_002eh"></a>
-<a name="index-reentrancy-structure"></a>
+<span id="index-_005freent"></span>
+<span id="index-reent_002eh"></span>
+<span id="index-reentrancy-structure"></span>
 <p>These hooks use the structure <code>_reent</code> defined in <samp>reent.h</samp>.
 A variable defined as &lsquo;<samp>struct _reent</samp>&rsquo; is called a <em>reentrancy
 structure</em>.  All functions which must manipulate global information are
@@ -89,8 +78,8 @@ and <var>mode</var>.
 for small memory systems, controlled by the <code>_REENT_SMALL</code>
 definition from the (automatically included) <samp>&lt;sys/config.h&gt;</samp>.
 </p>
-<a name="index-global-reentrancy-structure"></a>
-<a name="index-_005fimpure_005fptr"></a>
+<span id="index-global-reentrancy-structure"></span>
+<span id="index-_005fimpure_005fptr"></span>
 <p>Each function which uses the global reentrancy structure uses the global
 variable <code>_impure_ptr</code>, which points to a reentrancy structure.
 </p>
@@ -99,7 +88,7 @@ that each thread of execution control initialize a unique global
 variable of type &lsquo;<samp>struct _reent</samp>&rsquo;:
 </p>
 <ol>
-<li> <a name="index-extra-argument_002c-reentrant-fns"></a>
+<li> <span id="index-extra-argument_002c-reentrant-fns"></span>
 Use the reentrant versions of the library functions, after initializing
 a global reentrancy structure for each process.  Use the pointer to this
 structure as the extra argument for all library functions.
@@ -109,8 +98,8 @@ unique reentrancy structure in the global variable <code>_impure_ptr</code>,
 and call the standard library subroutines.
 </li></ol>
 
-<a name="index-list-of-reentrant-functions"></a>
-<a name="index-reentrant-function-list"></a>
+<span id="index-list-of-reentrant-functions"></span>
+<span id="index-reentrant-function-list"></span>
 <p>The following functions are provided in both reentrant
 and non-reentrant versions.
 </p>
@@ -167,7 +156,7 @@ _getpid_r       _times_r
 <hr>
 <div class="header">
 <p>
-Next: <a href="Misc.html#Misc" accesskey="n" rel="next">Misc</a>, Previous: <a href="Locale.html#Locale" accesskey="p" rel="prev">Locale</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Misc.html" accesskey="n" rel="next">Misc</a>, Previous: <a href="Locale.html" accesskey="p" rel="prev">Locale</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

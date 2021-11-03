@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>define_peephole (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Peephole-Definitions.html#Peephole-Definitions" rel="up" title="Peephole Definitions">
-<link href="define_005fpeephole2.html#define_005fpeephole2" rel="next" title="define_peephole2">
-<link href="Peephole-Definitions.html#Peephole-Definitions" rel="prev" title="Peephole Definitions">
+<link href="Peephole-Definitions.html" rel="up" title="Peephole Definitions">
+<link href="define_005fpeephole2.html" rel="next" title="define_peephole2">
+<link href="Peephole-Definitions.html" rel="prev" title="Peephole Definitions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,20 +58,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="define_005fpeephole"></a>
-<div class="header">
+<span id="define_005fpeephole"></span><div class="header">
 <p>
-Next: <a href="define_005fpeephole2.html#define_005fpeephole2" accesskey="n" rel="next">define_peephole2</a>, Up: <a href="Peephole-Definitions.html#Peephole-Definitions" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="define_005fpeephole2.html" accesskey="n" rel="next">define_peephole2</a>, Up: <a href="Peephole-Definitions.html" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="RTL-to-Text-Peephole-Optimizers"></a>
-<h4 class="subsection">17.18.1 RTL to Text Peephole Optimizers</h4>
-<a name="index-define_005fpeephole"></a>
+<span id="RTL-to-Text-Peephole-Optimizers"></span><h4 class="subsection">17.18.1 RTL to Text Peephole Optimizers</h4>
+<span id="index-define_005fpeephole"></span>
 
 <p>A definition looks like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole
+<div class="example">
+<pre class="example">(define_peephole
   [<var>insn-pattern-1</var>
    <var>insn-pattern-2</var>
    &hellip;]
@@ -134,14 +123,14 @@ is complete.  Therefore, the peephole definition can check which
 operands have ended up in which kinds of registers, just by looking at
 the operands.
 </p>
-<a name="index-prev_005factive_005finsn"></a>
+<span id="index-prev_005factive_005finsn"></span>
 <p>The way to refer to the operands in <var>condition</var> is to write
 <code>operands[<var>i</var>]</code> for operand number <var>i</var> (as matched by
 <code>(match_operand <var>i</var> &hellip;)</code>).  Use the variable <code>insn</code>
 to refer to the last of the insns being matched; use
 <code>prev_active_insn</code> to find the preceding insns.
 </p>
-<a name="index-dead_005for_005fset_005fp"></a>
+<span id="index-dead_005for_005fset_005fp"></span>
 <p>When optimizing computations with intermediate results, you can use
 <var>condition</var> to match only when the intermediate results are not used
 elsewhere.  Use the C expression <code>dead_or_set_p (<var>insn</var>,
@@ -166,8 +155,8 @@ so the insns they produce are never combined or rearranged in any way.
 </p>
 <p>Here is an example, taken from the 68000 machine description:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole
+<div class="example">
+<pre class="example">(define_peephole
   [(set (reg:SI 15) (plus:SI (reg:SI 15) (const_int 4)))
    (set (match_operand:DF 0 &quot;register_operand&quot; &quot;=f&quot;)
         (match_operand:DF 1 &quot;register_operand&quot; &quot;ad&quot;))]
@@ -189,8 +178,8 @@ so the insns they produce are never combined or rearranged in any way.
 
 <p>The effect of this optimization is to change
 </p>
-<div class="smallexample">
-<pre class="smallexample">jbsr _foobar
+<div class="example">
+<pre class="example">jbsr _foobar
 addql #4,sp
 movel d1,sp@-
 movel d0,sp@-
@@ -199,8 +188,8 @@ fmoved sp@+,fp0
 
 <p>into
 </p>
-<div class="smallexample">
-<pre class="smallexample">jbsr _foobar
+<div class="example">
+<pre class="example">jbsr _foobar
 movel d1,sp@
 movel d0,sp@-
 fmoved sp@+,fp0
@@ -217,8 +206,8 @@ implicitly enclosed in a <code>parallel</code>.  Then you must explicitly
 write the <code>parallel</code>, and the square brackets within it, in the
 <code>define_peephole</code>.  Thus, if an insn pattern looks like this,
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;divmodsi4&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;divmodsi4&quot;
   [(set (match_operand:SI 0 &quot;general_operand&quot; &quot;=d&quot;)
         (div:SI (match_operand:SI 1 &quot;general_operand&quot; &quot;0&quot;)
                 (match_operand:SI 2 &quot;general_operand&quot; &quot;dmsK&quot;)))
@@ -230,8 +219,8 @@ write the <code>parallel</code>, and the square brackets within it, in the
 
 <p>then the way to mention this insn in a peephole is as follows:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole
+<div class="example">
+<pre class="example">(define_peephole
   [&hellip;
    (parallel
     [(set (match_operand:SI 0 &quot;general_operand&quot; &quot;=d&quot;)
@@ -246,7 +235,7 @@ write the <code>parallel</code>, and the square brackets within it, in the
 <hr>
 <div class="header">
 <p>
-Next: <a href="define_005fpeephole2.html#define_005fpeephole2" accesskey="n" rel="next">define_peephole2</a>, Up: <a href="Peephole-Definitions.html#Peephole-Definitions" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="define_005fpeephole2.html" accesskey="n" rel="next">define_peephole2</a>, Up: <a href="Peephole-Definitions.html" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

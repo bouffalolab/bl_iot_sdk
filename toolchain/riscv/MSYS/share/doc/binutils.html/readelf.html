@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -87,18 +87,24 @@ Next: <a href="elfedit.html#elfedit" accesskey="n" rel="next">elfedit</a>, Previ
         [<samp>-V</samp>|<samp>--version-info</samp>]
         [<samp>-A</samp>|<samp>--arch-specific</samp>]
         [<samp>-D</samp>|<samp>--use-dynamic</samp>]
+        [<samp>-L</samp>|<samp>--lint</samp>|<samp>--enable-checks</samp>]
         [<samp>-x</samp> &lt;number or name&gt;|<samp>--hex-dump=</samp>&lt;number or name&gt;]
         [<samp>-p</samp> &lt;number or name&gt;|<samp>--string-dump=</samp>&lt;number or name&gt;]
         [<samp>-R</samp> &lt;number or name&gt;|<samp>--relocated-dump=</samp>&lt;number or name&gt;]
         [<samp>-z</samp>|<samp>--decompress</samp>]
         [<samp>-c</samp>|<samp>--archive-index</samp>]
-        [<samp>-w[lLiaprmfFsoRtUuTgAckK]</samp>|
-         <samp>--debug-dump</samp>[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]]
+        [<samp>-w[lLiaprmfFsoORtUuTgAckK]</samp>|
+         <samp>--debug-dump</samp>[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]]
         [<samp>--dwarf-depth=<var>n</var></samp>]
         [<samp>--dwarf-start=<var>n</var></samp>]
+        [<samp>--ctf=</samp><var>section</var>]
+        [<samp>--ctf-parent=</samp><var>section</var>]
+        [<samp>--ctf-symbols=</samp><var>section</var>]
+        [<samp>--ctf-strings=</samp><var>section</var>]
         [<samp>-I</samp>|<samp>--histogram</samp>]
         [<samp>-v</samp>|<samp>--version</samp>]
         [<samp>-W</samp>|<samp>--wide</samp>]
+        [<samp>-T</samp>|<samp>--silent-truncation</samp>]
         [<samp>-H</samp>|<samp>--help</samp>]
         <var>elffile</var>&hellip;
 </pre></div>
@@ -251,6 +257,16 @@ symbol table sections.
 display the dynamic relocations rather than the static relocations.
 </p>
 </dd>
+<dt><code>-L</code></dt>
+<dt><code>--lint</code></dt>
+<dt><code>--enable-checks</code></dt>
+<dd><p>Displays warning messages about possible problems with the file(s)
+being examined.  If used on its own then all of the contents of the
+file(s) will be examined.  If used with one of the dumping options
+then the warning messages will only be produced for the things being
+displayed.
+</p>
+</dd>
 <dt><code>-x &lt;number or name&gt;</code></dt>
 <dt><code>--hex-dump=&lt;number or name&gt;</code></dt>
 <dd><p>Displays the contents of the indicated section as a hexadecimal bytes.
@@ -289,8 +305,8 @@ of binary archives.  Performs the same function as the <samp>t</samp>
 command to <code>ar</code>, but without using the BFD library.  See <a href="ar.html#ar">ar</a>.
 </p>
 </dd>
-<dt><code>-w[lLiaprmfFsoRtUuTgAckK]</code></dt>
-<dt><code>--debug-dump[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]</code></dt>
+<dt><code>-w[lLiaprmfFsOoRtUuTgAckK]</code></dt>
+<dt><code>--debug-dump[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]</code></dt>
 <dd>
 <p>Displays the contents of the DWARF debug sections in the file, if any
 are present.  Compressed debug sections are automatically decompressed
@@ -342,8 +358,8 @@ output from this option can also be restricted by the use of the
 <dt><code>k</code></dt>
 <dt><code>=links</code></dt>
 <dd><p>Displays the contents of the &lsquo;<samp>.gnu_debuglink</samp>&rsquo; and/or
-&lsquo;<samp>.gnu_debugaltlink</samp>&rsquo; sections.  Also displays the link to a
-separate dwarf object file (dwo), if one is specified by the 
+&lsquo;<samp>.gnu_debugaltlink</samp>&rsquo; sections.  Also displays any links to
+separate dwarf object files (dwo), if they are specified by the 
 DW_AT_GNU_dwo_name or DW_AT_dwo_name attributes in the
 &lsquo;<samp>.debug_info</samp>&rsquo; section.
 </p>
@@ -351,10 +367,9 @@ DW_AT_GNU_dwo_name or DW_AT_dwo_name attributes in the
 <dt><code>K</code></dt>
 <dt><code>=follow-links</code></dt>
 <dd><p>Display the contents of any selected debug sections that are found in
-a linked, separate debug info file.  This can result in multiple
-versions of the same debug section being displayed if both the main
-file and the separate debug info file contain sections with the same
-name.
+linked, separate debug info file(s).  This can result in multiple
+versions of the same debug section being displayed if it exists in
+more than one file.
 </p>
 <p>In addition, when displaying DWARF attributes, if a form is found that
 references the separate debug info file, then the referenced contents
@@ -382,6 +397,11 @@ format.
 <dt><code>=loc</code></dt>
 <dd><p>Displays the contents of the &lsquo;<samp>.debug_loc</samp>&rsquo; and/or
 &lsquo;<samp>.debug_loclists</samp>&rsquo; sections.
+</p>
+</dd>
+<dt><code>O</code></dt>
+<dt><code>=str-offsets</code></dt>
+<dd><p>Displays the contents of the &lsquo;<samp>.debug_str_offsets</samp>&rsquo; section.
 </p>
 </dd>
 <dt><code>p</code></dt>
@@ -456,6 +476,31 @@ siblings and children of the specified DIE will be printed.
 <p>This can be used in conjunction with <samp>--dwarf-depth</samp>.
 </p>
 
+
+</dd>
+<dt><code>--ctf=<var>section</var></code></dt>
+<dd><a name="index-CTF-1"></a>
+<a name="index-Compact-Type-Format-1"></a>
+
+<p>Display the contents of the specified CTF section.  CTF sections themselves
+contain many subsections, all of which are displayed in order.
+</p>
+</dd>
+<dt><code>--ctf-parent=<var>section</var></code></dt>
+<dd>
+<p>Specify the name of another section from which the CTF dictionary can inherit
+types.  (If none is specified, we assume the CTF dictionary inherits types
+from the default-named member of the archive contained within this section.)
+</p></dd>
+<dt><code>--ctf-symbols=<var>section</var></code></dt>
+<dt><code>--ctf-strings=<var>section</var></code></dt>
+<dd><p>Specify the name of another section from which the CTF file can inherit
+strings and symbols.  By default, the <code>.symtab</code> and its linked
+string table are used.
+</p>
+<p>If either of <samp>--ctf-symbols</samp> or <samp>--ctf-strings</samp> is specified, the
+other must be specified as well.
+</p>
 </dd>
 <dt><code>-I</code></dt>
 <dt><code>--histogram</code></dt>
@@ -475,6 +520,16 @@ of the symbol tables.
 64-bit ELF files, so that they fit into 80 columns. This option causes
 <code>readelf</code> to print each section header resp. each segment one a
 single line, which is far more readable on terminals wider than 80 columns.
+</p>
+</dd>
+<dt><code>-T</code></dt>
+<dt><code>--silent-truncation</code></dt>
+<dd><p>Normally when readelf is displaying a symbol name, and it has to
+truncate the name to fit into an 80 column display, it will add a
+suffix of <code>[...]</code> to the name.  This command line option
+disables this behaviour, allowing 5 more characters of the name to be
+displayed and restoring the old behaviour of readelf (prior to release
+2.35).
 </p>
 </dd>
 <dt><code>-H</code></dt>

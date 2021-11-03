@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>I/O of Rationals (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Rational-Number-Functions.html#Rational-Number-Functions" rel="up" title="Rational Number Functions">
-<link href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" rel="next" title="Floating-point Functions">
-<link href="Applying-Integer-Functions.html#Applying-Integer-Functions" rel="prev" title="Applying Integer Functions">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Rational-Number-Functions.html" rel="up" title="Rational Number Functions">
+<link href="Floating_002dpoint-Functions.html" rel="next" title="Floating-point Functions">
+<link href="Applying-Integer-Functions.html" rel="prev" title="Applying Integer Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="I_002fO-of-Rationals"></a>
-<div class="header">
+<span id="I_002fO-of-Rationals"></span><div class="header">
 <p>
-Previous: <a href="Applying-Integer-Functions.html#Applying-Integer-Functions" accesskey="p" rel="prev">Applying Integer Functions</a>, Up: <a href="Rational-Number-Functions.html#Rational-Number-Functions" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Applying-Integer-Functions.html" accesskey="p" rel="prev">Applying Integer Functions</a>, Up: <a href="Rational-Number-Functions.html" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Input-and-Output-Functions-1"></a>
-<h3 class="section">6.6 Input and Output Functions</h3>
-<a name="index-Rational-input-and-output-functions"></a>
-<a name="index-Input-functions-1"></a>
-<a name="index-Output-functions-1"></a>
-<a name="index-I_002fO-functions-1"></a>
+<span id="Input-and-Output-Functions-1"></span><h3 class="section">6.6 Input and Output Functions</h3>
+<span id="index-Rational-input-and-output-functions"></span>
+<span id="index-Input-functions-1"></span>
+<span id="index-Output-functions-1"></span>
+<span id="index-I_002fO-functions-1"></span>
 
 <p>Functions that perform input from a stdio stream, and functions that output to
 a stdio stream, of <code>mpq</code> numbers.  Passing a <code>NULL</code> pointer for a
@@ -81,10 +70,10 @@ a stdio stream, of <code>mpq</code> numbers.  Passing a <code>NULL</code> pointe
 before <samp>gmp.h</samp>, since that will allow <samp>gmp.h</samp> to define prototypes
 for these functions.
 </p>
-<p>See also <a href="Formatted-Output.html#Formatted-Output">Formatted Output</a> and <a href="Formatted-Input.html#Formatted-Input">Formatted Input</a>.
+<p>See also <a href="Formatted-Output.html">Formatted Output</a> and <a href="Formatted-Input.html">Formatted Input</a>.
 </p>
 <dl>
-<dt><a name="index-mpq_005fout_005fstr"></a>Function: <em>size_t</em> <strong>mpq_out_str</strong> <em>(FILE *<var>stream</var>, int <var>base</var>, const mpq_t <var>op</var>)</em></dt>
+<dt id="index-mpq_005fout_005fstr">Function: <em>size_t</em> <strong>mpq_out_str</strong> <em>(FILE *<var>stream</var>, int <var>base</var>, const mpq_t <var>op</var>)</em></dt>
 <dd><p>Output <var>op</var> on stdio stream <var>stream</var>, as a string of digits in base
 <var>base</var>.  The base may vary from 2 to 36.  Output is in the form
 &lsquo;<samp>num/den</samp>&rsquo; or if the denominator is 1 then just &lsquo;<samp>num</samp>&rsquo;.
@@ -93,7 +82,7 @@ for these functions.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpq_005finp_005fstr"></a>Function: <em>size_t</em> <strong>mpq_inp_str</strong> <em>(mpq_t <var>rop</var>, FILE *<var>stream</var>, int <var>base</var>)</em></dt>
+<dt id="index-mpq_005finp_005fstr">Function: <em>size_t</em> <strong>mpq_inp_str</strong> <em>(mpq_t <var>rop</var>, FILE *<var>stream</var>, int <var>base</var>)</em></dt>
 <dd><p>Read a string of digits from <var>stream</var> and convert them to a rational in
 <var>rop</var>.  Any initial white-space characters are read and discarded.  Return
 the number of characters read (including white space), or 0 if a rational
@@ -102,7 +91,7 @@ could not be read.
 <p>The input can be a fraction like &lsquo;<samp>17/63</samp>&rsquo; or just an integer like
 &lsquo;<samp>123</samp>&rsquo;.  Reading stops at the first character not in this form, and white
 space is not permitted within the string.  If the input might not be in
-canonical form, then <code>mpq_canonicalize</code> must be called (see <a href="Rational-Number-Functions.html#Rational-Number-Functions">Rational Number Functions</a>).
+canonical form, then <code>mpq_canonicalize</code> must be called (see <a href="Rational-Number-Functions.html">Rational Number Functions</a>).
 </p>
 <p>The <var>base</var> can be between 2 and 36, or can be 0 in which case the leading
 characters of the string determine the base, &lsquo;<samp>0x</samp>&rsquo; or &lsquo;<samp>0X</samp>&rsquo; for
@@ -116,7 +105,7 @@ for instance &lsquo;<samp>0x10/11</samp>&rsquo; is <em>16/11</em>, whereas &lsqu
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Applying-Integer-Functions.html#Applying-Integer-Functions" accesskey="p" rel="prev">Applying Integer Functions</a>, Up: <a href="Rational-Number-Functions.html#Rational-Number-Functions" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Applying-Integer-Functions.html" accesskey="p" rel="prev">Applying Integer Functions</a>, Up: <a href="Rational-Number-Functions.html" accesskey="u" rel="up">Rational Number Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

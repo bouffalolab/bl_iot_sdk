@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>M2 Types (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Modula_002d2.html#Modula_002d2" rel="up" title="Modula-2">
-<link href="M2-Defaults.html#M2-Defaults" rel="next" title="M2 Defaults">
-<link href="M2-Constants.html#M2-Constants" rel="prev" title="M2 Constants">
+<link href="Modula_002d2.html" rel="up" title="Modula-2">
+<link href="M2-Defaults.html" rel="next" title="M2 Defaults">
+<link href="M2-Constants.html" rel="prev" title="M2 Constants">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="M2-Types"></a>
-<div class="header">
+<span id="M2-Types"></span><div class="header">
 <p>
-Next: <a href="M2-Defaults.html#M2-Defaults" accesskey="n" rel="next">M2 Defaults</a>, Previous: <a href="M2-Constants.html#M2-Constants" accesskey="p" rel="prev">M2 Constants</a>, Up: <a href="Modula_002d2.html#Modula_002d2" accesskey="u" rel="up">Modula-2</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="M2-Defaults.html" accesskey="n" rel="next">M2 Defaults</a>, Previous: <a href="M2-Constants.html" accesskey="p" rel="prev">M2 Constants</a>, Up: <a href="Modula_002d2.html" accesskey="u" rel="up">Modula-2</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Modula_002d2-Types"></a>
-<h4 class="subsubsection">15.4.9.4 Modula-2 Types</h4>
-<a name="index-Modula_002d2-types"></a>
+<span id="Modula_002d2-Types"></span><h4 class="subsubsection">15.4.9.4 Modula-2 Types</h4>
+<span id="index-Modula_002d2-types"></span>
 
 <p>Currently <small>GDB</small> can print the following data types in Modula-2
 syntax: array types, record types, set types, pointer types, procedure
@@ -79,8 +68,8 @@ sample <small>GDB</small> sessions.
 </p>
 <p>The first example contains the following section of code:
 </p>
-<div class="smallexample">
-<pre class="smallexample">VAR
+<div class="example">
+<pre class="example">VAR
    s: SET OF CHAR ;
    r: [20..40] ;
 </pre></div>
@@ -88,8 +77,8 @@ sample <small>GDB</small> sessions.
 <p>and you can request <small>GDB</small> to interrogate the type and value of
 <code>r</code> and <code>s</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) print s
+<div class="example">
+<pre class="example">(gdb) print s
 {'A'..'C', 'Z'}
 (gdb) ptype s
 SET OF CHAR
@@ -101,15 +90,15 @@ SET OF CHAR
 
 <p>Likewise if your source code declares <code>s</code> as:
 </p>
-<div class="smallexample">
-<pre class="smallexample">VAR
+<div class="example">
+<pre class="example">VAR
    s: SET ['A'..'Z'] ;
 </pre></div>
 
 <p>then you may query the type of <code>s</code> by:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) ptype s
+<div class="example">
+<pre class="example">(gdb) ptype s
 type = SET ['A'..'Z']
 </pre></div>
 
@@ -119,13 +108,13 @@ expressions using the debugger.
 <p>The following example shows how you might declare an array in Modula-2
 and how you can interact with <small>GDB</small> to print its type and contents:
 </p>
-<div class="smallexample">
-<pre class="smallexample">VAR
+<div class="example">
+<pre class="example">VAR
    s: ARRAY [-10..10] OF CHAR ;
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) ptype s
+<div class="example">
+<pre class="example">(gdb) ptype s
 ARRAY [-10..10] OF CHAR
 </pre></div>
 
@@ -136,8 +125,8 @@ above.
 </p>
 <p>Here are some more type related Modula-2 examples:
 </p>
-<div class="smallexample">
-<pre class="smallexample">TYPE
+<div class="example">
+<pre class="example">TYPE
    colour = (blue, red, yellow, green) ;
    t = [blue..yellow] ;
 VAR
@@ -149,8 +138,8 @@ BEGIN
 <p>The <small>GDB</small> interaction shows how you can query the data type
 and value of a variable.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) print s
+<div class="example">
+<pre class="example">(gdb) print s
 $1 = blue
 (gdb) ptype t
 type = [blue..yellow]
@@ -160,15 +149,15 @@ type = [blue..yellow]
 displayed.  Observe that the contents are written in the same way as
 their <code>C</code> counterparts.
 </p>
-<div class="smallexample">
-<pre class="smallexample">VAR
+<div class="example">
+<pre class="example">VAR
    s: ARRAY [1..5] OF CARDINAL ;
 BEGIN
    s[1] := 1 ;
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) print s
+<div class="example">
+<pre class="example">(gdb) print s
 $1 = {1, 0, 0, 0, 0}
 (gdb) ptype s
 type = ARRAY [1..5] OF CARDINAL
@@ -177,8 +166,8 @@ type = ARRAY [1..5] OF CARDINAL
 <p>The Modula-2 language interface to <small>GDB</small> also understands
 pointer types as shown in this example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">VAR
+<div class="example">
+<pre class="example">VAR
    s: POINTER TO ARRAY [1..5] OF CARDINAL ;
 BEGIN
    NEW(s) ;
@@ -187,8 +176,8 @@ BEGIN
 
 <p>and you can request that <small>GDB</small> describes the type of <code>s</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) ptype s
+<div class="example">
+<pre class="example">(gdb) ptype s
 type = POINTER TO ARRAY [1..5] OF CARDINAL
 </pre></div>
 
@@ -196,8 +185,8 @@ type = POINTER TO ARRAY [1..5] OF CARDINAL
 Here we combine array types, record types, pointer types and subrange
 types:
 </p>
-<div class="smallexample">
-<pre class="smallexample">TYPE
+<div class="example">
+<pre class="example">TYPE
    foo = RECORD
             f1: CARDINAL ;
             f2: CHAR ;
@@ -213,8 +202,8 @@ VAR
 <p>and you can ask <small>GDB</small> to describe the type of <code>s</code> as shown
 below.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) ptype s
+<div class="example">
+<pre class="example">(gdb) ptype s
 type = POINTER TO ARRAY [-2..2] OF foo = RECORD
     f1 : CARDINAL;
     f2 : CHAR;
@@ -225,7 +214,7 @@ END
 <hr>
 <div class="header">
 <p>
-Next: <a href="M2-Defaults.html#M2-Defaults" accesskey="n" rel="next">M2 Defaults</a>, Previous: <a href="M2-Constants.html#M2-Constants" accesskey="p" rel="prev">M2 Constants</a>, Up: <a href="Modula_002d2.html#Modula_002d2" accesskey="u" rel="up">Modula-2</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="M2-Defaults.html" accesskey="n" rel="next">M2 Defaults</a>, Previous: <a href="M2-Constants.html" accesskey="p" rel="prev">M2 Constants</a>, Up: <a href="Modula_002d2.html" accesskey="u" rel="up">Modula-2</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

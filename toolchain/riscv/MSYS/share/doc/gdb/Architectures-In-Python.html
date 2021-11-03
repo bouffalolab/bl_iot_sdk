@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -26,7 +26,7 @@ developing GNU and promoting software freedom." -->
 <link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Python-API.html#Python-API" rel="up" title="Python API">
-<link href="Python-Auto_002dloading.html#Python-Auto_002dloading" rel="next" title="Python Auto-loading">
+<link href="Registers-In-Python.html#Registers-In-Python" rel="next" title="Registers In Python">
 <link href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python" rel="prev" title="Lazy Strings In Python">
 <style type="text/css">
 <!--
@@ -63,7 +63,7 @@ ul.no-bullet {list-style: none}
 <a name="Architectures-In-Python"></a>
 <div class="header">
 <p>
-Previous: <a href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python" accesskey="p" rel="prev">Lazy Strings In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Registers-In-Python.html#Registers-In-Python" accesskey="n" rel="next">Registers In Python</a>, Previous: <a href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python" accesskey="p" rel="prev">Lazy Strings In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <a name="Python-representation-of-architectures"></a>
@@ -120,10 +120,23 @@ instruction in bytes.
 </dl>
 </dd></dl>
 
+<a name="gdbpy_005farchitecture_005fregisters"></a><dl>
+<dt><a name="index-Architecture_002eregisters"></a>Function: <strong>Architecture.registers</strong> <em>(<span class="roman">[</span> <var>reggroup</var> <span class="roman">]</span>)</em></dt>
+<dd><p>Return a <code>gdb.RegisterDescriptorIterator</code> (see <a href="Registers-In-Python.html#Registers-In-Python">Registers In Python</a>) for all of the registers in <var>reggroup</var>, a string that is
+the name of a register group.  If <var>reggroup</var> is omitted, or is the
+empty string, then the register group &lsquo;<samp>all</samp>&rsquo; is assumed.
+</p></dd></dl>
+
+<a name="gdbpy_005farchitecture_005freggroups"></a><dl>
+<dt><a name="index-Architecture_002eregister_005fgroups"></a>Function: <strong>Architecture.register_groups</strong> <em>()</em></dt>
+<dd><p>Return a <code>gdb.RegisterGroupsIterator</code> (see <a href="Registers-In-Python.html#Registers-In-Python">Registers In Python</a>) for all of the register groups available for the
+<code>gdb.Architecture</code>.
+</p></dd></dl>
+
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python" accesskey="p" rel="prev">Lazy Strings In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Registers-In-Python.html#Registers-In-Python" accesskey="n" rel="next">Registers In Python</a>, Previous: <a href="Lazy-Strings-In-Python.html#Lazy-Strings-In-Python" accesskey="p" rel="prev">Lazy Strings In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

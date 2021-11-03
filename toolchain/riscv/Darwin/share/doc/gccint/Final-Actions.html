@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Final Actions (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Test-Directives.html#Test-Directives" rel="up" title="Test Directives">
-<link href="Ada-Tests.html#Ada-Tests" rel="next" title="Ada Tests">
-<link href="Require-Support.html#Require-Support" rel="prev" title="Require Support">
+<link href="Test-Directives.html" rel="up" title="Test Directives">
+<link href="Ada-Tests.html" rel="next" title="Ada Tests">
+<link href="Require-Support.html" rel="prev" title="Require Support">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,20 +58,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Final-Actions"></a>
-<div class="header">
+<span id="Final-Actions"></span><div class="header">
 <p>
-Previous: <a href="Require-Support.html#Require-Support" accesskey="p" rel="prev">Require Support</a>, Up: <a href="Test-Directives.html#Test-Directives" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Require-Support.html" accesskey="p" rel="prev">Require Support</a>, Up: <a href="Test-Directives.html" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Commands-for-use-in-dg_002dfinal"></a>
-<h4 class="subsection">7.2.6 Commands for use in <code>dg-final</code></h4>
+<span id="Commands-for-use-in-dg_002dfinal"></span><h4 class="subsection">7.2.6 Commands for use in <code>dg-final</code></h4>
 
 <p>The GCC testsuite defines the following directives to be used within
 <code>dg-final</code>.
 </p>
-<a name="Scan-a-particular-file"></a>
-<h4 class="subsubsection">7.2.6.1 Scan a particular file</h4>
+<span id="Scan-a-particular-file"></span><h4 class="subsubsection">7.2.6.1 Scan a particular file</h4>
 
 <dl compact="compact">
 <dt><code>scan-file <var>filename</var> <var>regexp</var> [{ target/xfail <var>selector</var> }]</code></dt>
@@ -92,10 +80,13 @@ Previous: <a href="Require-Support.html#Require-Support" accesskey="p" rel="prev
 <dt><code>scan-module <var>module</var> <var>regexp</var> [{ target/xfail <var>selector</var> }]</code></dt>
 <dd><p>Passes if <var>regexp</var> matches in Fortran module <var>module</var>.
 </p></dd>
+<dt><code>dg-check-dot <var>filename</var></code></dt>
+<dd><p>Passes if <var>filename</var> is a valid <samp>.dot</samp> file (by running
+<code>dot -Tpng</code> on it, and verifying the exit code is 0).
+</p></dd>
 </dl>
 
-<a name="Scan-the-assembly-output"></a>
-<h4 class="subsubsection">7.2.6.2 Scan the assembly output</h4>
+<span id="Scan-the-assembly-output"></span><h4 class="subsubsection">7.2.6.2 Scan the assembly output</h4>
 
 <dl compact="compact">
 <dt><code>scan-assembler <var>regex</var> [{ target/xfail <var>selector</var> }]</code></dt>
@@ -128,14 +119,102 @@ assembly output.
 <dt><code>scan-not-hidden <var>symbol</var> [{ target/xfail <var>selector</var> }]</code></dt>
 <dd><p>Passes if <var>symbol</var> is not defined as a hidden symbol in the test&rsquo;s
 assembly output.
-</p></dd>
+</p>
+</dd>
+<dt><code>check-function-bodies <var>prefix</var> <var>terminator</var> [<var>options</var> [{ target/xfail <var>selector</var> }]]</code></dt>
+<dd><p>Looks through the source file for comments that give the expected assembly
+output for selected functions.  Each line of expected output starts with the
+prefix string <var>prefix</var> and the expected output for a function as a whole
+is followed by a line that starts with the string <var>terminator</var>.
+Specifying an empty terminator is equivalent to specifying &lsquo;<samp>&quot;*/&quot;</samp>&rsquo;.
+</p>
+<p><var>options</var>, if specified, is a list of regular expressions, each of
+which matches a full command-line option.  A non-empty list prevents
+the test from running unless all of the given options are present on the
+command line.  This can help if a source file is compiled both with
+and without optimization, since it is rarely useful to check the full
+function body for unoptimized code.
+</p>
+<p>The first line of the expected output for a function <var>fn</var> has the form:
+</p>
+<div class="example">
+<pre class="example"><var>prefix</var> <var>fn</var>:  [{ target/xfail <var>selector</var> }]
+</pre></div>
+
+<p>Subsequent lines of the expected output also start with <var>prefix</var>.
+In both cases, whitespace after <var>prefix</var> is not significant.
+</p>
+<p>The test discards assembly directives such as <code>.cfi_startproc</code>
+and local label definitions such as <code>.LFB0</code> from the compiler&rsquo;s
+assembly output.  It then matches the result against the expected
+output for a function as a single regular expression.  This means that
+later lines can use backslashes to refer back to &lsquo;<samp>(&hellip;)</samp>&rsquo;
+captures on earlier lines.  For example:
+</p>
+<div class="example">
+<pre class="example">/* { dg-final { check-function-bodies &quot;**&quot; &quot;&quot; &quot;-DCHECK_ASM&quot; } } */
+&hellip;
+/*
+** add_w0_s8_m:
+**	mov	(z[0-9]+\.b), w0
+**	add	z0\.b, p0/m, z0\.b, \1
+**	ret
+*/
+svint8_t add_w0_s8_m (&hellip;) { &hellip; }
+&hellip;
+/*
+** add_b0_s8_m:
+**	mov	(z[0-9]+\.b), b0
+**	add	z1\.b, p0/m, z1\.b, \1
+**	ret
+*/
+svint8_t add_b0_s8_m (&hellip;) { &hellip; }
+</pre></div>
+
+<p>checks whether the implementations of <code>add_w0_s8_m</code> and
+<code>add_b0_s8_m</code> match the regular expressions given.  The test only
+runs when &lsquo;<samp>-DCHECK_ASM</samp>&rsquo; is passed on the command line.
+</p>
+<p>It is possible to create non-capturing multi-line regular expression
+groups of the form &lsquo;<samp>(<var>a</var>|<var>b</var>|&hellip;)</samp>&rsquo; by putting the
+&lsquo;<samp>(</samp>&rsquo;, &lsquo;<samp>|</samp>&rsquo; and &lsquo;<samp>)</samp>&rsquo; on separate lines (each still using
+<var>prefix</var>).  For example:
+</p>
+<div class="example">
+<pre class="example">/*
+** cmple_f16_tied:
+** (
+**	fcmge	p0\.h, p0/z, z1\.h, z0\.h
+** |
+**	fcmle	p0\.h, p0/z, z0\.h, z1\.h
+** )
+**	ret
+*/
+svbool_t cmple_f16_tied (&hellip;) { &hellip; }
+</pre></div>
+
+<p>checks whether <code>cmple_f16_tied</code> is implemented by the
+<code>fcmge</code> instruction followed by <code>ret</code> or by the
+<code>fcmle</code> instruction followed by <code>ret</code>.  The test is
+still a single regular rexpression.
+</p>
+<p>A line containing just:
+</p>
+<div class="example">
+<pre class="example"><var>prefix</var> ...
+</pre></div>
+
+<p>stands for zero or more unmatched lines; the whitespace after
+<var>prefix</var> is again not significant.
+</p>
+</dd>
 </dl>
 
-<a name="Scan-optimization-dump-files"></a>
-<h4 class="subsubsection">7.2.6.3 Scan optimization dump files</h4>
+<span id="Scan-optimization-dump-files"></span><h4 class="subsubsection">7.2.6.3 Scan optimization dump files</h4>
 
-<p>These commands are available for <var>kind</var> of <code>tree</code>, <code>rtl</code>,
-and <code>ipa</code>.
+<p>These commands are available for <var>kind</var> of <code>tree</code>, <code>ltrans-tree</code>,
+<code>offload-tree</code>, <code>rtl</code>, <code>offload-rtl</code>, <code>ipa</code>, and
+<code>wpa-ipa</code>.
 </p>
 <dl compact="compact">
 <dt><code>scan-<var>kind</var>-dump <var>regex</var> <var>suffix</var> [{ target/xfail <var>selector</var> }]</code></dt>
@@ -163,8 +242,7 @@ suffix <var>suffix</var>.
 </p></dd>
 </dl>
 
-<a name="Verify-that-an-output-files-exists-or-not"></a>
-<h4 class="subsubsection">7.2.6.4 Verify that an output files exists or not</h4>
+<span id="Check-for-output-files"></span><h4 class="subsubsection">7.2.6.4 Check for output files</h4>
 
 <dl compact="compact">
 <dt><code>output-exists [{ target/xfail <var>selector</var> }]</code></dt>
@@ -173,20 +251,18 @@ suffix <var>suffix</var>.
 </dd>
 <dt><code>output-exists-not [{ target/xfail <var>selector</var> }]</code></dt>
 <dd><p>Passes if compiler output file does not exist.
-</p></dd>
-</dl>
-
-<a name="Check-for-LTO-tests"></a>
-<h4 class="subsubsection">7.2.6.5 Check for LTO tests</h4>
-
-<dl compact="compact">
+</p>
+</dd>
 <dt><code>scan-symbol <var>regexp</var> [{ target/xfail <var>selector</var> }]</code></dt>
 <dd><p>Passes if the pattern is present in the final executable.
+</p>
+</dd>
+<dt><code>scan-symbol-not <var>regexp</var> [{ target/xfail <var>selector</var> }]</code></dt>
+<dd><p>Passes if the pattern is absent from the final executable.
 </p></dd>
 </dl>
 
-<a name="Checks-for-gcov-tests"></a>
-<h4 class="subsubsection">7.2.6.6 Checks for <code>gcov</code> tests</h4>
+<span id="Checks-for-gcov-tests"></span><h4 class="subsubsection">7.2.6.5 Checks for <code>gcov</code> tests</h4>
 
 <dl compact="compact">
 <dt><code>run-gcov <var>sourcefile</var></code></dt>
@@ -199,8 +275,7 @@ suffix <var>suffix</var>.
 </p></dd>
 </dl>
 
-<a name="Clean-up-generated-test-files"></a>
-<h4 class="subsubsection">7.2.6.7 Clean up generated test files</h4>
+<span id="Clean-up-generated-test-files"></span><h4 class="subsubsection">7.2.6.6 Clean up generated test files</h4>
 
 <p>Usually the test-framework removes files that were generated during
 testing. If a testcase, for example, uses any dumping mechanism to
@@ -220,8 +295,8 @@ module names listed in keep-modules.
 Cleaning up module files is usually done automatically by the testsuite
 by looking at the source files and removing the modules after the test
 has been executed.
-</p><div class="smallexample">
-<pre class="smallexample">module MoD1
+</p><div class="example">
+<pre class="example">module MoD1
 end module MoD1
 module Mod2
 end module Mod2
@@ -238,8 +313,8 @@ end module mod4
 <dd><p>Whitespace separated list of module names that should not be deleted by
 cleanup-modules.
 If the list of modules is empty, all modules defined in this file are kept.
-</p><div class="smallexample">
-<pre class="smallexample">module maybe_unneeded
+</p><div class="example">
+<pre class="example">module maybe_unneeded
 end module maybe_unneeded
 module keep1
 end module keep1
@@ -253,8 +328,8 @@ end module keep2
 <dt><code>dg-keep-saved-temps &quot;<var>list-of-suffixes-not-to-delete</var>&quot;</code></dt>
 <dd><p>Whitespace separated list of suffixes that should not be deleted
 automatically in a testcase that uses <samp>-save-temps</samp>.
-</p><div class="smallexample">
-<pre class="smallexample">// { dg-options &quot;-save-temps -fpch-preprocess -I.&quot; }
+</p><div class="example">
+<pre class="example">// { dg-options &quot;-save-temps -fpch-preprocess -I.&quot; }
 int main() { return 0; }
 // { dg-keep-saved-temps &quot;.s&quot; } ! just keep assembler file
 // { dg-keep-saved-temps &quot;.s&quot; &quot;.i&quot; } ! ... and .i
@@ -266,16 +341,12 @@ int main() { return 0; }
 <dd><p>Removes profiling files generated for this test.
 </p>
 </dd>
-<dt><code>cleanup-repo-files</code></dt>
-<dd><p>Removes files generated for this test for <samp>-frepo</samp>.
-</p>
-</dd>
 </dl>
 
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Require-Support.html#Require-Support" accesskey="p" rel="prev">Require Support</a>, Up: <a href="Test-Directives.html#Test-Directives" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Require-Support.html" accesskey="p" rel="prev">Require Support</a>, Up: <a href="Test-Directives.html" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

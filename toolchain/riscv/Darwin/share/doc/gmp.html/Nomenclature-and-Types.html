@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Nomenclature and Types (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="GMP-Basics.html#GMP-Basics" rel="up" title="GMP Basics">
-<link href="Function-Classes.html#Function-Classes" rel="next" title="Function Classes">
-<link href="Headers-and-Libraries.html#Headers-and-Libraries" rel="prev" title="Headers and Libraries">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="GMP-Basics.html" rel="up" title="GMP Basics">
+<link href="Function-Classes.html" rel="next" title="Function Classes">
+<link href="Headers-and-Libraries.html" rel="prev" title="Headers and Libraries">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Nomenclature-and-Types"></a>
-<div class="header">
+<span id="Nomenclature-and-Types"></span><div class="header">
 <p>
-Next: <a href="Function-Classes.html#Function-Classes" accesskey="n" rel="next">Function Classes</a>, Previous: <a href="Headers-and-Libraries.html#Headers-and-Libraries" accesskey="p" rel="prev">Headers and Libraries</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Function-Classes.html" accesskey="n" rel="next">Function Classes</a>, Previous: <a href="Headers-and-Libraries.html" accesskey="p" rel="prev">Headers and Libraries</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Nomenclature-and-Types-1"></a>
-<h3 class="section">3.2 Nomenclature and Types</h3>
-<a name="index-Nomenclature"></a>
-<a name="index-Types"></a>
+<span id="Nomenclature-and-Types-1"></span><h3 class="section">3.2 Nomenclature and Types</h3>
+<span id="index-Nomenclature"></span>
+<span id="index-Types"></span>
 
-<a name="index-Integer"></a>
-<a name="index-mpz_005ft"></a>
+<span id="index-Integer"></span>
+<span id="index-mpz_005ft"></span>
 <p>In this manual, <em>integer</em> usually means a multiple precision integer, as
 defined by the GMP library.  The C data type for such integers is <code>mpz_t</code>.
 Here are some examples of how to declare such integers:
@@ -84,8 +73,8 @@ struct foo { mpz_t x, y; };
 mpz_t vec[20];
 </pre></div>
 
-<a name="index-Rational-number"></a>
-<a name="index-mpq_005ft"></a>
+<span id="index-Rational-number"></span>
+<span id="index-mpq_005ft"></span>
 <p><em>Rational number</em> means a multiple precision fraction.  The C data type
 for these fractions is <code>mpq_t</code>.  For example:
 </p>
@@ -93,8 +82,8 @@ for these fractions is <code>mpq_t</code>.  For example:
 <pre class="example">mpq_t quotient;
 </pre></div>
 
-<a name="index-Floating_002dpoint-number"></a>
-<a name="index-mpf_005ft"></a>
+<span id="index-Floating_002dpoint-number"></span>
+<span id="index-mpf_005ft"></span>
 <p><em>Floating point number</em> or <em>Float</em> for short, is an arbitrary precision
 mantissa with a limited precision exponent.  The C data type for such objects
 is <code>mpf_t</code>.  For example:
@@ -103,31 +92,31 @@ is <code>mpf_t</code>.  For example:
 <pre class="example">mpf_t fp;
 </pre></div>
 
-<a name="index-mp_005fexp_005ft"></a>
+<span id="index-mp_005fexp_005ft"></span>
 <p>The floating point functions accept and return exponents in the C type
 <code>mp_exp_t</code>.  Currently this is usually a <code>long</code>, but on some systems
 it&rsquo;s an <code>int</code> for efficiency.
 </p>
-<a name="index-Limb"></a>
-<a name="index-mp_005flimb_005ft"></a>
+<span id="index-Limb"></span>
+<span id="index-mp_005flimb_005ft"></span>
 <p>A <em>limb</em> means the part of a multi-precision number that fits in a single
 machine word.  (We chose this word because a limb of the human body is
 analogous to a digit, only larger, and containing several digits.)  Normally a
 limb is 32 or 64 bits.  The C data type for a limb is <code>mp_limb_t</code>.
 </p>
-<a name="index-mp_005fsize_005ft"></a>
+<span id="index-mp_005fsize_005ft"></span>
 <p>Counts of limbs of a multi-precision number represented in the C type
 <code>mp_size_t</code>.  Currently this is normally a <code>long</code>, but on some
 systems it&rsquo;s an <code>int</code> for efficiency, and on some systems it will be
 <code>long long</code> in the future.
 </p>
-<a name="index-mp_005fbitcnt_005ft"></a>
+<span id="index-mp_005fbitcnt_005ft"></span>
 <p>Counts of bits of a multi-precision number are represented in the C type
 <code>mp_bitcnt_t</code>.  Currently this is always an <code>unsigned long</code>, but on
 some systems it will be an <code>unsigned long long</code> in the future.
 </p>
-<a name="index-Random-state"></a>
-<a name="index-gmp_005frandstate_005ft"></a>
+<span id="index-Random-state"></span>
+<span id="index-gmp_005frandstate_005ft"></span>
 <p><em>Random state</em> means an algorithm selection and current state data.  The C
 data type for such objects is <code>gmp_randstate_t</code>.  For example:
 </p>
@@ -142,7 +131,7 @@ data type for such objects is <code>gmp_randstate_t</code>.  For example:
 <hr>
 <div class="header">
 <p>
-Next: <a href="Function-Classes.html#Function-Classes" accesskey="n" rel="next">Function Classes</a>, Previous: <a href="Headers-and-Libraries.html#Headers-and-Libraries" accesskey="p" rel="prev">Headers and Libraries</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Function-Classes.html" accesskey="n" rel="next">Function Classes</a>, Previous: <a href="Headers-and-Libraries.html" accesskey="p" rel="prev">Headers and Libraries</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

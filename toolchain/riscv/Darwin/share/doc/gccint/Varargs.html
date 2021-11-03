@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Varargs (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Target-Macros.html#Target-Macros" rel="up" title="Target Macros">
-<link href="Trampolines.html#Trampolines" rel="next" title="Trampolines">
-<link href="Miscellaneous-Register-Hooks.html#Miscellaneous-Register-Hooks" rel="prev" title="Miscellaneous Register Hooks">
+<link href="Target-Macros.html" rel="up" title="Target Macros">
+<link href="Trampolines.html" rel="next" title="Trampolines">
+<link href="Miscellaneous-Register-Hooks.html" rel="prev" title="Miscellaneous Register Hooks">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Varargs"></a>
-<div class="header">
+<span id="Varargs"></span><div class="header">
 <p>
-Next: <a href="Trampolines.html#Trampolines" accesskey="n" rel="next">Trampolines</a>, Previous: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="p" rel="prev">Stack and Calling</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Trampolines.html" accesskey="n" rel="next">Trampolines</a>, Previous: <a href="Stack-and-Calling.html" accesskey="p" rel="prev">Stack and Calling</a>, Up: <a href="Target-Macros.html" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Implementing-the-Varargs-Macros"></a>
-<h3 class="section">18.10 Implementing the Varargs Macros</h3>
-<a name="index-varargs-implementation"></a>
+<span id="Implementing-the-Varargs-Macros"></span><h3 class="section">18.10 Implementing the Varargs Macros</h3>
+<span id="index-varargs-implementation"></span>
 
 <p>GCC comes with an implementation of <code>&lt;varargs.h&gt;</code> and
 <code>&lt;stdarg.h&gt;</code> that work without change on machines that pass arguments
@@ -95,7 +84,7 @@ the end of the named arguments is with the built-in functions described
 below.
 </p>
 <dl>
-<dt><a name="index-_005f_005fbuiltin_005fsaveregs"></a>Macro: <strong>__builtin_saveregs</strong> <em>()</em></dt>
+<dt id="index-_005f_005fbuiltin_005fsaveregs">Macro: <strong>__builtin_saveregs</strong> <em>()</em></dt>
 <dd><p>Use this built-in function to save the argument registers in memory so
 that the varargs mechanism can access them.  Both ISO and traditional
 versions of <code>va_start</code> must use <code>__builtin_saveregs</code>, unless
@@ -114,7 +103,7 @@ to use them for its own purposes.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fbuiltin_005fnext_005farg"></a>Macro: <strong>__builtin_next_arg</strong> <em>(<var>lastarg</var>)</em></dt>
+<dt id="index-_005f_005fbuiltin_005fnext_005farg">Macro: <strong>__builtin_next_arg</strong> <em>(<var>lastarg</var>)</em></dt>
 <dd><p>This builtin returns the address of the first anonymous stack
 argument, as type <code>void *</code>.  If <code>ARGS_GROW_DOWNWARD</code>, it
 returns the address of the location above the first anonymous stack
@@ -125,7 +114,7 @@ of the current function.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fbuiltin_005fclassify_005ftype"></a>Macro: <strong>__builtin_classify_type</strong> <em>(<var>object</var>)</em></dt>
+<dt id="index-_005f_005fbuiltin_005fclassify_005ftype">Macro: <strong>__builtin_classify_type</strong> <em>(<var>object</var>)</em></dt>
 <dd><p>Since each machine has its own conventions for which data types are
 passed in which kind of register, your implementation of <code>va_arg</code>
 has to embody these conventions.  The easiest way to categorize the
@@ -143,7 +132,7 @@ interpret the values of <code>__builtin_classify_type</code>.
 <p>These machine description macros help implement varargs:
 </p>
 <dl>
-<dt><a name="index-TARGET_005fEXPAND_005fBUILTIN_005fSAVEREGS"></a>Target Hook: <em>rtx</em> <strong>TARGET_EXPAND_BUILTIN_SAVEREGS</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fEXPAND_005fBUILTIN_005fSAVEREGS">Target Hook: <em>rtx</em> <strong>TARGET_EXPAND_BUILTIN_SAVEREGS</strong> <em>(void)</em></dt>
 <dd><p>If defined, this hook produces the machine-specific code for a call to
 <code>__builtin_saveregs</code>.  This code will be moved to the very
 beginning of the function, before any parameter access are made.  The
@@ -152,7 +141,7 @@ to use as the return of <code>__builtin_saveregs</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSETUP_005fINCOMING_005fVARARGS"></a>Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARGS</strong> <em>(cumulative_args_t <var>args_so_far</var>, machine_mode <var>mode</var>, tree <var>type</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
+<dt id="index-TARGET_005fSETUP_005fINCOMING_005fVARARGS">Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARGS</strong> <em>(cumulative_args_t <var>args_so_far</var>, const function_arg_info <var>&amp;arg</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
 <dd><p>This target hook offers an alternative to using
 <code>__builtin_saveregs</code> and defining the hook
 <code>TARGET_EXPAND_BUILTIN_SAVEREGS</code>.  Use it to store the anonymous
@@ -163,8 +152,8 @@ pass all their arguments on the stack.
 </p>
 <p>The argument <var>args_so_far</var> points to the <code>CUMULATIVE_ARGS</code> data
 structure, containing the values that are obtained after processing the
-named arguments.  The arguments <var>mode</var> and <var>type</var> describe the
-last named argument&mdash;its machine mode and its data type as a tree node.
+named arguments.  The argument <var>arg</var> describes the last of these named
+arguments.
 </p>
 <p>The target hook should do two things: first, push onto the stack all the
 argument registers <em>not</em> used for the named arguments, and second,
@@ -187,7 +176,7 @@ not generate any instructions in this case.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSTRICT_005fARGUMENT_005fNAMING"></a>Target Hook: <em>bool</em> <strong>TARGET_STRICT_ARGUMENT_NAMING</strong> <em>(cumulative_args_t <var>ca</var>)</em></dt>
+<dt id="index-TARGET_005fSTRICT_005fARGUMENT_005fNAMING">Target Hook: <em>bool</em> <strong>TARGET_STRICT_ARGUMENT_NAMING</strong> <em>(cumulative_args_t <var>ca</var>)</em></dt>
 <dd><p>Define this hook to return <code>true</code> if the location where a function
 argument is passed depends on whether or not it is a named argument.
 </p>
@@ -203,7 +192,7 @@ except the last are treated as named.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fCALL_005fARGS"></a>Target Hook: <em>void</em> <strong>TARGET_CALL_ARGS</strong> <em>(rtx, <var>tree</var>)</em></dt>
+<dt id="index-TARGET_005fCALL_005fARGS">Target Hook: <em>void</em> <strong>TARGET_CALL_ARGS</strong> <em>(rtx, <var>tree</var>)</em></dt>
 <dd><p>While generating RTL for a function call, this target hook is invoked once
 for each argument passed to the function, either a register returned by
 <code>TARGET_FUNCTION_ARG</code> or a memory location.  It is called just
@@ -219,7 +208,7 @@ Most ports do not need to implement anything for this hook.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fEND_005fCALL_005fARGS"></a>Target Hook: <em>void</em> <strong>TARGET_END_CALL_ARGS</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fEND_005fCALL_005fARGS">Target Hook: <em>void</em> <strong>TARGET_END_CALL_ARGS</strong> <em>(void)</em></dt>
 <dd><p>This target hook is invoked while generating RTL for a function call,
 just after the point where the return reg is copied into a pseudo.  It
 signals that all the call argument and return registers for the just
@@ -228,7 +217,7 @@ Most ports do not need to implement anything for this hook.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fPRETEND_005fOUTGOING_005fVARARGS_005fNAMED"></a>Target Hook: <em>bool</em> <strong>TARGET_PRETEND_OUTGOING_VARARGS_NAMED</strong> <em>(cumulative_args_t <var>ca</var>)</em></dt>
+<dt id="index-TARGET_005fPRETEND_005fOUTGOING_005fVARARGS_005fNAMED">Target Hook: <em>bool</em> <strong>TARGET_PRETEND_OUTGOING_VARARGS_NAMED</strong> <em>(cumulative_args_t <var>ca</var>)</em></dt>
 <dd><p>If you need to conditionally change ABIs so that one works with
 <code>TARGET_SETUP_INCOMING_VARARGS</code>, but the other works like neither
 <code>TARGET_SETUP_INCOMING_VARARGS</code> nor <code>TARGET_STRICT_ARGUMENT_NAMING</code> was
@@ -238,7 +227,7 @@ Otherwise, you should not define this hook.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fLOAD_005fBOUNDS_005fFOR_005fARG"></a>Target Hook: <em>rtx</em> <strong>TARGET_LOAD_BOUNDS_FOR_ARG</strong> <em>(rtx <var>slot</var>, rtx <var>arg</var>, rtx <var>slot_no</var>)</em></dt>
+<dt id="index-TARGET_005fLOAD_005fBOUNDS_005fFOR_005fARG">Target Hook: <em>rtx</em> <strong>TARGET_LOAD_BOUNDS_FOR_ARG</strong> <em>(rtx <var>slot</var>, rtx <var>arg</var>, rtx <var>slot_no</var>)</em></dt>
 <dd><p>This hook is used by expand pass to emit insn to load bounds of
 <var>arg</var> passed in <var>slot</var>.  Expand pass uses this hook in case
 bounds of <var>arg</var> are not passed in register.  If <var>slot</var> is a
@@ -249,7 +238,7 @@ should be used to obtain bounds.  Hook returns RTX holding loaded bounds.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSTORE_005fBOUNDS_005fFOR_005fARG"></a>Target Hook: <em>void</em> <strong>TARGET_STORE_BOUNDS_FOR_ARG</strong> <em>(rtx <var>arg</var>, rtx <var>slot</var>, rtx <var>bounds</var>, rtx <var>slot_no</var>)</em></dt>
+<dt id="index-TARGET_005fSTORE_005fBOUNDS_005fFOR_005fARG">Target Hook: <em>void</em> <strong>TARGET_STORE_BOUNDS_FOR_ARG</strong> <em>(rtx <var>arg</var>, rtx <var>slot</var>, rtx <var>bounds</var>, rtx <var>slot_no</var>)</em></dt>
 <dd><p>This hook is used by expand pass to emit insns to store <var>bounds</var> of
 <var>arg</var> passed in <var>slot</var>.  Expand pass uses this hook in case
 <var>bounds</var> of <var>arg</var> are not passed in register.  If <var>slot</var> is a
@@ -260,36 +249,22 @@ should be used to store <var>bounds</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fLOAD_005fRETURNED_005fBOUNDS"></a>Target Hook: <em>rtx</em> <strong>TARGET_LOAD_RETURNED_BOUNDS</strong> <em>(rtx <var>slot</var>)</em></dt>
+<dt id="index-TARGET_005fLOAD_005fRETURNED_005fBOUNDS">Target Hook: <em>rtx</em> <strong>TARGET_LOAD_RETURNED_BOUNDS</strong> <em>(rtx <var>slot</var>)</em></dt>
 <dd><p>This hook is used by expand pass to emit insn to load bounds
 returned by function call in <var>slot</var>.  Hook returns RTX holding
 loaded bounds.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSTORE_005fRETURNED_005fBOUNDS"></a>Target Hook: <em>void</em> <strong>TARGET_STORE_RETURNED_BOUNDS</strong> <em>(rtx <var>slot</var>, rtx <var>bounds</var>)</em></dt>
+<dt id="index-TARGET_005fSTORE_005fRETURNED_005fBOUNDS">Target Hook: <em>void</em> <strong>TARGET_STORE_RETURNED_BOUNDS</strong> <em>(rtx <var>slot</var>, rtx <var>bounds</var>)</em></dt>
 <dd><p>This hook is used by expand pass to emit insn to store <var>bounds</var>
 returned by function call into <var>slot</var>.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fCHKP_005fFUNCTION_005fVALUE_005fBOUNDS"></a>Target Hook: <em>rtx</em> <strong>TARGET_CHKP_FUNCTION_VALUE_BOUNDS</strong> <em>(const_tree <var>ret_type</var>, const_tree <var>fn_decl_or_type</var>, bool <var>outgoing</var>)</em></dt>
-<dd><p>Define this to return an RTX representing the place where a function
-returns bounds for returned pointers.  Arguments meaning is similar to
-<code>TARGET_FUNCTION_VALUE</code>.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fSETUP_005fINCOMING_005fVARARG_005fBOUNDS"></a>Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARG_BOUNDS</strong> <em>(cumulative_args_t <var>args_so_far</var>, machine_mode <var>mode</var>, tree <var>type</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
-<dd><p>Use it to store bounds for anonymous register arguments stored
-into the stack.  Arguments meaning is similar to
-<code>TARGET_SETUP_INCOMING_VARARGS</code>.
 </p></dd></dl>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Trampolines.html#Trampolines" accesskey="n" rel="next">Trampolines</a>, Previous: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="p" rel="prev">Stack and Calling</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Trampolines.html" accesskey="n" rel="next">Trampolines</a>, Previous: <a href="Stack-and-Calling.html" accesskey="p" rel="prev">Stack and Calling</a>, Up: <a href="Target-Macros.html" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

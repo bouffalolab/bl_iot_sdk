@@ -1,328 +1,182 @@
-<html lang="en">
-<head>
-<title>Directly-mapped Media Functions - Using the GNU Compiler Collection (GCC)</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Using the GNU Compiler Collection (GCC)">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="FR_002dV-Built_002din-Functions.html#FR_002dV-Built_002din-Functions" title="FR-V Built-in Functions">
-<link rel="prev" href="Directly_002dmapped-Integer-Functions.html#Directly_002dmapped-Integer-Functions" title="Directly-mapped Integer Functions">
-<link rel="next" href="Raw-read_002fwrite-Functions.html#Raw-read_002fwrite-Functions" title="Raw read/write Functions">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Directly-mapped-Media-Functions"></a>
-<a name="Directly_002dmapped-Media-Functions"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Raw-read_002fwrite-Functions.html#Raw-read_002fwrite-Functions">Raw read/write Functions</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Directly_002dmapped-Integer-Functions.html#Directly_002dmapped-Integer-Functions">Directly-mapped Integer Functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="FR_002dV-Built_002din-Functions.html#FR_002dV-Built_002din-Functions">FR-V Built-in Functions</a>
-<hr>
-</div>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Using the GNU Compiler Collection (GCC): Directly-mapped Media Functions</title>
 
-<h5 class="subsubsection">6.59.12.3 Directly-Mapped Media Functions</h5>
+<meta name="description" content="Using the GNU Compiler Collection (GCC): Directly-mapped Media Functions">
+<meta name="keywords" content="Using the GNU Compiler Collection (GCC): Directly-mapped Media Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="FR_002dV-Built_002din-Functions.html#FR_002dV-Built_002din-Functions" rel="up" title="FR-V Built-in Functions">
+<link href="Raw-read_002fwrite-Functions.html#Raw-read_002fwrite-Functions" rel="next" title="Raw read/write Functions">
+<link href="Directly_002dmapped-Integer-Functions.html#Directly_002dmapped-Integer-Functions" rel="prev" title="Directly-mapped Integer Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Directly_002dmapped-Media-Functions"></a>
+<div class="header">
+<p>
+Next: <a href="Raw-read_002fwrite-Functions.html#Raw-read_002fwrite-Functions" accesskey="n" rel="next">Raw read/write Functions</a>, Previous: <a href="Directly_002dmapped-Integer-Functions.html#Directly_002dmapped-Integer-Functions" accesskey="p" rel="prev">Directly-mapped Integer Functions</a>, Up: <a href="FR_002dV-Built_002din-Functions.html#FR_002dV-Built_002din-Functions" accesskey="u" rel="up">FR-V Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Directly_002dMapped-Media-Functions"></a>
+<h4 class="subsubsection">6.60.14.3 Directly-Mapped Media Functions</h4>
 
 <p>The functions listed below map directly to FR-V M-type instructions.
+</p>
+<table>
+<tr><td width="45%">Function prototype</td><td width="32%">Example usage</td><td width="23%">Assembly output</td></tr>
+<tr><td width="45%"><code>uw1 __MABSHS (sw1)</code></td><td width="32%"><code><var>b</var> = __MABSHS (<var>a</var>)</code></td><td width="23%"><code>MABSHS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MADDACCS (acc, acc)</code></td><td width="32%"><code>__MADDACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MADDACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MADDHSS (sw1, sw1)</code></td><td width="32%"><code><var>c</var> = __MADDHSS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MADDHSS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MADDHUS (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MADDHUS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MADDHUS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MAND (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MAND (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MAND <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MASACCS (acc, acc)</code></td><td width="32%"><code>__MASACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MASACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MAVEH (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MAVEH (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MAVEH <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MBTOH (uw1)</code></td><td width="32%"><code><var>b</var> = __MBTOH (<var>a</var>)</code></td><td width="23%"><code>MBTOH <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MBTOHE (uw1 *, uw1)</code></td><td width="32%"><code>__MBTOHE (&amp;<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MBTOHE <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MCLRACC (acc)</code></td><td width="32%"><code>__MCLRACC (<var>a</var>)</code></td><td width="23%"><code>MCLRACC <var>a</var></code></td></tr>
+<tr><td width="45%"><code>void __MCLRACCA (void)</code></td><td width="32%"><code>__MCLRACCA ()</code></td><td width="23%"><code>MCLRACCA</code></td></tr>
+<tr><td width="45%"><code>uw1 __Mcop1 (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __Mcop1 (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>Mcop1 <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __Mcop2 (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __Mcop2 (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>Mcop2 <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MCPLHI (uw2, const)</code></td><td width="32%"><code><var>c</var> = __MCPLHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPLHI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MCPLI (uw2, const)</code></td><td width="32%"><code><var>c</var> = __MCPLI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPLI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MCPXIS (acc, sw1, sw1)</code></td><td width="32%"><code>__MCPXIS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPXIS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MCPXIU (acc, uw1, uw1)</code></td><td width="32%"><code>__MCPXIU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPXIU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MCPXRS (acc, sw1, sw1)</code></td><td width="32%"><code>__MCPXRS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPXRS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MCPXRU (acc, uw1, uw1)</code></td><td width="32%"><code>__MCPXRU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCPXRU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MCUT (acc, uw1)</code></td><td width="32%"><code><var>c</var> = __MCUT (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCUT <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MCUTSS (acc, sw1)</code></td><td width="32%"><code><var>c</var> = __MCUTSS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MCUTSS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MDADDACCS (acc, acc)</code></td><td width="32%"><code>__MDADDACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MDADDACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MDASACCS (acc, acc)</code></td><td width="32%"><code>__MDASACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MDASACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MDCUTSSI (acc, const)</code></td><td width="32%"><code><var>c</var> = __MDCUTSSI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MDCUTSSI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MDPACKH (uw2, uw2)</code></td><td width="32%"><code><var>c</var> = __MDPACKH (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MDPACKH <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MDROTLI (uw2, const)</code></td><td width="32%"><code><var>c</var> = __MDROTLI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MDROTLI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MDSUBACCS (acc, acc)</code></td><td width="32%"><code>__MDSUBACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MDSUBACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MDUNPACKH (uw1 *, uw2)</code></td><td width="32%"><code>__MDUNPACKH (&amp;<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MDUNPACKH <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MEXPDHD (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MEXPDHD (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MEXPDHD <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MEXPDHW (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MEXPDHW (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MEXPDHW <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MHDSETH (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MHDSETH (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MHDSETH <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MHDSETS (const)</code></td><td width="32%"><code><var>b</var> = __MHDSETS (<var>a</var>)</code></td><td width="23%"><code>MHDSETS #<var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MHSETHIH (uw1, const)</code></td><td width="32%"><code><var>b</var> = __MHSETHIH (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MHSETHIH #<var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MHSETHIS (sw1, const)</code></td><td width="32%"><code><var>b</var> = __MHSETHIS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MHSETHIS #<var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MHSETLOH (uw1, const)</code></td><td width="32%"><code><var>b</var> = __MHSETLOH (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MHSETLOH #<var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MHSETLOS (sw1, const)</code></td><td width="32%"><code><var>b</var> = __MHSETLOS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MHSETLOS #<var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MHTOB (uw2)</code></td><td width="32%"><code><var>b</var> = __MHTOB (<var>a</var>)</code></td><td width="23%"><code>MHTOB <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MMACHS (acc, sw1, sw1)</code></td><td width="32%"><code>__MMACHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMACHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMACHU (acc, uw1, uw1)</code></td><td width="32%"><code>__MMACHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMACHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMRDHS (acc, sw1, sw1)</code></td><td width="32%"><code>__MMRDHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMRDHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMRDHU (acc, uw1, uw1)</code></td><td width="32%"><code>__MMRDHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMRDHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMULHS (acc, sw1, sw1)</code></td><td width="32%"><code>__MMULHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMULHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMULHU (acc, uw1, uw1)</code></td><td width="32%"><code>__MMULHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMULHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMULXHS (acc, sw1, sw1)</code></td><td width="32%"><code>__MMULXHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMULXHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MMULXHU (acc, uw1, uw1)</code></td><td width="32%"><code>__MMULXHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MMULXHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MNOT (uw1)</code></td><td width="32%"><code><var>b</var> = __MNOT (<var>a</var>)</code></td><td width="23%"><code>MNOT <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MOR (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MOR (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MOR <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MPACKH (uh, uh)</code></td><td width="32%"><code><var>c</var> = __MPACKH (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MPACKH <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQADDHSS (sw2, sw2)</code></td><td width="32%"><code><var>c</var> = __MQADDHSS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQADDHSS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MQADDHUS (uw2, uw2)</code></td><td width="32%"><code><var>c</var> = __MQADDHUS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQADDHUS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQCPXIS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQCPXIS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQCPXIS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQCPXIU (acc, uw2, uw2)</code></td><td width="32%"><code>__MQCPXIU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQCPXIU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQCPXRS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQCPXRS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQCPXRS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQCPXRU (acc, uw2, uw2)</code></td><td width="32%"><code>__MQCPXRU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQCPXRU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQLCLRHS (sw2, sw2)</code></td><td width="32%"><code><var>c</var> = __MQLCLRHS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQLCLRHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQLMTHS (sw2, sw2)</code></td><td width="32%"><code><var>c</var> = __MQLMTHS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQLMTHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMACHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQMACHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMACHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMACHU (acc, uw2, uw2)</code></td><td width="32%"><code>__MQMACHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMACHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMACXHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQMACXHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMACXHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMULHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQMULHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMULHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMULHU (acc, uw2, uw2)</code></td><td width="32%"><code>__MQMULHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMULHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMULXHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQMULXHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMULXHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQMULXHU (acc, uw2, uw2)</code></td><td width="32%"><code>__MQMULXHU (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQMULXHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQSATHS (sw2, sw2)</code></td><td width="32%"><code><var>c</var> = __MQSATHS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQSATHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MQSLLHI (uw2, int)</code></td><td width="32%"><code><var>c</var> = __MQSLLHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQSLLHI <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQSRAHI (sw2, int)</code></td><td width="32%"><code><var>c</var> = __MQSRAHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQSRAHI <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw2 __MQSUBHSS (sw2, sw2)</code></td><td width="32%"><code><var>c</var> = __MQSUBHSS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQSUBHSS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw2 __MQSUBHUS (uw2, uw2)</code></td><td width="32%"><code><var>c</var> = __MQSUBHUS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQSUBHUS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQXMACHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQXMACHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQXMACHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MQXMACXHS (acc, sw2, sw2)</code></td><td width="32%"><code>__MQXMACXHS (<var>c</var>, <var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MQXMACXHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MRDACC (acc)</code></td><td width="32%"><code><var>b</var> = __MRDACC (<var>a</var>)</code></td><td width="23%"><code>MRDACC <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MRDACCG (acc)</code></td><td width="32%"><code><var>b</var> = __MRDACCG (<var>a</var>)</code></td><td width="23%"><code>MRDACCG <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MROTLI (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MROTLI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MROTLI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MROTRI (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MROTRI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MROTRI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MSATHS (sw1, sw1)</code></td><td width="32%"><code><var>c</var> = __MSATHS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSATHS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MSATHU (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MSATHU (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSATHU <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MSLLHI (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MSLLHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSLLHI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MSRAHI (sw1, const)</code></td><td width="32%"><code><var>c</var> = __MSRAHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSRAHI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MSRLHI (uw1, const)</code></td><td width="32%"><code><var>c</var> = __MSRLHI (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSRLHI <var>a</var>,#<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MSUBACCS (acc, acc)</code></td><td width="32%"><code>__MSUBACCS (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MSUBACCS <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>sw1 __MSUBHSS (sw1, sw1)</code></td><td width="32%"><code><var>c</var> = __MSUBHSS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSUBHSS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MSUBHUS (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MSUBHUS (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MSUBHUS <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MTRAP (void)</code></td><td width="32%"><code>__MTRAP ()</code></td><td width="23%"><code>MTRAP</code></td></tr>
+<tr><td width="45%"><code>uw2 __MUNPACKH (uw1)</code></td><td width="32%"><code><var>b</var> = __MUNPACKH (<var>a</var>)</code></td><td width="23%"><code>MUNPACKH <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MWCUT (uw2, uw1)</code></td><td width="32%"><code><var>c</var> = __MWCUT (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MWCUT <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+<tr><td width="45%"><code>void __MWTACC (acc, uw1)</code></td><td width="32%"><code>__MWTACC (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MWTACC <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>void __MWTACCG (acc, uw1)</code></td><td width="32%"><code>__MWTACCG (<var>b</var>, <var>a</var>)</code></td><td width="23%"><code>MWTACCG <var>a</var>,<var>b</var></code></td></tr>
+<tr><td width="45%"><code>uw1 __MXOR (uw1, uw1)</code></td><td width="32%"><code><var>c</var> = __MXOR (<var>a</var>, <var>b</var>)</code></td><td width="23%"><code>MXOR <var>a</var>,<var>b</var>,<var>c</var></code></td></tr>
+</table>
 
- <p><table summary=""><tr align="left"><td valign="top" width="45%">Function prototype </td><td valign="top" width="32%">Example usage </td><td valign="top" width="23%">Assembly output
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MABSHS (sw1)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MABSHS (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MABSHS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MADDACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MADDACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MADDACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MADDHSS (sw1, sw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MADDHSS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MADDHSS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MADDHUS (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MADDHUS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MADDHUS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MAND (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MAND (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MAND </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MASACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MASACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MASACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MAVEH (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MAVEH (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MAVEH </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MBTOH (uw1)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MBTOH (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MBTOH </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MBTOHE (uw1 *, uw1)</code>
-</td><td valign="top" width="32%"><code>__MBTOHE (&amp;</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MBTOHE </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCLRACC (acc)</code>
-</td><td valign="top" width="32%"><code>__MCLRACC (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCLRACC </code><var>a</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCLRACCA (void)</code>
-</td><td valign="top" width="32%"><code>__MCLRACCA ()</code>
-</td><td valign="top" width="23%"><code>MCLRACCA</code>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __Mcop1 (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __Mcop1 (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>Mcop1 </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __Mcop2 (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __Mcop2 (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>Mcop2 </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MCPLHI (uw2, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MCPLHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPLHI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MCPLI (uw2, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MCPLI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPLI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCPXIS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MCPXIS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPXIS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCPXIU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MCPXIU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPXIU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCPXRS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MCPXRS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPXRS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MCPXRU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MCPXRU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCPXRU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MCUT (acc, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MCUT (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCUT </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MCUTSS (acc, sw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MCUTSS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MCUTSS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MDADDACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MDADDACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDADDACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MDASACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MDASACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDASACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MDCUTSSI (acc, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MDCUTSSI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDCUTSSI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MDPACKH (uw2, uw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MDPACKH (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDPACKH </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MDROTLI (uw2, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MDROTLI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDROTLI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MDSUBACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MDSUBACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDSUBACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MDUNPACKH (uw1 *, uw2)</code>
-</td><td valign="top" width="32%"><code>__MDUNPACKH (&amp;</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MDUNPACKH </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MEXPDHD (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MEXPDHD (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MEXPDHD </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MEXPDHW (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MEXPDHW (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MEXPDHW </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MHDSETH (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MHDSETH (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHDSETH </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MHDSETS (const)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHDSETS (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHDSETS #</code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MHSETHIH (uw1, const)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHSETHIH (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHSETHIH #</code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MHSETHIS (sw1, const)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHSETHIS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHSETHIS #</code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MHSETLOH (uw1, const)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHSETLOH (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHSETLOH #</code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MHSETLOS (sw1, const)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHSETLOS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHSETLOS #</code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MHTOB (uw2)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MHTOB (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MHTOB </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMACHS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MMACHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMACHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMACHU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MMACHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMACHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMRDHS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MMRDHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMRDHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMRDHU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MMRDHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMRDHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMULHS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MMULHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMULHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMULHU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MMULHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMULHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMULXHS (acc, sw1, sw1)</code>
-</td><td valign="top" width="32%"><code>__MMULXHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMULXHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MMULXHU (acc, uw1, uw1)</code>
-</td><td valign="top" width="32%"><code>__MMULXHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MMULXHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MNOT (uw1)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MNOT (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MNOT </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MOR (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MOR (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MOR </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MPACKH (uh, uh)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MPACKH (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MPACKH </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQADDHSS (sw2, sw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQADDHSS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQADDHSS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MQADDHUS (uw2, uw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQADDHUS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQADDHUS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQCPXIS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQCPXIS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQCPXIS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQCPXIU (acc, uw2, uw2)</code>
-</td><td valign="top" width="32%"><code>__MQCPXIU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQCPXIU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQCPXRS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQCPXRS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQCPXRS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQCPXRU (acc, uw2, uw2)</code>
-</td><td valign="top" width="32%"><code>__MQCPXRU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQCPXRU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQLCLRHS (sw2, sw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQLCLRHS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQLCLRHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQLMTHS (sw2, sw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQLMTHS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQLMTHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMACHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQMACHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMACHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMACHU (acc, uw2, uw2)</code>
-</td><td valign="top" width="32%"><code>__MQMACHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMACHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMACXHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQMACXHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMACXHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMULHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQMULHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMULHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMULHU (acc, uw2, uw2)</code>
-</td><td valign="top" width="32%"><code>__MQMULHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMULHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMULXHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQMULXHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMULXHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQMULXHU (acc, uw2, uw2)</code>
-</td><td valign="top" width="32%"><code>__MQMULXHU (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQMULXHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQSATHS (sw2, sw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQSATHS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQSATHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MQSLLHI (uw2, int)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQSLLHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQSLLHI </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQSRAHI (sw2, int)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQSRAHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQSRAHI </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw2 __MQSUBHSS (sw2, sw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQSUBHSS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQSUBHSS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MQSUBHUS (uw2, uw2)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MQSUBHUS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQSUBHUS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQXMACHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQXMACHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQXMACHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MQXMACXHS (acc, sw2, sw2)</code>
-</td><td valign="top" width="32%"><code>__MQXMACXHS (</code><var>c</var><code>, </code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MQXMACXHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MRDACC (acc)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MRDACC (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MRDACC </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MRDACCG (acc)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MRDACCG (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MRDACCG </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MROTLI (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MROTLI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MROTLI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MROTRI (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MROTRI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MROTRI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MSATHS (sw1, sw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSATHS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSATHS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MSATHU (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSATHU (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSATHU </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MSLLHI (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSLLHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSLLHI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MSRAHI (sw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSRAHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSRAHI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MSRLHI (uw1, const)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSRLHI (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSRLHI </code><var>a</var><code>,#</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MSUBACCS (acc, acc)</code>
-</td><td valign="top" width="32%"><code>__MSUBACCS (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSUBACCS </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>sw1 __MSUBHSS (sw1, sw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSUBHSS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSUBHSS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MSUBHUS (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MSUBHUS (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MSUBHUS </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MTRAP (void)</code>
-</td><td valign="top" width="32%"><code>__MTRAP ()</code>
-</td><td valign="top" width="23%"><code>MTRAP</code>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw2 __MUNPACKH (uw1)</code>
-</td><td valign="top" width="32%"><var>b</var><code> = __MUNPACKH (</code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MUNPACKH </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MWCUT (uw2, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MWCUT (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MWCUT </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MWTACC (acc, uw1)</code>
-</td><td valign="top" width="32%"><code>__MWTACC (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MWTACC </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>void __MWTACCG (acc, uw1)</code>
-</td><td valign="top" width="32%"><code>__MWTACCG (</code><var>b</var><code>, </code><var>a</var><code>)</code>
-</td><td valign="top" width="23%"><code>MWTACCG </code><var>a</var><code>,</code><var>b</var>
-<br></td></tr><tr align="left"><td valign="top" width="45%"><code>uw1 __MXOR (uw1, uw1)</code>
-</td><td valign="top" width="32%"><var>c</var><code> = __MXOR (</code><var>a</var><code>, </code><var>b</var><code>)</code>
-</td><td valign="top" width="23%"><code>MXOR </code><var>a</var><code>,</code><var>b</var><code>,</code><var>c</var>
- <br></td></tr></table>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Raw-read_002fwrite-Functions.html#Raw-read_002fwrite-Functions" accesskey="n" rel="next">Raw read/write Functions</a>, Previous: <a href="Directly_002dmapped-Integer-Functions.html#Directly_002dmapped-Integer-Functions" accesskey="p" rel="prev">Directly-mapped Integer Functions</a>, Up: <a href="FR_002dV-Built_002din-Functions.html#FR_002dV-Built_002din-Functions" accesskey="u" rel="up">FR-V Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
- </body></html>
 
+
+</body>
+</html>

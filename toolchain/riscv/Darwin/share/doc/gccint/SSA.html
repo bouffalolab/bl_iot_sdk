@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SSA (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Tree-SSA.html#Tree-SSA" rel="up" title="Tree SSA">
-<link href="Alias-analysis.html#Alias-analysis" rel="next" title="Alias analysis">
-<link href="SSA-Operands.html#SSA-Operands" rel="prev" title="SSA Operands">
+<link href="Tree-SSA.html" rel="up" title="Tree SSA">
+<link href="Alias-analysis.html" rel="next" title="Alias analysis">
+<link href="SSA-Operands.html" rel="prev" title="SSA Operands">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,16 +58,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="SSA"></a>
-<div class="header">
+<span id="SSA"></span><div class="header">
 <p>
-Next: <a href="Alias-analysis.html#Alias-analysis" accesskey="n" rel="next">Alias analysis</a>, Previous: <a href="SSA-Operands.html#SSA-Operands" accesskey="p" rel="prev">SSA Operands</a>, Up: <a href="Tree-SSA.html#Tree-SSA" accesskey="u" rel="up">Tree SSA</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alias-analysis.html" accesskey="n" rel="next">Alias analysis</a>, Previous: <a href="SSA-Operands.html" accesskey="p" rel="prev">SSA Operands</a>, Up: <a href="Tree-SSA.html" accesskey="u" rel="up">Tree SSA</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Static-Single-Assignment"></a>
-<h3 class="section">13.3 Static Single Assignment</h3>
-<a name="index-SSA"></a>
-<a name="index-static-single-assignment"></a>
+<span id="Static-Single-Assignment"></span><h3 class="section">13.3 Static Single Assignment</h3>
+<span id="index-SSA"></span>
+<span id="index-static-single-assignment"></span>
 
 <p>Most of the tree optimizers rely on the data flow information provided
 by the Static Single Assignment (SSA) form.  We implement the SSA form
@@ -104,7 +93,7 @@ the version number and the statement that created the
 <code>SSA_NAME</code>.  Only definitions and virtual definitions may
 create new <code>SSA_NAME</code> nodes.
 </p>
-<a name="index-PHI-nodes"></a>
+<span id="index-PHI-nodes"></span>
 <p>Sometimes, flow of control makes it impossible to determine the
 most recent version of a variable.  In these cases, the compiler
 inserts an artificial definition for that variable called
@@ -112,8 +101,8 @@ inserts an artificial definition for that variable called
 all the incoming versions of the variable to create a new name
 for it.  For instance,
 </p>
-<div class="smallexample">
-<pre class="smallexample">if (&hellip;)
+<div class="example">
+<pre class="example">if (&hellip;)
   a_1 = 5;
 else if (&hellip;)
   a_2 = 2;
@@ -135,37 +124,36 @@ which&rdquo;.
 <p>The following functions can be used to examine PHI nodes
 </p>
 <dl>
-<dt><a name="index-gimple_005fphi_005fresult-1"></a>Function: <strong>gimple_phi_result</strong> <em>(<var>phi</var>)</em></dt>
+<dt id="index-gimple_005fphi_005fresult-1">Function: <strong>gimple_phi_result</strong> <em>(<var>phi</var>)</em></dt>
 <dd><p>Returns the <code>SSA_NAME</code> created by PHI node <var>phi</var> (i.e.,
 <var>phi</var>&rsquo;s LHS).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gimple_005fphi_005fnum_005fargs-1"></a>Function: <strong>gimple_phi_num_args</strong> <em>(<var>phi</var>)</em></dt>
+<dt id="index-gimple_005fphi_005fnum_005fargs-1">Function: <strong>gimple_phi_num_args</strong> <em>(<var>phi</var>)</em></dt>
 <dd><p>Returns the number of arguments in <var>phi</var>.  This number is exactly
 the number of incoming edges to the basic block holding <var>phi</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gimple_005fphi_005farg-1"></a>Function: <strong>gimple_phi_arg</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
+<dt id="index-gimple_005fphi_005farg-1">Function: <strong>gimple_phi_arg</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
 <dd><p>Returns <var>i</var>th argument of <var>phi</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gimple_005fphi_005farg_005fedge"></a>Function: <strong>gimple_phi_arg_edge</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
+<dt id="index-gimple_005fphi_005farg_005fedge">Function: <strong>gimple_phi_arg_edge</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
 <dd><p>Returns the incoming edge for the <var>i</var>th argument of <var>phi</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gimple_005fphi_005farg_005fdef"></a>Function: <strong>gimple_phi_arg_def</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
+<dt id="index-gimple_005fphi_005farg_005fdef">Function: <strong>gimple_phi_arg_def</strong> <em>(<var>phi</var>, <var>i</var>)</em></dt>
 <dd><p>Returns the <code>SSA_NAME</code> for the <var>i</var>th argument of <var>phi</var>.
 </p></dd></dl>
 
 
-<a name="Preserving-the-SSA-form"></a>
-<h4 class="subsection">13.3.1 Preserving the SSA form</h4>
-<a name="index-update_005fssa"></a>
-<a name="index-preserving-SSA-form"></a>
+<span id="Preserving-the-SSA-form"></span><h4 class="subsection">13.3.1 Preserving the SSA form</h4>
+<span id="index-update_005fssa"></span>
+<span id="index-preserving-SSA-form"></span>
 <p>Some optimization passes make changes to the function that
 invalidate the SSA property.  This can happen when a pass has
 added new symbols or changed the program so that variables that
@@ -183,8 +171,8 @@ the program.
 </p>
 <p>For instance, given the following code:
 </p>
-<div class="smallexample">
-<pre class="smallexample">     1  L0:
+<div class="example">
+<pre class="example">     1  L0:
      2  x_1 = PHI (0, x_5)
      3  if (x_1 &lt; 10)
      4    if (x_1 &gt; 7)
@@ -200,8 +188,8 @@ the program.
 <p>Suppose that we insert new names <code>x_10</code> and <code>x_11</code> (lines
 <code>4</code> and <code>8</code>).
 </p>
-<div class="smallexample">
-<pre class="smallexample">     1  L0:
+<div class="example">
+<pre class="example">     1  L0:
      2  x_1 = PHI (0, x_5)
      3  if (x_1 &lt; 10)
      4    x_10 = &hellip;
@@ -284,14 +272,13 @@ are explicitly destroyed and only the symbols marked for
 renaming are processed.
 </li></ul>
 
-<a name="Examining-SSA_005fNAME-nodes"></a>
-<h4 class="subsection">13.3.2 Examining <code>SSA_NAME</code> nodes</h4>
-<a name="index-examining-SSA_005fNAMEs"></a>
+<span id="Examining-SSA_005fNAME-nodes"></span><h4 class="subsection">13.3.2 Examining <code>SSA_NAME</code> nodes</h4>
+<span id="index-examining-SSA_005fNAMEs"></span>
 
 <p>The following macros can be used to examine <code>SSA_NAME</code> nodes
 </p>
 <dl>
-<dt><a name="index-SSA_005fNAME_005fDEF_005fSTMT"></a>Macro: <strong>SSA_NAME_DEF_STMT</strong> <em>(<var>var</var>)</em></dt>
+<dt id="index-SSA_005fNAME_005fDEF_005fSTMT">Macro: <strong>SSA_NAME_DEF_STMT</strong> <em>(<var>var</var>)</em></dt>
 <dd><p>Returns the statement <var>s</var> that creates the <code>SSA_NAME</code>
 <var>var</var>.  If <var>s</var> is an empty statement (i.e., <code>IS_EMPTY_STMT
 (<var>s</var>)</code> returns <code>true</code>), it means that the first reference to
@@ -299,16 +286,15 @@ this variable is a USE or a VUSE.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-SSA_005fNAME_005fVERSION"></a>Macro: <strong>SSA_NAME_VERSION</strong> <em>(<var>var</var>)</em></dt>
+<dt id="index-SSA_005fNAME_005fVERSION">Macro: <strong>SSA_NAME_VERSION</strong> <em>(<var>var</var>)</em></dt>
 <dd><p>Returns the version number of the <code>SSA_NAME</code> object <var>var</var>.
 </p></dd></dl>
 
 
-<a name="Walking-the-dominator-tree"></a>
-<h4 class="subsection">13.3.3 Walking the dominator tree</h4>
+<span id="Walking-the-dominator-tree"></span><h4 class="subsection">13.3.3 Walking the dominator tree</h4>
 
 <dl>
-<dt><a name="index-walk_005fdominator_005ftree"></a>Tree SSA function: <em>void</em> <strong>walk_dominator_tree</strong> <em>(<var>walk_data</var>, <var>bb</var>)</em></dt>
+<dt id="index-walk_005fdominator_005ftree">Tree SSA function: <em>void</em> <strong>walk_dominator_tree</strong> <em>(<var>walk_data</var>, <var>bb</var>)</em></dt>
 <dd>
 <p>This function walks the dominator tree for the current CFG calling a
 set of callback functions defined in <var>struct dom_walk_data</var> in
@@ -343,7 +329,7 @@ is popped.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Alias-analysis.html#Alias-analysis" accesskey="n" rel="next">Alias analysis</a>, Previous: <a href="SSA-Operands.html#SSA-Operands" accesskey="p" rel="prev">SSA Operands</a>, Up: <a href="Tree-SSA.html#Tree-SSA" accesskey="u" rel="up">Tree SSA</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alias-analysis.html" accesskey="n" rel="next">Alias analysis</a>, Previous: <a href="SSA-Operands.html" accesskey="p" rel="prev">SSA Operands</a>, Up: <a href="Tree-SSA.html" accesskey="u" rel="up">Tree SSA</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

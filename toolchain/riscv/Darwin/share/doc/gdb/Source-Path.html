@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Source Path (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Source.html#Source" rel="up" title="Source">
-<link href="Machine-Code.html#Machine-Code" rel="next" title="Machine Code">
-<link href="Search.html#Search" rel="prev" title="Search">
+<link href="Source.html" rel="up" title="Source">
+<link href="Machine-Code.html" rel="next" title="Machine Code">
+<link href="Search.html" rel="prev" title="Search">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Source-Path"></a>
-<div class="header">
+<span id="Source-Path"></span><div class="header">
 <p>
-Next: <a href="Machine-Code.html#Machine-Code" accesskey="n" rel="next">Machine Code</a>, Previous: <a href="Search.html#Search" accesskey="p" rel="prev">Search</a>, Up: <a href="Source.html#Source" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Machine-Code.html" accesskey="n" rel="next">Machine Code</a>, Previous: <a href="Search.html" accesskey="p" rel="prev">Search</a>, Up: <a href="Source.html" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Specifying-Source-Directories"></a>
-<h3 class="section">9.5 Specifying Source Directories</h3>
+<span id="Specifying-Source-Directories"></span><h3 class="section">9.5 Specifying Source Directories</h3>
 
-<a name="index-source-path"></a>
-<a name="index-directories-for-source-files"></a>
+<span id="index-source-path"></span>
+<span id="index-directories-for-source-files"></span>
 <p>Executable programs sometimes do not record the directories of the source
 files from which they were compiled, just the names.  Even when they do,
 the directories could be moved between the compilation and your debugging
@@ -80,11 +69,20 @@ it tries all the directories in the list, in the order they are present
 in the list, until it finds a file with the desired name.
 </p>
 <p>For example, suppose an executable references the file
-<samp>/usr/src/foo-1.0/lib/foo.c</samp>, and our source path is
-<samp>/mnt/cross</samp>.  The file is first looked up literally; if this
-fails, <samp>/mnt/cross/usr/src/foo-1.0/lib/foo.c</samp> is tried; if this
-fails, <samp>/mnt/cross/foo.c</samp> is opened; if this fails, an error
-message is printed.  <small>GDB</small> does not look up the parts of the
+<samp>/usr/src/foo-1.0/lib/foo.c</samp>, does not record a compilation
+directory, and the <em>source path</em> is <samp>/mnt/cross</samp>.
+<small>GDB</small> would look for the source file in the following
+locations:
+</p>
+<ol>
+<li> <samp>/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/foo.c</samp>
+
+</li></ol>
+
+<p>If the source file is not present at any of the above locations then
+an error is printed.  <small>GDB</small> does not look up the parts of the
 source file name, such as <samp>/mnt/cross/src/foo-1.0/lib/foo.c</samp>.
 Likewise, the subdirectories of the source path are not searched: if
 the source path is <samp>/mnt/cross</samp>, and the binary refers to
@@ -92,12 +90,89 @@ the source path is <samp>/mnt/cross</samp>, and the binary refers to
 <samp>/mnt/cross/usr/src/foo-1.0/lib</samp>.
 </p>
 <p>Plain file names, relative file names with leading directories, file
-names containing dots, etc. are all treated as described above; for
-instance, if the source path is <samp>/mnt/cross</samp>, and the source file
-is recorded as <samp>../lib/foo.c</samp>, <small>GDB</small> would first try
-<samp>../lib/foo.c</samp>, then <samp>/mnt/cross/../lib/foo.c</samp>, and after
-that&mdash;<samp>/mnt/cross/foo.c</samp>.
+names containing dots, etc. are all treated as described above,
+except that non-absolute file names are not looked up literally.  If
+the <em>source path</em> is <samp>/mnt/cross</samp>, the source file is
+recorded as <samp>../lib/foo.c</samp>, and no compilation directory is
+recorded, then <small>GDB</small> will search in the following locations:
 </p>
+<ol>
+<li> <samp>/mnt/cross/../lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/foo.c</samp>
+
+</li></ol>
+
+<span id="index-cdir"></span>
+<span id="index-cwd"></span>
+<span id="index-_0024cdir_002c-convenience-variable"></span>
+<span id="index-_0024cwd_002c-convenience-variable"></span>
+<span id="index-compilation-directory"></span>
+<span id="index-current-directory"></span>
+<span id="index-working-directory"></span>
+<span id="index-directory_002c-current"></span>
+<span id="index-directory_002c-compilation"></span>
+<p>The <em>source path</em> will always include two special entries
+&lsquo;<samp>$cdir</samp>&rsquo; and &lsquo;<samp>$cwd</samp>&rsquo;, these refer to the compilation directory
+(if one is recorded) and the current working directory respectively.
+</p>
+<p>&lsquo;<samp>$cdir</samp>&rsquo; causes <small>GDB</small> to search within the compilation
+directory, if one is recorded in the debug information.  If no
+compilation directory is recorded in the debug information then
+&lsquo;<samp>$cdir</samp>&rsquo; is ignored.
+</p>
+<p>&lsquo;<samp>$cwd</samp>&rsquo; is not the same as &lsquo;<samp>.</samp>&rsquo;&mdash;the former tracks the
+current working directory as it changes during your <small>GDB</small>
+session, while the latter is immediately expanded to the current
+directory at the time you add an entry to the source path.
+</p>
+<p>If a compilation directory is recorded in the debug information, and
+<small>GDB</small> has not found the source file after the first search
+using <em>source path</em>, then <small>GDB</small> will combine the
+compilation directory and the filename, and then search for the source
+file again using the <em>source path</em>.
+</p>
+<p>For example, if the executable records the source file as
+<samp>/usr/src/foo-1.0/lib/foo.c</samp>, the compilation directory is
+recorded as <samp>/project/build</samp>, and the <em>source path</em> is
+<samp>/mnt/cross:$cdir:$cwd</samp> while the current working directory of
+the <small>GDB</small> session is <samp>/home/user</samp>, then <small>GDB</small> will
+search for the source file in the following locations:
+</p>
+<ol>
+<li> <samp>/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/project/build/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/home/user/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/project/build/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/project/build/project/build/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/home/user/project/build/usr/src/foo-1.0/lib/foo.c</samp>
+</li><li> <samp>/mnt/cross/foo.c</samp>
+</li><li> <samp>/project/build/foo.c</samp>
+</li><li> <samp>/home/user/foo.c</samp>
+
+</li></ol>
+
+<p>If the file name in the previous example had been recorded in the
+executable as a relative path rather than an absolute path, then the
+first look up would not have occurred, but all of the remaining steps
+would be similar.
+</p>
+<p>When searching for source files on MS-DOS and MS-Windows, where
+absolute paths start with a drive letter (e.g.
+<samp>C:/project/foo.c</samp>), <small>GDB</small> will remove the drive letter
+from the file name before appending it to a search directory from
+<em>source path</em>; for instance if the executable references the
+source file <samp>C:/project/foo.c</samp> and <em>source path</em> is set to
+<samp>D:/mnt/cross</samp>, then <small>GDB</small> will search in the following
+locations for the source file:
+</p>
+<ol>
+<li> <samp>C:/project/foo.c</samp>
+</li><li> <samp>D:/mnt/cross/project/foo.c</samp>
+</li><li> <samp>D:/mnt/cross/foo.c</samp>
+
+</li></ol>
+
 <p>Note that the executable search path is <em>not</em> used to locate the
 source files.
 </p>
@@ -105,10 +180,10 @@ source files.
 any information it has cached about where source files are found and where
 each line is in the file.
 </p>
-<a name="index-directory"></a>
-<a name="index-dir"></a>
-<p>When you start <small>GDB</small>, its source path includes only &lsquo;<samp>cdir</samp>&rsquo;
-and &lsquo;<samp>cwd</samp>&rsquo;, in that order.
+<span id="index-directory"></span>
+<span id="index-dir"></span>
+<p>When you start <small>GDB</small>, its source path includes only &lsquo;<samp>$cdir</samp>&rsquo;
+and &lsquo;<samp>$cwd</samp>&rsquo;, in that order.
 To add other directories, use the <code>directory</code> command.
 </p>
 <p>The search path is used to find both program source files and <small>GDB</small>
@@ -161,8 +236,8 @@ for any reason a source file that is not relevant to your executable is
 located at the original location, a substitution rule is the only
 method available to point <small>GDB</small> at the new location.
 </p>
-<a name="index-_002d_002dwith_002drelocated_002dsources"></a>
-<a name="index-default-source-path-substitution"></a>
+<span id="index-_002d_002dwith_002drelocated_002dsources"></span>
+<span id="index-default-source-path-substitution"></span>
 <p>You can configure a default source path substitution rule by
 configuring <small>GDB</small> with the
 &lsquo;<samp>--with-relocated-sources=<var>dir</var></samp>&rsquo; option.  The <var>dir</var>
@@ -184,21 +259,12 @@ part of absolute file names) or
 whitespace.  You may specify a directory that is already in the source
 path; this moves it forward, so <small>GDB</small> searches it sooner.
 </p>
-<a name="index-cdir"></a>
-<a name="index-cwd"></a>
-<a name="index-_0024cdir_002c-convenience-variable"></a>
-<a name="index-_0024cwd_002c-convenience-variable"></a>
-<a name="index-compilation-directory"></a>
-<a name="index-current-directory"></a>
-<a name="index-working-directory"></a>
-<a name="index-directory_002c-current"></a>
-<a name="index-directory_002c-compilation"></a>
-<p>You can use the string &lsquo;<samp>$cdir</samp>&rsquo; to refer to the compilation
-directory (if one is recorded), and &lsquo;<samp>$cwd</samp>&rsquo; to refer to the current
-working directory.  &lsquo;<samp>$cwd</samp>&rsquo; is not the same as &lsquo;<samp>.</samp>&rsquo;&mdash;the former
-tracks the current working directory as it changes during your <small>GDB</small>
-session, while the latter is immediately expanded to the current
-directory at the time you add an entry to the source path.
+<p>The special strings &lsquo;<samp>$cdir</samp>&rsquo; (to refer to the compilation
+directory, if one is recorded), and &lsquo;<samp>$cwd</samp>&rsquo; (to refer to the
+current working directory) can also be included in the list of
+directories <var>dirname</var>.  Though these will already be in the source
+path they will be moved forward in the list so <small>GDB</small> searches
+them sooner.
 </p>
 </dd>
 <dt><code>directory</code></dt>
@@ -207,18 +273,18 @@ directory at the time you add an entry to the source path.
 
 </dd>
 <dt><code>set directories <var>path-list</var></code></dt>
-<dd><a name="index-set-directories"></a>
+<dd><span id="index-set-directories"></span>
 <p>Set the source path to <var>path-list</var>.
 &lsquo;<samp>$cdir:$cwd</samp>&rsquo; are added if missing.
 </p>
 </dd>
 <dt><code>show directories</code></dt>
-<dd><a name="index-show-directories"></a>
+<dd><span id="index-show-directories"></span>
 <p>Print the source path: show which directories it contains.
 </p>
-<a name="set-substitute_002dpath"></a></dd>
+<span id="set-substitute_002dpath"></span></dd>
 <dt><code>set substitute-path <var>from</var> <var>to</var></code></dt>
-<dd><a name="index-set-substitute_002dpath"></a>
+<dd><span id="index-set-substitute_002dpath"></span>
 <p>Define a source path substitution rule, and add it at the end of the
 current list of existing substitution rules.  If a rule with the same
 <var>from</var> was already defined, then the old rule is also deleted.
@@ -226,8 +292,8 @@ current list of existing substitution rules.  If a rule with the same
 <p>For example, if the file <samp>/foo/bar/baz.c</samp> was moved to
 <samp>/mnt/cross/baz.c</samp>, then the command
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) set substitute-path /foo/bar /mnt/cross
+<div class="example">
+<pre class="example">(gdb) set substitute-path /foo/bar /mnt/cross
 </pre></div>
 
 <p>will tell <small>GDB</small> to replace &lsquo;<samp>/foo/bar</samp>&rsquo; with
@@ -241,8 +307,8 @@ the substitution.
 </p>
 <p>For instance, if we had entered the following commands:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) set substitute-path /usr/src/include /mnt/include
+<div class="example">
+<pre class="example">(gdb) set substitute-path /usr/src/include /mnt/include
 (gdb) set substitute-path /usr/src /mnt/src
 </pre></div>
 
@@ -254,7 +320,7 @@ use the second rule to rewrite <samp>/usr/src/lib/foo.c</samp> into
 
 </dd>
 <dt><code>unset substitute-path [path]</code></dt>
-<dd><a name="index-unset-substitute_002dpath"></a>
+<dd><span id="index-unset-substitute_002dpath"></span>
 <p>If a path is specified, search the current list of substitution rules
 for a rule that would rewrite that path.  Delete that rule if found.
 A warning is emitted by the debugger if no rule could be found.
@@ -263,7 +329,7 @@ A warning is emitted by the debugger if no rule could be found.
 </p>
 </dd>
 <dt><code>show substitute-path [path]</code></dt>
-<dd><a name="index-show-substitute_002dpath"></a>
+<dd><span id="index-show-substitute_002dpath"></span>
 <p>If a path is specified, then print the source path substitution rule
 which would rewrite that path, if any.
 </p>
@@ -288,7 +354,7 @@ directories in one command.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Machine-Code.html#Machine-Code" accesskey="n" rel="next">Machine Code</a>, Previous: <a href="Search.html#Search" accesskey="p" rel="prev">Search</a>, Up: <a href="Source.html#Source" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Machine-Code.html" accesskey="n" rel="next">Machine Code</a>, Previous: <a href="Search.html" accesskey="p" rel="prev">Search</a>, Up: <a href="Source.html" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

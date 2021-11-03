@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Basic Asm (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C" rel="up" title="Using Assembly Language with C">
-<link href="Extended-Asm.html#Extended-Asm" rel="next" title="Extended Asm">
-<link href="Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C" rel="prev" title="Using Assembly Language with C">
+<link href="Using-Assembly-Language-with-C.html" rel="up" title="Using Assembly Language with C">
+<link href="Extended-Asm.html" rel="next" title="Extended Asm">
+<link href="Using-Assembly-Language-with-C.html" rel="prev" title="Using Assembly Language with C">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,16 +58,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Basic-Asm"></a>
-<div class="header">
+<span id="Basic-Asm"></span><div class="header">
 <p>
-Next: <a href="Extended-Asm.html#Extended-Asm" accesskey="n" rel="next">Extended Asm</a>, Up: <a href="Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C" accesskey="u" rel="up">Using Assembly Language with C</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Extended-Asm.html" accesskey="n" rel="next">Extended Asm</a>, Up: <a href="Using-Assembly-Language-with-C.html" accesskey="u" rel="up">Using Assembly Language with C</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Basic-Asm-_002d_002d_002d-Assembler-Instructions-Without-Operands"></a>
-<h4 class="subsection">6.45.1 Basic Asm &mdash; Assembler Instructions Without Operands</h4>
-<a name="index-basic-asm"></a>
-<a name="index-assembly-language-in-C_002c-basic"></a>
+<span id="Basic-Asm-_002d_002d_002d-Assembler-Instructions-Without-Operands"></span><h4 class="subsection">6.47.1 Basic Asm &mdash; Assembler Instructions Without Operands</h4>
+<span id="index-basic-asm"></span>
+<span id="index-assembly-language-in-C_002c-basic"></span>
 
 <p>A basic <code>asm</code> statement has the following syntax:
 </p>
@@ -87,10 +76,9 @@ Next: <a href="Extended-Asm.html#Extended-Asm" accesskey="n" rel="next">Extended
 <p>The <code>asm</code> keyword is a GNU extension.
 When writing code that can be compiled with <samp>-ansi</samp> and the
 various <samp>-std</samp> options, use <code>__asm__</code> instead of 
-<code>asm</code> (see <a href="Alternate-Keywords.html#Alternate-Keywords">Alternate Keywords</a>).
+<code>asm</code> (see <a href="Alternate-Keywords.html">Alternate Keywords</a>).
 </p>
-<a name="Qualifiers-1"></a>
-<h4 class="subsubheading">Qualifiers</h4>
+<span id="Qualifiers-1"></span><h4 class="subsubheading">Qualifiers</h4>
 <dl compact="compact">
 <dt><code>volatile</code></dt>
 <dd><p>The optional <code>volatile</code> qualifier has no effect. 
@@ -99,12 +87,11 @@ All basic <code>asm</code> blocks are implicitly volatile.
 </dd>
 <dt><code>inline</code></dt>
 <dd><p>If you use the <code>inline</code> qualifier, then for inlining purposes the size
-of the asm is taken as the smallest size possible (see <a href="Size-of-an-asm.html#Size-of-an-asm">Size of an asm</a>).
+of the <code>asm</code> statement is taken as the smallest size possible (see <a href="Size-of-an-asm.html">Size of an asm</a>).
 </p></dd>
 </dl>
 
-<a name="Parameters"></a>
-<h4 class="subsubheading">Parameters</h4>
+<span id="Parameters"></span><h4 class="subsubheading">Parameters</h4>
 <dl compact="compact">
 <dt><var>AssemblerInstructions</var></dt>
 <dd><p>This is a literal string that specifies the assembler code. The string can 
@@ -121,9 +108,8 @@ note that some assembler dialects use semicolons to start a comment.
 </p></dd>
 </dl>
 
-<a name="Remarks"></a>
-<h4 class="subsubheading">Remarks</h4>
-<p>Using extended <code>asm</code> (see <a href="Extended-Asm.html#Extended-Asm">Extended Asm</a>) typically produces
+<span id="Remarks"></span><h4 class="subsubheading">Remarks</h4>
+<p>Using extended <code>asm</code> (see <a href="Extended-Asm.html">Extended Asm</a>) typically produces
 smaller, safer, and more efficient code, and in most cases it is a
 better solution than basic <code>asm</code>.  However, there are two
 situations where only basic <code>asm</code> can be used:
@@ -135,10 +121,12 @@ outside of C functions, you must use basic <code>asm</code>.
 You can use this technique to emit assembler directives,
 define assembly language macros that can be invoked elsewhere in the file,
 or write entire functions in assembly language.
+Basic <code>asm</code> statements outside of functions may not use any
+qualifiers.
 
 </li><li> Functions declared
 with the <code>naked</code> attribute also require basic <code>asm</code>
-(see <a href="Function-Attributes.html#Function-Attributes">Function Attributes</a>).
+(see <a href="Function-Attributes.html">Function Attributes</a>).
 </li></ul>
 
 <p>Safely accessing C data and calling functions from basic <code>asm</code> is more 
@@ -190,7 +178,7 @@ registers you might use &lsquo;<samp>%eax</samp>&rsquo; in basic <code>asm</code
 </p>
 <p>On targets such as x86 that support multiple assembler dialects,
 all basic <code>asm</code> blocks use the assembler dialect specified by the 
-<samp>-masm</samp> command-line option (see <a href="x86-Options.html#x86-Options">x86 Options</a>).  
+<samp>-masm</samp> command-line option (see <a href="x86-Options.html">x86 Options</a>).  
 Basic <code>asm</code> provides no
 mechanism to provide different assembler strings for different dialects.
 </p>
@@ -208,7 +196,7 @@ but it may read or write any globally accessible variable.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Extended-Asm.html#Extended-Asm" accesskey="n" rel="next">Extended Asm</a>, Up: <a href="Using-Assembly-Language-with-C.html#Using-Assembly-Language-with-C" accesskey="u" rel="up">Using Assembly Language with C</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Extended-Asm.html" accesskey="n" rel="next">Extended Asm</a>, Up: <a href="Using-Assembly-Language-with-C.html" accesskey="u" rel="up">Using Assembly Language with C</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

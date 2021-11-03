@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>malloc (The Red Hat newlib C Library)</title>
@@ -11,32 +11,23 @@
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
 <link href="index.html#Top" rel="start" title="Top">
-<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html" rel="index" title="Document Index">
 <link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Stdlib.html#Stdlib" rel="up" title="Stdlib">
-<link href="mallinfo.html#mallinfo" rel="next" title="mallinfo">
-<link href="lldiv.html#lldiv" rel="prev" title="lldiv">
+<link href="Stdlib.html" rel="up" title="Stdlib">
+<link href="mallinfo.html" rel="next" title="mallinfo">
+<link href="lldiv.html" rel="prev" title="lldiv">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,26 +39,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="malloc"></a>
-<div class="header">
+<span id="malloc"></span><div class="header">
 <p>
-Next: <a href="mallinfo.html#mallinfo" accesskey="n" rel="next">mallinfo</a>, Previous: <a href="lldiv.html#lldiv" accesskey="p" rel="prev">lldiv</a>, Up: <a href="Stdlib.html#Stdlib" accesskey="u" rel="up">Stdlib</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="mallinfo.html" accesskey="n" rel="next">mallinfo</a>, Previous: <a href="lldiv.html" accesskey="p" rel="prev">lldiv</a>, Up: <a href="Stdlib.html" accesskey="u" rel="up">Stdlib</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="malloc_002c-realloc_002c-free_002d_002d_002dmanage-memory"></a>
-<h3 class="section">2.24 <code>malloc</code>, <code>realloc</code>, <code>free</code>&mdash;manage memory</h3>
-<a name="index-malloc"></a>
-<a name="index-realloc"></a>
-<a name="index-reallocf"></a>
-<a name="index-free"></a>
-<a name="index-memalign"></a>
-<a name="index-malloc_005fusable_005fsize"></a>
-<a name="index-_005fmalloc_005fr"></a>
-<a name="index-_005frealloc_005fr"></a>
-<a name="index-_005freallocf_005fr"></a>
-<a name="index-_005ffree_005fr"></a>
-<a name="index-_005fmemalign_005fr"></a>
-<a name="index-_005fmalloc_005fusable_005fsize_005fr"></a>
+<span id="malloc_002c-realloc_002c-free_002d_002d_002dmanage-memory"></span><h3 class="section">2.24 <code>malloc</code>, <code>realloc</code>, <code>free</code>&mdash;manage memory</h3>
+<span id="index-malloc"></span>
+<span id="index-realloc"></span>
+<span id="index-reallocf"></span>
+<span id="index-free"></span>
+<span id="index-memalign"></span>
+<span id="index-malloc_005fusable_005fsize"></span>
+<span id="index-_005fmalloc_005fr"></span>
+<span id="index-_005frealloc_005fr"></span>
+<span id="index-_005freallocf_005fr"></span>
+<span id="index-_005ffree_005fr"></span>
+<span id="index-_005fmemalign_005fr"></span>
+<span id="index-_005fmalloc_005fusable_005fsize_005fr"></span>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">#include &lt;stdlib.h&gt;
@@ -147,7 +136,7 @@ for those functions.
 functions for your system.  <code>_sbrk_r</code> is called with a positive
 value to allocate more space, and with a negative value to release
 previously allocated space if it is no longer required.
-See <a href="Stubs.html#Stubs">Stubs</a>.
+See <a href="Stubs.html">Stubs</a>.
 </p>
 <br>
 <p><strong>Returns</strong><br>
@@ -184,7 +173,7 @@ behave differently when <var>nbytes</var> is zero.
 <hr>
 <div class="header">
 <p>
-Next: <a href="mallinfo.html#mallinfo" accesskey="n" rel="next">mallinfo</a>, Previous: <a href="lldiv.html#lldiv" accesskey="p" rel="prev">lldiv</a>, Up: <a href="Stdlib.html#Stdlib" accesskey="u" rel="up">Stdlib</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="mallinfo.html" accesskey="n" rel="next">mallinfo</a>, Previous: <a href="lldiv.html" accesskey="p" rel="prev">lldiv</a>, Up: <a href="Stdlib.html" accesskey="u" rel="up">Stdlib</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

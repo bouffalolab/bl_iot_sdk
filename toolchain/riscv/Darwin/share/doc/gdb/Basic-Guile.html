@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Basic Guile (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Guile-API.html#Guile-API" rel="up" title="Guile API">
-<link href="Guile-Configuration.html#Guile-Configuration" rel="next" title="Guile Configuration">
-<link href="Guile-API.html#Guile-API" rel="prev" title="Guile API">
+<link href="Guile-API.html" rel="up" title="Guile API">
+<link href="Guile-Configuration.html" rel="next" title="Guile Configuration">
+<link href="Guile-API.html" rel="prev" title="Guile API">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,21 +51,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Basic-Guile"></a>
-<div class="header">
+<span id="Basic-Guile"></span><div class="header">
 <p>
-Next: <a href="Guile-Configuration.html#Guile-Configuration" accesskey="n" rel="next">Guile Configuration</a>, Up: <a href="Guile-API.html#Guile-API" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Guile-Configuration.html" accesskey="n" rel="next">Guile Configuration</a>, Up: <a href="Guile-API.html" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Basic-Guile-1"></a>
-<h4 class="subsubsection">23.3.3.1 Basic Guile</h4>
+<span id="Basic-Guile-1"></span><h4 class="subsubsection">23.3.3.1 Basic Guile</h4>
 
-<a name="index-guile-stdout"></a>
-<a name="index-guile-pagination"></a>
+<span id="index-guile-stdout"></span>
+<span id="index-guile-pagination"></span>
 <p>At startup, <small>GDB</small> overrides Guile&rsquo;s <code>current-output-port</code> and
 <code>current-error-port</code> to print using <small>GDB</small>&rsquo;s output-paging streams.
 A Guile program which outputs to one of these streams may have its
-output interrupted by the user (see <a href="Screen-Size.html#Screen-Size">Screen Size</a>).  In this
+output interrupted by the user (see <a href="Screen-Size.html">Screen Size</a>).  In this
 situation, a Guile <code>signal</code> exception is thrown with value <code>SIGINT</code>.
 </p>
 <p>Guile&rsquo;s history mechanism uses the same naming as <small>GDB</small>&rsquo;s,
@@ -105,7 +94,7 @@ set and arrange to close unneeded file descriptors before starting a
 child process.
 </li></ul>
 
-<a name="index-guile-gdb-module"></a>
+<span id="index-guile-gdb-module"></span>
 <p><small>GDB</small> introduces a new Guile module, named <code>gdb</code>.  All
 methods and classes added by <small>GDB</small> are placed in this module.
 <small>GDB</small> does not automatically <code>import</code> the <code>gdb</code> module,
@@ -115,12 +104,12 @@ module is imported to the user.
 To simplify interactive use, it is recommended to add one of the following
 to your ~/.gdbinit.
 </p>
-<div class="smallexample">
-<pre class="smallexample">guile (use-modules (gdb))
+<div class="example">
+<pre class="example">guile (use-modules (gdb))
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">guile (use-modules ((gdb) #:renamer (symbol-prefix-proc 'gdb:)))
+<div class="example">
+<pre class="example">guile (use-modules ((gdb) #:renamer (symbol-prefix-proc 'gdb:)))
 </pre></div>
 
 <p>Which one to choose depends on your preference.
@@ -130,12 +119,12 @@ and variables.
 <p>The rest of this manual assumes the <code>gdb</code> module has been imported
 without any prefix.  See the Guile documentation for <code>use-modules</code>
 for more information
-(see <a href="http://www.gnu.org/software/guile/manual/html_node/Using-Guile-Modules.html#Using-Guile-Modules">Using Guile Modules</a> in <cite>GNU Guile Reference Manual</cite>).
+(see <a href="https://www.gnu.org/software/guile/manual/html_node/Using-Guile-Modules.html#Using-Guile-Modules">Using Guile Modules</a> in <cite>GNU Guile Reference Manual</cite>).
 </p>
 <p>Example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) guile (value-type (make-value 1))
+<div class="example">
+<pre class="example">(gdb) guile (value-type (make-value 1))
 ERROR: Unbound variable: value-type
 Error while executing Scheme code.
 (gdb) guile (use-modules (gdb))
@@ -147,11 +136,11 @@ int
 <p>The <code>(gdb)</code> module provides these basic Guile functions.
 </p>
 <dl>
-<dt><a name="index-execute"></a>Scheme Procedure: <strong>execute</strong> <em>command <span class="roman">[</span>#:from-tty boolean<span class="roman">]</span> <span class="roman">[</span>#:to-string boolean<span class="roman">]</span></em></dt>
+<dt id="index-execute">Scheme Procedure: <strong>execute</strong> <em>command <span class="roman">[</span>#:from-tty boolean<span class="roman">]</span> <span class="roman">[</span>#:to-string boolean<span class="roman">]</span></em></dt>
 <dd><p>Evaluate <var>command</var>, a string, as a <small>GDB</small> CLI command.
 If a <small>GDB</small> exception happens while <var>command</var> runs, it is
 translated as described in
-<a href="Guile-Exception-Handling.html#Guile-Exception-Handling">Guile Exception Handling</a>.
+<a href="Guile-Exception-Handling.html">Guile Exception Handling</a>.
 </p>
 <p><var>from-tty</var> specifies whether <small>GDB</small> ought to consider this
 command as having originated from the user invoking it interactively.
@@ -164,12 +153,12 @@ turned on).  If the <var>to-string</var> parameter is
 returned as a string.  The default is <code>#f</code>, in which case the
 return value is unspecified.  If <var>to-string</var> is <code>#t</code>, the
 <small>GDB</small> virtual terminal will be temporarily set to unlimited width
-and height, and its pagination will be disabled; see <a href="Screen-Size.html#Screen-Size">Screen Size</a>.
+and height, and its pagination will be disabled; see <a href="Screen-Size.html">Screen Size</a>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-history_002dref"></a>Scheme Procedure: <strong>history-ref</strong> <em>number</em></dt>
-<dd><p>Return a value from <small>GDB</small>&rsquo;s value history (see <a href="Value-History.html#Value-History">Value History</a>).  The <var>number</var> argument indicates which history element to return.
+<dt id="index-history_002dref">Scheme Procedure: <strong>history-ref</strong> <em>number</em></dt>
+<dd><p>Return a value from <small>GDB</small>&rsquo;s value history (see <a href="Value-History.html">Value History</a>).  The <var>number</var> argument indicates which history element to return.
 If <var>number</var> is negative, then <small>GDB</small> will take its absolute value
 and count backward from the last element (i.e., the most recent element) to
 find the value to return.  If <var>number</var> is zero, then <small>GDB</small> will
@@ -178,7 +167,7 @@ doesn&rsquo;t exist in the value history, a <code>gdb:error</code> exception wil
 raised.
 </p>
 <p>If no exception is raised, the return value is always an instance of
-<code>&lt;gdb:value&gt;</code> (see <a href="Values-From-Inferior-In-Guile.html#Values-From-Inferior-In-Guile">Values From Inferior In Guile</a>).
+<code>&lt;gdb:value&gt;</code> (see <a href="Values-From-Inferior-In-Guile.html">Values From Inferior In Guile</a>).
 </p>
 <p><em>Note:</em> <small>GDB</small>&rsquo;s value history is independent of Guile&rsquo;s.
 <code>$1</code> in <small>GDB</small>&rsquo;s value history contains the result of evaluating
@@ -188,7 +177,7 @@ command line.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-history_002dappend_0021"></a>Scheme Procedure: <strong>history-append!</strong> <em>value</em></dt>
+<dt id="index-history_002dappend_0021">Scheme Procedure: <strong>history-append!</strong> <em>value</em></dt>
 <dd><p>Append <var>value</var>, an instance of <code>&lt;gdb:value&gt;</code>, to <small>GDB</small>&rsquo;s
 value history.  Return its index in the history.
 </p>
@@ -198,23 +187,23 @@ facilities.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-parse_002dand_002deval"></a>Scheme Procedure: <strong>parse-and-eval</strong> <em>expression</em></dt>
+<dt id="index-parse_002dand_002deval">Scheme Procedure: <strong>parse-and-eval</strong> <em>expression</em></dt>
 <dd><p>Parse <var>expression</var> as an expression in the current language,
 evaluate it, and return the result as a <code>&lt;gdb:value&gt;</code>.
 The <var>expression</var> must be a string.
 </p>
 <p>This function can be useful when implementing a new command
-(see <a href="Commands-In-Guile.html#Commands-In-Guile">Commands In Guile</a>), as it provides a way to parse the
+(see <a href="Commands-In-Guile.html">Commands In Guile</a>), as it provides a way to parse the
 command&rsquo;s arguments as an expression.
 It is also is useful when computing values.
 For example, it is the only way to get the value of a
-convenience variable (see <a href="Convenience-Vars.html#Convenience-Vars">Convenience Vars</a>) as a <code>&lt;gdb:value&gt;</code>.
+convenience variable (see <a href="Convenience-Vars.html">Convenience Vars</a>) as a <code>&lt;gdb:value&gt;</code>.
 </p></dd></dl>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Guile-Configuration.html#Guile-Configuration" accesskey="n" rel="next">Guile Configuration</a>, Up: <a href="Guile-API.html#Guile-API" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Guile-Configuration.html" accesskey="n" rel="next">Guile Configuration</a>, Up: <a href="Guile-API.html" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

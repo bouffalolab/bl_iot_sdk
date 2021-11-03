@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Building libgloss (Embed with GNU)</title>
@@ -10,32 +10,23 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="leds_002ec.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Libgloss.html#Libgloss" rel="up" title="Libgloss">
-<link href="Board-support.html#Board-support" rel="next" title="Board support">
-<link href="PA_002dRISC.html#PA_002dRISC" rel="prev" title="PA-RISC">
+<link href="Libgloss.html" rel="up" title="Libgloss">
+<link href="Board-support.html" rel="next" title="Board support">
+<link href="PA_002dRISC.html" rel="prev" title="PA-RISC">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -47,14 +38,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Building-libgloss"></a>
-<div class="header">
+<span id="Building-libgloss"></span><div class="header">
 <p>
-Next: <a href="Board-support.html#Board-support" accesskey="n" rel="next">Board support</a>, Previous: <a href="Supported-targets.html#Supported-targets" accesskey="p" rel="prev">Supported targets</a>, Up: <a href="Libgloss.html#Libgloss" accesskey="u" rel="up">Libgloss</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Board-support.html" accesskey="n" rel="next">Board support</a>, Previous: <a href="Supported-targets.html" accesskey="p" rel="prev">Supported targets</a>, Up: <a href="Libgloss.html" accesskey="u" rel="up">Libgloss</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Configuring-and-building-libgloss_002e"></a>
-<h3 class="section">1.2 Configuring and building libgloss.</h3>
+<span id="Configuring-and-building-libgloss_002e"></span><h3 class="section">1.2 Configuring and building libgloss.</h3>
 
 <p>Libgloss uses an autoconf based script to configure. Autoconf scripts
 are portable shell scripts that are generated from a configure.in file.
@@ -74,8 +63,8 @@ a config string. It&rsquo;s usually safest to use the full canonical opposed
 to the target alias. So, to configure for a CPU32 (m68k) with a separate
 source tree, use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">../src/libgloss/configure --verbose --target m68k-coff
+<div class="example">
+<pre class="example">../src/libgloss/configure --verbose --target m68k-coff
 </pre></div>
 
 <p>The configure script is in the source tree. When configure is invoked
@@ -93,8 +82,8 @@ tree, so it&rsquo;s a good test of all the other compilation passes.
 <p>The default values for the Makefiles are set in the Makefile fragment
 merged in during configuration. This fragment typically has rules like
 </p>
-<div class="smallexample">
-<pre class="smallexample">CC_FOR_TARGET = `if [ -f $${OBJROOT}/gcc/xgcc ] ; \
+<div class="example">
+<pre class="example">CC_FOR_TARGET = `if [ -f $${OBJROOT}/gcc/xgcc ] ; \
 	then echo ${OBJROOT}/gcc/xgcc -B${OBJROOT}/gcc/ ; \
 	else t='${program_transform_name}'; echo gcc | sed -e '' $$t ; fi`
 </pre></div>
@@ -125,7 +114,7 @@ tools using libgloss&rsquo;s test suites.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Board-support.html#Board-support" accesskey="n" rel="next">Board support</a>, Previous: <a href="Supported-targets.html#Supported-targets" accesskey="p" rel="prev">Supported targets</a>, Up: <a href="Libgloss.html#Libgloss" accesskey="u" rel="up">Libgloss</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Board-support.html" accesskey="n" rel="next">Board support</a>, Previous: <a href="Supported-targets.html" accesskey="p" rel="prev">Supported targets</a>, Up: <a href="Libgloss.html" accesskey="u" rel="up">Libgloss</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

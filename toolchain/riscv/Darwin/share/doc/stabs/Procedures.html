@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Procedures (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Program-Structure.html#Program-Structure" rel="up" title="Program Structure">
-<link href="Nested-Procedures.html#Nested-Procedures" rel="next" title="Nested Procedures">
-<link href="Line-Numbers.html#Line-Numbers" rel="prev" title="Line Numbers">
+<link href="Program-Structure.html" rel="up" title="Program Structure">
+<link href="Nested-Procedures.html" rel="next" title="Nested Procedures">
+<link href="Line-Numbers.html" rel="prev" title="Line Numbers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,19 +49,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Procedures"></a>
-<div class="header">
+<span id="Procedures"></span><div class="header">
 <p>
-Next: <a href="Nested-Procedures.html#Nested-Procedures" accesskey="n" rel="next">Nested Procedures</a>, Previous: <a href="Line-Numbers.html#Line-Numbers" accesskey="p" rel="prev">Line Numbers</a>, Up: <a href="Program-Structure.html#Program-Structure" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nested-Procedures.html" accesskey="n" rel="next">Nested Procedures</a>, Previous: <a href="Line-Numbers.html" accesskey="p" rel="prev">Line Numbers</a>, Up: <a href="Program-Structure.html" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Procedures-1"></a>
-<h3 class="section">2.5 Procedures</h3>
+<span id="Procedures-1"></span><h3 class="section">2.5 Procedures</h3>
 
-<a name="index-N_005fFUN_002c-for-functions"></a>
-<a name="index-N_005fFNAME"></a>
-<a name="index-N_005fSTSYM_002c-for-functions-_0028Sun-acc_0029"></a>
-<a name="index-N_005fGSYM_002c-for-functions-_0028Sun-acc_0029"></a>
+<span id="index-N_005fFUN_002c-for-functions"></span>
+<span id="index-N_005fFNAME"></span>
+<span id="index-N_005fSTSYM_002c-for-functions-_0028Sun-acc_0029"></span>
+<span id="index-N_005fGSYM_002c-for-functions-_0028Sun-acc_0029"></span>
 <p>All of the following stabs normally use the <code>N_FUN</code> symbol type.
 However, Sun&rsquo;s <code>acc</code> compiler on SunOS4 uses <code>N_GSYM</code> and
 <code>N_STSYM</code>, which means that the value of the stab for the function
@@ -83,7 +72,7 @@ same restriction; the value of the symbol is not useful (I&rsquo;m not sure it
 really does use this, because GDB doesn&rsquo;t handle this and no one has
 complained).
 </p>
-<a name="index-C_005fFUN"></a>
+<span id="index-C_005fFUN"></span>
 <p>A function is represented by an &lsquo;<samp>F</samp>&rsquo; symbol descriptor for a global
 (extern) function, and &lsquo;<samp>f</samp>&rsquo; for a static (local) function.  For
 a.out, the value of the symbol is the address of the start of the
@@ -95,7 +84,7 @@ Because looking things up in the ELF symbols would probably be slow, I&rsquo;m
 not sure how to find which symbol of that name is the right one, and
 this doesn&rsquo;t provide any way to deal with nested functions, it would
 probably be better to make the value of the stab an address relative to
-the start of the file, or just absolute.  See <a href="ELF-Linker-Relocation.html#ELF-Linker-Relocation">ELF Linker Relocation</a> for more information on linker relocation of stabs in ELF
+the start of the file, or just absolute.  See <a href="ELF-Linker-Relocation.html">ELF Linker Relocation</a> for more information on linker relocation of stabs in ELF
 files.  For XCOFF, the stab uses the <code>C_FUN</code> storage class and the
 value of the stab is meaningless; the address of the function can be
 found from the csect symbol (XTY_LD/XMC_PR).
@@ -117,7 +106,7 @@ in ANSI C).  GDB has tolerated this extension (parsed the syntax, if not
 necessarily used the information) since at least version 4.8; I don&rsquo;t
 know whether all versions of dbx tolerate it.  The argument types given
 here are not redundant with the symbols for the formal parameters
-(see <a href="Parameters.html#Parameters">Parameters</a>); they are the types of the arguments as they are
+(see <a href="Parameters.html">Parameters</a>); they are the types of the arguments as they are
 passed, before any conversions might take place.  For example, if a C
 function which is declared without a prototype takes a <code>float</code>
 argument, the value is passed as a <code>double</code> but then converted to a
@@ -134,7 +123,7 @@ Solaris compiler uses symbol descriptor &lsquo;<samp>P</samp>&rsquo; followed by
 type of the function, followed by the arguments, each preceded by
 &lsquo;<samp>;</samp>&rsquo;, as in a stab with symbol descriptor &lsquo;<samp>f</samp>&rsquo; or &lsquo;<samp>F</samp>&rsquo;.
 This use of symbol descriptor &lsquo;<samp>P</samp>&rsquo; can be distinguished from its use
-for register parameters (see <a href="Register-Parameters.html#Register-Parameters">Register Parameters</a>) by the fact that it has
+for register parameters (see <a href="Register-Parameters.html">Register Parameters</a>) by the fact that it has
 symbol type <code>N_FUN</code>.
 </p>
 <p>The AIX documentation also defines symbol descriptor &lsquo;<samp>J</samp>&rsquo; as an
@@ -177,7 +166,7 @@ for the program.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Nested-Procedures.html#Nested-Procedures" accesskey="n" rel="next">Nested Procedures</a>, Previous: <a href="Line-Numbers.html#Line-Numbers" accesskey="p" rel="prev">Line Numbers</a>, Up: <a href="Program-Structure.html#Program-Structure" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nested-Procedures.html" accesskey="n" rel="next">Nested Procedures</a>, Previous: <a href="Line-Numbers.html" accesskey="p" rel="prev">Line Numbers</a>, Up: <a href="Program-Structure.html" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,16 +1,6 @@
-<html lang="en">
-<head>
-<title>Binary GCD - GNU MP 6.1.0</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" title="Greatest Common Divisor Algorithms">
-<link rel="prev" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" title="Greatest Common Divisor Algorithms">
-<link rel="next" href="Lehmer_0027s-Algorithm.html#Lehmer_0027s-Algorithm" title="Lehmer's Algorithm">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-This manual describes how to install and use the GNU multiple precision
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This manual describes how to install and use the GNU multiple precision
 arithmetic library, version 6.1.0.
 
 Copyright 1991, 1993-2015 Free Software Foundation, Inc.
@@ -18,94 +8,131 @@ Copyright 1991, 1993-2015 Free Software Foundation, Inc.
 Permission is granted to copy, distribute and/or modify this document under
 the terms of the GNU Free Documentation License, Version 1.3 or any later
 version published by the Free Software Foundation; with no Invariant Sections,
-with the Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover
-Texts being ``You have freedom to copy and modify this GNU Manual, like GNU
-software''.  A copy of the license is included in
-*note GNU Free Documentation License::.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Binary-GCD"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Lehmer_0027s-Algorithm.html#Lehmer_0027s-Algorithm">Lehmer's Algorithm</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms">Greatest Common Divisor Algorithms</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms">Greatest Common Divisor Algorithms</a>
-<hr>
-</div>
+with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
+Texts being "You have freedom to copy and modify this GNU Manual, like GNU
+software".  A copy of the license is included in
+GNU Free Documentation License. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU MP 6.1.0: Binary GCD</title>
 
+<meta name="description" content="How to install and use the GNU multiple precision arithmetic library, version 6.1.0.">
+<meta name="keywords" content="GNU MP 6.1.0: Binary GCD">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" rel="up" title="Greatest Common Divisor Algorithms">
+<link href="Lehmer_0027s-Algorithm.html#Lehmer_0027s-Algorithm" rel="next" title="Lehmer's Algorithm">
+<link href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" rel="prev" title="Greatest Common Divisor Algorithms">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Binary-GCD"></a>
+<div class="header">
+<p>
+Next: <a href="Lehmer_0027s-Algorithm.html#Lehmer_0027s-Algorithm" accesskey="n" rel="next">Lehmer's Algorithm</a>, Previous: <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" accesskey="p" rel="prev">Greatest Common Divisor Algorithms</a>, Up: <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" accesskey="u" rel="up">Greatest Common Divisor Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Binary-GCD-1"></a>
 <h4 class="subsection">15.3.1 Binary GCD</h4>
 
-<p>At small sizes GMP uses an O(N^2) binary style GCD.  This is described
+<p>At small sizes GMP uses an <em>O(N^2)</em> binary style GCD.  This is described
 in many textbooks, for example Knuth section 4.5.2 algorithm B.  It simply
-consists of successively reducing odd operands a and b using
+consists of successively reducing odd operands <em>a</em> and <em>b</em> using
+</p>
+<blockquote>
+<p><em>a,b = abs(a-b),min(a,b)</em> <br>
+strip factors of 2 from <em>a</em>
+</p></blockquote>
 
-   <blockquote>
-a,b = abs(a-b),min(a,b) <br>
-strip factors of 2 from a
-</blockquote>
-
-   <p>The Euclidean GCD algorithm, as per Knuth algorithms E and A, repeatedly
-computes the quotient q = floor(a/b) and replaces
-a,b by v, u - q v. The binary algorithm has so far been found to
+<p>The Euclidean GCD algorithm, as per Knuth algorithms E and A, repeatedly
+computes the quotient <em>q = floor(a/b)</em> and replaces
+<em>a,b</em> by <em>v, u - q v</em>. The binary algorithm has so far been found to
 be faster than the Euclidean algorithm everywhere.  One reason the binary
 method does well is that the implied quotient at each step is usually small,
 so often only one or two subtractions are needed to get the same effect as a
 division.  Quotients 1, 2 and 3 for example occur 67.7% of the time, see Knuth
 section 4.5.3 Theorem E.
-
-   <p>When the implied quotient is large, meaning b is much smaller than
-a, then a division is worthwhile.  This is the basis for the initial
-a mod b reductions in <code>mpn_gcd</code> and <code>mpn_gcd_1</code> (the latter
+</p>
+<p>When the implied quotient is large, meaning <em>b</em> is much smaller than
+<em>a</em>, then a division is worthwhile.  This is the basis for the initial
+<em>a mod b</em> reductions in <code>mpn_gcd</code> and <code>mpn_gcd_1</code> (the latter
 for both Nx1 and 1x1 cases).  But after that initial reduction,
 big quotients occur too rarely to make it worth checking for them.
-
-   <pre class="sp">
-
-</pre>
-The final 1x1 GCD in <code>mpn_gcd_1</code> is done in the generic C
+</p>
+<br>
+<p>The final <em>1x1</em> GCD in <code>mpn_gcd_1</code> is done in the generic C
 code as described above.  For two N-bit operands, the algorithm takes about
 0.68 iterations per bit.  For optimum performance some attention needs to be
-paid to the way the factors of 2 are stripped from a.
-
-   <p>Firstly it may be noted that in twos complement the number of low zero bits on
-a-b is the same as b-a, so counting or testing can begin on
-a-b without waiting for abs(a-b) to be determined.
-
-   <p>A loop stripping low zero bits tends not to branch predict well, since the
-condition is data dependent.  But on average there's only a few low zeros, so
+paid to the way the factors of 2 are stripped from <em>a</em>.
+</p>
+<p>Firstly it may be noted that in twos complement the number of low zero bits on
+<em>a-b</em> is the same as <em>b-a</em>, so counting or testing can begin on
+<em>a-b</em> without waiting for <em>abs(a-b)</em> to be determined.
+</p>
+<p>A loop stripping low zero bits tends not to branch predict well, since the
+condition is data dependent.  But on average there&rsquo;s only a few low zeros, so
 an option is to strip one or two bits arithmetically then loop for more (as
 done for AMD K6).  Or use a lookup table to get a count for several bits then
 loop for more (as done for AMD K7).  An alternative approach is to keep just
-one of a or b odd and iterate
+one of <em>a</em> or <em>b</em> odd and iterate
+</p>
+<blockquote>
+<p><em>a,b = abs(a-b), min(a,b)</em> <br>
+<em>a = a/2</em> if even <br>
+<em>b = b/2</em> if even
+</p></blockquote>
 
-   <blockquote>
-a,b = abs(a-b), min(a,b) <br>
-a = a/2 if even <br>
-b = b/2 if even
-</blockquote>
-
-   <p>This requires about 1.25 iterations per bit, but stripping of a single bit at
+<p>This requires about 1.25 iterations per bit, but stripping of a single bit at
 each step avoids any branching.  Repeating the bit strip reduces to about 0.9
 iterations per bit, which may be a worthwhile tradeoff.
-
-   <p>Generally with the above approaches a speed of perhaps 6 cycles per bit can be
+</p>
+<p>Generally with the above approaches a speed of perhaps 6 cycles per bit can be
 achieved, which is still not terribly fast with for instance a 64-bit GCD
-taking nearly 400 cycles.  It's this sort of time which means it's not usually
+taking nearly 400 cycles.  It&rsquo;s this sort of time which means it&rsquo;s not usually
 advantageous to combine a set of divisibility tests into a GCD.
+</p>
+<p>Currently, the binary algorithm is used for GCD only when <em>N &lt; 3</em>.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Lehmer_0027s-Algorithm.html#Lehmer_0027s-Algorithm" accesskey="n" rel="next">Lehmer's Algorithm</a>, Previous: <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" accesskey="p" rel="prev">Greatest Common Divisor Algorithms</a>, Up: <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" accesskey="u" rel="up">Greatest Common Divisor Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   <p>Currently, the binary algorithm is used for GCD only when N &lt; 3.
 
-   </body></html>
 
+</body>
+</html>

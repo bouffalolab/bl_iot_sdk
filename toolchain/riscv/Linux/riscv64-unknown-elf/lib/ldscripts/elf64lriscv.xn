@@ -1,5 +1,5 @@
-/* Script for -n: mix text and data on same page */
-/* Copyright (C) 2014-2019 Free Software Foundation, Inc.
+/* Script for -n */
+/* Copyright (C) 2014-2020 Free Software Foundation, Inc.
    Copying and distribution of this script, with or without modification,
    are permitted in any medium without royalty provided the copyright
    notice and this notice are preserved.  */
@@ -7,7 +7,7 @@ OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
 	      "elf64-littleriscv")
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
-SEARCH_DIR("/var/lib/builds/sifive-tools/freedom-tools-master/obj/x86_64-linux-centos6/install/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-centos6/riscv64-unknown-elf/lib");
+SEARCH_DIR("/scratch/jenkins/workspace/tpp-freedom-tools/tpp03--build-binary-packages--parameterized/obj/x86_64-linux-ubuntu14/install/riscv64-unknown-elf-binutils-2.35.0-2020.12.8-x86_64-linux-ubuntu14/riscv64-unknown-elf/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
@@ -59,8 +59,9 @@ SECTIONS
     *(.text.exit .text.exit.*)
     *(.text.startup .text.startup.*)
     *(.text.hot .text.hot.*)
+    *(SORT(.text.sorted.*))
     *(.text .stub .text.* .gnu.linkonce.t.*)
-    /* .gnu.warning sections are handled specially by elf32.em.  */
+    /* .gnu.warning sections are handled specially by elf.em.  */
     *(.gnu.warning)
   }
   .fini           :
@@ -153,6 +154,7 @@ SECTIONS
   . = DATA_SEGMENT_RELRO_END (0, .);
   .data           :
   {
+    . = ALIGN(16);
     __DATA_BEGIN__ = .;
     *(.data .data.* .gnu.linkonce.d.*)
     SORT(CONSTRUCTORS)
@@ -164,6 +166,7 @@ SECTIONS
      we can shorten the on-disk segment size.  */
   .sdata          :
   {
+    . = ALIGN(16);
     __SDATA_BEGIN__ = .;
     *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata .srodata.*)
     *(.sdata .sdata.* .gnu.linkonce.s.*)
@@ -192,9 +195,10 @@ SECTIONS
   . = ALIGN(64 / 8);
   . = SEGMENT_START("ldata-segment", .);
   . = ALIGN(64 / 8);
+  . = ALIGN(16);
   __BSS_END__ = .;
-    __global_pointer$ = MIN(__SDATA_BEGIN__ + 0x800,
-		            MAX(__DATA_BEGIN__ + 0x800, __BSS_END__ - 0x800));
+  __global_pointer$ = MIN(__SDATA_BEGIN__ + 0x800,
+		         MAX(__DATA_BEGIN__ + 0x800, __BSS_END__ - 0x800));
   _end = .; PROVIDE (end = .);
   . = DATA_SEGMENT_END (.);
   /* Stabs debugging sections.  */

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -81,17 +81,124 @@ Different Languages</a>).  It may also print the expression using a
 Python-based pretty-printer (see <a href="Pretty-Printing.html#Pretty-Printing">Pretty Printing</a>).
 </p>
 <dl compact="compact">
-<dt><code>print <var>expr</var></code></dt>
-<dt><code>print /<var>f</var> <var>expr</var></code></dt>
+<dt><code>print [[<var>options</var>] --] <var>expr</var></code></dt>
+<dt><code>print [[<var>options</var>] --] /<var>f</var> <var>expr</var></code></dt>
 <dd><p><var>expr</var> is an expression (in the source language).  By default the
 value of <var>expr</var> is printed in a format appropriate to its data type;
 you can choose a different format by specifying &lsquo;<samp>/<var>f</var></samp>&rsquo;, where
 <var>f</var> is a letter specifying the format; see <a href="Output-Formats.html#Output-Formats">Output
 Formats</a>.
 </p>
+<a name="print-options"></a><p>The <code>print</code> command supports a number of options that allow
+overriding relevant global print settings as set by <code>set print</code>
+subcommands:
+</p>
+<dl compact="compact">
+<dt><code>-address [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of addresses.
+Related setting: <a href="Print-Settings.html#set-print-address">set print address</a>.
+</p>
 </dd>
-<dt><code>print</code></dt>
-<dt><code>print /<var>f</var></code></dt>
+<dt><code>-array [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Pretty formatting of arrays.
+Related setting: <a href="Print-Settings.html#set-print-array">set print array</a>.
+</p>
+</dd>
+<dt><code>-array-indexes [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of array indexes.
+Related setting: <a href="Print-Settings.html#set-print-array_002dindexes">set print array-indexes</a>.
+</p>
+</dd>
+<dt><code>-elements <var>number-of-elements</var>|<code>unlimited</code></code></dt>
+<dd><p>Set limit on string chars or array elements to print.  The value
+<code>unlimited</code> causes there to be no limit.  Related setting:
+<a href="Print-Settings.html#set-print-elements">set print elements</a>.
+</p>
+</dd>
+<dt><code>-max-depth <var>depth</var>|<code>unlimited</code></code></dt>
+<dd><p>Set the threshold after which nested structures are replaced with
+ellipsis.  Related setting: <a href="Print-Settings.html#set-print-max_002ddepth">set print max-depth</a>.
+</p>
+</dd>
+<dt><code>-null-stop [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of char arrays to stop at first null char.  Related
+setting: <a href="Print-Settings.html#set-print-null_002dstop">set print null-stop</a>.
+</p>
+</dd>
+<dt><code>-object [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing C<tt>++</tt> virtual function tables.  Related setting:
+<a href="Print-Settings.html#set-print-object">set print object</a>.
+</p>
+</dd>
+<dt><code>-pretty [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set pretty formatting of structures.  Related setting: <a href="Print-Settings.html#set-print-pretty">set print pretty</a>.
+</p>
+</dd>
+<dt><code>-raw-values [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set whether to print values in raw form, bypassing any
+pretty-printers for that value.  Related setting: <a href="Print-Settings.html#set-print-raw_002dvalues">set print raw-values</a>.
+</p>
+</dd>
+<dt><code>-repeats <var>number-of-repeats</var>|<code>unlimited</code></code></dt>
+<dd><p>Set threshold for repeated print elements.  <code>unlimited</code> causes
+all elements to be individually printed.  Related setting: <a href="Print-Settings.html#set-print-repeats">set print repeats</a>.
+</p>
+</dd>
+<dt><code>-static-members [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing C<tt>++</tt> static members.  Related setting: <a href="Print-Settings.html#set-print-static_002dmembers">set print static-members</a>.
+</p>
+</dd>
+<dt><code>-symbol [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of symbol names when printing pointers.  Related setting:
+<a href="Print-Settings.html#set-print-symbol">set print symbol</a>.
+</p>
+</dd>
+<dt><code>-union [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of unions interior to structures.  Related setting:
+<a href="Print-Settings.html#set-print-union">set print union</a>.
+</p>
+</dd>
+<dt><code>-vtbl [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set printing of C++ virtual function tables.  Related setting:
+<a href="Print-Settings.html#set-print-vtbl">set print vtbl</a>.
+</p></dd>
+</dl>
+
+<p>Because the <code>print</code> command accepts arbitrary expressions which
+may look like options (including abbreviations), if you specify any
+command option, then you must use a double dash (<code>--</code>) to mark
+the end of option processing.
+</p>
+<p>For example, this prints the value of the <code>-p</code> expression:
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) print -p
+</pre></div>
+
+<p>While this repeats the last value in the value history (see below)
+with the <code>-pretty</code> option in effect:
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) print -p --
+</pre></div>
+
+<p>Here is an example including both on option and an expression:
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) print -pretty -- *myptr
+$1 = {
+  next = 0x0,
+  flags = {
+    sweet = 1,
+    sour = 1
+  },
+  meat = 0x54 &quot;Pork&quot;
+}
+</pre></div>
+
+</dd>
+<dt><code>print [<var>options</var>]</code></dt>
+<dt><code>print [<var>options</var>] /<var>f</var></code></dt>
 <dd><a name="index-reprint-the-last-value"></a>
 <p>If you omit <var>expr</var>, <small>GDB</small> displays the last value again (from the
 <em>value history</em>; see <a href="Value-History.html#Value-History">Value History</a>).  This allows you to

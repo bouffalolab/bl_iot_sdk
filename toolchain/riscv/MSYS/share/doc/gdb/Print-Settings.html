@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -78,7 +78,7 @@ and symbols are printed.
 </p>
 <dl compact="compact">
 <dd><a name="index-set-print"></a>
-</dd>
+<a name="set-print-address"></a></dd>
 <dt><code>set print address</code></dt>
 <dt><code>set print address on</code></dt>
 <dd><a name="index-print_002fdon_0027t-print-memory-addresses"></a>
@@ -194,7 +194,7 @@ the appropriate <code>set print</code> options turned on.
 <p>You can also enable &lsquo;<samp>/a</samp>&rsquo;-like formatting all the time using
 &lsquo;<samp>set print symbol on</samp>&rsquo;:
 </p>
-<dl compact="compact">
+<a name="set-print-symbol"></a><dl compact="compact">
 <dt><code>set print symbol on</code></dt>
 <dd><p>Tell <small>GDB</small> to print the symbol corresponding to an address, if
 one exists.
@@ -215,6 +215,7 @@ address.
 <p>Other settings control how different kinds of objects are printed:
 </p>
 <dl compact="compact">
+<dd><a name="set-print-array"></a></dd>
 <dt><code>set print array</code></dt>
 <dt><code>set print array on</code></dt>
 <dd><a name="index-pretty-print-arrays"></a>
@@ -231,7 +232,7 @@ but uses more space.  The default is off.
 arrays.
 </p>
 <a name="index-print-array-indexes"></a>
-</dd>
+<a name="set-print-array_002dindexes"></a></dd>
 <dt><code>set print array-indexes</code></dt>
 <dt><code>set print array-indexes on</code></dt>
 <dd><p>Print the index of each element when displaying arrays.  May be more
@@ -247,7 +248,7 @@ index of a given element in that printed array.  The default is off.
 <dd><p>Show whether the index of each element is printed when displaying
 arrays.
 </p>
-</dd>
+<a name="set-print-elements"></a></dd>
 <dt><code>set print elements <var>number-of-elements</var></code></dt>
 <dt><code>set print elements unlimited</code></dt>
 <dd><a name="index-number-of-array-elements-to-print"></a>
@@ -265,13 +266,13 @@ that the number of elements to print is unlimited.
 <dd><p>Display the number of elements of a large array that <small>GDB</small> will print.
 If the number is 0, then the printing is unlimited.
 </p>
-</dd>
+<a name="set-print-frame_002darguments"></a></dd>
 <dt><code>set print frame-arguments <var>value</var></code></dt>
 <dd><a name="index-set-print-frame_002darguments"></a>
 <a name="index-printing-frame-argument-values"></a>
 <a name="index-print-all-frame-argument-values"></a>
 <a name="index-print-frame-argument-values-for-scalars-only"></a>
-<a name="index-do-not-print-frame-argument-values"></a>
+<a name="index-do-not-print-frame-arguments"></a>
 <p>This command allows to control how the values of arguments are printed
 when the debugger prints a frame (see <a href="Frames.html#Frames">Frames</a>).  The possible
 values are:
@@ -301,6 +302,18 @@ is replaced by <code>&hellip;</code>.  In this case, the example above now becom
 <pre class="smallexample">#1  0x08048361 in call_me (i=&hellip;, s=&hellip;, ss=&hellip;, u=&hellip;, e=&hellip;)
   at frame-args.c:23
 </pre></div>
+
+</dd>
+<dt><code>presence</code></dt>
+<dd><p>Only the presence of arguments is indicated by <code>&hellip;</code>.
+The <code>&hellip;</code> are not printed for function without any arguments.
+None of the argument names and values are printed.
+In this case, the example above now becomes:
+</p>
+<div class="smallexample">
+<pre class="smallexample">#1  0x08048361 in call_me (&hellip;) at frame-args.c:23
+</pre></div>
+
 </dd>
 </dl>
 
@@ -312,26 +325,26 @@ information printed in each frame, making the backtrace more readable.
 Also, it improves performance when displaying Ada frames, because
 the computation of large arguments can sometimes be CPU-intensive,
 especially in large applications.  Setting <code>print frame-arguments</code>
-to <code>scalars</code> (the default) or <code>none</code> avoids this computation,
-thus speeding up the display of each Ada frame.
+to <code>scalars</code> (the default), <code>none</code> or <code>presence</code> avoids
+this computation, thus speeding up the display of each Ada frame.
 </p>
 </dd>
 <dt><code>show print frame-arguments</code></dt>
 <dd><p>Show how the value of arguments should be displayed when printing a frame.
 </p>
-</dd>
-<dt><code>set print raw frame-arguments on</code></dt>
+<a name="set-print-raw_002dframe_002darguments"></a></dd>
+<dt><code>set print raw-frame-arguments on</code></dt>
 <dd><p>Print frame arguments in raw, non pretty-printed, form.
 </p>
 </dd>
-<dt><code>set print raw frame-arguments off</code></dt>
+<dt><code>set print raw-frame-arguments off</code></dt>
 <dd><p>Print frame arguments in pretty-printed form, if there is a pretty-printer
 for the value (see <a href="Pretty-Printing.html#Pretty-Printing">Pretty Printing</a>),
 otherwise print the value in raw form.
 This is the default.
 </p>
 </dd>
-<dt><code>show print raw frame-arguments</code></dt>
+<dt><code>show print raw-frame-arguments</code></dt>
 <dd><p>Show whether to print frame arguments in raw form.
 </p>
 <a name="set-print-entry_002dvalues"></a></dd>
@@ -457,7 +470,53 @@ entry resolution see <a href="Tail-Call-Frames.html#set-debug-entry_002dvalues">
 <dd><p>Show the method being used for printing of frame argument values at function
 entry.
 </p>
-</dd>
+<a name="set-print-frame_002dinfo"></a></dd>
+<dt><code>set print frame-info <var>value</var></code></dt>
+<dd><a name="index-set-print-frame_002dinfo"></a>
+<a name="index-printing-frame-information"></a>
+<a name="index-frame-information_002c-printing"></a>
+<p>This command allows to control the information printed when
+the debugger prints a frame.  See <a href="Frames.html#Frames">Frames</a>, <a href="Backtrace.html#Backtrace">Backtrace</a>,
+for a general explanation about frames and frame information.
+Note that some other settings (such as <code>set print frame-arguments</code>
+and <code>set print address</code>) are also influencing if and how some frame
+information is displayed.  In particular, the frame program counter is never
+printed if <code>set print address</code> is off.
+</p>
+<p>The possible values for <code>set print frame-info</code> are:
+</p><dl compact="compact">
+<dt><code>short-location</code></dt>
+<dd><p>Print the frame level, the program counter (if not at the
+beginning of the location source line), the function, the function
+arguments.
+</p></dd>
+<dt><code>location</code></dt>
+<dd><p>Same as <code>short-location</code> but also print the source file and source line
+number.
+</p></dd>
+<dt><code>location-and-address</code></dt>
+<dd><p>Same as <code>location</code> but print the program counter even if located at the
+beginning of the location source line.
+</p></dd>
+<dt><code>source-line</code></dt>
+<dd><p>Print the program counter (if not at the beginning of the location
+source line), the line number and the source line.
+</p></dd>
+<dt><code>source-and-location</code></dt>
+<dd><p>Print what <code>location</code> and <code>source-line</code> are printing.
+</p></dd>
+<dt><code>auto</code></dt>
+<dd><p>The information printed for a frame is decided automatically
+by the <small>GDB</small> command that prints a frame.
+For example, <code>frame</code> prints the information printed by
+<code>source-and-location</code> while <code>stepi</code> will switch between
+<code>source-line</code> and <code>source-and-location</code> depending on the program
+counter.
+The default value is <code>auto</code>.
+</p></dd>
+</dl>
+
+<a name="set-print-repeats"></a></dd>
 <dt><code>set print repeats <var>number-of-repeats</var></code></dt>
 <dt><code>set print repeats unlimited</code></dt>
 <dd><a name="index-repeated-array-elements"></a>
@@ -475,7 +534,61 @@ is 10.
 <dd><p>Display the current threshold for printing repeated identical
 elements.
 </p>
+<a name="set-print-max_002ddepth"></a></dd>
+<dt><code>set print max-depth <var>depth</var></code></dt>
+<dt><code>set print max-depth unlimited</code></dt>
+<dd><a name="index-printing-nested-structures"></a>
+<p>Set the threshold after which nested structures are replaced with
+ellipsis, this can make visualising deeply nested structures easier.
+</p>
+<p>For example, given this C code
+</p>
+<div class="smallexample">
+<pre class="smallexample">typedef struct s1 { int a; } s1;
+typedef struct s2 { s1 b; } s2;
+typedef struct s3 { s2 c; } s3;
+typedef struct s4 { s3 d; } s4;
+
+s4 var = { { { { 3 } } } };
+</pre></div>
+
+<p>The following table shows how different values of <var>depth</var> will
+effect how <code>var</code> is printed by <small>GDB</small>:
+</p>
+<table>
+<thead><tr><th width="30%"><var>depth</var> setting</th><th width="70%">Result of &lsquo;<samp>p var</samp>&rsquo;</th></tr></thead>
+<tr><td width="30%">unlimited</td><td width="70%"><code>$1 = {d = {c = {b = {a = 3}}}}</code></td></tr>
+<tr><td width="30%"><code>0</code></td><td width="70%"><code>$1 = {...}</code></td></tr>
+<tr><td width="30%"><code>1</code></td><td width="70%"><code>$1 = {d = {...}}</code></td></tr>
+<tr><td width="30%"><code>2</code></td><td width="70%"><code>$1 = {d = {c = {...}}}</code></td></tr>
+<tr><td width="30%"><code>3</code></td><td width="70%"><code>$1 = {d = {c = {b = {...}}}}</code></td></tr>
+<tr><td width="30%"><code>4</code></td><td width="70%"><code>$1 = {d = {c = {b = {a = 3}}}}</code></td></tr>
+</table>
+
+<p>To see the contents of structures that have been hidden the user can
+either increase the print max-depth, or they can print the elements of
+the structure that are visible, for example
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) set print max-depth 2
+(gdb) p var
+$1 = {d = {c = {...}}}
+(gdb) p var.d
+$2 = {c = {b = {...}}}
+(gdb) p var.d.c
+$3 = {b = {a = 3}}
+</pre></div>
+
+<p>The pattern used to replace nested structures varies based on
+language, for most languages <code>{...}</code> is used, but Fortran uses
+<code>(...)</code>.
+</p>
 </dd>
+<dt><code>show print max-depth</code></dt>
+<dd><p>Display the current threshold after which nested structures are
+replaces with ellipsis.
+</p>
+<a name="set-print-null_002dstop"></a></dd>
 <dt><code>set print null-stop</code></dt>
 <dd><a name="index-NULL-elements-in-arrays"></a>
 <p>Cause <small>GDB</small> to stop printing the characters of an array when the first
@@ -488,7 +601,7 @@ The default is off.
 <dd><p>Show whether <small>GDB</small> stops printing an array on the first
 <small>NULL</small> character.
 </p>
-</dd>
+<a name="set-print-pretty"></a></dd>
 <dt><code>set print pretty on</code></dt>
 <dd><a name="index-print-structures-in-indented-form"></a>
 <a name="index-indentation-in-structure-display"></a>
@@ -521,6 +634,23 @@ meat = 0x54 &quot;Pork&quot;}
 <dt><code>show print pretty</code></dt>
 <dd><p>Show which format <small>GDB</small> is using to print structures.
 </p>
+<a name="set-print-raw_002dvalues"></a></dd>
+<dt><code>set print raw-values on</code></dt>
+<dd><p>Print values in raw form, without applying the pretty
+printers for the value.
+</p>
+</dd>
+<dt><code>set print raw-values off</code></dt>
+<dd><p>Print values in pretty-printed form, if there is a pretty-printer
+for the value (see <a href="Pretty-Printing.html#Pretty-Printing">Pretty Printing</a>),
+otherwise print the value in raw form.
+</p>
+<p>The default setting is &ldquo;off&rdquo;.
+</p>
+</dd>
+<dt><code>show print raw-values</code></dt>
+<dd><p>Show whether to print values in raw form.
+</p>
 </dd>
 <dt><code>set print sevenbit-strings on</code></dt>
 <dd><a name="index-eight_002dbit-characters-in-strings"></a>
@@ -540,7 +670,7 @@ international character sets, and is the default.
 <dt><code>show print sevenbit-strings</code></dt>
 <dd><p>Show whether or not <small>GDB</small> is printing only seven-bit characters.
 </p>
-</dd>
+<a name="set-print-union"></a></dd>
 <dt><code>set print union on</code></dt>
 <dd><a name="index-unions-in-structures_002c-printing"></a>
 <p>Tell <small>GDB</small> to print unions which are contained in structures
@@ -634,7 +764,7 @@ decoding style by inspecting your program.
 <dt><code>show demangle-style</code></dt>
 <dd><p>Display the encoding style currently in use for decoding C<tt>++</tt> symbols.
 </p>
-</dd>
+<a name="set-print-object"></a></dd>
 <dt><code>set print object</code></dt>
 <dt><code>set print object on</code></dt>
 <dd><a name="index-derived-type-of-an-object_002c-printing"></a>
@@ -656,7 +786,7 @@ virtual function table.  This is the default setting.
 <dt><code>show print object</code></dt>
 <dd><p>Show whether actual, or declared, object types are displayed.
 </p>
-</dd>
+<a name="set-print-static_002dmembers"></a></dd>
 <dt><code>set print static-members</code></dt>
 <dt><code>set print static-members on</code></dt>
 <dd><a name="index-static-members-of-C_002b_002b-objects"></a>
@@ -685,7 +815,7 @@ virtual function table.  This is the default setting.
 <dt><code>show print pascal_static-members</code></dt>
 <dd><p>Show whether Pascal static members are printed or not.
 </p>
-</dd>
+<a name="set-print-vtbl"></a></dd>
 <dt><code>set print vtbl</code></dt>
 <dt><code>set print vtbl on</code></dt>
 <dd><a name="index-pretty-print-C_002b_002b-virtual-function-tables"></a>

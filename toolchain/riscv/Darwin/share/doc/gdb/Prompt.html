@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Prompt (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Controlling-GDB.html#Controlling-GDB" rel="up" title="Controlling GDB">
-<link href="Editing.html#Editing" rel="next" title="Editing">
-<link href="Controlling-GDB.html#Controlling-GDB" rel="prev" title="Controlling GDB">
+<link href="Controlling-GDB.html" rel="up" title="Controlling GDB">
+<link href="Editing.html" rel="next" title="Editing">
+<link href="Controlling-GDB.html" rel="prev" title="Controlling GDB">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,16 +51,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Prompt"></a>
-<div class="header">
+<span id="Prompt"></span><div class="header">
 <p>
-Next: <a href="Editing.html#Editing" accesskey="n" rel="next">Editing</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Editing.html" accesskey="n" rel="next">Editing</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Prompt-1"></a>
-<h3 class="section">22.1 Prompt</h3>
+<span id="Prompt-1"></span><h3 class="section">22.1 Prompt</h3>
 
-<a name="index-prompt"></a>
+<span id="index-prompt"></span>
 
 <p><small>GDB</small> indicates its readiness to read a command by printing a string
 called the <em>prompt</em>.  This string is normally &lsquo;<samp>(gdb)</samp>&rsquo;.  You
@@ -83,12 +72,12 @@ prompt you set.  This allows you to set a prompt which ends in a space
 or a prompt that does not.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-prompt"></a>
+<dd><span id="index-set-prompt"></span>
 </dd>
 <dt><code>set prompt <var>newprompt</var></code></dt>
 <dd><p>Directs <small>GDB</small> to use <var>newprompt</var> as its prompt string henceforth.
 </p>
-<a name="index-show-prompt"></a>
+<span id="index-show-prompt"></span>
 </dd>
 <dt><code>show prompt</code></dt>
 <dd><p>Prints a line of the form: &lsquo;<samp>Gdb's prompt is: <var>your-prompt</var></samp>&rsquo;
@@ -100,25 +89,25 @@ prompt extensions.  The commands for interacting with these extensions
 are:
 </p>
 <dl compact="compact">
-<dd><a name="index-set-extended_002dprompt"></a>
+<dd><span id="index-set-extended_002dprompt"></span>
 </dd>
 <dt><code>set extended-prompt <var>prompt</var></code></dt>
 <dd><p>Set an extended prompt that allows for substitutions.
-See <a href="gdb_002eprompt.html#gdb_002eprompt">gdb.prompt</a>, for a list of escape sequences that can be used for
+See <a href="gdb_002eprompt.html">gdb.prompt</a>, for a list of escape sequences that can be used for
 substitution.  Any escape sequences specified as part of the prompt
 string are replaced with the corresponding strings each time the prompt
 is displayed.
 </p>
 <p>For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">set extended-prompt Current working directory: \w (gdb)
+<div class="example">
+<pre class="example">set extended-prompt Current working directory: \w (gdb)
 </pre></div>
 
 <p>Note that when an extended-prompt is set, it takes control of the
 <var>prompt_hook</var> hook.  See <a href="Basic-Python.html#prompt_005fhook">prompt_hook</a>, for further information.
 </p>
-<a name="index-show-extended_002dprompt"></a>
+<span id="index-show-extended_002dprompt"></span>
 </dd>
 <dt><code>show extended-prompt</code></dt>
 <dd><p>Prints the extended prompt.  Any escape sequences specified as part of
@@ -130,7 +119,7 @@ corresponding strings each time the prompt is displayed.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Editing.html#Editing" accesskey="n" rel="next">Editing</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Editing.html" accesskey="n" rel="next">Editing</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

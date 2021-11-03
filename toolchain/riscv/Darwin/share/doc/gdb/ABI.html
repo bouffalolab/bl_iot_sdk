@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>ABI (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Controlling-GDB.html#Controlling-GDB" rel="up" title="Controlling GDB">
-<link href="Auto_002dloading.html#Auto_002dloading" rel="next" title="Auto-loading">
-<link href="Numbers.html#Numbers" rel="prev" title="Numbers">
+<link href="Controlling-GDB.html" rel="up" title="Controlling GDB">
+<link href="Auto_002dloading.html" rel="next" title="Auto-loading">
+<link href="Numbers.html" rel="prev" title="Numbers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,24 +51,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="ABI"></a>
-<div class="header">
+<span id="ABI"></span><div class="header">
 <p>
-Next: <a href="Auto_002dloading.html#Auto_002dloading" accesskey="n" rel="next">Auto-loading</a>, Previous: <a href="Numbers.html#Numbers" accesskey="p" rel="prev">Numbers</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Auto_002dloading.html" accesskey="n" rel="next">Auto-loading</a>, Previous: <a href="Numbers.html" accesskey="p" rel="prev">Numbers</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Configuring-the-Current-ABI"></a>
-<h3 class="section">22.7 Configuring the Current ABI</h3>
+<span id="Configuring-the-Current-ABI"></span><h3 class="section">22.7 Configuring the Current ABI</h3>
 
 <p><small>GDB</small> can determine the <em>ABI</em> (Application Binary Interface) of your
 application automatically.  However, sometimes you need to override its
 conclusions.  Use these commands to manage <small>GDB</small>&rsquo;s view of the
 current ABI.
 </p>
-<a name="index-OS-ABI"></a>
-<a name="index-set-osabi"></a>
-<a name="index-show-osabi"></a>
-<a name="index-Newlib-OS-ABI-and-its-influence-on-the-longjmp-handling"></a>
+<span id="index-OS-ABI"></span>
+<span id="index-set-osabi"></span>
+<span id="index-show-osabi"></span>
+<span id="index-Newlib-OS-ABI-and-its-influence-on-the-longjmp-handling"></span>
 
 <p>One <small>GDB</small> configuration can debug binaries for multiple operating
 system targets, either via remote debugging or native emulation.
@@ -107,7 +96,7 @@ The &ldquo;Newlib&rdquo; OS ABI can be selected by <code>set osabi Newlib</code>
 </p></dd>
 </dl>
 
-<a name="index-float-promotion"></a>
+<span id="index-float-promotion"></span>
 
 <p>Generally, the way that an argument of type <code>float</code> is passed to a
 function depends on whether the function is prototyped.  For a prototyped
@@ -121,7 +110,7 @@ a function is prototyped.  If <small>GDB</small> calls a function that is not ma
 as prototyped, it consults <kbd>set coerce-float-to-double</kbd>.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-coerce_002dfloat_002dto_002ddouble"></a>
+<dd><span id="index-set-coerce_002dfloat_002dto_002ddouble"></span>
 </dd>
 <dt><code>set coerce-float-to-double</code></dt>
 <dt><code>set coerce-float-to-double on</code></dt>
@@ -133,15 +122,15 @@ to an unprototyped function.  This is the default setting.
 <dd><p>Arguments of type <code>float</code> will be passed directly to unprototyped
 functions.
 </p>
-<a name="index-show-coerce_002dfloat_002dto_002ddouble"></a>
+<span id="index-show-coerce_002dfloat_002dto_002ddouble"></span>
 </dd>
 <dt><code>show coerce-float-to-double</code></dt>
 <dd><p>Show the current setting of promoting <code>float</code> to <code>double</code>.
 </p></dd>
 </dl>
 
-<a name="index-set-cp_002dabi"></a>
-<a name="index-show-cp_002dabi"></a>
+<span id="index-set-cp_002dabi"></span>
+<span id="index-show-cp_002dabi"></span>
 <p><small>GDB</small> needs to know the ABI used for your program&rsquo;s C<tt>++</tt>
 objects.  The correct C<tt>++</tt> ABI depends on which C<tt>++</tt> compiler was
 used to build your application.  <small>GDB</small> only fully supports
@@ -172,7 +161,7 @@ use the &ldquo;gnu-v2&rdquo; or &ldquo;gnu-v3&rdquo; ABI&rsquo;s as well.  The d
 <hr>
 <div class="header">
 <p>
-Next: <a href="Auto_002dloading.html#Auto_002dloading" accesskey="n" rel="next">Auto-loading</a>, Previous: <a href="Numbers.html#Numbers" accesskey="p" rel="prev">Numbers</a>, Up: <a href="Controlling-GDB.html#Controlling-GDB" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Auto_002dloading.html" accesskey="n" rel="next">Auto-loading</a>, Previous: <a href="Numbers.html" accesskey="p" rel="prev">Numbers</a>, Up: <a href="Controlling-GDB.html" accesskey="u" rel="up">Controlling GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

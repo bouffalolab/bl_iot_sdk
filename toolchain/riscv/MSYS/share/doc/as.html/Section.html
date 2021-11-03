@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -196,6 +196,10 @@ combination of the following characters:
 <dt><code>e</code></dt>
 <dd><p>section is excluded from executable and shared library.
 </p></dd>
+<dt><code>o</code></dt>
+<dd><p>section references a symbol defined in another section (the linked-to
+section) in the same file.
+</p></dd>
 <dt><code>w</code></dt>
 <dd><p>section is writable
 </p></dd>
@@ -292,6 +296,23 @@ which is a suffix of a larger string is considered a duplicate.  Thus
 <code>&quot;def&quot;</code> will be merged with <code>&quot;abcdef&quot;</code>;  A reference to the first
 <code>&quot;def&quot;</code> will be changed to a reference to <code>&quot;abcdef&quot;+3</code>.
 </p>
+<p>If <var>flags</var> contains the <code>o</code> flag, then the <var>type</var> argument
+must be present along with an additional field like this:
+</p>
+<div class="smallexample">
+<pre class="smallexample">.section <var>name</var>,&quot;<var>flags</var>&quot;o,@<var>type</var>,<var>SymbolName</var>
+</pre></div>
+
+<p>The <var>SymbolName</var> field specifies the symbol name which the section
+references.
+</p>
+<p>Note: If both the <var>M</var> and <var>o</var> flags are present, then the fields
+for the Merge flag should come first, like this:
+</p>
+<div class="smallexample">
+<pre class="smallexample">.section <var>name</var>,&quot;<var>flags</var>&quot;Mo,@<var>type</var>,<var>entsize</var>,<var>SymbolName</var>
+</pre></div>
+
 <p>If <var>flags</var> contains the <code>G</code> symbol then the <var>type</var> argument must
 be present along with an additional field like this:
 </p>
@@ -318,12 +339,31 @@ the Merge flag should come first, like this:
 <pre class="smallexample">.section <var>name</var> , &quot;<var>flags</var>&quot;MG, @<var>type</var>, <var>entsize</var>, <var>GroupName</var>[, <var>linkage</var>]
 </pre></div>
 
+<p>If both <code>o</code> flag and <code>G</code> flag are present, then the
+<var>SymbolName</var> field for <code>o</code> comes first, like this:
+</p>
+<div class="smallexample">
+<pre class="smallexample">.section <var>name</var>,&quot;<var>flags</var>&quot;oG,@<var>type</var>,<var>SymbolName</var>,<var>GroupName</var>[,<var>linkage</var>]
+</pre></div>
+
 <p>If <var>flags</var> contains the <code>?</code> symbol then it may not also contain the
 <code>G</code> symbol and the <var>GroupName</var> or <var>linkage</var> fields should not be
 present.  Instead, <code>?</code> says to consider the section that&rsquo;s current before
 this directive.  If that section used <code>G</code>, then the new section will use
 <code>G</code> with those same <var>GroupName</var> and <var>linkage</var> fields implicitly.
 If not, then the <code>?</code> symbol has no effect.
+</p>
+<p>The optional <var>unique,<code>&lt;number&gt;</code></var> argument must come last.  It
+assigns <var><code>&lt;number&gt;</code></var> as a unique section ID to distinguish
+different sections with the same section name like these:
+</p>
+<div class="smallexample">
+<pre class="smallexample">.section <var>name</var>,&quot;<var>flags</var>&quot;,@<var>type</var>,<var>unique,<code>&lt;number&gt;</code></var>
+.section <var>name</var>,&quot;<var>flags</var>&quot;G,@<var>type</var>,<var>GroupName</var>,[<var>linkage</var>],<var>unique,<code>&lt;number&gt;</code></var>
+.section <var>name</var>,&quot;<var>flags</var>&quot;MG,@<var>type</var>,<var>entsize</var>,<var>GroupName</var>[,<var>linkage</var>],<var>unique,<code>&lt;number&gt;</code></var>
+</pre></div>
+
+<p>The valid values of <var><code>&lt;number&gt;</code></var> are between 0 and 4294967295.
 </p>
 <p>If no flags are specified, the default flags depend upon the section name.  If
 the section name is not recognized, the default will be for the section to have

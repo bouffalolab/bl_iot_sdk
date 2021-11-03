@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -77,6 +77,7 @@ Next: <a href="Vectors.html#Vectors" accesskey="n" rel="next">Vectors</a>, Previ
 <h4 class="subsection">11.6.3 Unary and Binary Expressions</h4>
 <a name="index-NEGATE_005fEXPR"></a>
 <a name="index-ABS_005fEXPR"></a>
+<a name="index-ABSU_005fEXPR"></a>
 <a name="index-BIT_005fNOT_005fEXPR"></a>
 <a name="index-TRUTH_005fNOT_005fEXPR"></a>
 <a name="index-PREDECREMENT_005fEXPR"></a>
@@ -174,6 +175,12 @@ or complex abs of a complex value, use the <code>BUILT_IN_CABS</code>,
 <code>BUILT_IN_CABSF</code> or <code>BUILT_IN_CABSL</code> builtins, as used
 to implement the C99 <code>cabs</code>, <code>cabsf</code> and <code>cabsl</code>
 built-in functions.
+</p>
+</dd>
+<dt><code>ABSU_EXPR</code></dt>
+<dd><p>These nodes represent the absolute value of the single operand in
+equivalent unsigned type such that <code>ABSU_EXPR</code> of <code>TYPE_MIN</code>
+is well defined.
 </p>
 </dd>
 <dt><code>BIT_NOT_EXPR</code></dt>
@@ -388,21 +395,23 @@ allows the backend to choose between the faster of <code>TRUNC_DIV_EXPR</code>,
 <dt><code>LE_EXPR</code></dt>
 <dt><code>GT_EXPR</code></dt>
 <dt><code>GE_EXPR</code></dt>
+<dt><code>LTGT_EXPR</code></dt>
 <dt><code>EQ_EXPR</code></dt>
 <dt><code>NE_EXPR</code></dt>
-<dd><p>These nodes represent the less than, less than or equal to, greater
-than, greater than or equal to, equal, and not equal comparison
-operators.  The first and second operands will either be both of integral
-type, both of floating type or both of vector type.  The result type of
-these expressions will always be of integral, boolean or signed integral
-vector type.  These operations return the result type&rsquo;s zero value for
-false, the result type&rsquo;s one value for true, and a vector whose elements
-are zero (false) or minus one (true) for vectors.
+<dd><p>These nodes represent the less than, less than or equal to, greater than,
+greater than or equal to, less or greater than, equal, and not equal
+comparison operators.  The first and second operands will either be both
+of integral type, both of floating type or both of vector type, except for
+LTGT_EXPR where they will only be both of floating type.  The result type
+of these expressions will always be of integral, boolean or signed integral
+vector type.  These operations return the result type&rsquo;s zero value for false,
+the result type&rsquo;s one value for true, and a vector whose elements are zero
+(false) or minus one (true) for vectors.
 </p>
 <p>For floating point comparisons, if we honor IEEE NaNs and either operand
 is NaN, then <code>NE_EXPR</code> always returns true and the remaining operators
 always return false.  On some targets, comparisons against an IEEE NaN,
-other than equality and inequality, may generate a floating point exception.
+other than equality and inequality, may generate a floating-point exception.
 </p>
 </dd>
 <dt><code>ORDERED_EXPR</code></dt>
@@ -422,15 +431,13 @@ and the result type&rsquo;s one value for true.
 <dt><code>UNGT_EXPR</code></dt>
 <dt><code>UNGE_EXPR</code></dt>
 <dt><code>UNEQ_EXPR</code></dt>
-<dt><code>LTGT_EXPR</code></dt>
 <dd><p>These nodes represent the unordered comparison operators.
 These operations take two floating point operands and determine whether
 the operands are unordered or are less than, less than or equal to,
 greater than, greater than or equal to, or equal respectively.  For
 example, <code>UNLT_EXPR</code> returns true if either operand is an IEEE
-NaN or the first operand is less than the second.  With the possible
-exception of <code>LTGT_EXPR</code>, all of these operations are guaranteed
-not to generate a floating point exception.  The result
+NaN or the first operand is less than the second.  All these operations
+are guaranteed not to generate a floating point exception.  The result
 type of these expressions will always be of integral or boolean type.
 These operations return the result type&rsquo;s zero value for false,
 and the result type&rsquo;s one value for true.

@@ -10,7 +10,7 @@ the terms of the GNU Free Documentation License, Version 1.2 or any later
 version published by the Free Software Foundation; with no Invariant Sections,
 with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
 license is included in GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Compatibility with MPF (GNU MPFR 3.1.4)</title>
@@ -21,32 +21,23 @@ floating-point arithmetic, version 3.1.4.">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="MPFR-Interface.html#MPFR-Interface" rel="up" title="MPFR Interface">
-<link href="Custom-Interface.html#Custom-Interface" rel="next" title="Custom Interface">
-<link href="Exception-Related-Functions.html#Exception-Related-Functions" rel="prev" title="Exception Related Functions">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="MPFR-Interface.html" rel="up" title="MPFR Interface">
+<link href="Custom-Interface.html" rel="next" title="Custom Interface">
+<link href="Exception-Related-Functions.html" rel="prev" title="Exception Related Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,15 +49,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Compatibility-with-MPF"></a>
-<div class="header">
+<span id="Compatibility-with-MPF"></span><div class="header">
 <p>
-Next: <a href="Custom-Interface.html#Custom-Interface" accesskey="n" rel="next">Custom Interface</a>, Previous: <a href="Exception-Related-Functions.html#Exception-Related-Functions" accesskey="p" rel="prev">Exception Related Functions</a>, Up: <a href="MPFR-Interface.html#MPFR-Interface" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Custom-Interface.html" accesskey="n" rel="next">Custom Interface</a>, Previous: <a href="Exception-Related-Functions.html" accesskey="p" rel="prev">Exception Related Functions</a>, Up: <a href="MPFR-Interface.html" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="index-Compatibility-with-MPF"></a>
-<a name="Compatibility-With-MPF"></a>
-<h3 class="section">5.14 Compatibility With MPF</h3>
+<span id="index-Compatibility-with-MPF"></span>
+<span id="Compatibility-With-MPF"></span><h3 class="section">5.14 Compatibility With MPF</h3>
 
 <p>A header file <samp>mpf2mpfr.h</samp> is included in the distribution of MPFR for
 compatibility with the GNU MP class MPF.
@@ -88,7 +77,7 @@ this is useful to detect uninitialized values, but is slightly incompatible
 with MPF.
 </p>
 <dl>
-<dt><a name="index-mpfr_005fset_005fprec_005fraw"></a>Function: <em>void</em> <strong>mpfr_set_prec_raw</strong> <em>(mpfr_t <var>x</var>, mpfr_prec_t <var>prec</var>)</em></dt>
+<dt id="index-mpfr_005fset_005fprec_005fraw">Function: <em>void</em> <strong>mpfr_set_prec_raw</strong> <em>(mpfr_t <var>x</var>, mpfr_prec_t <var>prec</var>)</em></dt>
 <dd><p>Reset the precision of <var>x</var> to be <strong>exactly</strong> <var>prec</var> bits.
 The only difference with <code>mpfr_set_prec</code> is that <var>prec</var> is assumed to
 be small enough so that the significand fits into the current allocated memory
@@ -96,7 +85,7 @@ space for <var>x</var>. Otherwise the behavior is undefined.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpfr_005feq"></a>Function: <em>int</em> <strong>mpfr_eq</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>, unsigned long int <var>op3</var>)</em></dt>
+<dt id="index-mpfr_005feq">Function: <em>int</em> <strong>mpfr_eq</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>, unsigned long int <var>op3</var>)</em></dt>
 <dd><p>Return non-zero if <var>op1</var> and <var>op2</var> are both non-zero ordinary
 numbers with the same exponent and the same first <var>op3</var> bits, both
 zero, or both infinities of the same sign. Return zero otherwise.
@@ -109,7 +98,7 @@ you want to know whether two numbers are close to each other; for instance,
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpfr_005freldiff"></a>Function: <em>void</em> <strong>mpfr_reldiff</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, mpfr_t <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
+<dt id="index-mpfr_005freldiff">Function: <em>void</em> <strong>mpfr_reldiff</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, mpfr_t <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
 <dd><p>Compute the relative difference between <var>op1</var> and <var>op2</var>
 and store the result in <var>rop</var>.
 This function does not guarantee the correct rounding on the relative
@@ -118,8 +107,8 @@ precision of <var>rop</var> and the rounding mode <var>rnd</var> for all operati
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpfr_005fmul_005f2exp"></a>Function: <em>int</em> <strong>mpfr_mul_2exp</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, unsigned long int <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
-<dt><a name="index-mpfr_005fdiv_005f2exp"></a>Function: <em>int</em> <strong>mpfr_div_2exp</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, unsigned long int <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
+<dt id="index-mpfr_005fmul_005f2exp">Function: <em>int</em> <strong>mpfr_mul_2exp</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, unsigned long int <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
+<dt id="index-mpfr_005fdiv_005f2exp">Function: <em>int</em> <strong>mpfr_div_2exp</strong> <em>(mpfr_t <var>rop</var>, mpfr_t <var>op1</var>, unsigned long int <var>op2</var>, mpfr_rnd_t <var>rnd</var>)</em></dt>
 <dd><p>These functions are identical to <code>mpfr_mul_2ui</code> and <code>mpfr_div_2ui</code>
 respectively.
 These functions are only kept for compatibility with MPF, one should
@@ -130,7 +119,7 @@ prefer <code>mpfr_mul_2ui</code> and <code>mpfr_div_2ui</code> otherwise.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Custom-Interface.html#Custom-Interface" accesskey="n" rel="next">Custom Interface</a>, Previous: <a href="Exception-Related-Functions.html#Exception-Related-Functions" accesskey="p" rel="prev">Exception Related Functions</a>, Up: <a href="MPFR-Interface.html#MPFR-Interface" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Custom-Interface.html" accesskey="n" rel="next">Custom Interface</a>, Previous: <a href="Exception-Related-Functions.html" accesskey="p" rel="prev">Exception Related Functions</a>, Up: <a href="MPFR-Interface.html" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

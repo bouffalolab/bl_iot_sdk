@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>V850 Opcodes (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="V850_002dDependent.html#V850_002dDependent" rel="up" title="V850-Dependent">
-<link href="Vax_002dDependent.html#Vax_002dDependent" rel="next" title="Vax-Dependent">
-<link href="V850-Directives.html#V850-Directives" rel="prev" title="V850 Directives">
+<link href="V850_002dDependent.html" rel="up" title="V850-Dependent">
+<link href="Vax_002dDependent.html" rel="next" title="Vax-Dependent">
+<link href="V850-Directives.html" rel="prev" title="V850 Directives">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,24 +50,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="V850-Opcodes"></a>
-<div class="header">
+<span id="V850-Opcodes"></span><div class="header">
 <p>
-Previous: <a href="V850-Directives.html#V850-Directives" accesskey="p" rel="prev">V850 Directives</a>, Up: <a href="V850_002dDependent.html#V850_002dDependent" accesskey="u" rel="up">V850-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="V850-Directives.html" accesskey="p" rel="prev">V850 Directives</a>, Up: <a href="V850_002dDependent.html" accesskey="u" rel="up">V850-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Opcodes-19"></a>
-<h4 class="subsection">9.48.5 Opcodes</h4>
+<span id="Opcodes-19"></span><h4 class="subsection">9.49.5 Opcodes</h4>
 
-<a name="index-V850-opcodes"></a>
-<a name="index-opcodes-for-V850"></a>
+<span id="index-V850-opcodes"></span>
+<span id="index-opcodes-for-V850"></span>
 <p><code>as</code> implements all the standard V850 opcodes.
 </p>
 <p><code>as</code> also implements the following pseudo ops:
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-hi0-pseudo_002dop_002c-V850"></a>
+<span id="index-hi0-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>hi0()</code></dt>
 <dd><p>Computes the higher 16 bits of the given expression and stores it into
@@ -89,7 +78,7 @@ the immediate operand field of the given instruction.  For example:
 bits and then multiplies it by the lower 16 bits in register 5, putting
 the result into register 6.
 </p>
-<a name="index-lo-pseudo_002dop_002c-V850"></a>
+<span id="index-lo-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>lo()</code></dt>
 <dd><p>Computes the lower 16 bits of the given expression and stores it into
@@ -101,7 +90,7 @@ the immediate operand field of the given instruction.  For example:
 &rsquo;there&rsquo;, takes the lower 16 bits of this difference and adds it to
 register 5, putting the result into register 6.
 </p>
-<a name="index-hi-pseudo_002dop_002c-V850"></a>
+<span id="index-hi-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>hi()</code></dt>
 <dd><p>Computes the higher 16 bits of the given expression and then adds the
@@ -124,7 +113,7 @@ in the top bit of the lo() pseudo op, the movhi instruction actually
 stores 0 into r6 (0xFFFF + 1 = 0x0000), so that the movea instruction
 stores 0xFFFFFFFF into r6 - the right value.
 </p>
-<a name="index-hilo-pseudo_002dop_002c-V850"></a>
+<span id="index-hilo-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>hilo()</code></dt>
 <dd><p>Computes the 32 bit value of the given expression and stores it into
@@ -136,7 +125,7 @@ mov instruction).  For example:
 <p>computes the absolute address of label &rsquo;here&rsquo; and puts the result into
 register 6.
 </p>
-<a name="index-sdaoff-pseudo_002dop_002c-V850"></a>
+<span id="index-sdaoff-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>sdaoff()</code></dt>
 <dd><p>Computes the offset of the named variable from the start of the Small
@@ -154,7 +143,7 @@ label called &rsquo;__gp&rsquo;.  This can either be set up automatically by the
 linker, or specifically set by using the &lsquo;<samp>--defsym __gp=&lt;value&gt;</samp>&rsquo;
 command-line option].
 </p>
-<a name="index-tdaoff-pseudo_002dop_002c-V850"></a>
+<span id="index-tdaoff-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>tdaoff()</code></dt>
 <dd><p>Computes the offset of the named variable from the start of the Tiny
@@ -172,7 +161,7 @@ label called &rsquo;__ep&rsquo;.  This can either be set up automatically by the
 linker, or specifically set by using the &lsquo;<samp>--defsym __ep=&lt;value&gt;</samp>&rsquo;
 command-line option].
 </p>
-<a name="index-zdaoff-pseudo_002dop_002c-V850"></a>
+<span id="index-zdaoff-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>zdaoff()</code></dt>
 <dd><p>Computes the offset of the named variable from address 0 and stores the
@@ -186,7 +175,7 @@ that the label is somewhere within the first 32K of memory.  (Strictly
 speaking it also possible to access the last 32K of memory as well, as
 the offsets are signed).
 </p>
-<a name="index-ctoff-pseudo_002dop_002c-V850"></a>
+<span id="index-ctoff-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>ctoff()</code></dt>
 <dd><p>Computes the offset of the named variable from the start of the Call
@@ -200,7 +189,7 @@ example:
 <p>will put the call the function whose address is held in the call table
 at the location labeled &rsquo;table_func1&rsquo;.
 </p>
-<a name="index-longcall-pseudo_002dop_002c-V850"></a>
+<span id="index-longcall-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>.longcall <code>name</code></code></dt>
 <dd><p>Indicates that the following sequence of instructions is a long call
@@ -208,7 +197,7 @@ to function <code>name</code>.  The linker will attempt to shorten this call
 sequence if <code>name</code> is within a 22bit offset of the call.  Only
 valid if the <code>-mrelax</code> command-line switch has been enabled.
 </p>
-<a name="index-longjump-pseudo_002dop_002c-V850"></a>
+<span id="index-longjump-pseudo_002dop_002c-V850"></span>
 </dd>
 <dt><code>.longjump <code>name</code></code></dt>
 <dd><p>Indicates that the following sequence of instructions is a long jump
@@ -227,7 +216,7 @@ Ltd.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="V850-Directives.html#V850-Directives" accesskey="p" rel="prev">V850 Directives</a>, Up: <a href="V850_002dDependent.html#V850_002dDependent" accesskey="u" rel="up">V850-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="V850-Directives.html" accesskey="p" rel="prev">V850 Directives</a>, Up: <a href="V850_002dDependent.html" accesskey="u" rel="up">V850-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

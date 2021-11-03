@@ -1,74 +1,136 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>Wchar strings - Untitled</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Untitled">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="prev" href="Strings.html#Strings" title="Strings">
-<link rel="next" href="Signals.html#Signals" title="Signals">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Wchar-strings"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Signals.html#Signals">Signals</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Strings.html#Strings">Strings</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
-<hr>
-</div>
+<title>The Red Hat newlib C Library: Wchar strings</title>
 
-<h2 class="chapter">6 Wide Character Strings (<samp><span class="file">wchar.h</span></samp>)</h2>
+<meta name="description" content="The Red Hat newlib C Library: Wchar strings">
+<meta name="keywords" content="The Red Hat newlib C Library: Wchar strings">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="wmemchr.html#wmemchr" rel="next" title="wmemchr">
+<link href="wcsncasecmp.html#wcsncasecmp" rel="prev" title="wcsncasecmp">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Wchar-strings"></a>
+<div class="header">
+<p>
+Next: <a href="Signals.html#Signals" accesskey="n" rel="next">Signals</a>, Previous: <a href="Strings.html#Strings" accesskey="p" rel="prev">Strings</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Wide-Character-Strings-_0028wchar_002eh_0029"></a>
+<h2 class="chapter">6 Wide Character Strings (<samp>wchar.h</samp>)</h2>
 
 <p>This chapter describes wide-character string-handling functions and
-managing areas of memory containing wide characters.  The corresponding
-declarations are in <samp><span class="file">wchar.h</span></samp>.
+managing areas of memory containing wide characters.  The corresponding 
+declarations are in <samp>wchar.h</samp>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="wmemchr.html#wmemchr" accesskey="1">wmemchr</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Find wide character in memory
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wmemcmp.html#wmemcmp" accesskey="2">wmemcmp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Compare two wide-character memory areas
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wmemcpy.html#wmemcpy" accesskey="3">wmemcpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy wide-character memory regions
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wmemmove.html#wmemmove" accesskey="4">wmemmove</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Move possibly overlapping wide-character memory
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wmempcpy.html#wmempcpy" accesskey="5">wmempcpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy wide-character memory regions and locate end
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wmemset.html#wmemset" accesskey="6">wmemset</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Set an area of memory to a specified wide character
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcscat.html#wcscat" accesskey="7">wcscat</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Concatenate wide-character strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcschr.html#wcschr" accesskey="8">wcschr</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Search for wide character in string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcscmp.html#wcscmp" accesskey="9">wcscmp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Wide-character string compare
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcscoll.html#wcscoll">wcscoll</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Locale-specific wide-character string compare
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcscpy.html#wcscpy">wcscpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcpcpy.html#wcpcpy">wcpcpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy a wide-character string returning a pointer to its end
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcscspn.html#wcscspn">wcscspn</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Count wide characters not in string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsftime.html#wcsftime">wcsftime</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Convert date and time to a formatted wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcslcat.html#wcslcat">wcslcat</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Concatenate wide-character strings to specified length
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcslcpy.html#wcslcpy">wcslcpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy wide-character string to specified length
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcslen.html#wcslen">wcslen</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Wide-character string length
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsncat.html#wcsncat">wcsncat</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Concatenate wide-character strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsncmp.html#wcsncmp">wcsncmp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Wide-character string compare
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsncpy.html#wcsncpy">wcsncpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Counted copy wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcpncpy.html#wcpncpy">wcpncpy</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Copy part of a wide-character string returning a pointer to its end
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsnlen.html#wcsnlen">wcsnlen</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Wide-character string length with maximum limit
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcspbrk.html#wcspbrk">wcspbrk</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Find wide characters in string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsrchr.html#wcsrchr">wcsrchr</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Reverse search for wide character in string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsspn.html#wcsspn">wcsspn</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Find initial match in wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsstr.html#wcsstr">wcsstr</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Find wide-character string segment
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcstok.html#wcstok">wcstok</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Tokenize wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcswidth.html#wcswidth">wcswidth</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Number of column positions of a wide-character string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcsxfrm.html#wcsxfrm">wcsxfrm</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Locale-specific wide-character string transformation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="wcwidth.html#wcwidth">wcwidth</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Number of column positions of a wide-character code
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="wmemchr.html#wmemchr">wmemchr</a>:      Find wide character in memory
-<li><a accesskey="2" href="wmemcmp.html#wmemcmp">wmemcmp</a>:      Compare two wide-character memory areas
-<li><a accesskey="3" href="wmemcpy.html#wmemcpy">wmemcpy</a>:      Copy wide-character memory regions
-<li><a accesskey="4" href="wmemmove.html#wmemmove">wmemmove</a>:     Move possibly overlapping wide-character memory
-<li><a accesskey="5" href="wmempcpy.html#wmempcpy">wmempcpy</a>:     Copy wide-character memory regions and locate end
-<li><a accesskey="6" href="wmemset.html#wmemset">wmemset</a>:      Set an area of memory to a specified wide character
-<li><a accesskey="7" href="wcscat.html#wcscat">wcscat</a>:       Concatenate wide-character strings
-<li><a accesskey="8" href="wcschr.html#wcschr">wcschr</a>:       Search for wide character in string
-<li><a accesskey="9" href="wcscmp.html#wcscmp">wcscmp</a>:       Wide-character string compare
-<li><a href="wcscoll.html#wcscoll">wcscoll</a>:      Locale-specific wide-character string compare
-<li><a href="wcscpy.html#wcscpy">wcscpy</a>:       Copy wide-character string
-<li><a href="wcpcpy.html#wcpcpy">wcpcpy</a>:       Copy a wide-character string returning a pointer to its end
-<li><a href="wcscspn.html#wcscspn">wcscspn</a>:      Count wide characters not in string
-<li><a href="wcsftime.html#wcsftime">wcsftime</a>:     Convert date and time to a formatted wide-character string
-<li><a href="wcslcat.html#wcslcat">wcslcat</a>:      Concatenate wide-character strings to specified length
-<li><a href="wcslcpy.html#wcslcpy">wcslcpy</a>:      Copy wide-character string to specified length
-<li><a href="wcslen.html#wcslen">wcslen</a>:       Wide-character string length
-<li><a href="wcsncat.html#wcsncat">wcsncat</a>:      Concatenate wide-character strings
-<li><a href="wcsncmp.html#wcsncmp">wcsncmp</a>:      Wide-character string compare
-<li><a href="wcsncpy.html#wcsncpy">wcsncpy</a>:      Counted copy wide-character string
-<li><a href="wcpncpy.html#wcpncpy">wcpncpy</a>:      Copy part of a wide-character string returning a pointer to its end
-<li><a href="wcsnlen.html#wcsnlen">wcsnlen</a>:      Wide-character string length with maximum limit
-<li><a href="wcspbrk.html#wcspbrk">wcspbrk</a>:      Find wide characters in string
-<li><a href="wcsrchr.html#wcsrchr">wcsrchr</a>:      Reverse search for wide character in string
-<li><a href="wcsspn.html#wcsspn">wcsspn</a>:       Find initial match in wide-character string
-<li><a href="wcsstr.html#wcsstr">wcsstr</a>:       Find wide-character string segment
-<li><a href="wcstok.html#wcstok">wcstok</a>:       Tokenize wide-character string
-<li><a href="wcswidth.html#wcswidth">wcswidth</a>:     Number of column positions of a wide-character string
-<li><a href="wcsxfrm.html#wcsxfrm">wcsxfrm</a>:      Locale-specific wide-character string transformation
-<li><a href="wcwidth.html#wcwidth">wcwidth</a>:      Number of column positions of a wide-character code
-</ul>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Signals.html#Signals" accesskey="n" rel="next">Signals</a>, Previous: <a href="Strings.html#Strings" accesskey="p" rel="prev">Strings</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   </body></html>
 
+
+</body>
+</html>

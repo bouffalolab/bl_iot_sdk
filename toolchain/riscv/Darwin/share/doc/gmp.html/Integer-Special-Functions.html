@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Integer Special Functions (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Integer-Functions.html#Integer-Functions" rel="up" title="Integer Functions">
-<link href="Rational-Number-Functions.html#Rational-Number-Functions" rel="next" title="Rational Number Functions">
-<link href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" rel="prev" title="Miscellaneous Integer Functions">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Integer-Functions.html" rel="up" title="Integer Functions">
+<link href="Rational-Number-Functions.html" rel="next" title="Rational Number Functions">
+<link href="Miscellaneous-Integer-Functions.html" rel="prev" title="Miscellaneous Integer Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,27 +50,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Integer-Special-Functions"></a>
-<div class="header">
+<span id="Integer-Special-Functions"></span><div class="header">
 <p>
-Previous: <a href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" accesskey="p" rel="prev">Miscellaneous Integer Functions</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Miscellaneous-Integer-Functions.html" accesskey="p" rel="prev">Miscellaneous Integer Functions</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Special-Functions"></a>
-<h3 class="section">5.16 Special Functions</h3>
-<a name="index-Special-integer-functions"></a>
-<a name="index-Integer-special-functions"></a>
+<span id="Special-Functions"></span><h3 class="section">5.16 Special Functions</h3>
+<span id="index-Special-integer-functions"></span>
+<span id="index-Integer-special-functions"></span>
 
 <p>The functions in this section are for various special purposes.  Most
 applications will not need them.
 </p>
 <dl>
-<dt><a name="index-mpz_005farray_005finit"></a>Function: <em>void</em> <strong>mpz_array_init</strong> <em>(mpz_t <var>integer_array</var>, mp_size_t <var>array_size</var>, <span class="nolinebreak">mp_size_t</span>&nbsp;<var><span class="nolinebreak">fixed_num_bits</span></var><!-- /@w -->)</em></dt>
+<dt id="index-mpz_005farray_005finit">Function: <em>void</em> <strong>mpz_array_init</strong> <em>(mpz_t <var>integer_array</var>, mp_size_t <var>array_size</var>, <span class="nolinebreak">mp_size_t</span>&nbsp;<var><span class="nolinebreak">fixed_num_bits</span></var><!-- /@w -->)</em></dt>
 <dd><p><strong>This is an obsolete function.  Do not use it.</strong>
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005fmpz_005frealloc"></a>Function: <em>void *</em> <strong>_mpz_realloc</strong> <em>(mpz_t <var>integer</var>, mp_size_t <var>new_alloc</var>)</em></dt>
+<dt id="index-_005fmpz_005frealloc">Function: <em>void *</em> <strong>_mpz_realloc</strong> <em>(mpz_t <var>integer</var>, mp_size_t <var>new_alloc</var>)</em></dt>
 <dd><p>Change the space for <var>integer</var> to <var>new_alloc</var> limbs.  The value in
 <var>integer</var> is preserved if it fits, or is set to 0 if not.  The return
 value is not useful to applications and should be ignored.
@@ -90,7 +79,7 @@ this.  <code>mpz_realloc2</code> and <code>_mpz_realloc</code> are the same exce
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fgetlimbn"></a>Function: <em>mp_limb_t</em> <strong>mpz_getlimbn</strong> <em>(const mpz_t <var>op</var>, mp_size_t <var>n</var>)</em></dt>
+<dt id="index-mpz_005fgetlimbn">Function: <em>mp_limb_t</em> <strong>mpz_getlimbn</strong> <em>(const mpz_t <var>op</var>, mp_size_t <var>n</var>)</em></dt>
 <dd><p>Return limb number <var>n</var> from <var>op</var>.  The sign of <var>op</var> is ignored,
 just the absolute value is used.  The least significant limb is number 0.
 </p>
@@ -100,21 +89,21 @@ just the absolute value is used.  The least significant limb is number 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fsize"></a>Function: <em>size_t</em> <strong>mpz_size</strong> <em>(const mpz_t <var>op</var>)</em></dt>
+<dt id="index-mpz_005fsize">Function: <em>size_t</em> <strong>mpz_size</strong> <em>(const mpz_t <var>op</var>)</em></dt>
 <dd><p>Return the size of <var>op</var> measured in number of limbs.  If <var>op</var> is zero,
 the returned value will be zero.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005flimbs_005fread"></a>Function: <em>const mp_limb_t *</em> <strong>mpz_limbs_read</strong> <em>(const mpz_t <var>x</var>)</em></dt>
+<dt id="index-mpz_005flimbs_005fread">Function: <em>const mp_limb_t *</em> <strong>mpz_limbs_read</strong> <em>(const mpz_t <var>x</var>)</em></dt>
 <dd><p>Return a pointer to the limb array representing the absolute value of <var>x</var>.
 The size of the array is <code>mpz_size(<var>x</var>)</code>. Intended for read access
 only.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005flimbs_005fwrite"></a>Function: <em>mp_limb_t *</em> <strong>mpz_limbs_write</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>n</var>)</em></dt>
-<dt><a name="index-mpz_005flimbs_005fmodify"></a>Function: <em>mp_limb_t *</em> <strong>mpz_limbs_modify</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>n</var>)</em></dt>
+<dt id="index-mpz_005flimbs_005fwrite">Function: <em>mp_limb_t *</em> <strong>mpz_limbs_write</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>n</var>)</em></dt>
+<dt id="index-mpz_005flimbs_005fmodify">Function: <em>mp_limb_t *</em> <strong>mpz_limbs_modify</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>n</var>)</em></dt>
 <dd><p>Return a pointer to the limb array, intended for write access. The array is
 reallocated as needed, to make room for <var>n</var> limbs. Requires <em><var>n</var>
 &gt; 0</em>. The <code>mpz_limbs_modify</code> function returns an array that holds the old
@@ -123,7 +112,7 @@ value and return an array with unspecified contents.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005flimbs_005ffinish"></a>Function: <em>void</em> <strong>mpz_limbs_finish</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>s</var>)</em></dt>
+<dt id="index-mpz_005flimbs_005ffinish">Function: <em>void</em> <strong>mpz_limbs_finish</strong> <em>(mpz_t <var>x</var>, mp_size_t <var>s</var>)</em></dt>
 <dd><p>Updates the internal size field of <var>x</var>. Used after writing to the limb
 array pointer returned by <code>mpz_limbs_write</code> or <code>mpz_limbs_modify</code> is
 completed. The array should contain <em>abs(<var>s</var>)</em> valid limbs,
@@ -147,7 +136,7 @@ the limb pointer remains valid.
 </pre></div>
 
 <dl>
-<dt><a name="index-mpz_005froinit_005fn"></a>Function: <em>mpz_srcptr</em> <strong>mpz_roinit_n</strong> <em>(mpz_t <var>x</var>, const mp_limb_t *<var>xp</var>, mp_size_t <var>xs</var>)</em></dt>
+<dt id="index-mpz_005froinit_005fn">Function: <em>mpz_srcptr</em> <strong>mpz_roinit_n</strong> <em>(mpz_t <var>x</var>, const mp_limb_t *<var>xp</var>, mp_size_t <var>xs</var>)</em></dt>
 <dd><p>Special initialization of <var>x</var>, using the given limb array and size.
 <var>x</var> should be treated as read-only: it can be passed safely as input to
 any mpz function, but not as an output. The array <var>xp</var> must point to at
@@ -166,7 +155,7 @@ convenience, the function returns <var>x</var>, but cast to a const pointer type
 </pre></div>
 
 <dl>
-<dt><a name="index-MPZ_005fROINIT_005fN"></a>Macro: <em>mpz_t</em> <strong>MPZ_ROINIT_N</strong> <em>(mp_limb_t *<var>xp</var>, mp_size_t <var>xs</var>)</em></dt>
+<dt id="index-MPZ_005fROINIT_005fN">Macro: <em>mpz_t</em> <strong>MPZ_ROINIT_N</strong> <em>(mp_limb_t *<var>xp</var>, mp_size_t <var>xs</var>)</em></dt>
 <dd><p>This macro expands to an initializer which can be assigned to an mpz_t
 variable. The limb array <var>xp</var> must point to at least a readable limb,
 moreover, unlike the <code>mpz_roinit_n</code> function, the array must be
@@ -190,7 +179,7 @@ compiler supporting C99.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" accesskey="p" rel="prev">Miscellaneous Integer Functions</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Miscellaneous-Integer-Functions.html" accesskey="p" rel="prev">Miscellaneous Integer Functions</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

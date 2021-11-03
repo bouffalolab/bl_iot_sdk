@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Returning (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Altering.html#Altering" rel="up" title="Altering">
-<link href="Calling.html#Calling" rel="next" title="Calling">
-<link href="Signaling.html#Signaling" rel="prev" title="Signaling">
+<link href="Altering.html" rel="up" title="Altering">
+<link href="Calling.html" rel="next" title="Calling">
+<link href="Signaling.html" rel="prev" title="Signaling">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Returning"></a>
-<div class="header">
+<span id="Returning"></span><div class="header">
 <p>
-Next: <a href="Calling.html#Calling" accesskey="n" rel="next">Calling</a>, Previous: <a href="Signaling.html#Signaling" accesskey="p" rel="prev">Signaling</a>, Up: <a href="Altering.html#Altering" accesskey="u" rel="up">Altering</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Calling.html" accesskey="n" rel="next">Calling</a>, Previous: <a href="Signaling.html" accesskey="p" rel="prev">Signaling</a>, Up: <a href="Altering.html" accesskey="u" rel="up">Altering</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Returning-from-a-Function"></a>
-<h3 class="section">17.4 Returning from a Function</h3>
+<span id="Returning-from-a-Function"></span><h3 class="section">17.4 Returning from a Function</h3>
 
 <dl compact="compact">
-<dd><a name="index-returning-from-a-function"></a>
-<a name="index-return"></a>
+<dd><span id="index-returning-from-a-function"></span>
+<span id="index-return"></span>
 </dd>
 <dt><code>return</code></dt>
 <dt><code>return <var>expression</var></code></dt>
@@ -87,7 +76,7 @@ value.
 discarded frame return prematurely.  If you wish to specify a value to
 be returned, give that value as the argument to <code>return</code>.
 </p>
-<p>This pops the selected stack frame (see <a href="Selection.html#Selection">Selecting a
+<p>This pops the selected stack frame (see <a href="Selection.html">Selecting a
 Frame</a>), and any other frames inside of it, leaving its caller as the
 innermost remaining frame.  That frame becomes selected.  The
 specified value is stored in the registers used for returning values
@@ -95,7 +84,7 @@ of functions.
 </p>
 <p>The <code>return</code> command does not resume execution; it leaves the
 program stopped in the state that would exist if the function had just
-returned.  In contrast, the <code>finish</code> command (see <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">Continuing and Stepping</a>) resumes execution until the
+returned.  In contrast, the <code>finish</code> command (see <a href="Continuing-and-Stepping.html">Continuing and Stepping</a>) resumes execution until the
 selected stack frame returns naturally.
 </p>
 <p><small>GDB</small> needs to know how the <var>expression</var> argument should be set for
@@ -115,8 +104,8 @@ function in the current stack frame is declared to return a <code>long long
 int</code>, <small>GDB</small> transparently converts the implicit <code>int</code> value of -1
 into a <code>long long int</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">Breakpoint 1, func () at gdb.base/return-nodebug.c:29
+<div class="example">
+<pre class="example">Breakpoint 1, func () at gdb.base/return-nodebug.c:29
 29        return 31;
 (gdb) return -1
 Make func return now? (y or n) y
@@ -134,8 +123,8 @@ of a <code>long long int</code> result for a debug info less function (on 32-bit
 architectures).  Therefore the user is required to specify the return type by
 an appropriate cast explicitly:
 </p>
-<div class="smallexample">
-<pre class="smallexample">Breakpoint 2, 0x0040050b in func ()
+<div class="example">
+<pre class="example">Breakpoint 2, 0x0040050b in func ()
 (gdb) return -1
 Return value type not available for selected stack frame.
 Please use an explicit cast of the value to return.
@@ -148,7 +137,7 @@ Make selected stack frame return now? (y or n) y
 <hr>
 <div class="header">
 <p>
-Next: <a href="Calling.html#Calling" accesskey="n" rel="next">Calling</a>, Previous: <a href="Signaling.html#Signaling" accesskey="p" rel="prev">Signaling</a>, Up: <a href="Altering.html#Altering" accesskey="u" rel="up">Altering</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Calling.html" accesskey="n" rel="next">Calling</a>, Previous: <a href="Signaling.html" accesskey="p" rel="prev">Signaling</a>, Up: <a href="Altering.html" accesskey="u" rel="up">Altering</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

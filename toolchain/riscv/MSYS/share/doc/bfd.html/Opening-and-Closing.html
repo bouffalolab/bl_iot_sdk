@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -356,20 +356,9 @@ direction.
 Allocate a block of <var>wanted</var> bytes of memory attached to
 <code>abfd</code> and return a pointer to it.
 </p>
-<a name="index-bfd_005falloc2"></a>
-<a name="bfd_005falloc2"></a>
-<h4 class="subsubsection">2.14.1.13 <code>bfd_alloc2</code></h4>
-<p><strong>Synopsis</strong>
-</p><div class="example">
-<pre class="example">void *bfd_alloc2 (bfd *abfd, bfd_size_type nmemb, bfd_size_type size);
-</pre></div>
-<p><strong>Description</strong><br>
-Allocate a block of <var>nmemb</var> elements of <var>size</var> bytes each
-of memory attached to <code>abfd</code> and return a pointer to it.
-</p>
 <a name="index-bfd_005fzalloc"></a>
 <a name="bfd_005fzalloc"></a>
-<h4 class="subsubsection">2.14.1.14 <code>bfd_zalloc</code></h4>
+<h4 class="subsubsection">2.14.1.13 <code>bfd_zalloc</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void *bfd_zalloc (bfd *abfd, bfd_size_type wanted);
@@ -378,20 +367,9 @@ of memory attached to <code>abfd</code> and return a pointer to it.
 Allocate a block of <var>wanted</var> bytes of zeroed memory
 attached to <code>abfd</code> and return a pointer to it.
 </p>
-<a name="index-bfd_005fzalloc2"></a>
-<a name="bfd_005fzalloc2"></a>
-<h4 class="subsubsection">2.14.1.15 <code>bfd_zalloc2</code></h4>
-<p><strong>Synopsis</strong>
-</p><div class="example">
-<pre class="example">void *bfd_zalloc2 (bfd *abfd, bfd_size_type nmemb, bfd_size_type size);
-</pre></div>
-<p><strong>Description</strong><br>
-Allocate a block of <var>nmemb</var> elements of <var>size</var> bytes each
-of zeroed memory attached to <code>abfd</code> and return a pointer to it.
-</p>
 <a name="index-bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></a>
 <a name="bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></a>
-<h4 class="subsubsection">2.14.1.16 <code>bfd_calc_gnu_debuglink_crc32</code></h4>
+<h4 class="subsubsection">2.14.1.14 <code>bfd_calc_gnu_debuglink_crc32</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">unsigned long bfd_calc_gnu_debuglink_crc32
@@ -407,7 +385,7 @@ Return the updated CRC32 value.
 </p>
 <a name="index-bfd_005fget_005fdebug_005flink_005finfo_005f1"></a>
 <a name="bfd_005fget_005fdebug_005flink_005finfo_005f1"></a>
-<h4 class="subsubsection">2.14.1.17 <code>bfd_get_debug_link_info_1</code></h4>
+<h4 class="subsubsection">2.14.1.15 <code>bfd_get_debug_link_info_1</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_debug_link_info_1 (bfd *abfd, void *crc32_out);
@@ -431,7 +409,7 @@ it is the responsibility of the caller.
 </p>
 <a name="index-bfd_005fget_005fdebug_005flink_005finfo"></a>
 <a name="bfd_005fget_005fdebug_005flink_005finfo"></a>
-<h4 class="subsubsection">2.14.1.18 <code>bfd_get_debug_link_info</code></h4>
+<h4 class="subsubsection">2.14.1.16 <code>bfd_get_debug_link_info</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_debug_link_info (bfd *abfd, unsigned long *crc32_out);
@@ -451,7 +429,7 @@ it is the responsibility of the caller.
 </p>
 <a name="index-bfd_005fget_005falt_005fdebug_005flink_005finfo"></a>
 <a name="bfd_005fget_005falt_005fdebug_005flink_005finfo"></a>
-<h4 class="subsubsection">2.14.1.19 <code>bfd_get_alt_debug_link_info</code></h4>
+<h4 class="subsubsection">2.14.1.17 <code>bfd_get_alt_debug_link_info</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_alt_debug_link_info (bfd * abfd,
@@ -468,7 +446,7 @@ of the caller.
 </p>
 <a name="index-separate_005fdebug_005ffile_005fexists"></a>
 <a name="separate_005fdebug_005ffile_005fexists"></a>
-<h4 class="subsubsection">2.14.1.20 <code>separate_debug_file_exists</code></h4>
+<h4 class="subsubsection">2.14.1.18 <code>separate_debug_file_exists</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean separate_debug_file_exists
@@ -484,7 +462,7 @@ this routine is used as a <code>check_func_type</code> function.
 </p>
 <a name="index-separate_005falt_005fdebug_005ffile_005fexists"></a>
 <a name="separate_005falt_005fdebug_005ffile_005fexists"></a>
-<h4 class="subsubsection">2.14.1.21 <code>separate_alt_debug_file_exists</code></h4>
+<h4 class="subsubsection">2.14.1.19 <code>separate_alt_debug_file_exists</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean separate_alt_debug_file_exists
@@ -495,7 +473,7 @@ Checks to see if <var>name</var> is a file.
 </p>
 <a name="index-find_005fseparate_005fdebug_005ffile"></a>
 <a name="find_005fseparate_005fdebug_005ffile"></a>
-<h4 class="subsubsection">2.14.1.22 <code>find_separate_debug_file</code></h4>
+<h4 class="subsubsection">2.14.1.20 <code>find_separate_debug_file</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *find_separate_debug_file
@@ -523,7 +501,7 @@ Returns NULL if no valid file could be found.
 </p>
 <a name="index-bfd_005ffollow_005fgnu_005fdebuglink"></a>
 <a name="bfd_005ffollow_005fgnu_005fdebuglink"></a>
-<h4 class="subsubsection">2.14.1.23 <code>bfd_follow_gnu_debuglink</code></h4>
+<h4 class="subsubsection">2.14.1.21 <code>bfd_follow_gnu_debuglink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_gnu_debuglink (bfd *abfd, const char *dir);
@@ -546,7 +524,7 @@ filename.  The caller is responsible for freeing this string.
 </p>
 <a name="index-bfd_005ffollow_005fgnu_005fdebugaltlink"></a>
 <a name="bfd_005ffollow_005fgnu_005fdebugaltlink"></a>
-<h4 class="subsubsection">2.14.1.24 <code>bfd_follow_gnu_debugaltlink</code></h4>
+<h4 class="subsubsection">2.14.1.22 <code>bfd_follow_gnu_debugaltlink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_gnu_debugaltlink (bfd *abfd, const char *dir);
@@ -569,7 +547,7 @@ filename.  The caller is responsible for freeing this string.
 </p>
 <a name="index-bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></a>
 <a name="bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></a>
-<h4 class="subsubsection">2.14.1.25 <code>bfd_create_gnu_debuglink_section</code></h4>
+<h4 class="subsubsection">2.14.1.23 <code>bfd_create_gnu_debuglink_section</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">struct bfd_section *bfd_create_gnu_debuglink_section
@@ -586,7 +564,7 @@ A pointer to the new section is returned if all is ok.  Otherwise
 </p>
 <a name="index-bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></a>
 <a name="bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></a>
-<h4 class="subsubsection">2.14.1.26 <code>bfd_fill_in_gnu_debuglink_section</code></h4>
+<h4 class="subsubsection">2.14.1.24 <code>bfd_fill_in_gnu_debuglink_section</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_fill_in_gnu_debuglink_section
@@ -604,7 +582,7 @@ and bfd_error is set.
 </p>
 <a name="index-get_005fbuild_005fid"></a>
 <a name="get_005fbuild_005fid"></a>
-<h4 class="subsubsection">2.14.1.27 <code>get_build_id</code></h4>
+<h4 class="subsubsection">2.14.1.25 <code>get_build_id</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">struct bfd_build_id * get_build_id (bfd *abfd);
@@ -622,7 +600,7 @@ set.
 </p>
 <a name="index-get_005fbuild_005fid_005fname"></a>
 <a name="get_005fbuild_005fid_005fname"></a>
-<h4 class="subsubsection">2.14.1.28 <code>get_build_id_name</code></h4>
+<h4 class="subsubsection">2.14.1.26 <code>get_build_id_name</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char * get_build_id_name (bfd *abfd, void *build_id_out_p)
@@ -642,7 +620,7 @@ pointer) is set to a pointer to the build_id structure.
 </p>
 <a name="index-check_005fbuild_005fid_005ffile"></a>
 <a name="check_005fbuild_005fid_005ffile"></a>
-<h4 class="subsubsection">2.14.1.29 <code>check_build_id_file</code></h4>
+<h4 class="subsubsection">2.14.1.27 <code>check_build_id_file</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean check_build_id_file (char *name, void *buildid_p);
@@ -658,7 +636,7 @@ build-id which matches the build-id pointed at by
 </p>
 <a name="index-bfd_005ffollow_005fbuild_005fid_005fdebuglink"></a>
 <a name="bfd_005ffollow_005fbuild_005fid_005fdebuglink"></a>
-<h4 class="subsubsection">2.14.1.30 <code>bfd_follow_build_id_debuglink</code></h4>
+<h4 class="subsubsection">2.14.1.28 <code>bfd_follow_build_id_debuglink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_build_id_debuglink (bfd *abfd, const char *dir);
@@ -682,6 +660,18 @@ the current directory.
 <code>NULL</code> on any errors or failure to locate the debug file,
 otherwise a pointer to a heap-allocated string containing the
 filename.  The caller is responsible for freeing this string.
+</p>
+<a name="index-bfd_005fset_005ffilename"></a>
+<a name="bfd_005fset_005ffilename"></a>
+<h4 class="subsubsection">2.14.1.29 <code>bfd_set_filename</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">const char *bfd_set_filename (bfd *abfd, const char *filename);
+</pre></div>
+<p><strong>Description</strong><br>
+Set the filename of <var>abfd</var>, copying the FILENAME parameter to
+bfd_alloc&rsquo;d memory owned by <var>abfd</var>.  Returns a pointer the
+newly allocated name, or NULL if the allocation failed.
 </p>
 
 <hr>

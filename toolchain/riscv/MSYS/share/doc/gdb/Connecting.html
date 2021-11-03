@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -163,6 +163,12 @@ established.  If you are using <code>gdbserver</code>, you may also invoke
 <code>gdbserver</code> using the <samp>--attach</samp> option
 (see <a href="Server.html#Running-gdbserver">Running gdbserver</a>).
 </p>
+<p>Some remote targets allow <small>GDB</small> to determine the executable file running
+in the process the debugger is attaching to.  In such a case, <small>GDB</small>
+uses the value of <code>exec-file-mismatch</code> to handle a possible mismatch
+between the executable file name running in the process and the name of the
+current exec-file loaded by <small>GDB</small> (see <a href="Attach.html#set-exec_002dfile_002dmismatch">set exec-file-mismatch</a>).
+</p>
 </dd>
 </dl>
 
@@ -249,19 +255,19 @@ Unix domain sockets.
 </p>
 </dd>
 <dt><code>target remote <code><var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target remote <code><var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target remote <code>[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target remote <code>tcp:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target remote <code>tcp:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target remote <code>tcp:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target remote <code>tcp4:<var>host</var>:<var>port</var></code></code></dt>
 <dt><code>target remote <code>tcp6:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target remote <code>tcp6:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target remote <code>tcp6:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code><var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target extended-remote <code><var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target extended-remote <code>[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>tcp:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target extended-remote <code>tcp:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target extended-remote <code>tcp:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>tcp4:<var>host</var>:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>tcp6:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target extended-remote <code>tcp6:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target extended-remote <code>tcp6:[<var>host</var>]:<var>port</var></code></code></dt>
 <dd><a name="index-TCP-port_002c-target-remote"></a>
 <p>Debug using a <acronym>TCP</acronym> connection to <var>port</var> on <var>host</var>.
 The <var>host</var> may be either a host name, a numeric <acronym>IPv4</acronym>
@@ -312,15 +318,15 @@ port 1234 on your local machine:
 </p>
 </dd>
 <dt><code>target remote <code>udp:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target remote <code>udp:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target remote <code>udp:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target remote <code>udp4:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target remote <code>udp6:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target remote <code>udp6:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>udp:<var>host</var>:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>udp:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target extended-remote <code>udp:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target extended-remote <code>udp:[<var>host</var>]:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>udp4:<var>host</var>:<var>port</var></code></code></dt>
 <dt><code>target extended-remote <code>udp6:<var>host</var>:<var>port</var></code></code></dt>
-<dt><code>target extended-remote <code>udp6:<var>[host]</var>:<var>port</var></code></code></dt>
+<dt><code>target extended-remote <code>udp6:[<var>host</var>]:<var>port</var></code></code></dt>
 <dd><a name="index-UDP-port_002c-target-remote"></a>
 <p>Debug using <acronym>UDP</acronym> packets to <var>port</var> on <var>host</var>.  For example, to
 connect to <acronym>UDP</acronym> port 2828 on a terminal server named <code>manyfarms</code>:

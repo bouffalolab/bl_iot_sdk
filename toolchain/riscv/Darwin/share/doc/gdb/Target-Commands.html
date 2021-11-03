@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Target Commands (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Targets.html#Targets" rel="up" title="Targets">
-<link href="Byte-Order.html#Byte-Order" rel="next" title="Byte Order">
-<link href="Active-Targets.html#Active-Targets" rel="prev" title="Active Targets">
+<link href="Targets.html" rel="up" title="Targets">
+<link href="Byte-Order.html" rel="next" title="Byte Order">
+<link href="Active-Targets.html" rel="prev" title="Active Targets">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,14 +51,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Target-Commands"></a>
-<div class="header">
+<span id="Target-Commands"></span><div class="header">
 <p>
-Next: <a href="Byte-Order.html#Byte-Order" accesskey="n" rel="next">Byte Order</a>, Previous: <a href="Active-Targets.html#Active-Targets" accesskey="p" rel="prev">Active Targets</a>, Up: <a href="Targets.html#Targets" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Byte-Order.html" accesskey="n" rel="next">Byte Order</a>, Previous: <a href="Active-Targets.html" accesskey="p" rel="prev">Active Targets</a>, Up: <a href="Targets.html" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Commands-for-Managing-Targets"></a>
-<h3 class="section">19.2 Commands for Managing Targets</h3>
+<span id="Commands-for-Managing-Targets"></span><h3 class="section">19.2 Commands for Managing Targets</h3>
 
 <dl compact="compact">
 <dt><code>target <var>type</var> <var>parameters</var></code></dt>
@@ -83,19 +72,19 @@ with, process numbers, and baud rates.
 <p>The <code>target</code> command does not repeat if you press <tt class="key">RET</tt> again
 after executing the command.
 </p>
-<a name="index-help-target"></a>
+<span id="index-help-target"></span>
 </dd>
 <dt><code>help target</code></dt>
 <dd><p>Displays the names of all targets available.  To display targets
 currently selected, use either <code>info target</code> or <code>info files</code>
-(see <a href="Files.html#Files">Commands to Specify Files</a>).
+(see <a href="Files.html">Commands to Specify Files</a>).
 </p>
 </dd>
 <dt><code>help target <var>name</var></code></dt>
 <dd><p>Describe a particular target, including any parameters necessary to
 select it.
 </p>
-<a name="index-set-gnutarget"></a>
+<span id="index-set-gnutarget"></span>
 </dd>
 <dt><code>set gnutarget <var>args</var></code></dt>
 <dd><p><small>GDB</small> uses its own library BFD to read your files.  <small>GDB</small>
@@ -109,9 +98,9 @@ with <code>gnutarget</code> the <code>target</code> refers to a program, not a m
 you must know the actual BFD name.
 </p></blockquote>
 
-<p>See <a href="Files.html#Files">Commands to Specify Files</a>.
+<p>See <a href="Files.html">Commands to Specify Files</a>.
 </p>
-<a name="index-show-gnutarget"></a>
+<span id="index-show-gnutarget"></span>
 </dd>
 <dt><code>show gnutarget</code></dt>
 <dd><p>Use the <code>show gnutarget</code> command to display what file format
@@ -121,36 +110,36 @@ and <code>show gnutarget</code> displays &lsquo;<samp>The current BFD target is 
 </p></dd>
 </dl>
 
-<a name="index-common-targets"></a>
+<span id="index-common-targets"></span>
 <p>Here are some common targets (available, or not, depending on the GDB
 configuration):
 </p>
 <dl compact="compact">
-<dd><a name="index-target"></a>
+<dd><span id="index-target"></span>
 </dd>
 <dt><code>target exec <var>program</var></code></dt>
-<dd><a name="index-executable-file-target"></a>
+<dd><span id="index-executable-file-target"></span>
 <p>An executable file.  &lsquo;<samp>target exec <var>program</var></samp>&rsquo; is the same as
 &lsquo;<samp>exec-file <var>program</var></samp>&rsquo;.
 </p>
 </dd>
 <dt><code>target core <var>filename</var></code></dt>
-<dd><a name="index-core-dump-file-target"></a>
+<dd><span id="index-core-dump-file-target"></span>
 <p>A core dump file.  &lsquo;<samp>target core <var>filename</var></samp>&rsquo; is the same as
 &lsquo;<samp>core-file <var>filename</var></samp>&rsquo;.
 </p>
 </dd>
 <dt><code>target remote <var>medium</var></code></dt>
-<dd><a name="index-remote-target"></a>
+<dd><span id="index-remote-target"></span>
 <p>A remote system connected to <small>GDB</small> via a serial line or network
 connection.  This command tells <small>GDB</small> to use its own remote
-protocol over <var>medium</var> for debugging.  See <a href="Remote-Debugging.html#Remote-Debugging">Remote Debugging</a>.
+protocol over <var>medium</var> for debugging.  See <a href="Remote-Debugging.html">Remote Debugging</a>.
 </p>
 <p>For example, if you have a board connected to <samp>/dev/ttya</samp> on the
 machine running <small>GDB</small>, you could say:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target remote /dev/ttya
+<div class="example">
+<pre class="example">target remote /dev/ttya
 </pre></div>
 
 <p><code>target remote</code> supports the <code>load</code> command.  This is only
@@ -160,23 +149,23 @@ clobbered by the download.
 </p>
 </dd>
 <dt><code>target sim <span class="roman">[</span><var>simargs</var><span class="roman">]</span> &hellip;</code></dt>
-<dd><a name="index-built_002din-simulator-target"></a>
+<dd><span id="index-built_002din-simulator-target"></span>
 <p>Builtin CPU simulator.  <small>GDB</small> includes simulators for most architectures.
 In general,
-</p><div class="smallexample">
-<pre class="smallexample">        target sim
+</p><div class="example">
+<pre class="example">        target sim
         load
         run
 </pre></div>
 <p>works; however, you cannot assume that a specific memory map, device
 drivers, or even basic I/O is available, although some simulators do
 provide these.  For info about any processor-specific simulator details,
-see the appropriate section in <a href="Embedded-Processors.html#Embedded-Processors">Embedded
+see the appropriate section in <a href="Embedded-Processors.html">Embedded
 Processors</a>.
 </p>
 </dd>
 <dt><code>target native</code></dt>
-<dd><a name="index-native-target"></a>
+<dd><span id="index-native-target"></span>
 <p>Setup for local/native process debugging.  Useful to make the
 <code>run</code> command spawn native processes (likewise <code>attach</code>,
 etc.) even when <code>set auto-connect-native-target</code> is <code>off</code>
@@ -194,8 +183,8 @@ various aspects of this process.
 </p>
 <dl compact="compact">
 <dt><code>set hash</code></dt>
-<dd><a name="index-set-hash_002c-for-remote-monitors"></a>
-<a name="index-hash-mark-while-downloading"></a>
+<dd><span id="index-set-hash_002c-for-remote-monitors"></span>
+<span id="index-hash-mark-while-downloading"></span>
 <p>This command controls whether a hash mark &lsquo;<samp>#</samp>&rsquo; is displayed while
 downloading a file to the remote monitor.  If on, a hash mark is
 displayed after each S-record is successfully downloaded to the
@@ -203,19 +192,19 @@ monitor.
 </p>
 </dd>
 <dt><code>show hash</code></dt>
-<dd><a name="index-show-hash_002c-for-remote-monitors"></a>
+<dd><span id="index-show-hash_002c-for-remote-monitors"></span>
 <p>Show the current status of displaying the hash mark.
 </p>
 </dd>
 <dt><code>set debug monitor</code></dt>
-<dd><a name="index-set-debug-monitor"></a>
-<a name="index-display-remote-monitor-communications"></a>
+<dd><span id="index-set-debug-monitor"></span>
+<span id="index-display-remote-monitor-communications"></span>
 <p>Enable or disable display of communications messages between
 <small>GDB</small> and the remote monitor.
 </p>
 </dd>
 <dt><code>show debug monitor</code></dt>
-<dd><a name="index-show-debug-monitor"></a>
+<dd><span id="index-show-debug-monitor"></span>
 <p>Show the current status of displaying communications between
 <small>GDB</small> and the remote monitor.
 </p></dd>
@@ -223,10 +212,10 @@ monitor.
 
 <dl compact="compact">
 <dd>
-<a name="index-load-filename-offset"></a>
+<span id="index-load-filename-offset"></span>
 </dd>
 <dt><code>load <var>filename</var> <var>offset</var></code></dt>
-<dd><a name="load"></a><p>Depending on what remote debugging facilities are configured into
+<dd><span id="load"></span><p>Depending on what remote debugging facilities are configured into
 <small>GDB</small>, the <code>load</code> command may be available.  Where it exists, it
 is meant to make <var>filename</var> (an executable) available for debugging
 on the remote system&mdash;by downloading, or dynamic linking, for example.
@@ -255,10 +244,10 @@ load programs into flash memory.
 
 <dl compact="compact">
 <dd>
-<a name="index-flash_002derase"></a>
+<span id="index-flash_002derase"></span>
 </dd>
 <dt><code>flash-erase</code></dt>
-<dd><a name="flash_002derase"></a>
+<dd><span id="flash_002derase"></span>
 <p>Erases all known flash memory regions on the target.
 </p>
 </dd>
@@ -267,7 +256,7 @@ load programs into flash memory.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Byte-Order.html#Byte-Order" accesskey="n" rel="next">Byte Order</a>, Previous: <a href="Active-Targets.html#Active-Targets" accesskey="p" rel="prev">Active Targets</a>, Up: <a href="Targets.html#Targets" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Byte-Order.html" accesskey="n" rel="next">Byte Order</a>, Previous: <a href="Active-Targets.html" accesskey="p" rel="prev">Active Targets</a>, Up: <a href="Targets.html" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

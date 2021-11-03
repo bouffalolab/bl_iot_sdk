@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -84,13 +84,13 @@ used to examine the image of a running process using file-system
 subroutines.  This facility is supported on <small>GNU</small>/Linux and Solaris
 systems.
 </p>
-<p>On FreeBSD systems, system control nodes are used to query process
-information.
+<p>On FreeBSD and NetBSD systems, system control nodes are used to query
+process information.
 </p>
 <p>In addition, some systems may provide additional process information
 in core files.  Note that a core file may include a subset of the
 information available from a live process.  Process information is
-currently avaiable from cores created on <small>GNU</small>/Linux and FreeBSD
+currently available from cores created on <small>GNU</small>/Linux and FreeBSD
 systems.
 </p>
 <dl compact="compact">
@@ -117,19 +117,19 @@ a process ID rather than a thread ID).
 <dt><code>info proc cmdline</code></dt>
 <dd><a name="index-info-proc-cmdline"></a>
 <p>Show the original command line of the process.  This command is
-supported on <small>GNU</small>/Linux and FreeBSD.
+supported on <small>GNU</small>/Linux, FreeBSD and NetBSD.
 </p>
 </dd>
 <dt><code>info proc cwd</code></dt>
 <dd><a name="index-info-proc-cwd"></a>
 <p>Show the current working directory of the process.  This command is
-supported on <small>GNU</small>/Linux and FreeBSD.
+supported on <small>GNU</small>/Linux, FreeBSD and NetBSD.
 </p>
 </dd>
 <dt><code>info proc exe</code></dt>
 <dd><a name="index-info-proc-exe"></a>
 <p>Show the name of executable of the process.  This command is supported
-on <small>GNU</small>/Linux and FreeBSD.
+on <small>GNU</small>/Linux, FreeBSD and NetBSD.
 </p>
 </dd>
 <dt><code>info proc files</code></dt>
@@ -166,9 +166,9 @@ Open files:
 <dt><code>info proc mappings</code></dt>
 <dd><a name="index-memory-address-space-mappings"></a>
 <p>Report the memory address space ranges accessible in a process.  On
-Solaris and FreeBSD systems, each memory range includes information on
-whether the process has read, write, or execute access rights to each
-range.  On <small>GNU</small>/Linux and FreeBSD systems, each memory range
+Solaris, FreeBSD and NetBSD systems, each memory range includes information
+on whether the process has read, write, or execute access rights to each
+range.  On <small>GNU</small>/Linux, FreeBSD and NetBSD systems, each memory range
 includes the object file which is mapped to that range.
 </p>
 </dd>
@@ -179,13 +179,13 @@ includes the object file which is mapped to that range.
 group ID; virtual memory usage; the signals that are pending, blocked,
 and ignored; its TTY; its consumption of system and user time; its
 stack size; its &lsquo;<samp>nice</samp>&rsquo; value; etc.  These commands are supported
-on <small>GNU</small>/Linux and FreeBSD.
+on <small>GNU</small>/Linux, FreeBSD and NetBSD.
 </p>
 <p>For <small>GNU</small>/Linux systems, see the &lsquo;<samp>proc</samp>&rsquo; man page for more
 information (type <kbd>man 5 proc</kbd> from your shell prompt).
 </p>
-<p>For FreeBSD systems, <code>info proc stat</code> is an alias for <code>info
-proc status</code>.
+<p>For FreeBSD and NetBSD systems, <code>info proc stat</code> is an alias for
+<code>info proc status</code>.
 </p>
 </dd>
 <dt><code>info proc all</code></dt>

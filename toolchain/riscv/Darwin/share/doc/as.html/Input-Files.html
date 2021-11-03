@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Input Files (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Overview.html#Overview" rel="up" title="Overview">
-<link href="Object.html#Object" rel="next" title="Object">
-<link href="Command-Line.html#Command-Line" rel="prev" title="Command Line">
+<link href="Overview.html" rel="up" title="Overview">
+<link href="Object.html" rel="next" title="Object">
+<link href="Command-Line.html" rel="prev" title="Command Line">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Input-Files"></a>
-<div class="header">
+<span id="Input-Files"></span><div class="header">
 <p>
-Next: <a href="Object.html#Object" accesskey="n" rel="next">Object</a>, Previous: <a href="Command-Line.html#Command-Line" accesskey="p" rel="prev">Command Line</a>, Up: <a href="Overview.html#Overview" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Object.html" accesskey="n" rel="next">Object</a>, Previous: <a href="Command-Line.html" accesskey="p" rel="prev">Command Line</a>, Up: <a href="Overview.html" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Input-Files-1"></a>
-<h3 class="section">1.5 Input Files</h3>
+<span id="Input-Files-1"></span><h3 class="section">1.5 Input Files</h3>
 
-<a name="index-input"></a>
-<a name="index-source-program"></a>
-<a name="index-files_002c-input"></a>
+<span id="index-input"></span>
+<span id="index-source-program"></span>
+<span id="index-files_002c-input"></span>
 <p>We use the phrase <em>source program</em>, abbreviated <em>source</em>, to
 describe the program input to one run of <code>as</code>.  The program may
 be in one or more files; how the source is partitioned into files
@@ -100,15 +89,14 @@ in your command line.
 file.
 </p>
 
-<a name="Filenames-and-Line_002dnumbers"></a>
-<h4 class="subheading">Filenames and Line-numbers</h4>
+<span id="Filenames-and-Line_002dnumbers"></span><h4 class="subheading">Filenames and Line-numbers</h4>
 
-<a name="index-input-file-linenumbers"></a>
-<a name="index-line-numbers_002c-in-input-files"></a>
+<span id="index-input-file-linenumbers"></span>
+<span id="index-line-numbers_002c-in-input-files"></span>
 <p>There are two ways of locating a line in the input file (or files) and
 either may be used in reporting error messages.  One way refers to a line
 number in a physical file; the other refers to a line number in a
-&ldquo;logical&rdquo; file.  See <a href="Errors.html#Errors">Error and Warning Messages</a>.
+&ldquo;logical&rdquo; file.  See <a href="Errors.html">Error and Warning Messages</a>.
 </p>
 <p><em>Physical files</em> are those files named in the command line given
 to <code>as</code>.
@@ -118,12 +106,12 @@ directives; they bear no relation to physical files.  Logical file names help
 error messages reflect the original source file, when <code>as</code> source
 is itself synthesized from other files.  <code>as</code> understands the
 &lsquo;<samp>#</samp>&rsquo; directives emitted by the <code>gcc</code> preprocessor.  See also
-<a href="File.html#File"><code>.file</code></a>.
+<a href="File.html"><code>.file</code></a>.
 </p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Object.html#Object" accesskey="n" rel="next">Object</a>, Previous: <a href="Command-Line.html#Command-Line" accesskey="p" rel="prev">Command Line</a>, Up: <a href="Overview.html#Overview" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Object.html" accesskey="n" rel="next">Object</a>, Previous: <a href="Command-Line.html" accesskey="p" rel="prev">Command Line</a>, Up: <a href="Overview.html" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

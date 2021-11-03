@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Machine Constraints (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Constraints.html#Constraints" rel="up" title="Constraints">
-<link href="Asm-Labels.html#Asm-Labels" rel="next" title="Asm Labels">
-<link href="Modifiers.html#Modifiers" rel="prev" title="Modifiers">
+<link href="Constraints.html" rel="up" title="Constraints">
+<link href="Asm-Labels.html" rel="next" title="Asm Labels">
+<link href="Modifiers.html" rel="prev" title="Modifiers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,23 +58,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Machine-Constraints"></a>
-<div class="header">
+<span id="Machine-Constraints"></span><div class="header">
 <p>
-Previous: <a href="Modifiers.html#Modifiers" accesskey="p" rel="prev">Modifiers</a>, Up: <a href="Constraints.html#Constraints" accesskey="u" rel="up">Constraints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Modifiers.html" accesskey="p" rel="prev">Modifiers</a>, Up: <a href="Constraints.html" accesskey="u" rel="up">Constraints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Constraints-for-Particular-Machines"></a>
-<h4 class="subsubsection">6.45.3.4 Constraints for Particular Machines</h4>
-<a name="index-machine-specific-constraints"></a>
-<a name="index-constraints_002c-machine-specific"></a>
+<span id="Constraints-for-Particular-Machines"></span><h4 class="subsubsection">6.47.3.4 Constraints for Particular Machines</h4>
+<span id="index-machine-specific-constraints"></span>
+<span id="index-constraints_002c-machine-specific"></span>
 
 <p>Whenever possible, you should use the general-purpose constraint letters
 in <code>asm</code> arguments, since they will convey meaning more readily to
 people reading your code.  Failing that, use the constraint letters
 that usually have very similar meanings across architectures.  The most
 commonly used constraints are &lsquo;<samp>m</samp>&rsquo; and &lsquo;<samp>r</samp>&rsquo; (for memory and
-general-purpose registers respectively; see <a href="Simple-Constraints.html#Simple-Constraints">Simple Constraints</a>), and
+general-purpose registers respectively; see <a href="Simple-Constraints.html">Simple Constraints</a>), and
 &lsquo;<samp>I</samp>&rsquo;, usually the letter indicating the most common
 immediate-constant format.
 </p>
@@ -106,6 +95,14 @@ the meanings of that architecture&rsquo;s constraints.
 </dd>
 <dt><code>w</code></dt>
 <dd><p>Floating point register, Advanced SIMD vector register or SVE vector register
+</p>
+</dd>
+<dt><code>x</code></dt>
+<dd><p>Like <code>w</code>, but restricted to registers 0 to 15 inclusive.
+</p>
+</dd>
+<dt><code>y</code></dt>
+<dd><p>Like <code>w</code>, but restricted to registers 0 to 7 inclusive.
 </p>
 </dd>
 <dt><code>Upl</code></dt>
@@ -169,6 +166,129 @@ within 4GB of the instruction
 <dt><code>Ump</code></dt>
 <dd><p>A memory address suitable for a load/store pair instruction in SI, DI, SF and
 DF modes
+</p>
+</dd>
+</dl>
+
+
+</dd>
+<dt><em>AMD GCN &mdash;<samp>config/gcn/constraints.md</samp></em></dt>
+<dd><dl compact="compact">
+<dt><code>I</code></dt>
+<dd><p>Immediate integer in the range -16 to 64
+</p>
+</dd>
+<dt><code>J</code></dt>
+<dd><p>Immediate 16-bit signed integer
+</p>
+</dd>
+<dt><code>Kf</code></dt>
+<dd><p>Immediate constant -1
+</p>
+</dd>
+<dt><code>L</code></dt>
+<dd><p>Immediate 15-bit unsigned integer
+</p>
+</dd>
+<dt><code>A</code></dt>
+<dd><p>Immediate constant that can be inlined in an instruction encoding: integer
+-16..64, or float 0.0, +/-0.5, +/-1.0, +/-2.0,
++/-4.0, 1.0/(2.0*PI)
+</p>
+</dd>
+<dt><code>B</code></dt>
+<dd><p>Immediate 32-bit signed integer that can be attached to an instruction encoding
+</p>
+</dd>
+<dt><code>C</code></dt>
+<dd><p>Immediate 32-bit integer in range -16..4294967295 (i.e. 32-bit unsigned
+integer or &lsquo;<samp>A</samp>&rsquo; constraint)
+</p>
+</dd>
+<dt><code>DA</code></dt>
+<dd><p>Immediate 64-bit constant that can be split into two &lsquo;<samp>A</samp>&rsquo; constants
+</p>
+</dd>
+<dt><code>DB</code></dt>
+<dd><p>Immediate 64-bit constant that can be split into two &lsquo;<samp>B</samp>&rsquo; constants
+</p>
+</dd>
+<dt><code>U</code></dt>
+<dd><p>Any <code>unspec</code>
+</p>
+</dd>
+<dt><code>Y</code></dt>
+<dd><p>Any <code>symbol_ref</code> or <code>label_ref</code>
+</p>
+</dd>
+<dt><code>v</code></dt>
+<dd><p>VGPR register
+</p>
+</dd>
+<dt><code>Sg</code></dt>
+<dd><p>SGPR register
+</p>
+</dd>
+<dt><code>SD</code></dt>
+<dd><p>SGPR registers valid for instruction destinations, including VCC, M0 and EXEC
+</p>
+</dd>
+<dt><code>SS</code></dt>
+<dd><p>SGPR registers valid for instruction sources, including VCC, M0, EXEC and SCC
+</p>
+</dd>
+<dt><code>Sm</code></dt>
+<dd><p>SGPR registers valid as a source for scalar memory instructions (excludes M0
+and EXEC)
+</p>
+</dd>
+<dt><code>Sv</code></dt>
+<dd><p>SGPR registers valid as a source or destination for vector instructions
+(excludes EXEC)
+</p>
+</dd>
+<dt><code>ca</code></dt>
+<dd><p>All condition registers: SCC, VCCZ, EXECZ
+</p>
+</dd>
+<dt><code>cs</code></dt>
+<dd><p>Scalar condition register: SCC
+</p>
+</dd>
+<dt><code>cV</code></dt>
+<dd><p>Vector condition register: VCC, VCC_LO, VCC_HI
+</p>
+</dd>
+<dt><code>e</code></dt>
+<dd><p>EXEC register (EXEC_LO and EXEC_HI)
+</p>
+</dd>
+<dt><code>RB</code></dt>
+<dd><p>Memory operand with address space suitable for <code>buffer_*</code> instructions
+</p>
+</dd>
+<dt><code>RF</code></dt>
+<dd><p>Memory operand with address space suitable for <code>flat_*</code> instructions
+</p>
+</dd>
+<dt><code>RS</code></dt>
+<dd><p>Memory operand with address space suitable for <code>s_*</code> instructions
+</p>
+</dd>
+<dt><code>RL</code></dt>
+<dd><p>Memory operand with address space suitable for <code>ds_*</code> LDS instructions
+</p>
+</dd>
+<dt><code>RG</code></dt>
+<dd><p>Memory operand with address space suitable for <code>ds_*</code> GDS instructions
+</p>
+</dd>
+<dt><code>RD</code></dt>
+<dd><p>Memory operand with address space suitable for any <code>ds_*</code> instructions
+</p>
+</dd>
+<dt><code>RM</code></dt>
+<dd><p>Memory operand with address space suitable for <code>global_*</code> instructions
 </p>
 </dd>
 </dl>
@@ -606,6 +726,43 @@ use only with accumulator A1.
 <dd><p>Floating point constant that is legal for store immediate
 </p></dd>
 </dl>
+
+</dd>
+<dt><em>C-SKY&mdash;<samp>config/csky/constraints.md</samp></em></dt>
+<dd><dl compact="compact">
+<dt><code>a</code></dt>
+<dd><p>The mini registers r0 - r7.
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>The low registers r0 - r15.
+</p>
+</dd>
+<dt><code>c</code></dt>
+<dd><p>C register.
+</p>
+</dd>
+<dt><code>y</code></dt>
+<dd><p>HI and LO registers.
+</p>
+</dd>
+<dt><code>l</code></dt>
+<dd><p>LO register.
+</p>
+</dd>
+<dt><code>h</code></dt>
+<dd><p>HI register.
+</p>
+</dd>
+<dt><code>v</code></dt>
+<dd><p>Vector registers.
+</p>
+</dd>
+<dt><code>z</code></dt>
+<dd><p>Stack pointer register (SP).
+</p></dd>
+</dl>
+
 
 </dd>
 <dt><em>Epiphany&mdash;<samp>config/epiphany/constraints.md</samp></em></dt>
@@ -1692,6 +1849,32 @@ instructions.
 </dl>
 
 </dd>
+<dt><em>OpenRISC&mdash;<samp>config/or1k/constraints.md</samp></em></dt>
+<dd><dl compact="compact">
+<dt><code>I</code></dt>
+<dd><p>Integer that is valid as an immediate operand in an
+instruction taking a signed 16-bit number. Range
+-32768 to 32767.
+</p>
+</dd>
+<dt><code>K</code></dt>
+<dd><p>Integer that is valid as an immediate operand in an
+instruction taking an unsigned 16-bit number. Range
+0 to 65535.
+</p>
+</dd>
+<dt><code>M</code></dt>
+<dd><p>Signed 16-bit constant shifted left 16 bits. (Used with <code>l.movhi</code>)
+</p>
+</dd>
+<dt><code>O</code></dt>
+<dd><p>Zero
+</p>
+
+</dd>
+</dl>
+
+</dd>
 <dt><em>PDP-11&mdash;<samp>config/pdp11/constraints.md</samp></em></dt>
 <dd><dl compact="compact">
 <dt><code>a</code></dt>
@@ -1704,12 +1887,22 @@ memory with a single instruction.
 16-bit multiply operations.
 </p>
 </dd>
+<dt><code>D</code></dt>
+<dd><p>A memory reference that is encoded within the opcode, but not
+auto-increment or auto-decrement.
+</p>
+</dd>
 <dt><code>f</code></dt>
 <dd><p>Any of the floating point registers (AC0 through AC5).
 </p>
 </dd>
 <dt><code>G</code></dt>
 <dd><p>Floating point constant 0.
+</p>
+</dd>
+<dt><code>h</code></dt>
+<dd><p>Floating point registers AC4 and AC5.  These cannot be loaded from/to
+memory with a single instruction.
 </p>
 </dd>
 <dt><code>I</code></dt>
@@ -1738,7 +1931,7 @@ memory with a single instruction.
 </p>
 </dd>
 <dt><code>O</code></dt>
-<dd><p>Integer constants -4 through -1 and 1 through 4; shifts by these
+<dd><p>Integer constants 0 through 3; shifts by these
 amounts are handled as multiple single-bit shifts rather than a single
 variable-length shift.
 </p>
@@ -1757,358 +1950,155 @@ offset) after the opcode.
 </dd>
 <dt><em>PowerPC and IBM RS6000&mdash;<samp>config/rs6000/constraints.md</samp></em></dt>
 <dd><dl compact="compact">
-<dt><code>b</code></dt>
-<dd><p>Address base register
+<dt><code>r</code></dt>
+<dd><p>A general purpose register (GPR), <code>r0</code>&hellip;<code>r31</code>.
 </p>
 </dd>
-<dt><code>d</code></dt>
-<dd><p>Floating point register (containing 64-bit value)
+<dt><code>b</code></dt>
+<dd><p>A base register.  Like <code>r</code>, but <code>r0</code> is not allowed, so
+<code>r1</code>&hellip;<code>r31</code>.
 </p>
 </dd>
 <dt><code>f</code></dt>
-<dd><p>Floating point register (containing 32-bit value)
+<dd><p>A floating point register (FPR), <code>f0</code>&hellip;<code>f31</code>.
+</p>
+</dd>
+<dt><code>d</code></dt>
+<dd><p>A floating point register.  This is the same as <code>f</code> nowadays;
+historically <code>f</code> was for single-precision and <code>d</code> was for
+double-precision floating point.
 </p>
 </dd>
 <dt><code>v</code></dt>
-<dd><p>Altivec vector register
+<dd><p>An Altivec vector register (VR), <code>v0</code>&hellip;<code>v31</code>.
 </p>
 </dd>
 <dt><code>wa</code></dt>
-<dd><p>Any VSX register if the <samp>-mvsx</samp> option was used or NO_REGS.
+<dd><p>A VSX register (VSR), <code>vs0</code>&hellip;<code>vs63</code>.  This is either an
+FPR (<code>vs0</code>&hellip;<code>vs31</code> are <code>f0</code>&hellip;<code>f31</code>) or a VR
+(<code>vs32</code>&hellip;<code>vs63</code> are <code>v0</code>&hellip;<code>v31</code>).
 </p>
-<p>When using any of the register constraints (<code>wa</code>, <code>wd</code>,
-<code>wf</code>, <code>wg</code>, <code>wh</code>, <code>wi</code>, <code>wj</code>, <code>wk</code>,
-<code>wl</code>, <code>wm</code>, <code>wo</code>, <code>wp</code>, <code>wq</code>, <code>ws</code>,
-<code>wt</code>, <code>wu</code>, <code>wv</code>, <code>ww</code>, or <code>wy</code>)
-that take VSX registers, you must use <code>%x&lt;n&gt;</code> in the template so
-that the correct register is used.  Otherwise the register number
-output in the assembly file will be incorrect if an Altivec register
-is an operand of a VSX instruction that expects VSX register
-numbering.
+<p>When using <code>wa</code>, you should use the <code>%x</code> output modifier, so that
+the correct register number is printed.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;xvadddp %x0,%x1,%x2&quot;
+<div class="example">
+<pre class="example">asm (&quot;xvadddp %x0,%x1,%x2&quot;
      : &quot;=wa&quot; (v1)
      : &quot;wa&quot; (v2), &quot;wa&quot; (v3));
 </pre></div>
 
-<p>is correct, but:
+<p>You should not use <code>%x</code> for <code>v</code> operands:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;xvadddp %0,%1,%2&quot; 
-     : &quot;=wa&quot; (v1) 
-     : &quot;wa&quot; (v2), &quot;wa&quot; (v3));
-</pre></div>
-
-<p>is not correct.
-</p>
-<p>If an instruction only takes Altivec registers, you do not want to use
-<code>%x&lt;n&gt;</code>.
-</p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;xsaddqp %0,%1,%2&quot;
+<div class="example">
+<pre class="example">asm (&quot;xsaddqp %0,%1,%2&quot;
      : &quot;=v&quot; (v1)
      : &quot;v&quot; (v2), &quot;v&quot; (v3));
 </pre></div>
 
-<p>is correct because the <code>xsaddqp</code> instruction only takes Altivec
-registers, while:
-</p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;xsaddqp %x0,%x1,%x2&quot; 
-     : &quot;=v&quot; (v1) 
-     : &quot;v&quot; (v2), &quot;v&quot; (v3));
-</pre></div>
 
-<p>is incorrect.
-</p>
-</dd>
-<dt><code>wb</code></dt>
-<dd><p>Altivec register if <samp>-mcpu=power9</samp> is used or NO_REGS.
-</p>
-</dd>
-<dt><code>wd</code></dt>
-<dd><p>VSX vector register to hold vector double data or NO_REGS.
-</p>
-</dd>
-<dt><code>we</code></dt>
-<dd><p>VSX register if the <samp>-mcpu=power9</samp> and <samp>-m64</samp> options
-were used or NO_REGS.
-</p>
-</dd>
-<dt><code>wf</code></dt>
-<dd><p>VSX vector register to hold vector float data or NO_REGS.
-</p>
-</dd>
-<dt><code>wg</code></dt>
-<dd><p>If <samp>-mmfpgpr</samp> was used, a floating point register or NO_REGS.
-</p>
-</dd>
-<dt><code>wh</code></dt>
-<dd><p>Floating point register if direct moves are available, or NO_REGS.
-</p>
-</dd>
-<dt><code>wi</code></dt>
-<dd><p>FP or VSX register to hold 64-bit integers for VSX insns or NO_REGS.
-</p>
-</dd>
-<dt><code>wj</code></dt>
-<dd><p>FP or VSX register to hold 64-bit integers for direct moves or NO_REGS.
-</p>
-</dd>
-<dt><code>wk</code></dt>
-<dd><p>FP or VSX register to hold 64-bit doubles for direct moves or NO_REGS.
-</p>
-</dd>
-<dt><code>wl</code></dt>
-<dd><p>Floating point register if the LFIWAX instruction is enabled or NO_REGS.
-</p>
-</dd>
-<dt><code>wm</code></dt>
-<dd><p>VSX register if direct move instructions are enabled, or NO_REGS.
-</p>
-</dd>
-<dt><code>wn</code></dt>
-<dd><p>No register (NO_REGS).
-</p>
-</dd>
-<dt><code>wo</code></dt>
-<dd><p>VSX register to use for ISA 3.0 vector instructions, or NO_REGS.
-</p>
-</dd>
-<dt><code>wp</code></dt>
-<dd><p>VSX register to use for IEEE 128-bit floating point TFmode, or NO_REGS.
-</p>
-</dd>
-<dt><code>wq</code></dt>
-<dd><p>VSX register to use for IEEE 128-bit floating point, or NO_REGS.
-</p>
-</dd>
-<dt><code>wr</code></dt>
-<dd><p>General purpose register if 64-bit instructions are enabled or NO_REGS.
-</p>
-</dd>
-<dt><code>ws</code></dt>
-<dd><p>VSX vector register to hold scalar double values or NO_REGS.
-</p>
-</dd>
-<dt><code>wt</code></dt>
-<dd><p>VSX vector register to hold 128 bit integer or NO_REGS.
-</p>
-</dd>
-<dt><code>wu</code></dt>
-<dd><p>Altivec register to use for float/32-bit int loads/stores  or NO_REGS.
-</p>
-</dd>
-<dt><code>wv</code></dt>
-<dd><p>Altivec register to use for double loads/stores  or NO_REGS.
-</p>
-</dd>
-<dt><code>ww</code></dt>
-<dd><p>FP or VSX register to perform float operations under <samp>-mvsx</samp> or NO_REGS.
-</p>
-</dd>
-<dt><code>wx</code></dt>
-<dd><p>Floating point register if the STFIWX instruction is enabled or NO_REGS.
-</p>
-</dd>
-<dt><code>wy</code></dt>
-<dd><p>FP or VSX register to perform ISA 2.07 float ops or NO_REGS.
-</p>
-</dd>
-<dt><code>wz</code></dt>
-<dd><p>Floating point register if the LFIWZX instruction is enabled or NO_REGS.
-</p>
-</dd>
-<dt><code>wA</code></dt>
-<dd><p>Address base register if 64-bit instructions are enabled or NO_REGS.
-</p>
-</dd>
-<dt><code>wB</code></dt>
-<dd><p>Signed 5-bit constant integer that can be loaded into an altivec register.
-</p>
-</dd>
-<dt><code>wD</code></dt>
-<dd><p>Int constant that is the element number of the 64-bit scalar in a vector.
-</p>
-</dd>
-<dt><code>wE</code></dt>
-<dd><p>Vector constant that can be loaded with the XXSPLTIB instruction.
-</p>
-</dd>
-<dt><code>wF</code></dt>
-<dd><p>Memory operand suitable for power9 fusion load/stores.
-</p>
-</dd>
-<dt><code>wG</code></dt>
-<dd><p>Memory operand suitable for TOC fusion memory references.
-</p>
-</dd>
-<dt><code>wH</code></dt>
-<dd><p>Altivec register if <samp>-mvsx-small-integer</samp>.
-</p>
-</dd>
-<dt><code>wI</code></dt>
-<dd><p>Floating point register if <samp>-mvsx-small-integer</samp>.
-</p>
-</dd>
-<dt><code>wJ</code></dt>
-<dd><p>FP register if <samp>-mvsx-small-integer</samp> and <samp>-mpower9-vector</samp>.
-</p>
-</dd>
-<dt><code>wK</code></dt>
-<dd><p>Altivec register if <samp>-mvsx-small-integer</samp> and <samp>-mpower9-vector</samp>.
-</p>
-</dd>
-<dt><code>wL</code></dt>
-<dd><p>Int constant that is the element number that the MFVSRLD instruction.
-targets.
-</p>
-</dd>
-<dt><code>wM</code></dt>
-<dd><p>Match vector constant with all 1&rsquo;s if the XXLORC instruction is available.
-</p>
-</dd>
-<dt><code>wO</code></dt>
-<dd><p>A memory operand suitable for the ISA 3.0 vector d-form instructions.
-</p>
-</dd>
-<dt><code>wQ</code></dt>
-<dd><p>A memory address that will work with the <code>lq</code> and <code>stq</code>
-instructions.
-</p>
-</dd>
-<dt><code>wS</code></dt>
-<dd><p>Vector constant that can be loaded with XXSPLTIB &amp; sign extension.
-</p>
-</dd>
-<dt><code>h</code></dt>
-<dd><p>&lsquo;<samp>MQ</samp>&rsquo;, &lsquo;<samp>CTR</samp>&rsquo;, or &lsquo;<samp>LINK</samp>&rsquo; register
-</p>
 </dd>
 <dt><code>c</code></dt>
-<dd><p>&lsquo;<samp>CTR</samp>&rsquo; register
+<dd><p>The count register, <code>ctr</code>.
 </p>
 </dd>
 <dt><code>l</code></dt>
-<dd><p>&lsquo;<samp>LINK</samp>&rsquo; register
+<dd><p>The link register, <code>lr</code>.
 </p>
 </dd>
 <dt><code>x</code></dt>
-<dd><p>&lsquo;<samp>CR</samp>&rsquo; register (condition register) number 0
+<dd><p>Condition register field 0, <code>cr0</code>.
 </p>
 </dd>
 <dt><code>y</code></dt>
-<dd><p>&lsquo;<samp>CR</samp>&rsquo; register (condition register)
+<dd><p>Any condition register field, <code>cr0</code>&hellip;<code>cr7</code>.
 </p>
-</dd>
-<dt><code>z</code></dt>
-<dd><p>&lsquo;<samp>XER[CA]</samp>&rsquo; carry bit (part of the XER register)
-</p>
+
 </dd>
 <dt><code>I</code></dt>
-<dd><p>Signed 16-bit constant
+<dd><p>A signed 16-bit constant.
 </p>
 </dd>
 <dt><code>J</code></dt>
-<dd><p>Unsigned 16-bit constant shifted left 16 bits (use &lsquo;<samp>L</samp>&rsquo; instead for
-<code>SImode</code> constants)
+<dd><p>An unsigned 16-bit constant shifted left 16 bits (use <code>L</code> instead
+for <code>SImode</code> constants).
 </p>
 </dd>
 <dt><code>K</code></dt>
-<dd><p>Unsigned 16-bit constant
+<dd><p>An unsigned 16-bit constant.
 </p>
 </dd>
 <dt><code>L</code></dt>
-<dd><p>Signed 16-bit constant shifted left 16 bits
+<dd><p>A signed 16-bit constant shifted left 16 bits.
 </p>
+
 </dd>
-<dt><code>M</code></dt>
-<dd><p>Constant larger than 31
+<dt><code>eI</code></dt>
+<dd><p>A signed 34-bit integer constant if prefixed instructions are supported.
 </p>
-</dd>
-<dt><code>N</code></dt>
-<dd><p>Exact power of 2
-</p>
-</dd>
-<dt><code>O</code></dt>
-<dd><p>Zero
-</p>
-</dd>
-<dt><code>P</code></dt>
-<dd><p>Constant whose negation is a signed 16-bit constant
-</p>
-</dd>
-<dt><code>G</code></dt>
-<dd><p>Floating point constant that can be loaded into a register with one
-instruction per word
-</p>
-</dd>
-<dt><code>H</code></dt>
-<dd><p>Integer/Floating point constant that can be loaded into a register using
-three instructions
-</p>
+
 </dd>
 <dt><code>m</code></dt>
-<dd><p>Memory operand.
+<dd><p>A memory operand.
 Normally, <code>m</code> does not allow addresses that update the base register.
-If &lsquo;<samp>&lt;</samp>&rsquo; or &lsquo;<samp>&gt;</samp>&rsquo; constraint is also used, they are allowed and
+If the <code>&lt;</code> or <code>&gt;</code> constraint is also used, they are allowed and
 therefore on PowerPC targets in that case it is only safe
-to use &lsquo;<samp>m&lt;&gt;</samp>&rsquo; in an <code>asm</code> statement if that <code>asm</code> statement
+to use <code>m&lt;&gt;</code> in an <code>asm</code> statement if that <code>asm</code> statement
 accesses the operand exactly once.  The <code>asm</code> statement must also
-use &lsquo;<samp>%U<var>&lt;opno&gt;</var></samp>&rsquo; as a placeholder for the &ldquo;update&rdquo; flag in the
+use <code>%U<var>&lt;opno&gt;</var></code> as a placeholder for the &ldquo;update&rdquo; flag in the
 corresponding load or store instruction.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;st%U0 %1,%0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
+<div class="example">
+<pre class="example">asm (&quot;st%U0 %1,%0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
 </pre></div>
 
 <p>is correct but:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;st %1,%0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
+<div class="example">
+<pre class="example">asm (&quot;st %1,%0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
 </pre></div>
 
 <p>is not.
 </p>
-</dd>
-<dt><code>es</code></dt>
-<dd><p>A &ldquo;stable&rdquo; memory operand; that is, one which does not include any
-automodification of the base register.  This used to be useful when
-&lsquo;<samp>m</samp>&rsquo; allowed automodification of the base register, but as those are now only
-allowed when &lsquo;<samp>&lt;</samp>&rsquo; or &lsquo;<samp>&gt;</samp>&rsquo; is used, &lsquo;<samp>es</samp>&rsquo; is basically the same
-as &lsquo;<samp>m</samp>&rsquo; without &lsquo;<samp>&lt;</samp>&rsquo; and &lsquo;<samp>&gt;</samp>&rsquo;.
-</p>
+
 </dd>
 <dt><code>Q</code></dt>
-<dd><p>Memory operand that is an offset from a register (it is usually better
-to use &lsquo;<samp>m</samp>&rsquo; or &lsquo;<samp>es</samp>&rsquo; in <code>asm</code> statements)
+<dd><p>A memory operand addressed by just a base register.
+</p>
+
+</dd>
+<dt><code>Z</code></dt>
+<dd><p>A memory operand accessed with indexed or indirect addressing.
+</p>
+
+</dd>
+<dt><code>a</code></dt>
+<dd><p>An indexed or indirect address.
+</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt><em>PRU&mdash;<samp>config/pru/constraints.md</samp></em></dt>
+<dd><dl compact="compact">
+<dt><code>I</code></dt>
+<dd><p>An unsigned 8-bit integer constant.
+</p>
+</dd>
+<dt><code>J</code></dt>
+<dd><p>An unsigned 16-bit integer constant.
+</p>
+</dd>
+<dt><code>L</code></dt>
+<dd><p>An unsigned 5-bit integer constant (for shift counts).
+</p>
+</dd>
+<dt><code>T</code></dt>
+<dd><p>A text segment (program memory) constant label.
 </p>
 </dd>
 <dt><code>Z</code></dt>
-<dd><p>Memory operand that is an indexed or indirect from a register (it is
-usually better to use &lsquo;<samp>m</samp>&rsquo; or &lsquo;<samp>es</samp>&rsquo; in <code>asm</code> statements)
-</p>
-</dd>
-<dt><code>R</code></dt>
-<dd><p>AIX TOC entry
-</p>
-</dd>
-<dt><code>a</code></dt>
-<dd><p>Address operand that is an indexed or indirect from a register (&lsquo;<samp>p</samp>&rsquo; is
-preferable for <code>asm</code> statements)
-</p>
-</dd>
-<dt><code>U</code></dt>
-<dd><p>System V Release 4 small data area reference
-</p>
-</dd>
-<dt><code>W</code></dt>
-<dd><p>Vector constant that does not require memory
-</p>
-</dd>
-<dt><code>j</code></dt>
-<dd><p>Vector constant that is all zeros.
+<dd><p>Integer constant zero.
 </p>
 </dd>
 </dl>
@@ -2249,7 +2239,7 @@ preferable for <code>asm</code> statements)
 <dt><em>RISC-V&mdash;<samp>config/riscv/constraints.md</samp></em></dt>
 <dd><dl compact="compact">
 <dt><code>f</code></dt>
-<dd><p>A floating-point register (if availiable).
+<dd><p>A floating-point register (if available).
 </p>
 </dd>
 <dt><code>I</code></dt>
@@ -2535,99 +2525,6 @@ instruction sequence
 </dl>
 
 </dd>
-<dt><em>SPU&mdash;<samp>config/spu/spu.h</samp></em></dt>
-<dd><dl compact="compact">
-<dt><code>a</code></dt>
-<dd><p>An immediate which can be loaded with the il/ila/ilh/ilhu instructions.  const_int is treated as a 64 bit value.
-</p>
-</dd>
-<dt><code>c</code></dt>
-<dd><p>An immediate for and/xor/or instructions.  const_int is treated as a 64 bit value.
-</p>
-</dd>
-<dt><code>d</code></dt>
-<dd><p>An immediate for the <code>iohl</code> instruction.  const_int is treated as a 64 bit value.
-</p>
-</dd>
-<dt><code>f</code></dt>
-<dd><p>An immediate which can be loaded with <code>fsmbi</code>.
-</p>
-</dd>
-<dt><code>A</code></dt>
-<dd><p>An immediate which can be loaded with the il/ila/ilh/ilhu instructions.  const_int is treated as a 32 bit value.
-</p>
-</dd>
-<dt><code>B</code></dt>
-<dd><p>An immediate for most arithmetic instructions.  const_int is treated as a 32 bit value.
-</p>
-</dd>
-<dt><code>C</code></dt>
-<dd><p>An immediate for and/xor/or instructions.  const_int is treated as a 32 bit value.
-</p>
-</dd>
-<dt><code>D</code></dt>
-<dd><p>An immediate for the <code>iohl</code> instruction.  const_int is treated as a 32 bit value.
-</p>
-</dd>
-<dt><code>I</code></dt>
-<dd><p>A constant in the range [-64, 63] for shift/rotate instructions.
-</p>
-</dd>
-<dt><code>J</code></dt>
-<dd><p>An unsigned 7-bit constant for conversion/nop/channel instructions.
-</p>
-</dd>
-<dt><code>K</code></dt>
-<dd><p>A signed 10-bit constant for most arithmetic instructions.
-</p>
-</dd>
-<dt><code>M</code></dt>
-<dd><p>A signed 16 bit immediate for <code>stop</code>.
-</p>
-</dd>
-<dt><code>N</code></dt>
-<dd><p>An unsigned 16-bit constant for <code>iohl</code> and <code>fsmbi</code>.
-</p>
-</dd>
-<dt><code>O</code></dt>
-<dd><p>An unsigned 7-bit constant whose 3 least significant bits are 0.
-</p>
-</dd>
-<dt><code>P</code></dt>
-<dd><p>An unsigned 3-bit constant for 16-byte rotates and shifts
-</p>
-</dd>
-<dt><code>R</code></dt>
-<dd><p>Call operand, reg, for indirect calls
-</p>
-</dd>
-<dt><code>S</code></dt>
-<dd><p>Call operand, symbol, for relative calls.
-</p>
-</dd>
-<dt><code>T</code></dt>
-<dd><p>Call operand, const_int, for absolute calls.
-</p>
-</dd>
-<dt><code>U</code></dt>
-<dd><p>An immediate which can be loaded with the il/ila/ilh/ilhu instructions.  const_int is sign extended to 128 bit.
-</p>
-</dd>
-<dt><code>W</code></dt>
-<dd><p>An immediate for shift and rotate instructions.  const_int is treated as a 32 bit value.
-</p>
-</dd>
-<dt><code>Y</code></dt>
-<dd><p>An immediate for and/xor/or instructions.  const_int is sign extended as a 128 bit.
-</p>
-</dd>
-<dt><code>Z</code></dt>
-<dd><p>An immediate for the <code>iohl</code> instruction.  const_int is sign extended to 128 bit.
-</p>
-</dd>
-</dl>
-
-</dd>
 <dt><em>TI C6X family&mdash;<samp>config/c6x/constraints.md</samp></em></dt>
 <dd><dl compact="compact">
 <dt><code>a</code></dt>
@@ -2754,8 +2651,8 @@ register, from r0 to r10.
 operand can have postincrement which requires printing with &lsquo;<samp>%In</samp>&rsquo;
 and &lsquo;<samp>%in</samp>&rsquo; on TILE-Gx.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;st_add %I0,%1,%i0&quot; : &quot;=m&lt;&gt;&quot; (*mem) : &quot;r&quot; (val));
+<div class="example">
+<pre class="example">asm (&quot;st_add %I0,%1,%i0&quot; : &quot;=m&lt;&gt;&quot; (*mem) : &quot;r&quot; (val));
 </pre></div>
 
 </dd>
@@ -2851,8 +2748,8 @@ register, from r0 to r10.
 operand can have postincrement which requires printing with &lsquo;<samp>%In</samp>&rsquo;
 and &lsquo;<samp>%in</samp>&rsquo; on TILEPro.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm (&quot;swadd %I0,%1,%i0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
+<div class="example">
+<pre class="example">asm (&quot;swadd %I0,%1,%i0&quot; : &quot;=m&lt;&gt;&quot; (mem) : &quot;r&quot; (val));
 </pre></div>
 
 </dd>
@@ -3008,8 +2905,8 @@ that return double word results in the <code>ax:dx</code> register pair.  Single
 word values will be allocated either in <code>ax</code> or <code>dx</code>.
 For example on i386 the following implements <code>rdtsc</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">unsigned long long rdtsc (void)
+<div class="example">
+<pre class="example">unsigned long long rdtsc (void)
 {
   unsigned long long tick;
   __asm__ __volatile__(&quot;rdtsc&quot;:&quot;=A&quot;(tick));
@@ -3020,8 +2917,8 @@ For example on i386 the following implements <code>rdtsc</code>:
 <p>This is not correct on x86-64 as it would allocate tick in either <code>ax</code>
 or <code>dx</code>.  You have to use the following variant instead:
 </p>
-<div class="smallexample">
-<pre class="smallexample">unsigned long long rdtsc (void)
+<div class="example">
+<pre class="example">unsigned long long rdtsc (void)
 {
   unsigned int tickl, tickh;
   __asm__ __volatile__(&quot;rdtsc&quot;:&quot;=a&quot;(tickl),&quot;=d&quot;(tickh));
@@ -3134,14 +3031,6 @@ instructions).
 </dd>
 <dt><code>Ts</code></dt>
 <dd><p>Address operand without segment register.
-</p>
-</dd>
-<dt><code>Ti</code></dt>
-<dd><p>MPX address operand without index.
-</p>
-</dd>
-<dt><code>Tb</code></dt>
-<dd><p>MPX address operand without base.
 </p>
 </dd>
 </dl>
@@ -3281,7 +3170,7 @@ instructions).
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Modifiers.html#Modifiers" accesskey="p" rel="prev">Modifiers</a>, Up: <a href="Constraints.html#Constraints" accesskey="u" rel="up">Constraints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Modifiers.html" accesskey="p" rel="prev">Modifiers</a>, Up: <a href="Constraints.html" accesskey="u" rel="up">Constraints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

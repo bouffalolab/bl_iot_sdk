@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>C++ Volatiles (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C_002b_002b-Extensions.html#C_002b_002b-Extensions" rel="up" title="C++ Extensions">
-<link href="Restricted-Pointers.html#Restricted-Pointers" rel="next" title="Restricted Pointers">
-<link href="C_002b_002b-Extensions.html#C_002b_002b-Extensions" rel="prev" title="C++ Extensions">
+<link href="C_002b_002b-Extensions.html" rel="up" title="C++ Extensions">
+<link href="Restricted-Pointers.html" rel="next" title="Restricted Pointers">
+<link href="C_002b_002b-Extensions.html" rel="prev" title="C++ Extensions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,31 +58,29 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="C_002b_002b-Volatiles"></a>
-<div class="header">
+<span id="C_002b_002b-Volatiles"></span><div class="header">
 <p>
-Next: <a href="Restricted-Pointers.html#Restricted-Pointers" accesskey="n" rel="next">Restricted Pointers</a>, Up: <a href="C_002b_002b-Extensions.html#C_002b_002b-Extensions" accesskey="u" rel="up">C++ Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Restricted-Pointers.html" accesskey="n" rel="next">Restricted Pointers</a>, Up: <a href="C_002b_002b-Extensions.html" accesskey="u" rel="up">C++ Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="When-is-a-Volatile-C_002b_002b-Object-Accessed_003f"></a>
-<h3 class="section">7.1 When is a Volatile C++ Object Accessed?</h3>
-<a name="index-accessing-volatiles-1"></a>
-<a name="index-volatile-read-1"></a>
-<a name="index-volatile-write-1"></a>
-<a name="index-volatile-access-1"></a>
+<span id="When-is-a-Volatile-C_002b_002b-Object-Accessed_003f"></span><h3 class="section">7.1 When is a Volatile C++ Object Accessed?</h3>
+<span id="index-accessing-volatiles-1"></span>
+<span id="index-volatile-read-1"></span>
+<span id="index-volatile-write-1"></span>
+<span id="index-volatile-access-1"></span>
 
 <p>The C++ standard differs from the C standard in its treatment of
 volatile objects.  It fails to specify what constitutes a volatile
 access, except to say that C++ should behave in a similar manner to C
 with respect to volatiles, where possible.  However, the different
 lvalueness of expressions between C and C++ complicate the behavior.
-G++ behaves the same as GCC for volatile access, See <a href="C-Extensions.html#C-Extensions">Volatiles</a>, for a description of GCC&rsquo;s behavior.
+G++ behaves the same as GCC for volatile access, See <a href="C-Extensions.html">Volatiles</a>, for a description of GCC&rsquo;s behavior.
 </p>
 <p>The C and C++ language specifications differ when an object is
 accessed in a void context:
 </p>
-<div class="smallexample">
-<pre class="smallexample">volatile int *src = <var>somevalue</var>;
+<div class="example">
+<pre class="example">volatile int *src = <var>somevalue</var>;
 *src;
 </pre></div>
 
@@ -122,15 +111,15 @@ are lvalues, and if used as an lvalue, the volatile object is
 referred to.  For instance, <var>vref</var> refers to <var>vobj</var>, as
 expected, in the following example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">volatile int vobj;
+<div class="example">
+<pre class="example">volatile int vobj;
 volatile int &amp;vref = vobj = <var>something</var>;
 </pre></div>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Restricted-Pointers.html#Restricted-Pointers" accesskey="n" rel="next">Restricted Pointers</a>, Up: <a href="C_002b_002b-Extensions.html#C_002b_002b-Extensions" accesskey="u" rel="up">C++ Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Restricted-Pointers.html" accesskey="n" rel="next">Restricted Pointers</a>, Up: <a href="C_002b_002b-Extensions.html" accesskey="u" rel="up">C++ Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

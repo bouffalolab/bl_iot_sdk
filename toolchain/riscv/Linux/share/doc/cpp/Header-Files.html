@@ -1,80 +1,104 @@
-<html lang="en">
-<head>
-<title>Header Files - The C Preprocessor</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="The C Preprocessor">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="prev" href="Overview.html#Overview" title="Overview">
-<link rel="next" href="Macros.html#Macros" title="Macros">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation.  A copy of
 the license is included in the
-section entitled ``GNU Free Documentation License''.
+section entitled "GNU Free Documentation License".
 
 This manual contains no Invariant Sections.  The Front-Cover Texts are
 (a) (see below), and the Back-Cover Texts are (b) (see below).
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.
--->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Header-Files"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Macros.html#Macros">Macros</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Overview.html#Overview">Overview</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
-<hr>
-</div>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>The C Preprocessor: Header Files</title>
 
+<meta name="description" content="The C Preprocessor: Header Files">
+<meta name="keywords" content="The C Preprocessor: Header Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index-of-Directives.html#Index-of-Directives" rel="index" title="Index of Directives">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Include-Syntax.html#Include-Syntax" rel="next" title="Include Syntax">
+<link href="The-preprocessing-language.html#The-preprocessing-language" rel="prev" title="The preprocessing language">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Header-Files"></a>
+<div class="header">
+<p>
+Next: <a href="Macros.html#Macros" accesskey="n" rel="next">Macros</a>, Previous: <a href="Overview.html#Overview" accesskey="p" rel="prev">Overview</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Header-Files-1"></a>
 <h2 class="chapter">2 Header Files</h2>
 
-<p><a name="index-header-file-25"></a>A header file is a file containing C declarations and macro definitions
+<a name="index-header-file"></a>
+<p>A header file is a file containing C declarations and macro definitions
 (see <a href="Macros.html#Macros">Macros</a>) to be shared between several source files.  You request
-the use of a header file in your program by <dfn>including</dfn> it, with the
-C preprocessing directive &lsquo;<samp><span class="samp">#include</span></samp>&rsquo;.
-
-   <p>Header files serve two purposes.
-
-     <ul>
-<li><a name="index-system-header-files-26"></a>System header files declare the interfaces to parts of the operating
+the use of a header file in your program by <em>including</em> it, with the
+C preprocessing directive &lsquo;<samp>#include</samp>&rsquo;.
+</p>
+<p>Header files serve two purposes.
+</p>
+<ul>
+<li> <a name="index-system-header-files"></a>
+System header files declare the interfaces to parts of the operating
 system.  You include them in your program to supply the definitions and
 declarations you need to invoke system calls and libraries.
 
-     <li>Your own header files contain declarations for interfaces between the
+</li><li> Your own header files contain declarations for interfaces between the
 source files of your program.  Each time you have a group of related
 declarations and macro definitions all or most of which are needed in
 several different source files, it is a good idea to create a header
-file for them. 
-</ul>
+file for them.
+</li></ul>
 
-   <p>Including a header file produces the same results as copying the header
+<p>Including a header file produces the same results as copying the header
 file into each source file that needs it.  Such copying would be
 time-consuming and error-prone.  With a header file, the related
 declarations appear in only one place.  If they need to be changed, they
@@ -83,21 +107,37 @@ will automatically use the new version when next recompiled.  The header
 file eliminates the labor of finding and changing all the copies as well
 as the risk that a failure to find one copy will result in
 inconsistencies within a program.
-
-   <p>In C, the usual convention is to give header files names that end with
-<samp><span class="file">.h</span></samp>.  It is most portable to use only letters, digits, dashes, and
+</p>
+<p>In C, the usual convention is to give header files names that end with
+<samp>.h</samp>.  It is most portable to use only letters, digits, dashes, and
 underscores in header file names, and at most one dot.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Include-Syntax.html#Include-Syntax" accesskey="1">Include Syntax</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Include-Operation.html#Include-Operation" accesskey="2">Include Operation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Search-Path.html#Search-Path" accesskey="3">Search Path</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Once_002dOnly-Headers.html#Once_002dOnly-Headers" accesskey="4">Once-Only Headers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Alternatives-to-Wrapper-_0023ifndef.html#Alternatives-to-Wrapper-_0023ifndef" accesskey="5">Alternatives to Wrapper #ifndef</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Computed-Includes.html#Computed-Includes" accesskey="6">Computed Includes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Wrapper-Headers.html#Wrapper-Headers" accesskey="7">Wrapper Headers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="System-Headers.html#System-Headers" accesskey="8">System Headers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="Include-Syntax.html#Include-Syntax">Include Syntax</a>
-<li><a accesskey="2" href="Include-Operation.html#Include-Operation">Include Operation</a>
-<li><a accesskey="3" href="Search-Path.html#Search-Path">Search Path</a>
-<li><a accesskey="4" href="Once_002dOnly-Headers.html#Once_002dOnly-Headers">Once-Only Headers</a>
-<li><a accesskey="5" href="Alternatives-to-Wrapper-_0023ifndef.html#Alternatives-to-Wrapper-_0023ifndef">Alternatives to Wrapper #ifndef</a>
-<li><a accesskey="6" href="Computed-Includes.html#Computed-Includes">Computed Includes</a>
-<li><a accesskey="7" href="Wrapper-Headers.html#Wrapper-Headers">Wrapper Headers</a>
-<li><a accesskey="8" href="System-Headers.html#System-Headers">System Headers</a>
-</ul>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Macros.html#Macros" accesskey="n" rel="next">Macros</a>, Previous: <a href="Overview.html#Overview" accesskey="p" rel="prev">Overview</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+</div>
 
-   </body></html>
 
+
+</body>
+</html>

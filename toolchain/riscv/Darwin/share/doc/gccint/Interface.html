@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Interface (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Libgcc.html#Libgcc" rel="next" title="Libgcc">
-<link href="Portability.html#Portability" rel="prev" title="Portability">
+<link href="index.html" rel="up" title="Top">
+<link href="Libgcc.html" rel="next" title="Libgcc">
+<link href="Portability.html" rel="prev" title="Portability">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,26 +58,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Interface"></a>
-<div class="header">
+<span id="Interface"></span><div class="header">
 <p>
-Next: <a href="Libgcc.html#Libgcc" accesskey="n" rel="next">Libgcc</a>, Previous: <a href="Portability.html#Portability" accesskey="p" rel="prev">Portability</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Libgcc.html" accesskey="n" rel="next">Libgcc</a>, Previous: <a href="Portability.html" accesskey="p" rel="prev">Portability</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Interfacing-to-GCC-Output"></a>
-<h2 class="chapter">3 Interfacing to GCC Output</h2>
-<a name="index-interfacing-to-GCC-output"></a>
-<a name="index-run_002dtime-conventions"></a>
-<a name="index-function-call-conventions"></a>
-<a name="index-conventions_002c-run_002dtime"></a>
+<span id="Interfacing-to-GCC-Output"></span><h2 class="chapter">3 Interfacing to GCC Output</h2>
+<span id="index-interfacing-to-GCC-output"></span>
+<span id="index-run_002dtime-conventions"></span>
+<span id="index-function-call-conventions"></span>
+<span id="index-conventions_002c-run_002dtime"></span>
 
 <p>GCC is normally configured to use the same function calling convention
 normally in use on the target system.  This is done with the
-machine-description macros described (see <a href="Target-Macros.html#Target-Macros">Target Macros</a>).
+machine-description macros described (see <a href="Target-Macros.html">Target Macros</a>).
 </p>
-<a name="index-unions_002c-returning"></a>
-<a name="index-structures_002c-returning"></a>
-<a name="index-returning-structures-and-unions"></a>
+<span id="index-unions_002c-returning"></span>
+<span id="index-structures_002c-returning"></span>
+<span id="index-returning-structures-and-unions"></span>
 <p>However, returning of structure and union values is done differently on
 some target machines.  As a result, functions compiled with PCC
 returning such types cannot be called from code compiled with GCC,
@@ -114,8 +103,8 @@ where to return the value.  On these machines, GCC has been
 configured to be compatible with the standard compiler, when this method
 is used.  It may not be compatible for structures of 1, 2, 4 or 8 bytes.
 </p>
-<a name="index-argument-passing"></a>
-<a name="index-passing-arguments"></a>
+<span id="index-argument-passing"></span>
+<span id="index-passing-arguments"></span>
 <p>GCC uses the system&rsquo;s standard convention for passing arguments.  On
 some machines, the first few arguments are passed in registers; in
 others, all are passed on the stack.  It would be possible to use
@@ -132,7 +121,7 @@ are passed &ldquo;by invisible reference&rdquo;.  This means that the value is
 stored in memory, and the address of the memory location is passed to
 the subroutine.
 </p>
-<a name="index-longjmp-and-automatic-variables"></a>
+<span id="index-longjmp-and-automatic-variables"></span>
 <p>If you use <code>longjmp</code>, beware of automatic variables.  ISO C says that
 automatic variables that are not declared <code>volatile</code> have undefined
 values after a <code>longjmp</code>.  And this is all GCC promises to do,
@@ -143,7 +132,7 @@ your asking it to.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Libgcc.html#Libgcc" accesskey="n" rel="next">Libgcc</a>, Previous: <a href="Portability.html#Portability" accesskey="p" rel="prev">Portability</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Libgcc.html" accesskey="n" rel="next">Libgcc</a>, Previous: <a href="Portability.html" accesskey="p" rel="prev">Portability</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

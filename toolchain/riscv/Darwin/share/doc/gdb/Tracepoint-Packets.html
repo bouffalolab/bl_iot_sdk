@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Tracepoint Packets (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Protocol.html#Remote-Protocol" rel="up" title="Remote Protocol">
-<link href="Host-I_002fO-Packets.html#Host-I_002fO-Packets" rel="next" title="Host I/O Packets">
-<link href="MIPS-Breakpoint-Kinds.html#MIPS-Breakpoint-Kinds" rel="prev" title="MIPS Breakpoint Kinds">
+<link href="Remote-Protocol.html" rel="up" title="Remote Protocol">
+<link href="Host-I_002fO-Packets.html" rel="next" title="Host I/O Packets">
+<link href="MIPS-Breakpoint-Kinds.html" rel="prev" title="MIPS Breakpoint Kinds">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,23 +51,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Tracepoint-Packets"></a>
-<div class="header">
+<span id="Tracepoint-Packets"></span><div class="header">
 <p>
-Next: <a href="Host-I_002fO-Packets.html#Host-I_002fO-Packets" accesskey="n" rel="next">Host I/O Packets</a>, Previous: <a href="Architecture_002dSpecific-Protocol-Details.html#Architecture_002dSpecific-Protocol-Details" accesskey="p" rel="prev">Architecture-Specific Protocol Details</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Host-I_002fO-Packets.html" accesskey="n" rel="next">Host I/O Packets</a>, Previous: <a href="Architecture_002dSpecific-Protocol-Details.html" accesskey="p" rel="prev">Architecture-Specific Protocol Details</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Tracepoint-Packets-1"></a>
-<h3 class="section">E.6 Tracepoint Packets</h3>
-<a name="index-tracepoint-packets"></a>
-<a name="index-packets_002c-tracepoint"></a>
+<span id="Tracepoint-Packets-1"></span><h3 class="section">E.6 Tracepoint Packets</h3>
+<span id="index-tracepoint-packets"></span>
+<span id="index-packets_002c-tracepoint"></span>
 
 <p>Here we describe the packets <small>GDB</small> uses to implement
-tracepoints (see <a href="Tracepoints.html#Tracepoints">Tracepoints</a>).
+tracepoints (see <a href="Tracepoints.html">Tracepoints</a>).
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>QTDP:<var>n</var>:<var>addr</var>:<var>ena</var>:<var>step</var>:<var>pass</var>[:F<var>flen</var>][:X<var>len</var>,<var>bytes</var>]<span class="roman">[</span>-<span class="roman">]</span></samp>&rsquo;</dt>
-<dd><a name="index-QTDP-packet"></a>
+<dd><span id="index-QTDP-packet"></span>
 <p>Create a new tracepoint, number <var>n</var>, at <var>addr</var>.  If <var>ena</var>
 is &lsquo;<samp>E</samp>&rsquo;, then the tracepoint is enabled; if it is &lsquo;<samp>D</samp>&rsquo;, then
 the tracepoint is disabled.  The <var>step</var> gives the tracepoint&rsquo;s step
@@ -145,7 +134,7 @@ values (the &lsquo;<samp>-1</samp>&rsquo; value for <var>basereg</var> is a spec
 <dt>&lsquo;<samp>X <var>len</var>,<var>expr</var></samp>&rsquo;</dt>
 <dd><p>Evaluate <var>expr</var>, whose length is <var>len</var>, and collect memory as
 it directs.  The agent expression <var>expr</var> is as described in
-<a href="Agent-Expressions.html#Agent-Expressions">Agent Expressions</a>.  Each byte of the expression is encoded as a
+<a href="Agent-Expressions.html">Agent Expressions</a>.  Each byte of the expression is encoded as a
 two-digit hex number in the packet; <var>len</var> is the number of bytes
 in the expression (and thus one-half the number of hex digits in the
 packet).
@@ -177,7 +166,7 @@ separate tracepoint, as far as these restrictions are concerned.)
 
 </dd>
 <dt>&lsquo;<samp>QTDPsrc:<var>n</var>:<var>addr</var>:<var>type</var>:<var>start</var>:<var>slen</var>:<var>bytes</var></samp>&rsquo;</dt>
-<dd><a name="index-QTDPsrc-packet"></a>
+<dd><span id="index-QTDPsrc-packet"></span>
 <p>Specify a source string of tracepoint <var>n</var> at address <var>addr</var>.
 This is useful to get accurate reproduction of the tracepoints
 originally downloaded at the beginning of the trace run.  The <var>type</var>
@@ -200,7 +189,7 @@ report them back as part of the replies to the &lsquo;<samp>qTfP</samp>&rsquo;/&
 query packets.
 </p>
 <p>Although this packet is optional, and <small>GDB</small> will only send it
-if the target replies with &lsquo;<samp>TracepointSource</samp>&rsquo; See <a href="General-Query-Packets.html#General-Query-Packets">General Query Packets</a>, it makes both disconnected tracing and trace files
+if the target replies with &lsquo;<samp>TracepointSource</samp>&rsquo; See <a href="General-Query-Packets.html">General Query Packets</a>, it makes both disconnected tracing and trace files
 much easier to use.  Otherwise the user must be careful that the
 tracepoints in effect while looking at trace frames are identical to
 the ones in effect during the trace run; even a small discrepancy
@@ -209,8 +198,8 @@ be found.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTDV:<var>n</var>:<var>value</var>:<var>builtin</var>:<var>name</var></samp>&rsquo;</dt>
-<dd><a name="index-define-trace-state-variable_002c-remote-request"></a>
-<a name="index-QTDV-packet"></a>
+<dd><span id="index-define-trace-state-variable_002c-remote-request"></span>
+<span id="index-QTDV-packet"></span>
 <p>Create a new trace state variable, number <var>n</var>, with an initial
 value of <var>value</var>, which is a 64-bit signed integer.  Both <var>n</var>
 and <var>value</var> are encoded as hexadecimal values. <small>GDB</small> has
@@ -225,7 +214,7 @@ variable.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTFrame:<var>n</var></samp>&rsquo;</dt>
-<dd><a name="index-QTFrame-packet"></a>
+<dd><span id="index-QTFrame-packet"></span>
 <p>Select the <var>n</var>&rsquo;th tracepoint frame from the buffer, and use the
 register and memory contents recorded there to answer subsequent
 request packets from <small>GDB</small>.
@@ -275,9 +264,9 @@ frame <em>outside</em> the given range of addresses (exclusive).
 </p>
 </dd>
 <dt>&lsquo;<samp>qTMinFTPILen</samp>&rsquo;</dt>
-<dd><a name="index-qTMinFTPILen-packet"></a>
+<dd><span id="index-qTMinFTPILen-packet"></span>
 <p>This packet requests the minimum length of instruction at which a fast
-tracepoint (see <a href="Set-Tracepoints.html#Set-Tracepoints">Set Tracepoints</a>) may be placed.  For instance, on
+tracepoint (see <a href="Set-Tracepoints.html">Set Tracepoints</a>) may be placed.  For instance, on
 the 32-bit x86 architecture, it is possible to use a 4-byte jump, but
 it depends on the target system being able to create trampolines in
 the first 64K of memory, which might or might not be possible for that
@@ -306,7 +295,7 @@ regardless of size.
 
 </dd>
 <dt>&lsquo;<samp>QTStart</samp>&rsquo;</dt>
-<dd><a name="index-QTStart-packet"></a>
+<dd><span id="index-QTStart-packet"></span>
 <p>Begin the tracepoint experiment.  Begin collecting data from
 tracepoint hits in the trace frame buffer.  This packet supports the
 &lsquo;<samp>qRelocInsn</samp>&rsquo; reply (see <a href="#Tracepoint-Packets">Relocate
@@ -314,31 +303,31 @@ instruction reply packet</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>QTStop</samp>&rsquo;</dt>
-<dd><a name="index-QTStop-packet"></a>
+<dd><span id="index-QTStop-packet"></span>
 <p>End the tracepoint experiment.  Stop collecting trace frames.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTEnable:<var>n</var>:<var>addr</var></samp>&rsquo;</dt>
-<dd><a name="QTEnable"></a><a name="index-QTEnable-packet"></a>
+<dd><span id="QTEnable"></span><span id="index-QTEnable-packet"></span>
 <p>Enable tracepoint <var>n</var> at address <var>addr</var> in a started tracepoint
 experiment.  If the tracepoint was previously disabled, then collection
 of data from it will resume.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTDisable:<var>n</var>:<var>addr</var></samp>&rsquo;</dt>
-<dd><a name="QTDisable"></a><a name="index-QTDisable-packet"></a>
+<dd><span id="QTDisable"></span><span id="index-QTDisable-packet"></span>
 <p>Disable tracepoint <var>n</var> at address <var>addr</var> in a started tracepoint
 experiment.  No more data will be collected from the tracepoint unless
 &lsquo;<samp>QTEnable:<var>n</var>:<var>addr</var></samp>&rsquo; is subsequently issued.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTinit</samp>&rsquo;</dt>
-<dd><a name="index-QTinit-packet"></a>
+<dd><span id="index-QTinit-packet"></span>
 <p>Clear the table of tracepoints, and empty the trace frame buffer.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTro:<var>start1</var>,<var>end1</var>:<var>start2</var>,<var>end2</var>:&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-QTro-packet"></a>
+<dd><span id="index-QTro-packet"></span>
 <p>Establish the given ranges of memory as &ldquo;transparent&rdquo;.  The stub
 will answer requests for these ranges from memory&rsquo;s current contents,
 if they were not collected as part of the tracepoint hit.
@@ -350,7 +339,7 @@ there&rsquo;s no reason for the stub to refuse to provide their contents.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTDisconnected:<var>value</var></samp>&rsquo;</dt>
-<dd><a name="index-QTDisconnected-packet"></a>
+<dd><span id="index-QTDisconnected-packet"></span>
 <p>Set the choice to what to do with the tracing run when <small>GDB</small>
 disconnects from the target.  A <var>value</var> of 1 directs the target to
 continue the tracing run, while 0 tells the target to stop tracing if
@@ -358,7 +347,7 @@ continue the tracing run, while 0 tells the target to stop tracing if
 </p>
 </dd>
 <dt>&lsquo;<samp>qTStatus</samp>&rsquo;</dt>
-<dd><a name="index-qTStatus-packet"></a>
+<dd><span id="index-qTStatus-packet"></span>
 <p>Ask the stub if there is a trace experiment running right now.
 </p>
 <p>The reply has the form:
@@ -453,8 +442,8 @@ that the trace run will stop.
 
 </dd>
 <dt>&lsquo;<samp>qTP:<var>tp</var>:<var>addr</var></samp>&rsquo;</dt>
-<dd><a name="index-tracepoint-status_002c-remote-request"></a>
-<a name="index-qTP-packet"></a>
+<dd><span id="index-tracepoint-status_002c-remote-request"></span>
+<span id="index-qTP-packet"></span>
 <p>Ask the stub for the current state of tracepoint number <var>tp</var> at
 address <var>addr</var>.
 </p>
@@ -471,8 +460,8 @@ steps&rsquo; space consumption is added into the usage number.
 
 </dd>
 <dt>&lsquo;<samp>qTV:<var>var</var></samp>&rsquo;</dt>
-<dd><a name="index-trace-state-variable-value_002c-remote-request"></a>
-<a name="index-qTV-packet"></a>
+<dd><span id="index-trace-state-variable-value_002c-remote-request"></span>
+<span id="index-qTV-packet"></span>
 <p>Ask the stub for the value of the trace state variable number <var>var</var>.
 </p>
 <p>Replies:
@@ -495,10 +484,10 @@ was not collected.
 
 </dd>
 <dt>&lsquo;<samp>qTfP</samp>&rsquo;</dt>
-<dd><a name="index-qTfP-packet"></a>
+<dd><span id="index-qTfP-packet"></span>
 </dd>
 <dt>&lsquo;<samp>qTsP</samp>&rsquo;</dt>
-<dd><a name="index-qTsP-packet"></a>
+<dd><span id="index-qTsP-packet"></span>
 <p>These packets request data about tracepoints that are being used by
 the target.  <small>GDB</small> sends <code>qTfP</code> to get the first piece
 of data, and multiple <code>qTsP</code> to get additional pieces.  Replies
@@ -507,10 +496,10 @@ that define tracepoints. (FIXME add detailed syntax)
 </p>
 </dd>
 <dt>&lsquo;<samp>qTfV</samp>&rsquo;</dt>
-<dd><a name="index-qTfV-packet"></a>
+<dd><span id="index-qTfV-packet"></span>
 </dd>
 <dt>&lsquo;<samp>qTsV</samp>&rsquo;</dt>
-<dd><a name="index-qTsV-packet"></a>
+<dd><span id="index-qTsV-packet"></span>
 <p>These packets request data about trace state variables that are on the
 target.  <small>GDB</small> sends <code>qTfV</code> to get the first vari of data,
 and multiple <code>qTsV</code> to get additional variables.  Replies to
@@ -520,8 +509,8 @@ trace state variables.
 </dd>
 <dt>&lsquo;<samp>qTfSTM</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>qTsSTM</samp>&rsquo;</dt>
-<dd><a name="qTfSTM"></a><a name="qTsSTM"></a><a name="index-qTfSTM-packet"></a>
-<a name="index-qTsSTM-packet"></a>
+<dd><span id="qTfSTM"></span><span id="qTsSTM"></span><span id="index-qTfSTM-packet"></span>
+<span id="index-qTsSTM-packet"></span>
 <p>These packets request data about static tracepoint markers that exist
 in the target program.  <small>GDB</small> sends <code>qTfSTM</code> to get the
 first piece of data, and multiple <code>qTsSTM</code> to get additional
@@ -558,7 +547,7 @@ query), until the target responds with &lsquo;<samp>l</samp>&rsquo; (lower-case 
 </p>
 </dd>
 <dt>&lsquo;<samp>qTSTMat:<var>address</var></samp>&rsquo;</dt>
-<dd><a name="qTSTMat"></a><a name="index-qTSTMat-packet"></a>
+<dd><span id="qTSTMat"></span><span id="index-qTSTMat-packet"></span>
 <p>This packets requests data about static tracepoint markers in the
 target program at <var>address</var>.  Replies to this packet follow the
 syntax of the &lsquo;<samp>qTfSTM</samp>&rsquo; and <code>qTsSTM</code> packets that list static
@@ -566,7 +555,7 @@ tracepoint markers.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTSave:<var>filename</var></samp>&rsquo;</dt>
-<dd><a name="index-QTSave-packet"></a>
+<dd><span id="index-QTSave-packet"></span>
 <p>This packet directs the target to save trace data to the file name
 <var>filename</var> in the target&rsquo;s filesystem.  The <var>filename</var> is encoded
 as a hex string; the interpretation of the file name (relative vs
@@ -574,7 +563,7 @@ absolute, wild cards, etc) is up to the target.
 </p>
 </dd>
 <dt>&lsquo;<samp>qTBuffer:<var>offset</var>,<var>len</var></samp>&rsquo;</dt>
-<dd><a name="index-qTBuffer-packet"></a>
+<dd><span id="index-qTBuffer-packet"></span>
 <p>Return up to <var>len</var> bytes of the current contents of trace buffer,
 starting at <var>offset</var>.  The trace buffer is treated as if it were
 a contiguous collection of traceframes, as per the trace file format.
@@ -590,14 +579,14 @@ available.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTBuffer:size:<var>size</var></samp>&rsquo;</dt>
-<dd><a name="QTBuffer_002dsize"></a><a name="index-QTBuffer-size-packet"></a>
+<dd><span id="QTBuffer_002dsize"></span><span id="index-QTBuffer-size-packet"></span>
 <p>This packet directs the target to make the trace buffer be of size
 <var>size</var> if possible.  A value of <code>-1</code> tells the target to
 use whatever size it prefers.
 </p>
 </dd>
 <dt>&lsquo;<samp>QTNotes:<span class="roman">[</span><var>type</var>:<var>text</var><span class="roman">]</span><span class="roman">[</span>;<var>type</var>:<var>text</var><span class="roman">]</span>&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-QTNotes-packet"></a>
+<dd><span id="index-QTNotes-packet"></span>
 <p>This packet adds optional textual notes to the trace run.  Allowable
 types include <code>user</code>, <code>notes</code>, and <code>tstop</code>, the
 <var>text</var> fields are arbitrary strings, hex-encoded.
@@ -605,8 +594,7 @@ types include <code>user</code>, <code>notes</code>, and <code>tstop</code>, the
 </dd>
 </dl>
 
-<a name="Relocate-instruction-reply-packet"></a>
-<h4 class="subsection">E.6.1 Relocate instruction reply packet</h4>
+<span id="Relocate-instruction-reply-packet"></span><h4 class="subsection">E.6.1 Relocate instruction reply packet</h4>
 <p>When installing fast tracepoints in memory, the target may need to
 relocate the instruction currently at the tracepoint address to a
 different address in memory.  For most instructions, a simple copy is
@@ -650,7 +638,7 @@ relocating the instruction.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Host-I_002fO-Packets.html#Host-I_002fO-Packets" accesskey="n" rel="next">Host I/O Packets</a>, Previous: <a href="Architecture_002dSpecific-Protocol-Details.html#Architecture_002dSpecific-Protocol-Details" accesskey="p" rel="prev">Architecture-Specific Protocol Details</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Host-I_002fO-Packets.html" accesskey="n" rel="next">Host I/O Packets</a>, Previous: <a href="Architecture_002dSpecific-Protocol-Details.html" accesskey="p" rel="prev">Architecture-Specific Protocol Details</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

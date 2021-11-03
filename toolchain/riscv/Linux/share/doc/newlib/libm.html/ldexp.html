@@ -1,70 +1,91 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>ldexp - Untitled</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Untitled">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Math.html#Math" title="Math">
-<link rel="prev" href="isgreater.html#isgreater" title="isgreater">
-<link rel="next" href="log.html#log" title="log">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>LIBM: ldexp</title>
+
+<meta name="description" content="LIBM: ldexp">
+<meta name="keywords" content="LIBM: ldexp">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Math.html#Math" rel="up" title="Math">
+<link href="log.html#log" rel="next" title="log">
+<link href="fpclassify.html#fpclassify" rel="prev" title="fpclassify">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="ldexp"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="log.html#log">log</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="isgreater.html#isgreater">isgreater</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Math.html#Math">Math</a>
-<hr>
+Next: <a href="log.html#log" accesskey="n" rel="next">log</a>, Previous: <a href="fpclassify.html#fpclassify" accesskey="p" rel="prev">fpclassify</a>, Up: <a href="Math.html#Math" accesskey="u" rel="up">Math</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="ldexp_002c-ldexpf_002d_002d_002dload-exponent"></a>
 <h3 class="section">1.33 <code>ldexp</code>, <code>ldexpf</code>&mdash;load exponent</h3>
+<a name="index-ldexp"></a>
+<a name="index-ldexpf"></a>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">#include &lt;math.h&gt;
+double ldexp(double <var>val</var>, int <var>exp</var>);
+float ldexpf(float <var>val</var>, int <var>exp</var>);
 
-<p><a name="index-ldexp-94"></a><a name="index-ldexpf-95"></a><strong>Synopsis</strong>
-<pre class="example">     #include &lt;math.h&gt;
-     double ldexp(double <var>val</var>, int <var>exp</var>);
-     float ldexpf(float <var>val</var>, int <var>exp</var>);
-     
-</pre>
-   <p><strong>Description</strong><br>
-<code>ldexp</code> calculates the value
-<var>val</var> times 2 to the power <var>exp</var>. 
+</pre></div>
+<p><strong>Description</strong><br>
+<code>ldexp</code> calculates the value 
+<var>val</var> times 2 to the power <var>exp</var>.
 <code>ldexpf</code> is identical, save that it takes and returns <code>float</code>
 rather than <code>double</code> values.
-
-   <pre class="sp">
-
-</pre>
-<strong>Returns</strong><br>
+</p>
+<br>
+<p><strong>Returns</strong><br>
 <code>ldexp</code> returns the calculated value.
-
-   <p>Underflow and overflow both set <code>errno</code> to <code>ERANGE</code>. 
-On underflow, <code>ldexp</code> and <code>ldexpf</code> return 0.0. 
+</p>
+<p>Underflow and overflow both set <code>errno</code> to <code>ERANGE</code>.
+On underflow, <code>ldexp</code> and <code>ldexpf</code> return 0.0.
 On overflow, <code>ldexp</code> returns plus or minus <code>HUGE_VAL</code>.
-
-   <pre class="sp">
-
-</pre>
-<strong>Portability</strong><br>
+</p>
+<br>
+<p><strong>Portability</strong><br>
 <code>ldexp</code> is ANSI. <code>ldexpf</code> is an extension.
+</p>
+<br>
 
-   <pre class="sp">
 
-</pre>
 
-   </body></html>
-
+</body>
+</html>

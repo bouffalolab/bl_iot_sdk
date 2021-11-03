@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Frame Layout (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Stack-and-Calling.html#Stack-and-Calling" rel="up" title="Stack and Calling">
-<link href="Exception-Handling.html#Exception-Handling" rel="next" title="Exception Handling">
-<link href="Stack-and-Calling.html#Stack-and-Calling" rel="prev" title="Stack and Calling">
+<link href="Stack-and-Calling.html" rel="up" title="Stack and Calling">
+<link href="Exception-Handling.html" rel="next" title="Exception Handling">
+<link href="Stack-and-Calling.html" rel="prev" title="Stack and Calling">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,27 +58,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Frame-Layout"></a>
-<div class="header">
+<span id="Frame-Layout"></span><div class="header">
 <p>
-Next: <a href="Exception-Handling.html#Exception-Handling" accesskey="n" rel="next">Exception Handling</a>, Up: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Exception-Handling.html" accesskey="n" rel="next">Exception Handling</a>, Up: <a href="Stack-and-Calling.html" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Basic-Stack-Layout"></a>
-<h4 class="subsection">18.9.1 Basic Stack Layout</h4>
-<a name="index-stack-frame-layout"></a>
-<a name="index-frame-layout"></a>
+<span id="Basic-Stack-Layout"></span><h4 class="subsection">18.9.1 Basic Stack Layout</h4>
+<span id="index-stack-frame-layout"></span>
+<span id="index-frame-layout"></span>
 
 <p>Here is the basic stack layout.
 </p>
 <dl>
-<dt><a name="index-STACK_005fGROWS_005fDOWNWARD"></a>Macro: <strong>STACK_GROWS_DOWNWARD</strong></dt>
+<dt id="index-STACK_005fGROWS_005fDOWNWARD">Macro: <strong>STACK_GROWS_DOWNWARD</strong></dt>
 <dd><p>Define this macro to be true if pushing a word onto the stack moves the stack
 pointer to a smaller address, and false otherwise.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-STACK_005fPUSH_005fCODE"></a>Macro: <strong>STACK_PUSH_CODE</strong></dt>
+<dt id="index-STACK_005fPUSH_005fCODE">Macro: <strong>STACK_PUSH_CODE</strong></dt>
 <dd><p>This macro defines the operation used when something is pushed
 on the stack.  In RTL, a push operation will be
 <code>(set (mem (STACK_PUSH_CODE (reg sp))) &hellip;)</code>
@@ -104,19 +93,19 @@ which is often wrong.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-FRAME_005fGROWS_005fDOWNWARD"></a>Macro: <strong>FRAME_GROWS_DOWNWARD</strong></dt>
+<dt id="index-FRAME_005fGROWS_005fDOWNWARD">Macro: <strong>FRAME_GROWS_DOWNWARD</strong></dt>
 <dd><p>Define this macro to nonzero value if the addresses of local variable slots
 are at negative offsets from the frame pointer.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ARGS_005fGROW_005fDOWNWARD"></a>Macro: <strong>ARGS_GROW_DOWNWARD</strong></dt>
+<dt id="index-ARGS_005fGROW_005fDOWNWARD">Macro: <strong>ARGS_GROW_DOWNWARD</strong></dt>
 <dd><p>Define this macro if successive arguments to a function occupy decreasing
 addresses on the stack.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSTARTING_005fFRAME_005fOFFSET"></a>Target Hook: <em>HOST_WIDE_INT</em> <strong>TARGET_STARTING_FRAME_OFFSET</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fSTARTING_005fFRAME_005fOFFSET">Target Hook: <em>HOST_WIDE_INT</em> <strong>TARGET_STARTING_FRAME_OFFSET</strong> <em>(void)</em></dt>
 <dd><p>This hook returns the offset from the frame pointer to the first local
 variable slot to be allocated.  If <code>FRAME_GROWS_DOWNWARD</code>, it is the
 offset to <em>end</em> of the first slot allocated, otherwise it is the
@@ -125,7 +114,7 @@ implementation returns 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-STACK_005fALIGNMENT_005fNEEDED"></a>Macro: <strong>STACK_ALIGNMENT_NEEDED</strong></dt>
+<dt id="index-STACK_005fALIGNMENT_005fNEEDED">Macro: <strong>STACK_ALIGNMENT_NEEDED</strong></dt>
 <dd><p>Define to zero to disable final alignment of the stack during reload.
 The nonzero default for this macro is suitable for most ports.
 </p>
@@ -136,7 +125,7 @@ stack alignment and do it in the backend.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-STACK_005fPOINTER_005fOFFSET"></a>Macro: <strong>STACK_POINTER_OFFSET</strong></dt>
+<dt id="index-STACK_005fPOINTER_005fOFFSET">Macro: <strong>STACK_POINTER_OFFSET</strong></dt>
 <dd><p>Offset from the stack pointer register to the first location at which
 outgoing arguments are placed.  If not specified, the default value of
 zero is used.  This is the proper value for most machines.
@@ -146,7 +135,7 @@ the first location at which outgoing arguments are placed.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-FIRST_005fPARM_005fOFFSET"></a>Macro: <strong>FIRST_PARM_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
+<dt id="index-FIRST_005fPARM_005fOFFSET">Macro: <strong>FIRST_PARM_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
 <dd><p>Offset from the argument pointer register to the first argument&rsquo;s
 address.  On some machines it may depend on the data type of the
 function.
@@ -156,7 +145,7 @@ the first argument&rsquo;s address.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-STACK_005fDYNAMIC_005fOFFSET"></a>Macro: <strong>STACK_DYNAMIC_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
+<dt id="index-STACK_005fDYNAMIC_005fOFFSET">Macro: <strong>STACK_DYNAMIC_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
 <dd><p>Offset from the stack pointer register to an item dynamically allocated
 on the stack, e.g., by <code>alloca</code>.
 </p>
@@ -166,7 +155,7 @@ machines.  See <samp>function.c</samp> for details.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-INITIAL_005fFRAME_005fADDRESS_005fRTX"></a>Macro: <strong>INITIAL_FRAME_ADDRESS_RTX</strong></dt>
+<dt id="index-INITIAL_005fFRAME_005fADDRESS_005fRTX">Macro: <strong>INITIAL_FRAME_ADDRESS_RTX</strong></dt>
 <dd><p>A C expression whose value is RTL representing the address of the initial
 stack frame. This address is passed to <code>RETURN_ADDR_RTX</code> and
 <code>DYNAMIC_CHAIN_ADDRESS</code>.  If you don&rsquo;t define this macro, a reasonable
@@ -176,7 +165,7 @@ elimination work in the presence of <code>__builtin_frame_address (count)</code>
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-DYNAMIC_005fCHAIN_005fADDRESS"></a>Macro: <strong>DYNAMIC_CHAIN_ADDRESS</strong> <em>(<var>frameaddr</var>)</em></dt>
+<dt id="index-DYNAMIC_005fCHAIN_005fADDRESS">Macro: <strong>DYNAMIC_CHAIN_ADDRESS</strong> <em>(<var>frameaddr</var>)</em></dt>
 <dd><p>A C expression whose value is RTL representing the address in a stack
 frame where the pointer to the caller&rsquo;s frame is stored.  Assume that
 <var>frameaddr</var> is an RTL expression for the address of the stack frame
@@ -188,7 +177,7 @@ address of the stack word that points to the previous frame.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-SETUP_005fFRAME_005fADDRESSES"></a>Macro: <strong>SETUP_FRAME_ADDRESSES</strong></dt>
+<dt id="index-SETUP_005fFRAME_005fADDRESSES">Macro: <strong>SETUP_FRAME_ADDRESSES</strong></dt>
 <dd><p>A C expression that produces the machine-specific code to
 setup the stack so that arbitrary frames can be accessed.  For example,
 on the SPARC, we must flush all of the register windows to the stack
@@ -197,7 +186,7 @@ define this macro.  The default is to do nothing.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fBUILTIN_005fSETJMP_005fFRAME_005fVALUE"></a>Target Hook: <em>rtx</em> <strong>TARGET_BUILTIN_SETJMP_FRAME_VALUE</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fBUILTIN_005fSETJMP_005fFRAME_005fVALUE">Target Hook: <em>rtx</em> <strong>TARGET_BUILTIN_SETJMP_FRAME_VALUE</strong> <em>(void)</em></dt>
 <dd><p>This target hook should return an rtx that is used to store
 the address of the current frame into the built in <code>setjmp</code> buffer.
 The default value, <code>virtual_stack_vars_rtx</code>, is correct for most
@@ -206,7 +195,7 @@ machines.  One reason you may need to define this target hook is if
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-FRAME_005fADDR_005fRTX"></a>Macro: <strong>FRAME_ADDR_RTX</strong> <em>(<var>frameaddr</var>)</em></dt>
+<dt id="index-FRAME_005fADDR_005fRTX">Macro: <strong>FRAME_ADDR_RTX</strong> <em>(<var>frameaddr</var>)</em></dt>
 <dd><p>A C expression whose value is RTL representing the value of the frame
 address for the current frame.  <var>frameaddr</var> is the frame pointer
 of the current frame.  This is used for __builtin_frame_address.
@@ -215,7 +204,7 @@ as the frame pointer.  Most machines do not need to define it.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-RETURN_005fADDR_005fRTX"></a>Macro: <strong>RETURN_ADDR_RTX</strong> <em>(<var>count</var>, <var>frameaddr</var>)</em></dt>
+<dt id="index-RETURN_005fADDR_005fRTX">Macro: <strong>RETURN_ADDR_RTX</strong> <em>(<var>count</var>, <var>frameaddr</var>)</em></dt>
 <dd><p>A C expression whose value is RTL representing the value of the return
 address for the frame <var>count</var> steps up from the current frame, after
 the prologue.  <var>frameaddr</var> is the frame pointer of the <var>count</var>
@@ -228,14 +217,14 @@ determine the return address of other frames.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-RETURN_005fADDR_005fIN_005fPREVIOUS_005fFRAME"></a>Macro: <strong>RETURN_ADDR_IN_PREVIOUS_FRAME</strong></dt>
+<dt id="index-RETURN_005fADDR_005fIN_005fPREVIOUS_005fFRAME">Macro: <strong>RETURN_ADDR_IN_PREVIOUS_FRAME</strong></dt>
 <dd><p>Define this macro to nonzero value if the return address of a particular
 stack frame is accessed from the frame pointer of the previous stack
 frame.  The zero default for this macro is suitable for most ports.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-INCOMING_005fRETURN_005fADDR_005fRTX"></a>Macro: <strong>INCOMING_RETURN_ADDR_RTX</strong></dt>
+<dt id="index-INCOMING_005fRETURN_005fADDR_005fRTX">Macro: <strong>INCOMING_RETURN_ADDR_RTX</strong></dt>
 <dd><p>A C expression whose value is RTL representing the location of the
 incoming return address at the beginning of any function, before the
 prologue.  This RTL is either a <code>REG</code>, indicating that the return
@@ -250,7 +239,7 @@ debugging information like that provided by DWARF 2.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-DWARF_005fALT_005fFRAME_005fRETURN_005fCOLUMN"></a>Macro: <strong>DWARF_ALT_FRAME_RETURN_COLUMN</strong></dt>
+<dt id="index-DWARF_005fALT_005fFRAME_005fRETURN_005fCOLUMN">Macro: <strong>DWARF_ALT_FRAME_RETURN_COLUMN</strong></dt>
 <dd><p>A C expression whose value is an integer giving a DWARF 2 column
 number that may be used as an alternative return column.  The column
 must not correspond to any gcc hard register (that is, it must not
@@ -263,7 +252,7 @@ over time.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-DWARF_005fZERO_005fREG"></a>Macro: <strong>DWARF_ZERO_REG</strong></dt>
+<dt id="index-DWARF_005fZERO_005fREG">Macro: <strong>DWARF_ZERO_REG</strong></dt>
 <dd><p>A C expression whose value is an integer giving a DWARF 2 register
 number that is considered to always have the value zero.  This should
 only be defined if the target has an architected zero register, and
@@ -272,16 +261,16 @@ terminate the stack backtrace.  New ports should avoid this.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fDWARF_005fHANDLE_005fFRAME_005fUNSPEC"></a>Target Hook: <em>void</em> <strong>TARGET_DWARF_HANDLE_FRAME_UNSPEC</strong> <em>(const char *<var>label</var>, rtx <var>pattern</var>, int <var>index</var>)</em></dt>
+<dt id="index-TARGET_005fDWARF_005fHANDLE_005fFRAME_005fUNSPEC">Target Hook: <em>void</em> <strong>TARGET_DWARF_HANDLE_FRAME_UNSPEC</strong> <em>(const char *<var>label</var>, rtx <var>pattern</var>, int <var>index</var>)</em></dt>
 <dd><p>This target hook allows the backend to emit frame-related insns that
 contain UNSPECs or UNSPEC_VOLATILEs.  The DWARF 2 call frame debugging
 info engine will invoke it on insns of the form
-</p><div class="smallexample">
-<pre class="smallexample">(set (reg) (unspec [&hellip;] UNSPEC_INDEX))
+</p><div class="example">
+<pre class="example">(set (reg) (unspec [&hellip;] UNSPEC_INDEX))
 </pre></div>
 <p>and
-</p><div class="smallexample">
-<pre class="smallexample">(set (reg) (unspec_volatile [&hellip;] UNSPECV_INDEX)).
+</p><div class="example">
+<pre class="example">(set (reg) (unspec_volatile [&hellip;] UNSPECV_INDEX)).
 </pre></div>
 <p>to let the backend emit the call frame instructions.  <var>label</var> is
 the CFI label attached to the insn, <var>pattern</var> is the pattern of
@@ -289,13 +278,13 @@ the insn and <var>index</var> is <code>UNSPEC_INDEX</code> or <code>UNSPECV_INDE
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fDWARF_005fPOLY_005fINDETERMINATE_005fVALUE"></a>Target Hook: <em>unsigned int</em> <strong>TARGET_DWARF_POLY_INDETERMINATE_VALUE</strong> <em>(unsigned int <var>i</var>, unsigned int *<var>factor</var>, int *<var>offset</var>)</em></dt>
+<dt id="index-TARGET_005fDWARF_005fPOLY_005fINDETERMINATE_005fVALUE">Target Hook: <em>unsigned int</em> <strong>TARGET_DWARF_POLY_INDETERMINATE_VALUE</strong> <em>(unsigned int <var>i</var>, unsigned int *<var>factor</var>, int *<var>offset</var>)</em></dt>
 <dd><p>Express the value of <code>poly_int</code> indeterminate <var>i</var> as a DWARF
 expression, with <var>i</var> counting from 1.  Return the number of a DWARF
 register <var>R</var> and set &lsquo;<samp>*<var>factor</var></samp>&rsquo; and &lsquo;<samp>*<var>offset</var></samp>&rsquo; such
 that the value of the indeterminate is:
-</p><div class="smallexample">
-<pre class="smallexample">value_of(<var>R</var>) / <var>factor</var> - <var>offset</var>
+</p><div class="example">
+<pre class="example">value_of(<var>R</var>) / <var>factor</var> - <var>offset</var>
 </pre></div>
 
 <p>A target only needs to define this hook if it sets
@@ -303,7 +292,7 @@ that the value of the indeterminate is:
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-INCOMING_005fFRAME_005fSP_005fOFFSET"></a>Macro: <strong>INCOMING_FRAME_SP_OFFSET</strong></dt>
+<dt id="index-INCOMING_005fFRAME_005fSP_005fOFFSET">Macro: <strong>INCOMING_FRAME_SP_OFFSET</strong></dt>
 <dd><p>A C expression whose value is an integer giving the offset, in bytes,
 from the value of the stack pointer register to the top of the stack
 frame at the beginning of any function, before the prologue.  The top of
@@ -315,7 +304,7 @@ debugging information like that provided by DWARF 2.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-DEFAULT_005fINCOMING_005fFRAME_005fSP_005fOFFSET"></a>Macro: <strong>DEFAULT_INCOMING_FRAME_SP_OFFSET</strong></dt>
+<dt id="index-DEFAULT_005fINCOMING_005fFRAME_005fSP_005fOFFSET">Macro: <strong>DEFAULT_INCOMING_FRAME_SP_OFFSET</strong></dt>
 <dd><p>Like <code>INCOMING_FRAME_SP_OFFSET</code>, but must be the same for all
 functions of the same ABI, and when using GAS <code>.cfi_*</code> directives
 must also agree with the default CFI GAS emits.  Define this macro
@@ -325,7 +314,7 @@ between different functions of the same ABI or when
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ARG_005fPOINTER_005fCFA_005fOFFSET"></a>Macro: <strong>ARG_POINTER_CFA_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
+<dt id="index-ARG_005fPOINTER_005fCFA_005fOFFSET">Macro: <strong>ARG_POINTER_CFA_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
 <dd><p>A C expression whose value is an integer giving the offset, in bytes,
 from the argument pointer to the canonical frame address (cfa).  The
 final value should coincide with that calculated by
@@ -345,7 +334,7 @@ DWARF 2.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-FRAME_005fPOINTER_005fCFA_005fOFFSET"></a>Macro: <strong>FRAME_POINTER_CFA_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
+<dt id="index-FRAME_005fPOINTER_005fCFA_005fOFFSET">Macro: <strong>FRAME_POINTER_CFA_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
 <dd><p>If defined, a C expression whose value is an integer giving the offset
 in bytes from the frame pointer to the canonical frame address (cfa).
 The final value should coincide with that calculated by
@@ -361,7 +350,7 @@ should be defined.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-CFA_005fFRAME_005fBASE_005fOFFSET"></a>Macro: <strong>CFA_FRAME_BASE_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
+<dt id="index-CFA_005fFRAME_005fBASE_005fOFFSET">Macro: <strong>CFA_FRAME_BASE_OFFSET</strong> <em>(<var>fundecl</var>)</em></dt>
 <dd><p>If defined, a C expression whose value is an integer giving the offset
 in bytes from the canonical frame address (cfa) to the frame base used
 in DWARF 2 debug information.  The default is zero.  A different value
@@ -371,7 +360,7 @@ may reduce the size of debug information on some ports.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Exception-Handling.html#Exception-Handling" accesskey="n" rel="next">Exception Handling</a>, Up: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Exception-Handling.html" accesskey="n" rel="next">Exception Handling</a>, Up: <a href="Stack-and-Calling.html" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

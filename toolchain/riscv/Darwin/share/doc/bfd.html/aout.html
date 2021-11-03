@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>aout (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="BFD-back-ends.html#BFD-back-ends" rel="up" title="BFD back ends">
-<link href="coff.html#coff" rel="next" title="coff">
-<link href="What-to-Put-Where.html#What-to-Put-Where" rel="prev" title="What to Put Where">
+<link href="BFD-back-ends.html" rel="up" title="BFD back ends">
+<link href="coff.html" rel="next" title="coff">
+<link href="What-to-Put-Where.html" rel="prev" title="What to Put Where">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,14 +60,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="aout"></a>
-<div class="header">
+<span id="aout"></span><div class="header">
 <p>
-Next: <a href="coff.html#coff" accesskey="n" rel="next">coff</a>, Previous: <a href="What-to-Put-Where.html#What-to-Put-Where" accesskey="p" rel="prev">What to Put Where</a>, Up: <a href="BFD-back-ends.html#BFD-back-ends" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="coff.html" accesskey="n" rel="next">coff</a>, Previous: <a href="What-to-Put-Where.html" accesskey="p" rel="prev">What to Put Where</a>, Up: <a href="BFD-back-ends.html" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="a_002eout-backends"></a>
-<h3 class="section">3.2 a.out backends</h3>
+<span id="a_002eout-backends"></span><h3 class="section">3.2 a.out backends</h3>
 
 
 <p><strong>Description</strong><br>
@@ -172,8 +161,7 @@ to use the
 <samp><var>XXX</var>.mt</samp> file (by setting &quot;<code>bfd_target=XXX</code>&quot;) when your
 configuration is selected.
 </p>
-<a name="Relocations-2"></a>
-<h4 class="subsection">3.2.1 Relocations</h4>
+<span id="Relocations-2"></span><h4 class="subsection">3.2.1 Relocations</h4>
 
 
 <p><strong>Description</strong><br>
@@ -184,8 +172,7 @@ and <em>extended</em> forms of a.out relocation records.
 and a type field.  The extended records also have a full
 integer for an addend.
 </p>
-<a name="Internal-entry-points"></a>
-<h4 class="subsection">3.2.2 Internal entry points</h4>
+<span id="Internal-entry-points"></span><h4 class="subsection">3.2.2 Internal entry points</h4>
 
 
 <p><strong>Description</strong><br>
@@ -193,9 +180,8 @@ integer for an addend.
 contents of an a.out file, which are gathered and exported in
 turn by various format specific files (eg sunos.c).
 </p>
-<a name="index-aout_005fsize_005fswap_005fexec_005fheader_005fin"></a>
-<a name="aout_005fsize_005fswap_005fexec_005fheader_005fin"></a>
-<h4 class="subsubsection">3.2.2.1 <code>aout_<var>size</var>_swap_exec_header_in</code></h4>
+<span id="index-aout_005fsize_005fswap_005fexec_005fheader_005fin"></span>
+<span id="aout_005fsize_005fswap_005fexec_005fheader_005fin"></span><h4 class="subsubsection">3.2.2.1 <code>aout_<var>size</var>_swap_exec_header_in</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void aout_<var>size</var>_swap_exec_header_in,
@@ -208,9 +194,8 @@ Swap the information in an executable header <var>raw_bytes</var> taken
 from a raw byte stream memory image into the internal exec header
 structure <var>execp</var>.
 </p>
-<a name="index-aout_005fsize_005fswap_005fexec_005fheader_005fout"></a>
-<a name="aout_005fsize_005fswap_005fexec_005fheader_005fout"></a>
-<h4 class="subsubsection">3.2.2.2 <code>aout_<var>size</var>_swap_exec_header_out</code></h4>
+<span id="index-aout_005fsize_005fswap_005fexec_005fheader_005fout"></span>
+<span id="aout_005fsize_005fswap_005fexec_005fheader_005fout"></span><h4 class="subsubsection">3.2.2.2 <code>aout_<var>size</var>_swap_exec_header_out</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void aout_<var>size</var>_swap_exec_header_out
@@ -222,9 +207,8 @@ structure <var>execp</var>.
 Swap the information in an internal exec header structure
 <var>execp</var> into the buffer <var>raw_bytes</var> ready for writing to disk.
 </p>
-<a name="index-aout_005fsize_005fsome_005faout_005fobject_005fp"></a>
-<a name="aout_005fsize_005fsome_005faout_005fobject_005fp"></a>
-<h4 class="subsubsection">3.2.2.3 <code>aout_<var>size</var>_some_aout_object_p</code></h4>
+<span id="index-aout_005fsize_005fsome_005faout_005fobject_005fp"></span>
+<span id="aout_005fsize_005fsome_005faout_005fobject_005fp"></span><h4 class="subsubsection">3.2.2.3 <code>aout_<var>size</var>_some_aout_object_p</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const bfd_target *aout_<var>size</var>_some_aout_object_p
@@ -239,9 +223,8 @@ for access if it really is.  Call back to the calling
 environment&rsquo;s &quot;finish up&quot; function just before returning, to
 handle any last-minute setup.
 </p>
-<a name="index-aout_005fsize_005fmkobject"></a>
-<a name="aout_005fsize_005fmkobject"></a>
-<h4 class="subsubsection">3.2.2.4 <code>aout_<var>size</var>_mkobject</code></h4>
+<span id="index-aout_005fsize_005fmkobject"></span>
+<span id="aout_005fsize_005fmkobject"></span><h4 class="subsubsection">3.2.2.4 <code>aout_<var>size</var>_mkobject</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean aout_<var>size</var>_mkobject, (bfd *abfd);
@@ -249,9 +232,8 @@ handle any last-minute setup.
 <p><strong>Description</strong><br>
 Initialize BFD <var>abfd</var> for use with a.out files.
 </p>
-<a name="index-aout_005fsize_005fmachine_005ftype"></a>
-<a name="aout_005fsize_005fmachine_005ftype"></a>
-<h4 class="subsubsection">3.2.2.5 <code>aout_<var>size</var>_machine_type</code></h4>
+<span id="index-aout_005fsize_005fmachine_005ftype"></span>
+<span id="aout_005fsize_005fmachine_005ftype"></span><h4 class="subsubsection">3.2.2.5 <code>aout_<var>size</var>_machine_type</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">enum machine_type  aout_<var>size</var>_machine_type
@@ -268,9 +250,8 @@ and machine can&rsquo;t be represented in a.out format.
 <p>If the architecture is understood, machine type 0 (default)
 is always understood.
 </p>
-<a name="index-aout_005fsize_005fset_005farch_005fmach"></a>
-<a name="aout_005fsize_005fset_005farch_005fmach"></a>
-<h4 class="subsubsection">3.2.2.6 <code>aout_<var>size</var>_set_arch_mach</code></h4>
+<span id="index-aout_005fsize_005fset_005farch_005fmach"></span>
+<span id="aout_005fsize_005fset_005farch_005fmach"></span><h4 class="subsubsection">3.2.2.6 <code>aout_<var>size</var>_set_arch_mach</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean aout_<var>size</var>_set_arch_mach,
@@ -283,9 +264,8 @@ Set the architecture and the machine of the BFD <var>abfd</var> to the
 values <var>arch</var> and <var>machine</var>.  Verify that <var>abfd</var>&rsquo;s format
 can support the architecture required.
 </p>
-<a name="index-aout_005fsize_005fnew_005fsection_005fhook"></a>
-<a name="aout_005fsize_005fnew_005fsection_005fhook"></a>
-<h4 class="subsubsection">3.2.2.7 <code>aout_<var>size</var>_new_section_hook</code></h4>
+<span id="index-aout_005fsize_005fnew_005fsection_005fhook"></span>
+<span id="aout_005fsize_005fnew_005fsection_005fhook"></span><h4 class="subsubsection">3.2.2.7 <code>aout_<var>size</var>_new_section_hook</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean aout_<var>size</var>_new_section_hook,
@@ -300,7 +280,7 @@ request.
 <hr>
 <div class="header">
 <p>
-Next: <a href="coff.html#coff" accesskey="n" rel="next">coff</a>, Previous: <a href="What-to-Put-Where.html#What-to-Put-Where" accesskey="p" rel="prev">What to Put Where</a>, Up: <a href="BFD-back-ends.html#BFD-back-ends" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="coff.html" accesskey="n" rel="next">coff</a>, Previous: <a href="What-to-Put-Where.html" accesskey="p" rel="prev">What to Put Where</a>, Up: <a href="BFD-back-ends.html" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

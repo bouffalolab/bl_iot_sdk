@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>setlocale (The Red Hat newlib C Library)</title>
@@ -11,32 +11,23 @@
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
 <link href="index.html#Top" rel="start" title="Top">
-<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html" rel="index" title="Document Index">
 <link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Locale.html#Locale" rel="up" title="Locale">
-<link href="Reentrancy.html#Reentrancy" rel="next" title="Reentrancy">
-<link href="Locale.html#Locale" rel="prev" title="Locale">
+<link href="Locale.html" rel="up" title="Locale">
+<link href="Reentrancy.html" rel="next" title="Reentrancy">
+<link href="Locale.html" rel="prev" title="Locale">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,18 +39,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="setlocale"></a>
-<div class="header">
+<span id="setlocale"></span><div class="header">
 <p>
-Up: <a href="Locale.html#Locale" accesskey="u" rel="up">Locale</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Up: <a href="Locale.html" accesskey="u" rel="up">Locale</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="setlocale_002c-localeconv_002d_002d_002dselect-or-query-locale"></a>
-<h3 class="section">9.1 <code>setlocale</code>, <code>localeconv</code>&mdash;select or query locale</h3>
-<a name="index-setlocale"></a>
-<a name="index-localeconv"></a>
-<a name="index-_005fsetlocale_005fr"></a>
-<a name="index-_005flocaleconv_005fr"></a>
+<span id="setlocale_002c-localeconv_002d_002d_002dselect-or-query-locale"></span><h3 class="section">9.1 <code>setlocale</code>, <code>localeconv</code>&mdash;select or query locale</h3>
+<span id="index-setlocale"></span>
+<span id="index-localeconv"></span>
+<span id="index-_005fsetlocale_005fr"></span>
+<span id="index-_005flocaleconv_005fr"></span>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">#include &lt;locale.h&gt;
@@ -129,12 +118,12 @@ corresponding LC_* environment variables and $LANG according to POSIX rules.)
 <code>&quot;cjkwide&quot;</code>, which affect how the functions <code>wcwidth</code> and <code>wcswidth</code>
 handle characters from the &quot;CJK Ambiguous Width&quot; category of characters
 described at http://www.unicode.org/reports/tr11/#Ambiguous.
-These characters have a width of 1 for singlebyte charsets and a width of 2
-for multibyte charsets other than UTF-8.
-For UTF-8, their width depends on the language specifier:
-it is 2 for <code>&quot;zh&quot;</code> (Chinese), <code>&quot;ja&quot;</code> (Japanese), and <code>&quot;ko&quot;</code> (Korean),
-and 1 for everything else. Specifying <code>&quot;cjknarrow&quot;</code> or <code>&quot;cjkwide&quot;</code>
-forces a width of 1 or 2, respectively, independent of charset and language.
+These characters have a width of 1 for singlebyte charsets and UTF-8,
+and a width of 2 for multibyte charsets other than UTF-8. Specifying
+<code>&quot;cjknarrow&quot;</code> or <code>&quot;cjkwide&quot;</code> forces a width of 1 or 2, respectively.
+</p>
+<p>This implementation also supports the modifier <code>&quot;cjksingle&quot;</code>
+to enforce single-width character properties.
 </p>
 <p>If you use <code>NULL</code> as the <var>locale</var> argument, <code>setlocale</code> returns a
 pointer to the string representing the current locale.  The acceptable
@@ -178,7 +167,7 @@ There is no ISO-8859-12 codepage.  It&rsquo;s also refused by this implementatio
 <hr>
 <div class="header">
 <p>
-Up: <a href="Locale.html#Locale" accesskey="u" rel="up">Locale</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Up: <a href="Locale.html" accesskey="u" rel="up">Locale</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

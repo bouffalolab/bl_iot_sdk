@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Output Formats (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Data.html#Data" rel="up" title="Data">
-<link href="Memory.html#Memory" rel="next" title="Memory">
-<link href="Arrays.html#Arrays" rel="prev" title="Arrays">
+<link href="Data.html" rel="up" title="Data">
+<link href="Memory.html" rel="next" title="Memory">
+<link href="Arrays.html" rel="prev" title="Arrays">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Output-Formats"></a>
-<div class="header">
+<span id="Output-Formats"></span><div class="header">
 <p>
-Next: <a href="Memory.html#Memory" accesskey="n" rel="next">Memory</a>, Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Memory.html" accesskey="n" rel="next">Memory</a>, Previous: <a href="Arrays.html" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Output-Formats-1"></a>
-<h3 class="section">10.5 Output Formats</h3>
+<span id="Output-Formats-1"></span><h3 class="section">10.5 Output Formats</h3>
 
-<a name="index-formatted-output"></a>
-<a name="index-output-formats"></a>
+<span id="index-formatted-output"></span>
+<span id="index-output-formats"></span>
 <p>By default, <small>GDB</small> prints a value according to its data type.  Sometimes
 this is not what you want.  For example, you might want to print a number
 in hex, or a pointer in decimal.  Or you might want to view data in memory
@@ -102,23 +91,23 @@ hexadecimal.
 </dd>
 <dt><code>t</code></dt>
 <dd><p>Print as integer in binary.  The letter &lsquo;<samp>t</samp>&rsquo; stands for &ldquo;two&rdquo;.
-<a name="DOCF10" href="#FOOT10"><sup>10</sup></a>
+<a id="DOCF11" href="#FOOT11"><sup>11</sup></a>
 </p>
 </dd>
 <dt><code>a</code></dt>
-<dd><a name="index-unknown-address_002c-locating"></a>
-<a name="index-locate-address"></a>
+<dd><span id="index-unknown-address_002c-locating"></span>
+<span id="index-locate-address"></span>
 <p>Print as an address, both absolute in hexadecimal and as an offset from
 the nearest preceding symbol.  You can use this format used to discover
 where (in what function) an unknown address is located:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) p/a 0x54320
+<div class="example">
+<pre class="example">(gdb) p/a 0x54320
 $3 = 0x54320 &lt;_initialize_vx+396&gt;
 </pre></div>
 
 <p>The command <code>info symbol 0x54320</code> yields similar results.
-See <a href="Symbols.html#Symbols">info symbol</a>.
+See <a href="Symbols.html">info symbol</a>.
 </p>
 </dd>
 <dt><code>c</code></dt>
@@ -139,8 +128,8 @@ using typical floating point syntax.
 </p>
 </dd>
 <dt><code>s</code></dt>
-<dd><a name="index-printing-strings"></a>
-<a name="index-printing-byte-arrays"></a>
+<dd><span id="index-printing-strings"></span>
+<span id="index-printing-byte-arrays"></span>
 <p>Regard as a string, if possible.  With this format, pointers to single-byte
 data are displayed as null-terminated strings and arrays of single-byte data
 are displayed as fixed-length strings.  Other values are displayed in their
@@ -159,18 +148,18 @@ to the size of the integer type.
 </p>
 </dd>
 <dt><code>r</code></dt>
-<dd><a name="index-raw-printing"></a>
+<dd><span id="index-raw-printing"></span>
 <p>Print using the &lsquo;<samp>raw</samp>&rsquo; formatting.  By default, <small>GDB</small> will
-use a Python-based pretty-printer, if one is available (see <a href="Pretty-Printing.html#Pretty-Printing">Pretty Printing</a>).  This typically results in a higher-level display of the
+use a Python-based pretty-printer, if one is available (see <a href="Pretty-Printing.html">Pretty Printing</a>).  This typically results in a higher-level display of the
 value&rsquo;s contents.  The &lsquo;<samp>r</samp>&rsquo; format bypasses any Python
 pretty-printer which might exist.
 </p></dd>
 </dl>
 
-<p>For example, to print the program counter in hex (see <a href="Registers.html#Registers">Registers</a>), type
+<p>For example, to print the program counter in hex (see <a href="Registers.html">Registers</a>), type
 </p>
-<div class="smallexample">
-<pre class="smallexample">p/x $pc
+<div class="example">
+<pre class="example">p/x $pc
 </pre></div>
 
 <p>Note that no space is required before the slash; this is because command
@@ -184,15 +173,15 @@ expression.  For example, &lsquo;<samp>p/x</samp>&rsquo; reprints the last value
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT10" href="#DOCF10">(10)</a></h3>
+<h5><a id="FOOT11" href="#DOCF11">(11)</a></h3>
 <p>&lsquo;<samp>b</samp>&rsquo; cannot be used because these format letters are also
 used with the <code>x</code> command, where &lsquo;<samp>b</samp>&rsquo; stands for &ldquo;byte&rdquo;;
-see <a href="Memory.html#Memory">Examining Memory</a>.</p>
+see <a href="Memory.html">Examining Memory</a>.</p>
 </div>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Memory.html#Memory" accesskey="n" rel="next">Memory</a>, Previous: <a href="Arrays.html#Arrays" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Memory.html" accesskey="n" rel="next">Memory</a>, Previous: <a href="Arrays.html" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

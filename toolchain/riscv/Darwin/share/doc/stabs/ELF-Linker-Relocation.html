@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>ELF Linker Relocation (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Stab-Sections.html#Stab-Sections" rel="up" title="Stab Sections">
-<link href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License" rel="next" title="GNU Free Documentation License">
-<link href="Stab-Section-Basics.html#Stab-Section-Basics" rel="prev" title="Stab Section Basics">
+<link href="Stab-Sections.html" rel="up" title="Stab Sections">
+<link href="GNU-Free-Documentation-License.html" rel="next" title="GNU Free Documentation License">
+<link href="Stab-Section-Basics.html" rel="prev" title="Stab Section Basics">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="ELF-Linker-Relocation"></a>
-<div class="header">
+<span id="ELF-Linker-Relocation"></span><div class="header">
 <p>
-Previous: <a href="Stab-Section-Basics.html#Stab-Section-Basics" accesskey="p" rel="prev">Stab Section Basics</a>, Up: <a href="Stab-Sections.html#Stab-Sections" accesskey="u" rel="up">Stab Sections</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Stab-Section-Basics.html" accesskey="p" rel="prev">Stab Section Basics</a>, Up: <a href="Stab-Sections.html" accesskey="u" rel="up">Stab Sections</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Having-the-Linker-Relocate-Stabs-in-ELF"></a>
-<h3 class="appendixsec">F.2 Having the Linker Relocate Stabs in ELF</h3>
+<span id="Having-the-Linker-Relocate-Stabs-in-ELF"></span><h3 class="appendixsec">F.2 Having the Linker Relocate Stabs in ELF</h3>
 
 <p>This section describes some Sun hacks for Stabs in ELF; it does not
 apply to COFF or SOM.  While <small>GDB</small> no longer supports this hack
@@ -86,7 +75,7 @@ stabs section.  They are named <code>Bbss.bss</code> for the bss section,
 <code>Ddata.data</code> for the data section, and <code>Drodata.rodata</code> for
 the rodata section.  For the text section, there is no such symbol (but
 there should be, see below).  For an example of how these symbols work,
-See <a href="Stab-Section-Transformations.html#Stab-Section-Transformations">Stab Section Transformations</a>.  GCC does not provide these symbols;
+See <a href="Stab-Section-Transformations.html">Stab Section Transformations</a>.  GCC does not provide these symbols;
 it instead relies on the stabs getting relocated.  Thus addresses which
 would normally be relative to <code>Bbss.bss</code>, etc., are already
 relocated.  The Sun linker provided with Solaris 2.2 and earlier
@@ -97,7 +86,7 @@ having the linker do these relocations is to have the compiler no longer
 output relocatable values.  Last I heard they had been talked out of the
 linker kludge.  See Sun point patch 101052-01 and Sun bug 1142109.  With
 the Sun compiler this affects &lsquo;<samp>S</samp>&rsquo; symbol descriptor stabs
-(see <a href="Statics.html#Statics">Statics</a>) and functions (see <a href="Procedures.html#Procedures">Procedures</a>).  In the latter
+(see <a href="Statics.html">Statics</a>) and functions (see <a href="Procedures.html">Procedures</a>).  In the latter
 case, to adopt the clean solution (making the value of the stab relative
 to the start of the compilation unit), it would be necessary to invent a
 <code>Ttext.text</code> symbol, analogous to the <code>Bbss.bss</code>, etc.,
@@ -123,7 +112,7 @@ However, no one has yet designed or implemented such a scheme.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Stab-Section-Basics.html#Stab-Section-Basics" accesskey="p" rel="prev">Stab Section Basics</a>, Up: <a href="Stab-Sections.html#Stab-Sections" accesskey="u" rel="up">Stab Sections</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Stab-Section-Basics.html" accesskey="p" rel="prev">Stab Section Basics</a>, Up: <a href="Stab-Sections.html" accesskey="u" rel="up">Stab Sections</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

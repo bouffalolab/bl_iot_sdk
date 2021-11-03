@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>typedef arelent (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Relocations.html#Relocations" rel="up" title="Relocations">
-<link href="howto-manager.html#howto-manager" rel="next" title="howto manager">
-<link href="Relocations.html#Relocations" rel="prev" title="Relocations">
+<link href="Relocations.html" rel="up" title="Relocations">
+<link href="howto-manager.html" rel="next" title="howto manager">
+<link href="Relocations.html" rel="prev" title="Relocations">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,14 +60,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="typedef-arelent"></a>
-<div class="header">
+<span id="typedef-arelent"></span><div class="header">
 <p>
-Next: <a href="howto-manager.html#howto-manager" accesskey="n" rel="next">howto manager</a>, Previous: <a href="Relocations.html#Relocations" accesskey="p" rel="prev">Relocations</a>, Up: <a href="Relocations.html#Relocations" accesskey="u" rel="up">Relocations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="howto-manager.html" accesskey="n" rel="next">howto manager</a>, Previous: <a href="Relocations.html" accesskey="p" rel="prev">Relocations</a>, Up: <a href="Relocations.html" accesskey="u" rel="up">Relocations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="typedef-arelent-1"></a>
-<h4 class="subsection">2.10.1 typedef arelent</h4>
+<span id="typedef-arelent-1"></span><h4 class="subsection">2.10.1 typedef arelent</h4>
 <p>This is the structure of a relocation entry:
 </p>
 
@@ -143,7 +132,7 @@ Here is a description of each of the fields within an <code>arelent</code>:
 <p>The symbol table pointer points to a pointer to the symbol
 associated with the relocation request.  It is the pointer
 into the table returned by the back end&rsquo;s
-<code>canonicalize_symtab</code> action. See <a href="Symbols.html#Symbols">Symbols</a>. The symbol is
+<code>canonicalize_symtab</code> action. See <a href="Symbols.html">Symbols</a>. The symbol is
 referenced through a pointer to a pointer so that tools like
 the linker can fix up all the symbols of the same name by
 modifying only one pointer. The relocation routine looks in
@@ -275,8 +264,7 @@ would normally have a relocation instruction set and turn
 relocations into pointers to the correct structure on input -
 but it would be possible to create each howto field on demand.
 </p>
-<a name="enum-complain_005foverflow"></a>
-<h4 class="subsubsection">2.10.1.1 <code>enum complain_overflow</code></h4>
+<span id="enum-complain_005foverflow"></span><h4 class="subsubsection">2.10.1.1 <code>enum complain_overflow</code></h4>
 <p>Indicates what sort of overflow checking should be done when
 performing a relocation.
 </p>
@@ -303,8 +291,7 @@ enum complain_overflow
   complain_overflow_unsigned
 };
 </pre></div>
-<a name="reloc_005fhowto_005ftype"></a>
-<h4 class="subsubsection">2.10.1.2 <code>reloc_howto_type</code></h4>
+<span id="reloc_005fhowto_005ftype"></span><h4 class="subsubsection">2.10.1.2 <code>reloc_howto_type</code></h4>
 <p>The <code>reloc_howto_type</code> is a structure which contains all the
 information that libbfd needs to know to tie up a back end&rsquo;s data.
 </p>
@@ -391,13 +378,12 @@ information that libbfd needs to know to tie up a back end&rsquo;s data.
      bfd *, char **);
 
   /* The textual name of the relocation type.  */
-  char *name;
+  const char *name;
 };
 
 </pre></div>
-<a name="index-The-HOWTO-Macro"></a>
-<a name="The-HOWTO-Macro"></a>
-<h4 class="subsubsection">2.10.1.3 <code>The HOWTO Macro</code></h4>
+<span id="index-The-HOWTO-Macro"></span>
+<span id="The-HOWTO-Macro"></span><h4 class="subsubsection">2.10.1.3 <code>The HOWTO Macro</code></h4>
 <p><strong>Description</strong><br>
 The HOWTO macro fills in a reloc_howto_type (a typedef for
 const struct reloc_howto_struct).
@@ -417,9 +403,8 @@ This is used to fill in an empty howto entry in an array.
 
 </pre></div>
 
-<a name="index-bfd_005fget_005freloc_005fsize"></a>
-<a name="bfd_005fget_005freloc_005fsize"></a>
-<h4 class="subsubsection">2.10.1.4 <code>bfd_get_reloc_size</code></h4>
+<span id="index-bfd_005fget_005freloc_005fsize"></span>
+<span id="bfd_005fget_005freloc_005fsize"></span><h4 class="subsubsection">2.10.1.4 <code>bfd_get_reloc_size</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">unsigned int bfd_get_reloc_size (reloc_howto_type *);
@@ -428,9 +413,8 @@ This is used to fill in an empty howto entry in an array.
 For a reloc_howto_type that operates on a fixed number of bytes,
 this returns the number of bytes operated on.
 </p>
-<a name="index-arelent_005fchain"></a>
-<a name="arelent_005fchain"></a>
-<h4 class="subsubsection">2.10.1.5 <code>arelent_chain</code></h4>
+<span id="index-arelent_005fchain"></span>
+<span id="arelent_005fchain"></span><h4 class="subsubsection">2.10.1.5 <code>arelent_chain</code></h4>
 <p><strong>Description</strong><br>
 How relocs are tied together in an <code>asection</code>:
 </p><div class="example">
@@ -443,9 +427,8 @@ arelent_chain;
 
 </pre></div>
 
-<a name="index-bfd_005fcheck_005foverflow"></a>
-<a name="bfd_005fcheck_005foverflow"></a>
-<h4 class="subsubsection">2.10.1.6 <code>bfd_check_overflow</code></h4>
+<span id="index-bfd_005fcheck_005foverflow"></span>
+<span id="bfd_005fcheck_005foverflow"></span><h4 class="subsubsection">2.10.1.6 <code>bfd_check_overflow</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_reloc_status_type bfd_check_overflow
@@ -462,9 +445,8 @@ Perform overflow checking on <var>relocation</var> which has
 <var>addrsize</var> significant bits.  The result is either of
 <code>bfd_reloc_ok</code> or <code>bfd_reloc_overflow</code>.
 </p>
-<a name="index-bfd_005freloc_005foffset_005fin_005frange"></a>
-<a name="bfd_005freloc_005foffset_005fin_005frange"></a>
-<h4 class="subsubsection">2.10.1.7 <code>bfd_reloc_offset_in_range</code></h4>
+<span id="index-bfd_005freloc_005foffset_005fin_005frange"></span>
+<span id="bfd_005freloc_005foffset_005fin_005frange"></span><h4 class="subsubsection">2.10.1.7 <code>bfd_reloc_offset_in_range</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_reloc_offset_in_range
@@ -477,9 +459,8 @@ Perform overflow checking on <var>relocation</var> which has
 Returns TRUE if the reloc described by <var>HOWTO</var> can be
 applied at <var>OFFSET</var> octets in <var>SECTION</var>.
 </p>
-<a name="index-bfd_005fperform_005frelocation"></a>
-<a name="bfd_005fperform_005frelocation"></a>
-<h4 class="subsubsection">2.10.1.8 <code>bfd_perform_relocation</code></h4>
+<span id="index-bfd_005fperform_005frelocation"></span>
+<span id="bfd_005fperform_005frelocation"></span><h4 class="subsubsection">2.10.1.8 <code>bfd_perform_relocation</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_reloc_status_type bfd_perform_relocation
@@ -506,9 +487,8 @@ types with addends were invented to solve just this problem.
 The <var>error_message</var> argument is set to an error message if
 this return <code>bfd_reloc_dangerous</code>.
 </p>
-<a name="index-bfd_005finstall_005frelocation"></a>
-<a name="bfd_005finstall_005frelocation"></a>
-<h4 class="subsubsection">2.10.1.9 <code>bfd_install_relocation</code></h4>
+<span id="index-bfd_005finstall_005frelocation"></span>
+<span id="bfd_005finstall_005frelocation"></span><h4 class="subsubsection">2.10.1.9 <code>bfd_install_relocation</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_reloc_status_type bfd_install_relocation
@@ -531,7 +511,7 @@ assembler.
 <hr>
 <div class="header">
 <p>
-Next: <a href="howto-manager.html#howto-manager" accesskey="n" rel="next">howto manager</a>, Previous: <a href="Relocations.html#Relocations" accesskey="p" rel="prev">Relocations</a>, Up: <a href="Relocations.html#Relocations" accesskey="u" rel="up">Relocations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="howto-manager.html" accesskey="n" rel="next">howto manager</a>, Previous: <a href="Relocations.html" accesskey="p" rel="prev">Relocations</a>, Up: <a href="Relocations.html" accesskey="u" rel="up">Relocations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

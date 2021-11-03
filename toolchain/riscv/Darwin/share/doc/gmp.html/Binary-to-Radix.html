@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Binary to Radix (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" rel="up" title="Radix Conversion Algorithms">
-<link href="Radix-to-Binary.html#Radix-to-Binary" rel="next" title="Radix to Binary">
-<link href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" rel="prev" title="Radix Conversion Algorithms">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Radix-Conversion-Algorithms.html" rel="up" title="Radix Conversion Algorithms">
+<link href="Radix-to-Binary.html" rel="next" title="Radix to Binary">
+<link href="Radix-Conversion-Algorithms.html" rel="prev" title="Radix Conversion Algorithms">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,14 +50,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Binary-to-Radix"></a>
-<div class="header">
+<span id="Binary-to-Radix"></span><div class="header">
 <p>
-Next: <a href="Radix-to-Binary.html#Radix-to-Binary" accesskey="n" rel="next">Radix to Binary</a>, Previous: <a href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" accesskey="p" rel="prev">Radix Conversion Algorithms</a>, Up: <a href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" accesskey="u" rel="up">Radix Conversion Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Radix-to-Binary.html" accesskey="n" rel="next">Radix to Binary</a>, Previous: <a href="Radix-Conversion-Algorithms.html" accesskey="p" rel="prev">Radix Conversion Algorithms</a>, Up: <a href="Radix-Conversion-Algorithms.html" accesskey="u" rel="up">Radix Conversion Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Binary-to-Radix-1"></a>
-<h4 class="subsection">15.6.1 Binary to Radix</h4>
+<span id="Binary-to-Radix-1"></span><h4 class="subsection">15.6.1 Binary to Radix</h4>
 
 <p>Conversions from binary to a power-of-2 radix use a simple and fast
 <em>O(N)</em> bit extraction algorithm.
@@ -92,7 +81,7 @@ recursively.  When a piece has been divided down to less than
 used.
 </p>
 <p>The advantage of this algorithm is that big divisions can make use of the
-sub-quadratic divide and conquer division (see <a href="Divide-and-Conquer-Division.html#Divide-and-Conquer-Division">Divide and Conquer Division</a>), and big divisions tend to have less overheads than lots of
+sub-quadratic divide and conquer division (see <a href="Divide-and-Conquer-Division.html">Divide and Conquer Division</a>), and big divisions tend to have less overheads than lots of
 separate single limb divisions anyway.  But in any case the cost of
 calculating the powers <em>b^(n*2^i)</em> must first be overcome.
 </p>
@@ -133,7 +122,7 @@ speedup.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Radix-to-Binary.html#Radix-to-Binary" accesskey="n" rel="next">Radix to Binary</a>, Previous: <a href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" accesskey="p" rel="prev">Radix Conversion Algorithms</a>, Up: <a href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" accesskey="u" rel="up">Radix Conversion Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Radix-to-Binary.html" accesskey="n" rel="next">Radix to Binary</a>, Previous: <a href="Radix-Conversion-Algorithms.html" accesskey="p" rel="prev">Radix Conversion Algorithms</a>, Up: <a href="Radix-Conversion-Algorithms.html" accesskey="u" rel="up">Radix Conversion Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

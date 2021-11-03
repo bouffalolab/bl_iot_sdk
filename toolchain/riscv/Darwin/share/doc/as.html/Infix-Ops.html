@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Infix Ops (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Integer-Exprs.html#Integer-Exprs" rel="up" title="Integer Exprs">
-<link href="Pseudo-Ops.html#Pseudo-Ops" rel="next" title="Pseudo Ops">
-<link href="Prefix-Ops.html#Prefix-Ops" rel="prev" title="Prefix Ops">
+<link href="Integer-Exprs.html" rel="up" title="Integer Exprs">
+<link href="Pseudo-Ops.html" rel="next" title="Pseudo Ops">
+<link href="Prefix-Ops.html" rel="prev" title="Prefix Ops">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,25 +50,23 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Infix-Ops"></a>
-<div class="header">
+<span id="Infix-Ops"></span><div class="header">
 <p>
-Previous: <a href="Prefix-Ops.html#Prefix-Ops" accesskey="p" rel="prev">Prefix Ops</a>, Up: <a href="Integer-Exprs.html#Integer-Exprs" accesskey="u" rel="up">Integer Exprs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Prefix-Ops.html" accesskey="p" rel="prev">Prefix Ops</a>, Up: <a href="Integer-Exprs.html" accesskey="u" rel="up">Integer Exprs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Infix-Operators"></a>
-<h4 class="subsection">6.2.4 Infix Operators</h4>
+<span id="Infix-Operators"></span><h4 class="subsection">6.2.4 Infix Operators</h4>
 
-<a name="index-infix-operators"></a>
-<a name="index-operators_002c-permitted-arguments"></a>
+<span id="index-infix-operators"></span>
+<span id="index-operators_002c-permitted-arguments"></span>
 <p><em>Infix operators</em> take two arguments, one on either side.  Operators
 have precedence, but operations with equal precedence are performed left
 to right.  Apart from <code>+</code> or <samp>-</samp>, both arguments must be
 absolute, and the result is absolute.
 </p>
 <ol>
-<li><a name="index-operator-precedence"></a>
-<a name="index-precedence-of-operators"></a>
+<li><span id="index-operator-precedence"></span>
+<span id="index-precedence-of-operators"></span>
 
 </li><li> Highest Precedence
 
@@ -127,18 +116,18 @@ absolute, and the result is absolute.
 </li><li> Low Precedence
 
 <dl compact="compact">
-<dd><a name="index-addition_002c-permitted-arguments"></a>
-<a name="index-plus_002c-permitted-arguments"></a>
-<a name="index-arguments-for-addition"></a>
+<dd><span id="index-addition_002c-permitted-arguments"></span>
+<span id="index-plus_002c-permitted-arguments"></span>
+<span id="index-arguments-for-addition"></span>
 </dd>
 <dt><code>+</code></dt>
 <dd><p><em>Addition</em>.  If either argument is absolute, the result has the section of
 the other argument.  You may not add together arguments from different
 sections.
 </p>
-<a name="index-subtraction_002c-permitted-arguments"></a>
-<a name="index-minus_002c-permitted-arguments"></a>
-<a name="index-arguments-for-subtraction"></a>
+<span id="index-subtraction_002c-permitted-arguments"></span>
+<span id="index-minus_002c-permitted-arguments"></span>
+<span id="index-arguments-for-subtraction"></span>
 </dd>
 <dt><code>-</code></dt>
 <dd><p><em>Subtraction</em>.  If the right argument is absolute, the
@@ -146,8 +135,8 @@ result has the section of the left argument.
 If both arguments are in the same section, the result is absolute.
 You may not subtract arguments from different sections.
 </p>
-<a name="index-comparison-expressions"></a>
-<a name="index-expressions_002c-comparison"></a>
+<span id="index-comparison-expressions"></span>
+<span id="index-expressions_002c-comparison"></span>
 </dd>
 <dt><code>==</code></dt>
 <dd><p><em>Is Equal To</em>
@@ -199,7 +188,7 @@ address; you can only have a defined section in one of the two arguments.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Prefix-Ops.html#Prefix-Ops" accesskey="p" rel="prev">Prefix Ops</a>, Up: <a href="Integer-Exprs.html#Integer-Exprs" accesskey="u" rel="up">Integer Exprs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Prefix-Ops.html" accesskey="p" rel="prev">Prefix Ops</a>, Up: <a href="Integer-Exprs.html" accesskey="u" rel="up">Integer Exprs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

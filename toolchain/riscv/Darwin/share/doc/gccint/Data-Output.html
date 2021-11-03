@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Data Output (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Assembler-Format.html#Assembler-Format" rel="up" title="Assembler Format">
-<link href="Uninitialized-Data.html#Uninitialized-Data" rel="next" title="Uninitialized Data">
-<link href="File-Framework.html#File-Framework" rel="prev" title="File Framework">
+<link href="Assembler-Format.html" rel="up" title="Assembler Format">
+<link href="Uninitialized-Data.html" rel="next" title="Uninitialized Data">
+<link href="File-Framework.html" rel="prev" title="File Framework">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,26 +58,30 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Data-Output"></a>
-<div class="header">
+<span id="Data-Output"></span><div class="header">
 <p>
-Next: <a href="Uninitialized-Data.html#Uninitialized-Data" accesskey="n" rel="next">Uninitialized Data</a>, Previous: <a href="File-Framework.html#File-Framework" accesskey="p" rel="prev">File Framework</a>, Up: <a href="Assembler-Format.html#Assembler-Format" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Uninitialized-Data.html" accesskey="n" rel="next">Uninitialized Data</a>, Previous: <a href="File-Framework.html" accesskey="p" rel="prev">File Framework</a>, Up: <a href="Assembler-Format.html" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Output-of-Data"></a>
-<h4 class="subsection">18.20.2 Output of Data</h4>
+<span id="Output-of-Data"></span><h4 class="subsection">18.20.2 Output of Data</h4>
 
 
 <dl>
-<dt><a name="index-TARGET_005fASM_005fBYTE_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_BYTE_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fALIGNED_005fHI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_HI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fALIGNED_005fSI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_SI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fALIGNED_005fDI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_DI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fALIGNED_005fTI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_TI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fUNALIGNED_005fHI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_HI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fUNALIGNED_005fSI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_SI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fUNALIGNED_005fDI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_DI_OP</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fUNALIGNED_005fTI_005fOP"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_TI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fBYTE_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_BYTE_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fHI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_HI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fPSI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_PSI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fSI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_SI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fPDI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_PDI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fDI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_DI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fPTI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_PTI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fALIGNED_005fTI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_ALIGNED_TI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fHI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_HI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fPSI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_PSI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fSI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_SI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fPDI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_PDI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fDI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_DI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fPTI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_PTI_OP</strong></dt>
+<dt id="index-TARGET_005fASM_005fUNALIGNED_005fTI_005fOP">Target Hook: <em>const char *</em> <strong>TARGET_ASM_UNALIGNED_TI_OP</strong></dt>
 <dd><p>These hooks specify assembly directives for creating certain kinds
 of integer object.  The <code>TARGET_ASM_BYTE_OP</code> directive creates a
 byte-sized object, the <code>TARGET_ASM_ALIGNED_HI_OP</code> one creates an
@@ -99,7 +94,7 @@ the string should contain a tab, a pseudo-op, and then another tab.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fASM_005fINTEGER"></a>Target Hook: <em>bool</em> <strong>TARGET_ASM_INTEGER</strong> <em>(rtx <var>x</var>, unsigned int <var>size</var>, int <var>aligned_p</var>)</em></dt>
+<dt id="index-TARGET_005fASM_005fINTEGER">Target Hook: <em>bool</em> <strong>TARGET_ASM_INTEGER</strong> <em>(rtx <var>x</var>, unsigned int <var>size</var>, int <var>aligned_p</var>)</em></dt>
 <dd><p>The <code>assemble_integer</code> function uses this hook to output an
 integer object.  <var>x</var> is the object&rsquo;s value, <var>size</var> is its size
 in bytes and <var>aligned_p</var> indicates whether it is aligned.  The
@@ -113,13 +108,13 @@ when the relevant string is <code>NULL</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fASM_005fDECL_005fEND"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_DECL_END</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fASM_005fDECL_005fEND">Target Hook: <em>void</em> <strong>TARGET_ASM_DECL_END</strong> <em>(void)</em></dt>
 <dd><p>Define this hook if the target assembler requires a special marker to
 terminate an initialized variable declaration.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fASM_005fOUTPUT_005fADDR_005fCONST_005fEXTRA"></a>Target Hook: <em>bool</em> <strong>TARGET_ASM_OUTPUT_ADDR_CONST_EXTRA</strong> <em>(FILE *<var>file</var>, rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fASM_005fOUTPUT_005fADDR_005fCONST_005fEXTRA">Target Hook: <em>bool</em> <strong>TARGET_ASM_OUTPUT_ADDR_CONST_EXTRA</strong> <em>(FILE *<var>file</var>, rtx <var>x</var>)</em></dt>
 <dd><p>A target hook to recognize <var>rtx</var> patterns that <code>output_addr_const</code>
 can&rsquo;t deal with, and output assembly code to <var>file</var> corresponding to
 the pattern <var>x</var>.  This may be used to allow machine-dependent
@@ -132,7 +127,7 @@ return <code>true</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ASM_005fOUTPUT_005fASCII"></a>Macro: <strong>ASM_OUTPUT_ASCII</strong> <em>(<var>stream</var>, <var>ptr</var>, <var>len</var>)</em></dt>
+<dt id="index-ASM_005fOUTPUT_005fASCII">Macro: <strong>ASM_OUTPUT_ASCII</strong> <em>(<var>stream</var>, <var>ptr</var>, <var>len</var>)</em></dt>
 <dd><p>A C statement to output to the stdio stream <var>stream</var> an assembler
 instruction to assemble a string constant containing the <var>len</var>
 bytes at <var>ptr</var>.  <var>ptr</var> will be a C expression of type
@@ -144,14 +139,14 @@ Berkeley Unix assembler, do not define the macro
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ASM_005fOUTPUT_005fFDESC"></a>Macro: <strong>ASM_OUTPUT_FDESC</strong> <em>(<var>stream</var>, <var>decl</var>, <var>n</var>)</em></dt>
+<dt id="index-ASM_005fOUTPUT_005fFDESC">Macro: <strong>ASM_OUTPUT_FDESC</strong> <em>(<var>stream</var>, <var>decl</var>, <var>n</var>)</em></dt>
 <dd><p>A C statement to output word <var>n</var> of a function descriptor for
 <var>decl</var>.  This must be defined if <code>TARGET_VTABLE_USES_DESCRIPTORS</code>
 is defined, and is otherwise unused.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-CONSTANT_005fPOOL_005fBEFORE_005fFUNCTION"></a>Macro: <strong>CONSTANT_POOL_BEFORE_FUNCTION</strong></dt>
+<dt id="index-CONSTANT_005fPOOL_005fBEFORE_005fFUNCTION">Macro: <strong>CONSTANT_POOL_BEFORE_FUNCTION</strong></dt>
 <dd><p>You may define this macro as a C expression.  You should define the
 expression to have a nonzero value if GCC should output the constant
 pool for a function before the code for the function, or a zero value if
@@ -161,7 +156,7 @@ pool before the function.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ASM_005fOUTPUT_005fPOOL_005fPROLOGUE"></a>Macro: <strong>ASM_OUTPUT_POOL_PROLOGUE</strong> <em>(<var>file</var>, <var>funname</var>, <var>fundecl</var>, <var>size</var>)</em></dt>
+<dt id="index-ASM_005fOUTPUT_005fPOOL_005fPROLOGUE">Macro: <strong>ASM_OUTPUT_POOL_PROLOGUE</strong> <em>(<var>file</var>, <var>funname</var>, <var>fundecl</var>, <var>size</var>)</em></dt>
 <dd><p>A C statement to output assembler commands to define the start of the
 constant pool for a function.  <var>funname</var> is a string giving
 the name of the function.  Should the return type of the function
@@ -174,7 +169,7 @@ not be defined.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ASM_005fOUTPUT_005fSPECIAL_005fPOOL_005fENTRY"></a>Macro: <strong>ASM_OUTPUT_SPECIAL_POOL_ENTRY</strong> <em>(<var>file</var>, <var>x</var>, <var>mode</var>, <var>align</var>, <var>labelno</var>, <var>jumpto</var>)</em></dt>
+<dt id="index-ASM_005fOUTPUT_005fSPECIAL_005fPOOL_005fENTRY">Macro: <strong>ASM_OUTPUT_SPECIAL_POOL_ENTRY</strong> <em>(<var>file</var>, <var>x</var>, <var>mode</var>, <var>align</var>, <var>labelno</var>, <var>jumpto</var>)</em></dt>
 <dd><p>A C statement (with or without semicolon) to output a constant in the
 constant pool, if it needs special treatment.  (This macro need not do
 anything for RTL expressions that can be output normally.)
@@ -191,8 +186,8 @@ the address of this pool entry.  The definition of this macro is
 responsible for outputting the label definition at the proper place.
 Here is how to do this:
 </p>
-<div class="smallexample">
-<pre class="smallexample"><code>(*targetm.asm_out.internal_label)</code> (<var>file</var>, &quot;LC&quot;, <var>labelno</var>);
+<div class="example">
+<pre class="example"><code>(*targetm.asm_out.internal_label)</code> (<var>file</var>, &quot;LC&quot;, <var>labelno</var>);
 </pre></div>
 
 <p>When you output a pool entry specially, you should end with a
@@ -203,7 +198,7 @@ entry from being output a second time in the usual manner.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ASM_005fOUTPUT_005fPOOL_005fEPILOGUE"></a>Macro: <strong>ASM_OUTPUT_POOL_EPILOGUE</strong> <em>(<var>file</var> <var>funname</var> <var>fundecl</var> <var>size</var>)</em></dt>
+<dt id="index-ASM_005fOUTPUT_005fPOOL_005fEPILOGUE">Macro: <strong>ASM_OUTPUT_POOL_EPILOGUE</strong> <em>(<var>file</var> <var>funname</var> <var>fundecl</var> <var>size</var>)</em></dt>
 <dd><p>A C statement to output assembler commands to at the end of the constant
 pool for a function.  <var>funname</var> is a string giving the name of the
 function.  Should the return type of the function be required, you can
@@ -215,7 +210,7 @@ define this macro.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-IS_005fASM_005fLOGICAL_005fLINE_005fSEPARATOR"></a>Macro: <strong>IS_ASM_LOGICAL_LINE_SEPARATOR</strong> <em>(<var>C</var>, <var>STR</var>)</em></dt>
+<dt id="index-IS_005fASM_005fLOGICAL_005fLINE_005fSEPARATOR">Macro: <strong>IS_ASM_LOGICAL_LINE_SEPARATOR</strong> <em>(<var>C</var>, <var>STR</var>)</em></dt>
 <dd><p>Define this macro as a C expression which is nonzero if <var>C</var> is
 used as a logical line separator by the assembler.  <var>STR</var> points
 to the position in the string where <var>C</var> was found; this can be used if
@@ -226,8 +221,8 @@ the character &lsquo;<samp>;</samp>&rsquo; is treated as a logical line separato
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fASM_005fOPEN_005fPAREN"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_OPEN_PAREN</strong></dt>
-<dt><a name="index-TARGET_005fASM_005fCLOSE_005fPAREN"></a>Target Hook: <em>const char *</em> <strong>TARGET_ASM_CLOSE_PAREN</strong></dt>
+<dt id="index-TARGET_005fASM_005fOPEN_005fPAREN">Target Hook: <em>const char *</em> <strong>TARGET_ASM_OPEN_PAREN</strong></dt>
+<dt id="index-TARGET_005fASM_005fCLOSE_005fPAREN">Target Hook: <em>const char *</em> <strong>TARGET_ASM_CLOSE_PAREN</strong></dt>
 <dd><p>These target hooks are C string constants, describing the syntax in the
 assembler for grouping arithmetic expressions.  If not overridden, they
 default to normal parentheses, which is correct for most assemblers.
@@ -237,12 +232,12 @@ default to normal parentheses, which is correct for most assemblers.
 of <code>ASM_OUTPUT_DOUBLE</code> and the like:
 </p>
 <dl>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fSINGLE"></a>Macro: <strong>REAL_VALUE_TO_TARGET_SINGLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fDOUBLE"></a>Macro: <strong>REAL_VALUE_TO_TARGET_DOUBLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fLONG_005fDOUBLE"></a>Macro: <strong>REAL_VALUE_TO_TARGET_LONG_DOUBLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL32"></a>Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL32</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL64"></a>Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL64</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
-<dt><a name="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL128"></a>Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL128</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fSINGLE">Macro: <strong>REAL_VALUE_TO_TARGET_SINGLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fDOUBLE">Macro: <strong>REAL_VALUE_TO_TARGET_DOUBLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fLONG_005fDOUBLE">Macro: <strong>REAL_VALUE_TO_TARGET_LONG_DOUBLE</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL32">Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL32</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL64">Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL64</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
+<dt id="index-REAL_005fVALUE_005fTO_005fTARGET_005fDECIMAL128">Macro: <strong>REAL_VALUE_TO_TARGET_DECIMAL128</strong> <em>(<var>x</var>, <var>l</var>)</em></dt>
 <dd><p>These translate <var>x</var>, of type <code>REAL_VALUE_TYPE</code>, to the
 target&rsquo;s floating point representation, and store its bit pattern in
 the variable <var>l</var>.  For <code>REAL_VALUE_TO_TARGET_SINGLE</code> and
@@ -262,7 +257,7 @@ machine&rsquo;s memory.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Uninitialized-Data.html#Uninitialized-Data" accesskey="n" rel="next">Uninitialized Data</a>, Previous: <a href="File-Framework.html#File-Framework" accesskey="p" rel="prev">File Framework</a>, Up: <a href="Assembler-Format.html#Assembler-Format" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Uninitialized-Data.html" accesskey="n" rel="next">Uninitialized Data</a>, Previous: <a href="File-Framework.html" accesskey="p" rel="prev">File Framework</a>, Up: <a href="Assembler-Format.html" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

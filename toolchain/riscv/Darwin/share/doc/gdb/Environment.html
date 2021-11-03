@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Environment (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Running.html#Running" rel="up" title="Running">
-<link href="Working-Directory.html#Working-Directory" rel="next" title="Working Directory">
-<link href="Arguments.html#Arguments" rel="prev" title="Arguments">
+<link href="Running.html" rel="up" title="Running">
+<link href="Working-Directory.html" rel="next" title="Working Directory">
+<link href="Arguments.html" rel="prev" title="Arguments">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,16 +51,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Environment"></a>
-<div class="header">
+<span id="Environment"></span><div class="header">
 <p>
-Next: <a href="Working-Directory.html#Working-Directory" accesskey="n" rel="next">Working Directory</a>, Previous: <a href="Arguments.html#Arguments" accesskey="p" rel="prev">Arguments</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Working-Directory.html" accesskey="n" rel="next">Working Directory</a>, Previous: <a href="Arguments.html" accesskey="p" rel="prev">Arguments</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Your-Program_0027s-Environment"></a>
-<h3 class="section">4.4 Your Program&rsquo;s Environment</h3>
+<span id="Your-Program_0027s-Environment"></span><h3 class="section">4.4 Your Program&rsquo;s Environment</h3>
 
-<a name="index-environment-_0028of-your-program_0029"></a>
+<span id="index-environment-_0028of-your-program_0029"></span>
 <p>The <em>environment</em> consists of a set of environment variables and
 their values.  Environment variables conventionally record such things as
 your user name, your home directory, your terminal type, and your search
@@ -79,7 +68,7 @@ debugging, it can be useful to try running your program with a modified
 environment without having to start <small>GDB</small> over again.
 </p>
 <dl compact="compact">
-<dd><a name="index-path"></a>
+<dd><span id="index-path"></span>
 </dd>
 <dt><code>path <var>directory</var></code></dt>
 <dd><p>Add <var>directory</var> to the front of the <code>PATH</code> environment variable
@@ -97,13 +86,13 @@ use &lsquo;<samp>.</samp>&rsquo; instead, it refers to the directory where you e
 <var>directory</var> argument (with the current path) before adding
 <var>directory</var> to the search path.
 </p>
-<a name="index-show-paths"></a>
+<span id="index-show-paths"></span>
 </dd>
 <dt><code>show paths</code></dt>
 <dd><p>Display the list of search paths for executables (the <code>PATH</code>
 environment variable).
 </p>
-<a name="index-show-environment"></a>
+<span id="index-show-environment"></span>
 </dd>
 <dt><code>show environment <span class="roman">[</span><var>varname</var><span class="roman">]</span></code></dt>
 <dd><p>Print the value of environment variable <var>varname</var> to be given to
@@ -111,8 +100,8 @@ your program when it starts.  If you do not supply <var>varname</var>,
 print the names and values of all environment variables to be given to
 your program.  You can abbreviate <code>environment</code> as <code>env</code>.
 </p>
-<a name="index-set-environment"></a>
-<a name="set-environment"></a></dd>
+<span id="index-set-environment"></span>
+<span id="set-environment"></span></dd>
 <dt><code>set environment <var>varname</var> <span class="roman">[</span>=<var>value</var><span class="roman">]</span></code></dt>
 <dd><p>Set environment variable <var>varname</var> to <var>value</var>.  The value
 changes for your program (and the shell <small>GDB</small> uses to launch
@@ -124,8 +113,8 @@ null value.
 </p>
 <p>For example, this command:
 </p>
-<div class="smallexample">
-<pre class="smallexample">set env USER = foo
+<div class="example">
+<pre class="example">set env USER = foo
 </pre></div>
 
 <p>tells the debugged program, when subsequently run, that its user is named
@@ -141,8 +130,8 @@ wrapper instead of using <code>set environment</code>.  See <a href="Starting.ht
 <code>gdbserver</code> to be used when starting the remote inferior.
 see <a href="General-Query-Packets.html#QEnvironmentHexEncoded">QEnvironmentHexEncoded</a>.
 </p>
-<a name="index-unset-environment"></a>
-<a name="unset-environment"></a></dd>
+<span id="index-unset-environment"></span>
+<span id="unset-environment"></span></dd>
 <dt><code>unset environment <var>varname</var></code></dt>
 <dd><p>Remove variable <var>varname</var> from the environment to be passed to your
 program.  This is different from &lsquo;<samp>set env <var>varname</var> =</samp>&rsquo;;
@@ -169,7 +158,7 @@ variables to files that are only run when you sign on, such as
 <hr>
 <div class="header">
 <p>
-Next: <a href="Working-Directory.html#Working-Directory" accesskey="n" rel="next">Working Directory</a>, Previous: <a href="Arguments.html#Arguments" accesskey="p" rel="prev">Arguments</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Working-Directory.html" accesskey="n" rel="next">Working Directory</a>, Previous: <a href="Arguments.html" accesskey="p" rel="prev">Arguments</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

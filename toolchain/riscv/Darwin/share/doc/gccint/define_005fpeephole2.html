@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>define_peephole2 (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Peephole-Definitions.html#Peephole-Definitions" rel="up" title="Peephole Definitions">
-<link href="Insn-Attributes.html#Insn-Attributes" rel="next" title="Insn Attributes">
-<link href="define_005fpeephole.html#define_005fpeephole" rel="prev" title="define_peephole">
+<link href="Peephole-Definitions.html" rel="up" title="Peephole Definitions">
+<link href="Insn-Attributes.html" rel="next" title="Insn Attributes">
+<link href="define_005fpeephole.html" rel="prev" title="define_peephole">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,23 +58,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="define_005fpeephole2"></a>
-<div class="header">
+<span id="define_005fpeephole2"></span><div class="header">
 <p>
-Previous: <a href="define_005fpeephole.html#define_005fpeephole" accesskey="p" rel="prev">define_peephole</a>, Up: <a href="Peephole-Definitions.html#Peephole-Definitions" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="define_005fpeephole.html" accesskey="p" rel="prev">define_peephole</a>, Up: <a href="Peephole-Definitions.html" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="RTL-to-RTL-Peephole-Optimizers"></a>
-<h4 class="subsection">17.18.2 RTL to RTL Peephole Optimizers</h4>
-<a name="index-define_005fpeephole2"></a>
+<span id="RTL-to-RTL-Peephole-Optimizers"></span><h4 class="subsection">17.18.2 RTL to RTL Peephole Optimizers</h4>
+<span id="index-define_005fpeephole2"></span>
 
 <p>The <code>define_peephole2</code> definition tells the compiler how to
 substitute one sequence of instructions for another sequence,
 what additional scratch registers may be needed and what their
 lifetimes must be.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole2
+<div class="example">
+<pre class="example">(define_peephole2
   [<var>insn-pattern-1</var>
    <var>insn-pattern-2</var>
    &hellip;]
@@ -95,15 +84,15 @@ lifetimes must be.
 </pre></div>
 
 <p>The definition is almost identical to <code>define_split</code>
-(see <a href="Insn-Splitting.html#Insn-Splitting">Insn Splitting</a>) except that the pattern to match is not a
+(see <a href="Insn-Splitting.html">Insn Splitting</a>) except that the pattern to match is not a
 single instruction, but a sequence of instructions.
 </p>
 <p>It is possible to request additional scratch registers for use in the
 output template.  If appropriate registers are not free, the pattern
 will simply not match.
 </p>
-<a name="index-match_005fscratch-1"></a>
-<a name="index-match_005fdup-1"></a>
+<span id="index-match_005fscratch-1"></span>
+<span id="index-match_005fdup-1"></span>
 <p>Scratch registers are requested with a <code>match_scratch</code> pattern at
 the top level of the input pattern.  The allocated register (initially) will
 be dead at the point requested within the original sequence.  If the scratch
@@ -113,8 +102,8 @@ at which the register must be available.
 </p>
 <p>Here is an example from the IA-32 machine description:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole2
+<div class="example">
+<pre class="example">(define_peephole2
   [(match_scratch:SI 2 &quot;r&quot;)
    (parallel [(set (match_operand:SI 0 &quot;register_operand&quot; &quot;&quot;)
                    (match_operator:SI 3 &quot;arith_or_logical_operator&quot;
@@ -137,8 +126,8 @@ to be live only at the point just before the arithmetic.
 <p>A real example requiring extended scratch lifetimes is harder to come by,
 so here&rsquo;s a silly made-up example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_peephole2
+<div class="example">
+<pre class="example">(define_peephole2
   [(match_scratch:SI 4 &quot;r&quot;)
    (set (match_operand:SI 0 &quot;&quot; &quot;&quot;) (match_operand:SI 1 &quot;&quot; &quot;&quot;))
    (set (match_operand:SI 2 &quot;&quot; &quot;&quot;) (match_dup 1))
@@ -152,6 +141,36 @@ so here&rsquo;s a silly made-up example:
   &quot;&quot;)
 </pre></div>
 
+<p>There are two special macros defined for use in the preparation statements:
+<code>DONE</code> and <code>FAIL</code>.  Use them with a following semicolon,
+as a statement.
+</p>
+<dl compact="compact">
+<dd>
+<span id="index-DONE-2"></span>
+</dd>
+<dt><code>DONE</code></dt>
+<dd><p>Use the <code>DONE</code> macro to end RTL generation for the peephole.  The
+only RTL insns generated as replacement for the matched input insn will
+be those already emitted by explicit calls to <code>emit_insn</code> within
+the preparation statements; the replacement pattern is not used.
+</p>
+<span id="index-FAIL-2"></span>
+</dd>
+<dt><code>FAIL</code></dt>
+<dd><p>Make the <code>define_peephole2</code> fail on this occasion.  When a <code>define_peephole2</code>
+fails, it means that the replacement was not truly available for the
+particular inputs it was given.  In that case, GCC may still apply a
+later <code>define_peephole2</code> that also matches the given insn pattern.
+(Note that this is different from <code>define_split</code>, where <code>FAIL</code>
+prevents the input insn from being split at all.)
+</p></dd>
+</dl>
+
+<p>If the preparation falls through (invokes neither <code>DONE</code> nor
+<code>FAIL</code>), then the <code>define_peephole2</code> uses the replacement
+template.
+</p>
 <p>If we had not added the <code>(match_dup 4)</code> in the middle of the input
 sequence, it might have been the case that the register we chose at the
 beginning of the sequence is killed by the first or second <code>set</code>.
@@ -159,7 +178,7 @@ beginning of the sequence is killed by the first or second <code>set</code>.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="define_005fpeephole.html#define_005fpeephole" accesskey="p" rel="prev">define_peephole</a>, Up: <a href="Peephole-Definitions.html#Peephole-Definitions" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="define_005fpeephole.html" accesskey="p" rel="prev">define_peephole</a>, Up: <a href="Peephole-Definitions.html" accesskey="u" rel="up">Peephole Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

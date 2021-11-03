@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Linker Scripts (Embed with GNU)</title>
@@ -10,32 +10,23 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="leds_002ec.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Libraries.html#Libraries" rel="up" title="Libraries">
-<link href="What-to-do-now.html#What-to-do-now" rel="next" title="What to do now">
-<link href="Crt0.html#Crt0" rel="prev" title="Crt0">
+<link href="Libraries.html" rel="up" title="Libraries">
+<link href="What-to-do-now.html" rel="next" title="What to do now">
+<link href="Crt0.html" rel="prev" title="Crt0">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -47,14 +38,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Linker-Scripts"></a>
-<div class="header">
+<span id="Linker-Scripts"></span><div class="header">
 <p>
-Next: <a href="What-to-do-now.html#What-to-do-now" accesskey="n" rel="next">What to do now</a>, Previous: <a href="Crt0.html#Crt0" accesskey="p" rel="prev">Crt0</a>, Up: <a href="Libraries.html#Libraries" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="What-to-do-now.html" accesskey="n" rel="next">What to do now</a>, Previous: <a href="Crt0.html" accesskey="p" rel="prev">Crt0</a>, Up: <a href="Libraries.html" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Linker-scripts-for-memory-management"></a>
-<h3 class="section">3.2 Linker scripts for memory management</h3>
+<span id="Linker-scripts-for-memory-management"></span><h3 class="section">3.2 Linker scripts for memory management</h3>
 
 <p>The linker script sets up the memory map of an application. It also
 sets up default values for variables used elsewhere by sbrk() and the
@@ -74,10 +63,10 @@ check a few critical addresses like <code>start</code>, <code>bss_end</code>, an
 </p>
 <p>Here&rsquo;s a breakdown of a linker script for a m68k based target board.
 See the file <code>libgloss/m68k/idp.ld</code>, or go to the appendixes in
-the end of the manual. <a href="idp_002eld.html#idp_002eld">Example Linker Script</a>. 
+the end of the manual. <a href="idp_002eld.html">Example Linker Script</a>. 
 </p>
-<div class="smallexample">
-<pre class="smallexample">STARTUP(crt0.o)
+<div class="example">
+<pre class="example">STARTUP(crt0.o)
 OUTPUT_ARCH(m68k)
 INPUT(idp.o)
 SEARCH_DIR(.)
@@ -110,8 +99,8 @@ as it&rsquo;s always needed, it might as well be here as a default.
 <code>SEARCH_DIR</code> specifies the path to look for files, and
 <code>_DYNAMIC</code> means in this case there are no shared libraries. 
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * Setup the memory map of the MC68ec0x0 Board (IDP)
  * stack grows up towards high memory. This works for
  * both the rom68k and the mon68k monitors.
@@ -127,8 +116,8 @@ script. In this case, it&rsquo;s only a pointer to the beginning of free RAM
 space, with an upper limit at 2M. If the output file exceeds the upper
 limit, it will produce an error message.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * stick everything in ram (of course)
  */
 SECTIONS
@@ -161,8 +150,8 @@ all the actual instructions are. This also sets up the <em>CONTRUCTOR</em>
 and the <em>DESTRUCTOR</em> tables for <code>G++</code>. Notice that the section
 description redirects itself to the <em>ram</em> variable setup earlier.
 </p>
-<div class="smallexample">
-<pre class="smallexample">  .talias :	 { }  &gt; ram
+<div class="example">
+<pre class="example">  .talias :	 { }  &gt; ram
   .data  : {
     *(.data)
     CONSTRUCTORS
@@ -174,8 +163,8 @@ description redirects itself to the <em>ram</em> variable setup earlier.
 he initialized data goes. <code>CONSTRUCTORS</code> is a special command used
 by <code>ld</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">  .bss SIZEOF(.data) + ADDR(.data) :
+<div class="example">
+<pre class="example">  .bss SIZEOF(.data) + ADDR(.data) :
   {
    __bss_start = ALIGN(0x8);
    *(.bss)
@@ -206,7 +195,7 @@ are setup here for use by the <code>crt0.o</code> when it zero&rsquo;s the
 <hr>
 <div class="header">
 <p>
-Next: <a href="What-to-do-now.html#What-to-do-now" accesskey="n" rel="next">What to do now</a>, Previous: <a href="Crt0.html#Crt0" accesskey="p" rel="prev">Crt0</a>, Up: <a href="Libraries.html#Libraries" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="What-to-do-now.html" accesskey="n" rel="next">What to do now</a>, Previous: <a href="Crt0.html" accesskey="p" rel="prev">Crt0</a>, Up: <a href="Libraries.html" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

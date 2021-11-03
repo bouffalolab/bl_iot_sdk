@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Warnings and Errors (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Trouble.html#Trouble" rel="up" title="Trouble">
-<link href="Bugs.html#Bugs" rel="next" title="Bugs">
-<link href="Non_002dbugs.html#Non_002dbugs" rel="prev" title="Non-bugs">
+<link href="Trouble.html" rel="up" title="Trouble">
+<link href="Bugs.html" rel="next" title="Bugs">
+<link href="Non_002dbugs.html" rel="prev" title="Non-bugs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,18 +58,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Warnings-and-Errors"></a>
-<div class="header">
+<span id="Warnings-and-Errors"></span><div class="header">
 <p>
-Previous: <a href="Non_002dbugs.html#Non_002dbugs" accesskey="p" rel="prev">Non-bugs</a>, Up: <a href="Trouble.html#Trouble" accesskey="u" rel="up">Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Non_002dbugs.html" accesskey="p" rel="prev">Non-bugs</a>, Up: <a href="Trouble.html" accesskey="u" rel="up">Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Warning-Messages-and-Error-Messages"></a>
-<h3 class="section">13.9 Warning Messages and Error Messages</h3>
+<span id="Warning-Messages-and-Error-Messages"></span><h3 class="section">14.9 Warning Messages and Error Messages</h3>
 
-<a name="index-error-messages"></a>
-<a name="index-warnings-vs-errors"></a>
-<a name="index-messages_002c-warning-and-error"></a>
+<span id="index-error-messages"></span>
+<span id="index-warnings-vs-errors"></span>
+<span id="index-messages_002c-warning-and-error"></span>
 <p>The GNU compiler can produce two kinds of diagnostics: errors and
 warnings.  Each kind has a different purpose:
 </p>
@@ -101,8 +90,8 @@ warnings are issued only if you ask for them, with one of the <samp>-W</samp>
 options (for instance, <samp>-Wall</samp> requests a variety of useful
 warnings).
 </p>
-<a name="index-pedantic-4"></a>
-<a name="index-pedantic_002derrors-3"></a>
+<span id="index-pedantic-4"></span>
+<span id="index-pedantic_002derrors-3"></span>
 <p>GCC always tries to compile your program if possible; it never
 gratuitously rejects a program whose meaning is clear merely because
 (for instance) it fails to conform to a standard.  In some cases,
@@ -113,13 +102,13 @@ such cases; <samp>-pedantic-errors</samp> says to make them errors instead.
 This does not mean that <em>all</em> non-ISO constructs get warnings
 or errors.
 </p>
-<p>See <a href="Warning-Options.html#Warning-Options">Options to Request or Suppress Warnings</a>, for
+<p>See <a href="Warning-Options.html">Options to Request or Suppress Warnings</a>, for
 more detail on these and related command-line options.
 </p>
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Non_002dbugs.html#Non_002dbugs" accesskey="p" rel="prev">Non-bugs</a>, Up: <a href="Trouble.html#Trouble" accesskey="u" rel="up">Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Non_002dbugs.html" accesskey="p" rel="prev">Non-bugs</a>, Up: <a href="Trouble.html" accesskey="u" rel="up">Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -33,7 +33,7 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Match-and-Simplify.html#Match-and-Simplify" rel="up" title="Match and Simplify">
-<link href="Funding.html#Funding" rel="next" title="Funding">
+<link href="Static-Analyzer.html#Static-Analyzer" rel="next" title="Static Analyzer">
 <link href="GIMPLE-API.html#GIMPLE-API" rel="prev" title="GIMPLE API">
 <style type="text/css">
 <!--
@@ -249,7 +249,9 @@ come second in commutative expressions.
 </p>
 <p>The second supported flag is <code>s</code> which tells the code
 generator to fail the pattern if the expression marked with
-<code>s</code> does have more than one use.  For example in
+<code>s</code> does have more than one use and the simplification
+results in an expression with more than one operator.
+For example in
 </p>
 <div class="smallexample">
 <pre class="smallexample">(simplify
@@ -260,6 +262,14 @@ generator to fail the pattern if the expression marked with
 <p>this avoids the association if <code>(pointer_plus @0 @1)</code> is
 used outside of the matched expression and thus it would stay
 live and not trivially removed by dead code elimination.
+Now consider <code>((x + 3) + -3)</code> with the temporary
+holding <code>(x + 3)</code> used elsewhere.  This simplifies down
+to <code>x</code> which is desirable and thus flagging with <code>s</code>
+does not prevent the transform.  Now consider <code>((x + 3) + 1)</code>
+which simplifies to <code>(x + 4)</code>.  Despite being flagged with
+<code>s</code> the simplification will be performed.  The
+simplification of <code>((x + a) + 1)</code> to <code>(x + (a + 1))</code> will
+not performed in this case though.
 </p>
 <p>More features exist to avoid too much repetition.
 </p>
@@ -282,8 +292,8 @@ nested and a <code>for</code> can have multiple operators to iterate.
 </pre></div>
 
 <p>In this example the pattern will be repeated four times with
-<code>opa, opb, opc</code> being <code>plus, minus, plus</code>,
-<code>plus, minus, minus</code>, <code>minus, plus, plus</code>,
+<code>opa, opb, opc</code> being <code>plus, minus, plus</code>;
+<code>plus, minus, minus</code>; <code>minus, plus, plus</code>;
 <code>minus, plus, minus</code>.
 </p>
 <p>To avoid repeating operator lists in <code>for</code> you can name
@@ -368,6 +378,9 @@ to be all either present or not, thus
 patterns only.  If you want to match all four combinations you
 have access to two additional conditional converts as in
 <code>(eq (convert1? @1) (convert2? @2))</code>.
+</p>
+<p>The support for <code>?</code> marking extends to all unary operations
+including predicates you declare yourself with <code>match</code>.
 </p>
 <p>Predicates available from the GCC middle-end need to be made
 available explicitely via <code>define_predicates</code>:

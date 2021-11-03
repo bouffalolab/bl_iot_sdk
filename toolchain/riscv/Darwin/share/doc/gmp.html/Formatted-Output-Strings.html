@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Formatted Output Strings (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Formatted-Output.html#Formatted-Output" rel="up" title="Formatted Output">
-<link href="Formatted-Output-Functions.html#Formatted-Output-Functions" rel="next" title="Formatted Output Functions">
-<link href="Formatted-Output.html#Formatted-Output" rel="prev" title="Formatted Output">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Formatted-Output.html" rel="up" title="Formatted Output">
+<link href="Formatted-Output-Functions.html" rel="next" title="Formatted Output Functions">
+<link href="Formatted-Output.html" rel="prev" title="Formatted Output">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,17 +50,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Formatted-Output-Strings"></a>
-<div class="header">
+<span id="Formatted-Output-Strings"></span><div class="header">
 <p>
-Next: <a href="Formatted-Output-Functions.html#Formatted-Output-Functions" accesskey="n" rel="next">Formatted Output Functions</a>, Previous: <a href="Formatted-Output.html#Formatted-Output" accesskey="p" rel="prev">Formatted Output</a>, Up: <a href="Formatted-Output.html#Formatted-Output" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Formatted-Output-Functions.html" accesskey="n" rel="next">Formatted Output Functions</a>, Previous: <a href="Formatted-Output.html" accesskey="p" rel="prev">Formatted Output</a>, Up: <a href="Formatted-Output.html" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Format-Strings"></a>
-<h3 class="section">10.1 Format Strings</h3>
+<span id="Format-Strings"></span><h3 class="section">10.1 Format Strings</h3>
 
 <p><code>gmp_printf</code> and friends accept format strings similar to the standard C
-<code>printf</code> (see <a href="http://www.gnu.org/software/libc/manual/html_node/Formatted-Output.html#Formatted-Output">Formatted Output</a> in <cite>The GNU C
+<code>printf</code> (see <a href="https://www.gnu.org/software/libc/manual/html_node/Formatted-Output.html#Formatted-Output">Formatted Output</a> in <cite>The GNU C
 Library Reference Manual</cite>).  A format specification is of the form
 </p>
 <div class="example">
@@ -102,7 +91,7 @@ gmp_printf (&quot;limb array %Nx\n&quot;, ptr, size);
 </pre></div>
 
 <p>For &lsquo;<samp>N</samp>&rsquo; the limbs are expected least significant first, as per the
-<code>mpn</code> functions (see <a href="Low_002dlevel-Functions.html#Low_002dlevel-Functions">Low-level Functions</a>).  A negative size can be
+<code>mpn</code> functions (see <a href="Low_002dlevel-Functions.html">Low-level Functions</a>).  A negative size can be
 given to print the value as a negative.
 </p>
 <p>All the standard C <code>printf</code> types behave the same as the C library
@@ -214,7 +203,7 @@ these rules mean that &lsquo;<samp>%Ff</samp>&rsquo;, &lsquo;<samp>%.Ff</samp>&r
 different.
 </p>
 <p>The decimal point character (or string) is taken from the current locale
-settings on systems which provide <code>localeconv</code> (see <a href="http://www.gnu.org/software/libc/manual/html_node/Locales.html#Locales">Locales
+settings on systems which provide <code>localeconv</code> (see <a href="https://www.gnu.org/software/libc/manual/html_node/Locales.html#Locales">Locales
 and Internationalization</a> in <cite>The GNU C Library Reference Manual</cite>).  The C
 library will normally do the same for standard float output.
 </p>
@@ -225,7 +214,7 @@ characters are not recognised.  Perhaps this will change in the future.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Formatted-Output-Functions.html#Formatted-Output-Functions" accesskey="n" rel="next">Formatted Output Functions</a>, Previous: <a href="Formatted-Output.html#Formatted-Output" accesskey="p" rel="prev">Formatted Output</a>, Up: <a href="Formatted-Output.html#Formatted-Output" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Formatted-Output-Functions.html" accesskey="n" rel="next">Formatted Output Functions</a>, Previous: <a href="Formatted-Output.html" accesskey="p" rel="prev">Formatted Output</a>, Up: <a href="Formatted-Output.html" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>gdb man (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Man-Pages.html#Man-Pages" rel="up" title="Man Pages">
-<link href="gdbserver-man.html#gdbserver-man" rel="next" title="gdbserver man">
-<link href="Man-Pages.html#Man-Pages" rel="prev" title="Man Pages">
+<link href="Man-Pages.html" rel="up" title="Man Pages">
+<link href="gdbserver-man.html" rel="next" title="gdbserver man">
+<link href="Man-Pages.html" rel="prev" title="Man Pages">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="gdb-man"></a>
-<div class="header">
+<span id="gdb-man"></span><div class="header">
 <p>
-Next: <a href="gdbserver-man.html#gdbserver-man" accesskey="n" rel="next">gdbserver man</a>, Up: <a href="Man-Pages.html#Man-Pages" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="gdbserver-man.html" accesskey="n" rel="next">gdbserver man</a>, Up: <a href="Man-Pages.html" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="node-heading">gdb man</h4>
-<a name="gdb-man-1"></a>
-<h3 class="heading">gdb man</h3>
+<span id="gdb-man-1"></span><h3 class="heading">gdb man</h3>
 
 
 <p>gdb [<samp>-help</samp>] [<samp>-nh</samp>] [<samp>-nx</samp>] [<samp>-q</samp>]
@@ -110,27 +99,26 @@ by using the command <code>help</code>.
 usual way to start <small>GDB</small> is with one argument or two, specifying an
 executable program as the argument:
 </p>
-<div class="smallexample">
-<pre class="smallexample">gdb program
+<div class="example">
+<pre class="example">gdb program
 </pre></div>
 
 <p>You can also start with both an executable program and a core file specified:
 </p>
-<div class="smallexample">
-<pre class="smallexample">gdb program core
+<div class="example">
+<pre class="example">gdb program core
 </pre></div>
 
-<p>You can, instead, specify a process ID as a second argument, if you want
-to debug a running process:
+<p>You can, instead, specify a process ID as a second argument or use option
+<code>-p</code>, if you want to debug a running process:
 </p>
-<div class="smallexample">
-<pre class="smallexample">gdb program 1234
+<div class="example">
+<pre class="example">gdb program 1234
 gdb -p 1234
 </pre></div>
 
-<p>would attach <small>GDB</small> to process <code>1234</code> (unless you also have a file
-named <samp>1234</samp>; <small>GDB</small> does check for a core file first).
-With option <samp>-p</samp> you can omit the <var>program</var> filename.
+<p>would attach <small>GDB</small> to process <code>1234</code>.  With option <samp>-p</samp> you
+can omit the <var>program</var> filename.
 </p>
 <p>Here are some of the most frequently needed <small>GDB</small> commands:
 </p>
@@ -271,8 +259,8 @@ commands in the command files.
 download and run a program on another computer; in order to make this
 more useful, the message
 </p>
-<div class="smallexample">
-<pre class="smallexample">Program exited normally.
+<div class="example">
+<pre class="example">Program exited normally.
 </pre></div>
 
 <p>(which is ordinarily issued whenever a program running under <small>GDB</small> control
@@ -310,7 +298,7 @@ interface used by <small>GDB</small> for remote debugging.
 <hr>
 <div class="header">
 <p>
-Next: <a href="gdbserver-man.html#gdbserver-man" accesskey="n" rel="next">gdbserver man</a>, Up: <a href="Man-Pages.html#Man-Pages" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="gdbserver-man.html" accesskey="n" rel="next">gdbserver man</a>, Up: <a href="Man-Pages.html" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

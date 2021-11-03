@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Output (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Sequences.html#Sequences" rel="up" title="Sequences">
-<link href="Auto_002dloading-sequences.html#Auto_002dloading-sequences" rel="next" title="Auto-loading sequences">
-<link href="Command-Files.html#Command-Files" rel="prev" title="Command Files">
+<link href="Sequences.html" rel="up" title="Sequences">
+<link href="Auto_002dloading-sequences.html" rel="next" title="Auto-loading sequences">
+<link href="Command-Files.html" rel="prev" title="Command Files">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,14 +51,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Output"></a>
-<div class="header">
+<span id="Output"></span><div class="header">
 <p>
-Next: <a href="Auto_002dloading-sequences.html#Auto_002dloading-sequences" accesskey="n" rel="next">Auto-loading sequences</a>, Previous: <a href="Command-Files.html#Command-Files" accesskey="p" rel="prev">Command Files</a>, Up: <a href="Sequences.html#Sequences" accesskey="u" rel="up">Sequences</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Auto_002dloading-sequences.html" accesskey="n" rel="next">Auto-loading sequences</a>, Previous: <a href="Command-Files.html" accesskey="p" rel="prev">Command Files</a>, Up: <a href="Sequences.html" accesskey="u" rel="up">Sequences</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Commands-for-Controlled-Output"></a>
-<h4 class="subsection">23.1.4 Commands for Controlled Output</h4>
+<span id="Commands-for-Controlled-Output"></span><h4 class="subsection">23.1.4 Commands for Controlled Output</h4>
 
 <p>During the execution of a command file or a user-defined command, normal
 <small>GDB</small> output is suppressed; the only output that appears is what is
@@ -76,7 +65,7 @@ describes three commands useful for generating exactly the output you
 want.
 </p>
 <dl compact="compact">
-<dd><a name="index-echo"></a>
+<dd><span id="index-echo"></span>
 </dd>
 <dt><code>echo <var>text</var></code></dt>
 <dd><p>Print <var>text</var>.  Nonprinting characters can be included in
@@ -92,35 +81,35 @@ To print &lsquo;<samp>&nbsp;<!-- /@w -->and foo =&nbsp;<!-- /@w --></samp>&rsquo
 <p>A backslash at the end of <var>text</var> can be used, as in C, to continue
 the command onto subsequent lines.  For example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">echo This is some text\n\
+<div class="example">
+<pre class="example">echo This is some text\n\
 which is continued\n\
 onto several lines.\n
 </pre></div>
 
 <p>produces the same output as
 </p>
-<div class="smallexample">
-<pre class="smallexample">echo This is some text\n
+<div class="example">
+<pre class="example">echo This is some text\n
 echo which is continued\n
 echo onto several lines.\n
 </pre></div>
 
-<a name="index-output"></a>
+<span id="index-output"></span>
 </dd>
 <dt><code>output <var>expression</var></code></dt>
 <dd><p>Print the value of <var>expression</var> and nothing but that value: no
 newlines, no &lsquo;<samp>$<var>nn</var> = </samp>&rsquo;.  The value is not entered in the
-value history either.  See <a href="Expressions.html#Expressions">Expressions</a>, for more information
+value history either.  See <a href="Expressions.html">Expressions</a>, for more information
 on expressions.
 </p>
 </dd>
 <dt><code>output/<var>fmt</var> <var>expression</var></code></dt>
 <dd><p>Print the value of <var>expression</var> in format <var>fmt</var>.  You can use
-the same formats as for <code>print</code>.  See <a href="Output-Formats.html#Output-Formats">Output
+the same formats as for <code>print</code>.  See <a href="Output-Formats.html">Output
 Formats</a>, for more information.
 </p>
-<a name="index-printf"></a>
+<span id="index-printf"></span>
 </dd>
 <dt><code>printf <var>template</var>, <var>expressions</var>&hellip;</code></dt>
 <dd><p>Print the values of one or more <var>expressions</var> under the control of
@@ -130,8 +119,8 @@ which may be either numbers or pointers.  Their values are printed as
 specified by <var>template</var>, exactly as a C program would do by
 executing the code below:
 </p>
-<div class="smallexample">
-<pre class="smallexample">printf (<var>template</var>, <var>expressions</var>&hellip;);
+<div class="example">
+<pre class="example">printf (<var>template</var>, <var>expressions</var>&hellip;);
 </pre></div>
 
 <p>As in <code>C</code> <code>printf</code>, ordinary characters in <var>template</var>
@@ -143,8 +132,8 @@ printed.
 </p>
 <p>For example, you can print two values in hex like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">printf &quot;foo, bar-foo = 0x%x, 0x%x\n&quot;, foo, bar-foo
+<div class="example">
+<pre class="example">printf &quot;foo, bar-foo = 0x%x, 0x%x\n&quot;, foo, bar-foo
 </pre></div>
 
 <p><code>printf</code> supports all the standard <code>C</code> conversion
@@ -200,11 +189,11 @@ such as width and precision will also be available for <small>GDB</small> to use
 available and the value will be printed in the standard way.
 </p>
 <p>Here&rsquo;s an example of printing DFP types using the above conversion letters:
-</p><div class="smallexample">
-<pre class="smallexample">printf &quot;D32: %Hf - D64: %Df - D128: %DDf\n&quot;,1.2345df,1.2E10dd,1.2E1dl
+</p><div class="example">
+<pre class="example">printf &quot;D32: %Hf - D64: %Df - D128: %DDf\n&quot;,1.2345df,1.2E10dd,1.2E1dl
 </pre></div>
 
-<a name="eval"></a><a name="index-eval"></a>
+<span id="eval"></span><span id="index-eval"></span>
 </dd>
 <dt><code>eval <var>template</var>, <var>expressions</var>&hellip;</code></dt>
 <dd><p>Convert the values of one or more <var>expressions</var> under the control of
@@ -216,7 +205,7 @@ the string <var>template</var> to a command line, and call it.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Auto_002dloading-sequences.html#Auto_002dloading-sequences" accesskey="n" rel="next">Auto-loading sequences</a>, Previous: <a href="Command-Files.html#Command-Files" accesskey="p" rel="prev">Command Files</a>, Up: <a href="Sequences.html#Sequences" accesskey="u" rel="up">Sequences</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Auto_002dloading-sequences.html" accesskey="n" rel="next">Auto-loading sequences</a>, Previous: <a href="Command-Files.html" accesskey="p" rel="prev">Command Files</a>, Up: <a href="Sequences.html" accesskey="u" rel="up">Sequences</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

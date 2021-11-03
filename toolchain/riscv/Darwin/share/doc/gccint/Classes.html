@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Classes (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" rel="up" title="C and C++ Trees">
-<link href="Functions-for-C_002b_002b.html#Functions-for-C_002b_002b" rel="next" title="Functions for C++">
-<link href="Namespaces.html#Namespaces" rel="prev" title="Namespaces">
+<link href="C-and-C_002b_002b-Trees.html" rel="up" title="C and C++ Trees">
+<link href="Functions-for-C_002b_002b.html" rel="next" title="Functions for C++">
+<link href="Namespaces.html" rel="prev" title="Namespaces">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,22 +58,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Classes"></a>
-<div class="header">
+<span id="Classes"></span><div class="header">
 <p>
-Next: <a href="Functions-for-C_002b_002b.html#Functions-for-C_002b_002b" accesskey="n" rel="next">Functions for C++</a>, Previous: <a href="Namespaces.html#Namespaces" accesskey="p" rel="prev">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Functions-for-C_002b_002b.html" accesskey="n" rel="next">Functions for C++</a>, Previous: <a href="Namespaces.html" accesskey="p" rel="prev">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Classes-1"></a>
-<h4 class="subsection">11.10.3 Classes</h4>
-<a name="index-class_002c-scope"></a>
-<a name="index-RECORD_005fTYPE-1"></a>
-<a name="index-UNION_005fTYPE-1"></a>
-<a name="index-CLASSTYPE_005fDECLARED_005fCLASS"></a>
-<a name="index-TYPE_005fBINFO"></a>
-<a name="index-BINFO_005fTYPE"></a>
-<a name="index-TYPE_005fFIELDS-2"></a>
-<a name="index-TYPE_005fVFIELD"></a>
+<span id="Classes-1"></span><h4 class="subsection">11.10.3 Classes</h4>
+<span id="index-class_002c-scope"></span>
+<span id="index-RECORD_005fTYPE-1"></span>
+<span id="index-UNION_005fTYPE-1"></span>
+<span id="index-CLASSTYPE_005fDECLARED_005fCLASS"></span>
+<span id="index-TYPE_005fBINFO"></span>
+<span id="index-BINFO_005fTYPE"></span>
+<span id="index-TYPE_005fFIELDS-2"></span>
+<span id="index-TYPE_005fVFIELD"></span>
 
 <p>Besides namespaces, the other high-level scoping construct in C++ is the
 class.  (Throughout this manual the term <em>class</em> is used to mean the
@@ -154,71 +143,71 @@ virtually or not.  The other flags, <code>BINFO_FLAG_0</code> to
 </p>
 <dl compact="compact">
 <dt><code>LOCAL_CLASS_P</code>
-<a name="index-LOCAL_005fCLASS_005fP"></a>
+<span id="index-LOCAL_005fCLASS_005fP"></span>
 </dt>
 <dd><p>This predicate holds if the class is local class <em>i.e.</em> declared
 inside a function body.
 </p>
 </dd>
 <dt><code>TYPE_POLYMORPHIC_P</code>
-<a name="index-TYPE_005fPOLYMORPHIC_005fP"></a>
+<span id="index-TYPE_005fPOLYMORPHIC_005fP"></span>
 </dt>
 <dd><p>This predicate holds if the class has at least one virtual function
 (declared or inherited).
 </p>
 </dd>
 <dt><code>TYPE_HAS_DEFAULT_CONSTRUCTOR</code>
-<a name="index-TYPE_005fHAS_005fDEFAULT_005fCONSTRUCTOR"></a>
+<span id="index-TYPE_005fHAS_005fDEFAULT_005fCONSTRUCTOR"></span>
 </dt>
 <dd><p>This predicate holds whenever its argument represents a class-type with
 default constructor.
 </p>
 </dd>
 <dt><code>CLASSTYPE_HAS_MUTABLE</code>
-<a name="index-CLASSTYPE_005fHAS_005fMUTABLE"></a>
+<span id="index-CLASSTYPE_005fHAS_005fMUTABLE"></span>
 </dt>
 <dt><code>TYPE_HAS_MUTABLE_P</code>
-<a name="index-TYPE_005fHAS_005fMUTABLE_005fP"></a>
+<span id="index-TYPE_005fHAS_005fMUTABLE_005fP"></span>
 </dt>
 <dd><p>These predicates hold for a class-type having a mutable data member.
 </p>
 </dd>
 <dt><code>CLASSTYPE_NON_POD_P</code>
-<a name="index-CLASSTYPE_005fNON_005fPOD_005fP"></a>
+<span id="index-CLASSTYPE_005fNON_005fPOD_005fP"></span>
 </dt>
 <dd><p>This predicate holds only for class-types that are not PODs.
 </p>
 </dd>
 <dt><code>TYPE_HAS_NEW_OPERATOR</code>
-<a name="index-TYPE_005fHAS_005fNEW_005fOPERATOR"></a>
+<span id="index-TYPE_005fHAS_005fNEW_005fOPERATOR"></span>
 </dt>
 <dd><p>This predicate holds for a class-type that defines
 <code>operator new</code>.
 </p>
 </dd>
 <dt><code>TYPE_HAS_ARRAY_NEW_OPERATOR</code>
-<a name="index-TYPE_005fHAS_005fARRAY_005fNEW_005fOPERATOR"></a>
+<span id="index-TYPE_005fHAS_005fARRAY_005fNEW_005fOPERATOR"></span>
 </dt>
 <dd><p>This predicate holds for a class-type for which
 <code>operator new[]</code> is defined.
 </p>
 </dd>
 <dt><code>TYPE_OVERLOADS_CALL_EXPR</code>
-<a name="index-TYPE_005fOVERLOADS_005fCALL_005fEXPR"></a>
+<span id="index-TYPE_005fOVERLOADS_005fCALL_005fEXPR"></span>
 </dt>
 <dd><p>This predicate holds for class-type for which the function call
 <code>operator()</code> is overloaded.
 </p>
 </dd>
 <dt><code>TYPE_OVERLOADS_ARRAY_REF</code>
-<a name="index-TYPE_005fOVERLOADS_005fARRAY_005fREF"></a>
+<span id="index-TYPE_005fOVERLOADS_005fARRAY_005fREF"></span>
 </dt>
 <dd><p>This predicate holds for a class-type that overloads
 <code>operator[]</code>
 </p>
 </dd>
 <dt><code>TYPE_OVERLOADS_ARROW</code>
-<a name="index-TYPE_005fOVERLOADS_005fARROW"></a>
+<span id="index-TYPE_005fOVERLOADS_005fARROW"></span>
 </dt>
 <dd><p>This predicate holds for a class-type for which <code>operator-&gt;</code> is
 overloaded.
@@ -229,7 +218,7 @@ overloaded.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Functions-for-C_002b_002b.html#Functions-for-C_002b_002b" accesskey="n" rel="next">Functions for C++</a>, Previous: <a href="Namespaces.html#Namespaces" accesskey="p" rel="prev">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Functions-for-C_002b_002b.html" accesskey="n" rel="next">Functions for C++</a>, Previous: <a href="Namespaces.html" accesskey="p" rel="prev">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Additions to Ada (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Ada.html#Ada" rel="up" title="Ada">
-<link href="Overloading-support-for-Ada.html#Overloading-support-for-Ada" rel="next" title="Overloading support for Ada">
-<link href="Omissions-from-Ada.html#Omissions-from-Ada" rel="prev" title="Omissions from Ada">
+<link href="Ada.html" rel="up" title="Ada">
+<link href="Overloading-support-for-Ada.html" rel="next" title="Overloading support for Ada">
+<link href="Omissions-from-Ada.html" rel="prev" title="Omissions from Ada">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Additions-to-Ada"></a>
-<div class="header">
+<span id="Additions-to-Ada"></span><div class="header">
 <p>
-Next: <a href="Overloading-support-for-Ada.html#Overloading-support-for-Ada" accesskey="n" rel="next">Overloading support for Ada</a>, Previous: <a href="Omissions-from-Ada.html#Omissions-from-Ada" accesskey="p" rel="prev">Omissions from Ada</a>, Up: <a href="Ada.html#Ada" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Overloading-support-for-Ada.html" accesskey="n" rel="next">Overloading support for Ada</a>, Previous: <a href="Omissions-from-Ada.html" accesskey="p" rel="prev">Omissions from Ada</a>, Up: <a href="Ada.html" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Additions-to-Ada-1"></a>
-<h4 class="subsubsection">15.4.10.3 Additions to Ada</h4>
-<a name="index-Ada_002c-deviations-from"></a>
+<span id="Additions-to-Ada-1"></span><h4 class="subsubsection">15.4.10.3 Additions to Ada</h4>
+<span id="index-Ada_002c-deviations-from"></span>
 
 <p>As it does for other languages, <small>GDB</small> makes certain generic
-extensions to Ada (see <a href="Expressions.html#Expressions">Expressions</a>):
+extensions to Ada (see <a href="Expressions.html">Expressions</a>):
 </p>
 <ul>
 <li> If the expression <var>E</var> is a variable residing in memory (typically
@@ -91,7 +80,7 @@ you must typically surround it in single quotes.
 <var>type</var> that appears at address <var>addr</var>.&rdquo;
 
 </li><li> A name starting with &lsquo;<samp>$</samp>&rsquo; is a convenience variable 
-(see <a href="Convenience-Vars.html#Convenience-Vars">Convenience Vars</a>) or a machine register (see <a href="Registers.html#Registers">Registers</a>).
+(see <a href="Convenience-Vars.html">Convenience Vars</a>) or a machine register (see <a href="Registers.html">Registers</a>).
 </li></ul>
 
 <p>In addition, <small>GDB</small> provides a few other shortcuts and outright
@@ -101,8 +90,8 @@ additions specific to Ada:
 <li> The assignment statement is allowed as an expression, returning
 its right-hand operand as its value.  Thus, you may enter
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) set x := y + 3
+<div class="example">
+<pre class="example">(gdb) set x := y + 3
 (gdb) print A(tmp := y + 1)
 </pre></div>
 
@@ -111,8 +100,8 @@ the value of its right-hand operand.
 This allows, for example,
 complex conditional breaks:
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) break f
+<div class="example">
+<pre class="example">(gdb) break f
 (gdb) condition 1 (report(i); k += 1; A(k) &gt; 100)
 </pre></div>
 
@@ -123,8 +112,8 @@ which is also used to print strings.  A sequence of characters of the form
 (single) character whose numeric encoding is <var>XX</var> in hexadecimal.  The
 sequence of characters &lsquo;<samp>[&quot;&quot;&quot;]</samp>&rsquo; also denotes a single quotation mark 
 in strings.   For example,
-<div class="smallexample">
-<pre class="smallexample">   &quot;One line.[&quot;0a&quot;]Next line.[&quot;0a&quot;]&quot;
+<div class="example">
+<pre class="example">   &quot;One line.[&quot;0a&quot;]Next line.[&quot;0a&quot;]&quot;
 </pre></div>
 <p>contains an ASCII newline character (<code>Ada.Characters.Latin_1.LF</code>)
 after each period.
@@ -133,8 +122,8 @@ after each period.
 <tt>'Max</tt> is optional (and is ignored in any case).  For example, it is valid
 to write
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) print 'max(x, y)
+<div class="example">
+<pre class="example">(gdb) print 'max(x, y)
 </pre></div>
 
 </li><li> When printing arrays, <small>GDB</small> uses positional notation when the 
@@ -142,8 +131,8 @@ array has a lower bound of 1, and uses a modified named notation otherwise.
 For example, a one-dimensional array of three integers with a lower bound
 of 3 might print as
 
-<div class="smallexample">
-<pre class="smallexample">(3 =&gt; 10, 17, 1)
+<div class="example">
+<pre class="example">(3 =&gt; 10, 17, 1)
 </pre></div>
 
 <p>That is, in contrast to valid Ada, only the first component has a <code>=&gt;</code> 
@@ -155,15 +144,15 @@ their names (an exact match gets preference).
 For example, you may use <tt>a'len</tt>, <tt>a'gth</tt>, or <tt>a'lh</tt>
 in place of  <tt>a'length</tt>.
 
-</li><li> <a name="index-quoting-Ada-internal-identifiers"></a>
+</li><li> <span id="index-quoting-Ada-internal-identifiers"></span>
 Since Ada is case-insensitive, the debugger normally maps identifiers you type 
 to lower case.  The GNAT compiler uses upper-case characters for 
 some of its internal identifiers, which are normally of no interest to users.
 For the rare occasions when you actually have to look at them,
 enclose them in angle brackets to avoid the lower-case mapping. 
 For example,
-<div class="smallexample">
-<pre class="smallexample">(gdb) print &lt;JMPBUF_SAVE&gt;[0]
+<div class="example">
+<pre class="example">(gdb) print &lt;JMPBUF_SAVE&gt;[0]
 </pre></div>
 
 </li><li> Printing an object of class-wide type or dereferencing an 
@@ -177,7 +166,7 @@ object.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Overloading-support-for-Ada.html#Overloading-support-for-Ada" accesskey="n" rel="next">Overloading support for Ada</a>, Previous: <a href="Omissions-from-Ada.html#Omissions-from-Ada" accesskey="p" rel="prev">Omissions from Ada</a>, Up: <a href="Ada.html#Ada" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Overloading-support-for-Ada.html" accesskey="n" rel="next">Overloading support for Ada</a>, Previous: <a href="Omissions-from-Ada.html" accesskey="p" rel="prev">Omissions from Ada</a>, Up: <a href="Ada.html" accesskey="u" rel="up">Ada</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

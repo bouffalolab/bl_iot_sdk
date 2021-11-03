@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>x86 transactional memory intrinsics (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Target-Builtins.html#Target-Builtins" rel="up" title="Target Builtins">
-<link href="x86-control_002dflow-protection-intrinsics.html#x86-control_002dflow-protection-intrinsics" rel="next" title="x86 control-flow protection intrinsics">
-<link href="x86-Built_002din-Functions.html#x86-Built_002din-Functions" rel="prev" title="x86 Built-in Functions">
+<link href="Target-Builtins.html" rel="up" title="Target Builtins">
+<link href="x86-control_002dflow-protection-intrinsics.html" rel="next" title="x86 control-flow protection intrinsics">
+<link href="x86-Built_002din-Functions.html" rel="prev" title="x86 Built-in Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,20 +58,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="x86-transactional-memory-intrinsics"></a>
-<div class="header">
+<span id="x86-transactional-memory-intrinsics"></span><div class="header">
 <p>
-Next: <a href="x86-control_002dflow-protection-intrinsics.html#x86-control_002dflow-protection-intrinsics" accesskey="n" rel="next">x86 control-flow protection intrinsics</a>, Previous: <a href="x86-Built_002din-Functions.html#x86-Built_002din-Functions" accesskey="p" rel="prev">x86 Built-in Functions</a>, Up: <a href="Target-Builtins.html#Target-Builtins" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="x86-control_002dflow-protection-intrinsics.html" accesskey="n" rel="next">x86 control-flow protection intrinsics</a>, Previous: <a href="x86-Built_002din-Functions.html" accesskey="p" rel="prev">x86 Built-in Functions</a>, Up: <a href="Target-Builtins.html" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="x86-Transactional-Memory-Intrinsics"></a>
-<h4 class="subsection">6.59.34 x86 Transactional Memory Intrinsics</h4>
+<span id="x86-Transactional-Memory-Intrinsics"></span><h4 class="subsection">6.60.36 x86 Transactional Memory Intrinsics</h4>
 
 <p>These hardware transactional memory intrinsics for x86 allow you to use
 memory transactions with RTM (Restricted Transactional Memory).
 This support is enabled with the <samp>-mrtm</samp> option.
 For using HLE (Hardware Lock Elision) see 
-<a href="x86-specific-memory-model-extensions-for-transactional-memory.html#x86-specific-memory-model-extensions-for-transactional-memory">x86 specific memory model extensions for transactional memory</a> instead.
+<a href="x86-specific-memory-model-extensions-for-transactional-memory.html">x86 specific memory model extensions for transactional memory</a> instead.
 </p>
 <p>A memory transaction commits all changes to memory in an atomic way,
 as visible to other threads. If the transaction fails it is rolled back
@@ -90,7 +79,7 @@ and all side effects discarded.
 and suitable fallback code always needs to be supplied.
 </p>
 <dl>
-<dt><a name="index-_005fxbegin"></a>RTM Function: <em>unsigned</em> <strong>_xbegin</strong> <em>()</em></dt>
+<dt id="index-_005fxbegin">RTM Function: <em>unsigned</em> <strong>_xbegin</strong> <em>()</em></dt>
 <dd><p>Start a RTM (Restricted Transactional Memory) transaction. 
 Returns <code>_XBEGIN_STARTED</code> when the transaction
 started successfully (note this is not 0, so the constant has to be 
@@ -128,19 +117,19 @@ fallback path.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005fxend"></a>RTM Function: <em>void</em> <strong>_xend</strong> <em>()</em></dt>
+<dt id="index-_005fxend">RTM Function: <em>void</em> <strong>_xend</strong> <em>()</em></dt>
 <dd><p>Commit the current transaction. When no transaction is active this faults.
 All memory side effects of the transaction become visible
 to other threads in an atomic manner.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005fxtest"></a>RTM Function: <em>int</em> <strong>_xtest</strong> <em>()</em></dt>
+<dt id="index-_005fxtest">RTM Function: <em>int</em> <strong>_xtest</strong> <em>()</em></dt>
 <dd><p>Return a nonzero value if a transaction is currently active, otherwise 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-_005fxabort"></a>RTM Function: <em>void</em> <strong>_xabort</strong> <em>(status)</em></dt>
+<dt id="index-_005fxabort">RTM Function: <em>void</em> <strong>_xabort</strong> <em>(status)</em></dt>
 <dd><p>Abort the current transaction. When no transaction is active this is a no-op.
 The <var>status</var> is an 8-bit constant; its value is encoded in the return 
 value from <code>_xbegin</code>.
@@ -149,8 +138,8 @@ value from <code>_xbegin</code>.
 <p>Here is an example showing handling for <code>_XABORT_RETRY</code>
 and a fallback path for other failures:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#include &lt;immintrin.h&gt;
+<div class="example">
+<pre class="example">#include &lt;immintrin.h&gt;
 
 int n_tries, max_tries;
 unsigned status = _XABORT_EXPLICIT;
@@ -179,7 +168,7 @@ must synchronize together to ensure consistency.
 <hr>
 <div class="header">
 <p>
-Next: <a href="x86-control_002dflow-protection-intrinsics.html#x86-control_002dflow-protection-intrinsics" accesskey="n" rel="next">x86 control-flow protection intrinsics</a>, Previous: <a href="x86-Built_002din-Functions.html#x86-Built_002din-Functions" accesskey="p" rel="prev">x86 Built-in Functions</a>, Up: <a href="Target-Builtins.html#Target-Builtins" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="x86-control_002dflow-protection-intrinsics.html" accesskey="n" rel="next">x86 control-flow protection intrinsics</a>, Previous: <a href="x86-Built_002din-Functions.html" accesskey="p" rel="prev">x86 Built-in Functions</a>, Up: <a href="Target-Builtins.html" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

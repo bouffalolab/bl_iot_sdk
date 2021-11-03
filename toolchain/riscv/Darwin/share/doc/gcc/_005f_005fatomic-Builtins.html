@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>__atomic Builtins (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C-Extensions.html#C-Extensions" rel="up" title="C Extensions">
-<link href="Integer-Overflow-Builtins.html#Integer-Overflow-Builtins" rel="next" title="Integer Overflow Builtins">
-<link href="_005f_005fsync-Builtins.html#g_t_005f_005fsync-Builtins" rel="prev" title="__sync Builtins">
+<link href="C-Extensions.html" rel="up" title="C Extensions">
+<link href="Integer-Overflow-Builtins.html" rel="next" title="Integer Overflow Builtins">
+<link href="_005f_005fsync-Builtins.html" rel="prev" title="__sync Builtins">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,14 +58,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="g_t_005f_005fatomic-Builtins"></a>
-<div class="header">
+<span id="g_t_005f_005fatomic-Builtins"></span><div class="header">
 <p>
-Next: <a href="Integer-Overflow-Builtins.html#Integer-Overflow-Builtins" accesskey="n" rel="next">Integer Overflow Builtins</a>, Previous: <a href="_005f_005fsync-Builtins.html#g_t_005f_005fsync-Builtins" accesskey="p" rel="prev">__sync Builtins</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Integer-Overflow-Builtins.html" accesskey="n" rel="next">Integer Overflow Builtins</a>, Previous: <a href="_005f_005fsync-Builtins.html" accesskey="p" rel="prev">__sync Builtins</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Built_002din-Functions-for-Memory-Model-Aware-Atomic-Operations"></a>
-<h3 class="section">6.53 Built-in Functions for Memory Model Aware Atomic Operations</h3>
+<span id="Built_002din-Functions-for-Memory-Model-Aware-Atomic-Operations"></span><h3 class="section">6.55 Built-in Functions for Memory Model Aware Atomic Operations</h3>
 
 <p>The following built-in functions approximately match the requirements
 for the C++11 memory model.  They are all
@@ -93,7 +82,7 @@ detailed requirements.
 </p>
 <p>The &lsquo;<samp>__atomic</samp>&rsquo; builtins can be used with any integral scalar or
 pointer type that is 1, 2, 4, or 8 bytes in length.  16-byte integral
-types are also allowed if &lsquo;<samp>__int128</samp>&rsquo; (see <a href="_005f_005fint128.html#g_t_005f_005fint128">__int128</a>) is
+types are also allowed if &lsquo;<samp>__int128</samp>&rsquo; (see <a href="_005f_005fint128.html">__int128</a>) is
 supported by the architecture.
 </p>
 <p>The four non-arithmetic functions (load, store, exchange, and 
@@ -185,7 +174,7 @@ for target use and should be 0.  Use of the predefined atomic values
 ensures proper usage.
 </p>
 <dl>
-<dt><a name="index-_005f_005fatomic_005fload_005fn"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_load_n</strong> <em>(<var>type</var> *ptr, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fload_005fn">Built-in Function: <em><var>type</var></em> <strong>__atomic_load_n</strong> <em>(<var>type</var> *ptr, int memorder)</em></dt>
 <dd><p>This built-in function implements an atomic load operation.  It returns the
 contents of <code>*<var>ptr</var></code>.
 </p>
@@ -196,14 +185,14 @@ and <code>__ATOMIC_CONSUME</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fload"></a>Built-in Function: <em>void</em> <strong>__atomic_load</strong> <em>(<var>type</var> *ptr, <var>type</var> *ret, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fload">Built-in Function: <em>void</em> <strong>__atomic_load</strong> <em>(<var>type</var> *ptr, <var>type</var> *ret, int memorder)</em></dt>
 <dd><p>This is the generic version of an atomic load.  It returns the
 contents of <code>*<var>ptr</var></code> in <code>*<var>ret</var></code>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fstore_005fn"></a>Built-in Function: <em>void</em> <strong>__atomic_store_n</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fstore_005fn">Built-in Function: <em>void</em> <strong>__atomic_store_n</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
 <dd><p>This built-in function implements an atomic store operation.  It writes 
 <code><var>val</var></code> into <code>*<var>ptr</var></code>.  
 </p>
@@ -213,14 +202,14 @@ contents of <code>*<var>ptr</var></code> in <code>*<var>ret</var></code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fstore"></a>Built-in Function: <em>void</em> <strong>__atomic_store</strong> <em>(<var>type</var> *ptr, <var>type</var> *val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fstore">Built-in Function: <em>void</em> <strong>__atomic_store</strong> <em>(<var>type</var> *ptr, <var>type</var> *val, int memorder)</em></dt>
 <dd><p>This is the generic version of an atomic store.  It stores the value
 of <code>*<var>val</var></code> into <code>*<var>ptr</var></code>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fexchange_005fn"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_exchange_n</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fexchange_005fn">Built-in Function: <em><var>type</var></em> <strong>__atomic_exchange_n</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
 <dd><p>This built-in function implements an atomic exchange operation.  It writes
 <var>val</var> into <code>*<var>ptr</var></code>, and returns the previous contents of
 <code>*<var>ptr</var></code>.
@@ -232,7 +221,7 @@ of <code>*<var>val</var></code> into <code>*<var>ptr</var></code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fexchange"></a>Built-in Function: <em>void</em> <strong>__atomic_exchange</strong> <em>(<var>type</var> *ptr, <var>type</var> *val, <var>type</var> *ret, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fexchange">Built-in Function: <em>void</em> <strong>__atomic_exchange</strong> <em>(<var>type</var> *ptr, <var>type</var> *val, <var>type</var> *ret, int memorder)</em></dt>
 <dd><p>This is the generic version of an atomic exchange.  It stores the
 contents of <code>*<var>val</var></code> into <code>*<var>ptr</var></code>. The original value
 of <code>*<var>ptr</var></code> is copied into <code>*<var>ret</var></code>.
@@ -240,24 +229,24 @@ of <code>*<var>ptr</var></code> is copied into <code>*<var>ret</var></code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fcompare_005fexchange_005fn"></a>Built-in Function: <em>bool</em> <strong>__atomic_compare_exchange_n</strong> <em>(<var>type</var> *ptr, <var>type</var> *expected, <var>type</var> desired, bool weak, int success_memorder, int failure_memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fcompare_005fexchange_005fn">Built-in Function: <em>bool</em> <strong>__atomic_compare_exchange_n</strong> <em>(<var>type</var> *ptr, <var>type</var> *expected, <var>type</var> desired, bool weak, int success_memorder, int failure_memorder)</em></dt>
 <dd><p>This built-in function implements an atomic compare and exchange operation.
 This compares the contents of <code>*<var>ptr</var></code> with the contents of
 <code>*<var>expected</var></code>. If equal, the operation is a <em>read-modify-write</em>
 operation that writes <var>desired</var> into <code>*<var>ptr</var></code>.  If they are not
 equal, the operation is a <em>read</em> and the current contents of
-<code>*<var>ptr</var></code> are written into <code>*<var>expected</var></code>.  <var>weak</var> is true
-for weak compare_exchange, which may fail spuriously, and false for
+<code>*<var>ptr</var></code> are written into <code>*<var>expected</var></code>.  <var>weak</var> is <code>true</code>
+for weak compare_exchange, which may fail spuriously, and <code>false</code> for
 the strong variation, which never fails spuriously.  Many targets
 only offer the strong variation and ignore the parameter.  When in doubt, use
 the strong variation.
 </p>
-<p>If <var>desired</var> is written into <code>*<var>ptr</var></code> then true is returned
+<p>If <var>desired</var> is written into <code>*<var>ptr</var></code> then <code>true</code> is returned
 and memory is affected according to the
 memory order specified by <var>success_memorder</var>.  There are no
 restrictions on what memory order can be used here.
 </p>
-<p>Otherwise, false is returned and memory is affected according
+<p>Otherwise, <code>false</code> is returned and memory is affected according
 to <var>failure_memorder</var>. This memory order cannot be
 <code>__ATOMIC_RELEASE</code> nor <code>__ATOMIC_ACQ_REL</code>.  It also cannot be a
 stronger order than that specified by <var>success_memorder</var>.
@@ -265,7 +254,7 @@ stronger order than that specified by <var>success_memorder</var>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fcompare_005fexchange"></a>Built-in Function: <em>bool</em> <strong>__atomic_compare_exchange</strong> <em>(<var>type</var> *ptr, <var>type</var> *expected, <var>type</var> *desired, bool weak, int success_memorder, int failure_memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fcompare_005fexchange">Built-in Function: <em>bool</em> <strong>__atomic_compare_exchange</strong> <em>(<var>type</var> *ptr, <var>type</var> *expected, <var>type</var> *desired, bool weak, int success_memorder, int failure_memorder)</em></dt>
 <dd><p>This built-in function implements the generic version of
 <code>__atomic_compare_exchange</code>.  The function is virtually identical to
 <code>__atomic_compare_exchange_n</code>, except the desired value is also a
@@ -274,19 +263,20 @@ pointer.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fadd_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_add_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005fsub_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_sub_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005fand_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_and_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005fxor_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_xor_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005for_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_or_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005fnand_005ffetch"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_nand_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fadd_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_add_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fsub_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_sub_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fand_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_and_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fxor_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_xor_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005for_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_or_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fnand_005ffetch">Built-in Function: <em><var>type</var></em> <strong>__atomic_nand_fetch</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
 <dd><p>These built-in functions perform the operation suggested by the name, and
 return the result of the operation.  Operations on pointer arguments are
 performed as if the operands were of the <code>uintptr_t</code> type.  That is,
 they are not scaled by the size of the type to which the pointer points.
 </p>
-<div class="smallexample">
-<pre class="smallexample">{ *ptr <var>op</var>= val; return *ptr; }
+<div class="example">
+<pre class="example">{ *ptr <var>op</var>= val; return *ptr; }
+{ *ptr = ~(*ptr &amp; val); return *ptr; } // nand
 </pre></div>
 
 <p>The object pointed to by the first argument must be of integer or pointer
@@ -295,20 +285,21 @@ type.  It must not be a boolean type.  All memory orders are valid.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005ffetch_005fadd"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_add</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005ffetch_005fsub"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_sub</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005ffetch_005fand"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_and</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005ffetch_005fxor"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_xor</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005ffetch_005for"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_or</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
-<dt><a name="index-_005f_005fatomic_005ffetch_005fnand"></a>Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_nand</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005fadd">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_add</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005fsub">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_sub</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005fand">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_and</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005fxor">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_xor</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005for">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_or</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ffetch_005fnand">Built-in Function: <em><var>type</var></em> <strong>__atomic_fetch_nand</strong> <em>(<var>type</var> *ptr, <var>type</var> val, int memorder)</em></dt>
 <dd><p>These built-in functions perform the operation suggested by the name, and
 return the value that had previously been in <code>*<var>ptr</var></code>.  Operations
 on pointer arguments are performed as if the operands were of
 the <code>uintptr_t</code> type.  That is, they are not scaled by the size of
 the type to which the pointer points.
 </p>
-<div class="smallexample">
-<pre class="smallexample">{ tmp = *ptr; *ptr <var>op</var>= val; return tmp; }
+<div class="example">
+<pre class="example">{ tmp = *ptr; *ptr <var>op</var>= val; return tmp; }
+{ tmp = *ptr; *ptr = ~(*ptr &amp; val); return tmp; } // nand
 </pre></div>
 
 <p>The same constraints on arguments apply as for the corresponding
@@ -317,7 +308,7 @@ the type to which the pointer points.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005ftest_005fand_005fset"></a>Built-in Function: <em>bool</em> <strong>__atomic_test_and_set</strong> <em>(void *ptr, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005ftest_005fand_005fset">Built-in Function: <em>bool</em> <strong>__atomic_test_and_set</strong> <em>(void *ptr, int memorder)</em></dt>
 <dd>
 <p>This built-in function performs an atomic test-and-set operation on
 the byte at <code>*<var>ptr</var></code>.  The byte is set to some implementation
@@ -331,7 +322,7 @@ other types only part of the value may be set.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fclear"></a>Built-in Function: <em>void</em> <strong>__atomic_clear</strong> <em>(bool *ptr, int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fclear">Built-in Function: <em>void</em> <strong>__atomic_clear</strong> <em>(bool *ptr, int memorder)</em></dt>
 <dd>
 <p>This built-in function performs an atomic clear operation on
 <code>*<var>ptr</var></code>.  After the operation, <code>*<var>ptr</var></code> contains 0.
@@ -347,7 +338,7 @@ prefer using <code>__atomic_store</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fthread_005ffence"></a>Built-in Function: <em>void</em> <strong>__atomic_thread_fence</strong> <em>(int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fthread_005ffence">Built-in Function: <em>void</em> <strong>__atomic_thread_fence</strong> <em>(int memorder)</em></dt>
 <dd>
 <p>This built-in function acts as a synchronization fence between threads
 based on the specified memory order.
@@ -357,7 +348,7 @@ based on the specified memory order.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fsignal_005ffence"></a>Built-in Function: <em>void</em> <strong>__atomic_signal_fence</strong> <em>(int memorder)</em></dt>
+<dt id="index-_005f_005fatomic_005fsignal_005ffence">Built-in Function: <em>void</em> <strong>__atomic_signal_fence</strong> <em>(int memorder)</em></dt>
 <dd>
 <p>This built-in function acts as a synchronization fence between a thread
 and signal handlers based in the same thread.
@@ -367,9 +358,9 @@ and signal handlers based in the same thread.
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005falways_005flock_005ffree"></a>Built-in Function: <em>bool</em> <strong>__atomic_always_lock_free</strong> <em>(size_t size,  void *ptr)</em></dt>
+<dt id="index-_005f_005fatomic_005falways_005flock_005ffree">Built-in Function: <em>bool</em> <strong>__atomic_always_lock_free</strong> <em>(size_t size,  void *ptr)</em></dt>
 <dd>
-<p>This built-in function returns true if objects of <var>size</var> bytes always
+<p>This built-in function returns <code>true</code> if objects of <var>size</var> bytes always
 generate lock-free atomic instructions for the target architecture.
 <var>size</var> must resolve to a compile-time constant and the result also
 resolves to a compile-time constant.
@@ -378,16 +369,16 @@ resolves to a compile-time constant.
 alignment.  A value of 0 indicates typical alignment should be used.  The 
 compiler may also ignore this parameter.
 </p>
-<div class="smallexample">
-<pre class="smallexample">if (__atomic_always_lock_free (sizeof (long long), 0))
+<div class="example">
+<pre class="example">if (__atomic_always_lock_free (sizeof (long long), 0))
 </pre></div>
 
 </dd></dl>
 
 <dl>
-<dt><a name="index-_005f_005fatomic_005fis_005flock_005ffree"></a>Built-in Function: <em>bool</em> <strong>__atomic_is_lock_free</strong> <em>(size_t size, void *ptr)</em></dt>
+<dt id="index-_005f_005fatomic_005fis_005flock_005ffree">Built-in Function: <em>bool</em> <strong>__atomic_is_lock_free</strong> <em>(size_t size, void *ptr)</em></dt>
 <dd>
-<p>This built-in function returns true if objects of <var>size</var> bytes always
+<p>This built-in function returns <code>true</code> if objects of <var>size</var> bytes always
 generate lock-free atomic instructions for the target architecture.  If
 the built-in function is not known to be lock-free, a call is made to a
 runtime routine named <code>__atomic_is_lock_free</code>.
@@ -400,7 +391,7 @@ compiler may also ignore this parameter.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Integer-Overflow-Builtins.html#Integer-Overflow-Builtins" accesskey="n" rel="next">Integer Overflow Builtins</a>, Previous: <a href="_005f_005fsync-Builtins.html#g_t_005f_005fsync-Builtins" accesskey="p" rel="prev">__sync Builtins</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Integer-Overflow-Builtins.html" accesskey="n" rel="next">Integer Overflow Builtins</a>, Previous: <a href="_005f_005fsync-Builtins.html" accesskey="p" rel="prev">__sync Builtins</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

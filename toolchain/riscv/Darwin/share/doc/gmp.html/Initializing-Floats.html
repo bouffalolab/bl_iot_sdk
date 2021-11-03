@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Initializing Floats (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" rel="up" title="Floating-point Functions">
-<link href="Assigning-Floats.html#Assigning-Floats" rel="next" title="Assigning Floats">
-<link href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" rel="prev" title="Floating-point Functions">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Floating_002dpoint-Functions.html" rel="up" title="Floating-point Functions">
+<link href="Assigning-Floats.html" rel="next" title="Assigning Floats">
+<link href="Floating_002dpoint-Functions.html" rel="prev" title="Floating-point Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,26 +50,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Initializing-Floats"></a>
-<div class="header">
+<span id="Initializing-Floats"></span><div class="header">
 <p>
-Next: <a href="Assigning-Floats.html#Assigning-Floats" accesskey="n" rel="next">Assigning Floats</a>, Previous: <a href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" accesskey="p" rel="prev">Floating-point Functions</a>, Up: <a href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" accesskey="u" rel="up">Floating-point Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Assigning-Floats.html" accesskey="n" rel="next">Assigning Floats</a>, Previous: <a href="Floating_002dpoint-Functions.html" accesskey="p" rel="prev">Floating-point Functions</a>, Up: <a href="Floating_002dpoint-Functions.html" accesskey="u" rel="up">Floating-point Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Initialization-Functions-1"></a>
-<h3 class="section">7.1 Initialization Functions</h3>
-<a name="index-Float-initialization-functions"></a>
-<a name="index-Initialization-functions-3"></a>
+<span id="Initialization-Functions-1"></span><h3 class="section">7.1 Initialization Functions</h3>
+<span id="index-Float-initialization-functions"></span>
+<span id="index-Initialization-functions-3"></span>
 
 <dl>
-<dt><a name="index-mpf_005fset_005fdefault_005fprec"></a>Function: <em>void</em> <strong>mpf_set_default_prec</strong> <em>(mp_bitcnt_t <var>prec</var>)</em></dt>
+<dt id="index-mpf_005fset_005fdefault_005fprec">Function: <em>void</em> <strong>mpf_set_default_prec</strong> <em>(mp_bitcnt_t <var>prec</var>)</em></dt>
 <dd><p>Set the default precision to be <strong>at least</strong> <var>prec</var> bits.  All
 subsequent calls to <code>mpf_init</code> will use this precision, but previously
 initialized variables are unaffected.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005fget_005fdefault_005fprec"></a>Function: <em>mp_bitcnt_t</em> <strong>mpf_get_default_prec</strong> <em>(void)</em></dt>
+<dt id="index-mpf_005fget_005fdefault_005fprec">Function: <em>mp_bitcnt_t</em> <strong>mpf_get_default_prec</strong> <em>(void)</em></dt>
 <dd><p>Return the default precision actually used.
 </p></dd></dl>
 
@@ -87,7 +76,7 @@ it.  The functions <code>mpf_init</code> and <code>mpf_init2</code> are used for
 purpose.
 </p>
 <dl>
-<dt><a name="index-mpf_005finit"></a>Function: <em>void</em> <strong>mpf_init</strong> <em>(mpf_t <var>x</var>)</em></dt>
+<dt id="index-mpf_005finit">Function: <em>void</em> <strong>mpf_init</strong> <em>(mpf_t <var>x</var>)</em></dt>
 <dd><p>Initialize <var>x</var> to 0.  Normally, a variable should be initialized once only
 or at least be cleared, using <code>mpf_clear</code>, between initializations.  The
 precision of <var>x</var> is undefined unless a default precision has already been
@@ -95,14 +84,14 @@ established by a call to <code>mpf_set_default_prec</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005finit2"></a>Function: <em>void</em> <strong>mpf_init2</strong> <em>(mpf_t <var>x</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
+<dt id="index-mpf_005finit2">Function: <em>void</em> <strong>mpf_init2</strong> <em>(mpf_t <var>x</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
 <dd><p>Initialize <var>x</var> to 0 and set its precision to be <strong>at least</strong>
 <var>prec</var> bits.  Normally, a variable should be initialized once only or at
 least be cleared, using <code>mpf_clear</code>, between initializations.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005finits"></a>Function: <em>void</em> <strong>mpf_inits</strong> <em>(mpf_t <var>x</var>, ...)</em></dt>
+<dt id="index-mpf_005finits">Function: <em>void</em> <strong>mpf_inits</strong> <em>(mpf_t <var>x</var>, ...)</em></dt>
 <dd><p>Initialize a NULL-terminated list of <code>mpf_t</code> variables, and set their
 values to 0.  The precision of the initialized variables is undefined unless a
 default precision has already been established by a call to
@@ -110,13 +99,13 @@ default precision has already been established by a call to
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005fclear"></a>Function: <em>void</em> <strong>mpf_clear</strong> <em>(mpf_t <var>x</var>)</em></dt>
+<dt id="index-mpf_005fclear">Function: <em>void</em> <strong>mpf_clear</strong> <em>(mpf_t <var>x</var>)</em></dt>
 <dd><p>Free the space occupied by <var>x</var>.  Make sure to call this function for all
 <code>mpf_t</code> variables when you are done with them.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005fclears"></a>Function: <em>void</em> <strong>mpf_clears</strong> <em>(mpf_t <var>x</var>, ...)</em></dt>
+<dt id="index-mpf_005fclears">Function: <em>void</em> <strong>mpf_clears</strong> <em>(mpf_t <var>x</var>, ...)</em></dt>
 <dd><p>Free the space occupied by a NULL-terminated list of <code>mpf_t</code> variables.
 </p></dd></dl>
 
@@ -139,12 +128,12 @@ iterative algorithms like Newton-Raphson, making the computation precision
 closely match the actual accurate part of the numbers.
 </p>
 <dl>
-<dt><a name="index-mpf_005fget_005fprec"></a>Function: <em>mp_bitcnt_t</em> <strong>mpf_get_prec</strong> <em>(const mpf_t <var>op</var>)</em></dt>
+<dt id="index-mpf_005fget_005fprec">Function: <em>mp_bitcnt_t</em> <strong>mpf_get_prec</strong> <em>(const mpf_t <var>op</var>)</em></dt>
 <dd><p>Return the current precision of <var>op</var>, in bits.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005fset_005fprec"></a>Function: <em>void</em> <strong>mpf_set_prec</strong> <em>(mpf_t <var>rop</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
+<dt id="index-mpf_005fset_005fprec">Function: <em>void</em> <strong>mpf_set_prec</strong> <em>(mpf_t <var>rop</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
 <dd><p>Set the precision of <var>rop</var> to be <strong>at least</strong> <var>prec</var> bits.  The
 value in <var>rop</var> will be truncated to the new precision.
 </p>
@@ -153,7 +142,7 @@ a tight loop.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpf_005fset_005fprec_005fraw"></a>Function: <em>void</em> <strong>mpf_set_prec_raw</strong> <em>(mpf_t <var>rop</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
+<dt id="index-mpf_005fset_005fprec_005fraw">Function: <em>void</em> <strong>mpf_set_prec_raw</strong> <em>(mpf_t <var>rop</var>, mp_bitcnt_t <var>prec</var>)</em></dt>
 <dd><p>Set the precision of <var>rop</var> to be <strong>at least</strong> <var>prec</var> bits,
 without changing the memory allocated.
 </p>
@@ -183,7 +172,7 @@ different purposes during a calculation.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Assigning-Floats.html#Assigning-Floats" accesskey="n" rel="next">Assigning Floats</a>, Previous: <a href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" accesskey="p" rel="prev">Floating-point Functions</a>, Up: <a href="Floating_002dpoint-Functions.html#Floating_002dpoint-Functions" accesskey="u" rel="up">Floating-point Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Assigning-Floats.html" accesskey="n" rel="next">Assigning Floats</a>, Previous: <a href="Floating_002dpoint-Functions.html" accesskey="p" rel="prev">Floating-point Functions</a>, Up: <a href="Floating_002dpoint-Functions.html" accesskey="u" rel="up">Floating-point Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

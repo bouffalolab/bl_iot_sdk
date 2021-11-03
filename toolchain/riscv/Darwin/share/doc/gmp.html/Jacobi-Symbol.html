@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Jacobi Symbol (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" rel="up" title="Greatest Common Divisor Algorithms">
-<link href="Powering-Algorithms.html#Powering-Algorithms" rel="next" title="Powering Algorithms">
-<link href="Extended-GCD.html#Extended-GCD" rel="prev" title="Extended GCD">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Greatest-Common-Divisor-Algorithms.html" rel="up" title="Greatest Common Divisor Algorithms">
+<link href="Powering-Algorithms.html" rel="next" title="Powering Algorithms">
+<link href="Extended-GCD.html" rel="prev" title="Extended GCD">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,21 +50,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Jacobi-Symbol"></a>
-<div class="header">
+<span id="Jacobi-Symbol"></span><div class="header">
 <p>
-Previous: <a href="Extended-GCD.html#Extended-GCD" accesskey="p" rel="prev">Extended GCD</a>, Up: <a href="Greatest-Common-Divisor-Algorithms.html#Greatest-Common-Divisor-Algorithms" accesskey="u" rel="up">Greatest Common Divisor Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Extended-GCD.html" accesskey="p" rel="prev">Extended GCD</a>, Up: <a href="Greatest-Common-Divisor-Algorithms.html" accesskey="u" rel="up">Greatest Common Divisor Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Jacobi-Symbol-1"></a>
-<h4 class="subsection">15.3.5 Jacobi Symbol</h4>
-<a name="index-Jacobi-symbol-algorithm"></a>
+<span id="Jacobi-Symbol-1"></span><h4 class="subsection">15.3.5 Jacobi Symbol</h4>
+<span id="index-Jacobi-symbol-algorithm"></span>
 
 <p>[This section is obsolete.  The current Jacobi code actually uses a very
 efficient algorithm.]
 </p>
 <p><code>mpz_jacobi</code> and <code>mpz_kronecker</code> are currently implemented with a
-simple binary algorithm similar to that described for the GCDs (see <a href="Binary-GCD.html#Binary-GCD">Binary GCD</a>).  They&rsquo;re not very fast when both inputs are large.  Lehmer&rsquo;s multi-step
+simple binary algorithm similar to that described for the GCDs (see <a href="Binary-GCD.html">Binary GCD</a>).  They&rsquo;re not very fast when both inputs are large.  Lehmer&rsquo;s multi-step
 improvement or a binary based multi-step algorithm is likely to be better.
 </p>
 <p>When one operand fits a single limb, and that includes <code>mpz_kronecker_ui</code>

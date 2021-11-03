@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Continuing and Stepping (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Stopping.html#Stopping" rel="up" title="Stopping">
-<link href="Skipping-Over-Functions-and-Files.html#Skipping-Over-Functions-and-Files" rel="next" title="Skipping Over Functions and Files">
-<link href="Breakpoint_002drelated-Warnings.html#Breakpoint_002drelated-Warnings" rel="prev" title="Breakpoint-related Warnings">
+<link href="Stopping.html" rel="up" title="Stopping">
+<link href="Skipping-Over-Functions-and-Files.html" rel="next" title="Skipping Over Functions and Files">
+<link href="Breakpoint_002drelated-Warnings.html" rel="prev" title="Breakpoint-related Warnings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Continuing-and-Stepping"></a>
-<div class="header">
+<span id="Continuing-and-Stepping"></span><div class="header">
 <p>
-Next: <a href="Skipping-Over-Functions-and-Files.html#Skipping-Over-Functions-and-Files" accesskey="n" rel="next">Skipping Over Functions and Files</a>, Previous: <a href="Breakpoints.html#Breakpoints" accesskey="p" rel="prev">Breakpoints</a>, Up: <a href="Stopping.html#Stopping" accesskey="u" rel="up">Stopping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Skipping-Over-Functions-and-Files.html" accesskey="n" rel="next">Skipping Over Functions and Files</a>, Previous: <a href="Breakpoints.html" accesskey="p" rel="prev">Breakpoints</a>, Up: <a href="Stopping.html" accesskey="u" rel="up">Stopping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Continuing-and-Stepping-1"></a>
-<h3 class="section">5.2 Continuing and Stepping</h3>
+<span id="Continuing-and-Stepping-1"></span><h3 class="section">5.2 Continuing and Stepping</h3>
 
-<a name="index-stepping"></a>
-<a name="index-continuing"></a>
-<a name="index-resuming-execution"></a>
+<span id="index-stepping"></span>
+<span id="index-continuing"></span>
+<span id="index-resuming-execution"></span>
 <p><em>Continuing</em> means resuming program execution until your program
 completes normally.  In contrast, <em>stepping</em> means executing just
 one more &ldquo;step&rdquo; of your program, where &ldquo;step&rdquo; may mean either one
@@ -79,13 +68,13 @@ line of source code, or one machine instruction (depending on what
 particular command you use).  Either when continuing or when stepping,
 your program may stop even sooner, due to a breakpoint or a signal.  (If
 it stops due to a signal, you may want to use <code>handle</code>, or use
-&lsquo;<samp>signal 0</samp>&rsquo; to resume execution (see <a href="Signals.html#Signals">Signals</a>),
+&lsquo;<samp>signal 0</samp>&rsquo; to resume execution (see <a href="Signals.html">Signals</a>),
 or you may step into the signal&rsquo;s handler (see <a href="Signals.html#stepping-and-signal-handlers">stepping and signal handlers</a>).)
 </p>
 <dl compact="compact">
-<dd><a name="index-continue"></a>
-<a name="index-c-_0028continue_0029"></a>
-<a name="index-fg-_0028resume-foreground-execution_0029"></a>
+<dd><span id="index-continue"></span>
+<span id="index-c-_0028continue_0029"></span>
+<span id="index-fg-_0028resume-foreground-execution_0029"></span>
 </dd>
 <dt><code>continue <span class="roman">[</span><var>ignore-count</var><span class="roman">]</span></code></dt>
 <dt><code>c <span class="roman">[</span><var>ignore-count</var><span class="roman">]</span></code></dt>
@@ -94,7 +83,7 @@ or you may step into the signal&rsquo;s handler (see <a href="Signals.html#stepp
 any breakpoints set at that address are bypassed.  The optional argument
 <var>ignore-count</var> allows you to specify a further number of times to
 ignore a breakpoint at this location; its effect is like that of
-<code>ignore</code> (see <a href="Conditions.html#Conditions">Break Conditions</a>).
+<code>ignore</code> (see <a href="Conditions.html">Break Conditions</a>).
 </p>
 <p>The argument <var>ignore-count</var> is meaningful only when your program
 stopped due to a breakpoint.  At other times, the argument to
@@ -108,20 +97,20 @@ purely for convenience, and have exactly the same behavior as
 </dl>
 
 <p>To resume execution at a different place, you can use <code>return</code>
-(see <a href="Returning.html#Returning">Returning from a Function</a>) to go back to the
-calling function; or <code>jump</code> (see <a href="Jumping.html#Jumping">Continuing at a
+(see <a href="Returning.html">Returning from a Function</a>) to go back to the
+calling function; or <code>jump</code> (see <a href="Jumping.html">Continuing at a
 Different Address</a>) to go to an arbitrary location in your program.
 </p>
 <p>A typical technique for using stepping is to set a breakpoint
-(see <a href="Breakpoints.html#Breakpoints">Breakpoints; Watchpoints; and Catchpoints</a>) at the
+(see <a href="Breakpoints.html">Breakpoints; Watchpoints; and Catchpoints</a>) at the
 beginning of the function or the section of your program where a problem
 is believed to lie, run your program until it stops at that breakpoint,
 and then step through the suspect area, examining the variables that are
 interesting, until you see the problem happen.
 </p>
 <dl compact="compact">
-<dd><a name="index-step"></a>
-<a name="index-s-_0028step_0029"></a>
+<dd><span id="index-step"></span>
+<span id="index-s-_0028step_0029"></span>
 </dd>
 <dt><code>step</code></dt>
 <dd><p>Continue running your program until control reaches a different source
@@ -157,8 +146,8 @@ was any debugging information about the routine.
 breakpoint is reached, or a signal not related to stepping occurs before
 <var>count</var> steps, stepping stops right away.
 </p>
-<a name="index-next"></a>
-<a name="index-n-_0028next_0029"></a>
+<span id="index-next"></span>
+<span id="index-n-_0028next_0029"></span>
 </dd>
 <dt><code>next <span class="roman">[</span><var>count</var><span class="roman">]</span></code></dt>
 <dd><p>Continue to the next source line in the current (innermost) stack frame.
@@ -176,11 +165,11 @@ is abbreviated <code>n</code>.
 source line.  This prevents multiple stops that could otherwise occur in
 <code>switch</code> statements, <code>for</code> loops, etc.
 </p>
-<a name="index-set-step_002dmode"></a>
+<span id="index-set-step_002dmode"></span>
 </dd>
 <dt><code>set step-mode</code></dt>
-<dd><a name="index-functions-without-line-info_002c-and-stepping"></a>
-<a name="index-stepping-into-functions-with-no-line-info"></a>
+<dd><span id="index-functions-without-line-info_002c-and-stepping"></span>
+<span id="index-stepping-into-functions-with-no-line-info"></span>
 </dd>
 <dt><code>set step-mode on</code></dt>
 <dd><p>The <code>set step-mode on</code> command causes the <code>step</code> command to
@@ -201,19 +190,29 @@ debug information.  This is the default.
 <dd><p>Show whether <small>GDB</small> will stop in or step over functions without
 source line debug information.
 </p>
-<a name="index-finish"></a>
-<a name="index-fin-_0028finish_0029"></a>
+<span id="index-finish"></span>
+<span id="index-fin-_0028finish_0029"></span>
 </dd>
 <dt><code>finish</code></dt>
 <dd><p>Continue running until just after function in the selected stack frame
 returns.  Print the returned value (if any).  This command can be
 abbreviated as <code>fin</code>.
 </p>
-<p>Contrast this with the <code>return</code> command (see <a href="Returning.html#Returning">Returning from a Function</a>).
+<p>Contrast this with the <code>return</code> command (see <a href="Returning.html">Returning from a Function</a>).
 </p>
-<a name="index-until"></a>
-<a name="index-u-_0028until_0029"></a>
-<a name="index-run-until-specified-location"></a>
+<span id="index-set-print-finish"></span>
+<span id="index-show-print-finish"></span>
+</dd>
+<dt><code>set print finish <span class="roman">[</span>on|off<span class="roman">]</span></code></dt>
+<dt><code>show print finish</code></dt>
+<dd><p>By default the <code>finish</code> command will show the value that is
+returned by the function.  This can be disabled using <code>set print
+finish off</code>.  When disabled, the value is still entered into the value
+history (see <a href="Value-History.html">Value History</a>), but not displayed.
+</p>
+<span id="index-until"></span>
+<span id="index-u-_0028until_0029"></span>
+<span id="index-run-until-specified-location"></span>
 </dd>
 <dt><code>until</code></dt>
 <dt><code>u</code></dt>
@@ -239,8 +238,8 @@ example, in the following excerpt from a debugging session, the <code>f</code>
 (<code>frame</code>) command shows that execution is stopped at line
 <code>206</code>; yet when we use <code>until</code>, we get to line <code>195</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) f
+<div class="example">
+<pre class="example">(gdb) f
 #0  main (argc=4, argv=0xf7fffae8) at m4.c:206
 206                 expand_input();
 (gdb) until
@@ -264,7 +263,7 @@ argument.
 <dt><code>u <var>location</var></code></dt>
 <dd><p>Continue running your program until either the specified <var>location</var> is
 reached, or the current stack frame returns.  The location is any of
-the forms described in <a href="Specify-Location.html#Specify-Location">Specify Location</a>.
+the forms described in <a href="Specify-Location.html">Specify Location</a>.
 This form of the command uses temporary breakpoints, and
 hence is quicker than <code>until</code> without an argument.  The specified
 location is actually reached only if it is in the current frame.  This
@@ -274,8 +273,8 @@ line <code>96</code>, issuing <code>until 99</code> will execute the program up 
 line <code>99</code> in the same invocation of factorial, i.e., after the inner
 invocations have returned.
 </p>
-<div class="smallexample">
-<pre class="smallexample">94	int factorial (int value)
+<div class="example">
+<pre class="example">94	int factorial (int value)
 95	{
 96	    if (value &gt; 1) {
 97            value *= factorial (value - 1);
@@ -285,20 +284,20 @@ invocations have returned.
 </pre></div>
 
 
-<a name="index-advance-location"></a>
+<span id="index-advance-location"></span>
 </dd>
 <dt><code>advance <var>location</var></code></dt>
 <dd><p>Continue running the program up to the given <var>location</var>.  An argument is
 required, which should be of one of the forms described in
-<a href="Specify-Location.html#Specify-Location">Specify Location</a>.
+<a href="Specify-Location.html">Specify Location</a>.
 Execution will also stop upon exit from the current stack
 frame.  This command is similar to <code>until</code>, but <code>advance</code> will
 not skip over recursive function calls, and the target location doesn&rsquo;t
 have to be in the same frame as the current one.
 </p>
 
-<a name="index-stepi"></a>
-<a name="index-si-_0028stepi_0029"></a>
+<span id="index-stepi"></span>
+<span id="index-si-_0028stepi_0029"></span>
 </dd>
 <dt><code>stepi</code></dt>
 <dt><code>stepi <var>arg</var></code></dt>
@@ -307,12 +306,12 @@ have to be in the same frame as the current one.
 </p>
 <p>It is often useful to do &lsquo;<samp>display/i $pc</samp>&rsquo; when stepping by machine
 instructions.  This makes <small>GDB</small> automatically display the next
-instruction to be executed, each time your program stops.  See <a href="Auto-Display.html#Auto-Display">Automatic Display</a>.
+instruction to be executed, each time your program stops.  See <a href="Auto-Display.html">Automatic Display</a>.
 </p>
 <p>An argument is a repeat count, as in <code>step</code>.
 </p>
-<a name="index-nexti"></a>
-<a name="index-ni-_0028nexti_0029"></a>
+<span id="index-nexti"></span>
+<span id="index-ni-_0028nexti_0029"></span>
 </dd>
 <dt><code>nexti</code></dt>
 <dt><code>nexti <var>arg</var></code></dt>
@@ -325,8 +324,8 @@ proceed until the function returns.
 </dd>
 </dl>
 
-<a name="range-stepping"></a><a name="index-range-stepping"></a>
-<a name="index-target_002dassisted-range-stepping"></a>
+<span id="range-stepping"></span><span id="index-range-stepping"></span>
+<span id="index-target_002dassisted-range-stepping"></span>
 <p>By default, and if available, <small>GDB</small> makes use of
 target-assisted <em>range stepping</em>.  In other words, whenever you
 use a stepping command (e.g., <code>step</code>, <code>next</code>), <small>GDB</small>
@@ -341,8 +340,8 @@ enabled.  You can use the following command to turn off range stepping
 if necessary:
 </p>
 <dl compact="compact">
-<dd><a name="index-set-range_002dstepping"></a>
-<a name="index-show-range_002dstepping"></a>
+<dd><span id="index-set-range_002dstepping"></span>
+<span id="index-show-range_002dstepping"></span>
 </dd>
 <dt><code>set range-stepping</code></dt>
 <dt><code>show range-stepping</code></dt>
@@ -360,7 +359,7 @@ default is <code>on</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Skipping-Over-Functions-and-Files.html#Skipping-Over-Functions-and-Files" accesskey="n" rel="next">Skipping Over Functions and Files</a>, Previous: <a href="Breakpoints.html#Breakpoints" accesskey="p" rel="prev">Breakpoints</a>, Up: <a href="Stopping.html#Stopping" accesskey="u" rel="up">Stopping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Skipping-Over-Functions-and-Files.html" accesskey="n" rel="next">Skipping Over Functions and Files</a>, Previous: <a href="Breakpoints.html" accesskey="p" rel="prev">Breakpoints</a>, Up: <a href="Stopping.html" accesskey="u" rel="up">Stopping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

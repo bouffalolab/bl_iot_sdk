@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>File layout (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="mmo.html#mmo" rel="up" title="mmo">
-<link href="Symbol_002dtable.html#Symbol_002dtable" rel="next" title="Symbol-table">
-<link href="mmo.html#mmo" rel="prev" title="mmo">
+<link href="mmo.html" rel="up" title="mmo">
+<link href="Symbol_002dtable.html" rel="next" title="Symbol-table">
+<link href="mmo.html" rel="prev" title="mmo">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,26 +60,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="File-layout"></a>
-<div class="header">
+<span id="File-layout"></span><div class="header">
 <p>
-Next: <a href="Symbol_002dtable.html#Symbol_002dtable" accesskey="n" rel="next">Symbol-table</a>, Previous: <a href="mmo.html#mmo" accesskey="p" rel="prev">mmo</a>, Up: <a href="mmo.html#mmo" accesskey="u" rel="up">mmo</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol_002dtable.html" accesskey="n" rel="next">Symbol-table</a>, Previous: <a href="mmo.html" accesskey="p" rel="prev">mmo</a>, Up: <a href="mmo.html" accesskey="u" rel="up">mmo</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="File-layout-2"></a>
-<h4 class="subsection">3.5.1 File layout</h4>
+<span id="File-layout-2"></span><h4 class="subsection">3.5.1 File layout</h4>
 <p>The mmo file contents is not partitioned into named sections as
 with e.g. ELF.  Memory areas is formed by specifying the
 location of the data that follows.  Only the memory area
 &lsquo;<samp>0x0000&hellip;00</samp>&rsquo; to &lsquo;<samp>0x01ff&hellip;ff</samp>&rsquo; is executable, so
 it is used for code (and constants) and the area
 &lsquo;<samp>0x2000&hellip;00</samp>&rsquo; to &lsquo;<samp>0x20ff&hellip;ff</samp>&rsquo; is used for
-writable data.  See <a href="mmo-section-mapping.html#mmo-section-mapping">mmo section mapping</a>.
+writable data.  See <a href="mmo-section-mapping.html">mmo section mapping</a>.
 </p>
 <p>There is provision for specifying &ldquo;special data&rdquo; of 65536
 different types.  We use type 80 (decimal), arbitrarily chosen the
 same as the ELF <code>e_machine</code> number for MMIX, filling it with
-section information normally found in ELF objects. See <a href="mmo-section-mapping.html#mmo-section-mapping">mmo section mapping</a>.
+section information normally found in ELF objects. See <a href="mmo-section-mapping.html">mmo section mapping</a>.
 </p>
 <p>Contents is entered as 32-bit words, xor:ed over previous
 contents, always zero-initialized.  A word that starts with the
@@ -162,7 +151,7 @@ assumed incremented by one.
 <dt><code>lop_spec</code></dt>
 <dd><p>0x9808YYZZ.  &lsquo;<samp>YZ</samp>&rsquo; is the type number.  Data until the next
 lopcode other than lop_quote forms special data of type &lsquo;<samp>YZ</samp>&rsquo;.
-See <a href="mmo-section-mapping.html#mmo-section-mapping">mmo section mapping</a>.
+See <a href="mmo-section-mapping.html">mmo section mapping</a>.
 </p>
 <p>Other types than 80, (or type 80 with a content that does not
 parse) is stored in sections named <code>.MMIX.spec_data.<var>n</var></code>
@@ -191,7 +180,7 @@ into global registers &lsquo;<samp>$G</samp>&rsquo; &hellip; &lsquo;<samp>$255</
 <dd><p>0x980b0000.  The next-to-last lopcode in a program.  Must follow
 immediately after the lop_post lopcode and its data.  After this
 lopcode follows all symbols in a compressed format
-(see <a href="Symbol_002dtable.html#Symbol_002dtable">Symbol-table</a>).
+(see <a href="Symbol_002dtable.html">Symbol-table</a>).
 </p>
 </dd>
 <dt><code>lop_end</code></dt>
@@ -230,7 +219,7 @@ generated by <code>mmixal</code>.
  0x00000000
  0x00000000
  0x980b0000 - lop_stab for &quot;:Main&quot; = 0, serial 1.
- 0x203a4040   See <a href="Symbol_002dtable.html#Symbol_002dtable">Symbol-table</a>.
+ 0x203a4040   See <a href="Symbol_002dtable.html">Symbol-table</a>.
  0x10404020
  0x4d206120
  0x69016e00
@@ -240,7 +229,7 @@ generated by <code>mmixal</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Symbol_002dtable.html#Symbol_002dtable" accesskey="n" rel="next">Symbol-table</a>, Previous: <a href="mmo.html#mmo" accesskey="p" rel="prev">mmo</a>, Up: <a href="mmo.html#mmo" accesskey="u" rel="up">mmo</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol_002dtable.html" accesskey="n" rel="next">Symbol-table</a>, Previous: <a href="mmo.html" accesskey="p" rel="prev">mmo</a>, Up: <a href="mmo.html" accesskey="u" rel="up">mmo</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

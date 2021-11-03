@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>All-Stop Mode (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Thread-Stops.html#Thread-Stops" rel="up" title="Thread Stops">
-<link href="Non_002dStop-Mode.html#Non_002dStop-Mode" rel="next" title="Non-Stop Mode">
-<link href="Thread-Stops.html#Thread-Stops" rel="prev" title="Thread Stops">
+<link href="Thread-Stops.html" rel="up" title="Thread Stops">
+<link href="Non_002dStop-Mode.html" rel="next" title="Non-Stop Mode">
+<link href="Thread-Stops.html" rel="prev" title="Thread Stops">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,16 +51,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="All_002dStop-Mode"></a>
-<div class="header">
+<span id="All_002dStop-Mode"></span><div class="header">
 <p>
-Next: <a href="Non_002dStop-Mode.html#Non_002dStop-Mode" accesskey="n" rel="next">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Non_002dStop-Mode.html" accesskey="n" rel="next">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="All_002dStop-Mode-1"></a>
-<h4 class="subsection">5.5.1 All-Stop Mode</h4>
+<span id="All_002dStop-Mode-1"></span><h4 class="subsection">5.5.1 All-Stop Mode</h4>
 
-<a name="index-all_002dstop-mode"></a>
+<span id="index-all_002dstop-mode"></span>
 
 <p>In all-stop mode, whenever your program stops under <small>GDB</small> for any reason,
 <em>all</em> threads of execution stop, not just the current thread.  This
@@ -94,9 +83,9 @@ continuing or even single-stepping.  This happens whenever some other
 thread runs into a breakpoint, a signal, or an exception before the
 first thread completes whatever you requested.
 </p>
-<a name="index-automatic-thread-selection"></a>
-<a name="index-switching-threads-automatically"></a>
-<a name="index-threads_002c-automatic-switching"></a>
+<span id="index-automatic-thread-selection"></span>
+<span id="index-switching-threads-automatically"></span>
+<span id="index-threads_002c-automatic-switching"></span>
 <p>Whenever <small>GDB</small> stops your program, due to a breakpoint or a
 signal, it automatically selects the thread where that breakpoint or
 signal happened.  <small>GDB</small> alerts you to the context switch with a
@@ -108,8 +97,8 @@ locking the OS scheduler to allow only a single thread to run.
 </p>
 <dl compact="compact">
 <dt><code>set scheduler-locking <var>mode</var></code></dt>
-<dd><a name="index-scheduler-locking-mode"></a>
-<a name="index-lock-scheduler"></a>
+<dd><span id="index-scheduler-locking-mode"></span>
+<span id="index-lock-scheduler"></span>
 <p>Set the scheduler locking mode.  It applies to normal execution,
 record mode, and replay mode.  If it is <code>off</code>, then there is no
 locking and any thread may run at any time.  If <code>on</code>, then only
@@ -131,7 +120,7 @@ current thread away from the thread that you are debugging.  The
 </p></dd>
 </dl>
 
-<a name="index-resume-threads-of-multiple-processes-simultaneously"></a>
+<span id="index-resume-threads-of-multiple-processes-simultaneously"></span>
 <p>By default, when you issue one of the execution commands such as
 <code>continue</code>, <code>next</code> or <code>step</code>, <small>GDB</small> allows only
 threads of the current inferior to run.  For example, if <small>GDB</small>
@@ -147,7 +136,7 @@ you can instruct <small>GDB</small> to allow all threads of all the
 inferiors to run with the <code>set&nbsp;<span class="nolinebreak">schedule-multiple</span></code><!-- /@w --> command.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-schedule_002dmultiple"></a>
+<dd><span id="index-set-schedule_002dmultiple"></span>
 </dd>
 <dt><code>set schedule-multiple</code></dt>
 <dd><p>Set the mode for allowing threads of multiple processes to be resumed
@@ -167,7 +156,7 @@ multiple processes.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Non_002dStop-Mode.html#Non_002dStop-Mode" accesskey="n" rel="next">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Non_002dStop-Mode.html" accesskey="n" rel="next">Non-Stop Mode</a>, Up: <a href="Thread-Stops.html" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Remote Non-Stop (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Protocol.html#Remote-Protocol" rel="up" title="Remote Protocol">
-<link href="Packet-Acknowledgment.html#Packet-Acknowledgment" rel="next" title="Packet Acknowledgment">
-<link href="Notification-Packets.html#Notification-Packets" rel="prev" title="Notification Packets">
+<link href="Remote-Protocol.html" rel="up" title="Remote Protocol">
+<link href="Packet-Acknowledgment.html" rel="next" title="Packet Acknowledgment">
+<link href="Notification-Packets.html" rel="prev" title="Notification Packets">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Remote-Non_002dStop"></a>
-<div class="header">
+<span id="Remote-Non_002dStop"></span><div class="header">
 <p>
-Next: <a href="Packet-Acknowledgment.html#Packet-Acknowledgment" accesskey="n" rel="next">Packet Acknowledgment</a>, Previous: <a href="Notification-Packets.html#Notification-Packets" accesskey="p" rel="prev">Notification Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Packet-Acknowledgment.html" accesskey="n" rel="next">Packet Acknowledgment</a>, Previous: <a href="Notification-Packets.html" accesskey="p" rel="prev">Notification Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Remote-Protocol-Support-for-Non_002dStop-Mode"></a>
-<h3 class="section">E.10 Remote Protocol Support for Non-Stop Mode</h3>
+<span id="Remote-Protocol-Support-for-Non_002dStop-Mode"></span><h3 class="section">E.10 Remote Protocol Support for Non-Stop Mode</h3>
 
 <p><small>GDB</small>&rsquo;s remote protocol supports non-stop debugging of
-multi-threaded programs, as described in <a href="Non_002dStop-Mode.html#Non_002dStop-Mode">Non-Stop Mode</a>.  If the stub
+multi-threaded programs, as described in <a href="Non_002dStop-Mode.html">Non-Stop Mode</a>.  If the stub
 supports non-stop mode, it should report that to <small>GDB</small> by including
 &lsquo;<samp>QNonStop+</samp>&rsquo; in its &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="General-Query-Packets.html#qSupported">qSupported</a>).
 </p>
@@ -83,7 +72,7 @@ probe the target state after a mode change.
 </p>
 <p>In non-stop mode, when an attached process encounters an event that
 would otherwise be reported with a stop reply, it uses the
-asynchronous notification mechanism (see <a href="Notification-Packets.html#Notification-Packets">Notification Packets</a>) to
+asynchronous notification mechanism (see <a href="Notification-Packets.html">Notification Packets</a>) to
 inform <small>GDB</small>.  In contrast to all-stop mode, where all threads
 in all processes are stopped when a stop reply is sent, in non-stop
 mode only the thread reporting the stop event is stopped.  That is,
@@ -123,7 +112,7 @@ necessary, such as on the x86 architecture.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Packet-Acknowledgment.html#Packet-Acknowledgment" accesskey="n" rel="next">Packet Acknowledgment</a>, Previous: <a href="Notification-Packets.html#Notification-Packets" accesskey="p" rel="prev">Notification Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Packet-Acknowledgment.html" accesskey="n" rel="next">Packet Acknowledgment</a>, Previous: <a href="Notification-Packets.html" accesskey="p" rel="prev">Notification Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

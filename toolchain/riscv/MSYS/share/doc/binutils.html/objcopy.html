@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -92,6 +92,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--interleave-width=</samp><var>width</var>]
         [<samp>-j</samp> <var>sectionpattern</var>|<samp>--only-section=</samp><var>sectionpattern</var>]
         [<samp>-R</samp> <var>sectionpattern</var>|<samp>--remove-section=</samp><var>sectionpattern</var>]
+        [<samp>--keep-section=</samp><var>sectionpattern</var>]
         [<samp>--remove-relocations=</samp><var>sectionpattern</var>]
         [<samp>-p</samp>|<samp>--preserve-dates</samp>]
         [<samp>-D</samp>|<samp>--enable-deterministic-archives</samp>]
@@ -107,6 +108,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--change-section-vma</samp> <var>sectionpattern</var>{=,+,-}<var>val</var>]
         [<samp>--change-warnings</samp>] [<samp>--no-change-warnings</samp>]
         [<samp>--set-section-flags</samp> <var>sectionpattern</var>=<var>flags</var>]
+        [<samp>--set-section-alignment</samp> <var>sectionpattern</var>=<var>align</var>]
         [<samp>--add-section</samp> <var>sectionname</var>=<var>filename</var>]
         [<samp>--dump-section</samp> <var>sectionname</var>=<var>filename</var>]
         [<samp>--update-section</samp> <var>sectionname</var>=<var>filename</var>]
@@ -150,6 +152,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--elf-stt-common=<var>val</var></samp>]
         [<samp>--merge-notes</samp>]
         [<samp>--no-merge-notes</samp>]
+        [<samp>--verilog-data-width=<var>val</var></samp>]
         [<samp>-v</samp>|<samp>--verbose</samp>]
         [<samp>-V</samp>|<samp>--version</samp>]
         [<samp>--help</samp>] [<samp>--info</samp>]
@@ -274,6 +277,11 @@ would otherwise remove it.  For example:
 
 <p>will remove all sections matching the pattern &rsquo;.text.*&rsquo;, but will not
 remove the section &rsquo;.text.foo&rsquo;.
+</p>
+</dd>
+<dt><code>--keep-section=<var>sectionpattern</var></code></dt>
+<dd><p>When removing sections from the output file, keep sections that match
+<var>sectionpattern</var>.
 </p>
 </dd>
 <dt><code>--remove-relocations=<var>sectionpattern</var></code></dt>
@@ -495,15 +503,17 @@ filled in with the value specified by <samp>--gap-fill</samp> (default zero).
 </p>
 </dd>
 <dt><code>--set-start <var>val</var></code></dt>
-<dd><p>Set the start address of the new file to <var>val</var>.  Not all object file
-formats support setting the start address.
+<dd><p>Set the start address (also known as the entry address) of the new
+file to <var>val</var>.  Not all object file formats support setting the
+start address.
 </p>
 </dd>
 <dt><code>--change-start <var>incr</var></code></dt>
 <dt><code>--adjust-start <var>incr</var></code></dt>
 <dd><a name="index-changing-start-address"></a>
-<p>Change the start address by adding <var>incr</var>.  Not all object file
-formats support setting the start address.
+<p>Change the start address (also known as the entry address) by adding
+<var>incr</var>.  Not all object file formats support setting the start
+address.
 </p>
 </dd>
 <dt><code>--change-addresses <var>incr</var></code></dt>
@@ -579,11 +589,19 @@ if the section pattern does not match any sections.
 <var>flags</var> argument is a comma separated string of flag names.  The
 recognized names are &lsquo;<samp>alloc</samp>&rsquo;, &lsquo;<samp>contents</samp>&rsquo;, &lsquo;<samp>load</samp>&rsquo;,
 &lsquo;<samp>noload</samp>&rsquo;, &lsquo;<samp>readonly</samp>&rsquo;, &lsquo;<samp>code</samp>&rsquo;, &lsquo;<samp>data</samp>&rsquo;, &lsquo;<samp>rom</samp>&rsquo;,
-&lsquo;<samp>share</samp>&rsquo;, and &lsquo;<samp>debug</samp>&rsquo;.  You can set the &lsquo;<samp>contents</samp>&rsquo; flag
-for a section which does not have contents, but it is not meaningful
-to clear the &lsquo;<samp>contents</samp>&rsquo; flag of a section which does have
-contents&ndash;just remove the section instead.  Not all flags are
-meaningful for all object file formats.
+&lsquo;<samp>exclude</samp>&rsquo;, &lsquo;<samp>share</samp>&rsquo;, and &lsquo;<samp>debug</samp>&rsquo;.  You can set the
+&lsquo;<samp>contents</samp>&rsquo; flag for a section which does not have contents, but it
+is not meaningful to clear the &lsquo;<samp>contents</samp>&rsquo; flag of a section which
+does have contents&ndash;just remove the section instead.  Not all flags are
+meaningful for all object file formats.  In particular the
+&lsquo;<samp>share</samp>&rsquo; flag is only meaningful for COFF format files and not for
+ELF format files.
+</p>
+</dd>
+<dt><code>--set-section-alignment <var>sectionpattern</var>=<var>align</var></code></dt>
+<dd><p>Set the alignment for any sections matching <var>sectionpattern</var>.
+<var>align</var> specifies the alignment in bytes and must be a power of
+two, i.e. 1, 2, 4, 8&hellip;. 
 </p>
 </dd>
 <dt><code>--add-section <var>sectionname</var>=<var>filename</var></code></dt>
@@ -639,7 +657,8 @@ symbol table in the order they appear.
 changing the section&rsquo;s flags to <var>flags</var> in the process.  This has
 the advantage over using a linker script to perform the rename in that
 the output stays as an object file and does not become a linked
-executable.
+executable.  This option accepts the same set of flags as the
+<samp>--sect-section-flags</samp> option.
 </p>
 <p>This option is particularly helpful when the input format is binary,
 since this will always create a section called .data.  If for example,
@@ -857,7 +876,7 @@ like this:
 <div class="smallexample">
 <pre class="smallexample"> objcopy --add-gnu-debuglink=foo.debug
 </pre></div>
- 
+
 <p>At debug time the debugger will attempt to look for the separate debug
 info file in a set of known locations.  The exact set of these
 locations varies depending upon the distribution being used, but it
@@ -977,8 +996,9 @@ for dlls.
 </p>
 </dd>
 <dt><code>--section-alignment <var>num</var></code></dt>
-<dd><p>Sets the section alignment.  Sections in memory will always begin at
-addresses which are a multiple of this number.  Defaults to 0x1000.
+<dd><p>Sets the section alignment field in the PE header.  Sections in memory
+will always begin at addresses which are a multiple of this number.
+Defaults to 0x1000.
 [This option is specific to PE targets.]
 </p>
 </dd>
@@ -1062,6 +1082,12 @@ SHT_NOTE type sections by removing duplicate notes.
 <dt><code>-V</code></dt>
 <dt><code>--version</code></dt>
 <dd><p>Show the version number of <code>objcopy</code>.
+</p>
+</dd>
+<dt><code>--verilog-data-width=<var>bytes</var></code></dt>
+<dd><p>For Verilog output, this options controls the number of bytes
+converted for each output data element.  The input target controls the
+endianness of the conversion.
 </p>
 </dd>
 <dt><code>-v</code></dt>

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GDB/MI Data Manipulation (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB_002fMI.html#GDB_002fMI" rel="up" title="GDB/MI">
-<link href="GDB_002fMI-Tracepoint-Commands.html#GDB_002fMI-Tracepoint-Commands" rel="next" title="GDB/MI Tracepoint Commands">
-<link href="GDB_002fMI-Variable-Objects.html#GDB_002fMI-Variable-Objects" rel="prev" title="GDB/MI Variable Objects">
+<link href="GDB_002fMI.html" rel="up" title="GDB/MI">
+<link href="GDB_002fMI-Tracepoint-Commands.html" rel="next" title="GDB/MI Tracepoint Commands">
+<link href="GDB_002fMI-Variable-Objects.html" rel="prev" title="GDB/MI Variable Objects">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GDB_002fMI-Data-Manipulation"></a>
-<div class="header">
+<span id="GDB_002fMI-Data-Manipulation"></span><div class="header">
 <p>
-Next: <a href="GDB_002fMI-Tracepoint-Commands.html#GDB_002fMI-Tracepoint-Commands" accesskey="n" rel="next">GDB/MI Tracepoint Commands</a>, Previous: <a href="GDB_002fMI-Variable-Objects.html#GDB_002fMI-Variable-Objects" accesskey="p" rel="prev">GDB/MI Variable Objects</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Tracepoint-Commands.html" accesskey="n" rel="next">GDB/MI Tracepoint Commands</a>, Previous: <a href="GDB_002fMI-Variable-Objects.html" accesskey="p" rel="prev">GDB/MI Variable Objects</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GDB_002fMI-Data-Manipulation-1"></a>
-<h3 class="section">27.16 <small>GDB/MI</small> Data Manipulation</h3>
+<span id="GDB_002fMI-Data-Manipulation-1"></span><h3 class="section">27.16 <small>GDB/MI</small> Data Manipulation</h3>
 
-<a name="index-data-manipulation_002c-in-GDB_002fMI"></a>
-<a name="index-GDB_002fMI_002c-data-manipulation"></a>
+<span id="index-data-manipulation_002c-in-GDB_002fMI"></span>
+<span id="index-GDB_002fMI_002c-data-manipulation"></span>
 <p>This section describes the <small>GDB/MI</small> commands that manipulate data:
 examine memory and registers, evaluate expressions, etc.
 </p>
@@ -78,15 +67,13 @@ examine memory and registers, evaluate expressions, etc.
 see <a href="Memory.html#addressable-memory-unit">addressable memory unit</a>.
 </p>
 
-<a name="The-_002ddata_002ddisassemble-Command"></a>
-<h4 class="subheading">The <code>-data-disassemble</code> Command</h4>
-<a name="index-_002ddata_002ddisassemble"></a>
+<span id="The-_002ddata_002ddisassemble-Command"></span><h4 class="subheading">The <code>-data-disassemble</code> Command</h4>
+<span id="index-_002ddata_002ddisassemble"></span>
 
-<a name="Synopsis-61"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-64"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-disassemble
+<div class="example">
+<pre class="example"> -data-disassemble
     [ -s <var>start-addr</var> -e <var>end-addr</var> ]
   | [ -a <var>addr</var> ]
   | [ -f <var>filename</var> -l <var>linenum</var> [ -n <var>lines</var> ] ]
@@ -137,13 +124,12 @@ are displayed.
 
 <p>Modes 1 and 3 are deprecated.  The output is &ldquo;source centric&rdquo;
 which hasn&rsquo;t proved useful in practice.
-See <a href="Machine-Code.html#Machine-Code">Machine Code</a>, for a discussion of the difference between
+See <a href="Machine-Code.html">Machine Code</a>, for a discussion of the difference between
 <code>/m</code> and <code>/s</code> output of the <code>disassemble</code> command.
 </p></dd>
 </dl>
 
-<a name="Result-6"></a>
-<h4 class="subsubheading">Result</h4>
+<span id="Result-6"></span><h4 class="subsubheading">Result</h4>
 
 <p>The result of the <code>-data-disassemble</code> command will be a list named
 &lsquo;<samp>asm_insns</samp>&rsquo;, the contents of this list depend on the <var>mode</var>
@@ -193,7 +179,7 @@ used.
 <dt><code>fullname</code></dt>
 <dd><p>Absolute file name of &lsquo;<samp>file</samp>&rsquo;.  It is converted to a canonical form
 using the source file search path
-(see <a href="Source-Path.html#Source-Path">Specifying Source Directories</a>)
+(see <a href="Source-Path.html">Specifying Source Directories</a>)
 and after resolving all the symbolic links.
 </p>
 <p>If the source file is not found this field will contain the path as
@@ -214,18 +200,16 @@ present in the debug information.
 manipulated directly by <small>GDB/MI</small>, i.e., it is not possible to
 adjust its format.
 </p>
-<a name="GDB-Command-43"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-46"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>disassemble</samp>&rsquo;.
 </p>
-<a name="Example-49"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-52"></span><h4 class="subsubheading">Example</h4>
 
 <p>Disassemble from the current value of <code>$pc</code> to <code>$pc + 20</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-disassemble -s $pc -e &quot;$pc + 20&quot; -- 0
 ^done,
 asm_insns=[
@@ -245,8 +229,8 @@ inst=&quot;or  %o2, 0x168, %o4\t! 0x11968 &lt;_lib_version+48&gt;&quot;}]
 <p>Disassemble the whole <code>main</code> function.  Line 32 is part of
 <code>main</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">-data-disassemble -f basics.c -l 32 -- 0
+<div class="example">
+<pre class="example">-data-disassemble -f basics.c -l 32 -- 0
 ^done,asm_insns=[
 {address=&quot;0x000107bc&quot;,func-name=&quot;main&quot;,offset=&quot;0&quot;,
 inst=&quot;save  %sp, -112, %sp&quot;},
@@ -262,8 +246,8 @@ inst=&quot;sethi %hi(0x11800), %o2&quot;},
 
 <p>Disassemble 3 instructions from the start of <code>main</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-disassemble -f basics.c -l 32 -n 3 -- 0
 ^done,asm_insns=[
 {address=&quot;0x000107bc&quot;,func-name=&quot;main&quot;,offset=&quot;0&quot;,
@@ -277,8 +261,8 @@ inst=&quot;sethi  %hi(0x11800), %o2&quot;}]
 
 <p>Disassemble 3 instructions from the start of <code>main</code> in mixed mode:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-disassemble -f basics.c -l 32 -n 3 -- 1
 ^done,asm_insns=[
 src_and_asm_line={line=&quot;31&quot;,
@@ -297,38 +281,34 @@ inst=&quot;sethi  %hi(0x11800), %o2&quot;}]}]
 </pre></div>
 
 
-<a name="The-_002ddata_002devaluate_002dexpression-Command"></a>
-<h4 class="subheading">The <code>-data-evaluate-expression</code> Command</h4>
-<a name="index-_002ddata_002devaluate_002dexpression"></a>
+<span id="The-_002ddata_002devaluate_002dexpression-Command"></span><h4 class="subheading">The <code>-data-evaluate-expression</code> Command</h4>
+<span id="index-_002ddata_002devaluate_002dexpression"></span>
 
-<a name="Synopsis-62"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-65"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-evaluate-expression <var>expr</var>
+<div class="example">
+<pre class="example"> -data-evaluate-expression <var>expr</var>
 </pre></div>
 
 <p>Evaluate <var>expr</var> as an expression.  The expression could contain an
 inferior function call.  The function call will execute synchronously.
 If the expression contains spaces, it must be enclosed in double quotes.
 </p>
-<a name="GDB-Command-44"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-47"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> commands are &lsquo;<samp>print</samp>&rsquo;, &lsquo;<samp>output</samp>&rsquo;, and
 &lsquo;<samp>call</samp>&rsquo;.  In <code>gdbtk</code> only, there&rsquo;s a corresponding
 &lsquo;<samp>gdb_eval</samp>&rsquo; command.
 </p>
-<a name="Example-50"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-53"></span><h4 class="subsubheading">Example</h4>
 
 <p>In the following example, the numbers that precede the commands are the
-<em>tokens</em> described in <a href="GDB_002fMI-Command-Syntax.html#GDB_002fMI-Command-Syntax"><small>GDB/MI</small>
+<em>tokens</em> described in <a href="GDB_002fMI-Command-Syntax.html"><small>GDB/MI</small>
 Command Syntax</a>.  Notice how <small>GDB/MI</small> returns the same tokens in its
 output.
 </p>
-<div class="smallexample">
-<pre class="smallexample">211-data-evaluate-expression A
+<div class="example">
+<pre class="example">211-data-evaluate-expression A
 211^done,value=&quot;1&quot;
 (gdb)
 311-data-evaluate-expression &amp;A
@@ -343,32 +323,28 @@ output.
 </pre></div>
 
 
-<a name="The-_002ddata_002dlist_002dchanged_002dregisters-Command"></a>
-<h4 class="subheading">The <code>-data-list-changed-registers</code> Command</h4>
-<a name="index-_002ddata_002dlist_002dchanged_002dregisters"></a>
+<span id="The-_002ddata_002dlist_002dchanged_002dregisters-Command"></span><h4 class="subheading">The <code>-data-list-changed-registers</code> Command</h4>
+<span id="index-_002ddata_002dlist_002dchanged_002dregisters"></span>
 
-<a name="Synopsis-63"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-66"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-list-changed-registers
+<div class="example">
+<pre class="example"> -data-list-changed-registers
 </pre></div>
 
 <p>Display a list of the registers that have changed.
 </p>
-<a name="GDB-Command-45"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-48"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p><small>GDB</small> doesn&rsquo;t have a direct analog for this command; <code>gdbtk</code>
 has the corresponding command &lsquo;<samp>gdb_changed_register_list</samp>&rsquo;.
 </p>
-<a name="Example-51"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-54"></span><h4 class="subsubheading">Example</h4>
 
 <p>On a PPC MBX board:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -exec-continue
 ^running
 
@@ -385,15 +361,13 @@ line=&quot;5&quot;,arch=&quot;powerpc&quot;}
 </pre></div>
 
 
-<a name="The-_002ddata_002dlist_002dregister_002dnames-Command"></a>
-<h4 class="subheading">The <code>-data-list-register-names</code> Command</h4>
-<a name="index-_002ddata_002dlist_002dregister_002dnames"></a>
+<span id="The-_002ddata_002dlist_002dregister_002dnames-Command"></span><h4 class="subheading">The <code>-data-list-register-names</code> Command</h4>
+<span id="index-_002ddata_002dlist_002dregister_002dnames"></span>
 
-<a name="Synopsis-64"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-67"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-list-register-names [ ( <var>regno</var> )+ ]
+<div class="example">
+<pre class="example"> -data-list-register-names [ ( <var>regno</var> )+ ]
 </pre></div>
 
 <p>Show a list of register names for the current target.  If no arguments
@@ -403,19 +377,17 @@ names of the registers corresponding to the arguments.  To ensure
 consistency between a register name and its number, the output list may
 include empty register names.
 </p>
-<a name="GDB-Command-46"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-49"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p><small>GDB</small> does not have a command which corresponds to
 &lsquo;<samp>-data-list-register-names</samp>&rsquo;.  In <code>gdbtk</code> there is a
 corresponding command &lsquo;<samp>gdb_regnames</samp>&rsquo;.
 </p>
-<a name="Example-52"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-55"></span><h4 class="subsubheading">Example</h4>
 
 <p>For the PPC MBX board:
-</p><div class="smallexample">
-<pre class="smallexample">(gdb)
+</p><div class="example">
+<pre class="example">(gdb)
 -data-list-register-names
 ^done,register-names=[&quot;r0&quot;,&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;,&quot;r4&quot;,&quot;r5&quot;,&quot;r6&quot;,&quot;r7&quot;,
 &quot;r8&quot;,&quot;r9&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;r13&quot;,&quot;r14&quot;,&quot;r15&quot;,&quot;r16&quot;,&quot;r17&quot;,&quot;r18&quot;,
@@ -430,15 +402,13 @@ corresponding command &lsquo;<samp>gdb_regnames</samp>&rsquo;.
 (gdb)
 </pre></div>
 
-<a name="The-_002ddata_002dlist_002dregister_002dvalues-Command"></a>
-<h4 class="subheading">The <code>-data-list-register-values</code> Command</h4>
-<a name="index-_002ddata_002dlist_002dregister_002dvalues"></a>
+<span id="The-_002ddata_002dlist_002dregister_002dvalues-Command"></span><h4 class="subheading">The <code>-data-list-register-values</code> Command</h4>
+<span id="index-_002ddata_002dlist_002dregister_002dvalues"></span>
 
-<a name="Synopsis-65"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-68"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-list-register-values
+<div class="example">
+<pre class="example"> -data-list-register-values
     [ <code>--skip-unavailable</code> ] <var>fmt</var> [ ( <var>regno</var> )*]
 </pre></div>
 
@@ -472,20 +442,18 @@ indicates that only the available registers are to be returned.
 </p></dd>
 </dl>
 
-<a name="GDB-Command-47"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-50"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> commands are &lsquo;<samp>info reg</samp>&rsquo;, &lsquo;<samp>info
 all-reg</samp>&rsquo;, and (in <code>gdbtk</code>) &lsquo;<samp>gdb_fetch_registers</samp>&rsquo;.
 </p>
-<a name="Example-53"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-56"></span><h4 class="subsubheading">Example</h4>
 
 <p>For a PPC MBX board (note: line breaks are for readability only, they
 don&rsquo;t appear in the actual output):
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-list-register-values r 64 65
 ^done,register-values=[{number=&quot;64&quot;,value=&quot;0xfe00a300&quot;},
 {number=&quot;65&quot;,value=&quot;0x00029002&quot;}]
@@ -531,17 +499,15 @@ don&rsquo;t appear in the actual output):
 </pre></div>
 
 
-<a name="The-_002ddata_002dread_002dmemory-Command"></a>
-<h4 class="subheading">The <code>-data-read-memory</code> Command</h4>
-<a name="index-_002ddata_002dread_002dmemory"></a>
+<span id="The-_002ddata_002dread_002dmemory-Command"></span><h4 class="subheading">The <code>-data-read-memory</code> Command</h4>
+<span id="index-_002ddata_002dread_002dmemory"></span>
 
 <p>This command is deprecated, use <code>-data-read-memory-bytes</code> instead.
 </p>
-<a name="Synopsis-66"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-69"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-read-memory [ -o <var>byte-offset</var> ]
+<div class="example">
+<pre class="example"> -data-read-memory [ -o <var>byte-offset</var> ]
    <var>address</var> <var>word-format</var> <var>word-size</var>
    <var>nr-rows</var> <var>nr-cols</var> [ <var>aschar</var> ]
 </pre></div>
@@ -557,7 +523,7 @@ quoted using the C convention.
 </dd>
 <dt>&lsquo;<samp><var>word-format</var></samp>&rsquo;</dt>
 <dd><p>The format to be used to print the memory words.  The notation is the
-same as for <small>GDB</small>&rsquo;s <code>print</code> command (see <a href="Output-Formats.html#Output-Formats">Output Formats</a>).
+same as for <small>GDB</small>&rsquo;s <code>print</code> command (see <a href="Output-Formats.html">Output Formats</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp><var>word-size</var></samp>&rsquo;</dt>
@@ -597,21 +563,19 @@ in &lsquo;<samp>nr-bytes</samp>&rsquo; and the starting address used to read mem
 &lsquo;<samp>next-row</samp>&rsquo; and &lsquo;<samp>prev-row</samp>&rsquo;, &lsquo;<samp>next-page</samp>&rsquo; and
 &lsquo;<samp>prev-page</samp>&rsquo;.
 </p>
-<a name="GDB-Command-48"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-51"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>x</samp>&rsquo;.  <code>gdbtk</code> has
 &lsquo;<samp>gdb_get_mem</samp>&rsquo; memory read command.
 </p>
-<a name="Example-54"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-57"></span><h4 class="subsubheading">Example</h4>
 
 <p>Read six bytes of memory starting at <code>bytes+6</code> but then offset by
 <code>-6</code> bytes.  Format as three rows of two columns.  One byte per
 word.  Display each word in hex.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 9-data-read-memory -o -6 -- bytes+6 x 1 3 2
 9^done,addr=&quot;0x00001390&quot;,nr-bytes=&quot;6&quot;,total-bytes=&quot;6&quot;,
 next-row=&quot;0x00001396&quot;,prev-row=&quot;0x0000138e&quot;,next-page=&quot;0x00001396&quot;,
@@ -625,8 +589,8 @@ prev-page=&quot;0x0000138a&quot;,memory=[
 <p>Read two bytes of memory starting at address <code>shorts + 64</code> and
 display as a single word formatted in decimal.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 5-data-read-memory shorts+64 d 2 1 1
 5^done,addr=&quot;0x00001510&quot;,nr-bytes=&quot;2&quot;,total-bytes=&quot;2&quot;,
 next-row=&quot;0x00001512&quot;,prev-row=&quot;0x0000150e&quot;,
@@ -639,8 +603,8 @@ next-page=&quot;0x00001512&quot;,prev-page=&quot;0x0000150e&quot;,memory=[
 as eight rows of four columns.  Include a string encoding with &lsquo;<samp>x</samp>&rsquo;
 used as the non-printable character.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 4-data-read-memory bytes+16 x 1 8 4 x
 4^done,addr=&quot;0x000013a0&quot;,nr-bytes=&quot;32&quot;,total-bytes=&quot;32&quot;,
 next-row=&quot;0x000013c0&quot;,prev-row=&quot;0x0000139c&quot;,
@@ -656,15 +620,13 @@ next-page=&quot;0x000013c0&quot;,prev-page=&quot;0x00001380&quot;,memory=[
 (gdb)
 </pre></div>
 
-<a name="The-_002ddata_002dread_002dmemory_002dbytes-Command"></a>
-<h4 class="subheading">The <code>-data-read-memory-bytes</code> Command</h4>
-<a name="index-_002ddata_002dread_002dmemory_002dbytes"></a>
+<span id="The-_002ddata_002dread_002dmemory_002dbytes-Command"></span><h4 class="subheading">The <code>-data-read-memory-bytes</code> Command</h4>
+<span id="index-_002ddata_002dread_002dmemory_002dbytes"></span>
 
-<a name="Synopsis-67"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-70"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-read-memory-bytes [ -o <var>offset</var> ]
+<div class="example">
+<pre class="example"> -data-read-memory-bytes [ -o <var>offset</var> ]
    <var>address</var> <var>count</var>
 </pre></div>
 
@@ -693,7 +655,7 @@ arithmetics itself.
 
 <p>This command attempts to read all accessible memory regions in the
 specified range.  First, all regions marked as unreadable in the memory
-map (if one is defined) will be skipped.  See <a href="Memory-Region-Attributes.html#Memory-Region-Attributes">Memory Region Attributes</a>.  Second, <small>GDB</small> will attempt to read the remaining
+map (if one is defined) will be skipped.  See <a href="Memory-Region-Attributes.html">Memory Region Attributes</a>.  Second, <small>GDB</small> will attempt to read the remaining
 regions.  For each one, if reading full region results in an errors,
 <small>GDB</small> will try to read a subset of the region.
 </p>
@@ -702,11 +664,11 @@ and the only way to read every readable unit is to try a read at
 every address, which is not practical.   Therefore, <small>GDB</small> will
 attempt to read all accessible memory units at either beginning or the end
 of the region, using a binary division scheme.  This heuristic works
-well for reading accross a memory map boundary.  Note that if a region
+well for reading across a memory map boundary.  Note that if a region
 has a readable range that is neither at the beginning or the end,
 <small>GDB</small> will not read it.
 </p>
-<p>The result record (see <a href="GDB_002fMI-Result-Records.html#GDB_002fMI-Result-Records">GDB/MI Result Records</a>) that is output of
+<p>The result record (see <a href="GDB_002fMI-Result-Records.html">GDB/MI Result Records</a>) that is output of
 the command includes a field named &lsquo;<samp>memory</samp>&rsquo; whose content is a
 list of tuples.  Each tuple represent a successfully read memory block
 and has the following fields:
@@ -733,16 +695,14 @@ the start address passed to <code>-data-read-memory-bytes</code>.
 
 
 
-<a name="GDB-Command-49"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-52"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>x</samp>&rsquo;.
 </p>
-<a name="Example-55"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-58"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-read-memory-bytes &amp;a 10
 ^done,memory=[{begin=&quot;0xbffff154&quot;,offset=&quot;0x00000000&quot;,
               end=&quot;0xbffff15e&quot;,
@@ -751,15 +711,13 @@ the start address passed to <code>-data-read-memory-bytes</code>.
 </pre></div>
 
 
-<a name="The-_002ddata_002dwrite_002dmemory_002dbytes-Command"></a>
-<h4 class="subheading">The <code>-data-write-memory-bytes</code> Command</h4>
-<a name="index-_002ddata_002dwrite_002dmemory_002dbytes"></a>
+<span id="The-_002ddata_002dwrite_002dmemory_002dbytes-Command"></span><h4 class="subheading">The <code>-data-write-memory-bytes</code> Command</h4>
+<span id="index-_002ddata_002dwrite_002dmemory_002dbytes"></span>
 
-<a name="Synopsis-68"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-71"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -data-write-memory-bytes <var>address</var> <var>contents</var>
+<div class="example">
+<pre class="example"> -data-write-memory-bytes <var>address</var> <var>contents</var>
  -data-write-memory-bytes <var>address</var> <var>contents</var> <span class="roman">[</span><var>count</var><span class="roman">]</span>
 </pre></div>
 
@@ -786,23 +744,21 @@ written.  If <var>count</var> is greater than <var>contents</var>&rsquo; length,
 </dd>
 </dl>
 
-<a name="GDB-Command-50"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-53"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>There&rsquo;s no corresponding <small>GDB</small> command.
 </p>
-<a name="Example-56"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-59"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-write-memory-bytes &amp;a &quot;aabbccdd&quot;
 ^done
 (gdb)
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -data-write-memory-bytes &amp;a &quot;aabbccdd&quot; 16e
 ^done
 (gdb)
@@ -811,7 +767,7 @@ written.  If <var>count</var> is greater than <var>contents</var>&rsquo; length,
 <hr>
 <div class="header">
 <p>
-Next: <a href="GDB_002fMI-Tracepoint-Commands.html#GDB_002fMI-Tracepoint-Commands" accesskey="n" rel="next">GDB/MI Tracepoint Commands</a>, Previous: <a href="GDB_002fMI-Variable-Objects.html#GDB_002fMI-Variable-Objects" accesskey="p" rel="prev">GDB/MI Variable Objects</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Tracepoint-Commands.html" accesskey="n" rel="next">GDB/MI Tracepoint Commands</a>, Previous: <a href="GDB_002fMI-Variable-Objects.html" accesskey="p" rel="prev">GDB/MI Variable Objects</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

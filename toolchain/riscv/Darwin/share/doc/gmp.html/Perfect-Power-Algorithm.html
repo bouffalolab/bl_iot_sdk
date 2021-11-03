@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Perfect Power Algorithm (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms" rel="up" title="Root Extraction Algorithms">
-<link href="Radix-Conversion-Algorithms.html#Radix-Conversion-Algorithms" rel="next" title="Radix Conversion Algorithms">
-<link href="Perfect-Square-Algorithm.html#Perfect-Square-Algorithm" rel="prev" title="Perfect Square Algorithm">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Root-Extraction-Algorithms.html" rel="up" title="Root Extraction Algorithms">
+<link href="Radix-Conversion-Algorithms.html" rel="next" title="Radix Conversion Algorithms">
+<link href="Perfect-Square-Algorithm.html" rel="prev" title="Perfect Square Algorithm">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,20 +50,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Perfect-Power-Algorithm"></a>
-<div class="header">
+<span id="Perfect-Power-Algorithm"></span><div class="header">
 <p>
-Previous: <a href="Perfect-Square-Algorithm.html#Perfect-Square-Algorithm" accesskey="p" rel="prev">Perfect Square Algorithm</a>, Up: <a href="Root-Extraction-Algorithms.html#Root-Extraction-Algorithms" accesskey="u" rel="up">Root Extraction Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Perfect-Square-Algorithm.html" accesskey="p" rel="prev">Perfect Square Algorithm</a>, Up: <a href="Root-Extraction-Algorithms.html" accesskey="u" rel="up">Root Extraction Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Perfect-Power"></a>
-<h4 class="subsection">15.5.4 Perfect Power</h4>
-<a name="index-Perfect-power-algorithm"></a>
+<span id="Perfect-Power"></span><h4 class="subsection">15.5.4 Perfect Power</h4>
+<span id="index-Perfect-power-algorithm"></span>
 
 <p>Detecting perfect powers is required by some factorization algorithms.
 Currently <code>mpz_perfect_power_p</code> is implemented using repeated Nth root
 extractions, though naturally only prime roots need to be considered.
-(See <a href="Nth-Root-Algorithm.html#Nth-Root-Algorithm">Nth Root Algorithm</a>.)
+(See <a href="Nth-Root-Algorithm.html">Nth Root Algorithm</a>.)
 </p>
 <p>If a prime divisor <em>p</em> with multiplicity <em>e</em> can be found, then only
 roots which are divisors of <em>e</em> need to be considered, much reducing the

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Directory Options (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Invoking-GCC.html#Invoking-GCC" rel="up" title="Invoking GCC">
-<link href="Code-Gen-Options.html#Code-Gen-Options" rel="next" title="Code Gen Options">
-<link href="Link-Options.html#Link-Options" rel="prev" title="Link Options">
+<link href="Invoking-GCC.html" rel="up" title="Invoking GCC">
+<link href="Code-Gen-Options.html" rel="next" title="Code Gen Options">
+<link href="Link-Options.html" rel="prev" title="Link Options">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,17 +58,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Directory-Options"></a>
-<div class="header">
+<span id="Directory-Options"></span><div class="header">
 <p>
-Next: <a href="Code-Gen-Options.html#Code-Gen-Options" accesskey="n" rel="next">Code Gen Options</a>, Previous: <a href="Link-Options.html#Link-Options" accesskey="p" rel="prev">Link Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Code-Gen-Options.html" accesskey="n" rel="next">Code Gen Options</a>, Previous: <a href="Link-Options.html" accesskey="p" rel="prev">Link Options</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Options-for-Directory-Search"></a>
-<h3 class="section">3.15 Options for Directory Search</h3>
-<a name="index-directory-options"></a>
-<a name="index-options_002c-directory-search"></a>
-<a name="index-search-path"></a>
+<span id="Options-for-Directory-Search"></span><h3 class="section">3.16 Options for Directory Search</h3>
+<span id="index-directory-options"></span>
+<span id="index-options_002c-directory-search"></span>
+<span id="index-search-path"></span>
 
 <p>These options specify directories to search for header files, for
 libraries and for parts of the compiler:
@@ -87,10 +76,10 @@ libraries and for parts of the compiler:
 <dt><code>-iquote <var>dir</var></code></dt>
 <dt><code>-isystem <var>dir</var></code></dt>
 <dt><code>-idirafter <var>dir</var></code></dt>
-<dd><a name="index-I"></a>
-<a name="index-iquote"></a>
-<a name="index-isystem"></a>
-<a name="index-idirafter"></a>
+<dd><span id="index-I"></span>
+<span id="index-iquote"></span>
+<span id="index-isystem"></span>
+<span id="index-idirafter"></span>
 <p>Add the directory <var>dir</var> to the list of directories to be searched
 for header files during preprocessing.
 If <var>dir</var> begins with &lsquo;<samp>=</samp>&rsquo; or <code>$SYSROOT</code>, then the &lsquo;<samp>=</samp>&rsquo;
@@ -151,7 +140,7 @@ use the <samp>-nostdinc</samp> and/or <samp>-isystem</samp> options.
 </p>
 </dd>
 <dt><code>-I-</code></dt>
-<dd><a name="index-I_002d"></a>
+<dd><span id="index-I_002d"></span>
 <p>Split the include path.
 This option has been deprecated.  Please use <samp>-iquote</samp> instead for
 <samp>-I</samp> directories before the <samp>-I-</samp> and remove the <samp>-I-</samp>
@@ -169,7 +158,7 @@ file directory as the first search directory for <code>#include&nbsp;&quot;<var>
 </p>
 </dd>
 <dt><code>-iprefix <var>prefix</var></code></dt>
-<dd><a name="index-iprefix"></a>
+<dd><span id="index-iprefix"></span>
 <p>Specify <var>prefix</var> as the prefix for subsequent <samp>-iwithprefix</samp>
 options.  If the prefix represents a directory, you should include the
 final &lsquo;<samp>/</samp>&rsquo;.
@@ -177,8 +166,8 @@ final &lsquo;<samp>/</samp>&rsquo;.
 </dd>
 <dt><code>-iwithprefix <var>dir</var></code></dt>
 <dt><code>-iwithprefixbefore <var>dir</var></code></dt>
-<dd><a name="index-iwithprefix"></a>
-<a name="index-iwithprefixbefore"></a>
+<dd><span id="index-iwithprefix"></span>
+<span id="index-iwithprefixbefore"></span>
 <p>Append <var>dir</var> to the prefix specified previously with
 <samp>-iprefix</samp>, and add the resulting directory to the include search
 path.  <samp>-iwithprefixbefore</samp> puts it in the same place <samp>-I</samp>
@@ -186,7 +175,7 @@ would; <samp>-iwithprefix</samp> puts it where <samp>-idirafter</samp> would.
 </p>
 </dd>
 <dt><code>-isysroot <var>dir</var></code></dt>
-<dd><a name="index-isysroot"></a>
+<dd><span id="index-isysroot"></span>
 <p>This option is like the <samp>--sysroot</samp> option, but applies only to
 header files (except for Darwin targets, where it applies to both header
 files and libraries).  See the <samp>--sysroot</samp> option for more
@@ -194,13 +183,13 @@ information.
 </p>
 </dd>
 <dt><code>-imultilib <var>dir</var></code></dt>
-<dd><a name="index-imultilib"></a>
+<dd><span id="index-imultilib"></span>
 <p>Use <var>dir</var> as a subdirectory of the directory containing
 target-specific C++ headers.
 </p>
 </dd>
 <dt><code>-nostdinc</code></dt>
-<dd><a name="index-nostdinc"></a>
+<dd><span id="index-nostdinc"></span>
 <p>Do not search the standard system directories for header files.
 Only the directories explicitly specified with <samp>-I</samp>,
 <samp>-iquote</samp>, <samp>-isystem</samp>, and/or <samp>-idirafter</samp>
@@ -209,7 +198,7 @@ are searched.
 </p>
 </dd>
 <dt><code>-nostdinc++</code></dt>
-<dd><a name="index-nostdinc_002b_002b-1"></a>
+<dd><span id="index-nostdinc_002b_002b-1"></span>
 <p>Do not search for header files in the C++-specific standard directories,
 but do still search the other standard directories.  (This option is
 used when building the C++ library.)
@@ -217,7 +206,7 @@ used when building the C++ library.)
 
 </dd>
 <dt><code>-iplugindir=<var>dir</var></code></dt>
-<dd><a name="index-iplugindir_003d"></a>
+<dd><span id="index-iplugindir_003d"></span>
 <p>Set the directory to search for plugins that are passed
 by <samp>-fplugin=<var>name</var></samp> instead of
 <samp>-fplugin=<var>path</var>/<var>name</var>.so</samp>.  This option is not meant
@@ -225,13 +214,13 @@ to be used by the user, but only passed by the driver.
 </p>
 </dd>
 <dt><code>-L<var>dir</var></code></dt>
-<dd><a name="index-L"></a>
+<dd><span id="index-L"></span>
 <p>Add directory <var>dir</var> to the list of directories to be searched
 for <samp>-l</samp>.
 </p>
 </dd>
 <dt><code>-B<var>prefix</var></code></dt>
-<dd><a name="index-B"></a>
+<dd><span id="index-B"></span>
 <p>This option specifies where to find the executables, libraries,
 include files, and data files of the compiler itself.
 </p>
@@ -266,7 +255,7 @@ standard prefixes above are tried, and that is all.  The file is left
 out of the link if it is not found by those means.
 </p>
 <p>Another way to specify a prefix much like the <samp>-B</samp> prefix is to use
-the environment variable <code>GCC_EXEC_PREFIX</code>.  See <a href="Environment-Variables.html#Environment-Variables">Environment Variables</a>.
+the environment variable <code>GCC_EXEC_PREFIX</code>.  See <a href="Environment-Variables.html">Environment Variables</a>.
 </p>
 <p>As a special kludge, if the path provided by <samp>-B</samp> is
 <samp>[dir/]stage<var>N</var>/</samp>, where <var>N</var> is a number in the range 0 to
@@ -275,14 +264,14 @@ with boot-strapping the compiler.
 </p>
 </dd>
 <dt><code>-no-canonical-prefixes</code></dt>
-<dd><a name="index-no_002dcanonical_002dprefixes"></a>
+<dd><span id="index-no_002dcanonical_002dprefixes"></span>
 <p>Do not expand any symbolic links, resolve references to &lsquo;<samp>/../</samp>&rsquo;
 or &lsquo;<samp>/./</samp>&rsquo;, or make the path absolute when generating a relative
 prefix.
 </p>
 </dd>
 <dt><code>--sysroot=<var>dir</var></code></dt>
-<dd><a name="index-sysroot"></a>
+<dd><span id="index-sysroot"></span>
 <p>Use <var>dir</var> as the logical root directory for headers and libraries.
 For example, if the compiler normally searches for headers in
 <samp>/usr/include</samp> and libraries in <samp>/usr/lib</samp>, it instead
@@ -299,7 +288,7 @@ library aspect does not.
 </p>
 </dd>
 <dt><code>--no-sysroot-suffix</code></dt>
-<dd><a name="index-no_002dsysroot_002dsuffix"></a>
+<dd><span id="index-no_002dsysroot_002dsuffix"></span>
 <p>For some targets, a suffix is added to the root directory specified
 with <samp>--sysroot</samp>, depending on the other options used, so that
 headers may for example be found in
@@ -313,7 +302,7 @@ such a suffix.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Code-Gen-Options.html#Code-Gen-Options" accesskey="n" rel="next">Code Gen Options</a>, Previous: <a href="Link-Options.html#Link-Options" accesskey="p" rel="prev">Link Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Code-Gen-Options.html" accesskey="n" rel="next">Code Gen Options</a>, Previous: <a href="Link-Options.html" accesskey="p" rel="prev">Link Options</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

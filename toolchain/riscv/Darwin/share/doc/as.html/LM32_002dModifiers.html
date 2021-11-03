@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>LM32-Modifiers (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="LM32-Syntax.html#LM32-Syntax" rel="up" title="LM32 Syntax">
-<link href="LM32_002dChars.html#LM32_002dChars" rel="next" title="LM32-Chars">
-<link href="LM32_002dRegs.html#LM32_002dRegs" rel="prev" title="LM32-Regs">
+<link href="LM32-Syntax.html" rel="up" title="LM32 Syntax">
+<link href="LM32_002dChars.html" rel="next" title="LM32-Chars">
+<link href="LM32_002dRegs.html" rel="prev" title="LM32-Regs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,27 +50,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="LM32_002dModifiers"></a>
-<div class="header">
+<span id="LM32_002dModifiers"></span><div class="header">
 <p>
-Next: <a href="LM32_002dChars.html#LM32_002dChars" accesskey="n" rel="next">LM32-Chars</a>, Previous: <a href="LM32_002dRegs.html#LM32_002dRegs" accesskey="p" rel="prev">LM32-Regs</a>, Up: <a href="LM32-Syntax.html#LM32-Syntax" accesskey="u" rel="up">LM32 Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="LM32_002dChars.html" accesskey="n" rel="next">LM32-Chars</a>, Previous: <a href="LM32_002dRegs.html" accesskey="p" rel="prev">LM32-Regs</a>, Up: <a href="LM32-Syntax.html" accesskey="u" rel="up">LM32 Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Relocatable-Expression-Modifiers-1"></a>
-<h4 class="subsubsection">9.18.2.2 Relocatable Expression Modifiers</h4>
+<span id="Relocatable-Expression-Modifiers-1"></span><h4 class="subsubsection">9.19.2.2 Relocatable Expression Modifiers</h4>
 
-<a name="index-LM32-modifiers"></a>
-<a name="index-syntax_002c-LM32"></a>
+<span id="index-LM32-modifiers"></span>
+<span id="index-syntax_002c-LM32"></span>
 
 <p>The assembler supports several modifiers when using relocatable addresses
 in LM32 instruction operands.  The general syntax is the following:
 </p>
-<div class="smallexample">
-<pre class="smallexample">modifier(relocatable-expression)
+<div class="example">
+<pre class="example">modifier(relocatable-expression)
 </pre></div>
 
 <dl compact="compact">
-<dd><a name="index-symbol-modifiers-1"></a>
+<dd><span id="index-symbol-modifiers-1"></span>
 
 </dd>
 <dt><code>lo</code></dt>
@@ -95,8 +84,8 @@ as 16 bit relocatable expression.
 </p>
 <p>For example
 </p>
-<div class="smallexample">
-<pre class="smallexample">ori  r4, r4, lo(sym+10)
+<div class="example">
+<pre class="example">ori  r4, r4, lo(sym+10)
 orhi r4, r4, hi(sym+10)
 </pre></div>
 
@@ -106,8 +95,8 @@ orhi r4, r4, hi(sym+10)
 <p>This modified creates a 16-bit relocatable expression that is
 the offset of the symbol from the global pointer.
 </p>
-<div class="smallexample">
-<pre class="smallexample">mva r4, gp(sym)
+<div class="example">
+<pre class="example">mva r4, gp(sym)
 </pre></div>
 
 </dd>
@@ -117,8 +106,8 @@ the offset of the symbol from the global pointer.
 relocatable expression that is the offset into the GOT of this
 symbol.
 </p>
-<div class="smallexample">
-<pre class="smallexample">lw r4, (gp+got(sym))
+<div class="example">
+<pre class="example">lw r4, (gp+got(sym))
 </pre></div>
 
 </dd>
@@ -133,8 +122,8 @@ address which is an offset from the GOT.
 <p>This modifier allows you to use the bits 16 through 31 of an
 address which is an offset from the GOT.
 </p>
-<div class="smallexample">
-<pre class="smallexample">orhi r4, r4, gotoffhi16(lsym)
+<div class="example">
+<pre class="example">orhi r4, r4, gotoffhi16(lsym)
 addi r4, r4, gotofflo16(lsym)
 </pre></div>
 

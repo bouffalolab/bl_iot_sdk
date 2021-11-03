@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Delay Slots (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Insn-Attributes.html#Insn-Attributes" rel="up" title="Insn Attributes">
-<link href="Processor-pipeline-description.html#Processor-pipeline-description" rel="next" title="Processor pipeline description">
-<link href="Mnemonic-Attribute.html#Mnemonic-Attribute" rel="prev" title="Mnemonic Attribute">
+<link href="Insn-Attributes.html" rel="up" title="Insn Attributes">
+<link href="Processor-pipeline-description.html" rel="next" title="Processor pipeline description">
+<link href="Mnemonic-Attribute.html" rel="prev" title="Mnemonic Attribute">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Delay-Slots"></a>
-<div class="header">
+<span id="Delay-Slots"></span><div class="header">
 <p>
-Next: <a href="Processor-pipeline-description.html#Processor-pipeline-description" accesskey="n" rel="next">Processor pipeline description</a>, Previous: <a href="Mnemonic-Attribute.html#Mnemonic-Attribute" accesskey="p" rel="prev">Mnemonic Attribute</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Processor-pipeline-description.html" accesskey="n" rel="next">Processor pipeline description</a>, Previous: <a href="Mnemonic-Attribute.html" accesskey="p" rel="prev">Mnemonic Attribute</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Delay-Slot-Scheduling"></a>
-<h4 class="subsection">17.19.8 Delay Slot Scheduling</h4>
-<a name="index-delay-slots_002c-defining"></a>
+<span id="Delay-Slot-Scheduling"></span><h4 class="subsection">17.19.8 Delay Slot Scheduling</h4>
+<span id="index-delay-slots_002c-defining"></span>
 
 <p>The insn attribute mechanism can be used to specify the requirements for
 delay slots, if any, on a target machine.  An instruction is said to
@@ -96,12 +85,12 @@ on the type of instruction being generated, not on data flow between the
 instructions.  See the next section for a discussion of data-dependent
 instruction scheduling.
 </p>
-<a name="index-define_005fdelay"></a>
+<span id="index-define_005fdelay"></span>
 <p>The requirement of an insn needing one or more delay slots is indicated
 via the <code>define_delay</code> expression.  It has the following form:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_delay <var>test</var>
+<div class="example">
+<pre class="example">(define_delay <var>test</var>
               [<var>delay-1</var> <var>annul-true-1</var> <var>annul-false-1</var>
                <var>delay-2</var> <var>annul-true-2</var> <var>annul-false-2</var>
                &hellip;])
@@ -121,8 +110,8 @@ supported for that delay slot, <code>(nil)</code> should be coded.
 a single delay slot, which may contain any insn other than a branch or
 call, the following would be placed in the <samp>md</samp> file:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_delay (eq_attr &quot;type&quot; &quot;branch,call&quot;)
+<div class="example">
+<pre class="example">(define_delay (eq_attr &quot;type&quot; &quot;branch,call&quot;)
               [(eq_attr &quot;type&quot; &quot;!branch,call&quot;) (nil) (nil)])
 </pre></div>
 
@@ -136,8 +125,8 @@ but two for calls,  no delay slot can contain a branch or call insn,
 and any valid insn in the delay slot for the branch can be annulled if the
 branch is true, we might represent this as follows:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_delay (eq_attr &quot;type&quot; &quot;branch&quot;)
+<div class="example">
+<pre class="example">(define_delay (eq_attr &quot;type&quot; &quot;branch&quot;)
    [(eq_attr &quot;type&quot; &quot;!branch,call&quot;)
     (eq_attr &quot;type&quot; &quot;!branch,call&quot;)
     (nil)])
@@ -150,7 +139,7 @@ branch is true, we might represent this as follows:
 <hr>
 <div class="header">
 <p>
-Next: <a href="Processor-pipeline-description.html#Processor-pipeline-description" accesskey="n" rel="next">Processor pipeline description</a>, Previous: <a href="Mnemonic-Attribute.html#Mnemonic-Attribute" accesskey="p" rel="prev">Mnemonic Attribute</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Processor-pipeline-description.html" accesskey="n" rel="next">Processor pipeline description</a>, Previous: <a href="Mnemonic-Attribute.html" accesskey="p" rel="prev">Mnemonic Attribute</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

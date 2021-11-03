@@ -10,7 +10,7 @@ the terms of the GNU Free Documentation License, Version 1.2 or any later
 version published by the Free Software Foundation; with no Invariant Sections,
 with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
 license is included in GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Headers and Libraries (GNU MPFR 3.1.4)</title>
@@ -21,32 +21,23 @@ floating-point arithmetic, version 3.1.4.">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="MPFR-Basics.html#MPFR-Basics" rel="up" title="MPFR Basics">
-<link href="Nomenclature-and-Types.html#Nomenclature-and-Types" rel="next" title="Nomenclature and Types">
-<link href="MPFR-Basics.html#MPFR-Basics" rel="prev" title="MPFR Basics">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="MPFR-Basics.html" rel="up" title="MPFR Basics">
+<link href="Nomenclature-and-Types.html" rel="next" title="Nomenclature and Types">
+<link href="MPFR-Basics.html" rel="prev" title="MPFR Basics">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,16 +49,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Headers-and-Libraries"></a>
-<div class="header">
+<span id="Headers-and-Libraries"></span><div class="header">
 <p>
-Next: <a href="Nomenclature-and-Types.html#Nomenclature-and-Types" accesskey="n" rel="next">Nomenclature and Types</a>, Previous: <a href="MPFR-Basics.html#MPFR-Basics" accesskey="p" rel="prev">MPFR Basics</a>, Up: <a href="MPFR-Basics.html#MPFR-Basics" accesskey="u" rel="up">MPFR Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nomenclature-and-Types.html" accesskey="n" rel="next">Nomenclature and Types</a>, Previous: <a href="MPFR-Basics.html" accesskey="p" rel="prev">MPFR Basics</a>, Up: <a href="MPFR-Basics.html" accesskey="u" rel="up">MPFR Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Headers-and-Libraries-1"></a>
-<h3 class="section">4.1 Headers and Libraries</h3>
+<span id="Headers-and-Libraries-1"></span><h3 class="section">4.1 Headers and Libraries</h3>
 
-<a name="index-mpfr_002eh"></a>
+<span id="index-mpfr_002eh"></span>
 <p>All declarations needed to use MPFR are collected in the include file
 <samp>mpfr.h</samp>.  It is designed to work with both C and C++ compilers.
 You should include that file in any program using the MPFR library:
@@ -76,7 +65,7 @@ You should include that file in any program using the MPFR library:
 <pre class="example">#include &lt;mpfr.h&gt;
 </pre></div>
 
-<a name="index-stdio_002eh"></a>
+<span id="index-stdio_002eh"></span>
 <p>Note however that prototypes for MPFR functions with <code>FILE *</code> parameters
 are provided only if <code>&lt;stdio.h&gt;</code> is included too (before <samp>mpfr.h</samp>):
 </p>
@@ -85,14 +74,14 @@ are provided only if <code>&lt;stdio.h&gt;</code> is included too (before <samp>
 #include &lt;mpfr.h&gt;
 </pre></div>
 
-<a name="index-stdarg_002eh"></a>
+<span id="index-stdarg_002eh"></span>
 <p>Likewise <code>&lt;stdarg.h&gt;</code> (or <code>&lt;varargs.h&gt;</code>) is required for prototypes
 with <code>va_list</code> parameters, such as <code>mpfr_vprintf</code>.
 </p>
-<a name="index-stdint_002eh"></a>
-<a name="index-inttypes_002eh"></a>
-<a name="index-intmax_005ft"></a>
-<a name="index-uintmax_005ft"></a>
+<span id="index-stdint_002eh"></span>
+<span id="index-inttypes_002eh"></span>
+<span id="index-intmax_005ft"></span>
+<span id="index-uintmax_005ft"></span>
 <p>And for any functions using <code>intmax_t</code>, you must include
 <code>&lt;stdint.h&gt;</code> or <code>&lt;inttypes.h&gt;</code> before <samp>mpfr.h</samp>, to
 allow <samp>mpfr.h</samp> to define prototypes for these functions. Moreover,
@@ -122,9 +111,9 @@ general this should not be necessary, but this can be useful when debugging
 user code: with some macros, the compiler may emit spurious warnings with
 some warning options, and macros can prevent some prototype checking.
 </p>
-<a name="index-Libraries"></a>
-<a name="index-Linking"></a>
-<a name="index-libmpfr"></a>
+<span id="index-Libraries"></span>
+<span id="index-Linking"></span>
+<span id="index-libmpfr"></span>
 <p>All programs using MPFR must link against both <samp>libmpfr</samp> and
 <samp>libgmp</samp> libraries.  On a typical Unix-like system this can be
 done with &lsquo;<samp>-lmpfr -lgmp</samp>&rsquo; (in that order), for example:
@@ -133,7 +122,7 @@ done with &lsquo;<samp>-lmpfr -lgmp</samp>&rsquo; (in that order), for example:
 <pre class="example">gcc myprogram.c -lmpfr -lgmp
 </pre></div>
 
-<a name="index-Libtool"></a>
+<span id="index-Libtool"></span>
 <p>MPFR is built using Libtool and an application can use that to link if
 desired, see <cite>GNU Libtool</cite>.
 </p>
@@ -148,7 +137,7 @@ file for additional information.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Nomenclature-and-Types.html#Nomenclature-and-Types" accesskey="n" rel="next">Nomenclature and Types</a>, Previous: <a href="MPFR-Basics.html#MPFR-Basics" accesskey="p" rel="prev">MPFR Basics</a>, Up: <a href="MPFR-Basics.html#MPFR-Basics" accesskey="u" rel="up">MPFR Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Nomenclature-and-Types.html" accesskey="n" rel="next">Nomenclature and Types</a>, Previous: <a href="MPFR-Basics.html" accesskey="p" rel="prev">MPFR Basics</a>, Up: <a href="MPFR-Basics.html" accesskey="u" rel="up">MPFR Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

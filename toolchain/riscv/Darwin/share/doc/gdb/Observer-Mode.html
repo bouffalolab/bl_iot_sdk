@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Observer Mode (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Thread-Stops.html#Thread-Stops" rel="up" title="Thread Stops">
-<link href="Reverse-Execution.html#Reverse-Execution" rel="next" title="Reverse Execution">
-<link href="Interrupted-System-Calls.html#Interrupted-System-Calls" rel="prev" title="Interrupted System Calls">
+<link href="Thread-Stops.html" rel="up" title="Thread Stops">
+<link href="Reverse-Execution.html" rel="next" title="Reverse Execution">
+<link href="Interrupted-System-Calls.html" rel="prev" title="Interrupted System Calls">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,14 +51,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Observer-Mode"></a>
-<div class="header">
+<span id="Observer-Mode"></span><div class="header">
 <p>
-Previous: <a href="Interrupted-System-Calls.html#Interrupted-System-Calls" accesskey="p" rel="prev">Interrupted System Calls</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Interrupted-System-Calls.html" accesskey="p" rel="prev">Interrupted System Calls</a>, Up: <a href="Thread-Stops.html" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Observer-Mode-1"></a>
-<h4 class="subsection">5.5.6 Observer Mode</h4>
+<span id="Observer-Mode-1"></span><h4 class="subsection">5.5.6 Observer Mode</h4>
 
 <p>If you want to build on non-stop mode and observe program behavior
 without any chance of disruption by <small>GDB</small>, you can set
@@ -88,7 +77,7 @@ stream will still not be able to be placed.
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-observer"></a>
+<span id="index-observer"></span>
 </dd>
 <dt><code>set observer on</code></dt>
 <dt><code>set observer off</code></dt>
@@ -101,7 +90,7 @@ normal debugging, though remaining in non-stop mode.
 <dt><code>show observer</code></dt>
 <dd><p>Show whether observer mode is on or off.
 </p>
-<a name="index-may_002dwrite_002dregisters"></a>
+<span id="index-may_002dwrite_002dregisters"></span>
 </dd>
 <dt><code>set may-write-registers on</code></dt>
 <dt><code>set may-write-registers off</code></dt>
@@ -113,7 +102,7 @@ registers, such as with assignment expressions in <code>print</code>, or the
 <dt><code>show may-write-registers</code></dt>
 <dd><p>Show the current permission to write registers.
 </p>
-<a name="index-may_002dwrite_002dmemory"></a>
+<span id="index-may_002dwrite_002dmemory"></span>
 </dd>
 <dt><code>set may-write-memory on</code></dt>
 <dt><code>set may-write-memory off</code></dt>
@@ -125,7 +114,7 @@ defaults to <code>on</code>.
 <dt><code>show may-write-memory</code></dt>
 <dd><p>Show the current permission to write memory.
 </p>
-<a name="index-may_002dinsert_002dbreakpoints"></a>
+<span id="index-may_002dinsert_002dbreakpoints"></span>
 </dd>
 <dt><code>set may-insert-breakpoints on</code></dt>
 <dt><code>set may-insert-breakpoints off</code></dt>
@@ -137,7 +126,7 @@ by <small>GDB</small>.  It defaults to <code>on</code>.
 <dt><code>show may-insert-breakpoints</code></dt>
 <dd><p>Show the current permission to insert breakpoints.
 </p>
-<a name="index-may_002dinsert_002dtracepoints"></a>
+<span id="index-may_002dinsert_002dtracepoints"></span>
 </dd>
 <dt><code>set may-insert-tracepoints on</code></dt>
 <dt><code>set may-insert-tracepoints off</code></dt>
@@ -150,7 +139,7 @@ non-fast tracepoints, fast tracepoints being under the control of
 <dt><code>show may-insert-tracepoints</code></dt>
 <dd><p>Show the current permission to insert tracepoints.
 </p>
-<a name="index-may_002dinsert_002dfast_002dtracepoints"></a>
+<span id="index-may_002dinsert_002dfast_002dtracepoints"></span>
 </dd>
 <dt><code>set may-insert-fast-tracepoints on</code></dt>
 <dt><code>set may-insert-fast-tracepoints off</code></dt>
@@ -163,7 +152,7 @@ control of <code>may-insert-tracepoints</code>.  It defaults to <code>on</code>.
 <dt><code>show may-insert-fast-tracepoints</code></dt>
 <dd><p>Show the current permission to insert fast tracepoints.
 </p>
-<a name="index-may_002dinterrupt"></a>
+<span id="index-may_002dinterrupt"></span>
 </dd>
 <dt><code>set may-interrupt on</code></dt>
 <dt><code>set may-interrupt off</code></dt>
@@ -182,7 +171,7 @@ program execution.  When this variable is <code>off</code>, the
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Interrupted-System-Calls.html#Interrupted-System-Calls" accesskey="p" rel="prev">Interrupted System Calls</a>, Up: <a href="Thread-Stops.html#Thread-Stops" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Interrupted-System-Calls.html" accesskey="p" rel="prev">Interrupted System Calls</a>, Up: <a href="Thread-Stops.html" accesskey="u" rel="up">Thread Stops</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

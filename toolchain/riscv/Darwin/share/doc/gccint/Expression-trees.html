@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Expression trees (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GENERIC.html#GENERIC" rel="up" title="GENERIC">
-<link href="Constant-expressions.html#Constant-expressions" rel="next" title="Constant expressions">
-<link href="Attributes.html#Attributes" rel="prev" title="Attributes">
+<link href="GENERIC.html" rel="up" title="GENERIC">
+<link href="Constant-expressions.html" rel="next" title="Constant expressions">
+<link href="Attributes.html" rel="prev" title="Attributes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,17 +58,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Expression-trees"></a>
-<div class="header">
+<span id="Expression-trees"></span><div class="header">
 <p>
-Next: <a href="Statements.html#Statements" accesskey="n" rel="next">Statements</a>, Previous: <a href="Attributes.html#Attributes" accesskey="p" rel="prev">Attributes</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Statements.html" accesskey="n" rel="next">Statements</a>, Previous: <a href="Attributes.html" accesskey="p" rel="prev">Attributes</a>, Up: <a href="GENERIC.html" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Expressions-1"></a>
-<h3 class="section">11.6 Expressions</h3>
-<a name="index-expression"></a>
-<a name="index-TREE_005fTYPE-3"></a>
-<a name="index-TREE_005fOPERAND"></a>
+<span id="Expressions-1"></span><h3 class="section">11.6 Expressions</h3>
+<span id="index-expression"></span>
+<span id="index-TREE_005fTYPE-3"></span>
+<span id="index-TREE_005fOPERAND"></span>
 
 <p>The internal representation for expressions is for the most part quite
 straightforward.  However, there are a few facts that one must bear in
@@ -92,7 +81,7 @@ nodes being unshared.
 </p>
 <dl compact="compact">
 <dt><code>TREE_TYPE</code>
-<a name="index-TREE_005fTYPE-4"></a>
+<span id="index-TREE_005fTYPE-4"></span>
 </dt>
 <dd><p>Returns the type of the expression.  This value may not be precisely the
 same type that would be given the expression in the original program.
@@ -112,28 +101,28 @@ noted otherwise, the operands to an expression are accessed using the
 <code>TREE_OPERAND</code> macro.  For example, to access the first operand to
 a binary plus expression <code>expr</code>, use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">TREE_OPERAND (expr, 0)
+<div class="example">
+<pre class="example">TREE_OPERAND (expr, 0)
 </pre></div>
 
 <p>As this example indicates, the operands are zero-indexed.
 </p>
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Constant-expressions.html#Constant-expressions" accesskey="1">Constants</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Constant-expressions.html" accesskey="1">Constants</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Storage-References.html#Storage-References" accesskey="2">Storage References</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Storage-References.html" accesskey="2">Storage References</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Unary-and-Binary-Expressions.html#Unary-and-Binary-Expressions" accesskey="3">Unary and Binary Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Unary-and-Binary-Expressions.html" accesskey="3">Unary and Binary Expressions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Vectors.html#Vectors" accesskey="4">Vectors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Vectors.html" accesskey="4">Vectors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Statements.html#Statements" accesskey="n" rel="next">Statements</a>, Previous: <a href="Attributes.html#Attributes" accesskey="p" rel="prev">Attributes</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Statements.html" accesskey="n" rel="next">Statements</a>, Previous: <a href="Attributes.html" accesskey="p" rel="prev">Attributes</a>, Up: <a href="GENERIC.html" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

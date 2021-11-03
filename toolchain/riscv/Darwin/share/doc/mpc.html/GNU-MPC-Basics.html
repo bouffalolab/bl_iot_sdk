@@ -10,7 +10,7 @@ under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with no
 Invariant Sections. A copy of the license is included in the section
 entitled "GNU Free Documentation License." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GNU MPC Basics (GNU MPC 1.0.3)</title>
@@ -20,32 +20,23 @@ entitled "GNU Free Documentation License." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Complex-Functions.html#Complex-Functions" rel="next" title="Complex Functions">
-<link href="Reporting-Bugs.html#Reporting-Bugs" rel="prev" title="Reporting Bugs">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="index.html" rel="up" title="Top">
+<link href="Complex-Functions.html" rel="next" title="Complex Functions">
+<link href="Reporting-Bugs.html" rel="prev" title="Reporting Bugs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -57,17 +48,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GNU-MPC-Basics"></a>
-<div class="header">
+<span id="GNU-MPC-Basics"></span><div class="header">
 <p>
-Next: <a href="Complex-Functions.html#Complex-Functions" accesskey="n" rel="next">Complex Functions</a>, Previous: <a href="Reporting-Bugs.html#Reporting-Bugs" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Complex-Functions.html" accesskey="n" rel="next">Complex Functions</a>, Previous: <a href="Reporting-Bugs.html" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GNU-MPC-Basics-1"></a>
-<h2 class="chapter">4 GNU MPC Basics</h2>
+<span id="GNU-MPC-Basics-1"></span><h2 class="chapter">4 GNU MPC Basics</h2>
 
 
-<a name="index-mpc_002eh"></a>
+<span id="index-mpc_002eh"></span>
 <p>All declarations needed to use GNU MPC are collected in the include file
 <samp>mpc.h</samp>.  It is designed to work with both C and C++ compilers.
 You should include that file in any program using the GNU MPC library
@@ -76,25 +65,24 @@ by adding the line
 <pre class="example">   #include &quot;mpc.h&quot;
 </pre></div>
 
-<a name="Nomenclature-and-Types"></a>
-<h3 class="section">4.1 Nomenclature and Types</h3>
+<span id="Nomenclature-and-Types"></span><h3 class="section">4.1 Nomenclature and Types</h3>
 
-<a name="index-Complex-number"></a>
-<a name="index-mpc_005ft"></a>
+<span id="index-Complex-number"></span>
+<span id="index-mpc_005ft"></span>
 <p><em>Complex number</em> or <em>Complex</em> for short, is a pair of two
 arbitrary precision floating-point numbers (for the real and imaginary parts).
 The C data type for such objects is <code>mpc_t</code>.
 </p>
-<a name="index-Precision"></a>
-<a name="index-mpfr_005fprec_005ft"></a>
+<span id="index-Precision"></span>
+<span id="index-mpfr_005fprec_005ft"></span>
 <p>The <em>Precision</em> is the number of bits used to represent the mantissa
 of the real and imaginary parts;
 the corresponding C data type is <code>mpfr_prec_t</code>.
 For more details on the allowed precision range,
 see Section &ldquo;Nomenclature and Types&rdquo; in <cite>GNU MPFR</cite>.
 </p>
-<a name="index-Rounding-Mode"></a>
-<a name="index-mpc_005frnd_005ft"></a>
+<span id="index-Rounding-Mode"></span>
+<span id="index-mpc_005frnd_005ft"></span>
 <p>The <em>rounding mode</em> specifies the way to round the result of a
 complex operation, in case the exact result can not be represented
 exactly in the destination mantissa;
@@ -102,16 +90,14 @@ the corresponding C data type is <code>mpc_rnd_t</code>.
 A complex rounding mode is a pair of two rounding modes: one for the real
 part, one for the imaginary part.
 </p>
-<a name="Function-Classes"></a>
-<h3 class="section">4.2 Function Classes</h3>
+<span id="Function-Classes"></span><h3 class="section">4.2 Function Classes</h3>
 
 <p>There is only one class of functions in the GNU MPC library, namely functions for
 complex arithmetic. The function names begin with <code>mpc_</code>. The
 associated type is <code>mpc_t</code>.
 </p>
 
-<a name="GNU-MPC-Variable-Conventions"></a>
-<h3 class="section">4.3 GNU MPC Variable Conventions</h3>
+<span id="GNU-MPC-Variable-Conventions"></span><h3 class="section">4.3 GNU MPC Variable Conventions</h3>
 
 <p>As a general rule, all GNU MPC functions expect output arguments before input
 arguments.  This notation is based on an analogy with the assignment operator.
@@ -144,8 +130,7 @@ a complex variable will have the same allocated space during all its
 life.
 </p>
 
-<a name="Rounding-Modes"></a>
-<h3 class="section">4.4 Rounding Modes</h3>
+<span id="Rounding-Modes"></span><h3 class="section">4.4 Rounding Modes</h3>
 
 <p>A complex rounding mode is of the form <code>MPC_RNDxy</code> where
 <code>x</code> and <code>y</code> are one of <code>N</code> (to nearest), <code>Z</code> (towards
@@ -162,8 +147,7 @@ For example, the number 5, which is represented by (101) in binary, is rounded
 to (100)=4 with a precision of two bits, and not to (110)=6.
 </p>
 
-<a name="return_002dvalue"></a><a name="Return-Value"></a>
-<h3 class="section">4.5 Return Value</h3>
+<span id="return_002dvalue"></span><span id="Return-Value"></span><h3 class="section">4.5 Return Value</h3>
 
 <p>Most GNU MPC functions have a return value of type <code>int</code>, which is used
 to indicate the position of the rounded real and imaginary parts with respect
@@ -183,8 +167,7 @@ the return value <code>i</code> of such a function, yield the exactness value
 corresponding to the first or the second computed value, respectively.
 </p>
 
-<a name="Branch-Cuts-And-Special-Values"></a>
-<h3 class="section">4.6 Branch Cuts And Special Values</h3>
+<span id="Branch-Cuts-And-Special-Values"></span><h3 class="section">4.6 Branch Cuts And Special Values</h3>
 
 <p>Some complex functions have branch cuts, across which the function is
 discontinous. In GNU MPC, the branch cuts chosen are the same as those
@@ -199,7 +182,7 @@ standard.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Complex-Functions.html#Complex-Functions" accesskey="n" rel="next">Complex Functions</a>, Previous: <a href="Reporting-Bugs.html#Reporting-Bugs" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Complex-Functions.html" accesskey="n" rel="next">Complex Functions</a>, Previous: <a href="Reporting-Bugs.html" accesskey="p" rel="prev">Reporting Bugs</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

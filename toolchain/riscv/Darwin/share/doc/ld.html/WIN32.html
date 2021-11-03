@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>WIN32 (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Machine-Dependent.html#Machine-Dependent" rel="up" title="Machine Dependent">
-<link href="Xtensa.html#Xtensa" rel="next" title="Xtensa">
-<link href="TI-COFF.html#TI-COFF" rel="prev" title="TI COFF">
+<link href="Machine-Dependent.html" rel="up" title="Machine Dependent">
+<link href="Xtensa.html" rel="next" title="Xtensa">
+<link href="TI-COFF.html" rel="prev" title="TI COFF">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,21 +51,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="WIN32"></a>
-<div class="header">
+<span id="WIN32"></span><div class="header">
 <p>
-Next: <a href="Xtensa.html#Xtensa" accesskey="n" rel="next">Xtensa</a>, Previous: <a href="TI-COFF.html#TI-COFF" accesskey="p" rel="prev">TI COFF</a>, Up: <a href="Machine-Dependent.html#Machine-Dependent" accesskey="u" rel="up">Machine Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Xtensa.html" accesskey="n" rel="next">Xtensa</a>, Previous: <a href="TI-COFF.html" accesskey="p" rel="prev">TI COFF</a>, Up: <a href="Machine-Dependent.html" accesskey="u" rel="up">Machine Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="ld-and-WIN32-_0028cygwin_002fmingw_0029"></a>
-<h3 class="section">4.16 <code>ld</code> and WIN32 (cygwin/mingw)</h3>
+<span id="ld-and-WIN32-_0028cygwin_002fmingw_0029"></span><h3 class="section">4.16 <code>ld</code> and WIN32 (cygwin/mingw)</h3>
 
 <p>This section describes some of the win32 specific <code>ld</code> issues.
-See <a href="Options.html#Options">Command-line Options</a> for detailed description of the
+See <a href="Options.html">Command-line Options</a> for detailed description of the
 command-line options mentioned here.
 </p>
 <dl compact="compact">
-<dd><a name="index-import-libraries"></a>
+<dd><span id="index-import-libraries"></span>
 </dd>
 <dt><em>import libraries</em></dt>
 <dd><p>The standard Windows linker creates and uses so-called import
@@ -86,12 +75,12 @@ support for creating such libraries provided with the
 </p>
 </dd>
 <dt><em>exporting DLL symbols</em></dt>
-<dd><a name="index-exporting-DLL-symbols"></a>
+<dd><span id="index-exporting-DLL-symbols"></span>
 <p>The cygwin/mingw <code>ld</code> has several ways to export symbols for dll&rsquo;s.
 </p>
 <dl compact="compact">
 <dt><em>using auto-export functionality</em></dt>
-<dd><a name="index-using-auto_002dexport-functionality"></a>
+<dd><span id="index-using-auto_002dexport-functionality"></span>
 <p>By default <code>ld</code> exports symbols with the auto-export functionality,
 which is controlled by the following command-line options:
 </p>
@@ -123,7 +112,7 @@ if either of the following are true:
 
 </dd>
 <dt><em>using a DEF file</em></dt>
-<dd><a name="index-using-a-DEF-file"></a>
+<dd><span id="index-using-a-DEF-file"></span>
 <p>Another way of exporting symbols is using a DEF file.  A DEF file is
 an ASCII file containing definitions of symbols which should be
 exported when a dll is created.  Usually it is named &lsquo;<samp>&lt;dll
@@ -226,13 +215,13 @@ the DLL without an import library.
 <p>See ld/deffilep.y in the binutils sources for the full specification of
 other DEF file statements
 </p>
-<a name="index-creating-a-DEF-file"></a>
+<span id="index-creating-a-DEF-file"></span>
 <p>While linking a shared dll, <code>ld</code> is able to create a DEF file
 with the &lsquo;<samp>--output-def &lt;file&gt;</samp>&rsquo; command-line option.
 </p>
 </dd>
 <dt><em>Using decorations</em></dt>
-<dd><a name="index-Using-decorations"></a>
+<dd><span id="index-Using-decorations"></span>
 <p>Another way of marking symbols for export is to modify the source code
 itself, so that when building the DLL each symbol to be exported is
 declared as:
@@ -267,7 +256,7 @@ information.
 </p></dd>
 </dl>
 
-<a name="index-automatic-data-imports"></a>
+<span id="index-automatic-data-imports"></span>
 </dd>
 <dt><em>automatic data imports</em></dt>
 <dd><p>The standard Windows dll format supports data imports from dlls only
@@ -295,7 +284,7 @@ occurs, and several methods that can be used to overcome this difficulty.
 One of these methods is the <em>runtime pseudo-relocs</em> feature, described
 below.
 </p>
-<a name="index-runtime-pseudo_002drelocation"></a>
+<span id="index-runtime-pseudo_002drelocation"></span>
 <p>For complex variables imported from DLLs (such as structs or classes),
 object files typically contain a base address for the variable and an
 offset (<em>addend</em>) within the variable&ndash;to specify a particular
@@ -316,7 +305,7 @@ run without error on an older system.
 <p>&lsquo;<samp>--enable-runtime-pseudo-relocs</samp>&rsquo; is not the default; it must be explicitly
 enabled as needed.
 </p>
-<a name="index-direct-linking-to-a-dll"></a>
+<span id="index-direct-linking-to-a-dll"></span>
 </dd>
 <dt><em>direct linking to a dll</em></dt>
 <dd><p>The cygwin/mingw ports of <code>ld</code> support the direct linking,
@@ -507,7 +496,7 @@ the original names for the renamed symbols will be exported.
 In effect, you&rsquo;d be aliasing those symbols, not renaming them,
 which is probably not what you wanted.
 </p>
-<a name="index-weak-externals"></a>
+<span id="index-weak-externals"></span>
 </dd>
 <dt><em>weak externals</em></dt>
 <dd><p>The Windows object format, PE, specifies a form of weak symbols called
@@ -526,7 +515,7 @@ implemented.
 are supported.  If the symbol is undefined when linking, the symbol
 uses a default value.
 </p>
-<a name="index-aligned-common-symbols"></a>
+<span id="index-aligned-common-symbols"></span>
 </dd>
 <dt><em>aligned common symbols</em></dt>
 <dd><p>As a GNU extension to the PE file format, it is possible to specify the
@@ -546,7 +535,7 @@ warnings about unknown linker directives.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Xtensa.html#Xtensa" accesskey="n" rel="next">Xtensa</a>, Previous: <a href="TI-COFF.html#TI-COFF" accesskey="p" rel="prev">TI COFF</a>, Up: <a href="Machine-Dependent.html#Machine-Dependent" accesskey="u" rel="up">Machine Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Xtensa.html" accesskey="n" rel="next">Xtensa</a>, Previous: <a href="TI-COFF.html" accesskey="p" rel="prev">TI COFF</a>, Up: <a href="Machine-Dependent.html" accesskey="u" rel="up">Machine Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

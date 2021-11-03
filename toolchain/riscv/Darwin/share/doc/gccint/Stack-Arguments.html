@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Stack Arguments (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Stack-and-Calling.html#Stack-and-Calling" rel="up" title="Stack and Calling">
-<link href="Register-Arguments.html#Register-Arguments" rel="next" title="Register Arguments">
-<link href="Elimination.html#Elimination" rel="prev" title="Elimination">
+<link href="Stack-and-Calling.html" rel="up" title="Stack and Calling">
+<link href="Register-Arguments.html" rel="next" title="Register Arguments">
+<link href="Elimination.html" rel="prev" title="Elimination">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,23 +58,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Stack-Arguments"></a>
-<div class="header">
+<span id="Stack-Arguments"></span><div class="header">
 <p>
-Next: <a href="Register-Arguments.html#Register-Arguments" accesskey="n" rel="next">Register Arguments</a>, Previous: <a href="Elimination.html#Elimination" accesskey="p" rel="prev">Elimination</a>, Up: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Register-Arguments.html" accesskey="n" rel="next">Register Arguments</a>, Previous: <a href="Elimination.html" accesskey="p" rel="prev">Elimination</a>, Up: <a href="Stack-and-Calling.html" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Passing-Function-Arguments-on-the-Stack"></a>
-<h4 class="subsection">18.9.6 Passing Function Arguments on the Stack</h4>
-<a name="index-arguments-on-stack"></a>
-<a name="index-stack-arguments"></a>
+<span id="Passing-Function-Arguments-on-the-Stack"></span><h4 class="subsection">18.9.6 Passing Function Arguments on the Stack</h4>
+<span id="index-arguments-on-stack"></span>
+<span id="index-stack-arguments"></span>
 
 <p>The macros in this section control how arguments are passed
 on the stack.  See the following section for other macros that
 control passing certain arguments in registers.
 </p>
 <dl>
-<dt><a name="index-TARGET_005fPROMOTE_005fPROTOTYPES"></a>Target Hook: <em>bool</em> <strong>TARGET_PROMOTE_PROTOTYPES</strong> <em>(const_tree <var>fntype</var>)</em></dt>
+<dt id="index-TARGET_005fPROMOTE_005fPROTOTYPES">Target Hook: <em>bool</em> <strong>TARGET_PROMOTE_PROTOTYPES</strong> <em>(const_tree <var>fntype</var>)</em></dt>
 <dd><p>This target hook returns <code>true</code> if an argument declared in a
 prototype as an integral type smaller than <code>int</code> should actually be
 passed as an <code>int</code>.  In addition to avoiding errors in certain
@@ -92,7 +81,7 @@ The default is to not promote prototypes.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-PUSH_005fARGS"></a>Macro: <strong>PUSH_ARGS</strong></dt>
+<dt id="index-PUSH_005fARGS">Macro: <strong>PUSH_ARGS</strong></dt>
 <dd><p>A C expression.  If nonzero, push insns will be used to pass
 outgoing arguments.
 If the target machine does not have a push instruction, set it to zero.
@@ -102,7 +91,7 @@ it.  When <code>PUSH_ARGS</code> is nonzero, <code>PUSH_ROUNDING</code> must be 
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-PUSH_005fARGS_005fREVERSED"></a>Macro: <strong>PUSH_ARGS_REVERSED</strong></dt>
+<dt id="index-PUSH_005fARGS_005fREVERSED">Macro: <strong>PUSH_ARGS_REVERSED</strong></dt>
 <dd><p>A C expression.  If nonzero, function arguments will be evaluated from
 last to first, rather than from first to last.  If this macro is not
 defined, it defaults to <code>PUSH_ARGS</code> on targets where the stack
@@ -110,31 +99,31 @@ and args grow in opposite directions, and 0 otherwise.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-PUSH_005fROUNDING"></a>Macro: <strong>PUSH_ROUNDING</strong> <em>(<var>npushed</var>)</em></dt>
+<dt id="index-PUSH_005fROUNDING">Macro: <strong>PUSH_ROUNDING</strong> <em>(<var>npushed</var>)</em></dt>
 <dd><p>A C expression that is the number of bytes actually pushed onto the
 stack when an instruction attempts to push <var>npushed</var> bytes.
 </p>
 <p>On some machines, the definition
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define PUSH_ROUNDING(BYTES) (BYTES)
+<div class="example">
+<pre class="example">#define PUSH_ROUNDING(BYTES) (BYTES)
 </pre></div>
 
 <p>will suffice.  But on other machines, instructions that appear
 to push one byte actually push two bytes in an attempt to maintain
 alignment.  Then the definition should be
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define PUSH_ROUNDING(BYTES) (((BYTES) + 1) &amp; ~1)
+<div class="example">
+<pre class="example">#define PUSH_ROUNDING(BYTES) (((BYTES) + 1) &amp; ~1)
 </pre></div>
 
 <p>If the value of this macro has a type, it should be an unsigned type.
 </p></dd></dl>
 
-<a name="index-outgoing_005fargs_005fsize"></a>
-<a name="index-crtl_002d_003eoutgoing_005fargs_005fsize"></a>
+<span id="index-outgoing_005fargs_005fsize"></span>
+<span id="index-crtl_002d_003eoutgoing_005fargs_005fsize"></span>
 <dl>
-<dt><a name="index-ACCUMULATE_005fOUTGOING_005fARGS"></a>Macro: <strong>ACCUMULATE_OUTGOING_ARGS</strong></dt>
+<dt id="index-ACCUMULATE_005fOUTGOING_005fARGS">Macro: <strong>ACCUMULATE_OUTGOING_ARGS</strong></dt>
 <dd><p>A C expression.  If nonzero, the maximum amount of space required for outgoing arguments
 will be computed and placed into
 <code>crtl-&gt;outgoing_args_size</code>.  No space will be pushed
@@ -146,7 +135,7 @@ is not proper.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-REG_005fPARM_005fSTACK_005fSPACE"></a>Macro: <strong>REG_PARM_STACK_SPACE</strong> <em>(<var>fndecl</var>)</em></dt>
+<dt id="index-REG_005fPARM_005fSTACK_005fSPACE">Macro: <strong>REG_PARM_STACK_SPACE</strong> <em>(<var>fndecl</var>)</em></dt>
 <dd><p>Define this macro if functions should assume that stack space has been
 allocated for arguments even when their values are passed in
 registers.
@@ -163,7 +152,7 @@ which.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-INCOMING_005fREG_005fPARM_005fSTACK_005fSPACE"></a>Macro: <strong>INCOMING_REG_PARM_STACK_SPACE</strong> <em>(<var>fndecl</var>)</em></dt>
+<dt id="index-INCOMING_005fREG_005fPARM_005fSTACK_005fSPACE">Macro: <strong>INCOMING_REG_PARM_STACK_SPACE</strong> <em>(<var>fndecl</var>)</em></dt>
 <dd><p>Like <code>REG_PARM_STACK_SPACE</code>, but for incoming register arguments.
 Define this macro if space guaranteed when compiling a function body
 is different to space required when making a call, a situation that
@@ -171,7 +160,7 @@ can arise with K&amp;R style function definitions.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-OUTGOING_005fREG_005fPARM_005fSTACK_005fSPACE"></a>Macro: <strong>OUTGOING_REG_PARM_STACK_SPACE</strong> <em>(<var>fntype</var>)</em></dt>
+<dt id="index-OUTGOING_005fREG_005fPARM_005fSTACK_005fSPACE">Macro: <strong>OUTGOING_REG_PARM_STACK_SPACE</strong> <em>(<var>fntype</var>)</em></dt>
 <dd><p>Define this to a nonzero value if it is the responsibility of the
 caller to allocate the area reserved for arguments passed in registers
 when calling a function of <var>fntype</var>.  <var>fntype</var> may be NULL
@@ -183,7 +172,7 @@ whether the space for these arguments counts in the value of
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-STACK_005fPARMS_005fIN_005fREG_005fPARM_005fAREA"></a>Macro: <strong>STACK_PARMS_IN_REG_PARM_AREA</strong></dt>
+<dt id="index-STACK_005fPARMS_005fIN_005fREG_005fPARM_005fAREA">Macro: <strong>STACK_PARMS_IN_REG_PARM_AREA</strong></dt>
 <dd><p>Define this macro if <code>REG_PARM_STACK_SPACE</code> is defined, but the
 stack parameters don&rsquo;t skip the area specified by it.
 </p>
@@ -194,7 +183,7 @@ stack in its natural location.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fRETURN_005fPOPS_005fARGS"></a>Target Hook: <em>poly_int64</em> <strong>TARGET_RETURN_POPS_ARGS</strong> <em>(tree <var>fundecl</var>, tree <var>funtype</var>, poly_int64 <var>size</var>)</em></dt>
+<dt id="index-TARGET_005fRETURN_005fPOPS_005fARGS">Target Hook: <em>poly_int64</em> <strong>TARGET_RETURN_POPS_ARGS</strong> <em>(tree <var>fundecl</var>, tree <var>funtype</var>, poly_int64 <var>size</var>)</em></dt>
 <dd><p>This target hook returns the number of bytes of its own arguments that
 a function pops on returning, or 0 if the function pops no arguments
 and the caller must therefore pop them all after the function returns.
@@ -233,7 +222,7 @@ number of arguments.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-CALL_005fPOPS_005fARGS"></a>Macro: <strong>CALL_POPS_ARGS</strong> <em>(<var>cum</var>)</em></dt>
+<dt id="index-CALL_005fPOPS_005fARGS">Macro: <strong>CALL_POPS_ARGS</strong> <em>(<var>cum</var>)</em></dt>
 <dd><p>A C expression that should indicate the number of bytes a call sequence
 pops off the stack.  It is added to the value of <code>RETURN_POPS_ARGS</code>
 when compiling a function call.
@@ -251,7 +240,7 @@ appropriate.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Register-Arguments.html#Register-Arguments" accesskey="n" rel="next">Register Arguments</a>, Previous: <a href="Elimination.html#Elimination" accesskey="p" rel="prev">Elimination</a>, Up: <a href="Stack-and-Calling.html#Stack-and-Calling" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Register-Arguments.html" accesskey="n" rel="next">Register Arguments</a>, Previous: <a href="Elimination.html" accesskey="p" rel="prev">Elimination</a>, Up: <a href="Stack-and-Calling.html" accesskey="u" rel="up">Stack and Calling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

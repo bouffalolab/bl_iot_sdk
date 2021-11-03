@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -137,9 +137,98 @@ $4 = 1
 </pre></div>
 
 </dd>
+<dt><code>$_gdb_setting_str (<var>setting</var>)</code></dt>
+<dd><a name="index-_0024_005fgdb_005fsetting_005fstr_002c-convenience-function"></a>
+<p>Return the value of the <small>GDB</small> <var>setting</var> as a string.
+<var>setting</var> is any setting that can be used in a <code>set</code> or
+<code>show</code> command (see <a href="Controlling-GDB.html#Controlling-GDB">Controlling GDB</a>).
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) show print frame-arguments
+Printing of non-scalar frame arguments is &quot;scalars&quot;.
+(gdb) p $_gdb_setting_str(&quot;print frame-arguments&quot;)
+$1 = &quot;scalars&quot;
+(gdb) p $_gdb_setting_str(&quot;height&quot;)
+$2 = &quot;30&quot;
+(gdb)
+</pre></div>
+
+</dd>
+<dt><code>$_gdb_setting (<var>setting</var>)</code></dt>
+<dd><a name="index-_0024_005fgdb_005fsetting_002c-convenience-function"></a>
+<p>Return the value of the <small>GDB</small> <var>setting</var>.
+The type of the returned value depends on the setting.
+</p>
+<p>The value type for boolean and auto boolean settings is <code>int</code>.
+The boolean values <code>off</code> and <code>on</code> are converted to
+the integer values <code>0</code> and <code>1</code>.  The value <code>auto</code> is
+converted to the value <code>-1</code>.
+</p>
+<p>The value type for integer settings is either <code>unsigned int</code>
+or <code>int</code>, depending on the setting.
+</p>
+<p>Some integer settings accept an <code>unlimited</code> value.
+Depending on the setting, the <code>set</code> command also accepts
+the value <code>0</code> or the value <code>-1</code> as a synonym for
+<code>unlimited</code>.
+For example, <code>set height unlimited</code> is equivalent to
+<code>set height 0</code>.
+</p>
+<p>Some other settings that accept the <code>unlimited</code> value
+use the value <code>0</code> to literally mean zero.
+For example, <code>set history size 0</code> indicates to not
+record any <small>GDB</small> commands in the command history.
+For such settings, <code>-1</code> is the synonym
+for <code>unlimited</code>.
+</p>
+<p>See the documentation of the corresponding <code>set</code> command for
+the numerical value equivalent to <code>unlimited</code>.
+</p>
+<p>The <code>$_gdb_setting</code> function converts the unlimited value
+to a <code>0</code> or a <code>-1</code> value according to what the
+<code>set</code> command uses.
+</p>
+<div class="smallexample">
+<pre class="smallexample">(gdb) p $_gdb_setting_str(&quot;height&quot;)
+$1 = &quot;30&quot;
+(gdb) p $_gdb_setting(&quot;height&quot;)
+$2 = 30
+(gdb) set height unlimited
+(gdb) p $_gdb_setting_str(&quot;height&quot;)
+$3 = &quot;unlimited&quot;
+(gdb) p $_gdb_setting(&quot;height&quot;)
+$4 = 0
+</pre><pre class="smallexample">(gdb) p $_gdb_setting_str(&quot;history size&quot;)
+$5 = &quot;unlimited&quot;
+(gdb) p $_gdb_setting(&quot;history size&quot;)
+$6 = -1
+(gdb) p $_gdb_setting_str(&quot;disassemble-next-line&quot;)
+$7 = &quot;auto&quot;
+(gdb) p $_gdb_setting(&quot;disassemble-next-line&quot;)
+$8 = -1
+(gdb)
+</pre></div>
+
+<p>Other setting types (enum, filename, optional filename, string, string noescape)
+are returned as string values.
+</p>
+
+</dd>
+<dt><code>$_gdb_maint_setting_str (<var>setting</var>)</code></dt>
+<dd><a name="index-_0024_005fgdb_005fmaint_005fsetting_005fstr_002c-convenience-function"></a>
+<p>Like the <code>$_gdb_setting_str</code> function, but works with
+<code>maintenance set</code> variables.
+</p>
+</dd>
+<dt><code>$_gdb_maint_setting (<var>setting</var>)</code></dt>
+<dd><a name="index-_0024_005fgdb_005fmaint_005fsetting_002c-convenience-function"></a>
+<p>Like the <code>$_gdb_setting</code> function, but works with
+<code>maintenance set</code> variables.
+</p>
+</dd>
 </dl>
 
-<p>These functions require <small>GDB</small> to be configured with
+<p>The following functions require <small>GDB</small> to be configured with
 <code>Python</code> support.
 </p>
 <dl compact="compact">
@@ -250,6 +339,18 @@ an enumerated type:
 Visiting node of type NODE_INTEGER
 </pre></div>
 
+</dd>
+<dt><code>$_cimag(<var>value</var>)</code></dt>
+<dt><code>$_creal(<var>value</var>)</code></dt>
+<dd><a name="index-_0024_005fcimag_002c-convenience-function"></a>
+<a name="index-_0024_005fcreal_002c-convenience-function"></a>
+<p>Return the imaginary (<code>$_cimag</code>) or real (<code>$_creal</code>) part of
+the complex number <var>value</var>.
+</p>
+<p>The type of the imaginary or real part depends on the type of the
+complex number, e.g., using <code>$_cimag</code> on a <code>float complex</code>
+will return an imaginary part of type <code>float</code>.
+</p>
 </dd>
 </dl>
 

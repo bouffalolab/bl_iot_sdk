@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -76,7 +76,7 @@ Next: <a href="Objfiles-In-Python.html#Objfiles-In-Python" accesskey="n" rel="ne
 of an address space.
 It consists of all of the objfiles of the program.
 See <a href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>.
-See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">program spaces</a>, for more details
+See <a href="Inferiors-Connections-and-Programs.html#Inferiors-Connections-and-Programs">program spaces</a>, for more details
 about program spaces.
 </p>
 <p>The following progspace-related functions are available in the
@@ -86,7 +86,7 @@ about program spaces.
 <dl>
 <dt><a name="index-gdb_002ecurrent_005fprogspace-1"></a>Function: <strong>gdb.current_progspace</strong> <em>()</em></dt>
 <dd><p>This function returns the program space of the currently selected inferior.
-See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Inferiors and Programs</a>.  This is identical to
+See <a href="Inferiors-Connections-and-Programs.html#Inferiors-Connections-and-Programs">Inferiors Connections and Programs</a>.  This is identical to
 <code>gdb.selected_inferior().progspace</code> (see <a href="Inferiors-In-Python.html#Inferiors-In-Python">Inferiors In Python</a>) and is
 included for historical compatibility.
 </p></dd></dl>
@@ -205,7 +205,7 @@ gdb.events.clear_objfiles.connect(clear_objfiles_handler)
 gdb.events.new_objfile.connect(new_objfile_handler)
 end
 (gdb) file /tmp/hello
-Reading symbols from /tmp/hello...done.
+Reading symbols from /tmp/hello...
 Computing the answer to the ultimate question ...
 (gdb) python print gdb.current_progspace().expensive_computation
 42

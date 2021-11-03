@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>AVR Variable Attributes (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Variable-Attributes.html#Variable-Attributes" rel="up" title="Variable Attributes">
-<link href="Blackfin-Variable-Attributes.html#Blackfin-Variable-Attributes" rel="next" title="Blackfin Variable Attributes">
-<link href="ARC-Variable-Attributes.html#ARC-Variable-Attributes" rel="prev" title="ARC Variable Attributes">
+<link href="Variable-Attributes.html" rel="up" title="Variable Attributes">
+<link href="Blackfin-Variable-Attributes.html" rel="next" title="Blackfin Variable Attributes">
+<link href="ARC-Variable-Attributes.html" rel="prev" title="ARC Variable Attributes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,18 +58,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="AVR-Variable-Attributes"></a>
-<div class="header">
+<span id="AVR-Variable-Attributes"></span><div class="header">
 <p>
-Next: <a href="Blackfin-Variable-Attributes.html#Blackfin-Variable-Attributes" accesskey="n" rel="next">Blackfin Variable Attributes</a>, Previous: <a href="ARC-Variable-Attributes.html#ARC-Variable-Attributes" accesskey="p" rel="prev">ARC Variable Attributes</a>, Up: <a href="Variable-Attributes.html#Variable-Attributes" accesskey="u" rel="up">Variable Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blackfin-Variable-Attributes.html" accesskey="n" rel="next">Blackfin Variable Attributes</a>, Previous: <a href="ARC-Variable-Attributes.html" accesskey="p" rel="prev">ARC Variable Attributes</a>, Up: <a href="Variable-Attributes.html" accesskey="u" rel="up">Variable Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="AVR-Variable-Attributes-1"></a>
-<h4 class="subsection">6.32.3 AVR Variable Attributes</h4>
+<span id="AVR-Variable-Attributes-1"></span><h4 class="subsection">6.34.3 AVR Variable Attributes</h4>
 
 <dl compact="compact">
 <dt><code>progmem</code></dt>
-<dd><a name="index-progmem-variable-attribute_002c-AVR"></a>
+<dd><span id="index-progmem-variable-attribute_002c-AVR"></span>
 <p>The <code>progmem</code> attribute is used on the AVR to place read-only
 data in the non-volatile program memory (flash). The <code>progmem</code>
 attribute accomplishes this by putting respective variables into a
@@ -93,8 +82,8 @@ but adds additional checking.
 of the data but not how this data is accessed.
 In order to read data located with the <code>progmem</code> attribute
 (inline) assembler must be used.
-</p><div class="smallexample">
-<pre class="smallexample">/* Use custom macros from <a href="http://nongnu.org/avr-libc/user-manual/">AVR-LibC</a><!-- /@w --> */
+</p><div class="example">
+<pre class="example">/* Use custom macros from <a href="http://nongnu.org/avr-libc/user-manual/">AVR-LibC</a><!-- /@w --> */
 #include &lt;avr/pgmspace.h&gt; 
 
 /* Locate var in flash memory */
@@ -124,7 +113,7 @@ RAM, no special features are needed in order not to waste RAM for
 read-only data or to read from flash.  You might even get slightly better
 performance by
 avoiding <code>progmem</code> and <code>__flash</code>.  This applies to devices from
-families <code>avrtiny</code> and <code>avrxmega3</code>, see <a href="AVR-Options.html#AVR-Options">AVR Options</a> for
+families <code>avrtiny</code> and <code>avrxmega3</code>, see <a href="AVR-Options.html">AVR Options</a> for
 an overview.
 </p>
 </dd>
@@ -138,8 +127,8 @@ address space starting at address <code>0x4000</code>.
 <p>Data in <code>progmem</code> can be accessed by means of ordinary C&nbsp;code,
 no special functions or macros are needed.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* var is located in flash memory */
+<div class="example">
+<pre class="example">/* var is located in flash memory */
 extern const int var[2] __attribute__((progmem));
 
 int read_var (int i)
@@ -157,7 +146,7 @@ at all.
 </dd>
 <dt><code>io</code></dt>
 <dt><code>io (<var>addr</var>)</code></dt>
-<dd><a name="index-io-variable-attribute_002c-AVR"></a>
+<dd><span id="index-io-variable-attribute_002c-AVR"></span>
 <p>Variables with the <code>io</code> attribute are used to address
 memory-mapped peripherals in the io address range.
 If an address is specified, the variable
@@ -165,8 +154,8 @@ is assigned that address, and the value is interpreted as an
 address in the data address space.
 Example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">volatile int porta __attribute__((io (0x22)));
+<div class="example">
+<pre class="example">volatile int porta __attribute__((io (0x22)));
 </pre></div>
 
 <p>The address specified in the address in the data address range.
@@ -176,14 +165,14 @@ compiler will still use in/out instructions where applicable,
 assuming some other module assigns an address in the io address range.
 Example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">extern volatile int porta __attribute__((io));
+<div class="example">
+<pre class="example">extern volatile int porta __attribute__((io));
 </pre></div>
 
 </dd>
 <dt><code>io_low</code></dt>
 <dt><code>io_low (<var>addr</var>)</code></dt>
-<dd><a name="index-io_005flow-variable-attribute_002c-AVR"></a>
+<dd><span id="index-io_005flow-variable-attribute_002c-AVR"></span>
 <p>This is like the <code>io</code> attribute, but additionally it informs the
 compiler that the object lies in the lower half of the I/O area,
 allowing the use of <code>cbi</code>, <code>sbi</code>, <code>sbic</code> and <code>sbis</code>
@@ -192,17 +181,17 @@ instructions.
 </dd>
 <dt><code>address</code></dt>
 <dt><code>address (<var>addr</var>)</code></dt>
-<dd><a name="index-address-variable-attribute_002c-AVR"></a>
+<dd><span id="index-address-variable-attribute_002c-AVR"></span>
 <p>Variables with the <code>address</code> attribute are used to address
 memory-mapped peripherals that may lie outside the io address range.
 </p>
-<div class="smallexample">
-<pre class="smallexample">volatile int porta __attribute__((address (0x600)));
+<div class="example">
+<pre class="example">volatile int porta __attribute__((address (0x600)));
 </pre></div>
 
 </dd>
 <dt><code>absdata</code></dt>
-<dd><a name="index-absdata-variable-attribute_002c-AVR"></a>
+<dd><span id="index-absdata-variable-attribute_002c-AVR"></span>
 <p>Variables in static storage and with the <code>absdata</code> attribute can
 be accessed by the <code>LDS</code> and <code>STS</code> instructions which take
 absolute addresses.
@@ -225,7 +214,7 @@ warning like
 
 </li></ul>
 
-<p>See also the <samp>-mabsdata</samp> <a href="AVR-Options.html#AVR-Options">command-line option</a>.
+<p>See also the <samp>-mabsdata</samp> <a href="AVR-Options.html">command-line option</a>.
 </p>
 </dd>
 </dl>
@@ -233,7 +222,7 @@ warning like
 <hr>
 <div class="header">
 <p>
-Next: <a href="Blackfin-Variable-Attributes.html#Blackfin-Variable-Attributes" accesskey="n" rel="next">Blackfin Variable Attributes</a>, Previous: <a href="ARC-Variable-Attributes.html#ARC-Variable-Attributes" accesskey="p" rel="prev">ARC Variable Attributes</a>, Up: <a href="Variable-Attributes.html#Variable-Attributes" accesskey="u" rel="up">Variable Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blackfin-Variable-Attributes.html" accesskey="n" rel="next">Blackfin Variable Attributes</a>, Previous: <a href="ARC-Variable-Attributes.html" accesskey="p" rel="prev">ARC Variable Attributes</a>, Up: <a href="Variable-Attributes.html" accesskey="u" rel="up">Variable Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

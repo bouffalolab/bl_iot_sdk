@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Values From Inferior In Guile (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Guile-API.html#Guile-API" rel="up" title="Guile API">
-<link href="Arithmetic-In-Guile.html#Arithmetic-In-Guile" rel="next" title="Arithmetic In Guile">
-<link href="Guile-Exception-Handling.html#Guile-Exception-Handling" rel="prev" title="Guile Exception Handling">
+<link href="Guile-API.html" rel="up" title="Guile API">
+<link href="Arithmetic-In-Guile.html" rel="next" title="Arithmetic In Guile">
+<link href="Guile-Exception-Handling.html" rel="prev" title="Guile Exception Handling">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Values-From-Inferior-In-Guile"></a>
-<div class="header">
+<span id="Values-From-Inferior-In-Guile"></span><div class="header">
 <p>
-Next: <a href="Arithmetic-In-Guile.html#Arithmetic-In-Guile" accesskey="n" rel="next">Arithmetic In Guile</a>, Previous: <a href="Guile-Exception-Handling.html#Guile-Exception-Handling" accesskey="p" rel="prev">Guile Exception Handling</a>, Up: <a href="Guile-API.html#Guile-API" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Arithmetic-In-Guile.html" accesskey="n" rel="next">Arithmetic In Guile</a>, Previous: <a href="Guile-Exception-Handling.html" accesskey="p" rel="prev">Guile Exception Handling</a>, Up: <a href="Guile-API.html" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Values-From-Inferior-In-Guile-1"></a>
-<h4 class="subsubsection">23.3.3.5 Values From Inferior In Guile</h4>
-<a name="index-values-from-inferior_002c-in-guile"></a>
-<a name="index-guile_002c-working-with-values-from-inferior"></a>
+<span id="Values-From-Inferior-In-Guile-1"></span><h4 class="subsubsection">23.3.3.5 Values From Inferior In Guile</h4>
+<span id="index-values-from-inferior_002c-in-guile"></span>
+<span id="index-guile_002c-working-with-values-from-inferior"></span>
 
-<a name="index-_003cgdb_003avalue_003e"></a>
+<span id="index-_003cgdb_003avalue_003e"></span>
 <p><small>GDB</small> provides values it obtains from the inferior program in
 an object of type <code>&lt;gdb:value&gt;</code>.  <small>GDB</small> uses this object
 for its internal bookkeeping of the inferior&rsquo;s values, and for
@@ -80,8 +69,8 @@ fetching values when necessary.
 <p><small>GDB</small> does not memoize <code>&lt;gdb:value&gt;</code> objects.
 <code>make-value</code> always returns a fresh object.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) guile (eq? (make-value 1) (make-value 1))
+<div class="example">
+<pre class="example">(gdb) guile (eq? (make-value 1) (make-value 1))
 $1 = #f
 (gdb) guile (equal? (make-value 1) (make-value 1))
 $1 = #t
@@ -96,8 +85,8 @@ and must be provided in the order specified by that prototype.
 representing a function that takes two integers as arguments.  To
 execute this function, call it like so:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define result (value-call some-val 10 20))
+<div class="example">
+<pre class="example">(define result (value-call some-val 10 20))
 </pre></div>
 
 <p>Any values returned from a function call are <code>&lt;gdb:value&gt;</code> objects.
@@ -113,20 +102,20 @@ be accessed using any special syntax, instead <code>value-field</code> must be u
 <code>(gdb)</code> module.
 </p>
 <dl>
-<dt><a name="index-value_003f"></a>Scheme Procedure: <strong>value?</strong> <em>object</em></dt>
+<dt id="index-value_003f">Scheme Procedure: <strong>value?</strong> <em>object</em></dt>
 <dd><p>Return <code>#t</code> if <var>object</var> is a <code>&lt;gdb:value&gt;</code> object.
 Otherwise return <code>#f</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-make_002dvalue"></a>Scheme Procedure: <strong>make-value</strong> <em>value <span class="roman">[</span>#:type type<span class="roman">]</span></em></dt>
+<dt id="index-make_002dvalue">Scheme Procedure: <strong>make-value</strong> <em>value <span class="roman">[</span>#:type type<span class="roman">]</span></em></dt>
 <dd><p>Many Scheme values can be converted directly to a <code>&lt;gdb:value&gt;</code>
 with this procedure.  If <var>type</var> is specified, the result is a value
 of this type, and if <var>value</var> can&rsquo;t be represented with this type
 an exception is thrown.  Otherwise the type of the result is determined from
 <var>value</var> as described below.
 </p>
-<p>See <a href="Architectures-In-Guile.html#Architectures-In-Guile">Architectures In Guile</a>, for a list of the builtin
+<p>See <a href="Architectures-In-Guile.html">Architectures In Guile</a>, for a list of the builtin
 types for an architecture.
 </p>
 <p>Here&rsquo;s how Scheme values are converted when <var>type</var> argument to
@@ -158,14 +147,14 @@ language using the current target encoding.
 Characters that cannot be represented in the current target encoding
 are replaced with the corresponding escape sequence.  This is Guile&rsquo;s
 <code>SCM_FAILED_CONVERSION_ESCAPE_SEQUENCE</code> conversion strategy
-(see <a href="http://www.gnu.org/software/guile/manual/html_node/Strings.html#Strings">Strings</a> in <cite>GNU Guile Reference Manual</cite>).
+(see <a href="https://www.gnu.org/software/guile/manual/html_node/Strings.html#Strings">Strings</a> in <cite>GNU Guile Reference Manual</cite>).
 </p>
 <p>Passing <var>type</var> is not supported in this case,
 if it is provided a <code>wrong-type-arg</code> exception is thrown.
 </p>
 </dd>
 <dt><code>&lt;gdb:lazy-string&gt;</code></dt>
-<dd><p>If <var>value</var> is a <code>&lt;gdb:lazy-string&gt;</code> object (see <a href="Lazy-Strings-In-Guile.html#Lazy-Strings-In-Guile">Lazy Strings In Guile</a>), then the <code>lazy-string-&gt;value</code> procedure is called, and
+<dd><p>If <var>value</var> is a <code>&lt;gdb:lazy-string&gt;</code> object (see <a href="Lazy-Strings-In-Guile.html">Lazy Strings In Guile</a>), then the <code>lazy-string-&gt;value</code> procedure is called, and
 its result is used.
 </p>
 <p>Passing <var>type</var> is not supported in this case,
@@ -183,29 +172,29 @@ the result is an array of type <code>uint8</code> of the same length.
 </dl>
 </dd></dl>
 
-<a name="index-optimized-out-value-in-guile"></a>
+<span id="index-optimized-out-value-in-guile"></span>
 <dl>
-<dt><a name="index-value_002doptimized_002dout_003f"></a>Scheme Procedure: <strong>value-optimized-out?</strong> <em>value</em></dt>
+<dt id="index-value_002doptimized_002dout_003f">Scheme Procedure: <strong>value-optimized-out?</strong> <em>value</em></dt>
 <dd><p>Return <code>#t</code> if the compiler optimized out <var>value</var>,
 thus it is not available for fetching from the inferior.
 Otherwise return <code>#f</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002daddress"></a>Scheme Procedure: <strong>value-address</strong> <em>value</em></dt>
+<dt id="index-value_002daddress">Scheme Procedure: <strong>value-address</strong> <em>value</em></dt>
 <dd><p>If <var>value</var> is addressable, returns a
 <code>&lt;gdb:value&gt;</code> object representing the address.
 Otherwise, <code>#f</code> is returned.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dtype"></a>Scheme Procedure: <strong>value-type</strong> <em>value</em></dt>
+<dt id="index-value_002dtype">Scheme Procedure: <strong>value-type</strong> <em>value</em></dt>
 <dd><p>Return the type of <var>value</var> as a <code>&lt;gdb:type&gt;</code> object
-(see <a href="Types-In-Guile.html#Types-In-Guile">Types In Guile</a>).
+(see <a href="Types-In-Guile.html">Types In Guile</a>).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002ddynamic_002dtype"></a>Scheme Procedure: <strong>value-dynamic-type</strong> <em>value</em></dt>
+<dt id="index-value_002ddynamic_002dtype">Scheme Procedure: <strong>value-dynamic-type</strong> <em>value</em></dt>
 <dd><p>Return the dynamic type of <var>value</var>.  This uses C<tt>++</tt> run-time
 type information (<acronym>RTTI</acronym>) to determine the dynamic type of the
 value.  If the value is of class type, it will return the class in
@@ -218,11 +207,11 @@ type.
 <p>Note that this feature will only work when debugging a C<tt>++</tt> program
 that includes <acronym>RTTI</acronym> for the object in question.  Otherwise,
 it will just return the static type of the value as in <kbd>ptype foo</kbd>.
-See <a href="Symbols.html#Symbols">ptype</a>.
+See <a href="Symbols.html">ptype</a>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dcast"></a>Scheme Procedure: <strong>value-cast</strong> <em>value type</em></dt>
+<dt id="index-value_002dcast">Scheme Procedure: <strong>value-cast</strong> <em>value type</em></dt>
 <dd><p>Return a new instance of <code>&lt;gdb:value&gt;</code> that is the result of
 casting <var>value</var> to the type described by <var>type</var>, which must
 be a <code>&lt;gdb:type&gt;</code> object.  If the cast cannot be performed for some
@@ -230,39 +219,39 @@ reason, this method throws an exception.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002ddynamic_002dcast"></a>Scheme Procedure: <strong>value-dynamic-cast</strong> <em>value type</em></dt>
+<dt id="index-value_002ddynamic_002dcast">Scheme Procedure: <strong>value-dynamic-cast</strong> <em>value type</em></dt>
 <dd><p>Like <code>value-cast</code>, but works as if the C<tt>++</tt> <code>dynamic_cast</code>
 operator were used.  Consult a C<tt>++</tt> reference for details.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dreinterpret_002dcast"></a>Scheme Procedure: <strong>value-reinterpret-cast</strong> <em>value type</em></dt>
+<dt id="index-value_002dreinterpret_002dcast">Scheme Procedure: <strong>value-reinterpret-cast</strong> <em>value type</em></dt>
 <dd><p>Like <code>value-cast</code>, but works as if the C<tt>++</tt> <code>reinterpret_cast</code>
 operator were used.  Consult a C<tt>++</tt> reference for details.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002ddereference"></a>Scheme Procedure: <strong>value-dereference</strong> <em>value</em></dt>
+<dt id="index-value_002ddereference">Scheme Procedure: <strong>value-dereference</strong> <em>value</em></dt>
 <dd><p>For pointer data types, this method returns a new <code>&lt;gdb:value&gt;</code> object
 whose contents is the object pointed to by <var>value</var>.  For example, if
 <code>foo</code> is a C pointer to an <code>int</code>, declared in your C program as
 </p>
-<div class="smallexample">
-<pre class="smallexample">int *foo;
+<div class="example">
+<pre class="example">int *foo;
 </pre></div>
 
 <p>then you can use the corresponding <code>&lt;gdb:value&gt;</code> to access what
 <code>foo</code> points to like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define bar (value-dereference foo))
+<div class="example">
+<pre class="example">(define bar (value-dereference foo))
 </pre></div>
 
 <p>The result <code>bar</code> will be a <code>&lt;gdb:value&gt;</code> object holding the
 value pointed to by <code>foo</code>.
 </p>
 <p>A similar function <code>value-referenced-value</code> exists which also
-returns <code>&lt;gdb:value&gt;</code> objects corresonding to the values pointed to
+returns <code>&lt;gdb:value&gt;</code> objects corresponding to the values pointed to
 by pointer values (and additionally, values referenced by reference
 values).  However, the behavior of <code>value-dereference</code>
 differs from <code>value-referenced-value</code> by the fact that the
@@ -271,8 +260,8 @@ unary operator <code>*</code> on a given value.  For example, consider a
 reference to a pointer <code>ptrref</code>, declared in your C<tt>++</tt> program
 as
 </p>
-<div class="smallexample">
-<pre class="smallexample">typedef int *intptr;
+<div class="example">
+<pre class="example">typedef int *intptr;
 ...
 int val = 10;
 intptr ptr = &amp;val;
@@ -286,8 +275,8 @@ corresponding to <code>val</code>.  However, if you apply the method
 <code>value-referenced-value</code>, the result would be a <code>&lt;gdb:value&gt;</code>
 object identical to that corresponding to <code>ptr</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define scm-ptrref (parse-and-eval &quot;ptrref&quot;))
+<div class="example">
+<pre class="example">(define scm-ptrref (parse-and-eval &quot;ptrref&quot;))
 (define scm-val (value-dereference scm-ptrref))
 (define scm-ptr (value-referenced-value scm-ptrref))
 </pre></div>
@@ -305,7 +294,7 @@ objects with type code <code>TYPE_CODE_PTR</code>) in a C/C<tt>++</tt> program.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dreferenced_002dvalue"></a>Scheme Procedure: <strong>value-referenced-value</strong> <em>value</em></dt>
+<dt id="index-value_002dreferenced_002dvalue">Scheme Procedure: <strong>value-referenced-value</strong> <em>value</em></dt>
 <dd><p>For pointer or reference data types, this method returns a new
 <code>&lt;gdb:value&gt;</code> object corresponding to the value referenced by the
 pointer/reference value.  For pointer data types,
@@ -315,8 +304,8 @@ identical results.  The difference between these methods is that
 values.  For example, consider a reference to an <code>int</code>, declared
 in your C<tt>++</tt> program as
 </p>
-<div class="smallexample">
-<pre class="smallexample">int val = 10;
+<div class="example">
+<pre class="example">int val = 10;
 int &amp;ref = val;
 </pre></div>
 
@@ -325,8 +314,8 @@ corresponding to <code>ref</code> will result in an error, while applying
 <code>value-referenced-value</code> will result in a <code>&lt;gdb:value&gt;</code> object
 identical to that corresponding to <code>val</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define scm-ref (parse-and-eval &quot;ref&quot;))
+<div class="example">
+<pre class="example">(define scm-ref (parse-and-eval &quot;ref&quot;))
 (define err-ref (value-dereference scm-ref))      ;; error
 (define scm-val (value-referenced-value scm-ref)) ;; ok
 </pre></div>
@@ -336,18 +325,18 @@ corresponding to <code>val</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dfield"></a>Scheme Procedure: <strong>value-field</strong> <em>value field-name</em></dt>
+<dt id="index-value_002dfield">Scheme Procedure: <strong>value-field</strong> <em>value field-name</em></dt>
 <dd><p>Return field <var>field-name</var> from <code>&lt;gdb:value&gt;</code> object <var>value</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dsubscript"></a>Scheme Procedure: <strong>value-subscript</strong> <em>value index</em></dt>
+<dt id="index-value_002dsubscript">Scheme Procedure: <strong>value-subscript</strong> <em>value index</em></dt>
 <dd><p>Return the value of array <var>value</var> at index <var>index</var>.
 The <var>value</var> argument must be a subscriptable <code>&lt;gdb:value&gt;</code> object.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dcall"></a>Scheme Procedure: <strong>value-call</strong> <em>value arg-list</em></dt>
+<dt id="index-value_002dcall">Scheme Procedure: <strong>value-call</strong> <em>value arg-list</em></dt>
 <dd><p>Perform an inferior function call, taking <var>value</var> as a pointer
 to the function to call.
 Each element of list <var>arg-list</var> must be a &lt;gdb:value&gt; object or an object
@@ -356,31 +345,31 @@ The result is the value returned by the function.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003ebool"></a>Scheme Procedure: <strong>value-&gt;bool</strong> <em>value</em></dt>
+<dt id="index-value_002d_003ebool">Scheme Procedure: <strong>value-&gt;bool</strong> <em>value</em></dt>
 <dd><p>Return the Scheme boolean representing <code>&lt;gdb:value&gt;</code> <var>value</var>.
 The value must be &ldquo;integer like&rdquo;.  Pointers are ok.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003einteger"></a>Scheme Procedure: <strong>value-&gt;integer</strong></dt>
+<dt id="index-value_002d_003einteger">Scheme Procedure: <strong>value-&gt;integer</strong></dt>
 <dd><p>Return the Scheme integer representing <code>&lt;gdb:value&gt;</code> <var>value</var>.
 The value must be &ldquo;integer like&rdquo;.  Pointers are ok.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003ereal"></a>Scheme Procedure: <strong>value-&gt;real</strong></dt>
+<dt id="index-value_002d_003ereal">Scheme Procedure: <strong>value-&gt;real</strong></dt>
 <dd><p>Return the Scheme real number representing <code>&lt;gdb:value&gt;</code> <var>value</var>.
 The value must be a number.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003ebytevector"></a>Scheme Procedure: <strong>value-&gt;bytevector</strong></dt>
+<dt id="index-value_002d_003ebytevector">Scheme Procedure: <strong>value-&gt;bytevector</strong></dt>
 <dd><p>Return a Scheme bytevector with the raw contents of <code>&lt;gdb:value&gt;</code>
 <var>value</var>.  No transformation, endian or otherwise, is performed.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003estring"></a>Scheme Procedure: <strong>value-&gt;string</strong> <em>value <span class="roman">[</span>#:encoding encoding<span class="roman">]</span> <span class="roman">[</span>#:errors errors<span class="roman">]</span> <span class="roman">[</span>#:length length<span class="roman">]</span></em></dt>
+<dt id="index-value_002d_003estring">Scheme Procedure: <strong>value-&gt;string</strong> <em>value <span class="roman">[</span>#:encoding encoding<span class="roman">]</span> <span class="roman">[</span>#:errors errors<span class="roman">]</span> <span class="roman">[</span>#:length length<span class="roman">]</span></em></dt>
 <dd><p>If <var>value&gt;</var> represents a string, then this method
 converts the contents to a Guile string.  Otherwise, this method will
 throw an exception.
@@ -403,7 +392,7 @@ the same encodings as the corresponding argument to Guile&rsquo;s
 <code>scm_from_stringn</code> function, and the Guile codec machinery will be used
 to convert the string.  If <var>encoding</var> is not given, or if
 <var>encoding</var> is the empty string, then either the <code>target-charset</code>
-(see <a href="Character-Sets.html#Character-Sets">Character Sets</a>) will be used, or a language-specific encoding
+(see <a href="Character-Sets.html">Character Sets</a>) will be used, or a language-specific encoding
 will be used, if the current language is able to supply one.
 </p>
 <p>The optional <var>errors</var> argument is one of <code>#f</code>, <code>error</code> or
@@ -414,7 +403,7 @@ default conversion strategy is used, which is set with the Scheme function
 If the value is <code>'error</code> then an exception is thrown if there is any
 conversion error.  If the value is <code>'substitute</code> then any conversion
 error is replaced with question marks.
-See <a href="http://www.gnu.org/software/guile/manual/html_node/Strings.html#Strings">Strings</a> in <cite>GNU Guile Reference Manual</cite>.
+See <a href="https://www.gnu.org/software/guile/manual/html_node/Strings.html#Strings">Strings</a> in <cite>GNU Guile Reference Manual</cite>.
 </p>
 <p>If the optional <var>length</var> argument is given, the string will be
 fetched and converted to the given length.
@@ -422,9 +411,9 @@ The length must be a Scheme integer and not a <code>&lt;gdb:value&gt;</code> int
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002d_003elazy_002dstring"></a>Scheme Procedure: <strong>value-&gt;lazy-string</strong> <em>value <span class="roman">[</span>#:encoding encoding<span class="roman">]</span> <span class="roman">[</span>#:length length<span class="roman">]</span></em></dt>
+<dt id="index-value_002d_003elazy_002dstring">Scheme Procedure: <strong>value-&gt;lazy-string</strong> <em>value <span class="roman">[</span>#:encoding encoding<span class="roman">]</span> <span class="roman">[</span>#:length length<span class="roman">]</span></em></dt>
 <dd><p>If this <code>&lt;gdb:value&gt;</code> represents a string, then this method
-converts <var>value</var> to a <code>&lt;gdb:lazy-string</code> (see <a href="Lazy-Strings-In-Guile.html#Lazy-Strings-In-Guile">Lazy Strings In Guile</a>).  Otherwise, this method will throw an exception.
+converts <var>value</var> to a <code>&lt;gdb:lazy-string</code> (see <a href="Lazy-Strings-In-Guile.html">Lazy Strings In Guile</a>).  Otherwise, this method will throw an exception.
 </p>
 <p>If the optional <var>encoding</var> argument is given, it must be a string
 naming the encoding of the <code>&lt;gdb:lazy-string</code>.  Some examples are:
@@ -437,7 +426,7 @@ used to convert the string during printing.  If the optional
 <var>encoding</var> argument is not provided, or is an empty string,
 <small>GDB</small> will automatically select the encoding most suitable for
 the string type.  For further information on encoding in <small>GDB</small>
-please see <a href="Character-Sets.html#Character-Sets">Character Sets</a>.
+please see <a href="Character-Sets.html">Character Sets</a>.
 </p>
 <p>If the optional <var>length</var> argument is given, the string will be
 fetched and encoded to the length of characters specified.  If
@@ -447,15 +436,15 @@ The length must be a Scheme integer and not a <code>&lt;gdb:value&gt;</code> int
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dlazy_003f"></a>Scheme Procedure: <strong>value-lazy?</strong> <em>value</em></dt>
+<dt id="index-value_002dlazy_003f">Scheme Procedure: <strong>value-lazy?</strong> <em>value</em></dt>
 <dd><p>Return <code>#t</code> if <var>value</var> has not yet been fetched
 from the inferior.
 Otherwise return <code>#f</code>.
 <small>GDB</small> does not fetch values until necessary, for efficiency.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define myval (parse-and-eval &quot;somevar&quot;))
+<div class="example">
+<pre class="example">(define myval (parse-and-eval &quot;somevar&quot;))
 </pre></div>
 
 <p>The value of <code>somevar</code> is not fetched at this time.  It will be
@@ -464,7 +453,7 @@ procedure is invoked.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-make_002dlazy_002dvalue"></a>Scheme Procedure: <strong>make-lazy-value</strong> <em>type address</em></dt>
+<dt id="index-make_002dlazy_002dvalue">Scheme Procedure: <strong>make-lazy-value</strong> <em>type address</em></dt>
 <dd><p>Return a <code>&lt;gdb:value&gt;</code> that will be lazily fetched from the
 target.  The object of type <code>&lt;gdb:type&gt;</code> whose value to fetch is
 specified by its <var>type</var> and its target memory <var>address</var>, which
@@ -472,7 +461,7 @@ is a Scheme integer.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dfetch_002dlazy_0021"></a>Scheme Procedure: <strong>value-fetch-lazy!</strong> <em>value</em></dt>
+<dt id="index-value_002dfetch_002dlazy_0021">Scheme Procedure: <strong>value-fetch-lazy!</strong> <em>value</em></dt>
 <dd><p>If <var>value</var> is a lazy value (<code>(value-lazy? value)</code> is <code>#t</code>),
 then the value is fetched from the inferior.
 Any errors that occur in the process will produce a Guile exception.
@@ -483,7 +472,7 @@ Any errors that occur in the process will produce a Guile exception.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-value_002dprint"></a>Scheme Procedure: <strong>value-print</strong> <em>value</em></dt>
+<dt id="index-value_002dprint">Scheme Procedure: <strong>value-print</strong> <em>value</em></dt>
 <dd><p>Return the string representation (print form) of <code>&lt;gdb:value&gt;</code>
 <var>value</var>.
 </p></dd></dl>
@@ -491,7 +480,7 @@ Any errors that occur in the process will produce a Guile exception.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Arithmetic-In-Guile.html#Arithmetic-In-Guile" accesskey="n" rel="next">Arithmetic In Guile</a>, Previous: <a href="Guile-Exception-Handling.html#Guile-Exception-Handling" accesskey="p" rel="prev">Guile Exception Handling</a>, Up: <a href="Guile-API.html#Guile-API" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Arithmetic-In-Guile.html" accesskey="n" rel="next">Arithmetic In Guile</a>, Previous: <a href="Guile-Exception-Handling.html" accesskey="p" rel="prev">Guile Exception Handling</a>, Up: <a href="Guile-API.html" accesskey="u" rel="up">Guile API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

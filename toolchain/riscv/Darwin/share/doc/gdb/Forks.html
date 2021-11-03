@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Forks (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Running.html#Running" rel="up" title="Running">
-<link href="Checkpoint_002fRestart.html#Checkpoint_002fRestart" rel="next" title="Checkpoint/Restart">
-<link href="Threads.html#Threads" rel="prev" title="Threads">
+<link href="Running.html" rel="up" title="Running">
+<link href="Checkpoint_002fRestart.html" rel="next" title="Checkpoint/Restart">
+<link href="Threads.html" rel="prev" title="Threads">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,18 +51,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Forks"></a>
-<div class="header">
+<span id="Forks"></span><div class="header">
 <p>
-Next: <a href="Checkpoint_002fRestart.html#Checkpoint_002fRestart" accesskey="n" rel="next">Checkpoint/Restart</a>, Previous: <a href="Threads.html#Threads" accesskey="p" rel="prev">Threads</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Checkpoint_002fRestart.html" accesskey="n" rel="next">Checkpoint/Restart</a>, Previous: <a href="Threads.html" accesskey="p" rel="prev">Threads</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Debugging-Forks"></a>
-<h3 class="section">4.11 Debugging Forks</h3>
+<span id="Debugging-Forks"></span><h3 class="section">4.11 Debugging Forks</h3>
 
-<a name="index-fork_002c-debugging-programs-which-call"></a>
-<a name="index-multiple-processes"></a>
-<a name="index-processes_002c-multiple"></a>
+<span id="index-fork_002c-debugging-programs-which-call"></span>
+<span id="index-multiple-processes"></span>
+<span id="index-processes_002c-multiple"></span>
 <p>On most systems, <small>GDB</small> has no special support for debugging
 programs which create additional processes using the <code>fork</code>
 function.  When a program forks, <small>GDB</small> will continue to debug the
@@ -88,7 +77,7 @@ so that the delay need not occur when you don&rsquo;t want to run <small>GDB</sm
 on the child.  While the child is sleeping, use the <code>ps</code> program to
 get its process ID.  Then tell <small>GDB</small> (a new invocation of
 <small>GDB</small> if you are also debugging the parent process) to attach to
-the child process (see <a href="Attach.html#Attach">Attach</a>).  From that point on you can debug
+the child process (see <a href="Attach.html">Attach</a>).  From that point on you can debug
 the child process just like any other process which you attached to.
 </p>
 <p>On some systems, <small>GDB</small> provides support for debugging programs
@@ -107,7 +96,7 @@ the parent process and the child process will run unimpeded.
 use the command <code>set&nbsp;<span class="nolinebreak">follow-fork-mode</span></code><!-- /@w -->.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-follow_002dfork_002dmode"></a>
+<dd><span id="index-set-follow_002dfork_002dmode"></span>
 </dd>
 <dt><code>set follow-fork-mode <var>mode</var></code></dt>
 <dd><p>Set the debugger response to a program call of <code>fork</code> or
@@ -127,19 +116,19 @@ unimpeded.
 </dd>
 </dl>
 
-<a name="index-show-follow_002dfork_002dmode"></a>
+<span id="index-show-follow_002dfork_002dmode"></span>
 </dd>
 <dt><code>show follow-fork-mode</code></dt>
 <dd><p>Display the current debugger response to a <code>fork</code> or <code>vfork</code> call.
 </p></dd>
 </dl>
 
-<a name="index-debugging-multiple-processes"></a>
+<span id="index-debugging-multiple-processes"></span>
 <p>On Linux, if you want to debug both the parent and child processes, use the
 command <code>set&nbsp;<span class="nolinebreak">detach-on-fork</span></code><!-- /@w -->.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-detach_002don_002dfork"></a>
+<dd><span id="index-set-detach_002don_002dfork"></span>
 </dd>
 <dt><code>set detach-on-fork <var>mode</var></code></dt>
 <dd><p>Tells gdb whether to detach one of the processes after a fork, or
@@ -161,7 +150,7 @@ is held suspended.
 </dd>
 </dl>
 
-<a name="index-show-detach_002don_002dfork"></a>
+<span id="index-show-detach_002don_002dfork"></span>
 </dd>
 <dt><code>show detach-on-fork</code></dt>
 <dd><p>Show whether detach-on-fork mode is on/off.
@@ -172,13 +161,13 @@ is held suspended.
 will retain control of all forked processes (including nested forks).
 You can list the forked processes under the control of <small>GDB</small> by
 using the <code>info&nbsp;inferiors</code><!-- /@w --> command, and switch from one fork
-to another by using the <code>inferior</code> command (see <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Debugging Multiple Inferiors and Programs</a>).
+to another by using the <code>inferior</code> command (see <a href="Inferiors-Connections-and-Programs.html">Debugging Multiple Inferiors Connections and Programs</a>).
 </p>
 <p>To quit debugging one of the forked processes, you can either detach
 from it by using the <code>detach&nbsp;inferiors</code><!-- /@w --> command (allowing it
 to run independently), or kill it using the <code>kill&nbsp;inferiors</code><!-- /@w -->
-command.  See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Debugging Multiple Inferiors
-and Programs</a>.
+command.  See <a href="Inferiors-Connections-and-Programs.html">Debugging
+Multiple Inferiors Connections and Programs</a>.
 </p>
 <p>If you ask to debug a child process and a <code>vfork</code> is followed by an
 <code>exec</code>, <small>GDB</small> executes the new target up to the first
@@ -198,7 +187,7 @@ You can change this behaviour with the <code>set&nbsp;<span class="nolinebreak">
 command.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-follow_002dexec_002dmode"></a>
+<dd><span id="index-set-follow_002dexec_002dmode"></span>
 </dd>
 <dt><code>set follow-exec-mode <var>mode</var></code></dt>
 <dd>
@@ -216,8 +205,8 @@ original inferior.
 </p>
 <p>For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) info inferiors
+<div class="example">
+<pre class="example">(gdb) info inferiors
 (gdb) info inferior
   Id   Description   Executable
 * 1    &lt;null&gt;        prog1
@@ -240,8 +229,8 @@ running after the <code>exec</code> call.  This is the default mode.
 </p>
 <p>For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) info inferiors
+<div class="example">
+<pre class="example">(gdb) info inferiors
   Id   Description   Executable
 * 1    &lt;null&gt;        prog1
 (gdb) run
@@ -261,12 +250,12 @@ Program exited normally.
 <code>target extended-remote</code> mode.
 </p>
 <p>You can use the <code>catch</code> command to make <small>GDB</small> stop whenever
-a <code>fork</code>, <code>vfork</code>, or <code>exec</code> call is made.  See <a href="Set-Catchpoints.html#Set-Catchpoints">Setting Catchpoints</a>.
+a <code>fork</code>, <code>vfork</code>, or <code>exec</code> call is made.  See <a href="Set-Catchpoints.html">Setting Catchpoints</a>.
 </p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Checkpoint_002fRestart.html#Checkpoint_002fRestart" accesskey="n" rel="next">Checkpoint/Restart</a>, Previous: <a href="Threads.html#Threads" accesskey="p" rel="prev">Threads</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Checkpoint_002fRestart.html" accesskey="n" rel="next">Checkpoint/Restart</a>, Previous: <a href="Threads.html" accesskey="p" rel="prev">Threads</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

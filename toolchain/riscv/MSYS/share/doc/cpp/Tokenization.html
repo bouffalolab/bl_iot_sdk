@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -127,8 +127,7 @@ preprocessor.  See <a href="C_002b_002b-Named-Operators.html#C_002b_002b-Named-O
 part of the &ldquo;basic source character set&rdquo;, at the implementation&rsquo;s
 discretion (such as accented Latin letters, Greek letters, or Chinese
 ideograms).  This may be done with an extended character set, or the
-&lsquo;<samp>\u</samp>&rsquo; and &lsquo;<samp>\U</samp>&rsquo; escape sequences.  GCC only accepts such
-characters in the &lsquo;<samp>\u</samp>&rsquo; and &lsquo;<samp>\U</samp>&rsquo; forms.
+&lsquo;<samp>\u</samp>&rsquo; and &lsquo;<samp>\U</samp>&rsquo; escape sequences.
 </p>
 <p>As an extension, GCC treats &lsquo;<samp>$</samp>&rsquo; as a letter.  This is for
 compatibility with some systems, such as VMS, where &lsquo;<samp>$</samp>&rsquo; is commonly
@@ -204,15 +203,15 @@ Punctuator:      {   }   [   ]   #    ##
 </pre></div>
 
 <a name="index-other-tokens"></a>
-<p>Any other single character is considered &ldquo;other&rdquo;.  It is passed on to
-the preprocessor&rsquo;s output unmolested.  The C compiler will almost
-certainly reject source code containing &ldquo;other&rdquo; tokens.  In ASCII, the
-only other characters are &lsquo;<samp>@</samp>&rsquo;, &lsquo;<samp>$</samp>&rsquo;, &lsquo;<samp>`</samp>&rsquo;, and control
+<p>Any other single byte is considered &ldquo;other&rdquo; and passed on to the
+preprocessor&rsquo;s output unchanged.  The C compiler will almost certainly
+reject source code containing &ldquo;other&rdquo; tokens.  In ASCII, the only
+&ldquo;other&rdquo; characters are &lsquo;<samp>@</samp>&rsquo;, &lsquo;<samp>$</samp>&rsquo;, &lsquo;<samp>`</samp>&rsquo;, and control
 characters other than NUL (all bits zero).  (Note that &lsquo;<samp>$</samp>&rsquo; is
-normally considered a letter.)  All characters with the high bit set
-(numeric range 0x7F&ndash;0xFF) are also &ldquo;other&rdquo; in the present
-implementation.  This will change when proper support for international
-character sets is added to GCC.
+normally considered a letter.)  All bytes with the high bit set
+(numeric range 0x7F&ndash;0xFF) that were not succesfully interpreted as
+part of an extended character in the input encoding are also &ldquo;other&rdquo;
+in the present implementation.
 </p>
 <p>NUL is a special case because of the high probability that its
 appearance is accidental, and because it may be invisible to the user

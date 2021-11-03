@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Checkpoint/Restart (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Running.html#Running" rel="up" title="Running">
-<link href="Stopping.html#Stopping" rel="next" title="Stopping">
-<link href="Forks.html#Forks" rel="prev" title="Forks">
+<link href="Running.html" rel="up" title="Running">
+<link href="Stopping.html" rel="next" title="Stopping">
+<link href="Forks.html" rel="prev" title="Forks">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,22 +51,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Checkpoint_002fRestart"></a>
-<div class="header">
+<span id="Checkpoint_002fRestart"></span><div class="header">
 <p>
-Previous: <a href="Forks.html#Forks" accesskey="p" rel="prev">Forks</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Forks.html" accesskey="p" rel="prev">Forks</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Setting-a-Bookmark-to-Return-to-Later"></a>
-<h3 class="section">4.12 Setting a <em>Bookmark</em> to Return to Later</h3>
+<span id="Setting-a-Bookmark-to-Return-to-Later"></span><h3 class="section">4.12 Setting a <em>Bookmark</em> to Return to Later</h3>
 
-<a name="index-checkpoint"></a>
-<a name="index-restart"></a>
-<a name="index-bookmark"></a>
-<a name="index-snapshot-of-a-process"></a>
-<a name="index-rewind-program-state"></a>
+<span id="index-checkpoint"></span>
+<span id="index-restart"></span>
+<span id="index-bookmark"></span>
+<span id="index-snapshot-of-a-process"></span>
+<span id="index-rewind-program-state"></span>
 
-<p>On certain operating systems<a name="DOCF3" href="#FOOT3"><sup>3</sup></a>, <small>GDB</small> is able to save a <em>snapshot</em> of a
+<p>On certain operating systems<a id="DOCF4" href="#FOOT4"><sup>4</sup></a>, <small>GDB</small> is able to save a <em>snapshot</em> of a
 program&rsquo;s state, called a <em>checkpoint</em>, and come back to it
 later.
 </p>
@@ -98,14 +87,14 @@ steps to reach the point where you think the bug occurs.
 <p>To use the <code>checkpoint</code>/<code>restart</code> method of debugging:
 </p>
 <dl compact="compact">
-<dd><a name="index-checkpoint-1"></a>
+<dd><span id="index-checkpoint-1"></span>
 </dd>
 <dt><code>checkpoint</code></dt>
 <dd><p>Save a snapshot of the debugged program&rsquo;s current execution state.
 The <code>checkpoint</code> command takes no arguments, but each checkpoint
 is assigned a small integer id, similar to a breakpoint id.
 </p>
-<a name="index-info-checkpoints"></a>
+<span id="index-info-checkpoints"></span>
 </dd>
 <dt><code>info checkpoints</code></dt>
 <dd><p>List the checkpoints that have been saved in the current debugging
@@ -119,7 +108,7 @@ listed:
 <dt><code>Source line, or label</code></dt>
 </dl>
 
-<a name="index-restart-checkpoint_002did"></a>
+<span id="index-restart-checkpoint_002did"></span>
 </dd>
 <dt><code>restart <var>checkpoint-id</var></code></dt>
 <dd><p>Restore the program state that was saved as checkpoint number
@@ -133,7 +122,7 @@ are not affected by restoring a checkpoint.  In general, a checkpoint
 only restores things that reside in the program being debugged, not in
 the debugger.
 </p>
-<a name="index-delete-checkpoint-checkpoint_002did"></a>
+<span id="index-delete-checkpoint-checkpoint_002did"></span>
 </dd>
 <dt><code>delete checkpoint <var>checkpoint-id</var></code></dt>
 <dd><p>Delete the previously-saved checkpoint identified by <var>checkpoint-id</var>.
@@ -161,7 +150,7 @@ program to a previously saved point in time, and begin debugging it
 again &mdash; and you can change the course of events so as to debug a
 different execution path this time.
 </p>
-<a name="index-checkpoints-and-process-id"></a>
+<span id="index-checkpoints-and-process-id"></span>
 <p>Finally, there is one bit of internal program state that will be
 different when you return to a checkpoint &mdash; the program&rsquo;s process
 id.  Each checkpoint will have a unique process id (or <var>pid</var>), 
@@ -169,8 +158,7 @@ and each will be different from the program&rsquo;s original <var>pid</var>.
 If your program has saved a local copy of its process id, this could
 potentially pose a problem.
 </p>
-<a name="A-Non_002dobvious-Benefit-of-Using-Checkpoints"></a>
-<h4 class="subsection">4.12.1 A Non-obvious Benefit of Using Checkpoints</h4>
+<span id="A-Non_002dobvious-Benefit-of-Using-Checkpoints"></span><h4 class="subsection">4.12.1 A Non-obvious Benefit of Using Checkpoints</h4>
 
 <p>On some systems such as <small>GNU</small>/Linux, address space randomization
 is performed on new processes for security reasons.  This makes it 
@@ -189,14 +177,14 @@ your symbols will all stay in the same place.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT3" href="#DOCF3">(3)</a></h3>
+<h5><a id="FOOT4" href="#DOCF4">(4)</a></h3>
 <p>Currently, only
 <small>GNU</small>/Linux.</p>
 </div>
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Forks.html#Forks" accesskey="p" rel="prev">Forks</a>, Up: <a href="Running.html#Running" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Forks.html" accesskey="p" rel="prev">Forks</a>, Up: <a href="Running.html" accesskey="u" rel="up">Running</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

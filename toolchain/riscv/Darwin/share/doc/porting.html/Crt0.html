@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Crt0 (Embed with GNU)</title>
@@ -10,32 +10,23 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="leds_002ec.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Libraries.html#Libraries" rel="up" title="Libraries">
-<link href="Linker-Scripts.html#Linker-Scripts" rel="next" title="Linker Scripts">
-<link href="Libraries.html#Libraries" rel="prev" title="Libraries">
+<link href="Libraries.html" rel="up" title="Libraries">
+<link href="Linker-Scripts.html" rel="next" title="Linker Scripts">
+<link href="Libraries.html" rel="prev" title="Libraries">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -47,14 +38,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Crt0"></a>
-<div class="header">
+<span id="Crt0"></span><div class="header">
 <p>
-Next: <a href="Linker-Scripts.html#Linker-Scripts" accesskey="n" rel="next">Linker Scripts</a>, Up: <a href="Libraries.html#Libraries" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Linker-Scripts.html" accesskey="n" rel="next">Linker Scripts</a>, Up: <a href="Libraries.html" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Crt0_002c-the-main-startup-file"></a>
-<h3 class="section">3.1 Crt0, the main startup file</h3>
+<span id="Crt0_002c-the-main-startup-file"></span><h3 class="section">3.1 Crt0, the main startup file</h3>
        
 <p>To make a program that has been compiled with GCC to run, you
 need to write some startup code. The initial piece of startup code is
@@ -98,19 +87,19 @@ and then the ROM takes over. Pick a safe vector with no side
 effects. Some ROMs have a builtin trap handler just for this case.
 </p></li></ol>
 <p>portable between all the m68k based boards we have here.
-<a href="crt0_002eS.html#crt0_002eS">Example Crt0.S</a>. 
+<a href="crt0_002eS.html">Example Crt0.S</a>. 
 </p>
 
-<div class="smallexample">
-<pre class="smallexample">/* ANSI concatenation macros.  */
+<div class="example">
+<pre class="example">/* ANSI concatenation macros.  */
 
 #define CONCAT1(a, b) CONCAT2(a, b)
 #define CONCAT2(a, b) a ## b
 </pre></div>
 <p>These we&rsquo;ll use later.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* These are predefined by new versions of GNU cpp.  */
+<div class="example">
+<pre class="example">/* These are predefined by new versions of GNU cpp.  */
 
 #ifndef __USER_LABEL_PREFIX__
 #define __USER_LABEL_PREFIX__ _
@@ -125,8 +114,8 @@ effects. Some ROMs have a builtin trap handler just for this case.
 <em>a.out</em>. <em>COFF</em> always has an <var>_ (underline)</var> prepended on
 the front of all global symbol names. <em>a.out</em> has none.
 </p>
-<div class="smallexample">
-<pre class="smallexample">#ifndef __REGISTER_PREFIX__
+<div class="example">
+<pre class="example">#ifndef __REGISTER_PREFIX__
 #define __REGISTER_PREFIX__
 #endif
 
@@ -155,8 +144,8 @@ the front of all global symbol names. <em>a.out</em> has none.
 <p>This is for portability between assemblers. Some register names have a
 <var>%</var> or <var>$</var> prepended to the register name.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * Set up some room for a stack. We just grab a chunk of memory.
  */
 	.set	stack_size, 0x2000
@@ -166,8 +155,8 @@ the front of all global symbol names. <em>a.out</em> has none.
 <p>Set up space for the stack. This can also be done in the linker script,
 but it typically gets done here.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * Define an empty environment.
  */
         .data
@@ -180,8 +169,8 @@ SYM (environ):
 monitor, but we setup a valid address for it, and pass it to main. At
 least that way if an application checks for it, it won&rsquo;t crash.
 </p>
-<div class="smallexample">
-<pre class="smallexample"> 	.align	2
+<div class="example">
+<pre class="example"> 	.align	2
 	.text
 	.global SYM (stack)
 
@@ -196,8 +185,8 @@ least that way if an application checks for it, it won&rsquo;t crash.
 <p>Setup a few global symbols that get used elsewhere. <var>__bss_start</var>
 needs to be unchanged, as it&rsquo;s setup by the linker script.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * start -- set things up so the application will run.
  */
 SYM (start):
@@ -223,8 +212,8 @@ programs have wild side effects from having the .bss section let
 uncleared. Particularly it causes problems with some implementations of
 <code>malloc</code>. 
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * Call the main routine from the application to get it going.
  * main (argc, argv, environ)
  * We pass argv as a pointer to NULL.
@@ -240,8 +229,8 @@ uncleared. Particularly it causes problems with some implementations of
 <p>Setup the environment pointer and jump to <code>main()</code>. When
 <code>main()</code> returns, it drops down to the <code>exit</code> routine below.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * _exit -- Exit from the application. Normally we cause a user trap
  *          to return to the ROM monitor for another run.
  */
@@ -257,7 +246,7 @@ control to the ROM monitor, this solution has been more portable.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Linker-Scripts.html#Linker-Scripts" accesskey="n" rel="next">Linker Scripts</a>, Up: <a href="Libraries.html#Libraries" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Linker-Scripts.html" accesskey="n" rel="next">Linker Scripts</a>, Up: <a href="Libraries.html" accesskey="u" rel="up">Libraries</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

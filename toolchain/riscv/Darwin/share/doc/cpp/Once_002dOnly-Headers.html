@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1987-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1987-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -20,7 +20,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Once-Only Headers (The C Preprocessor)</title>
@@ -30,33 +30,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index-of-Directives.html#Index-of-Directives" rel="index" title="Index of Directives">
+<link href="index.html" rel="start" title="Top">
+<link href="Index-of-Directives.html" rel="index" title="Index of Directives">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Header-Files.html#Header-Files" rel="up" title="Header Files">
-<link href="Alternatives-to-Wrapper-_0023ifndef.html#Alternatives-to-Wrapper-_0023ifndef" rel="next" title="Alternatives to Wrapper #ifndef">
-<link href="Search-Path.html#Search-Path" rel="prev" title="Search Path">
+<link href="Header-Files.html" rel="up" title="Header Files">
+<link href="Alternatives-to-Wrapper-_0023ifndef.html" rel="next" title="Alternatives to Wrapper #ifndef">
+<link href="Search-Path.html" rel="prev" title="Search Path">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -68,17 +59,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Once_002dOnly-Headers"></a>
-<div class="header">
+<span id="Once_002dOnly-Headers"></span><div class="header">
 <p>
-Next: <a href="Alternatives-to-Wrapper-_0023ifndef.html#Alternatives-to-Wrapper-_0023ifndef" accesskey="n" rel="next">Alternatives to Wrapper #ifndef</a>, Previous: <a href="Search-Path.html#Search-Path" accesskey="p" rel="prev">Search Path</a>, Up: <a href="Header-Files.html#Header-Files" accesskey="u" rel="up">Header Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alternatives-to-Wrapper-_0023ifndef.html" accesskey="n" rel="next">Alternatives to Wrapper #ifndef</a>, Previous: <a href="Search-Path.html" accesskey="p" rel="prev">Search Path</a>, Up: <a href="Header-Files.html" accesskey="u" rel="up">Header Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Once_002dOnly-Headers-1"></a>
-<h3 class="section">2.4 Once-Only Headers</h3>
-<a name="index-repeated-inclusion"></a>
-<a name="index-including-just-once"></a>
-<a name="index-wrapper-_0023ifndef"></a>
+<span id="Once_002dOnly-Headers-1"></span><h3 class="section">2.4 Once-Only Headers</h3>
+<span id="index-repeated-inclusion"></span>
+<span id="index-including-just-once"></span>
+<span id="index-wrapper-_0023ifndef"></span>
 
 <p>If a header file happens to be included twice, the compiler will process
 its contents twice.  This is very likely to cause an error, e.g. when the
@@ -88,8 +77,8 @@ it will certainly waste time.
 <p>The standard way to prevent this is to enclose the entire real contents
 of the file in a conditional, like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* File foo.  */
+<div class="example">
+<pre class="example">/* File foo.  */
 #ifndef FILE_FOO_SEEN
 #define FILE_FOO_SEEN
 
@@ -112,8 +101,8 @@ not bother to rescan the file at all.
 <p>You can put comments outside the wrapper.  They will not interfere with
 this optimization.
 </p>
-<a name="index-controlling-macro"></a>
-<a name="index-guard-macro"></a>
+<span id="index-controlling-macro"></span>
+<span id="index-guard-macro"></span>
 <p>The macro <code>FILE_FOO_SEEN</code> is called the <em>controlling macro</em> or
 <em>guard macro</em>.  In a user header file, the macro name should not
 begin with &lsquo;<samp>_</samp>&rsquo;.  In a system header file, it should begin with
@@ -124,7 +113,7 @@ additional text, to avoid conflicts with other header files.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Alternatives-to-Wrapper-_0023ifndef.html#Alternatives-to-Wrapper-_0023ifndef" accesskey="n" rel="next">Alternatives to Wrapper #ifndef</a>, Previous: <a href="Search-Path.html#Search-Path" accesskey="p" rel="prev">Search Path</a>, Up: <a href="Header-Files.html#Header-Files" accesskey="u" rel="up">Header Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html#Index-of-Directives" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alternatives-to-Wrapper-_0023ifndef.html" accesskey="n" rel="next">Alternatives to Wrapper #ifndef</a>, Previous: <a href="Search-Path.html" accesskey="p" rel="prev">Search Path</a>, Up: <a href="Header-Files.html" accesskey="u" rel="up">Header Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index-of-Directives.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

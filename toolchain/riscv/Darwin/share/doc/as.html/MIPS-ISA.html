@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MIPS ISA (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="MIPS_002dDependent.html#MIPS_002dDependent" rel="up" title="MIPS-Dependent">
-<link href="MIPS-assembly-options.html#MIPS-assembly-options" rel="next" title="MIPS assembly options">
-<link href="MIPS-Small-Data.html#MIPS-Small-Data" rel="prev" title="MIPS Small Data">
+<link href="MIPS_002dDependent.html" rel="up" title="MIPS-Dependent">
+<link href="MIPS-assembly-options.html" rel="next" title="MIPS assembly options">
+<link href="MIPS-Small-Data.html" rel="prev" title="MIPS Small Data">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,17 +50,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="MIPS-ISA"></a>
-<div class="header">
+<span id="MIPS-ISA"></span><div class="header">
 <p>
-Next: <a href="MIPS-assembly-options.html#MIPS-assembly-options" accesskey="n" rel="next">MIPS assembly options</a>, Previous: <a href="MIPS-Small-Data.html#MIPS-Small-Data" accesskey="p" rel="prev">MIPS Small Data</a>, Up: <a href="MIPS_002dDependent.html#MIPS_002dDependent" accesskey="u" rel="up">MIPS-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="MIPS-assembly-options.html" accesskey="n" rel="next">MIPS assembly options</a>, Previous: <a href="MIPS-Small-Data.html" accesskey="p" rel="prev">MIPS Small Data</a>, Up: <a href="MIPS_002dDependent.html" accesskey="u" rel="up">MIPS-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Directives-to-override-the-ISA-level"></a>
-<h4 class="subsection">9.26.5 Directives to override the ISA level</h4>
+<span id="Directives-to-override-the-ISA-level"></span><h4 class="subsection">9.27.5 Directives to override the ISA level</h4>
 
-<a name="index-MIPS-ISA-override"></a>
-<a name="index-_002eset-mipsn"></a>
+<span id="index-MIPS-ISA-override"></span>
+<span id="index-_002eset-mipsn"></span>
 <p><small>GNU</small> <code>as</code> supports an additional directive to change
 the MIPS Instruction Set Architecture level on the fly: <code>.set
 mips<var>n</var></code>.  <var>n</var> should be a number from 0 to 5, or 32, 32r2, 32r3,
@@ -84,8 +73,8 @@ configuration.  You can use this feature to permit specific MIPS III
 instructions while assembling in 32 bit mode.  Use this directive with
 care!
 </p>
-<a name="index-MIPS-CPU-override"></a>
-<a name="index-_002eset-arch_003dcpu"></a>
+<span id="index-MIPS-CPU-override"></span>
+<span id="index-_002eset-arch_003dcpu"></span>
 <p>The <code>.set arch=<var>cpu</var></code> directive provides even finer control.
 It changes the effective CPU target and allows the assembler to use
 instructions specific to a particular CPU.  All CPUs supported by the
@@ -107,7 +96,7 @@ in which it will assemble instructions for the microMIPS processor.  Use
 <hr>
 <div class="header">
 <p>
-Next: <a href="MIPS-assembly-options.html#MIPS-assembly-options" accesskey="n" rel="next">MIPS assembly options</a>, Previous: <a href="MIPS-Small-Data.html#MIPS-Small-Data" accesskey="p" rel="prev">MIPS Small Data</a>, Up: <a href="MIPS_002dDependent.html#MIPS_002dDependent" accesskey="u" rel="up">MIPS-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="MIPS-assembly-options.html" accesskey="n" rel="next">MIPS assembly options</a>, Previous: <a href="MIPS-Small-Data.html" accesskey="p" rel="prev">MIPS Small Data</a>, Up: <a href="MIPS_002dDependent.html" accesskey="u" rel="up">MIPS-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

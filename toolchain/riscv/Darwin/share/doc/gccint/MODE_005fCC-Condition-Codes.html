@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MODE_CC Condition Codes (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Condition-Code.html#Condition-Code" rel="up" title="Condition Code">
-<link href="Costs.html#Costs" rel="next" title="Costs">
-<link href="CC0-Condition-Codes.html#CC0-Condition-Codes" rel="prev" title="CC0 Condition Codes">
+<link href="Condition-Code.html" rel="up" title="Condition Code">
+<link href="Costs.html" rel="next" title="Costs">
+<link href="CC0-Condition-Codes.html" rel="prev" title="CC0 Condition Codes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,19 +58,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="MODE_005fCC-Condition-Codes"></a>
-<div class="header">
+<span id="MODE_005fCC-Condition-Codes"></span><div class="header">
 <p>
-Previous: <a href="CC0-Condition-Codes.html#CC0-Condition-Codes" accesskey="p" rel="prev">CC0 Condition Codes</a>, Up: <a href="Condition-Code.html#Condition-Code" accesskey="u" rel="up">Condition Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="CC0-Condition-Codes.html" accesskey="p" rel="prev">CC0 Condition Codes</a>, Up: <a href="Condition-Code.html" accesskey="u" rel="up">Condition Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Representation-of-condition-codes-using-registers"></a>
-<h4 class="subsection">18.15.2 Representation of condition codes using registers</h4>
-<a name="index-CCmode-1"></a>
-<a name="index-MODE_005fCC-1"></a>
+<span id="Representation-of-condition-codes-using-registers"></span><h4 class="subsection">18.15.2 Representation of condition codes using registers</h4>
+<span id="index-CCmode-1"></span>
+<span id="index-MODE_005fCC-1"></span>
 
 <dl>
-<dt><a name="index-SELECT_005fCC_005fMODE"></a>Macro: <strong>SELECT_CC_MODE</strong> <em>(<var>op</var>, <var>x</var>, <var>y</var>)</em></dt>
+<dt id="index-SELECT_005fCC_005fMODE">Macro: <strong>SELECT_CC_MODE</strong> <em>(<var>op</var>, <var>x</var>, <var>y</var>)</em></dt>
 <dd><p>On many machines, the condition code may be produced by other instructions
 than compares, for example the branch can use directly the condition
 code set by a subtract instruction.  However, on some machines
@@ -99,8 +88,8 @@ by instruction combination.  The result of <code>SELECT_CC_MODE</code> should
 be consistent with the mode used in the patterns; for example to support
 the case of the add on the SPARC discussed above, we have the pattern
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;&quot;
   [(set (reg:CCNZ 0)
         (compare:CCNZ
           (plus:SI (match_operand:SI 0 &quot;register_operand&quot; &quot;%r&quot;)
@@ -113,8 +102,8 @@ the case of the add on the SPARC discussed above, we have the pattern
 <p>together with a <code>SELECT_CC_MODE</code> that returns <code>CCNZmode</code>
 for comparisons whose argument is a <code>plus</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define SELECT_CC_MODE(OP,X,Y) \
+<div class="example">
+<pre class="example">#define SELECT_CC_MODE(OP,X,Y) \
   (GET_MODE_CLASS (GET_MODE (X)) == MODE_FLOAT           \
    ? ((OP == LT || OP == LE || OP == GT || OP == GE)     \
       ? CCFPEmode : CCFPmode)                            \
@@ -132,7 +121,7 @@ in <samp><var>machine</var>-modes.def</samp>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fCANONICALIZE_005fCOMPARISON"></a>Target Hook: <em>void</em> <strong>TARGET_CANONICALIZE_COMPARISON</strong> <em>(int *<var>code</var>, rtx *<var>op0</var>, rtx *<var>op1</var>, bool <var>op0_preserve_value</var>)</em></dt>
+<dt id="index-TARGET_005fCANONICALIZE_005fCOMPARISON">Target Hook: <em>void</em> <strong>TARGET_CANONICALIZE_COMPARISON</strong> <em>(int *<var>code</var>, rtx *<var>op0</var>, rtx *<var>op1</var>, bool <var>op0_preserve_value</var>)</em></dt>
 <dd><p>On some machines not all possible comparisons are defined, but you can
 convert an invalid comparison into a valid one.  For example, the Alpha
 does not have a <code>GT</code> comparison, but you can use an <code>LT</code>
@@ -155,7 +144,7 @@ comparison code or operands.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-REVERSIBLE_005fCC_005fMODE"></a>Macro: <strong>REVERSIBLE_CC_MODE</strong> <em>(<var>mode</var>)</em></dt>
+<dt id="index-REVERSIBLE_005fCC_005fMODE">Macro: <strong>REVERSIBLE_CC_MODE</strong> <em>(<var>mode</var>)</em></dt>
 <dd><p>A C expression whose value is one if it is always safe to reverse a
 comparison whose mode is <var>mode</var>.  If <code>SELECT_CC_MODE</code>
 can ever return <var>mode</var> for a floating-point inequality comparison,
@@ -166,14 +155,14 @@ floating-point format is anything other than <code>IEEE_FLOAT_FORMAT</code>.
 For example, here is the definition used on the SPARC, where floating-point
 inequality comparisons are given either <code>CCFPEmode</code> or <code>CCFPmode</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define REVERSIBLE_CC_MODE(MODE) \
+<div class="example">
+<pre class="example">#define REVERSIBLE_CC_MODE(MODE) \
    ((MODE) != CCFPEmode &amp;&amp; (MODE) != CCFPmode)
 </pre></div>
 </dd></dl>
 
 <dl>
-<dt><a name="index-REVERSE_005fCONDITION"></a>Macro: <strong>REVERSE_CONDITION</strong> <em>(<var>code</var>, <var>mode</var>)</em></dt>
+<dt id="index-REVERSE_005fCONDITION">Macro: <strong>REVERSE_CONDITION</strong> <em>(<var>code</var>, <var>mode</var>)</em></dt>
 <dd><p>A C expression whose value is reversed condition code of the <var>code</var> for
 comparison done in CC_MODE <var>mode</var>.  The macro is used only in case
 <code>REVERSIBLE_CC_MODE (<var>mode</var>)</code> is nonzero.  Define this macro in case
@@ -182,15 +171,15 @@ instance in case all floating point conditions are non-trapping, compiler may
 freely convert unordered compares to ordered ones.  Then definition may look
 like:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define REVERSE_CONDITION(CODE, MODE) \
+<div class="example">
+<pre class="example">#define REVERSE_CONDITION(CODE, MODE) \
    ((MODE) != CCFPmode ? reverse_condition (CODE) \
     : reverse_condition_maybe_unordered (CODE))
 </pre></div>
 </dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fFIXED_005fCONDITION_005fCODE_005fREGS"></a>Target Hook: <em>bool</em> <strong>TARGET_FIXED_CONDITION_CODE_REGS</strong> <em>(unsigned int *<var>p1</var>, unsigned int *<var>p2</var>)</em></dt>
+<dt id="index-TARGET_005fFIXED_005fCONDITION_005fCODE_005fREGS">Target Hook: <em>bool</em> <strong>TARGET_FIXED_CONDITION_CODE_REGS</strong> <em>(unsigned int *<var>p1</var>, unsigned int *<var>p2</var>)</em></dt>
 <dd><p>On targets which do not use <code>(cc0)</code>, and which use a hard
 register rather than a pseudo-register to hold condition codes, the
 regular CSE passes are often not able to identify cases in which the
@@ -206,7 +195,7 @@ integer pointed to by <var>p2</var> should be set to
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fCC_005fMODES_005fCOMPATIBLE"></a>Target Hook: <em>machine_mode</em> <strong>TARGET_CC_MODES_COMPATIBLE</strong> <em>(machine_mode <var>m1</var>, machine_mode <var>m2</var>)</em></dt>
+<dt id="index-TARGET_005fCC_005fMODES_005fCOMPATIBLE">Target Hook: <em>machine_mode</em> <strong>TARGET_CC_MODES_COMPATIBLE</strong> <em>(machine_mode <var>m1</var>, machine_mode <var>m2</var>)</em></dt>
 <dd><p>On targets which use multiple condition code modes in class
 <code>MODE_CC</code>, it is sometimes the case that a comparison can be
 validly done in more than one mode.  On such a system, define this
@@ -220,14 +209,16 @@ returns <code>VOIDmode</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fFLAGS_005fREGNUM"></a>Target Hook: <em>unsigned int</em> <strong>TARGET_FLAGS_REGNUM</strong></dt>
-<dd><p>If the target has a dedicated flags register, and it needs to use the post-reload comparison elimination pass, then this value should be set appropriately.
+<dt id="index-TARGET_005fFLAGS_005fREGNUM">Target Hook: <em>unsigned int</em> <strong>TARGET_FLAGS_REGNUM</strong></dt>
+<dd><p>If the target has a dedicated flags register, and it needs to use the
+post-reload comparison elimination pass, or the delay slot filler pass,
+then this value should be set appropriately.
 </p></dd></dl>
 
 <hr>
 <div class="header">
 <p>
-Previous: <a href="CC0-Condition-Codes.html#CC0-Condition-Codes" accesskey="p" rel="prev">CC0 Condition Codes</a>, Up: <a href="Condition-Code.html#Condition-Code" accesskey="u" rel="up">Condition Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="CC0-Condition-Codes.html" accesskey="p" rel="prev">CC0 Condition Codes</a>, Up: <a href="Condition-Code.html" accesskey="u" rel="up">Condition Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

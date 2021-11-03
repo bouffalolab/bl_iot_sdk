@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Efficiency (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="GMP-Basics.html#GMP-Basics" rel="up" title="GMP Basics">
-<link href="Debugging.html#Debugging" rel="next" title="Debugging">
-<link href="Demonstration-Programs.html#Demonstration-Programs" rel="prev" title="Demonstration Programs">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="GMP-Basics.html" rel="up" title="GMP Basics">
+<link href="Debugging.html" rel="next" title="Debugging">
+<link href="Demonstration-Programs.html" rel="prev" title="Demonstration Programs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Efficiency"></a>
-<div class="header">
+<span id="Efficiency"></span><div class="header">
 <p>
-Next: <a href="Debugging.html#Debugging" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Demonstration-Programs.html#Demonstration-Programs" accesskey="p" rel="prev">Demonstration Programs</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugging.html" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Demonstration-Programs.html" accesskey="p" rel="prev">Demonstration Programs</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Efficiency-1"></a>
-<h3 class="section">3.11 Efficiency</h3>
-<a name="index-Efficiency"></a>
+<span id="Efficiency-1"></span><h3 class="section">3.11 Efficiency</h3>
+<span id="index-Efficiency"></span>
 
 <dl compact="compact">
 <dt>Small Operands</dt>
-<dd><a name="index-Small-operands"></a>
+<dd><span id="index-Small-operands"></span>
 <p>On small operands, the time for function call overheads and memory allocation
 can be significant in comparison to actual calculation.  This is unavoidable
 in a general purpose variable precision library, although GMP attempts to be
@@ -79,7 +68,7 @@ as efficient as it can on both large and small operands.
 </p>
 </dd>
 <dt>Static Linking</dt>
-<dd><a name="index-Static-linking"></a>
+<dd><span id="index-Static-linking"></span>
 <p>On some CPUs, in particular the x86s, the static <samp>libgmp.a</samp> should be
 used for maximum speed, since the PIC code in the shared <samp>libgmp.so</samp> will
 have a small overhead on each function call and global data address.  For many
@@ -88,7 +77,7 @@ to be had.
 </p>
 </dd>
 <dt>Initializing and Clearing</dt>
-<dd><a name="index-Initializing-and-clearing"></a>
+<dd><span id="index-Initializing-and-clearing"></span>
 <p>Avoid excessive initializing and clearing of variables, since this can be
 quite time consuming, especially in comparison to otherwise fast operations
 like addition.
@@ -99,13 +88,13 @@ something like that with a garbage collector too.
 </p>
 </dd>
 <dt>Reallocations</dt>
-<dd><a name="index-Reallocations"></a>
+<dd><span id="index-Reallocations"></span>
 <p>An <code>mpz_t</code> or <code>mpq_t</code> variable used to hold successively increasing
 values will have its memory repeatedly <code>realloc</code>ed, which could be quite
 slow or could fragment memory, depending on the C library.  If an application
 can estimate the final size then <code>mpz_init2</code> or <code>mpz_realloc2</code> can
 be called to allocate the necessary space from the beginning
-(see <a href="Initializing-Integers.html#Initializing-Integers">Initializing Integers</a>).
+(see <a href="Initializing-Integers.html">Initializing Integers</a>).
 </p>
 <p>It doesn&rsquo;t matter if a size set with <code>mpz_init2</code> or <code>mpz_realloc2</code>
 is too small, since all functions will do a further reallocation if necessary.
@@ -113,7 +102,7 @@ Badly overestimating memory required will waste space though.
 </p>
 </dd>
 <dt><code>2exp</code> Functions</dt>
-<dd><a name="index-2exp-functions"></a>
+<dd><span id="index-2exp-functions"></span>
 <p>It&rsquo;s up to an application to call functions like <code>mpz_mul_2exp</code> when
 appropriate.  General purpose functions like <code>mpz_mul</code> make no attempt to
 identify powers of two or other special forms, because such inputs will
@@ -121,7 +110,7 @@ usually be very rare and testing every time would be wasteful.
 </p>
 </dd>
 <dt><code>ui</code> and <code>si</code> Functions</dt>
-<dd><a name="index-ui-and-si-functions"></a>
+<dd><span id="index-ui-and-si-functions"></span>
 <p>The <code>ui</code> functions and the small number of <code>si</code> functions exist for
 convenience and should be used where applicable.  But if for example an
 <code>mpz_t</code> contains a value that fits in an <code>unsigned long</code> there&rsquo;s no
@@ -130,7 +119,7 @@ function.
 </p>
 </dd>
 <dt>In-Place Operations</dt>
-<dd><a name="index-In_002dplace-operations"></a>
+<dd><span id="index-In_002dplace-operations"></span>
 <p><code>mpz_abs</code>, <code>mpq_abs</code>, <code>mpf_abs</code>, <code>mpz_neg</code>, <code>mpq_neg</code>
 and <code>mpf_neg</code> are fast when used for in-place operations like
 <code>mpz_abs(x,x)</code>, since in the current implementation only a single field
@@ -166,7 +155,7 @@ direct it there and let GMP take care of data movement.
 </p>
 </dd>
 <dt>Divisibility Testing (Small Integers)</dt>
-<dd><a name="index-Divisibility-testing"></a>
+<dd><span id="index-Divisibility-testing"></span>
 <p><code>mpz_divisible_ui_p</code> and <code>mpz_congruent_ui_p</code> are the best functions
 for testing whether an <code>mpz_t</code> is divisible by an individual small
 integer.  They use an algorithm which is faster than <code>mpz_tdiv_ui</code>, but
@@ -187,7 +176,7 @@ remainder is zero).
 </p>
 </dd>
 <dt>Rational Arithmetic</dt>
-<dd><a name="index-Rational-arithmetic"></a>
+<dd><span id="index-Rational-arithmetic"></span>
 <p>The <code>mpq</code> functions operate on <code>mpq_t</code> values with no common factors
 in the numerator and denominator.  Common factors are checked-for and cast out
 as necessary.  In general, cancelling factors every time is the best approach
@@ -203,7 +192,7 @@ the end.
 </p>
 <p>The <code>mpq_numref</code> and <code>mpq_denref</code> macros give access to the
 numerator and denominator to do things outside the scope of the supplied
-<code>mpq</code> functions.  See <a href="Applying-Integer-Functions.html#Applying-Integer-Functions">Applying Integer Functions</a>.
+<code>mpq</code> functions.  See <a href="Applying-Integer-Functions.html">Applying Integer Functions</a>.
 </p>
 <p>The canonical form for rationals allows mixed-type <code>mpq_t</code> and integer
 additions or subtractions to be done directly with multiples of the
@@ -222,14 +211,14 @@ mpz_submul (mpq_numref(q), mpq_denref(q), z);
 
 </dd>
 <dt>Number Sequences</dt>
-<dd><a name="index-Number-sequences"></a>
+<dd><span id="index-Number-sequences"></span>
 <p>Functions like <code>mpz_fac_ui</code>, <code>mpz_fib_ui</code> and <code>mpz_bin_uiui</code>
 are designed for calculating isolated values.  If a range of values is wanted
 it&rsquo;s probably best to call to get a starting point and iterate from there.
 </p>
 </dd>
 <dt>Text Input/Output</dt>
-<dd><a name="index-Text-input_002foutput"></a>
+<dd><span id="index-Text-input_002foutput"></span>
 <p>Hexadecimal or octal are suggested for input or output in text form.
 Power-of-2 bases like these can be converted much more efficiently than other
 bases, like decimal.  For big numbers there&rsquo;s usually nothing of particular
@@ -244,7 +233,7 @@ as proposed by King Charles XII of Sweden and later reformers.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Debugging.html#Debugging" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Demonstration-Programs.html#Demonstration-Programs" accesskey="p" rel="prev">Demonstration Programs</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugging.html" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Demonstration-Programs.html" accesskey="p" rel="prev">Demonstration Programs</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

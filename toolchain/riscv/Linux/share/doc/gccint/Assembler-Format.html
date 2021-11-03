@@ -1,78 +1,113 @@
-<html lang="en">
-<head>
-<title>Assembler Format - GNU Compiler Collection (GCC) Internals</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Compiler Collection (GCC) Internals">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Target-Macros.html#Target-Macros" title="Target Macros">
-<link rel="prev" href="PIC.html#PIC" title="PIC">
-<link rel="next" href="Debugging-Info.html#Debugging-Info" title="Debugging Info">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Assembler-Format"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Debugging-Info.html#Debugging-Info">Debugging Info</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="PIC.html#PIC">PIC</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Target-Macros.html#Target-Macros">Target Macros</a>
-<hr>
-</div>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Compiler Collection (GCC) Internals: Assembler Format</title>
 
+<meta name="description" content="GNU Compiler Collection (GCC) Internals: Assembler Format">
+<meta name="keywords" content="GNU Compiler Collection (GCC) Internals: Assembler Format">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Target-Macros.html#Target-Macros" rel="up" title="Target Macros">
+<link href="File-Framework.html#File-Framework" rel="next" title="File Framework">
+<link href="PIC.html#PIC" rel="prev" title="PIC">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Assembler-Format"></a>
+<div class="header">
+<p>
+Next: <a href="Debugging-Info.html#Debugging-Info" accesskey="n" rel="next">Debugging Info</a>, Previous: <a href="PIC.html#PIC" accesskey="p" rel="prev">PIC</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Defining-the-Output-Assembler-Language"></a>
 <h3 class="section">18.20 Defining the Output Assembler Language</h3>
 
 <p>This section describes macros whose principal purpose is to describe how
 to write instructions in assembler language&mdash;rather than what the
 instructions do.
-
-<ul class="menu">
-<li><a accesskey="1" href="File-Framework.html#File-Framework">File Framework</a>:        Structural information for the assembler file. 
-<li><a accesskey="2" href="Data-Output.html#Data-Output">Data Output</a>:           Output of constants (numbers, strings, addresses). 
-<li><a accesskey="3" href="Uninitialized-Data.html#Uninitialized-Data">Uninitialized Data</a>:    Output of uninitialized variables. 
-<li><a accesskey="4" href="Label-Output.html#Label-Output">Label Output</a>:          Output and generation of labels. 
-<li><a accesskey="5" href="Initialization.html#Initialization">Initialization</a>:        General principles of initialization
-                         and termination routines. 
-<li><a accesskey="6" href="Macros-for-Initialization.html#Macros-for-Initialization">Macros for Initialization</a>
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="File-Framework.html#File-Framework" accesskey="1">File Framework</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Structural information for the assembler file.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Data-Output.html#Data-Output" accesskey="2">Data Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output of constants (numbers, strings, addresses).
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Uninitialized-Data.html#Uninitialized-Data" accesskey="3">Uninitialized Data</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output of uninitialized variables.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Label-Output.html#Label-Output" accesskey="4">Label Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output and generation of labels.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Initialization.html#Initialization" accesskey="5">Initialization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">General principles of initialization
+                         and termination routines.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Macros-for-Initialization.html#Macros-for-Initialization" accesskey="6">Macros for Initialization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
                          Specific macros that control the handling of
-                         initialization and termination routines. 
-<li><a accesskey="7" href="Instruction-Output.html#Instruction-Output">Instruction Output</a>:    Output of actual instructions. 
-<li><a accesskey="8" href="Dispatch-Tables.html#Dispatch-Tables">Dispatch Tables</a>:       Output of jump tables. 
-<li><a accesskey="9" href="Exception-Region-Output.html#Exception-Region-Output">Exception Region Output</a>:  Output of exception region code. 
-<li><a href="Alignment-Output.html#Alignment-Output">Alignment Output</a>:      Pseudo ops for alignment and skipping data. 
-</ul>
+                         initialization and termination routines.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Instruction-Output.html#Instruction-Output" accesskey="7">Instruction Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output of actual instructions.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Dispatch-Tables.html#Dispatch-Tables" accesskey="8">Dispatch Tables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output of jump tables.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Exception-Region-Output.html#Exception-Region-Output" accesskey="9">Exception Region Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Output of exception region code.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Alignment-Output.html#Alignment-Output">Alignment Output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Pseudo ops for alignment and skipping data.
+</td></tr>
+</table>
 
- </body></html>
 
+
+
+</body>
+</html>

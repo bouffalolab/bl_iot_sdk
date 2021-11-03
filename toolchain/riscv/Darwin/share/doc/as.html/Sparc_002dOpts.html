@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Sparc-Opts (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Sparc_002dDependent.html#Sparc_002dDependent" rel="up" title="Sparc-Dependent">
-<link href="Sparc_002dAligned_002dData.html#Sparc_002dAligned_002dData" rel="next" title="Sparc-Aligned-Data">
-<link href="Sparc_002dDependent.html#Sparc_002dDependent" rel="prev" title="Sparc-Dependent">
+<link href="Sparc_002dDependent.html" rel="up" title="Sparc-Dependent">
+<link href="Sparc_002dAligned_002dData.html" rel="next" title="Sparc-Aligned-Data">
+<link href="Sparc_002dDependent.html" rel="prev" title="Sparc-Dependent">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Sparc_002dOpts"></a>
-<div class="header">
+<span id="Sparc_002dOpts"></span><div class="header">
 <p>
-Next: <a href="Sparc_002dAligned_002dData.html#Sparc_002dAligned_002dData" accesskey="n" rel="next">Sparc-Aligned-Data</a>, Up: <a href="Sparc_002dDependent.html#Sparc_002dDependent" accesskey="u" rel="up">Sparc-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Sparc_002dAligned_002dData.html" accesskey="n" rel="next">Sparc-Aligned-Data</a>, Up: <a href="Sparc_002dDependent.html" accesskey="u" rel="up">Sparc-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Options-23"></a>
-<h4 class="subsection">9.43.1 Options</h4>
+<span id="Options-24"></span><h4 class="subsection">9.44.1 Options</h4>
 
-<a name="index-options-for-SPARC"></a>
-<a name="index-SPARC-options"></a>
-<a name="index-architectures_002c-SPARC"></a>
-<a name="index-SPARC-architectures"></a>
+<span id="index-options-for-SPARC"></span>
+<span id="index-SPARC-options"></span>
+<span id="index-architectures_002c-SPARC"></span>
+<span id="index-SPARC-architectures"></span>
 <p>The SPARC chip family includes several successive versions, using the same
 core instruction set, but including a few additional instructions at
 each version.  There are exceptions to this however.  For details on what
@@ -92,27 +81,27 @@ is explicitly requested.  SPARC v9 is always incompatible with sparclite.
 </p>
 
 <dl compact="compact">
-<dd><a name="index-_002dAv6"></a>
-<a name="index-_002dAv7"></a>
-<a name="index-_002dAv8"></a>
-<a name="index-_002dAleon"></a>
-<a name="index-_002dAsparclet"></a>
-<a name="index-_002dAsparclite"></a>
-<a name="index-_002dAv9"></a>
-<a name="index-_002dAv9a"></a>
-<a name="index-_002dAv9b"></a>
-<a name="index-_002dAv9c"></a>
-<a name="index-_002dAv9d"></a>
-<a name="index-_002dAv9e"></a>
-<a name="index-_002dAv9v"></a>
-<a name="index-_002dAv9m"></a>
-<a name="index-_002dAsparc"></a>
-<a name="index-_002dAsparcvis"></a>
-<a name="index-_002dAsparcvis2"></a>
-<a name="index-_002dAsparcfmaf"></a>
-<a name="index-_002dAsparcima"></a>
-<a name="index-_002dAsparcvis3"></a>
-<a name="index-_002dAsparcvis3r"></a>
+<dd><span id="index-_002dAv6"></span>
+<span id="index-_002dAv7"></span>
+<span id="index-_002dAv8"></span>
+<span id="index-_002dAleon"></span>
+<span id="index-_002dAsparclet"></span>
+<span id="index-_002dAsparclite"></span>
+<span id="index-_002dAv9"></span>
+<span id="index-_002dAv9a"></span>
+<span id="index-_002dAv9b"></span>
+<span id="index-_002dAv9c"></span>
+<span id="index-_002dAv9d"></span>
+<span id="index-_002dAv9e"></span>
+<span id="index-_002dAv9v"></span>
+<span id="index-_002dAv9m"></span>
+<span id="index-_002dAsparc"></span>
+<span id="index-_002dAsparcvis"></span>
+<span id="index-_002dAsparcvis2"></span>
+<span id="index-_002dAsparcfmaf"></span>
+<span id="index-_002dAsparcima"></span>
+<span id="index-_002dAsparcvis3"></span>
+<span id="index-_002dAsparcvis3r"></span>
 </dd>
 <dt><code>-Av6 | -Av7 | -Av8 | -Aleon | -Asparclet | -Asparclite</code></dt>
 <dt><code>-Av8plus | -Av8plusa | -Av8plusb | -Av8plusc | -Av8plusd |</code></dt>
@@ -228,7 +217,7 @@ disabled by default.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Sparc_002dAligned_002dData.html#Sparc_002dAligned_002dData" accesskey="n" rel="next">Sparc-Aligned-Data</a>, Up: <a href="Sparc_002dDependent.html#Sparc_002dDependent" accesskey="u" rel="up">Sparc-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Sparc_002dAligned_002dData.html" accesskey="n" rel="next">Sparc-Aligned-Data</a>, Up: <a href="Sparc_002dDependent.html" accesskey="u" rel="up">Sparc-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

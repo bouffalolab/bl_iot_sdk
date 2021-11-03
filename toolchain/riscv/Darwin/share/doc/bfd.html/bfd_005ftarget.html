@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>bfd_target (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Targets.html#Targets" rel="up" title="Targets">
-<link href="Architectures.html#Architectures" rel="next" title="Architectures">
-<link href="Targets.html#Targets" rel="prev" title="Targets">
+<link href="Targets.html" rel="up" title="Targets">
+<link href="Architectures.html" rel="next" title="Architectures">
+<link href="Targets.html" rel="prev" title="Targets">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,15 +60,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="bfd_005ftarget"></a>
-<div class="header">
+<span id="bfd_005ftarget"></span><div class="header">
 <p>
-Previous: <a href="Targets.html#Targets" accesskey="p" rel="prev">Targets</a>, Up: <a href="Targets.html#Targets" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Targets.html" accesskey="p" rel="prev">Targets</a>, Up: <a href="Targets.html" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 
-<a name="bfd_005ftarget-1"></a>
-<h4 class="subsection">2.12.1 bfd_target</h4>
+<span id="bfd_005ftarget-1"></span><h4 class="subsection">2.12.1 bfd_target</h4>
 
 
 <p><strong>Description</strong><br>
@@ -166,10 +155,12 @@ typedef struct bfd_link_info _bfd_link_info;
 /* Forward declaration.  */
 typedef struct flag_info flag_info;
 
+typedef void (*bfd_cleanup) (bfd *);
+
 typedef struct bfd_target
 {
   /* Identifies the kind of target, e.g., SunOS4, Ultrix, etc.  */
-  char *name;
+  const char *name;
 
  /* The &quot;flavour&quot; of a back end is a general indication about
     the contents of a file.  */
@@ -230,9 +221,9 @@ typedef struct bfd_target
   /* Format dependent routines: these are vectors of entry points
      within the target vector structure, one for each format to check.  */
 
-  /* Check the format of a file being read.  Return a <code>bfd_target *</code> or zero.  */
-  const struct bfd_target *
-              (*_bfd_check_format[bfd_type_end]) (bfd *);
+  /* Check the format of a file being read.  Return a <code>bfd_cleanup</code> on
+     success or zero on failure.  */
+  bfd_cleanup (*_bfd_check_format[bfd_type_end]) (bfd *);
 
   /* Set the format of a file being written.  */
   bfd_boolean (*_bfd_set_format[bfd_type_end]) (bfd *);
@@ -383,9 +374,10 @@ BFD_JUMP_TABLE macros.
 #define bfd_get_symbol_info(b,p,e) \
        BFD_SEND (b, _bfd_get_symbol_info, (b,p,e))
   const char *(*_bfd_get_symbol_version_string) (bfd *, struct bfd_symbol *,
+                                                 bfd_boolean,
                                                  bfd_boolean *);
-#define bfd_get_symbol_version_string(b,s,h) \
-       BFD_SEND (b, _bfd_get_symbol_version_string, (b,s,h))
+#define bfd_get_symbol_version_string(b,s,p,h) \
+       BFD_SEND (b, _bfd_get_symbol_version_string, (b,s,p,h))
   bfd_boolean (*_bfd_is_local_label_name) (bfd *, const char *);
   bfd_boolean (*_bfd_is_target_special_symbol) (bfd *, asymbol *);
   alent *     (*_get_lineno) (bfd *, struct bfd_symbol *);
@@ -455,6 +447,7 @@ BFD_JUMP_TABLE macros.
   NAME##_bfd_lookup_section_flags, \
   NAME##_bfd_merge_sections, \
   NAME##_bfd_is_group_section, \
+  NAME##_bfd_group_name, \
   NAME##_bfd_discard_group, \
   NAME##_section_already_linked, \
   NAME##_bfd_define_common_symbol, \
@@ -512,6 +505,9 @@ BFD_JUMP_TABLE macros.
 
   /* Is this section a member of a group?  */
   bfd_boolean (*_bfd_is_group_section) (bfd *, const struct bfd_section *);
+
+  /* The group name, if section is a member of a group.  */
+  const char *(*_bfd_group_name) (bfd *, const struct bfd_section *);
 
   /* Discard members of a group.  */
   bfd_boolean (*_bfd_discard_group) (bfd *, struct bfd_section *);
@@ -572,11 +568,78 @@ to find an alternative output format that is suitable.
 
 } bfd_target;
 
+static inline const char *
+bfd_get_target (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;name;
+}
+
+static inline enum bfd_flavour
+bfd_get_flavour (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;flavour;
+}
+
+static inline flagword
+bfd_applicable_file_flags (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;object_flags;
+}
+
+static inline bfd_boolean
+bfd_family_coff (const bfd *abfd)
+{
+  return (bfd_get_flavour (abfd) == bfd_target_coff_flavour
+          || bfd_get_flavour (abfd) == bfd_target_xcoff_flavour);
+}
+
+static inline bfd_boolean
+bfd_big_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;byteorder == BFD_ENDIAN_BIG;
+}
+static inline bfd_boolean
+bfd_little_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;byteorder == BFD_ENDIAN_LITTLE;
+}
+
+static inline bfd_boolean
+bfd_header_big_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;header_byteorder == BFD_ENDIAN_BIG;
+}
+
+static inline bfd_boolean
+bfd_header_little_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;header_byteorder == BFD_ENDIAN_LITTLE;
+}
+
+static inline flagword
+bfd_applicable_section_flags (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;section_flags;
+}
+
+static inline char
+bfd_get_symbol_leading_char (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;symbol_leading_char;
+}
+
+static inline enum bfd_flavour
+bfd_asymbol_flavour (const asymbol *sy)
+{
+  if ((sy-&gt;flags &amp; BSF_SYNTHETIC) != 0)
+    return bfd_target_unknown_flavour;
+  return sy-&gt;the_bfd-&gt;xvec-&gt;flavour;
+}
+
 </pre></div>
 
-<a name="index-bfd_005fset_005fdefault_005ftarget"></a>
-<a name="bfd_005fset_005fdefault_005ftarget"></a>
-<h4 class="subsubsection">2.12.1.1 <code>bfd_set_default_target</code></h4>
+<span id="index-bfd_005fset_005fdefault_005ftarget"></span>
+<span id="bfd_005fset_005fdefault_005ftarget"></span><h4 class="subsubsection">2.12.1.1 <code>bfd_set_default_target</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_set_default_target (const char *name);
@@ -586,9 +649,8 @@ Set the default target vector to use when recognizing a BFD.
 This takes the name of the target, which may be a BFD target
 name or a configuration triplet.
 </p>
-<a name="index-bfd_005ffind_005ftarget"></a>
-<a name="bfd_005ffind_005ftarget"></a>
-<h4 class="subsubsection">2.12.1.2 <code>bfd_find_target</code></h4>
+<span id="index-bfd_005ffind_005ftarget"></span>
+<span id="bfd_005ffind_005ftarget"></span><h4 class="subsubsection">2.12.1.2 <code>bfd_find_target</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const bfd_target *bfd_find_target (const char *target_name, bfd *abfd);
@@ -605,9 +667,8 @@ set in the BFD if <var>abfd</var> isn&rsquo;t <code>NULL</code>.  This causes
 <code>bfd_check_format</code> to loop over all the targets to find the
 one that matches the file being read.
 </p>
-<a name="index-bfd_005fget_005ftarget_005finfo"></a>
-<a name="bfd_005fget_005ftarget_005finfo"></a>
-<h4 class="subsubsection">2.12.1.3 <code>bfd_get_target_info</code></h4>
+<span id="index-bfd_005fget_005ftarget_005finfo"></span>
+<span id="bfd_005fget_005ftarget_005finfo"></span><h4 class="subsubsection">2.12.1.3 <code>bfd_get_target_info</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const bfd_target *bfd_get_target_info (const char *target_name,
@@ -636,9 +697,8 @@ else the value of target vector&rsquo;s symbol underscoring.
 If <var>def_target_arch</var> is not <code>NULL</code>, then set it to the architecture
 string specified by the target_name.
 </p>
-<a name="index-bfd_005ftarget_005flist"></a>
-<a name="bfd_005ftarget_005flist"></a>
-<h4 class="subsubsection">2.12.1.4 <code>bfd_target_list</code></h4>
+<span id="index-bfd_005ftarget_005flist"></span>
+<span id="bfd_005ftarget_005flist"></span><h4 class="subsubsection">2.12.1.4 <code>bfd_target_list</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const char ** bfd_target_list (void);
@@ -648,9 +708,8 @@ Return a freshly malloced NULL-terminated
 vector of the names of all the valid BFD targets. Do not
 modify the names.
 </p>
-<a name="index-bfd_005fiterate_005fover_005ftargets"></a>
-<a name="bfd_005fiterate_005fover_005ftargets"></a>
-<h4 class="subsubsection">2.12.1.5 <code>bfd_iterate_over_targets</code></h4>
+<span id="index-bfd_005fiterate_005fover_005ftargets"></span>
+<span id="bfd_005fiterate_005fover_005ftargets"></span><h4 class="subsubsection">2.12.1.5 <code>bfd_iterate_over_targets</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const bfd_target *bfd_iterate_over_targets
@@ -663,9 +722,8 @@ vectors, passing <var>data</var> to <var>func</var>.  Stop iterating if
 <var>func</var> returns a non-zero result, and return that target
 vector.  Return NULL if <var>func</var> always returns zero.
 </p>
-<a name="index-bfd_005fflavour_005fname"></a>
-<a name="bfd_005fflavour_005fname"></a>
-<h4 class="subsubsection">2.12.1.6 <code>bfd_flavour_name</code></h4>
+<span id="index-bfd_005fflavour_005fname"></span>
+<span id="bfd_005fflavour_005fname"></span><h4 class="subsubsection">2.12.1.6 <code>bfd_flavour_name</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const char *bfd_flavour_name (enum bfd_flavour flavour);
@@ -677,7 +735,7 @@ Return the string form of <var>flavour</var>.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Targets.html#Targets" accesskey="p" rel="prev">Targets</a>, Up: <a href="Targets.html#Targets" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Targets.html" accesskey="p" rel="prev">Targets</a>, Up: <a href="Targets.html" accesskey="u" rel="up">Targets</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

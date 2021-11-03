@@ -1,15 +1,6 @@
-<html lang="en">
-<head>
-<title>Macro define and undefine - STABS</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="STABS">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="prev" href="Types.html#Types" title="Types">
-<link rel="next" href="Symbol-Tables.html#Symbol-Tables" title="Symbol Tables">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -17,85 +8,126 @@ Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
-Texts.  A copy of the license is included in the section entitled ``GNU
-Free Documentation License''.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Macro-define-and-undefine"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Symbol-Tables.html#Symbol-Tables">Symbol Tables</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Types.html#Types">Types</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
-<hr>
-</div>
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License". -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>STABS: Macro define and undefine</title>
 
+<meta name="description" content="STABS: Macro define and undefine">
+<meta name="keywords" content="STABS: Macro define and undefine">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Symbol-Tables.html#Symbol-Tables" rel="next" title="Symbol Tables">
+<link href="Function-Types.html#Function-Types" rel="prev" title="Function Types">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Macro-define-and-undefine"></a>
+<div class="header">
+<p>
+Next: <a href="Symbol-Tables.html#Symbol-Tables" accesskey="n" rel="next">Symbol Tables</a>, Previous: <a href="Types.html#Types" accesskey="p" rel="prev">Types</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Representation-of-_0023define-and-_0023undef"></a>
 <h2 class="chapter">6 Representation of #define and #undef</h2>
 
 <p>This section describes the stabs support for macro define and undefine
-information, supported on some systems.  (e.g., with <samp><span class="option">-g3</span></samp>
-<samp><span class="option">-gstabs</span></samp> when using GCC).
-
-   <p>A <code>#define </code><var>macro-name</var> <var>macro-body</var> is represented with
+information, supported on some systems.  (e.g., with <samp>-g3</samp>
+<samp>-gstabs</samp> when using GCC).
+</p>
+<p>A <code>#define <var>macro-name</var> <var>macro-body</var></code> is represented with
 an <code>N_MAC_DEFINE</code> stab with a string field of
-<var>macro-name</var> <var>macro-body</var>. 
-<a name="index-N_005fMAC_005fDEFINE-51"></a>
-An <code>#undef </code><var>macro-name</var> is represented with an
+<code><var>macro-name</var> <var>macro-body</var></code>.
+<a name="index-N_005fMAC_005fDEFINE"></a>
+</p>
+<p>An <code>#undef <var>macro-name</var></code> is represented with an
 <code>N_MAC_UNDEF</code> stabs with a string field of simply
-<var>macro-name</var>. 
-<a name="index-N_005fMAC_005fUNDEF-52"></a>
-For both <code>N_MAC_DEFINE</code> and <code>N_MAC_UNDEF</code>, the desc field is
+<code><var>macro-name</var></code>.
+<a name="index-N_005fMAC_005fUNDEF"></a>
+</p>
+<p>For both <code>N_MAC_DEFINE</code> and <code>N_MAC_UNDEF</code>, the desc field is
 the line number within the file where the corresponding <code>#define</code>
 or <code>#undef</code> occurred.
+</p>
+<p>For example, the following C code:
+</p>
+<div class="example">
+<pre class="example">    #define NONE	42
+    #define TWO(a, b)	(a + (a) + 2 * b)
+    #define ONE(c)	(c + 19)
 
-   <p>For example, the following C code:
+    main(int argc, char *argv[])
+    {
+      func(NONE, TWO(10, 11));
+      func(NONE, ONE(23));
 
-<pre class="example">         #define NONE	42
-         #define TWO(a, b)	(a + (a) + 2 * b)
-         #define ONE(c)	(c + 19)
-     
-         main(int argc, char *argv[])
-         {
-           func(NONE, TWO(10, 11));
-           func(NONE, ONE(23));
-     
-         #undef ONE
-         #define ONE(c)	(c + 23)
-     
-           func(NONE, ONE(-23));
-     
-           return (0);
-         }
-     
-         int global;
-     
-         func(int arg1, int arg2)
-         {
-           global = arg1 + arg2;
-         }
-</pre>
-   <p class="noindent">produces the following stabs (as well as many others):
+    #undef ONE
+    #define ONE(c)	(c + 23)
 
-<pre class="example">         .stabs	"NONE 42",54,0,1,0
-         .stabs	"TWO(a,b) (a + (a) + 2 * b)",54,0,2,0
-         .stabs	"ONE(c) (c + 19)",54,0,3,0
-         .stabs	"ONE",58,0,10,0
-         .stabs	"ONE(c) (c + 23)",54,0,11,0
-</pre>
-   <p class="noindent">NOTE: In the above example, <code>54</code> is <code>N_MAC_DEFINE</code> and
+      func(NONE, ONE(-23));
+
+      return (0);
+    }
+
+    int global;
+
+    func(int arg1, int arg2)
+    {
+      global = arg1 + arg2;
+    }
+</pre></div>
+
+<p>produces the following stabs (as well as many others):
+</p>
+<div class="example">
+<pre class="example">    .stabs	&quot;NONE 42&quot;,54,0,1,0
+    .stabs	&quot;TWO(a,b) (a + (a) + 2 * b)&quot;,54,0,2,0
+    .stabs	&quot;ONE(c) (c + 19)&quot;,54,0,3,0
+    .stabs	&quot;ONE&quot;,58,0,10,0
+    .stabs	&quot;ONE(c) (c + 23)&quot;,54,0,11,0
+</pre></div>
+
+<p>NOTE: In the above example, <code>54</code> is <code>N_MAC_DEFINE</code> and
 <code>58</code> is <code>N_MAC_UNDEF</code>.
+</p>
 
-   </body></html>
 
+
+</body>
+</html>

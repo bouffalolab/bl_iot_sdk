@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -132,6 +132,18 @@ more than performance.  With this option, the linker will not insert
 no-ops or widen density instructions to preserve branch target
 alignment.  There may still be some cases where no-ops are required to
 preserve the correctness of the code.
+</p>
+</dd>
+<dt><samp>--abi-windowed</samp></dt>
+<dt><samp>--abi-call0</samp></dt>
+<dd><p>Choose ABI for the output object and for the generated PLT code.
+PLT code inserted by the linker must match ABI of the output object
+because windowed and call0 ABI use incompatible function call
+conventions.
+Default ABI is chosen by the ABI tag in the <code>.xtensa.info</code> section
+of the first input object.
+A warning is issued if ABI tags of input objects do not match each other
+or the chosen output object ABI.
 </p></dd>
 </dl>
 

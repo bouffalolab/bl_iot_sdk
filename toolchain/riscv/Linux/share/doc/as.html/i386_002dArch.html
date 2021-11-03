@@ -1,120 +1,158 @@
-<html lang="en">
-<head>
-<title>i386-Arch - Using as</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Using as">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="i386_002dDependent.html#i386_002dDependent" title="i386-Dependent">
-<link rel="prev" href="i386_002d16bit.html#i386_002d16bit" title="i386-16bit">
-<link rel="next" href="i386_002dBugs.html#i386_002dBugs" title="i386-Bugs">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-This file documents the GNU Assembler "as".
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
-section entitled ``GNU Free Documentation License''.
+section entitled "GNU Free Documentation License".
+ -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Using as: i386-Arch</title>
 
+<meta name="description" content="Using as: i386-Arch">
+<meta name="keywords" content="Using as: i386-Arch">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="i386_002dDependent.html#i386_002dDependent" rel="up" title="i386-Dependent">
+<link href="i386_002dISA.html#i386_002dISA" rel="next" title="i386-ISA">
+<link href="i386_002d16bit.html#i386_002d16bit" rel="prev" title="i386-16bit">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
 -->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+</style>
+
+
 </head>
-<body>
-<div class="node">
-<a name="i386-Arch"></a>
+
+<body lang="en">
 <a name="i386_002dArch"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="i386_002dBugs.html#i386_002dBugs">i386-Bugs</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="i386_002d16bit.html#i386_002d16bit">i386-16bit</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="i386_002dDependent.html#i386_002dDependent">i386-Dependent</a>
-<hr>
+Next: <a href="i386_002dISA.html#i386_002dISA" accesskey="n" rel="next">i386-ISA</a>, Previous: <a href="i386_002d16bit.html#i386_002d16bit" accesskey="p" rel="prev">i386-16bit</a>, Up: <a href="i386_002dDependent.html#i386_002dDependent" accesskey="u" rel="up">i386-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Specifying-CPU-Architecture"></a>
+<h4 class="subsection">9.16.15 Specifying CPU Architecture</h4>
 
-<h4 class="subsection">9.15.15 Specifying CPU Architecture</h4>
+<a name="index-arch-directive_002c-i386"></a>
+<a name="index-i386-arch-directive"></a>
+<a name="index-arch-directive_002c-x86_002d64"></a>
+<a name="index-x86_002d64-arch-directive"></a>
 
-<p><a name="index-arch-directive_002c-i386-1246"></a><a name="index-i386-arch-directive-1247"></a><a name="index-arch-directive_002c-x86_002d64-1248"></a><a name="index-x86_002d64-arch-directive-1249"></a>
-<code>as</code> may be told to assemble for a particular CPU
-(sub-)architecture with the <code>.arch </code><var>cpu_type</var> directive.  This
+<p><code>as</code> may be told to assemble for a particular CPU
+(sub-)architecture with the <code>.arch <var>cpu_type</var></code> directive.  This
 directive enables a warning when gas detects an instruction that is not
 supported on the CPU specified.  The choices for <var>cpu_type</var> are:
+</p>
+<table>
+<tr><td width="20%">&lsquo;<samp>i8086</samp>&rsquo;</td><td width="20%">&lsquo;<samp>i186</samp>&rsquo;</td><td width="20%">&lsquo;<samp>i286</samp>&rsquo;</td><td width="20%">&lsquo;<samp>i386</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>i486</samp>&rsquo;</td><td width="20%">&lsquo;<samp>i586</samp>&rsquo;</td><td width="20%">&lsquo;<samp>i686</samp>&rsquo;</td><td width="20%">&lsquo;<samp>pentium</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>pentiumpro</samp>&rsquo;</td><td width="20%">&lsquo;<samp>pentiumii</samp>&rsquo;</td><td width="20%">&lsquo;<samp>pentiumiii</samp>&rsquo;</td><td width="20%">&lsquo;<samp>pentium4</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>prescott</samp>&rsquo;</td><td width="20%">&lsquo;<samp>nocona</samp>&rsquo;</td><td width="20%">&lsquo;<samp>core</samp>&rsquo;</td><td width="20%">&lsquo;<samp>core2</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>corei7</samp>&rsquo;</td><td width="20%">&lsquo;<samp>l1om</samp>&rsquo;</td><td width="20%">&lsquo;<samp>k1om</samp>&rsquo;</td><td width="20%">&lsquo;<samp>iamcu</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>k6</samp>&rsquo;</td><td width="20%">&lsquo;<samp>k6_2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>athlon</samp>&rsquo;</td><td width="20%">&lsquo;<samp>k8</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>amdfam10</samp>&rsquo;</td><td width="20%">&lsquo;<samp>bdver1</samp>&rsquo;</td><td width="20%">&lsquo;<samp>bdver2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>bdver3</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>bdver4</samp>&rsquo;</td><td width="20%">&lsquo;<samp>znver1</samp>&rsquo;</td><td width="20%">&lsquo;<samp>znver2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>btver1</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>btver2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>generic32</samp>&rsquo;</td><td width="20%">&lsquo;<samp>generic64</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.cmov</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.fxsr</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.mmx</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.sse</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse3</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse4a</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.ssse3</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse4.1</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse4.2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse4</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.vmx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.smx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.ept</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.clflush</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.movbe</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.xsave</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.xsaveopt</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.aes</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.pclmul</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.fma</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.fsgsbase</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.rdrnd</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.f16c</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.bmi2</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.lzcnt</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.popcnt</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.invpcid</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.vmfunc</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.hle</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.rtm</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.adx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.rdseed</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.prfchw</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.smap</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.mpx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sha</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.prefetchwt1</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.clflushopt</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.xsavec</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.xsaves</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.se1</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx512f</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512cd</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512er</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512pf</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx512vl</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512bw</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512dq</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512ifma</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx512vbmi</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_4fmaps</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_4vnniw</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx512_vpopcntdq</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_vbmi2</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_vnni</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.avx512_bitalg</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_bf16</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.avx512_vp2intersect</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.clwb</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.rdpid</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.ptwrite</samp>&rsquo;</td><td width="20%"></td></tr>
+<tr><td width="20%">&lsquo;<samp>.ibt</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.wbnoinvd</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.pconfig</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.waitpkg</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.cldemote</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.shstk</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.gfni</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.vaes</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.vpclmulqdq</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.movdiri</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.movdir64b</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.enqcmd</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.tsxldtrk</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.3dnow</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.3dnowa</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse4a</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sse5</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.syscall</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.rdtscp</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.svme</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.lwp</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.fma4</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.xop</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.cx16</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.padlock</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.clzero</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.mwaitx</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.rdpru</samp>&rsquo;</td></tr>
+<tr><td width="20%">&lsquo;<samp>.mcommit</samp>&rsquo;</td><td width="20%">&lsquo;<samp>.sev_es</samp>&rsquo;</td></tr>
+</table>
 
-   <p><table summary=""><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">i8086</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">i186</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">i286</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">i386</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">i486</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">i586</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">i686</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">pentium</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">pentiumpro</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">pentiumii</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">pentiumiii</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">pentium4</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">prescott</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">nocona</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">core</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">core2</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">corei7</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">l1om</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">k1om</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">iamcu</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">k6</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">k6_2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">athlon</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">k8</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">amdfam10</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">bdver1</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">bdver2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">bdver3</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">bdver4</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">znver1</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">znver2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">btver1</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">btver2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">generic32</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">generic64</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.cmov</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.fxsr</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.mmx</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse3</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.ssse3</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse4.1</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse4.2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse4</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.vmx</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.smx</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.ept</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.clflush</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.movbe</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.xsave</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.xsaveopt</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.aes</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.pclmul</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.fma</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.fsgsbase</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.rdrnd</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.f16c</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.bmi2</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.lzcnt</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.invpcid</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.vmfunc</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.hle</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.rtm</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.adx</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.rdseed</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.prfchw</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.smap</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.mpx</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sha</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.prefetchwt1</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.clflushopt</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.xsavec</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.xsaves</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.se1</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512f</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512cd</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512er</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512pf</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512vl</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512bw</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512dq</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512ifma</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512vbmi</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_4fmaps</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_4vnniw</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_vpopcntdq</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_vbmi2</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_vnni</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.avx512_bitalg</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.clwb</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.rdpid</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.ptwrite</span></samp>&rsquo; </td><td valign="top" width="20%"><br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.ibt</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.wbnoinvd</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.pconfig</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.waitpkg</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.cldemote</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.shstk</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.gfni</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.vaes</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.vpclmulqdq</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.movdiri</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.movdir64b</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.3dnow</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.3dnowa</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse4a</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.sse5</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.syscall</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.rdtscp</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.svme</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.abm</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.lwp</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.fma4</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.xop</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.cx16</span></samp>&rsquo;
-<br></td></tr><tr align="left"><td valign="top" width="20%">&lsquo;<samp><span class="samp">.padlock</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.clzero</span></samp>&rsquo; </td><td valign="top" width="20%">&lsquo;<samp><span class="samp">.mwaitx</span></samp>&rsquo;
-   <br></td></tr></table>
-
-   <p>Apart from the warning, there are only two other effects on
+<p>Apart from the warning, there are only two other effects on
 <code>as</code> operation;  Firstly, if you specify a CPU other than
-&lsquo;<samp><span class="samp">i486</span></samp>&rsquo;, then shift by one instructions such as &lsquo;<samp><span class="samp">sarl $1, %eax</span></samp>&rsquo;
+&lsquo;<samp>i486</samp>&rsquo;, then shift by one instructions such as &lsquo;<samp>sarl $1, %eax</samp>&rsquo;
 will automatically use a two byte opcode sequence.  The larger three
 byte opcode sequence is used on the 486 (and when no architecture is
 specified) because it executes faster on the 486.  Note that you can
-explicitly request the two byte opcode by writing &lsquo;<samp><span class="samp">sarl %eax</span></samp>&rsquo;. 
-Secondly, if you specify &lsquo;<samp><span class="samp">i8086</span></samp>&rsquo;, &lsquo;<samp><span class="samp">i186</span></samp>&rsquo;, or &lsquo;<samp><span class="samp">i286</span></samp>&rsquo;,
-<em>and</em> &lsquo;<samp><span class="samp">.code16</span></samp>&rsquo; or &lsquo;<samp><span class="samp">.code16gcc</span></samp>&rsquo; then byte offset
+explicitly request the two byte opcode by writing &lsquo;<samp>sarl %eax</samp>&rsquo;.
+Secondly, if you specify &lsquo;<samp>i8086</samp>&rsquo;, &lsquo;<samp>i186</samp>&rsquo;, or &lsquo;<samp>i286</samp>&rsquo;,
+<em>and</em> &lsquo;<samp>.code16</samp>&rsquo; or &lsquo;<samp>.code16gcc</samp>&rsquo; then byte offset
 conditional jumps will be promoted when necessary to a two instruction
 sequence consisting of a conditional jump of the opposite sense around
 an unconditional jump to the target.
-
-   <p>Following the CPU architecture (but not a sub-architecture, which are those
-starting with a dot), you may specify &lsquo;<samp><span class="samp">jumps</span></samp>&rsquo; or &lsquo;<samp><span class="samp">nojumps</span></samp>&rsquo; to
-control automatic promotion of conditional jumps. &lsquo;<samp><span class="samp">jumps</span></samp>&rsquo; is the
+</p>
+<p>Following the CPU architecture (but not a sub-architecture, which are those
+starting with a dot), you may specify &lsquo;<samp>jumps</samp>&rsquo; or &lsquo;<samp>nojumps</samp>&rsquo; to
+control automatic promotion of conditional jumps. &lsquo;<samp>jumps</samp>&rsquo; is the
 default, and enables jump promotion;  All external jumps will be of the long
-variety, and file-local jumps will be promoted as necessary. 
-(see <a href="i386_002dJumps.html#i386_002dJumps">i386-Jumps</a>)  &lsquo;<samp><span class="samp">nojumps</span></samp>&rsquo; leaves external conditional jumps as
+variety, and file-local jumps will be promoted as necessary.
+(see <a href="i386_002dJumps.html#i386_002dJumps">i386-Jumps</a>)  &lsquo;<samp>nojumps</samp>&rsquo; leaves external conditional jumps as
 byte offset jumps, and warns about file-local conditional jumps that
-<code>as</code> promotes. 
-Unconditional jumps are treated as for &lsquo;<samp><span class="samp">jumps</span></samp>&rsquo;.
+<code>as</code> promotes.
+Unconditional jumps are treated as for &lsquo;<samp>jumps</samp>&rsquo;.
+</p>
+<p>For example
+</p>
+<div class="smallexample">
+<pre class="smallexample"> .arch i8086,nojumps
+</pre></div>
 
-   <p>For example
+<hr>
+<div class="header">
+<p>
+Next: <a href="i386_002dISA.html#i386_002dISA" accesskey="n" rel="next">i386-ISA</a>, Previous: <a href="i386_002d16bit.html#i386_002d16bit" accesskey="p" rel="prev">i386-16bit</a>, Up: <a href="i386_002dDependent.html#i386_002dDependent" accesskey="u" rel="up">i386-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
-<pre class="smallexample">      .arch i8086,nojumps
-</pre>
-   </body></html>
 
+
+</body>
+</html>

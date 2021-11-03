@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Stubs (The Red Hat newlib C Library)</title>
@@ -11,32 +11,23 @@
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
 <link href="index.html#Top" rel="start" title="Top">
-<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html" rel="index" title="Document Index">
 <link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Syscalls.html#Syscalls" rel="up" title="Syscalls">
-<link href="Reentrant-Syscalls.html#Reentrant-Syscalls" rel="next" title="Reentrant Syscalls">
-<link href="Syscalls.html#Syscalls" rel="prev" title="Syscalls">
+<link href="Syscalls.html" rel="up" title="Syscalls">
+<link href="Reentrant-Syscalls.html" rel="next" title="Reentrant Syscalls">
+<link href="Syscalls.html" rel="prev" title="Syscalls">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,18 +39,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Stubs"></a>
-<div class="header">
+<span id="Stubs"></span><div class="header">
 <p>
-Next: <a href="Reentrant-Syscalls.html#Reentrant-Syscalls" accesskey="n" rel="next">Reentrant Syscalls</a>, Up: <a href="Syscalls.html#Syscalls" accesskey="u" rel="up">Syscalls</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Reentrant-Syscalls.html" accesskey="n" rel="next">Reentrant Syscalls</a>, Up: <a href="Syscalls.html" accesskey="u" rel="up">Syscalls</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Definitions-for-OS-interface"></a>
-<h3 class="section">13.1 Definitions for OS interface</h3>
-<a name="index-stubs"></a>
+<span id="Definitions-for-OS-interface"></span><h3 class="section">13.1 Definitions for OS interface</h3>
+<span id="index-stubs"></span>
 
-<a name="index-subroutines-for-OS-interface"></a>
-<a name="index-OS-interface-subroutines"></a>
+<span id="index-subroutines-for-OS-interface"></span>
+<span id="index-OS-interface-subroutines"></span>
 <p>This is the complete set of system definitions (primarily subroutines)
 required; the examples shown implement the minimal functionality
 required to allow <code>libc</code> to link, and fail gracefully where OS
@@ -71,9 +60,9 @@ development environments that supply fully functional versions of these
 subroutines.  Such environments usually return error codes in a global
 <code>errno</code>.  However, the Red Hat newlib C library provides a <em>macro</em>
 definition for <code>errno</code> in the header file <samp>errno.h</samp>, as part
-of its support for reentrant routines (see <a href="Reentrancy.html#Reentrancy">Reentrancy</a>).
+of its support for reentrant routines (see <a href="Reentrancy.html">Reentrancy</a>).
 </p>
-<a name="index-errno-global-vs-macro"></a>
+<span id="index-errno-global-vs-macro"></span>
 <p>The bridge between these two interpretations of <code>errno</code> is
 straightforward: the C library routines with OS interface calls
 capture the <code>errno</code> values returned globally, and record them in
@@ -94,7 +83,7 @@ extern int errno;
 </p>
 <dl compact="compact">
 <dt><code>_exit</code>
-<a name="index-_005fexit"></a>
+<span id="index-_005fexit"></span>
 </dt>
 <dd><p>Exit a program without cleaning up files.  If your system doesn&rsquo;t
 provide this, it is best to avoid linking with subroutines that require
@@ -102,7 +91,7 @@ it (<code>exit</code>, <code>system</code>).
 </p>
 </dd>
 <dt><code>close</code>
-<a name="index-close"></a>
+<span id="index-close"></span>
 </dt>
 <dd><p>Close a file.  Minimal implementation:
 </p>
@@ -114,7 +103,7 @@ it (<code>exit</code>, <code>system</code>).
 
 </dd>
 <dt><code>environ</code>
-<a name="index-environ-1"></a>
+<span id="index-environ-1"></span>
 </dt>
 <dd><p>A pointer to a list of environment variables and their values.  For a
 minimal environment, this empty list is adequate:
@@ -126,7 +115,7 @@ char **environ = __env;
 
 </dd>
 <dt><code>execve</code>
-<a name="index-execve"></a>
+<span id="index-execve"></span>
 </dt>
 <dd><p>Transfer control to a new process.  Minimal implementation (for a system
 without processes):
@@ -143,7 +132,7 @@ int execve(char *name, char **argv, char **env) {
 
 </dd>
 <dt><code>fork</code>
-<a name="index-fork"></a>
+<span id="index-fork"></span>
 </dt>
 <dd><p>Create a new process.  Minimal implementation (for a system without processes):
 </p>
@@ -159,7 +148,7 @@ int fork(void) {
 
 </dd>
 <dt><code>fstat</code>
-<a name="index-fstat"></a>
+<span id="index-fstat"></span>
 </dt>
 <dd><p>Status of an open file.  For consistency with other minimal
 implementations in these examples, all files are regarded as character
@@ -176,7 +165,7 @@ int fstat(int file, struct stat *st) {
 
 </dd>
 <dt><code>getpid</code>
-<a name="index-getpid"></a>
+<span id="index-getpid"></span>
 </dt>
 <dd><p>Process-ID; this is sometimes used to generate strings unlikely to
 conflict with other processes.  Minimal implementation, for a system
@@ -190,7 +179,7 @@ without processes:
 
 </dd>
 <dt><code>isatty</code>
-<a name="index-isatty"></a>
+<span id="index-isatty"></span>
 </dt>
 <dd><p>Query whether output stream is a terminal.   For consistency with the
 other minimal implementations, which only support output to
@@ -204,7 +193,7 @@ other minimal implementations, which only support output to
 
 </dd>
 <dt><code>kill</code>
-<a name="index-kill"></a>
+<span id="index-kill"></span>
 </dt>
 <dd><p>Send a signal.  Minimal implementation:
 </p>
@@ -220,7 +209,7 @@ int kill(int pid, int sig) {
 
 </dd>
 <dt><code>link</code>
-<a name="index-link"></a>
+<span id="index-link"></span>
 </dt>
 <dd><p>Establish a new name for an existing file.  Minimal implementation:
 </p>
@@ -236,7 +225,7 @@ int link(char *old, char *new) {
 
 </dd>
 <dt><code>lseek</code>
-<a name="index-lseek"></a>
+<span id="index-lseek"></span>
 </dt>
 <dd><p>Set position in a file.  Minimal implementation:
 </p>
@@ -248,7 +237,7 @@ int link(char *old, char *new) {
 
 </dd>
 <dt><code>open</code>
-<a name="index-open"></a>
+<span id="index-open"></span>
 </dt>
 <dd><p>Open a file.  Minimal implementation:
 </p>
@@ -260,7 +249,7 @@ int link(char *old, char *new) {
 
 </dd>
 <dt><code>read</code>
-<a name="index-read"></a>
+<span id="index-read"></span>
 </dt>
 <dd><p>Read from a file.  Minimal implementation:
 </p>
@@ -272,7 +261,7 @@ int link(char *old, char *new) {
 
 </dd>
 <dt><code>sbrk</code>
-<a name="index-sbrk"></a>
+<span id="index-sbrk"></span>
 </dt>
 <dd><p>Increase program data space.  As <code>malloc</code> and related functions
 depend on this, it is useful to have a working implementation.  The
@@ -301,7 +290,7 @@ following suffices for a standalone system; it exploits the symbol
 
 </dd>
 <dt><code>stat</code>
-<a name="index-stat"></a>
+<span id="index-stat"></span>
 </dt>
 <dd><p>Status of a file (by name).  Minimal implementation:
 </p>
@@ -314,7 +303,7 @@ following suffices for a standalone system; it exploits the symbol
 
 </dd>
 <dt><code>times</code>
-<a name="index-times"></a>
+<span id="index-times"></span>
 </dt>
 <dd><p>Timing information for current process.  Minimal implementation:
 </p>
@@ -326,7 +315,7 @@ following suffices for a standalone system; it exploits the symbol
 
 </dd>
 <dt><code>unlink</code>
-<a name="index-unlink"></a>
+<span id="index-unlink"></span>
 </dt>
 <dd><p>Remove a file&rsquo;s directory entry.  Minimal implementation:
 </p>
@@ -342,7 +331,7 @@ int unlink(char *name) {
 
 </dd>
 <dt><code>wait</code>
-<a name="index-wait"></a>
+<span id="index-wait"></span>
 </dt>
 <dd><p>Wait for a child process.  Minimal implementation:
 </p><div class="example">
@@ -357,7 +346,7 @@ int wait(int *status) {
 
 </dd>
 <dt><code>write</code>
-<a name="index-write"></a>
+<span id="index-write"></span>
 </dt>
 <dd><p>Write to a file.  <samp>libc</samp> subroutines will use this
 system routine for output to all files, <em>including</em>
@@ -385,7 +374,7 @@ provided by your hardware manufacturer) to actually perform the output.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Reentrant-Syscalls.html#Reentrant-Syscalls" accesskey="n" rel="next">Reentrant Syscalls</a>, Up: <a href="Syscalls.html#Syscalls" accesskey="u" rel="up">Syscalls</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Reentrant-Syscalls.html" accesskey="n" rel="next">Reentrant Syscalls</a>, Up: <a href="Syscalls.html" accesskey="u" rel="up">Syscalls</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

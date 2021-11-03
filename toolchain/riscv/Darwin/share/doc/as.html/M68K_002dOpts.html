@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>M68K-Opts (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="M68K_002dDependent.html#M68K_002dDependent" rel="up" title="M68K-Dependent">
-<link href="M68K_002dSyntax.html#M68K_002dSyntax" rel="next" title="M68K-Syntax">
-<link href="M68K_002dDependent.html#M68K_002dDependent" rel="prev" title="M68K-Dependent">
+<link href="M68K_002dDependent.html" rel="up" title="M68K-Dependent">
+<link href="M68K_002dSyntax.html" rel="next" title="M68K-Syntax">
+<link href="M68K_002dDependent.html" rel="prev" title="M68K-Dependent">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,23 +50,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="M68K_002dOpts"></a>
-<div class="header">
+<span id="M68K_002dOpts"></span><div class="header">
 <p>
-Next: <a href="M68K_002dSyntax.html#M68K_002dSyntax" accesskey="n" rel="next">M68K-Syntax</a>, Up: <a href="M68K_002dDependent.html#M68K_002dDependent" accesskey="u" rel="up">M68K-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="M68K_002dSyntax.html" accesskey="n" rel="next">M68K-Syntax</a>, Up: <a href="M68K_002dDependent.html" accesskey="u" rel="up">M68K-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="M680x0-Options"></a>
-<h4 class="subsection">9.21.1 M680x0 Options</h4>
+<span id="M680x0-Options"></span><h4 class="subsection">9.22.1 M680x0 Options</h4>
 
-<a name="index-options_002c-M680x0"></a>
-<a name="index-M680x0-options"></a>
+<span id="index-options_002c-M680x0"></span>
+<span id="index-M680x0-options"></span>
 <p>The Motorola 680x0 version of <code>as</code> has a few machine
 dependent options:
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-_002dmarch_003d-command_002dline-option_002c-M680x0"></a>
+<span id="index-_002dmarch_003d-command_002dline-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>-march=<var>architecture</var></samp>&rsquo;</dt>
 <dd><p>This option specifies a target architecture.  The following
@@ -94,7 +83,7 @@ architectures are recognized:
 <code>cfv4e</code>.
 </p>
 
-<a name="index-_002dmcpu_003d-command_002dline-option_002c-M680x0"></a>
+<span id="index-_002dmcpu_003d-command_002dline-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>-mcpu=<var>cpu</var></samp>&rsquo;</dt>
 <dd><p>This option specifies a target cpu.  When used in conjunction with the
@@ -102,13 +91,13 @@ architectures are recognized:
 architecture.  Also, the generic features of the architecture are used
 for instruction generation, rather than those of the specific chip.
 </p>
-<a name="index-_002dm_005bno_002d_005d68851-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005d68881-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005ddiv-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005dusp-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005dfloat-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005dmac-command_002dline-option_002c-M680x0"></a>
-<a name="index-_002dm_005bno_002d_005demac-command_002dline-option_002c-M680x0"></a>
+<span id="index-_002dm_005bno_002d_005d68851-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005d68881-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005ddiv-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005dusp-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005dfloat-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005dmac-command_002dline-option_002c-M680x0"></span>
+<span id="index-_002dm_005bno_002d_005demac-command_002dline-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>-m[no-]68851</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>-m[no-]68881</samp>&rsquo;</dt>
@@ -123,7 +112,7 @@ or architecture by default supports an option (for instance
 <samp>-march=isaaplus</samp> includes the <samp>-mdiv</samp> option),
 explicitly disabling the option will override the default.
 </p>
-<a name="index-_002dl-option_002c-M680x0"></a>
+<span id="index-_002dl-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>-l</samp>&rsquo;</dt>
 <dd><p>You can use the &lsquo;<samp>-l</samp>&rsquo; option to shorten the size of references to undefined
@@ -136,7 +125,7 @@ can.)  If you use this option, the references are only one word wide (16 bits).
 This may be useful if you want the object file to be as small as possible, and
 you know that the relevant symbols are always less than 17 bits away.
 </p>
-<a name="index-_002d_002dregister_002dprefix_002doptional-option_002c-M680x0"></a>
+<span id="index-_002d_002dregister_002dprefix_002doptional-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>--register-prefix-optional</samp>&rsquo;</dt>
 <dd><p>For some configurations, especially those where the compiler normally
@@ -151,7 +140,7 @@ normally required.  If this is done, it will generally be impossible to
 refer to C variables and functions with the same names as register
 names.
 </p>
-<a name="index-_002d_002dbitwise_002dor-option_002c-M680x0"></a>
+<span id="index-_002d_002dbitwise_002dor-option_002c-M680x0"></span>
 </dd>
 <dt>&lsquo;<samp>--bitwise-or</samp>&rsquo;</dt>
 <dd><p>Normally the character &lsquo;<samp>|</samp>&rsquo; is treated as a comment character, which
@@ -160,8 +149,8 @@ option turns &lsquo;<samp>|</samp>&rsquo; into a normal character.  In this mode
 either use C style comments, or start comments with a &lsquo;<samp>#</samp>&rsquo; character
 at the beginning of a line.
 </p>
-<a name="index-_002d_002dbase_002dsize_002ddefault_002d16"></a>
-<a name="index-_002d_002dbase_002dsize_002ddefault_002d32"></a>
+<span id="index-_002d_002dbase_002dsize_002ddefault_002d16"></span>
+<span id="index-_002d_002dbase_002dsize_002ddefault_002d32"></span>
 </dd>
 <dt>&lsquo;<samp>--base-size-default-16  --base-size-default-32</samp>&rsquo;</dt>
 <dd><p>If you use an addressing mode with a base register without specifying
@@ -173,8 +162,8 @@ In this case, &lsquo;<samp>%a0@(%d0)</samp>&rsquo; is equivalent to &lsquo;<samp
 You may use the &lsquo;<samp>--base-size-default-32</samp>&rsquo; option to restore the
 default behaviour.
 </p>
-<a name="index-_002d_002ddisp_002dsize_002ddefault_002d16"></a>
-<a name="index-_002d_002ddisp_002dsize_002ddefault_002d32"></a>
+<span id="index-_002d_002ddisp_002dsize_002ddefault_002d16"></span>
+<span id="index-_002d_002ddisp_002dsize_002ddefault_002d32"></span>
 </dd>
 <dt>&lsquo;<samp>--disp-size-default-16  --disp-size-default-32</samp>&rsquo;</dt>
 <dd><p>If you use an addressing mode with a displacement, and the value of the
@@ -188,7 +177,7 @@ to instead assume that the displacement is 16 bits.  In this case,
 &lsquo;<samp>disp</samp>&rsquo; is a 16 bit value.  You may use the
 &lsquo;<samp>--disp-size-default-32</samp>&rsquo; option to restore the default behaviour.
 </p>
-<a name="index-_002d_002dpcrel"></a>
+<span id="index-_002d_002dpcrel"></span>
 </dd>
 <dt>&lsquo;<samp>--pcrel</samp>&rsquo;</dt>
 <dd><p>Always keep branches PC-relative.  In the M680x0 architecture all branches
@@ -199,11 +188,11 @@ option disables this substitution.  When this option is given and no long
 branches are available, only word branches will be emitted.  An error
 message will be generated if a word branch cannot reach its target.  This
 option has no effect on 68020 and other processors that have long branches.
-see <a href="M68K_002dBranch.html#M68K_002dBranch">Branch Improvement</a>.
+see <a href="M68K_002dBranch.html">Branch Improvement</a>.
 </p>
-<a name="index-_002dm68000-and-related-options"></a>
-<a name="index-architecture-options_002c-M680x0"></a>
-<a name="index-M680x0-architecture-options"></a>
+<span id="index-_002dm68000-and-related-options"></span>
+<span id="index-architecture-options_002c-M680x0"></span>
+<span id="index-M680x0-architecture-options"></span>
 </dd>
 <dt>&lsquo;<samp>-m68000</samp>&rsquo;</dt>
 <dd><p><code>as</code> can assemble code for several different members of the
@@ -318,7 +307,7 @@ of MMU instructions.
 <hr>
 <div class="header">
 <p>
-Next: <a href="M68K_002dSyntax.html#M68K_002dSyntax" accesskey="n" rel="next">M68K-Syntax</a>, Up: <a href="M68K_002dDependent.html#M68K_002dDependent" accesskey="u" rel="up">M68K-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="M68K_002dSyntax.html" accesskey="n" rel="next">M68K-Syntax</a>, Up: <a href="M68K_002dDependent.html" accesskey="u" rel="up">M68K-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

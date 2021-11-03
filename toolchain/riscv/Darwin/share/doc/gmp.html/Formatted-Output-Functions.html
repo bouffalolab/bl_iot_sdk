@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Formatted Output Functions (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Formatted-Output.html#Formatted-Output" rel="up" title="Formatted Output">
-<link href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output" rel="next" title="C++ Formatted Output">
-<link href="Formatted-Output-Strings.html#Formatted-Output-Strings" rel="prev" title="Formatted Output Strings">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Formatted-Output.html" rel="up" title="Formatted Output">
+<link href="C_002b_002b-Formatted-Output.html" rel="next" title="C++ Formatted Output">
+<link href="Formatted-Output-Strings.html" rel="prev" title="Formatted Output Strings">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,19 +50,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Formatted-Output-Functions"></a>
-<div class="header">
+<span id="Formatted-Output-Functions"></span><div class="header">
 <p>
-Next: <a href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output" accesskey="n" rel="next">C++ Formatted Output</a>, Previous: <a href="Formatted-Output-Strings.html#Formatted-Output-Strings" accesskey="p" rel="prev">Formatted Output Strings</a>, Up: <a href="Formatted-Output.html#Formatted-Output" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Formatted-Output.html" accesskey="n" rel="next">C++ Formatted Output</a>, Previous: <a href="Formatted-Output-Strings.html" accesskey="p" rel="prev">Formatted Output Strings</a>, Up: <a href="Formatted-Output.html" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Functions"></a>
-<h3 class="section">10.2 Functions</h3>
-<a name="index-Output-functions-3"></a>
+<span id="Functions"></span><h3 class="section">10.2 Functions</h3>
+<span id="index-Output-functions-3"></span>
 
 <p>Each of the following functions is similar to the corresponding C library
 function.  The basic <code>printf</code> forms take a variable argument list.  The
-<code>vprintf</code> forms take an argument pointer, see <a href="http://www.gnu.org/software/libc/manual/html_node/Variadic-Functions.html#Variadic-Functions">Variadic Functions</a> in <cite>The GNU C Library Reference Manual</cite>, or &lsquo;<samp>man 3
+<code>vprintf</code> forms take an argument pointer, see <a href="https://www.gnu.org/software/libc/manual/html_node/Variadic-Functions.html#Variadic-Functions">Variadic Functions</a> in <cite>The GNU C Library Reference Manual</cite>, or &lsquo;<samp>man 3
 va_start</samp>&rsquo;.
 </p>
 <p>It should be emphasised that if a format string is invalid, or the arguments
@@ -86,22 +75,22 @@ output may be produced if a write error occurs.  All the functions can return
 this shouldn&rsquo;t normally occur.
 </p>
 <dl>
-<dt><a name="index-gmp_005fprintf"></a>Function: <em>int</em> <strong>gmp_printf</strong> <em>(const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvprintf"></a>Function: <em>int</em> <strong>gmp_vprintf</strong> <em>(const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fprintf">Function: <em>int</em> <strong>gmp_printf</strong> <em>(const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvprintf">Function: <em>int</em> <strong>gmp_vprintf</strong> <em>(const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Print to the standard output <code>stdout</code>.  Return the number of characters
 written, or <em>-1</em> if an error occurred.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005ffprintf"></a>Function: <em>int</em> <strong>gmp_fprintf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvfprintf"></a>Function: <em>int</em> <strong>gmp_vfprintf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005ffprintf">Function: <em>int</em> <strong>gmp_fprintf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvfprintf">Function: <em>int</em> <strong>gmp_vfprintf</strong> <em>(FILE *<var>fp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Print to the stream <var>fp</var>.  Return the number of characters written, or
 <em>-1</em> if an error occurred.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005fsprintf"></a>Function: <em>int</em> <strong>gmp_sprintf</strong> <em>(char *<var>buf</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvsprintf"></a>Function: <em>int</em> <strong>gmp_vsprintf</strong> <em>(char *<var>buf</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fsprintf">Function: <em>int</em> <strong>gmp_sprintf</strong> <em>(char *<var>buf</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvsprintf">Function: <em>int</em> <strong>gmp_vsprintf</strong> <em>(char *<var>buf</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Form a null-terminated string in <var>buf</var>.  Return the number of characters
 written, excluding the terminating null.
 </p>
@@ -113,8 +102,8 @@ exceeding the space available at <var>buf</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005fsnprintf"></a>Function: <em>int</em> <strong>gmp_snprintf</strong> <em>(char *<var>buf</var>, size_t <var>size</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvsnprintf"></a>Function: <em>int</em> <strong>gmp_vsnprintf</strong> <em>(char *<var>buf</var>, size_t <var>size</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fsnprintf">Function: <em>int</em> <strong>gmp_snprintf</strong> <em>(char *<var>buf</var>, size_t <var>size</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvsnprintf">Function: <em>int</em> <strong>gmp_vsnprintf</strong> <em>(char *<var>buf</var>, size_t <var>size</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Form a null-terminated string in <var>buf</var>.  No more than <var>size</var> bytes
 will be written.  To get the full output, <var>size</var> must be enough for the
 string and null-terminator.
@@ -132,10 +121,10 @@ if the C library <code>vsnprintf</code> is the older GLIBC 2.0.x style.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005fasprintf"></a>Function: <em>int</em> <strong>gmp_asprintf</strong> <em>(char **<var>pp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fvasprintf"></a>Function: <em>int</em> <strong>gmp_vasprintf</strong> <em>(char **<var>pp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-gmp_005fasprintf">Function: <em>int</em> <strong>gmp_asprintf</strong> <em>(char **<var>pp</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fvasprintf">Function: <em>int</em> <strong>gmp_vasprintf</strong> <em>(char **<var>pp</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
 <dd><p>Form a null-terminated string in a block of memory obtained from the current
-memory allocation function (see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  The block will be the
+memory allocation function (see <a href="Custom-Allocation.html">Custom Allocation</a>).  The block will be the
 size of the string and null-terminator.  The address of the block in stored to
 *<var>pp</var>.  The return value is the number of characters produced, excluding
 the null-terminator.
@@ -146,9 +135,9 @@ function handle that.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-gmp_005fobstack_005fprintf"></a>Function: <em>int</em> <strong>gmp_obstack_printf</strong> <em>(struct obstack *<var>ob</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
-<dt><a name="index-gmp_005fobstack_005fvprintf"></a>Function: <em>int</em> <strong>gmp_obstack_vprintf</strong> <em>(struct obstack *<var>ob</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
-<dd><a name="index-obstack-output"></a>
+<dt id="index-gmp_005fobstack_005fprintf">Function: <em>int</em> <strong>gmp_obstack_printf</strong> <em>(struct obstack *<var>ob</var>, const char *<var>fmt</var>, &hellip;)</em></dt>
+<dt id="index-gmp_005fobstack_005fvprintf">Function: <em>int</em> <strong>gmp_obstack_vprintf</strong> <em>(struct obstack *<var>ob</var>, const char *<var>fmt</var>, va_list <var>ap</var>)</em></dt>
+<dd><span id="index-obstack-output"></span>
 <p>Append to the current object in <var>ob</var>.  The return value is the number of
 characters written.  A null-terminator is not written.
 </p>
@@ -156,14 +145,14 @@ characters written.  A null-terminator is not written.
 might move as it grows.
 </p>
 <p>These functions are available only when the C library provides the obstack
-feature, which probably means only on GNU systems, see <a href="http://www.gnu.org/software/libc/manual/html_node/Obstacks.html#Obstacks">Obstacks</a> in <cite>The GNU C Library Reference Manual</cite>.
+feature, which probably means only on GNU systems, see <a href="https://www.gnu.org/software/libc/manual/html_node/Obstacks.html#Obstacks">Obstacks</a> in <cite>The GNU C Library Reference Manual</cite>.
 </p></dd></dl>
 
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="C_002b_002b-Formatted-Output.html#C_002b_002b-Formatted-Output" accesskey="n" rel="next">C++ Formatted Output</a>, Previous: <a href="Formatted-Output-Strings.html#Formatted-Output-Strings" accesskey="p" rel="prev">Formatted Output Strings</a>, Up: <a href="Formatted-Output.html#Formatted-Output" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Formatted-Output.html" accesskey="n" rel="next">C++ Formatted Output</a>, Previous: <a href="Formatted-Output-Strings.html" accesskey="p" rel="prev">Formatted Output Strings</a>, Up: <a href="Formatted-Output.html" accesskey="u" rel="up">Formatted Output</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

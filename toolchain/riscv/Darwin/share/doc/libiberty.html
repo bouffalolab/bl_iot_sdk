@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GNU libiberty</title>
@@ -17,23 +17,14 @@
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -53,62 +44,60 @@ ul.no-bullet {list-style: none}
 
 
 
-<a name="SEC_Contents"></a>
+<span id="SEC_Contents"></span>
 <h2 class="contents-heading">Table of Contents</h2>
 
 <div class="contents">
 
 <ul class="no-bullet">
-  <li><a name="toc-Using-1" href="#Using">1 Using</a></li>
-  <li><a name="toc-Overview-1" href="#Overview">2 Overview</a>
+  <li><a id="toc-Using-1" href="#Using">1 Using</a></li>
+  <li><a id="toc-Overview-1" href="#Overview">2 Overview</a>
   <ul class="no-bullet">
-    <li><a name="toc-Supplemental-Functions-1" href="#Supplemental-Functions">2.1 Supplemental Functions</a></li>
-    <li><a name="toc-Replacement-Functions-1" href="#Replacement-Functions">2.2 Replacement Functions</a>
+    <li><a id="toc-Supplemental-Functions-1" href="#Supplemental-Functions">2.1 Supplemental Functions</a></li>
+    <li><a id="toc-Replacement-Functions-1" href="#Replacement-Functions">2.2 Replacement Functions</a>
     <ul class="no-bullet">
-      <li><a name="toc-Memory-Allocation-1" href="#Memory-Allocation">2.2.1 Memory Allocation</a></li>
-      <li><a name="toc-Exit-Handlers-1" href="#Exit-Handlers">2.2.2 Exit Handlers</a></li>
-      <li><a name="toc-Error-Reporting-1" href="#Error-Reporting">2.2.3 Error Reporting</a></li>
+      <li><a id="toc-Memory-Allocation-1" href="#Memory-Allocation">2.2.1 Memory Allocation</a></li>
+      <li><a id="toc-Exit-Handlers-1" href="#Exit-Handlers">2.2.2 Exit Handlers</a></li>
+      <li><a id="toc-Error-Reporting-1" href="#Error-Reporting">2.2.3 Error Reporting</a></li>
     </ul></li>
-    <li><a name="toc-Extensions-1" href="#Extensions">2.3 Extensions</a>
+    <li><a id="toc-Extensions-1" href="#Extensions">2.3 Extensions</a>
     <ul class="no-bullet">
-      <li><a name="toc-Obstacks-1" href="#Obstacks">2.3.1 Obstacks</a>
+      <li><a id="toc-Obstacks-1" href="#Obstacks">2.3.1 Obstacks</a>
       <ul class="no-bullet">
-        <li><a name="toc-Creating-Obstacks-1" href="#Creating-Obstacks">2.3.1.1 Creating Obstacks</a></li>
-        <li><a name="toc-Preparing-for-Using-Obstacks" href="#Preparing-for-Obstacks">2.3.1.2 Preparing for Using Obstacks</a></li>
-        <li><a name="toc-Allocation-in-an-Obstack-1" href="#Allocation-in-an-Obstack">2.3.1.3 Allocation in an Obstack</a></li>
-        <li><a name="toc-Freeing-Objects-in-an-Obstack" href="#Freeing-Obstack-Objects">2.3.1.4 Freeing Objects in an Obstack</a></li>
-        <li><a name="toc-Obstack-Functions-and-Macros" href="#Obstack-Functions">2.3.1.5 Obstack Functions and Macros</a></li>
-        <li><a name="toc-Growing-Objects-1" href="#Growing-Objects">2.3.1.6 Growing Objects</a></li>
-        <li><a name="toc-Extra-Fast-Growing-Objects" href="#Extra-Fast-Growing">2.3.1.7 Extra Fast Growing Objects</a></li>
-        <li><a name="toc-Status-of-an-Obstack-1" href="#Status-of-an-Obstack">2.3.1.8 Status of an Obstack</a></li>
-        <li><a name="toc-Alignment-of-Data-in-Obstacks" href="#Obstacks-Data-Alignment">2.3.1.9 Alignment of Data in Obstacks</a></li>
-        <li><a name="toc-Obstack-Chunks-1" href="#Obstack-Chunks">2.3.1.10 Obstack Chunks</a></li>
-        <li><a name="toc-Summary-of-Obstack-Macros" href="#Summary-of-Obstacks">2.3.1.11 Summary of Obstack Macros</a></li>
+        <li><a id="toc-Creating-Obstacks-1" href="#Creating-Obstacks">2.3.1.1 Creating Obstacks</a></li>
+        <li><a id="toc-Preparing-for-Using-Obstacks" href="#Preparing-for-Obstacks">2.3.1.2 Preparing for Using Obstacks</a></li>
+        <li><a id="toc-Allocation-in-an-Obstack-1" href="#Allocation-in-an-Obstack">2.3.1.3 Allocation in an Obstack</a></li>
+        <li><a id="toc-Freeing-Objects-in-an-Obstack" href="#Freeing-Obstack-Objects">2.3.1.4 Freeing Objects in an Obstack</a></li>
+        <li><a id="toc-Obstack-Functions-and-Macros" href="#Obstack-Functions">2.3.1.5 Obstack Functions and Macros</a></li>
+        <li><a id="toc-Growing-Objects-1" href="#Growing-Objects">2.3.1.6 Growing Objects</a></li>
+        <li><a id="toc-Extra-Fast-Growing-Objects" href="#Extra-Fast-Growing">2.3.1.7 Extra Fast Growing Objects</a></li>
+        <li><a id="toc-Status-of-an-Obstack-1" href="#Status-of-an-Obstack">2.3.1.8 Status of an Obstack</a></li>
+        <li><a id="toc-Alignment-of-Data-in-Obstacks" href="#Obstacks-Data-Alignment">2.3.1.9 Alignment of Data in Obstacks</a></li>
+        <li><a id="toc-Obstack-Chunks-1" href="#Obstack-Chunks">2.3.1.10 Obstack Chunks</a></li>
+        <li><a id="toc-Summary-of-Obstack-Macros" href="#Summary-of-Obstacks">2.3.1.11 Summary of Obstack Macros</a></li>
       </ul></li>
     </ul></li>
   </ul></li>
-  <li><a name="toc-Function_002c-Variable_002c-and-Macro-Listing_002e" href="#Functions">3 Function, Variable, and Macro Listing.</a></li>
-  <li><a name="toc-Licenses-1" href="#Licenses">Appendix A Licenses</a>
+  <li><a id="toc-Function_002c-Variable_002c-and-Macro-Listing_002e" href="#Functions">3 Function, Variable, and Macro Listing.</a></li>
+  <li><a id="toc-Licenses-1" href="#Licenses">Appendix A Licenses</a>
   <ul class="no-bullet">
-    <li><a name="toc-GNU-LESSER-GENERAL-PUBLIC-LICENSE" href="#Library-Copying">A.1 GNU LESSER GENERAL PUBLIC LICENSE</a>
+    <li><a id="toc-GNU-LESSER-GENERAL-PUBLIC-LICENSE" href="#Library-Copying">A.1 GNU LESSER GENERAL PUBLIC LICENSE</a>
     <ul class="no-bullet">
-      <li><a name="toc-Preamble" href="#Preamble">A.1.1 Preamble</a></li>
-      <li><a name="toc-How-to-Apply-These-Terms-to-Your-New-Libraries" href="#How-to-Apply-These-Terms-to-Your-New-Libraries">A.1.2 How to Apply These Terms to Your New Libraries</a></li>
+      <li><a id="toc-Preamble" href="#Preamble">A.1.1 Preamble</a></li>
+      <li><a id="toc-How-to-Apply-These-Terms-to-Your-New-Libraries" href="#How-to-Apply-These-Terms-to-Your-New-Libraries">A.1.2 How to Apply These Terms to Your New Libraries</a></li>
     </ul></li>
-    <li><a name="toc-BSD-1" href="#BSD">A.2 BSD</a></li>
+    <li><a id="toc-BSD-1" href="#BSD">A.2 BSD</a></li>
   </ul></li>
-  <li><a name="toc-Index-1" href="#Index">Index</a></li>
+  <li><a id="toc-Index-1" href="#Index" rel="index">Index</a></li>
 </ul>
 </div>
 
 
-<a name="Top"></a>
-<div class="header">
+<span id="Top"></span><div class="header">
 <p>
 Next: <a href="#Using" accesskey="n" rel="next">Using</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Introduction"></a>
-<h1 class="top">Introduction</h1>
+<span id="Introduction"></span><h1 class="top">Introduction</h1>
 
 <p>The <code>libiberty</code> library is a collection of subroutines used by various
 GNU programs.  It is available under the Library General Public
@@ -116,38 +105,36 @@ License; for more information, see <a href="#Library-Copying">Library Copying</a
 </p>
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Using" accesskey="1">Using</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to use libiberty in your code.
+<tr><td align="left" valign="top">&bull; <a href="#Using" accesskey="1">Using</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to use libiberty in your code.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Overview" accesskey="2">Overview</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overview of available function groups.
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Overview" accesskey="2">Overview</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overview of available function groups.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Functions" accesskey="3">Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Available functions, macros, and global variables.
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Functions" accesskey="3">Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Available functions, macros, and global variables.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Licenses" accesskey="4">Licenses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The various licenses under which libiberty sources are
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Licenses" accesskey="4">Licenses</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The various licenses under which libiberty sources are
                        distributed.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Index" accesskey="5">Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of functions and categories.
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Index" rel="index" accesskey="5">Index</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of functions and categories.
 </td></tr>
 </table>
 
 <hr>
-<a name="Using"></a>
-<div class="header">
+<span id="Using"></span><div class="header">
 <p>
 Next: <a href="#Overview" accesskey="n" rel="next">Overview</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Using-1"></a>
-<h2 class="chapter">1 Using</h2>
-<a name="index-using-libiberty"></a>
-<a name="index-libiberty-usage"></a>
-<a name="index-how-to-use"></a>
+<span id="Using-1"></span><h2 class="chapter">1 Using</h2>
+<span id="index-using-libiberty"></span>
+<span id="index-libiberty-usage"></span>
+<span id="index-how-to-use"></span>
 
 
 <p>To date, <code>libiberty</code> is generally not installed on its own.  It has evolved
@@ -179,44 +166,40 @@ add <samp>-liberty</samp> to your link command invocation.
 </p>
 
 <hr>
-<a name="Overview"></a>
-<div class="header">
+<span id="Overview"></span><div class="header">
 <p>
 Next: <a href="#Functions" accesskey="n" rel="next">Functions</a>, Previous: <a href="#Using" accesskey="p" rel="prev">Using</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Overview-1"></a>
-<h2 class="chapter">2 Overview</h2>
+<span id="Overview-1"></span><h2 class="chapter">2 Overview</h2>
 
 <p>Functions contained in <code>libiberty</code> can be divided into three general categories.
 </p>
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Supplemental-Functions" accesskey="1">Supplemental Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Providing functions which don&rsquo;t exist
+<tr><td align="left" valign="top">&bull; <a href="#Supplemental-Functions" accesskey="1">Supplemental Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Providing functions which don&rsquo;t exist
                                  on older operating systems.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Replacement-Functions" accesskey="2">Replacement Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">These functions are sometimes buggy or
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Replacement-Functions" accesskey="2">Replacement Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">These functions are sometimes buggy or
                                  unpredictable on some operating systems.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Extensions" accesskey="3">Extensions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions which provide useful extensions
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Extensions" accesskey="3">Extensions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions which provide useful extensions
                                  or safety wrappers around existing code.
 </td></tr>
 </table>
 
 <hr>
-<a name="Supplemental-Functions"></a>
-<div class="header">
+<span id="Supplemental-Functions"></span><div class="header">
 <p>
 Next: <a href="#Replacement-Functions" accesskey="n" rel="next">Replacement Functions</a>, Up: <a href="#Overview" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Supplemental-Functions-1"></a>
-<h3 class="section">2.1 Supplemental Functions</h3>
-<a name="index-supplemental-functions"></a>
-<a name="index-functions_002c-supplemental"></a>
-<a name="index-functions_002c-missing"></a>
+<span id="Supplemental-Functions-1"></span><h3 class="section">2.1 Supplemental Functions</h3>
+<span id="index-supplemental-functions"></span>
+<span id="index-functions_002c-supplemental"></span>
+<span id="index-functions_002c-missing"></span>
 
 <p>Certain operating systems do not provide functions which have since
 become standardized, or at least common.  For example, the Single
@@ -241,15 +224,13 @@ be declared as <code>extern</code>.
 
 
 <hr>
-<a name="Replacement-Functions"></a>
-<div class="header">
+<span id="Replacement-Functions"></span><div class="header">
 <p>
 Next: <a href="#Extensions" accesskey="n" rel="next">Extensions</a>, Previous: <a href="#Supplemental-Functions" accesskey="p" rel="prev">Supplemental Functions</a>, Up: <a href="#Overview" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Replacement-Functions-1"></a>
-<h3 class="section">2.2 Replacement Functions</h3>
-<a name="index-replacement-functions"></a>
-<a name="index-functions_002c-replacement"></a>
+<span id="Replacement-Functions-1"></span><h3 class="section">2.2 Replacement Functions</h3>
+<span id="index-replacement-functions"></span>
+<span id="index-functions_002c-replacement"></span>
 
 <p>Some functions have extremely limited implementations on different
 platforms.  Other functions are tedious to use correctly; for example,
@@ -265,25 +246,23 @@ functions may call one another.
 </p>
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Memory-Allocation" accesskey="1">Memory Allocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Testing and handling failed memory
+<tr><td align="left" valign="top">&bull; <a href="#Memory-Allocation" accesskey="1">Memory Allocation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Testing and handling failed memory
                                    requests automatically.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Exit-Handlers" accesskey="2">Exit Handlers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Calling routines on program exit.
+<tr><td align="left" valign="top">&bull; <a href="#Exit-Handlers" accesskey="2">Exit Handlers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Calling routines on program exit.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Error-Reporting" accesskey="3">Error Reporting</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Mapping errno and signal numbers to
+<tr><td align="left" valign="top">&bull; <a href="#Error-Reporting" accesskey="3">Error Reporting</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Mapping errno and signal numbers to
                                    more useful string formats.
 </td></tr>
 </table>
 
 <hr>
-<a name="Memory-Allocation"></a>
-<div class="header">
+<span id="Memory-Allocation"></span><div class="header">
 <p>
 Next: <a href="#Exit-Handlers" accesskey="n" rel="next">Exit Handlers</a>, Up: <a href="#Replacement-Functions" accesskey="u" rel="up">Replacement Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Memory-Allocation-1"></a>
-<h4 class="subsection">2.2.1 Memory Allocation</h4>
-<a name="index-memory-allocation"></a>
+<span id="Memory-Allocation-1"></span><h4 class="subsection">2.2.1 Memory Allocation</h4>
+<span id="index-memory-allocation"></span>
 
 <p>The functions beginning with the letter &lsquo;<samp>x</samp>&rsquo; are wrappers around
 standard functions; the functions provided by the system environment
@@ -293,14 +272,12 @@ terminate the program.  Thus, these versions can be used with impunity.
 </p>
 
 <hr>
-<a name="Exit-Handlers"></a>
-<div class="header">
+<span id="Exit-Handlers"></span><div class="header">
 <p>
 Next: <a href="#Error-Reporting" accesskey="n" rel="next">Error Reporting</a>, Previous: <a href="#Memory-Allocation" accesskey="p" rel="prev">Memory Allocation</a>, Up: <a href="#Replacement-Functions" accesskey="u" rel="up">Replacement Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Exit-Handlers-1"></a>
-<h4 class="subsection">2.2.2 Exit Handlers</h4>
-<a name="index-exit-handlers"></a>
+<span id="Exit-Handlers-1"></span><h4 class="subsection">2.2.2 Exit Handlers</h4>
+<span id="index-exit-handlers"></span>
 
 <p>The existence and implementation of the <code>atexit</code> routine varies
 amongst the flavors of Unix.  <code>libiberty</code> provides an unvarying dependable
@@ -308,14 +285,12 @@ implementation via <code>xatexit</code> and <code>xexit</code>.
 </p>
 
 <hr>
-<a name="Error-Reporting"></a>
-<div class="header">
+<span id="Error-Reporting"></span><div class="header">
 <p>
 Previous: <a href="#Exit-Handlers" accesskey="p" rel="prev">Exit Handlers</a>, Up: <a href="#Replacement-Functions" accesskey="u" rel="up">Replacement Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Error-Reporting-1"></a>
-<h4 class="subsection">2.2.3 Error Reporting</h4>
-<a name="index-error-reporting"></a>
+<span id="Error-Reporting-1"></span><h4 class="subsection">2.2.3 Error Reporting</h4>
+<span id="index-error-reporting"></span>
 
 <p>These are a set of routines to facilitate programming with the system
 <code>errno</code> interface.  The <code>libiberty</code> source file <samp>strerror.c</samp>
@@ -324,15 +299,13 @@ contains a good deal of documentation for these functions.
 
 
 <hr>
-<a name="Extensions"></a>
-<div class="header">
+<span id="Extensions"></span><div class="header">
 <p>
 Previous: <a href="#Replacement-Functions" accesskey="p" rel="prev">Replacement Functions</a>, Up: <a href="#Overview" accesskey="u" rel="up">Overview</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Extensions-1"></a>
-<h3 class="section">2.3 Extensions</h3>
-<a name="index-extensions"></a>
-<a name="index-functions_002c-extension"></a>
+<span id="Extensions-1"></span><h3 class="section">2.3 Extensions</h3>
+<span id="index-extensions"></span>
+<span id="index-functions_002c-extension"></span>
 
 <p><code>libiberty</code> includes additional functionality above and beyond standard
 functions, which has proven generically useful in GNU programs, such as
@@ -341,19 +314,17 @@ projects as they gain popularity, and are included here to provide a
 central location from which to use, maintain, and distribute them.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Obstacks" accesskey="1">Obstacks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Stacks of arbitrary objects.
+<tr><td align="left" valign="top">&bull; <a href="#Obstacks" accesskey="1">Obstacks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Stacks of arbitrary objects.
 </td></tr>
 </table>
 
 <hr>
-<a name="Obstacks"></a>
-<div class="header">
+<span id="Obstacks"></span><div class="header">
 <p>
 Up: <a href="#Extensions" accesskey="u" rel="up">Extensions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Obstacks-1"></a>
-<h4 class="subsection">2.3.1 Obstacks</h4>
-<a name="index-obstacks"></a>
+<span id="Obstacks-1"></span><h4 class="subsection">2.3.1 Obstacks</h4>
+<span id="index-obstacks"></span>
 
 <p>An <em>obstack</em> is a pool of memory containing a stack of objects.  You
 can create any number of separate obstacks, and then allocate objects in
@@ -368,48 +339,46 @@ the objects are usually small.  And the only space overhead per object is
 the padding needed to start each object on a suitable boundary.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Creating-Obstacks" accesskey="1">Creating Obstacks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to declare an obstack in your program.
+<tr><td align="left" valign="top">&bull; <a href="#Creating-Obstacks" accesskey="1">Creating Obstacks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to declare an obstack in your program.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Preparing-for-Obstacks" accesskey="2">Preparing for Obstacks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparations needed before you can
+<tr><td align="left" valign="top">&bull; <a href="#Preparing-for-Obstacks" accesskey="2">Preparing for Obstacks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparations needed before you can
 				 use obstacks.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Allocation-in-an-Obstack" accesskey="3">Allocation in an Obstack</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Allocating objects in an obstack.
+<tr><td align="left" valign="top">&bull; <a href="#Allocation-in-an-Obstack" accesskey="3">Allocation in an Obstack</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Allocating objects in an obstack.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Freeing-Obstack-Objects" accesskey="4">Freeing Obstack Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Freeing objects in an obstack.
+<tr><td align="left" valign="top">&bull; <a href="#Freeing-Obstack-Objects" accesskey="4">Freeing Obstack Objects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Freeing objects in an obstack.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Obstack-Functions" accesskey="5">Obstack Functions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The obstack functions are really macros.
+<tr><td align="left" valign="top">&bull; <a href="#Obstack-Functions" accesskey="5">Obstack Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The obstack functions are really macros.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Growing-Objects" accesskey="6">Growing Objects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Making an object bigger by stages.
+<tr><td align="left" valign="top">&bull; <a href="#Growing-Objects" accesskey="6">Growing Objects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Making an object bigger by stages.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Extra-Fast-Growing" accesskey="7">Extra Fast Growing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Extra-high-efficiency (though more
+<tr><td align="left" valign="top">&bull; <a href="#Extra-Fast-Growing" accesskey="7">Extra Fast Growing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Extra-high-efficiency (though more
 				 complicated) growing objects.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Status-of-an-Obstack" accesskey="8">Status of an Obstack</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Inquiries about the status of an obstack.
+<tr><td align="left" valign="top">&bull; <a href="#Status-of-an-Obstack" accesskey="8">Status of an Obstack</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Inquiries about the status of an obstack.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Obstacks-Data-Alignment" accesskey="9">Obstacks Data Alignment</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Controlling alignment of objects in obstacks.
+<tr><td align="left" valign="top">&bull; <a href="#Obstacks-Data-Alignment" accesskey="9">Obstacks Data Alignment</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Controlling alignment of objects in obstacks.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Obstack-Chunks">Obstack Chunks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How obstacks obtain and release chunks;
+<tr><td align="left" valign="top">&bull; <a href="#Obstack-Chunks">Obstack Chunks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How obstacks obtain and release chunks;
 				 efficiency considerations.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Summary-of-Obstacks">Summary of Obstacks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="#Summary-of-Obstacks">Summary of Obstacks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 
 <hr>
-<a name="Creating-Obstacks"></a>
-<div class="header">
+<span id="Creating-Obstacks"></span><div class="header">
 <p>
 Next: <a href="#Preparing-for-Obstacks" accesskey="n" rel="next">Preparing for Obstacks</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Creating-Obstacks-1"></a>
-<h4 class="subsubsection">2.3.1.1 Creating Obstacks</h4>
+<span id="Creating-Obstacks-1"></span><h4 class="subsubsection">2.3.1.1 Creating Obstacks</h4>
 
 <p>The utilities for manipulating obstacks are declared in the header
 file <samp>obstack.h</samp>.
-<a name="index-obstack_002eh"></a>
+<span id="index-obstack_002eh"></span>
 </p>
 <dl>
-<dt><a name="index-struct-obstack"></a>Data Type: <strong>struct obstack</strong></dt>
+<dt id="index-struct-obstack">Data Type: <strong>struct obstack</strong></dt>
 <dd><p>An obstack is represented by a data structure of type <code>struct
 obstack</code>.  This structure has a small fixed size; it records the status
 of the obstack and how to find the space in which objects are allocated.
@@ -442,23 +411,21 @@ directly or indirectly.  You must also supply a function to free a chunk.
 These matters are described in the following section.
 </p>
 <hr>
-<a name="Preparing-for-Obstacks"></a>
-<div class="header">
+<span id="Preparing-for-Obstacks"></span><div class="header">
 <p>
 Next: <a href="#Allocation-in-an-Obstack" accesskey="n" rel="next">Allocation in an Obstack</a>, Previous: <a href="#Creating-Obstacks" accesskey="p" rel="prev">Creating Obstacks</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Preparing-for-Using-Obstacks"></a>
-<h4 class="subsubsection">2.3.1.2 Preparing for Using Obstacks</h4>
+<span id="Preparing-for-Using-Obstacks"></span><h4 class="subsubsection">2.3.1.2 Preparing for Using Obstacks</h4>
 
 <p>Each source file in which you plan to use obstacks
 must include the header file <samp>obstack.h</samp>, like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#include &lt;obstack.h&gt;
+<div class="example">
+<pre class="example">#include &lt;obstack.h&gt;
 </pre></div>
 
-<a name="index-obstack_005fchunk_005falloc"></a>
-<a name="index-obstack_005fchunk_005ffree"></a>
+<span id="index-obstack_005fchunk_005falloc"></span>
+<span id="index-obstack_005fchunk_005ffree"></span>
 <p>Also, if the source file uses the macro <code>obstack_init</code>, it must
 declare or define two macros that will be called by the
 obstack library.  One, <code>obstack_chunk_alloc</code>, is used to allocate
@@ -468,11 +435,11 @@ them are freed.  These macros should appear before any use of obstacks
 in the source file.
 </p>
 <p>Usually these are defined to use <code>malloc</code> via the intermediary
-<code>xmalloc</code> (see <a href="http://www.gnu.org/software/libc/manual/html_mono/libc.html#Unconstrained-Allocation">Unconstrained Allocation</a> in <cite>The GNU C Library Reference Manual</cite>).  This is done with
+<code>xmalloc</code> (see <a href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#Unconstrained-Allocation">Unconstrained Allocation</a> in <cite>The GNU C Library Reference Manual</cite>).  This is done with
 the following pair of macro definitions:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define obstack_chunk_alloc xmalloc
+<div class="example">
+<pre class="example">#define obstack_chunk_alloc xmalloc
 #define obstack_chunk_free free
 </pre></div>
 
@@ -487,7 +454,7 @@ as an obstack, it must initialize the obstack by calling
 <code>obstack_specify_allocation_with_arg</code>.
 </p>
 <dl>
-<dt><a name="index-obstack_005finit"></a>Function: <em>int</em> <strong>obstack_init</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005finit">Function: <em>int</em> <strong>obstack_init</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>Initialize obstack <var>obstack-ptr</var> for allocation of objects.  This
 macro calls the obstack&rsquo;s <code>obstack_chunk_alloc</code> function.  If
 allocation of memory fails, the function pointed to by
@@ -499,29 +466,29 @@ obstack returned 0 if allocation failed).
 <p>Here are two examples of how to allocate the space for an obstack and
 initialize it.  First, an obstack that is a static variable:
 </p>
-<div class="smallexample">
-<pre class="smallexample">static struct obstack myobstack;
+<div class="example">
+<pre class="example">static struct obstack myobstack;
 &hellip;
 obstack_init (&amp;myobstack);
 </pre></div>
 
 <p>Second, an obstack that is itself dynamically allocated:
 </p>
-<div class="smallexample">
-<pre class="smallexample">struct obstack *myobstack_ptr
+<div class="example">
+<pre class="example">struct obstack *myobstack_ptr
   = (struct obstack *) xmalloc (sizeof (struct obstack));
 
 obstack_init (myobstack_ptr);
 </pre></div>
 
 <dl>
-<dt><a name="index-obstack_005fbegin"></a>Function: <em>int</em> <strong>obstack_begin</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size)</em></dt>
+<dt id="index-obstack_005fbegin">Function: <em>int</em> <strong>obstack_begin</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size)</em></dt>
 <dd><p>Like <code>obstack_init</code>, but specify chunks to be at least
 <var>chunk_size</var> bytes in size.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fspecify_005fallocation"></a>Function: <em>int</em> <strong>obstack_specify_allocation</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size, size_t alignment, void *(*chunkfun) (size_t), void (*freefun) (void *))</em></dt>
+<dt id="index-obstack_005fspecify_005fallocation">Function: <em>int</em> <strong>obstack_specify_allocation</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size, size_t alignment, void *(*chunkfun) (size_t), void (*freefun) (void *))</em></dt>
 <dd><p>Like <code>obstack_init</code>, specifying chunk size, chunk
 alignment, and memory allocation functions.  A <var>chunk_size</var> or
 <var>alignment</var> of zero results in the default size or alignment
@@ -529,22 +496,22 @@ respectively being used.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fspecify_005fallocation_005fwith_005farg"></a>Function: <em>int</em> <strong>obstack_specify_allocation_with_arg</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size, size_t alignment, void *(*chunkfun) (void *, size_t), void (*freefun) (void *, void *), void *arg)</em></dt>
+<dt id="index-obstack_005fspecify_005fallocation_005fwith_005farg">Function: <em>int</em> <strong>obstack_specify_allocation_with_arg</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t chunk_size, size_t alignment, void *(*chunkfun) (void *, size_t), void (*freefun) (void *, void *), void *arg)</em></dt>
 <dd><p>Like <code>obstack_specify_allocation</code>, but specifying memory
 allocation functions that take an extra first argument, <var>arg</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005falloc_005ffailed_005fhandler"></a>Variable: <strong>obstack_alloc_failed_handler</strong></dt>
+<dt id="index-obstack_005falloc_005ffailed_005fhandler">Variable: <strong>obstack_alloc_failed_handler</strong></dt>
 <dd><p>The value of this variable is a pointer to a function that
 <code>obstack</code> uses when <code>obstack_chunk_alloc</code> fails to allocate
 memory.  The default action is to print a message and abort.
 You should supply a function that either calls <code>exit</code>
-(see <a href="http://www.gnu.org/software/libc/manual/html_mono/libc.html#Program-Termination">Program Termination</a> in <cite>The GNU C Library Reference Manual</cite>) or <code>longjmp</code> (see <a href="http://www.gnu.org/software/libc/manual/html_mono/libc.html#Non_002dLocal-Exits">Non-Local
+(see <a href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#Program-Termination">Program Termination</a> in <cite>The GNU C Library Reference Manual</cite>) or <code>longjmp</code> (see <a href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#Non_002dLocal-Exits">Non-Local
 Exits</a> in <cite>The GNU C Library Reference Manual</cite>) and doesn&rsquo;t return.
 </p>
-<div class="smallexample">
-<pre class="smallexample">void my_obstack_alloc_failed (void)
+<div class="example">
+<pre class="example">void my_obstack_alloc_failed (void)
 &hellip;
 obstack_alloc_failed_handler = &amp;my_obstack_alloc_failed;
 </pre></div>
@@ -552,20 +519,18 @@ obstack_alloc_failed_handler = &amp;my_obstack_alloc_failed;
 </dd></dl>
 
 <hr>
-<a name="Allocation-in-an-Obstack"></a>
-<div class="header">
+<span id="Allocation-in-an-Obstack"></span><div class="header">
 <p>
 Next: <a href="#Freeing-Obstack-Objects" accesskey="n" rel="next">Freeing Obstack Objects</a>, Previous: <a href="#Preparing-for-Obstacks" accesskey="p" rel="prev">Preparing for Obstacks</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Allocation-in-an-Obstack-1"></a>
-<h4 class="subsubsection">2.3.1.3 Allocation in an Obstack</h4>
-<a name="index-allocation-_0028obstacks_0029"></a>
+<span id="Allocation-in-an-Obstack-1"></span><h4 class="subsubsection">2.3.1.3 Allocation in an Obstack</h4>
+<span id="index-allocation-_0028obstacks_0029"></span>
 
 <p>The most direct way to allocate an object in an obstack is with
 <code>obstack_alloc</code>, which is invoked almost like <code>malloc</code>.
 </p>
 <dl>
-<dt><a name="index-obstack_005falloc"></a>Function: <em>void *</em> <strong>obstack_alloc</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005falloc">Function: <em>void *</em> <strong>obstack_alloc</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
 <dd><p>This allocates an uninitialized block of <var>size</var> bytes in an obstack
 and returns its address.  Here <var>obstack-ptr</var> specifies which obstack
 to allocate the block in; it is the address of the <code>struct obstack</code>
@@ -581,8 +546,8 @@ it needs to allocate a new chunk of memory; it calls
 <p>For example, here is a function that allocates a copy of a string <var>str</var>
 in a specific obstack, which is in the variable <code>string_obstack</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">struct obstack string_obstack;
+<div class="example">
+<pre class="example">struct obstack string_obstack;
 
 char *
 copystring (char *string)
@@ -597,7 +562,7 @@ copystring (char *string)
 <p>To allocate a block with specified contents, use the macro <code>obstack_copy</code>.
 </p>
 <dl>
-<dt><a name="index-obstack_005fcopy"></a>Function: <em>void *</em> <strong>obstack_copy</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>address</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fcopy">Function: <em>void *</em> <strong>obstack_copy</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>address</var>, size_t <var>size</var>)</em></dt>
 <dd><p>This allocates a block and initializes it by copying <var>size</var>
 bytes of data starting at <var>address</var>.  It calls
 <code>obstack_alloc_failed_handler</code> if allocation of memory by
@@ -605,7 +570,7 @@ bytes of data starting at <var>address</var>.  It calls
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fcopy0"></a>Function: <em>void *</em> <strong>obstack_copy0</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>address</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fcopy0">Function: <em>void *</em> <strong>obstack_copy0</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>address</var>, size_t <var>size</var>)</em></dt>
 <dd><p>Like <code>obstack_copy</code>, but appends an extra byte containing a null
 character.  This extra byte is not counted in the argument <var>size</var>.
 </p></dd></dl>
@@ -614,8 +579,8 @@ character.  This extra byte is not counted in the argument <var>size</var>.
 of characters into an obstack as a null-terminated string.  Here is an
 example of its use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">char *
+<div class="example">
+<pre class="example">char *
 obstack_savestring (char *addr, size_t size)
 {
   return obstack_copy0 (&amp;myobstack, addr, size);
@@ -623,17 +588,15 @@ obstack_savestring (char *addr, size_t size)
 </pre></div>
 
 <p>Contrast this with the previous example of <code>savestring</code> using
-<code>malloc</code> (see <a href="http://www.gnu.org/software/libc/manual/html_mono/libc.html#Basic-Allocation">Basic Allocation</a> in <cite>The GNU C Library Reference Manual</cite>).
+<code>malloc</code> (see <a href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#Basic-Allocation">Basic Allocation</a> in <cite>The GNU C Library Reference Manual</cite>).
 </p>
 <hr>
-<a name="Freeing-Obstack-Objects"></a>
-<div class="header">
+<span id="Freeing-Obstack-Objects"></span><div class="header">
 <p>
 Next: <a href="#Obstack-Functions" accesskey="n" rel="next">Obstack Functions</a>, Previous: <a href="#Allocation-in-an-Obstack" accesskey="p" rel="prev">Allocation in an Obstack</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Freeing-Objects-in-an-Obstack"></a>
-<h4 class="subsubsection">2.3.1.4 Freeing Objects in an Obstack</h4>
-<a name="index-freeing-_0028obstacks_0029"></a>
+<span id="Freeing-Objects-in-an-Obstack"></span><h4 class="subsubsection">2.3.1.4 Freeing Objects in an Obstack</h4>
+<span id="index-freeing-_0028obstacks_0029"></span>
 
 <p>To free an object allocated in an obstack, use the macro
 <code>obstack_free</code>.  Since the obstack is a stack of objects, freeing
@@ -641,7 +604,7 @@ one object automatically frees all other objects allocated more recently
 in the same obstack.
 </p>
 <dl>
-<dt><a name="index-obstack_005ffree"></a>Function: <em>void</em> <strong>obstack_free</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>object</var>)</em></dt>
+<dt id="index-obstack_005ffree">Function: <em>void</em> <strong>obstack_free</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>object</var>)</em></dt>
 <dd><p>If <var>object</var> is a null pointer, everything allocated in the obstack
 is freed.  Otherwise, <var>object</var> must be the address of an object
 allocated in the obstack.  Then <var>object</var> is freed, along with
@@ -653,8 +616,8 @@ uninitialized obstack.  To free all memory in an obstack but leave it
 valid for further allocation, call <code>obstack_free</code> with the address
 of the first object allocated on the obstack:
 </p>
-<div class="smallexample">
-<pre class="smallexample">obstack_free (obstack_ptr, first_object_allocated_ptr);
+<div class="example">
+<pre class="example">obstack_free (obstack_ptr, first_object_allocated_ptr);
 </pre></div>
 
 <p>Recall that the objects in an obstack are grouped into chunks.  When all
@@ -663,14 +626,12 @@ frees the chunk (see <a href="#Preparing-for-Obstacks">Preparing for Obstacks</a
 obstacks, or non-obstack allocation, can reuse the space of the chunk.
 </p>
 <hr>
-<a name="Obstack-Functions"></a>
-<div class="header">
+<span id="Obstack-Functions"></span><div class="header">
 <p>
 Next: <a href="#Growing-Objects" accesskey="n" rel="next">Growing Objects</a>, Previous: <a href="#Freeing-Obstack-Objects" accesskey="p" rel="prev">Freeing Obstack Objects</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Obstack-Functions-and-Macros"></a>
-<h4 class="subsubsection">2.3.1.5 Obstack Functions and Macros</h4>
-<a name="index-macros"></a>
+<span id="Obstack-Functions-and-Macros"></span><h4 class="subsubsection">2.3.1.5 Obstack Functions and Macros</h4>
+<span id="index-macros"></span>
 
 <p>The interfaces for using obstacks are shown here as functions to
 specify the return type and argument types, but they are really
@@ -683,8 +644,8 @@ any other way (for example, you cannot take their address).
 operand (the obstack pointer) may not contain any side effects, because
 it may be computed more than once.  For example, if you write this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">obstack_alloc (get_obstack (), 4);
+<div class="example">
+<pre class="example">obstack_alloc (get_obstack (), 4);
 </pre></div>
 
 <p>you will find that <code>get_obstack</code> may be called several times.
@@ -705,15 +666,13 @@ even when not using GNU C.
 <code>_obstack_memory_used</code>.  You should not call these directly.
 </p>
 <hr>
-<a name="Growing-Objects"></a>
-<div class="header">
+<span id="Growing-Objects"></span><div class="header">
 <p>
 Next: <a href="#Extra-Fast-Growing" accesskey="n" rel="next">Extra Fast Growing</a>, Previous: <a href="#Obstack-Functions" accesskey="p" rel="prev">Obstack Functions</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Growing-Objects-1"></a>
-<h4 class="subsubsection">2.3.1.6 Growing Objects</h4>
-<a name="index-growing-objects-_0028in-obstacks_0029"></a>
-<a name="index-changing-the-size-of-a-block-_0028obstacks_0029"></a>
+<span id="Growing-Objects-1"></span><h4 class="subsubsection">2.3.1.6 Growing Objects</h4>
+<span id="index-growing-objects-_0028in-obstacks_0029"></span>
+<span id="index-changing-the-size-of-a-block-_0028obstacks_0029"></span>
 
 <p>Because memory in obstack chunks is used sequentially, it is possible to
 build up an object step by step, adding one or more bytes at a time to the
@@ -736,13 +695,13 @@ ordinary allocation of another object.  If you try to do so, the space
 already added to the growing object will become part of the other object.
 </p>
 <dl>
-<dt><a name="index-obstack_005fblank"></a>Function: <em>void</em> <strong>obstack_blank</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fblank">Function: <em>void</em> <strong>obstack_blank</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
 <dd><p>The most basic macro for adding to a growing object is
 <code>obstack_blank</code>, which adds space without initializing it.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fgrow"></a>Function: <em>void</em> <strong>obstack_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fgrow">Function: <em>void</em> <strong>obstack_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>, size_t <var>size</var>)</em></dt>
 <dd><p>To add a block of initialized space, use <code>obstack_grow</code>, which is
 the growing-object analogue of <code>obstack_copy</code>.  It adds <var>size</var>
 bytes of data to the growing object, copying the contents from
@@ -750,34 +709,34 @@ bytes of data to the growing object, copying the contents from
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fgrow0"></a>Function: <em>void</em> <strong>obstack_grow0</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fgrow0">Function: <em>void</em> <strong>obstack_grow0</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>, size_t <var>size</var>)</em></dt>
 <dd><p>This is the growing-object analogue of <code>obstack_copy0</code>.  It adds
 <var>size</var> bytes copied from <var>data</var>, followed by an additional null
 character.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005f1grow"></a>Function: <em>void</em> <strong>obstack_1grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, char <var>c</var>)</em></dt>
+<dt id="index-obstack_005f1grow">Function: <em>void</em> <strong>obstack_1grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, char <var>c</var>)</em></dt>
 <dd><p>To add one character at a time, use <code>obstack_1grow</code>.
 It adds a single byte containing <var>c</var> to the growing object.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fptr_005fgrow"></a>Function: <em>void</em> <strong>obstack_ptr_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>)</em></dt>
+<dt id="index-obstack_005fptr_005fgrow">Function: <em>void</em> <strong>obstack_ptr_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>)</em></dt>
 <dd><p>Adding the value of a pointer one can use
 <code>obstack_ptr_grow</code>.  It adds <code>sizeof (void *)</code> bytes
 containing the value of <var>data</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fint_005fgrow"></a>Function: <em>void</em> <strong>obstack_int_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, int <var>data</var>)</em></dt>
+<dt id="index-obstack_005fint_005fgrow">Function: <em>void</em> <strong>obstack_int_grow</strong> <em>(struct obstack *<var>obstack-ptr</var>, int <var>data</var>)</em></dt>
 <dd><p>A single value of type <code>int</code> can be added by using
 <code>obstack_int_grow</code>.  It adds <code>sizeof (int)</code> bytes to
 the growing object and initializes them with the value of <var>data</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005ffinish"></a>Function: <em>void *</em> <strong>obstack_finish</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005ffinish">Function: <em>void *</em> <strong>obstack_finish</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>When you are finished growing the object, use
 <code>obstack_finish</code> to close it off and return its final address.
 </p>
@@ -791,7 +750,7 @@ the object, because you can find out the length from the obstack
 with <code>obstack_object_size</code>, before finishing the object.
 </p>
 <dl>
-<dt><a name="index-obstack_005fobject_005fsize"></a>Function: <em>size_t</em> <strong>obstack_object_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005fobject_005fsize">Function: <em>size_t</em> <strong>obstack_object_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This macro returns the current size of the growing object, in bytes.
 Remember to call <code>obstack_object_size</code> <em>before</em> finishing the object.
 After it is finished, <code>obstack_object_size</code> will return zero.
@@ -800,21 +759,19 @@ After it is finished, <code>obstack_object_size</code> will return zero.
 <p>If you have started growing an object and wish to cancel it, you should
 finish it and then free it, like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">obstack_free (obstack_ptr, obstack_finish (obstack_ptr));
+<div class="example">
+<pre class="example">obstack_free (obstack_ptr, obstack_finish (obstack_ptr));
 </pre></div>
 
 <p>This has no effect if no object was growing.
 </p>
 <hr>
-<a name="Extra-Fast-Growing"></a>
-<div class="header">
+<span id="Extra-Fast-Growing"></span><div class="header">
 <p>
 Next: <a href="#Status-of-an-Obstack" accesskey="n" rel="next">Status of an Obstack</a>, Previous: <a href="#Growing-Objects" accesskey="p" rel="prev">Growing Objects</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Extra-Fast-Growing-Objects"></a>
-<h4 class="subsubsection">2.3.1.7 Extra Fast Growing Objects</h4>
-<a name="index-efficiency-and-obstacks"></a>
+<span id="Extra-Fast-Growing-Objects"></span><h4 class="subsubsection">2.3.1.7 Extra Fast Growing Objects</h4>
+<span id="index-efficiency-and-obstacks"></span>
 
 <p>The usual macros for growing objects incur overhead for checking
 whether there is room for the new growth in the current chunk.  If you
@@ -833,7 +790,7 @@ more efficiently, then you make the program faster.
 in the current chunk.
 </p>
 <dl>
-<dt><a name="index-obstack_005froom"></a>Function: <em>size_t</em> <strong>obstack_room</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005froom">Function: <em>size_t</em> <strong>obstack_room</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This returns the number of bytes that can be added safely to the current
 growing object (or to an object about to be started) in obstack
 <var>obstack</var> using the fast growth macros.
@@ -843,27 +800,27 @@ growing object (or to an object about to be started) in obstack
 for adding data to a growing object:
 </p>
 <dl>
-<dt><a name="index-obstack_005f1grow_005ffast"></a>Function: <em>void</em> <strong>obstack_1grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, char <var>c</var>)</em></dt>
+<dt id="index-obstack_005f1grow_005ffast">Function: <em>void</em> <strong>obstack_1grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, char <var>c</var>)</em></dt>
 <dd><p><code>obstack_1grow_fast</code> adds one byte containing the
 character <var>c</var> to the growing object in obstack <var>obstack-ptr</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fptr_005fgrow_005ffast"></a>Function: <em>void</em> <strong>obstack_ptr_grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>)</em></dt>
+<dt id="index-obstack_005fptr_005fgrow_005ffast">Function: <em>void</em> <strong>obstack_ptr_grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, void *<var>data</var>)</em></dt>
 <dd><p><code>obstack_ptr_grow_fast</code> adds <code>sizeof (void *)</code>
 bytes containing the value of <var>data</var> to the growing object in
 obstack <var>obstack-ptr</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fint_005fgrow_005ffast"></a>Function: <em>void</em> <strong>obstack_int_grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, int <var>data</var>)</em></dt>
+<dt id="index-obstack_005fint_005fgrow_005ffast">Function: <em>void</em> <strong>obstack_int_grow_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, int <var>data</var>)</em></dt>
 <dd><p><code>obstack_int_grow_fast</code> adds <code>sizeof (int)</code> bytes
 containing the value of <var>data</var> to the growing object in obstack
 <var>obstack-ptr</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fblank_005ffast"></a>Function: <em>void</em> <strong>obstack_blank_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-obstack_005fblank_005ffast">Function: <em>void</em> <strong>obstack_blank_fast</strong> <em>(struct obstack *<var>obstack-ptr</var>, size_t <var>size</var>)</em></dt>
 <dd><p><code>obstack_blank_fast</code> adds <var>size</var> bytes to the
 growing object in obstack <var>obstack-ptr</var> without initializing them.
 </p></dd></dl>
@@ -881,8 +838,8 @@ start using the fast growth macros again.
 </p>
 <p>Here is an example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void
+<div class="example">
+<pre class="example">void
 add_string (struct obstack *obstack, const char *ptr, size_t len)
 {
   while (len &gt; 0)
@@ -908,7 +865,7 @@ add_string (struct obstack *obstack, const char *ptr, size_t len)
 }
 </pre></div>
 
-<a name="index-shrinking-objects"></a>
+<span id="index-shrinking-objects"></span>
 <p>You can use <code>obstack_blank_fast</code> with a &ldquo;negative&rdquo; size
 argument to make the current object smaller.  Just don&rsquo;t try to shrink
 it beyond zero length&mdash;there&rsquo;s no telling what will happen if you do
@@ -916,22 +873,20 @@ that.  Earlier versions of obstacks allowed you to use
 <code>obstack_blank</code> to shrink objects.  This will no longer work.
 </p>
 <hr>
-<a name="Status-of-an-Obstack"></a>
-<div class="header">
+<span id="Status-of-an-Obstack"></span><div class="header">
 <p>
 Next: <a href="#Obstacks-Data-Alignment" accesskey="n" rel="next">Obstacks Data Alignment</a>, Previous: <a href="#Extra-Fast-Growing" accesskey="p" rel="prev">Extra Fast Growing</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Status-of-an-Obstack-1"></a>
-<h4 class="subsubsection">2.3.1.8 Status of an Obstack</h4>
-<a name="index-obstack-status"></a>
-<a name="index-status-of-obstack"></a>
+<span id="Status-of-an-Obstack-1"></span><h4 class="subsubsection">2.3.1.8 Status of an Obstack</h4>
+<span id="index-obstack-status"></span>
+<span id="index-status-of-obstack"></span>
 
 <p>Here are macros that provide information on the current status of
 allocation in an obstack.  You can use them to learn about an object while
 still growing it.
 </p>
 <dl>
-<dt><a name="index-obstack_005fbase"></a>Function: <em>void *</em> <strong>obstack_base</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005fbase">Function: <em>void *</em> <strong>obstack_base</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This macro returns the tentative address of the beginning of the
 currently growing object in <var>obstack-ptr</var>.  If you finish the object
 immediately, it will have that address.  If you make it larger first, it
@@ -943,7 +898,7 @@ chunk).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fnext_005ffree"></a>Function: <em>void *</em> <strong>obstack_next_free</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005fnext_005ffree">Function: <em>void *</em> <strong>obstack_next_free</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This macro returns the address of the first free byte in the current
 chunk of obstack <var>obstack-ptr</var>.  This is the end of the currently
 growing object.  If no object is growing, <code>obstack_next_free</code>
@@ -951,24 +906,22 @@ returns the same value as <code>obstack_base</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-obstack_005fobject_005fsize-1"></a>Function: <em>size_t</em> <strong>obstack_object_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005fobject_005fsize-1">Function: <em>size_t</em> <strong>obstack_object_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This macro returns the size in bytes of the currently growing object.
 This is equivalent to
 </p>
-<div class="smallexample">
-<pre class="smallexample">((size_t) (obstack_next_free (<var>obstack-ptr</var>) - obstack_base (<var>obstack-ptr</var>)))
+<div class="example">
+<pre class="example">((size_t) (obstack_next_free (<var>obstack-ptr</var>) - obstack_base (<var>obstack-ptr</var>)))
 </pre></div>
 </dd></dl>
 
 <hr>
-<a name="Obstacks-Data-Alignment"></a>
-<div class="header">
+<span id="Obstacks-Data-Alignment"></span><div class="header">
 <p>
 Next: <a href="#Obstack-Chunks" accesskey="n" rel="next">Obstack Chunks</a>, Previous: <a href="#Status-of-an-Obstack" accesskey="p" rel="prev">Status of an Obstack</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Alignment-of-Data-in-Obstacks"></a>
-<h4 class="subsubsection">2.3.1.9 Alignment of Data in Obstacks</h4>
-<a name="index-alignment-_0028in-obstacks_0029"></a>
+<span id="Alignment-of-Data-in-Obstacks"></span><h4 class="subsubsection">2.3.1.9 Alignment of Data in Obstacks</h4>
+<span id="index-alignment-_0028in-obstacks_0029"></span>
 
 <p>Each obstack has an <em>alignment boundary</em>; each object allocated in
 the obstack automatically starts on an address that is a multiple of the
@@ -979,7 +932,7 @@ the object can hold any type of data.
 <code>obstack_alignment_mask</code>.
 </p>
 <dl>
-<dt><a name="index-obstack_005falignment_005fmask"></a>Macro: <em>size_t</em> <strong>obstack_alignment_mask</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005falignment_005fmask">Macro: <em>size_t</em> <strong>obstack_alignment_mask</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>The value is a bit mask; a bit that is 1 indicates that the corresponding
 bit in the address of an object should be 0.  The mask value should be one
 less than a power of 2; the effect is that all object addresses are
@@ -992,8 +945,8 @@ on any multiple of 1 (that is, no alignment is required).
 <p>The expansion of the macro <code>obstack_alignment_mask</code> is an lvalue,
 so you can alter the mask by assignment.  For example, this statement:
 </p>
-<div class="smallexample">
-<pre class="smallexample">obstack_alignment_mask (obstack_ptr) = 0;
+<div class="example">
+<pre class="example">obstack_alignment_mask (obstack_ptr) = 0;
 </pre></div>
 
 <p>has the effect of turning off alignment processing in the specified obstack.
@@ -1007,15 +960,13 @@ This will finish a zero-length object and then do proper alignment for
 the next object.
 </p>
 <hr>
-<a name="Obstack-Chunks"></a>
-<div class="header">
+<span id="Obstack-Chunks"></span><div class="header">
 <p>
 Next: <a href="#Summary-of-Obstacks" accesskey="n" rel="next">Summary of Obstacks</a>, Previous: <a href="#Obstacks-Data-Alignment" accesskey="p" rel="prev">Obstacks Data Alignment</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Obstack-Chunks-1"></a>
-<h4 class="subsubsection">2.3.1.10 Obstack Chunks</h4>
-<a name="index-efficiency-of-chunks"></a>
-<a name="index-chunks"></a>
+<span id="Obstack-Chunks-1"></span><h4 class="subsubsection">2.3.1.10 Obstack Chunks</h4>
+<span id="index-efficiency-of-chunks"></span>
+<span id="index-chunks"></span>
 
 <p>Obstacks work by allocating space for themselves in large chunks, and
 then parceling out space in the chunks to satisfy your requests.  Chunks
@@ -1034,8 +985,8 @@ must also define.
 source file that uses <code>obstack_init</code> (see <a href="#Creating-Obstacks">Creating Obstacks</a>).
 Most often they are defined as macros like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define obstack_chunk_alloc malloc
+<div class="example">
+<pre class="example">#define obstack_chunk_alloc malloc
 #define obstack_chunk_free free
 </pre></div>
 
@@ -1050,7 +1001,7 @@ enough to satisfy many typical requests on the obstack yet short enough
 not to waste too much memory in the portion of the last chunk not yet used.
 </p>
 <dl>
-<dt><a name="index-obstack_005fchunk_005fsize"></a>Macro: <em>size_t</em> <strong>obstack_chunk_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
+<dt id="index-obstack_005fchunk_005fsize">Macro: <em>size_t</em> <strong>obstack_chunk_size</strong> <em>(struct obstack *<var>obstack-ptr</var>)</em></dt>
 <dd><p>This returns the chunk size of the given obstack.
 </p></dd></dl>
 
@@ -1062,19 +1013,17 @@ smaller, but making it larger might improve efficiency if you are
 allocating many objects whose size is comparable to the chunk size.  Here
 is how to do so cleanly:
 </p>
-<div class="smallexample">
-<pre class="smallexample">if (obstack_chunk_size (obstack_ptr) &lt; <var>new-chunk-size</var>)
+<div class="example">
+<pre class="example">if (obstack_chunk_size (obstack_ptr) &lt; <var>new-chunk-size</var>)
   obstack_chunk_size (obstack_ptr) = <var>new-chunk-size</var>;
 </pre></div>
 
 <hr>
-<a name="Summary-of-Obstacks"></a>
-<div class="header">
+<span id="Summary-of-Obstacks"></span><div class="header">
 <p>
 Previous: <a href="#Obstack-Chunks" accesskey="p" rel="prev">Obstack Chunks</a>, Up: <a href="#Obstacks" accesskey="u" rel="up">Obstacks</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Summary-of-Obstack-Macros"></a>
-<h4 class="subsubsection">2.3.1.11 Summary of Obstack Macros</h4>
+<span id="Summary-of-Obstack-Macros"></span><h4 class="subsubsection">2.3.1.11 Summary of Obstack Macros</h4>
 
 <p>Here is a summary of all the macros associated with obstacks.  Each
 takes the address of an obstack (<code>struct obstack *</code>) as its first
@@ -1187,16 +1136,14 @@ See <a href="#Status-of-an-Obstack">Status of an Obstack</a>.
 
 
 <hr>
-<a name="Functions"></a>
-<div class="header">
+<span id="Functions"></span><div class="header">
 <p>
 Next: <a href="#Licenses" accesskey="n" rel="next">Licenses</a>, Previous: <a href="#Overview" accesskey="p" rel="prev">Overview</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Function_002c-Variable_002c-and-Macro-Listing_002e"></a>
-<h2 class="chapter">3 Function, Variable, and Macro Listing.</h2>
+<span id="Function_002c-Variable_002c-and-Macro-Listing_002e"></span><h2 class="chapter">3 Function, Variable, and Macro Listing.</h2>
 
 <dl>
-<dt><a name="index-alloca"></a>Replacement: <em>void*</em> <strong>alloca</strong> <em>(size_t <var>size</var>)</em></dt>
+<dt id="index-alloca">Replacement: <em>void*</em> <strong>alloca</strong> <em>(size_t <var>size</var>)</em></dt>
 <dd>
 <p>This function allocates memory which will be automatically reclaimed
 after the procedure exits.  The <code>libiberty</code> implementation does not free
@@ -1214,7 +1161,7 @@ the possibility of a GCC built-in function.
 </dd></dl>
 
 <dl>
-<dt><a name="index-asprintf"></a>Extension: <em>int</em> <strong>asprintf</strong> <em>(char **<var>resptr</var>, const char *<var>format</var>, ...)</em></dt>
+<dt id="index-asprintf">Extension: <em>int</em> <strong>asprintf</strong> <em>(char **<var>resptr</var>, const char *<var>format</var>, ...)</em></dt>
 <dd>
 <p>Like <code>sprintf</code>, but instead of passing a pointer to a buffer, you
 pass a pointer to a pointer.  This function will compute the size of
@@ -1227,14 +1174,14 @@ not be allocated, minus one is returned and <code>NULL</code> is stored in
 </dd></dl>
 
 <dl>
-<dt><a name="index-atexit"></a>Supplemental: <em>int</em> <strong>atexit</strong> <em>(void (*<var>f</var>)())</em></dt>
+<dt id="index-atexit">Supplemental: <em>int</em> <strong>atexit</strong> <em>(void (*<var>f</var>)())</em></dt>
 <dd>
 <p>Causes function <var>f</var> to be called at exit.  Returns 0.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-basename"></a>Supplemental: <em>char*</em> <strong>basename</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-basename">Supplemental: <em>char*</em> <strong>basename</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the last component of pathname <var>name</var>.
 Behavior is undefined if the pathname ends in a directory separator.
@@ -1242,7 +1189,7 @@ Behavior is undefined if the pathname ends in a directory separator.
 </dd></dl>
 
 <dl>
-<dt><a name="index-bcmp"></a>Supplemental: <em>int</em> <strong>bcmp</strong> <em>(char *<var>x</var>, char *<var>y</var>, int <var>count</var>)</em></dt>
+<dt id="index-bcmp">Supplemental: <em>int</em> <strong>bcmp</strong> <em>(char *<var>x</var>, char *<var>y</var>, int <var>count</var>)</em></dt>
 <dd>
 <p>Compares the first <var>count</var> bytes of two areas of memory.  Returns
 zero if they are the same, nonzero otherwise.  Returns zero if
@@ -1253,7 +1200,7 @@ result mean <var>x</var> sorts before <var>y</var>).
 </dd></dl>
 
 <dl>
-<dt><a name="index-bcopy"></a>Supplemental: <em>void</em> <strong>bcopy</strong> <em>(char *<var>in</var>, char *<var>out</var>, int <var>length</var>)</em></dt>
+<dt id="index-bcopy">Supplemental: <em>void</em> <strong>bcopy</strong> <em>(char *<var>in</var>, char *<var>out</var>, int <var>length</var>)</em></dt>
 <dd>
 <p>Copies <var>length</var> bytes from memory region <var>in</var> to region
 <var>out</var>.  The use of <code>bcopy</code> is deprecated in new programs.
@@ -1261,7 +1208,7 @@ result mean <var>x</var> sorts before <var>y</var>).
 </dd></dl>
 
 <dl>
-<dt><a name="index-bsearch"></a>Supplemental: <em>void*</em> <strong>bsearch</strong> <em>(const void *<var>key</var>,   const void *<var>base</var>, size_t <var>nmemb</var>, size_t <var>size</var>,   int (*<var>compar</var>)(const void *, const void *))</em></dt>
+<dt id="index-bsearch">Supplemental: <em>void*</em> <strong>bsearch</strong> <em>(const void *<var>key</var>,   const void *<var>base</var>, size_t <var>nmemb</var>, size_t <var>size</var>,   int (*<var>compar</var>)(const void *, const void *))</em></dt>
 <dd>
 <p>Performs a search over an array of <var>nmemb</var> elements pointed to by
 <var>base</var> for a member that matches the object pointed to by <var>key</var>.
@@ -1275,7 +1222,22 @@ is respectively less than, matching, or greater than the array member.
 </dd></dl>
 
 <dl>
-<dt><a name="index-buildargv"></a>Extension: <em>char**</em> <strong>buildargv</strong> <em>(char *<var>sp</var>)</em></dt>
+<dt id="index-bsearch_005fr">Supplemental: <em>void*</em> <strong>bsearch_r</strong> <em>(const void *<var>key</var>,   const void *<var>base</var>, size_t <var>nmemb</var>, size_t <var>size</var>,   int (*<var>compar</var>)(const void *, const void *, void *), void *<var>arg</var>)</em></dt>
+<dd>
+<p>Performs a search over an array of <var>nmemb</var> elements pointed to by
+<var>base</var> for a member that matches the object pointed to by <var>key</var>.
+The size of each member is specified by <var>size</var>.  The array contents
+should be sorted in ascending order according to the <var>compar</var>
+comparison function.  This routine should take three arguments: the first
+two point to the <var>key</var> and to an array member, and the last is passed
+down unchanged from <code>bsearch_r</code>&rsquo;s last argument.  It should return an
+integer less than, equal to, or greater than zero if the <var>key</var> object
+is respectively less than, matching, or greater than the array member.
+</p>
+</dd></dl>
+
+<dl>
+<dt id="index-buildargv">Extension: <em>char**</em> <strong>buildargv</strong> <em>(char *<var>sp</var>)</em></dt>
 <dd>
 <p>Given a pointer to a string, parse the string extracting fields
 separated by whitespace and optionally enclosed within either single
@@ -1300,7 +1262,7 @@ string.
 </dd></dl>
 
 <dl>
-<dt><a name="index-bzero"></a>Supplemental: <em>void</em> <strong>bzero</strong> <em>(char *<var>mem</var>, int <var>count</var>)</em></dt>
+<dt id="index-bzero">Supplemental: <em>void</em> <strong>bzero</strong> <em>(char *<var>mem</var>, int <var>count</var>)</em></dt>
 <dd>
 <p>Zeros <var>count</var> bytes starting at <var>mem</var>.  Use of this function
 is deprecated in favor of <code>memset</code>.
@@ -1308,7 +1270,7 @@ is deprecated in favor of <code>memset</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-calloc"></a>Supplemental: <em>void*</em> <strong>calloc</strong> <em>(size_t <var>nelem</var>, size_t <var>elsize</var>)</em></dt>
+<dt id="index-calloc">Supplemental: <em>void*</em> <strong>calloc</strong> <em>(size_t <var>nelem</var>, size_t <var>elsize</var>)</em></dt>
 <dd>
 <p>Uses <code>malloc</code> to allocate storage for <var>nelem</var> objects of
 <var>elsize</var> bytes each, then zeros the memory.
@@ -1316,7 +1278,7 @@ is deprecated in favor of <code>memset</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-canonical_005ffilename_005feq"></a>Extension: <em>int</em> <strong>canonical_filename_eq</strong> <em>(const char *<var>a</var>, const char *<var>b</var>)</em></dt>
+<dt id="index-canonical_005ffilename_005feq">Extension: <em>int</em> <strong>canonical_filename_eq</strong> <em>(const char *<var>a</var>, const char *<var>b</var>)</em></dt>
 <dd>
 <p>Return non-zero if file names <var>a</var> and <var>b</var> are equivalent.
 This function compares the canonical versions of the filenames as returned by
@@ -1326,7 +1288,7 @@ underlying file are treated as being identical.
 </dd></dl>
 
 <dl>
-<dt><a name="index-choose_005ftemp_005fbase"></a>Extension: <em>char*</em> <strong>choose_temp_base</strong> <em>(void)</em></dt>
+<dt id="index-choose_005ftemp_005fbase">Extension: <em>char*</em> <strong>choose_temp_base</strong> <em>(void)</em></dt>
 <dd>
 <p>Return a prefix for temporary file names or <code>NULL</code> if unable to
 find one.  The current directory is chosen if all else fails so the
@@ -1339,7 +1301,7 @@ not recommended.
 </dd></dl>
 
 <dl>
-<dt><a name="index-char_002a"></a>Replacement: <em>const</em> <strong>char*</strong> <em>choose_tmpdir ()</em></dt>
+<dt id="index-char_002a">Replacement: <em>const</em> <strong>char*</strong> <em>choose_tmpdir ()</em></dt>
 <dd>
 <p>Returns a pointer to a directory path suitable for creating temporary
 files in.
@@ -1347,7 +1309,7 @@ files in.
 </dd></dl>
 
 <dl>
-<dt><a name="index-clock"></a>Supplemental: <em>long</em> <strong>clock</strong> <em>(void)</em></dt>
+<dt id="index-clock">Supplemental: <em>long</em> <strong>clock</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns an approximation of the CPU time used by the process as a
 <code>clock_t</code>; divide this number by &lsquo;<samp>CLOCKS_PER_SEC</samp>&rsquo; to get the
@@ -1356,7 +1318,7 @@ number of seconds used.
 </dd></dl>
 
 <dl>
-<dt><a name="index-concat"></a>Extension: <em>char*</em> <strong>concat</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>,   &hellip;, <code>NULL</code>)</em></dt>
+<dt id="index-concat">Extension: <em>char*</em> <strong>concat</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>,   &hellip;, <code>NULL</code>)</em></dt>
 <dd>
 <p>Concatenate zero or more of strings and return the result in freshly
 <code>xmalloc</code>ed memory.  The argument list is terminated by the first
@@ -1365,7 +1327,7 @@ number of seconds used.
 </dd></dl>
 
 <dl>
-<dt><a name="index-countargv"></a>Extension: <em>int</em> <strong>countargv</strong> <em>(char * const *<var>argv</var>)</em></dt>
+<dt id="index-countargv">Extension: <em>int</em> <strong>countargv</strong> <em>(char * const *<var>argv</var>)</em></dt>
 <dd>
 <p>Return the number of elements in <var>argv</var>.
 Returns zero if <var>argv</var> is NULL.
@@ -1373,17 +1335,16 @@ Returns zero if <var>argv</var> is NULL.
 </dd></dl>
 
 <dl>
-<dt><a name="index-crc32"></a>Extension: <em>unsigned int</em> <strong>crc32</strong> <em>(const unsigned char *<var>buf</var>,   int <var>len</var>, unsigned int <var>init</var>)</em></dt>
+<dt id="index-crc32">Extension: <em>unsigned int</em> <strong>crc32</strong> <em>(const unsigned char *<var>buf</var>,   int <var>len</var>, unsigned int <var>init</var>)</em></dt>
 <dd>
 <p>Compute the 32-bit CRC of <var>buf</var> which has length <var>len</var>.  The
 starting value is <var>init</var>; this may be used to compute the CRC of
 data split across multiple buffers by passing the return value of each
 call as the <var>init</var> parameter of the next.
 </p>
-<p>This is intended to match the CRC used by the <code>gdb</code> remote
-protocol for the &lsquo;<samp>qCRC</samp>&rsquo; command.  In order to get the same
-results as gdb for a block of data, you must pass the first CRC
-parameter as <code>0xffffffff</code>.
+<p>This is used by the <code>gdb</code> remote protocol for the &lsquo;<samp>qCRC</samp>&rsquo;
+command.  In order to get the same results as gdb for a block of data,
+you must pass the first CRC parameter as <code>0xffffffff</code>.
 </p>
 <p>This CRC can be specified as:
 </p>
@@ -1401,7 +1362,7 @@ make it easy to compose the values of multiple blocks.
 </dd></dl>
 
 <dl>
-<dt><a name="index-dupargv"></a>Extension: <em>char**</em> <strong>dupargv</strong> <em>(char * const *<var>vector</var>)</em></dt>
+<dt id="index-dupargv">Extension: <em>char**</em> <strong>dupargv</strong> <em>(char * const *<var>vector</var>)</em></dt>
 <dd>
 <p>Duplicate an argument vector.  Simply scans through <var>vector</var>,
 duplicating each argument until the terminating <code>NULL</code> is found.
@@ -1412,7 +1373,7 @@ argument vector.
 </dd></dl>
 
 <dl>
-<dt><a name="index-errno_005fmax"></a>Extension: <em>int</em> <strong>errno_max</strong> <em>(void)</em></dt>
+<dt id="index-errno_005fmax">Extension: <em>int</em> <strong>errno_max</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns the maximum <code>errno</code> value for which a corresponding
 symbolic name or message is available.  Note that in the case where we
@@ -1430,7 +1391,7 @@ symbolic name or message.
 </dd></dl>
 
 <dl>
-<dt><a name="index-expandargv"></a>Extension: <em>void</em> <strong>expandargv</strong> <em>(int *<var>argcp</var>, char ***<var>argvp</var>)</em></dt>
+<dt id="index-expandargv">Extension: <em>void</em> <strong>expandargv</strong> <em>(int *<var>argcp</var>, char ***<var>argvp</var>)</em></dt>
 <dd>
 <p>The <var>argcp</var> and <code>argvp</code> arguments are pointers to the usual
 <code>argc</code> and <code>argv</code> arguments to <code>main</code>.  This function
@@ -1450,7 +1411,7 @@ operating system to free the memory when the program exits.
 </dd></dl>
 
 <dl>
-<dt><a name="index-fdmatch"></a>Extension: <em>int</em> <strong>fdmatch</strong> <em>(int <var>fd1</var>, int <var>fd2</var>)</em></dt>
+<dt id="index-fdmatch">Extension: <em>int</em> <strong>fdmatch</strong> <em>(int <var>fd1</var>, int <var>fd2</var>)</em></dt>
 <dd>
 <p>Check to see if two open file descriptors refer to the same file.
 This is useful, for example, when we have an open file descriptor for
@@ -1465,7 +1426,7 @@ and inode numbers.
 </dd></dl>
 
 <dl>
-<dt><a name="index-fdopen_005funlocked"></a>Extension: <em>FILE *</em> <strong>fdopen_unlocked</strong> <em>(int <var>fildes</var>,   const char * <var>mode</var>)</em></dt>
+<dt id="index-fdopen_005funlocked">Extension: <em>FILE *</em> <strong>fdopen_unlocked</strong> <em>(int <var>fildes</var>,   const char * <var>mode</var>)</em></dt>
 <dd>
 <p>Opens and returns a <code>FILE</code> pointer via <code>fdopen</code>.  If the
 operating system supports it, ensure that the stream is setup to avoid
@@ -1475,7 +1436,7 @@ unchanged.
 </dd></dl>
 
 <dl>
-<dt><a name="index-ffs"></a>Supplemental: <em>int</em> <strong>ffs</strong> <em>(int <var>valu</var>)</em></dt>
+<dt id="index-ffs">Supplemental: <em>int</em> <strong>ffs</strong> <em>(int <var>valu</var>)</em></dt>
 <dd>
 <p>Find the first (least significant) bit set in <var>valu</var>.  Bits are
 numbered from right to left, starting with bit 1 (corresponding to the
@@ -1484,7 +1445,7 @@ value 1).  If <var>valu</var> is zero, zero is returned.
 </dd></dl>
 
 <dl>
-<dt><a name="index-filename_005fcmp"></a>Extension: <em>int</em> <strong>filename_cmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
+<dt id="index-filename_005fcmp">Extension: <em>int</em> <strong>filename_cmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
 <dd>
 <p>Return zero if the two file names <var>s1</var> and <var>s2</var> are equivalent.
 If not equivalent, the returned value is similar to what <code>strcmp</code>
@@ -1501,7 +1462,7 @@ and backward slashes are equal.
 </dd></dl>
 
 <dl>
-<dt><a name="index-filename_005feq"></a>Extension: <em>int</em> <strong>filename_eq</strong> <em>(const void *<var>s1</var>, const void *<var>s2</var>)</em></dt>
+<dt id="index-filename_005feq">Extension: <em>int</em> <strong>filename_eq</strong> <em>(const void *<var>s1</var>, const void *<var>s2</var>)</em></dt>
 <dd>
 <p>Return non-zero if file names <var>s1</var> and <var>s2</var> are equivalent.
 This function is for use with hashtab.c hash tables.
@@ -1509,7 +1470,7 @@ This function is for use with hashtab.c hash tables.
 </dd></dl>
 
 <dl>
-<dt><a name="index-filename_005fhash"></a>Extension: <em>hashval_t</em> <strong>filename_hash</strong> <em>(const void *<var>s</var>)</em></dt>
+<dt id="index-filename_005fhash">Extension: <em>hashval_t</em> <strong>filename_hash</strong> <em>(const void *<var>s</var>)</em></dt>
 <dd>
 <p>Return the hash value for file name <var>s</var> that will be compared
 using filename_cmp.
@@ -1518,7 +1479,7 @@ This function is for use with hashtab.c hash tables.
 </dd></dl>
 
 <dl>
-<dt><a name="index-filename_005fncmp"></a>Extension: <em>int</em> <strong>filename_ncmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>, size_t <var>n</var>)</em></dt>
+<dt id="index-filename_005fncmp">Extension: <em>int</em> <strong>filename_ncmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>, size_t <var>n</var>)</em></dt>
 <dd>
 <p>Return zero if the two file names <var>s1</var> and <var>s2</var> are equivalent
 in range <var>n</var>.
@@ -1536,7 +1497,7 @@ and backward slashes are equal.
 </dd></dl>
 
 <dl>
-<dt><a name="index-fnmatch"></a>Replacement: <em>int</em> <strong>fnmatch</strong> <em>(const char *<var>pattern</var>,   const char *<var>string</var>, int <var>flags</var>)</em></dt>
+<dt id="index-fnmatch">Replacement: <em>int</em> <strong>fnmatch</strong> <em>(const char *<var>pattern</var>,   const char *<var>string</var>, int <var>flags</var>)</em></dt>
 <dd>
 <p>Matches <var>string</var> against <var>pattern</var>, returning zero if it
 matches, <code>FNM_NOMATCH</code> if not.  <var>pattern</var> may contain the
@@ -1590,7 +1551,7 @@ or &lsquo;<samp>foobar/grill</samp>&rsquo;.
 </dd></dl>
 
 <dl>
-<dt><a name="index-fopen_005funlocked"></a>Extension: <em>FILE *</em> <strong>fopen_unlocked</strong> <em>(const char *<var>path</var>,   const char * <var>mode</var>)</em></dt>
+<dt id="index-fopen_005funlocked">Extension: <em>FILE *</em> <strong>fopen_unlocked</strong> <em>(const char *<var>path</var>,   const char * <var>mode</var>)</em></dt>
 <dd>
 <p>Opens and returns a <code>FILE</code> pointer via <code>fopen</code>.  If the
 operating system supports it, ensure that the stream is setup to avoid
@@ -1600,7 +1561,7 @@ unchanged.
 </dd></dl>
 
 <dl>
-<dt><a name="index-freeargv"></a>Extension: <em>void</em> <strong>freeargv</strong> <em>(char **<var>vector</var>)</em></dt>
+<dt id="index-freeargv">Extension: <em>void</em> <strong>freeargv</strong> <em>(char **<var>vector</var>)</em></dt>
 <dd>
 <p>Free an argument vector that was built using <code>buildargv</code>.  Simply
 scans through <var>vector</var>, freeing the memory for each argument until
@@ -1610,7 +1571,7 @@ itself.
 </dd></dl>
 
 <dl>
-<dt><a name="index-freopen_005funlocked"></a>Extension: <em>FILE *</em> <strong>freopen_unlocked</strong> <em>(const char * <var>path</var>,   const char * <var>mode</var>, FILE * <var>stream</var>)</em></dt>
+<dt id="index-freopen_005funlocked">Extension: <em>FILE *</em> <strong>freopen_unlocked</strong> <em>(const char * <var>path</var>,   const char * <var>mode</var>, FILE * <var>stream</var>)</em></dt>
 <dd>
 <p>Opens and returns a <code>FILE</code> pointer via <code>freopen</code>.  If the
 operating system supports it, ensure that the stream is setup to avoid
@@ -1620,7 +1581,7 @@ unchanged.
 </dd></dl>
 
 <dl>
-<dt><a name="index-get_005frun_005ftime"></a>Replacement: <em>long</em> <strong>get_run_time</strong> <em>(void)</em></dt>
+<dt id="index-get_005frun_005ftime">Replacement: <em>long</em> <strong>get_run_time</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns the time used so far, in microseconds.  If possible, this is
 the time used by this process, else it is the elapsed time since the
@@ -1629,7 +1590,7 @@ process started.
 </dd></dl>
 
 <dl>
-<dt><a name="index-getcwd"></a>Supplemental: <em>char*</em> <strong>getcwd</strong> <em>(char *<var>pathname</var>, int <var>len</var>)</em></dt>
+<dt id="index-getcwd">Supplemental: <em>char*</em> <strong>getcwd</strong> <em>(char *<var>pathname</var>, int <var>len</var>)</em></dt>
 <dd>
 <p>Copy the absolute pathname for the current working directory into
 <var>pathname</var>, which is assumed to point to a buffer of at least
@@ -1642,7 +1603,7 @@ directory&rsquo;s path doesn&rsquo;t fit in <var>len</var> characters, the resul
 </dd></dl>
 
 <dl>
-<dt><a name="index-getpagesize"></a>Supplemental: <em>int</em> <strong>getpagesize</strong> <em>(void)</em></dt>
+<dt id="index-getpagesize">Supplemental: <em>int</em> <strong>getpagesize</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns the number of bytes in a page of memory.  This is the
 granularity of many of the system memory management routines.  No
@@ -1652,7 +1613,7 @@ memory management hardware page size.
 </dd></dl>
 
 <dl>
-<dt><a name="index-getpwd"></a>Supplemental: <em>char*</em> <strong>getpwd</strong> <em>(void)</em></dt>
+<dt id="index-getpwd">Supplemental: <em>char*</em> <strong>getpwd</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns the current working directory.  This implementation caches the
 result on the assumption that the process will not call <code>chdir</code>
@@ -1661,7 +1622,7 @@ between calls to <code>getpwd</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-gettimeofday"></a>Supplemental: <em>int</em> <strong>gettimeofday</strong> <em>(struct timeval *<var>tp</var>, void *<var>tz</var>)</em></dt>
+<dt id="index-gettimeofday">Supplemental: <em>int</em> <strong>gettimeofday</strong> <em>(struct timeval *<var>tp</var>, void *<var>tz</var>)</em></dt>
 <dd>
 <p>Writes the current time to <var>tp</var>.  This implementation requires
 that <var>tz</var> be NULL.  Returns 0 on success, -1 on failure.
@@ -1669,7 +1630,7 @@ that <var>tz</var> be NULL.  Returns 0 on success, -1 on failure.
 </dd></dl>
 
 <dl>
-<dt><a name="index-hex_005finit"></a>Extension: <em>void</em> <strong>hex_init</strong> <em>(void)</em></dt>
+<dt id="index-hex_005finit">Extension: <em>void</em> <strong>hex_init</strong> <em>(void)</em></dt>
 <dd>
 <p>Initializes the array mapping the current character set to
 corresponding hex values.  This function must be called before any
@@ -1679,7 +1640,7 @@ default ASCII-based table will normally be used on ASCII systems.
 </dd></dl>
 
 <dl>
-<dt><a name="index-hex_005fp"></a>Extension: <em>int</em> <strong>hex_p</strong> <em>(int <var>c</var>)</em></dt>
+<dt id="index-hex_005fp">Extension: <em>int</em> <strong>hex_p</strong> <em>(int <var>c</var>)</em></dt>
 <dd>
 <p>Evaluates to non-zero if the given character is a valid hex character,
 or zero if it is not.  Note that the value you pass will be cast to
@@ -1688,7 +1649,7 @@ or zero if it is not.  Note that the value you pass will be cast to
 </dd></dl>
 
 <dl>
-<dt><a name="index-hex_005fvalue"></a>Extension: <em>unsigned int</em> <strong>hex_value</strong> <em>(int <var>c</var>)</em></dt>
+<dt id="index-hex_005fvalue">Extension: <em>unsigned int</em> <strong>hex_value</strong> <em>(int <var>c</var>)</em></dt>
 <dd>
 <p>Returns the numeric equivalent of the given character when interpreted
 as a hexadecimal digit.  The result is undefined if you pass an
@@ -1704,7 +1665,7 @@ systems.
 </dd></dl>
 
 <dl>
-<dt><a name="index-HOST_005fCHARSET"></a>Extension: <strong>HOST_CHARSET</strong></dt>
+<dt id="index-HOST_005fCHARSET">Extension: <strong>HOST_CHARSET</strong></dt>
 <dd><p>This macro indicates the basic character set and encoding used by the
 host: more precisely, the encoding used for character constants in
 preprocessor &lsquo;<samp>#if</samp>&rsquo; statements (the C &quot;execution character set&quot;).
@@ -1713,20 +1674,20 @@ with one of the following values:
 </p>
 <dl compact="compact">
 <dt><code>HOST_CHARSET_UNKNOWN</code>
-<a name="index-HOST_005fCHARSET_005fUNKNOWN"></a>
+<span id="index-HOST_005fCHARSET_005fUNKNOWN"></span>
 </dt>
 <dd><p>The host character set is unknown - that is, not one of the next two
 possibilities.
 </p>
 </dd>
 <dt><code>HOST_CHARSET_ASCII</code>
-<a name="index-HOST_005fCHARSET_005fASCII"></a>
+<span id="index-HOST_005fCHARSET_005fASCII"></span>
 </dt>
 <dd><p>The host character set is ASCII.
 </p>
 </dd>
 <dt><code>HOST_CHARSET_EBCDIC</code>
-<a name="index-HOST_005fCHARSET_005fEBCDIC"></a>
+<span id="index-HOST_005fCHARSET_005fEBCDIC"></span>
 </dt>
 <dd><p>The host character set is some variant of EBCDIC.  (Only one of the
 nineteen EBCDIC varying characters is tested; exercise caution.)
@@ -1735,7 +1696,7 @@ nineteen EBCDIC varying characters is tested; exercise caution.)
 </dd></dl>
 
 <dl>
-<dt><a name="index-htab_005fcreate_005ftyped_005falloc"></a>Supplemental: <em>htab_t</em> <strong>htab_create_typed_alloc</strong> <em>(size_t <var>size</var>, htab_hash <var>hash_f</var>, htab_eq <var>eq_f</var>, htab_del <var>del_f</var>, htab_alloc <var>alloc_tab_f</var>, htab_alloc <var>alloc_f</var>, htab_free <var>free_f</var>)</em></dt>
+<dt id="index-htab_005fcreate_005ftyped_005falloc">Supplemental: <em>htab_t</em> <strong>htab_create_typed_alloc</strong> <em>(size_t <var>size</var>, htab_hash <var>hash_f</var>, htab_eq <var>eq_f</var>, htab_del <var>del_f</var>, htab_alloc <var>alloc_tab_f</var>, htab_alloc <var>alloc_f</var>, htab_free <var>free_f</var>)</em></dt>
 <dd>
 <p>This function creates a hash table that uses two different allocators
 <var>alloc_tab_f</var> and <var>alloc_f</var> to use for allocating the table itself
@@ -1750,7 +1711,7 @@ allocation fails.
 </dd></dl>
 
 <dl>
-<dt><a name="index-index"></a>Supplemental: <em>char*</em> <strong>index</strong> <em>(char *<var>s</var>, int <var>c</var>)</em></dt>
+<dt id="index-index">Supplemental: <em>char*</em> <strong>index</strong> <em>(char *<var>s</var>, int <var>c</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the first occurrence of the character <var>c</var> in
 the string <var>s</var>, or <code>NULL</code> if not found.  The use of <code>index</code> is
@@ -1759,8 +1720,8 @@ deprecated in new programs in favor of <code>strchr</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-insque"></a>Supplemental: <em>void</em> <strong>insque</strong> <em>(struct qelem *<var>elem</var>,   struct qelem *<var>pred</var>)</em></dt>
-<dt><a name="index-remque"></a>Supplemental: <em>void</em> <strong>remque</strong> <em>(struct qelem *<var>elem</var>)</em></dt>
+<dt id="index-insque">Supplemental: <em>void</em> <strong>insque</strong> <em>(struct qelem *<var>elem</var>,   struct qelem *<var>pred</var>)</em></dt>
+<dt id="index-remque">Supplemental: <em>void</em> <strong>remque</strong> <em>(struct qelem *<var>elem</var>)</em></dt>
 <dd>
 <p>Routines to manipulate queues built from doubly linked lists.  The
 <code>insque</code> routine inserts <var>elem</var> in the queue immediately
@@ -1780,18 +1741,18 @@ back pointer, like this prototype (although no prototype is provided):
 </dd></dl>
 
 <dl>
-<dt><a name="index-ISALPHA"></a>Extension: <strong>ISALPHA</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISALNUM"></a>Extension: <strong>ISALNUM</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISBLANK"></a>Extension: <strong>ISBLANK</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISCNTRL"></a>Extension: <strong>ISCNTRL</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISDIGIT"></a>Extension: <strong>ISDIGIT</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISGRAPH"></a>Extension: <strong>ISGRAPH</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISLOWER"></a>Extension: <strong>ISLOWER</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISPRINT"></a>Extension: <strong>ISPRINT</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISPUNCT"></a>Extension: <strong>ISPUNCT</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISSPACE"></a>Extension: <strong>ISSPACE</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISUPPER"></a>Extension: <strong>ISUPPER</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISXDIGIT"></a>Extension: <strong>ISXDIGIT</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISALPHA">Extension: <strong>ISALPHA</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISALNUM">Extension: <strong>ISALNUM</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISBLANK">Extension: <strong>ISBLANK</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISCNTRL">Extension: <strong>ISCNTRL</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISDIGIT">Extension: <strong>ISDIGIT</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISGRAPH">Extension: <strong>ISGRAPH</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISLOWER">Extension: <strong>ISLOWER</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISPRINT">Extension: <strong>ISPRINT</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISPUNCT">Extension: <strong>ISPUNCT</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISSPACE">Extension: <strong>ISSPACE</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISUPPER">Extension: <strong>ISUPPER</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISXDIGIT">Extension: <strong>ISXDIGIT</strong> <em>(<var>c</var>)</em></dt>
 <dd>
 <p>These twelve macros are defined by <samp>safe-ctype.h</samp>.  Each has the
 same meaning as the corresponding macro (with name in lowercase)
@@ -1830,12 +1791,12 @@ false for characters with numeric values from 128 to 255.
 </dd></dl>
 
 <dl>
-<dt><a name="index-ISIDNUM"></a>Extension: <strong>ISIDNUM</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-ISIDST"></a>Extension: <strong>ISIDST</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-IS_005fVSPACE"></a>Extension: <strong>IS_VSPACE</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-IS_005fNVSPACE"></a>Extension: <strong>IS_NVSPACE</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-IS_005fSPACE_005fOR_005fNUL"></a>Extension: <strong>IS_SPACE_OR_NUL</strong> <em>(<var>c</var>)</em></dt>
-<dt><a name="index-IS_005fISOBASIC"></a>Extension: <strong>IS_ISOBASIC</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISIDNUM">Extension: <strong>ISIDNUM</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-ISIDST">Extension: <strong>ISIDST</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-IS_005fVSPACE">Extension: <strong>IS_VSPACE</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-IS_005fNVSPACE">Extension: <strong>IS_NVSPACE</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-IS_005fSPACE_005fOR_005fNUL">Extension: <strong>IS_SPACE_OR_NUL</strong> <em>(<var>c</var>)</em></dt>
+<dt id="index-IS_005fISOBASIC">Extension: <strong>IS_ISOBASIC</strong> <em>(<var>c</var>)</em></dt>
 <dd><p>These six macros are defined by <samp>safe-ctype.h</samp> and provide
 additional character classes which are useful when doing lexical
 analysis of C or similar languages.  They are true for the following
@@ -1852,7 +1813,7 @@ sets of characters:
 </dd></dl>
 
 <dl>
-<dt><a name="index-lbasename"></a>Replacement: <em>const char*</em> <strong>lbasename</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-lbasename">Replacement: <em>const char*</em> <strong>lbasename</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>Given a pointer to a string containing a typical pathname
 (&lsquo;<samp>/usr/src/cmd/ls/ls.c</samp>&rsquo; for example), returns a pointer to the
@@ -1868,7 +1829,7 @@ and a path ending in <code>/</code> returns the empty string after it.
 </dd></dl>
 
 <dl>
-<dt><a name="index-lrealpath"></a>Replacement: <em>const char*</em> <strong>lrealpath</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-lrealpath">Replacement: <em>const char*</em> <strong>lrealpath</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>Given a pointer to a string containing a pathname, returns a canonical
 version of the filename.  Symlinks will be resolved, and &ldquo;.&rdquo; and &ldquo;..&rdquo;
@@ -1878,7 +1839,7 @@ components will be simplified.  The returned value will be allocated using
 </dd></dl>
 
 <dl>
-<dt><a name="index-make_005frelative_005fprefix"></a>Extension: <em>const char*</em> <strong>make_relative_prefix</strong> <em>(const char *<var>progname</var>,   const char *<var>bin_prefix</var>, const char *<var>prefix</var>)</em></dt>
+<dt id="index-make_005frelative_005fprefix">Extension: <em>const char*</em> <strong>make_relative_prefix</strong> <em>(const char *<var>progname</var>,   const char *<var>bin_prefix</var>, const char *<var>prefix</var>)</em></dt>
 <dd>
 <p>Given three paths <var>progname</var>, <var>bin_prefix</var>, <var>prefix</var>,
 return the path that is in the same position relative to
@@ -1903,7 +1864,7 @@ relative prefix can be found, return <code>NULL</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-make_005ftemp_005ffile"></a>Replacement: <em>char*</em> <strong>make_temp_file</strong> <em>(const char *<var>suffix</var>)</em></dt>
+<dt id="index-make_005ftemp_005ffile">Replacement: <em>char*</em> <strong>make_temp_file</strong> <em>(const char *<var>suffix</var>)</em></dt>
 <dd>
 <p>Return a temporary file name (as a string) or <code>NULL</code> if unable to
 create one.  <var>suffix</var> is a suffix to append to the file name.  The
@@ -1912,7 +1873,7 @@ string is <code>malloc</code>ed, and the temporary file has been created.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memchr"></a>Supplemental: <em>void*</em> <strong>memchr</strong> <em>(const void *<var>s</var>, int <var>c</var>,   size_t <var>n</var>)</em></dt>
+<dt id="index-memchr">Supplemental: <em>void*</em> <strong>memchr</strong> <em>(const void *<var>s</var>, int <var>c</var>,   size_t <var>n</var>)</em></dt>
 <dd>
 <p>This function searches memory starting at <code>*<var>s</var></code> for the
 character <var>c</var>.  The search only ends with the first occurrence of
@@ -1925,7 +1886,7 @@ returned.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memcmp"></a>Supplemental: <em>int</em> <strong>memcmp</strong> <em>(const void *<var>x</var>, const void *<var>y</var>,   size_t <var>count</var>)</em></dt>
+<dt id="index-memcmp">Supplemental: <em>int</em> <strong>memcmp</strong> <em>(const void *<var>x</var>, const void *<var>y</var>,   size_t <var>count</var>)</em></dt>
 <dd>
 <p>Compares the first <var>count</var> bytes of two areas of memory.  Returns
 zero if they are the same, a value less than zero if <var>x</var> is
@@ -1936,7 +1897,7 @@ as if comparing unsigned char arrays.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memcpy"></a>Supplemental: <em>void*</em> <strong>memcpy</strong> <em>(void *<var>out</var>, const void *<var>in</var>,   size_t <var>length</var>)</em></dt>
+<dt id="index-memcpy">Supplemental: <em>void*</em> <strong>memcpy</strong> <em>(void *<var>out</var>, const void *<var>in</var>,   size_t <var>length</var>)</em></dt>
 <dd>
 <p>Copies <var>length</var> bytes from memory region <var>in</var> to region
 <var>out</var>.  Returns a pointer to <var>out</var>.
@@ -1944,7 +1905,7 @@ as if comparing unsigned char arrays.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memmem"></a>Supplemental: <em>void*</em> <strong>memmem</strong> <em>(const void *<var>haystack</var>,   size_t <var>haystack_len</var> const void *<var>needle</var>, size_t <var>needle_len</var>)</em></dt>
+<dt id="index-memmem">Supplemental: <em>void*</em> <strong>memmem</strong> <em>(const void *<var>haystack</var>,   size_t <var>haystack_len</var> const void *<var>needle</var>, size_t <var>needle_len</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the first occurrence of <var>needle</var> (length
 <var>needle_len</var>) in <var>haystack</var> (length <var>haystack_len</var>).
@@ -1953,7 +1914,7 @@ Returns <code>NULL</code> if not found.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memmove"></a>Supplemental: <em>void*</em> <strong>memmove</strong> <em>(void *<var>from</var>, const void *<var>to</var>,   size_t <var>count</var>)</em></dt>
+<dt id="index-memmove">Supplemental: <em>void*</em> <strong>memmove</strong> <em>(void *<var>from</var>, const void *<var>to</var>,   size_t <var>count</var>)</em></dt>
 <dd>
 <p>Copies <var>count</var> bytes from memory area <var>from</var> to memory area
 <var>to</var>, returning a pointer to <var>to</var>.
@@ -1961,7 +1922,7 @@ Returns <code>NULL</code> if not found.
 </dd></dl>
 
 <dl>
-<dt><a name="index-mempcpy"></a>Supplemental: <em>void*</em> <strong>mempcpy</strong> <em>(void *<var>out</var>, const void *<var>in</var>,   size_t <var>length</var>)</em></dt>
+<dt id="index-mempcpy">Supplemental: <em>void*</em> <strong>mempcpy</strong> <em>(void *<var>out</var>, const void *<var>in</var>,   size_t <var>length</var>)</em></dt>
 <dd>
 <p>Copies <var>length</var> bytes from memory region <var>in</var> to region
 <var>out</var>.  Returns a pointer to <var>out</var> + <var>length</var>.
@@ -1969,7 +1930,7 @@ Returns <code>NULL</code> if not found.
 </dd></dl>
 
 <dl>
-<dt><a name="index-memset"></a>Supplemental: <em>void*</em> <strong>memset</strong> <em>(void *<var>s</var>, int <var>c</var>,   size_t <var>count</var>)</em></dt>
+<dt id="index-memset">Supplemental: <em>void*</em> <strong>memset</strong> <em>(void *<var>s</var>, int <var>c</var>,   size_t <var>count</var>)</em></dt>
 <dd>
 <p>Sets the first <var>count</var> bytes of <var>s</var> to the constant byte
 <var>c</var>, returning a pointer to <var>s</var>.
@@ -1977,7 +1938,7 @@ Returns <code>NULL</code> if not found.
 </dd></dl>
 
 <dl>
-<dt><a name="index-mkstemps"></a>Replacement: <em>int</em> <strong>mkstemps</strong> <em>(char *<var>pattern</var>, int <var>suffix_len</var>)</em></dt>
+<dt id="index-mkstemps">Replacement: <em>int</em> <strong>mkstemps</strong> <em>(char *<var>pattern</var>, int <var>suffix_len</var>)</em></dt>
 <dd>
 <p>Generate a unique temporary file name from <var>pattern</var>.
 <var>pattern</var> has the form:
@@ -1995,7 +1956,7 @@ reading and writing.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005ffree"></a>Extension: <em>void</em> <strong>pex_free</strong> <em>(struct pex_obj <var>obj</var>)</em></dt>
+<dt id="index-pex_005ffree">Extension: <em>void</em> <strong>pex_free</strong> <em>(struct pex_obj <var>obj</var>)</em></dt>
 <dd>
 <p>Clean up and free all data associated with <var>obj</var>.  If you have not
 yet called <code>pex_get_times</code> or <code>pex_get_status</code>, this will
@@ -2004,7 +1965,7 @@ try to kill the subprocesses.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005fget_005fstatus"></a>Extension: <em>int</em> <strong>pex_get_status</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>count</var>, int *<var>vector</var>)</em></dt>
+<dt id="index-pex_005fget_005fstatus">Extension: <em>int</em> <strong>pex_get_status</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>count</var>, int *<var>vector</var>)</em></dt>
 <dd>
 <p>Returns the exit status of all programs run using <var>obj</var>.
 <var>count</var> is the number of results expected.  The results will be
@@ -2014,7 +1975,7 @@ to <code>pex_run</code>.  Returns 0 on error, 1 on success.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005fget_005ftimes"></a>Extension: <em>int</em> <strong>pex_get_times</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>count</var>, struct pex_time *<var>vector</var>)</em></dt>
+<dt id="index-pex_005fget_005ftimes">Extension: <em>int</em> <strong>pex_get_times</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>count</var>, struct pex_time *<var>vector</var>)</em></dt>
 <dd>
 <p>Returns the process execution times of all programs run using
 <var>obj</var>.  <var>count</var> is the number of results expected.  The
@@ -2031,7 +1992,7 @@ process times, all the fields will be set to <code>0</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005finit"></a>Extension: <em>struct pex_obj *</em> <strong>pex_init</strong> <em>(int <var>flags</var>,   const char *<var>pname</var>, const char *<var>tempbase</var>)</em></dt>
+<dt id="index-pex_005finit">Extension: <em>struct pex_obj *</em> <strong>pex_init</strong> <em>(int <var>flags</var>,   const char *<var>pname</var>, const char *<var>tempbase</var>)</em></dt>
 <dd>
 <p>Prepare to execute one or more programs, with standard output of each
 program fed to standard input of the next.  This is a system
@@ -2041,17 +2002,17 @@ independent interface to execute a pipeline.
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-PEX_005fRECORD_005fTIMES"></a>
+<span id="index-PEX_005fRECORD_005fTIMES"></span>
 </dd>
 <dt><code>PEX_RECORD_TIMES</code></dt>
 <dd><p>Record subprocess times if possible.
 </p>
-<a name="index-PEX_005fUSE_005fPIPES"></a>
+<span id="index-PEX_005fUSE_005fPIPES"></span>
 </dd>
 <dt><code>PEX_USE_PIPES</code></dt>
 <dd><p>Use pipes for communication between processes, if possible.
 </p>
-<a name="index-PEX_005fSAVE_005fTEMPS"></a>
+<span id="index-PEX_005fSAVE_005fTEMPS"></span>
 </dd>
 <dt><code>PEX_SAVE_TEMPS</code></dt>
 <dd><p>Don&rsquo;t delete temporary files used for communication between
@@ -2067,7 +2028,7 @@ temporary files; it may be <code>NULL</code> to use a randomly chosen name.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005finput_005ffile"></a>Extension: <em>FILE *</em> <strong>pex_input_file</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>in_name</var>)</em></dt>
+<dt id="index-pex_005finput_005ffile">Extension: <em>FILE *</em> <strong>pex_input_file</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>in_name</var>)</em></dt>
 <dd>
 <p>Return a stream for a temporary file to pass to the first program in
 the pipeline as input.
@@ -2085,7 +2046,7 @@ binary mode; otherwise, open it in the default mode.  Including
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-pex_005finput_005fpipe"></a>Extension: <em>FILE *</em> <strong>pex_input_pipe</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
+<dt id="index-pex_005finput_005fpipe">Extension: <em>FILE *</em> <strong>pex_input_pipe</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
 <dd>
 <p>Return a stream <var>fp</var> for a pipe connected to the standard input of
 the first program in the pipeline; <var>fp</var> is opened for writing.
@@ -2128,7 +2089,7 @@ the output pipe is you, but you are blocked on the input pipe.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005fone"></a>Extension: <em>const char *</em> <strong>pex_one</strong> <em>(int <var>flags</var>,   const char *<var>executable</var>, char * const *<var>argv</var>,   const char *<var>pname</var>, const char *<var>outname</var>, const char *<var>errname</var>,   int *<var>status</var>, int *<var>err</var>)</em></dt>
+<dt id="index-pex_005fone">Extension: <em>const char *</em> <strong>pex_one</strong> <em>(int <var>flags</var>,   const char *<var>executable</var>, char * const *<var>argv</var>,   const char *<var>pname</var>, const char *<var>outname</var>, const char *<var>errname</var>,   int *<var>status</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>An interface to permit the easy execution of a
 single program.  The return value and most of the parameters are as
@@ -2141,7 +2102,7 @@ be set to the exit status of the program.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005fread_005ferr"></a>Extension: <em>FILE *</em> <strong>pex_read_err</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
+<dt id="index-pex_005fread_005ferr">Extension: <em>FILE *</em> <strong>pex_read_err</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
 <dd>
 <p>Returns a <code>FILE</code> pointer which may be used to read the standard
 error of the last program in the pipeline.  When this is used,
@@ -2154,7 +2115,7 @@ it will be closed by <code>pex_free</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005fread_005foutput"></a>Extension: <em>FILE *</em> <strong>pex_read_output</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
+<dt id="index-pex_005fread_005foutput">Extension: <em>FILE *</em> <strong>pex_read_output</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>binary</var>)</em></dt>
 <dd>
 <p>Returns a <code>FILE</code> pointer which may be used to read the standard
 output of the last program in the pipeline.  When this is used,
@@ -2167,7 +2128,7 @@ it will be closed by <code>pex_free</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005frun"></a>Extension: <em>const char *</em> <strong>pex_run</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>executable</var>, char * const *<var>argv</var>,   const char *<var>outname</var>, const char *<var>errname</var>, int *<var>err</var>)</em></dt>
+<dt id="index-pex_005frun">Extension: <em>const char *</em> <strong>pex_run</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>executable</var>, char * const *<var>argv</var>,   const char *<var>outname</var>, const char *<var>errname</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Execute one program in a pipeline.  On success this returns
 <code>NULL</code>.  On failure it returns an error message, a statically
@@ -2179,7 +2140,7 @@ allocated string.
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-PEX_005fLAST"></a>
+<span id="index-PEX_005fLAST"></span>
 </dd>
 <dt><code>PEX_LAST</code></dt>
 <dd><p>This must be set on the last program in the pipeline.  In particular,
@@ -2190,25 +2151,25 @@ set this bit if you want to call <code>pex_read_output</code>
 (described below).  After a call to <code>pex_run</code> with this bit set,
 <var>pex_run</var> may no longer be called with the same <var>obj</var>.
 </p>
-<a name="index-PEX_005fSEARCH"></a>
+<span id="index-PEX_005fSEARCH"></span>
 </dd>
 <dt><code>PEX_SEARCH</code></dt>
 <dd><p>Search for the program using the user&rsquo;s executable search path.
 </p>
-<a name="index-PEX_005fSUFFIX"></a>
+<span id="index-PEX_005fSUFFIX"></span>
 </dd>
 <dt><code>PEX_SUFFIX</code></dt>
 <dd><p><var>outname</var> is a suffix.  See the description of <var>outname</var>,
 below.
 </p>
-<a name="index-PEX_005fSTDERR_005fTO_005fSTDOUT"></a>
+<span id="index-PEX_005fSTDERR_005fTO_005fSTDOUT"></span>
 </dd>
 <dt><code>PEX_STDERR_TO_STDOUT</code></dt>
 <dd><p>Send the program&rsquo;s standard error to standard output, if possible.
 </p>
-<a name="index-PEX_005fBINARY_005fINPUT"></a>
-<a name="index-PEX_005fBINARY_005fOUTPUT"></a>
-<a name="index-PEX_005fBINARY_005fERROR"></a>
+<span id="index-PEX_005fBINARY_005fINPUT"></span>
+<span id="index-PEX_005fBINARY_005fOUTPUT"></span>
+<span id="index-PEX_005fBINARY_005fERROR"></span>
 </dd>
 <dt><code>PEX_BINARY_INPUT</code></dt>
 <dt><code>PEX_BINARY_OUTPUT</code></dt>
@@ -2220,7 +2181,7 @@ proper behavior these flags should match appropriately&mdash;a call to
 <code>pex_run</code> using <code>PEX_BINARY_OUTPUT</code> should be followed by a
 call using <code>PEX_BINARY_INPUT</code>.
 </p>
-<a name="index-PEX_005fSTDERR_005fTO_005fPIPE"></a>
+<span id="index-PEX_005fSTDERR_005fTO_005fPIPE"></span>
 </dd>
 <dt><code>PEX_STDERR_TO_PIPE</code></dt>
 <dd><p>Send the program&rsquo;s standard error to a pipe, if possible.  This flag
@@ -2279,7 +2240,7 @@ value, or to 0 if there is no relevant <code>errno</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pex_005frun_005fin_005fenvironment"></a>Extension: <em>const char *</em> <strong>pex_run_in_environment</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>executable</var>, char * const *<var>argv</var>,   char * const *<var>env</var>, int <var>env_size</var>, const char *<var>outname</var>,   const char *<var>errname</var>, int *<var>err</var>)</em></dt>
+<dt id="index-pex_005frun_005fin_005fenvironment">Extension: <em>const char *</em> <strong>pex_run_in_environment</strong> <em>(struct pex_obj *<var>obj</var>,   int <var>flags</var>, const char *<var>executable</var>, char * const *<var>argv</var>,   char * const *<var>env</var>, int <var>env_size</var>, const char *<var>outname</var>,   const char *<var>errname</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Execute one program in a pipeline, permitting the environment for the
 program to be specified.  Behaviour and parameters not listed below are
@@ -2293,7 +2254,7 @@ form <code>VAR=VALUE</code>, with the exception of the last element that must be
 </dd></dl>
 
 <dl>
-<dt><a name="index-pexecute"></a>Extension: <em>int</em> <strong>pexecute</strong> <em>(const char *<var>program</var>,   char * const *<var>argv</var>, const char *<var>this_pname</var>,   const char *<var>temp_base</var>, char **<var>errmsg_fmt</var>,   char **<var>errmsg_arg</var>, int <var>flags</var>)</em></dt>
+<dt id="index-pexecute">Extension: <em>int</em> <strong>pexecute</strong> <em>(const char *<var>program</var>,   char * const *<var>argv</var>, const char *<var>this_pname</var>,   const char *<var>temp_base</var>, char **<var>errmsg_fmt</var>,   char **<var>errmsg_arg</var>, int <var>flags</var>)</em></dt>
 <dd>
 <p>This is the old interface to execute one or more programs.  It is
 still supported for compatibility purposes, but is no longer
@@ -2302,7 +2263,7 @@ documented.
 </dd></dl>
 
 <dl>
-<dt><a name="index-psignal"></a>Supplemental: <em>void</em> <strong>psignal</strong> <em>(int <var>signo</var>, char *<var>message</var>)</em></dt>
+<dt id="index-psignal">Supplemental: <em>void</em> <strong>psignal</strong> <em>(int <var>signo</var>, char *<var>message</var>)</em></dt>
 <dd>
 <p>Print <var>message</var> to the standard error, followed by a colon,
 followed by the description of the signal specified by <var>signo</var>,
@@ -2311,7 +2272,7 @@ followed by a newline.
 </dd></dl>
 
 <dl>
-<dt><a name="index-putenv"></a>Supplemental: <em>int</em> <strong>putenv</strong> <em>(const char *<var>string</var>)</em></dt>
+<dt id="index-putenv">Supplemental: <em>int</em> <strong>putenv</strong> <em>(const char *<var>string</var>)</em></dt>
 <dd>
 <p>Uses <code>setenv</code> or <code>unsetenv</code> to put <var>string</var> into
 the environment or remove it.  If <var>string</var> is of the form
@@ -2321,17 +2282,17 @@ name is unset/removed.
 </dd></dl>
 
 <dl>
-<dt><a name="index-pwait"></a>Extension: <em>int</em> <strong>pwait</strong> <em>(int <var>pid</var>, int *<var>status</var>, int <var>flags</var>)</em></dt>
+<dt id="index-pwait">Extension: <em>int</em> <strong>pwait</strong> <em>(int <var>pid</var>, int *<var>status</var>, int <var>flags</var>)</em></dt>
 <dd>
 <p>Another part of the old execution interface.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-random"></a>Supplement: <em>long int</em> <strong>random</strong> <em>(void)</em></dt>
-<dt><a name="index-srandom"></a>Supplement: <em>void</em> <strong>srandom</strong> <em>(unsigned int <var>seed</var>)</em></dt>
-<dt><a name="index-initstate"></a>Supplement: <em>void*</em> <strong>initstate</strong> <em>(unsigned int <var>seed</var>,   void *<var>arg_state</var>, unsigned long <var>n</var>)</em></dt>
-<dt><a name="index-setstate"></a>Supplement: <em>void*</em> <strong>setstate</strong> <em>(void *<var>arg_state</var>)</em></dt>
+<dt id="index-random">Supplement: <em>long int</em> <strong>random</strong> <em>(void)</em></dt>
+<dt id="index-srandom">Supplement: <em>void</em> <strong>srandom</strong> <em>(unsigned int <var>seed</var>)</em></dt>
+<dt id="index-initstate">Supplement: <em>void*</em> <strong>initstate</strong> <em>(unsigned int <var>seed</var>,   void *<var>arg_state</var>, unsigned long <var>n</var>)</em></dt>
+<dt id="index-setstate">Supplement: <em>void*</em> <strong>setstate</strong> <em>(void *<var>arg_state</var>)</em></dt>
 <dd>
 <p>Random number functions.  <code>random</code> returns a random number in the
 range 0 to <code>LONG_MAX</code>.  <code>srandom</code> initializes the random
@@ -2343,7 +2304,7 @@ control over the state of the random number generator.
 </dd></dl>
 
 <dl>
-<dt><a name="index-reconcat"></a>Extension: <em>char*</em> <strong>reconcat</strong> <em>(char *<var>optr</var>, const char *<var>s1</var>,   &hellip;, <code>NULL</code>)</em></dt>
+<dt id="index-reconcat">Extension: <em>char*</em> <strong>reconcat</strong> <em>(char *<var>optr</var>, const char *<var>s1</var>,   &hellip;, <code>NULL</code>)</em></dt>
 <dd>
 <p>Same as <code>concat</code>, except that if <var>optr</var> is not <code>NULL</code> it
 is freed after the string is created.  This is intended to be useful
@@ -2357,7 +2318,7 @@ loop:
 </dd></dl>
 
 <dl>
-<dt><a name="index-rename"></a>Supplemental: <em>int</em> <strong>rename</strong> <em>(const char *<var>old</var>, const char *<var>new</var>)</em></dt>
+<dt id="index-rename">Supplemental: <em>int</em> <strong>rename</strong> <em>(const char *<var>old</var>, const char *<var>new</var>)</em></dt>
 <dd>
 <p>Renames a file from <var>old</var> to <var>new</var>.  If <var>new</var> already
 exists, it is removed.
@@ -2365,7 +2326,7 @@ exists, it is removed.
 </dd></dl>
 
 <dl>
-<dt><a name="index-rindex"></a>Supplemental: <em>char*</em> <strong>rindex</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
+<dt id="index-rindex">Supplemental: <em>char*</em> <strong>rindex</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the last occurrence of the character <var>c</var> in
 the string <var>s</var>, or <code>NULL</code> if not found.  The use of <code>rindex</code> is
@@ -2374,8 +2335,8 @@ deprecated in new programs in favor of <code>strrchr</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-setenv"></a>Supplemental: <em>int</em> <strong>setenv</strong> <em>(const char *<var>name</var>,   const char *<var>value</var>, int <var>overwrite</var>)</em></dt>
-<dt><a name="index-unsetenv"></a>Supplemental: <em>void</em> <strong>unsetenv</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-setenv">Supplemental: <em>int</em> <strong>setenv</strong> <em>(const char *<var>name</var>,   const char *<var>value</var>, int <var>overwrite</var>)</em></dt>
+<dt id="index-unsetenv">Supplemental: <em>void</em> <strong>unsetenv</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p><code>setenv</code> adds <var>name</var> to the environment with value
 <var>value</var>.  If the name was already present in the environment,
@@ -2386,7 +2347,7 @@ environment.  This implementation is not safe for multithreaded code.
 </dd></dl>
 
 <dl>
-<dt><a name="index-setproctitle"></a>Supplemental: <em>void</em> <strong>setproctitle</strong> <em>(const char *<var>fmt</var>, ...)</em></dt>
+<dt id="index-setproctitle">Supplemental: <em>void</em> <strong>setproctitle</strong> <em>(const char *<var>fmt</var>, ...)</em></dt>
 <dd>
 <p>Set the title of a process to <var>fmt</var>. va args not supported for now,
 but defined for compatibility with BSD. 
@@ -2394,7 +2355,7 @@ but defined for compatibility with BSD.
 </dd></dl>
 
 <dl>
-<dt><a name="index-signo_005fmax"></a>Extension: <em>int</em> <strong>signo_max</strong> <em>(void)</em></dt>
+<dt id="index-signo_005fmax">Extension: <em>int</em> <strong>signo_max</strong> <em>(void)</em></dt>
 <dd>
 <p>Returns the maximum signal value for which a corresponding symbolic
 name or message is available.  Note that in the case where we use the
@@ -2412,7 +2373,7 @@ symbolic name or message.
 </dd></dl>
 
 <dl>
-<dt><a name="index-sigsetmask"></a>Supplemental: <em>int</em> <strong>sigsetmask</strong> <em>(int <var>set</var>)</em></dt>
+<dt id="index-sigsetmask">Supplemental: <em>int</em> <strong>sigsetmask</strong> <em>(int <var>set</var>)</em></dt>
 <dd>
 <p>Sets the signal mask to the one provided in <var>set</var> and returns
 the old mask (which, for libiberty&rsquo;s implementation, will always
@@ -2421,7 +2382,7 @@ be the value <code>1</code>).
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fattributes_005fcompare"></a>Extension: <em>const char *</em> <strong>simple_object_attributes_compare</strong> <em>(simple_object_attributes *<var>attrs1</var>, simple_object_attributes *<var>attrs2</var>,    int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fattributes_005fcompare">Extension: <em>const char *</em> <strong>simple_object_attributes_compare</strong> <em>(simple_object_attributes *<var>attrs1</var>, simple_object_attributes *<var>attrs2</var>,    int *<var>err</var>)</em></dt>
 <dd>
 <p>Compare <var>attrs1</var> and <var>attrs2</var>.  If they could be linked
 together without error, return <code>NULL</code>.  Otherwise, return an
@@ -2431,7 +2392,7 @@ if there is no relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005ffetch_005fattributes"></a>Extension: <em>simple_object_attributes *</em> <strong>simple_object_fetch_attributes</strong> <em>(simple_object_read *<var>simple_object</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005ffetch_005fattributes">Extension: <em>simple_object_attributes *</em> <strong>simple_object_fetch_attributes</strong> <em>(simple_object_read *<var>simple_object</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Fetch the attributes of <var>simple_object</var>.  The attributes are
 internal information such as the format of the object file, or the
@@ -2446,7 +2407,7 @@ error message, and sets <code>*<var>err</var></code> to an errno value or
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005ffind_005fsection"></a>Extension: <em>int</em> <strong>simple_object_find_section</strong> <em>(simple_object_read *<var>simple_object</var> off_t *<var>offset</var>,   off_t *<var>length</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005ffind_005fsection">Extension: <em>int</em> <strong>simple_object_find_section</strong> <em>(simple_object_read *<var>simple_object</var> off_t *<var>offset</var>,   off_t *<var>length</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Look for the section <var>name</var> in <var>simple_object</var>.  This returns
 information for the first section with that name.
@@ -2469,7 +2430,7 @@ relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005ffind_005fsections"></a>Extension: <em>const char *</em> <strong>simple_object_find_sections</strong> <em>(simple_object_read *<var>simple_object</var>, int (*<var>pfn</var>) (void *<var>data</var>,   const char *<var>name</var>, off_t <var>offset</var>, off_t <var>length</var>),   void *<var>data</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005ffind_005fsections">Extension: <em>const char *</em> <strong>simple_object_find_sections</strong> <em>(simple_object_read *<var>simple_object</var>, int (*<var>pfn</var>) (void *<var>data</var>,   const char *<var>name</var>, off_t <var>offset</var>, off_t <var>length</var>),   void *<var>data</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>This function calls <var>pfn</var> for each section in <var>simple_object</var>.
 It calls <var>pfn</var> with the section name, the offset within the file
@@ -2489,7 +2450,7 @@ or <code>0</code> if there is no relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fopen_005fread"></a>Extension: <em>simple_object_read *</em> <strong>simple_object_open_read</strong> <em>(int <var>descriptor</var>, off_t <var>offset</var>, const char *segment_name,   const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fopen_005fread">Extension: <em>simple_object_read *</em> <strong>simple_object_open_read</strong> <em>(int <var>descriptor</var>, off_t <var>offset</var>, const char *segment_name,   const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Opens an object file for reading.  Creates and returns an
 <code>simple_object_read</code> pointer which may be passed to other
@@ -2513,14 +2474,14 @@ an errno value or <code>0</code> if there is no relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005frelease_005fattributes"></a>Extension: <em>void</em> <strong>simple_object_release_attributes</strong> <em>(simple_object_attributes *<var>attrs</var>)</em></dt>
+<dt id="index-simple_005fobject_005frelease_005fattributes">Extension: <em>void</em> <strong>simple_object_release_attributes</strong> <em>(simple_object_attributes *<var>attrs</var>)</em></dt>
 <dd>
 <p>Release all resources associated with <var>attrs</var>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005frelease_005fread"></a>Extension: <em>void</em> <strong>simple_object_release_read</strong> <em>(simple_object_read *<var>simple_object</var>)</em></dt>
+<dt id="index-simple_005fobject_005frelease_005fread">Extension: <em>void</em> <strong>simple_object_release_read</strong> <em>(simple_object_read *<var>simple_object</var>)</em></dt>
 <dd>
 <p>Release all resources associated with <var>simple_object</var>.  This does
 not close the file descriptor.
@@ -2528,14 +2489,14 @@ not close the file descriptor.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005frelease_005fwrite"></a>Extension: <em>void</em> <strong>simple_object_release_write</strong> <em>(simple_object_write *<var>simple_object</var>)</em></dt>
+<dt id="index-simple_005fobject_005frelease_005fwrite">Extension: <em>void</em> <strong>simple_object_release_write</strong> <em>(simple_object_write *<var>simple_object</var>)</em></dt>
 <dd>
 <p>Release all resources associated with <var>simple_object</var>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fstart_005fwrite"></a>Extension: <em>simple_object_write *</em> <strong>simple_object_start_write</strong> <em>(simple_object_attributes <var>attrs</var>, const char *<var>segment_name</var>,   const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fstart_005fwrite">Extension: <em>simple_object_write *</em> <strong>simple_object_start_write</strong> <em>(simple_object_attributes <var>attrs</var>, const char *<var>segment_name</var>,   const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Start creating a new object file using the object file format
 described in <var>attrs</var>.  You must fetch attribute information from
@@ -2554,7 +2515,7 @@ to an errno value or <code>0</code> if there is no relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fwrite_005fadd_005fdata"></a>Extension: <em>const char *</em> <strong>simple_object_write_add_data</strong> <em>(simple_object_write *<var>simple_object</var>,   simple_object_write_section *<var>section</var>, const void *<var>buffer</var>,   size_t <var>size</var>, int <var>copy</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fwrite_005fadd_005fdata">Extension: <em>const char *</em> <strong>simple_object_write_add_data</strong> <em>(simple_object_write *<var>simple_object</var>,   simple_object_write_section *<var>section</var>, const void *<var>buffer</var>,   size_t <var>size</var>, int <var>copy</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Add data <var>buffer</var>/<var>size</var> to <var>section</var> in
 <var>simple_object</var>.  If <var>copy</var> is non-zero, the data will be
@@ -2569,7 +2530,7 @@ no relevant erro.
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fwrite_005fcreate_005fsection"></a>Extension: <em>simple_object_write_section *</em> <strong>simple_object_write_create_section</strong> <em>(simple_object_write *<var>simple_object</var>, const char *<var>name</var>,   unsigned int <var>align</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fwrite_005fcreate_005fsection">Extension: <em>simple_object_write_section *</em> <strong>simple_object_write_create_section</strong> <em>(simple_object_write *<var>simple_object</var>, const char *<var>name</var>,   unsigned int <var>align</var>, const char **<var>errmsg</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Add a section to <var>simple_object</var>.  <var>name</var> is the name of the
 new section.  <var>align</var> is the required alignment expressed as the
@@ -2587,7 +2548,7 @@ error message, and sets <code>*<var>err</var></code> to an errno value or
 </dd></dl>
 
 <dl>
-<dt><a name="index-simple_005fobject_005fwrite_005fto_005ffile"></a>Extension: <em>const char *</em> <strong>simple_object_write_to_file</strong> <em>(simple_object_write *<var>simple_object</var>, int <var>descriptor</var>, int *<var>err</var>)</em></dt>
+<dt id="index-simple_005fobject_005fwrite_005fto_005ffile">Extension: <em>const char *</em> <strong>simple_object_write_to_file</strong> <em>(simple_object_write *<var>simple_object</var>, int <var>descriptor</var>, int *<var>err</var>)</em></dt>
 <dd>
 <p>Write the complete object file to <var>descriptor</var>, an open file
 descriptor.  This writes out all the data accumulated by calls to
@@ -2601,7 +2562,7 @@ there is no relevant errno.
 </dd></dl>
 
 <dl>
-<dt><a name="index-snprintf"></a>Supplemental: <em>int</em> <strong>snprintf</strong> <em>(char *<var>buf</var>, size_t <var>n</var>,   const char *<var>format</var>, ...)</em></dt>
+<dt id="index-snprintf">Supplemental: <em>int</em> <strong>snprintf</strong> <em>(char *<var>buf</var>, size_t <var>n</var>,   const char *<var>format</var>, ...)</em></dt>
 <dd>
 <p>This function is similar to <code>sprintf</code>, but it will write to
 <var>buf</var> at most <code><var>n</var>-1</code> bytes of text, followed by a
@@ -2616,7 +2577,7 @@ the system version of this function is used.
 </dd></dl>
 
 <dl>
-<dt><a name="index-spaces"></a>Extension: <em>char*</em> <strong>spaces</strong> <em>(int <var>count</var>)</em></dt>
+<dt id="index-spaces">Extension: <em>char*</em> <strong>spaces</strong> <em>(int <var>count</var>)</em></dt>
 <dd>
 <p>Returns a pointer to a memory region filled with the specified
 number of spaces and null terminated.  The returned pointer is
@@ -2625,7 +2586,7 @@ valid until at least the next call.
 </dd></dl>
 
 <dl>
-<dt><a name="index-splay_005ftree_005fnew_005fwith_005ftyped_005falloc"></a>Supplemental: <em>splay_tree</em> <strong>splay_tree_new_with_typed_alloc</strong> <em>(splay_tree_compare_fn <var>compare_fn</var>, splay_tree_delete_key_fn <var>delete_key_fn</var>, splay_tree_delete_value_fn <var>delete_value_fn</var>, splay_tree_allocate_fn <var>tree_allocate_fn</var>, splay_tree_allocate_fn <var>node_allocate_fn</var>, splay_tree_deallocate_fn <var>deallocate_fn</var>, void * <var>allocate_data</var>)</em></dt>
+<dt id="index-splay_005ftree_005fnew_005fwith_005ftyped_005falloc">Supplemental: <em>splay_tree</em> <strong>splay_tree_new_with_typed_alloc</strong> <em>(splay_tree_compare_fn <var>compare_fn</var>, splay_tree_delete_key_fn <var>delete_key_fn</var>, splay_tree_delete_value_fn <var>delete_value_fn</var>, splay_tree_allocate_fn <var>tree_allocate_fn</var>, splay_tree_allocate_fn <var>node_allocate_fn</var>, splay_tree_deallocate_fn <var>deallocate_fn</var>, void * <var>allocate_data</var>)</em></dt>
 <dd>
 <p>This function creates a splay tree that uses two different allocators
 <var>tree_allocate_fn</var> and <var>node_allocate_fn</var> to use for allocating the
@@ -2634,19 +2595,23 @@ different types need to be allocated with different allocators.
 </p>
 <p>The splay tree will use <var>compare_fn</var> to compare nodes,
 <var>delete_key_fn</var> to deallocate keys, and <var>delete_value_fn</var> to
-deallocate values.
+deallocate values.  Keys and values will be deallocated when the
+tree is deleted using splay_tree_delete or when a node is removed
+using splay_tree_remove.  splay_tree_insert will release the previously
+inserted key and value using <var>delete_key_fn</var> and <var>delete_value_fn</var>
+if the inserted key is already found in the tree.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-stack_005flimit_005fincrease"></a>Extension: <em>void</em> <strong>stack_limit_increase</strong> <em>(unsigned long <var>pref</var>)</em></dt>
+<dt id="index-stack_005flimit_005fincrease">Extension: <em>void</em> <strong>stack_limit_increase</strong> <em>(unsigned long <var>pref</var>)</em></dt>
 <dd>
 <p>Attempt to increase stack size limit to <var>pref</var> bytes if possible.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-stpcpy"></a>Supplemental: <em>char*</em> <strong>stpcpy</strong> <em>(char *<var>dst</var>, const char *<var>src</var>)</em></dt>
+<dt id="index-stpcpy">Supplemental: <em>char*</em> <strong>stpcpy</strong> <em>(char *<var>dst</var>, const char *<var>src</var>)</em></dt>
 <dd>
 <p>Copies the string <var>src</var> into <var>dst</var>.  Returns a pointer to
 <var>dst</var> + strlen(<var>src</var>).
@@ -2654,7 +2619,7 @@ deallocate values.
 </dd></dl>
 
 <dl>
-<dt><a name="index-stpncpy"></a>Supplemental: <em>char*</em> <strong>stpncpy</strong> <em>(char *<var>dst</var>, const char *<var>src</var>,   size_t <var>len</var>)</em></dt>
+<dt id="index-stpncpy">Supplemental: <em>char*</em> <strong>stpncpy</strong> <em>(char *<var>dst</var>, const char *<var>src</var>,   size_t <var>len</var>)</em></dt>
 <dd>
 <p>Copies the string <var>src</var> into <var>dst</var>, copying exactly <var>len</var>
 and padding with zeros if necessary.  If <var>len</var> &lt; strlen(<var>src</var>)
@@ -2664,14 +2629,14 @@ strlen(<var>src</var>).
 </dd></dl>
 
 <dl>
-<dt><a name="index-strcasecmp"></a>Supplemental: <em>int</em> <strong>strcasecmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
+<dt id="index-strcasecmp">Supplemental: <em>int</em> <strong>strcasecmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
 <dd>
 <p>A case-insensitive <code>strcmp</code>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-strchr"></a>Supplemental: <em>char*</em> <strong>strchr</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
+<dt id="index-strchr">Supplemental: <em>char*</em> <strong>strchr</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the first occurrence of the character <var>c</var> in
 the string <var>s</var>, or <code>NULL</code> if not found.  If <var>c</var> is itself the
@@ -2680,7 +2645,7 @@ null character, the results are undefined.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strdup"></a>Supplemental: <em>char*</em> <strong>strdup</strong> <em>(const char *<var>s</var>)</em></dt>
+<dt id="index-strdup">Supplemental: <em>char*</em> <strong>strdup</strong> <em>(const char *<var>s</var>)</em></dt>
 <dd>
 <p>Returns a pointer to a copy of <var>s</var> in memory obtained from
 <code>malloc</code>, or <code>NULL</code> if insufficient memory was available.
@@ -2688,7 +2653,7 @@ null character, the results are undefined.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strerrno"></a>Replacement: <em>const char*</em> <strong>strerrno</strong> <em>(int <var>errnum</var>)</em></dt>
+<dt id="index-strerrno">Replacement: <em>const char*</em> <strong>strerrno</strong> <em>(int <var>errnum</var>)</em></dt>
 <dd>
 <p>Given an error number returned from a system call (typically returned
 in <code>errno</code>), returns a pointer to a string containing the
@@ -2708,7 +2673,7 @@ valid until the next call to <code>strerrno</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strerror"></a>Supplemental: <em>char*</em> <strong>strerror</strong> <em>(int <var>errnoval</var>)</em></dt>
+<dt id="index-strerror">Supplemental: <em>char*</em> <strong>strerror</strong> <em>(int <var>errnoval</var>)</em></dt>
 <dd>
 <p>Maps an <code>errno</code> number to an error message string, the contents
 of which are implementation defined.  On systems which have the
@@ -2729,14 +2694,14 @@ next call to <code>strerror</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strncasecmp"></a>Supplemental: <em>int</em> <strong>strncasecmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
+<dt id="index-strncasecmp">Supplemental: <em>int</em> <strong>strncasecmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
 <dd>
 <p>A case-insensitive <code>strncmp</code>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-strncmp"></a>Supplemental: <em>int</em> <strong>strncmp</strong> <em>(const char *<var>s1</var>,   const char *<var>s2</var>, size_t <var>n</var>)</em></dt>
+<dt id="index-strncmp">Supplemental: <em>int</em> <strong>strncmp</strong> <em>(const char *<var>s1</var>,   const char *<var>s2</var>, size_t <var>n</var>)</em></dt>
 <dd>
 <p>Compares the first <var>n</var> bytes of two strings, returning a value as
 <code>strcmp</code>.
@@ -2744,7 +2709,7 @@ next call to <code>strerror</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strndup"></a>Extension: <em>char*</em> <strong>strndup</strong> <em>(const char *<var>s</var>, size_t <var>n</var>)</em></dt>
+<dt id="index-strndup">Extension: <em>char*</em> <strong>strndup</strong> <em>(const char *<var>s</var>, size_t <var>n</var>)</em></dt>
 <dd>
 <p>Returns a pointer to a copy of <var>s</var> with at most <var>n</var> characters
 in memory obtained from <code>malloc</code>, or <code>NULL</code> if insufficient
@@ -2753,7 +2718,7 @@ memory was available.  The result is always NUL terminated.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strnlen"></a>Supplemental: <em>size_t</em> <strong>strnlen</strong> <em>(const char *<var>s</var>, size_t <var>maxlen</var>)</em></dt>
+<dt id="index-strnlen">Supplemental: <em>size_t</em> <strong>strnlen</strong> <em>(const char *<var>s</var>, size_t <var>maxlen</var>)</em></dt>
 <dd>
 <p>Returns the length of <var>s</var>, as with <code>strlen</code>, but never looks
 past the first <var>maxlen</var> characters in the string.  If there is no
@@ -2763,7 +2728,7 @@ past the first <var>maxlen</var> characters in the string.  If there is no
 </dd></dl>
 
 <dl>
-<dt><a name="index-strrchr"></a>Supplemental: <em>char*</em> <strong>strrchr</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
+<dt id="index-strrchr">Supplemental: <em>char*</em> <strong>strrchr</strong> <em>(const char *<var>s</var>, int <var>c</var>)</em></dt>
 <dd>
 <p>Returns a pointer to the last occurrence of the character <var>c</var> in
 the string <var>s</var>, or <code>NULL</code> if not found.  If <var>c</var> is itself the
@@ -2772,7 +2737,7 @@ null character, the results are undefined.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strsignal"></a>Supplemental: <em>const char *</em> <strong>strsignal</strong> <em>(int <var>signo</var>)</em></dt>
+<dt id="index-strsignal">Supplemental: <em>const char *</em> <strong>strsignal</strong> <em>(int <var>signo</var>)</em></dt>
 <dd>
 <p>Maps an signal number to an signal message string, the contents of
 which are implementation defined.  On systems which have the external
@@ -2793,7 +2758,7 @@ call to <code>strsignal</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strsigno"></a>Extension: <em>const char*</em> <strong>strsigno</strong> <em>(int <var>signo</var>)</em></dt>
+<dt id="index-strsigno">Extension: <em>const char*</em> <strong>strsigno</strong> <em>(int <var>signo</var>)</em></dt>
 <dd>
 <p>Given an signal number, returns a pointer to a string containing the
 symbolic name of that signal number, as found in <code>&lt;signal.h&gt;</code>.
@@ -2812,7 +2777,7 @@ valid until the next call to <code>strsigno</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strstr"></a>Supplemental: <em>char*</em> <strong>strstr</strong> <em>(const char *<var>string</var>, const char *<var>sub</var>)</em></dt>
+<dt id="index-strstr">Supplemental: <em>char*</em> <strong>strstr</strong> <em>(const char *<var>string</var>, const char *<var>sub</var>)</em></dt>
 <dd>
 <p>This function searches for the substring <var>sub</var> in the string
 <var>string</var>, not including the terminating null characters.  A pointer
@@ -2823,7 +2788,7 @@ length, the function returns <var>string</var>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strtod"></a>Supplemental: <em>double</em> <strong>strtod</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>)</em></dt>
+<dt id="index-strtod">Supplemental: <em>double</em> <strong>strtod</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>)</em></dt>
 <dd>
 <p>This ISO C function converts the initial portion of <var>string</var> to a
 <code>double</code>.  If <var>endptr</var> is not <code>NULL</code>, a pointer to the
@@ -2835,7 +2800,7 @@ the location referenced by <var>endptr</var>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strtoerrno"></a>Extension: <em>int</em> <strong>strtoerrno</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-strtoerrno">Extension: <em>int</em> <strong>strtoerrno</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>Given the symbolic name of a error number (e.g., <code>EACCES</code>), map it
 to an errno value.  If no translation is found, returns 0.
@@ -2843,8 +2808,8 @@ to an errno value.  If no translation is found, returns 0.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strtol"></a>Supplemental: <em>long int</em> <strong>strtol</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
-<dt><a name="index-strtoul"></a>Supplemental: <em>unsigned long int</em> <strong>strtoul</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
+<dt id="index-strtol">Supplemental: <em>long int</em> <strong>strtol</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
+<dt id="index-strtoul">Supplemental: <em>unsigned long int</em> <strong>strtoul</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
 <dd>
 <p>The <code>strtol</code> function converts the string in <var>string</var> to a
 long integer value according to the given <var>base</var>, which must be
@@ -2859,8 +2824,8 @@ that the converted value is unsigned.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strtoll"></a>Supplemental: <em>long long int</em> <strong>strtoll</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
-<dt><a name="index-strtoul-1"></a>Supplemental: <em>unsigned long long int</em> <strong>strtoul</strong> <em>(  const char *<var>string</var>, char **<var>endptr</var>, int <var>base</var>)</em></dt>
+<dt id="index-strtoll">Supplemental: <em>long long int</em> <strong>strtoll</strong> <em>(const char *<var>string</var>,   char **<var>endptr</var>, int <var>base</var>)</em></dt>
+<dt id="index-strtoul-1">Supplemental: <em>unsigned long long int</em> <strong>strtoul</strong> <em>(  const char *<var>string</var>, char **<var>endptr</var>, int <var>base</var>)</em></dt>
 <dd>
 <p>The <code>strtoll</code> function converts the string in <var>string</var> to a
 long long integer value according to the given <var>base</var>, which must be
@@ -2875,7 +2840,7 @@ that the converted value is unsigned.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strtosigno"></a>Extension: <em>int</em> <strong>strtosigno</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-strtosigno">Extension: <em>int</em> <strong>strtosigno</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>Given the symbolic name of a signal, map it to a signal number.  If no
 translation is found, returns 0.
@@ -2883,7 +2848,7 @@ translation is found, returns 0.
 </dd></dl>
 
 <dl>
-<dt><a name="index-strverscmp"></a>Function: <em>int</em> <strong>strverscmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
+<dt id="index-strverscmp">Function: <em>int</em> <strong>strverscmp</strong> <em>(const char *<var>s1</var>, const char *<var>s2</var>)</em></dt>
 <dd><p>The <code>strverscmp</code> function compares the string <var>s1</var> against
 <var>s2</var>, considering them as holding indices/version numbers.  Return
 value follows the same conventions as found in the <code>strverscmp</code>
@@ -2909,8 +2874,8 @@ If the common prefix contains only leading zeroes, the longest part is less
 than the other one; else the comparison behaves normally.
 </li></ul>
 
-<div class="smallexample">
-<pre class="smallexample">strverscmp (&quot;no digit&quot;, &quot;no digit&quot;)
+<div class="example">
+<pre class="example">strverscmp (&quot;no digit&quot;, &quot;no digit&quot;)
     &rArr; 0    // <span class="roman">same behavior as strcmp.</span>
 strverscmp (&quot;item#99&quot;, &quot;item#100&quot;)
     &rArr; &lt;0   // <span class="roman">same prefix, but 99 &lt; 100.</span>
@@ -2927,21 +2892,21 @@ because filenames frequently hold indices/version numbers.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-timeval_005fadd"></a>Extension: <em>void</em> <strong>timeval_add</strong> <em>(struct timeval *<var>a</var>,   struct timeval *<var>b</var>, struct timeval *<var>result</var>)</em></dt>
+<dt id="index-timeval_005fadd">Extension: <em>void</em> <strong>timeval_add</strong> <em>(struct timeval *<var>a</var>,   struct timeval *<var>b</var>, struct timeval *<var>result</var>)</em></dt>
 <dd>
 <p>Adds <var>a</var> to <var>b</var> and stores the result in <var>result</var>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-timeval_005fsub"></a>Extension: <em>void</em> <strong>timeval_sub</strong> <em>(struct timeval *<var>a</var>,   struct timeval *<var>b</var>, struct timeval *<var>result</var>)</em></dt>
+<dt id="index-timeval_005fsub">Extension: <em>void</em> <strong>timeval_sub</strong> <em>(struct timeval *<var>a</var>,   struct timeval *<var>b</var>, struct timeval *<var>result</var>)</em></dt>
 <dd>
 <p>Subtracts <var>b</var> from <var>a</var> and stores the result in <var>result</var>.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-tmpnam"></a>Supplemental: <em>char*</em> <strong>tmpnam</strong> <em>(char *<var>s</var>)</em></dt>
+<dt id="index-tmpnam">Supplemental: <em>char*</em> <strong>tmpnam</strong> <em>(char *<var>s</var>)</em></dt>
 <dd>
 <p>This function attempts to create a name for a temporary file, which
 will be a valid file name yet not exist when <code>tmpnam</code> checks for
@@ -2952,7 +2917,7 @@ not be used in new projects.  Use <code>mkstemp</code> instead.
 </dd></dl>
 
 <dl>
-<dt><a name="index-unlink_005fif_005fordinary"></a>Supplemental: <em>int</em> <strong>unlink_if_ordinary</strong> <em>(const char*)</em></dt>
+<dt id="index-unlink_005fif_005fordinary">Supplemental: <em>int</em> <strong>unlink_if_ordinary</strong> <em>(const char*)</em></dt>
 <dd>
 <p>Unlinks the named file, unless it is special (e.g. a device file).
 Returns 0 when the file was unlinked, a negative value (and errno set) when
@@ -2962,7 +2927,7 @@ was made to unlink the file because it is special.
 </dd></dl>
 
 <dl>
-<dt><a name="index-unlock_005fstd_005fstreams"></a>Extension: <em>void</em> <strong>unlock_std_streams</strong> <em>(void)</em></dt>
+<dt id="index-unlock_005fstd_005fstreams">Extension: <em>void</em> <strong>unlock_std_streams</strong> <em>(void)</em></dt>
 <dd>
 <p>If the OS supports it, ensure that the standard I/O streams,
 <code>stdin</code>, <code>stdout</code> and <code>stderr</code> are setup to avoid any
@@ -2971,7 +2936,7 @@ multi-threaded locking.  Otherwise do nothing.
 </dd></dl>
 
 <dl>
-<dt><a name="index-unlock_005fstream"></a>Extension: <em>void</em> <strong>unlock_stream</strong> <em>(FILE * <var>stream</var>)</em></dt>
+<dt id="index-unlock_005fstream">Extension: <em>void</em> <strong>unlock_stream</strong> <em>(FILE * <var>stream</var>)</em></dt>
 <dd>
 <p>If the OS supports it, ensure that the supplied stream is setup to
 avoid any multi-threaded locking.  Otherwise leave the <code>FILE</code>
@@ -2980,7 +2945,7 @@ pointer unchanged.  If the <var>stream</var> is <code>NULL</code> do nothing.
 </dd></dl>
 
 <dl>
-<dt><a name="index-vasprintf"></a>Extension: <em>int</em> <strong>vasprintf</strong> <em>(char **<var>resptr</var>,   const char *<var>format</var>, va_list <var>args</var>)</em></dt>
+<dt id="index-vasprintf">Extension: <em>int</em> <strong>vasprintf</strong> <em>(char **<var>resptr</var>,   const char *<var>format</var>, va_list <var>args</var>)</em></dt>
 <dd>
 <p>Like <code>vsprintf</code>, but instead of passing a pointer to a buffer,
 you pass a pointer to a pointer.  This function will compute the size
@@ -2993,16 +2958,16 @@ not be allocated, minus one is returned and <code>NULL</code> is stored in
 </dd></dl>
 
 <dl>
-<dt><a name="index-vfork"></a>Supplemental: <em>int</em> <strong>vfork</strong> <em>(void)</em></dt>
+<dt id="index-vfork">Supplemental: <em>int</em> <strong>vfork</strong> <em>(void)</em></dt>
 <dd>
 <p>Emulates <code>vfork</code> by calling <code>fork</code> and returning its value.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-vprintf"></a>Supplemental: <em>int</em> <strong>vprintf</strong> <em>(const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
-<dt><a name="index-vfprintf"></a>Supplemental: <em>int</em> <strong>vfprintf</strong> <em>(FILE *<var>stream</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
-<dt><a name="index-vsprintf"></a>Supplemental: <em>int</em> <strong>vsprintf</strong> <em>(char *<var>str</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-vprintf">Supplemental: <em>int</em> <strong>vprintf</strong> <em>(const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-vfprintf">Supplemental: <em>int</em> <strong>vfprintf</strong> <em>(FILE *<var>stream</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-vsprintf">Supplemental: <em>int</em> <strong>vsprintf</strong> <em>(char *<var>str</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
 <dd>
 <p>These functions are the same as <code>printf</code>, <code>fprintf</code>, and
 <code>sprintf</code>, respectively, except that they are called with a
@@ -3014,7 +2979,7 @@ nonstandard but common function <code>_doprnt</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-vsnprintf"></a>Supplemental: <em>int</em> <strong>vsnprintf</strong> <em>(char *<var>buf</var>, size_t <var>n</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
+<dt id="index-vsnprintf">Supplemental: <em>int</em> <strong>vsnprintf</strong> <em>(char *<var>buf</var>, size_t <var>n</var>,   const char *<var>format</var>, va_list <var>ap</var>)</em></dt>
 <dd>
 <p>This function is similar to <code>vsprintf</code>, but it will write to
 <var>buf</var> at most <code><var>n</var>-1</code> bytes of text, followed by a
@@ -3029,7 +2994,7 @@ used.
 </dd></dl>
 
 <dl>
-<dt><a name="index-waitpid"></a>Supplemental: <em>int</em> <strong>waitpid</strong> <em>(int <var>pid</var>, int *<var>status</var>, int)</em></dt>
+<dt id="index-waitpid">Supplemental: <em>int</em> <strong>waitpid</strong> <em>(int <var>pid</var>, int *<var>status</var>, int)</em></dt>
 <dd>
 <p>This is a wrapper around the <code>wait</code> function.  Any &ldquo;special&rdquo;
 values of <var>pid</var> depend on your implementation of <code>wait</code>, as
@@ -3038,7 +3003,7 @@ does the return value.  The third argument is unused in <code>libiberty</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-writeargv"></a>Extension: <em>int</em> <strong>writeargv</strong> <em>(char * const *<var>argv</var>, FILE *<var>file</var>)</em></dt>
+<dt id="index-writeargv">Extension: <em>int</em> <strong>writeargv</strong> <em>(char * const *<var>argv</var>, FILE *<var>file</var>)</em></dt>
 <dd>
 <p>Write each member of ARGV, handling all necessary quoting, to the file
 named by FILE, separated by whitespace.  Return 0 on success, non-zero
@@ -3047,7 +3012,7 @@ if an error occurred while writing to FILE.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xasprintf"></a>Replacement: <em>char*</em> <strong>xasprintf</strong> <em>(const char *<var>format</var>, ...)</em></dt>
+<dt id="index-xasprintf">Replacement: <em>char*</em> <strong>xasprintf</strong> <em>(const char *<var>format</var>, ...)</em></dt>
 <dd>
 <p>Print to allocated string without fail.  If <code>xasprintf</code> fails,
 this will print a message to <code>stderr</code> (using the name set by
@@ -3056,7 +3021,7 @@ this will print a message to <code>stderr</code> (using the name set by
 </dd></dl>
 
 <dl>
-<dt><a name="index-xatexit"></a>Function: <em>int</em> <strong>xatexit</strong> <em>(void (*<var>fn</var>) (void))</em></dt>
+<dt id="index-xatexit">Function: <em>int</em> <strong>xatexit</strong> <em>(void (*<var>fn</var>) (void))</em></dt>
 <dd>
 <p>Behaves as the standard <code>atexit</code> function, but with no limit on
 the number of registered functions.  Returns 0 on success, or -1 on
@@ -3066,7 +3031,7 @@ failure.  If you use <code>xatexit</code> to register functions, you must use
 </dd></dl>
 
 <dl>
-<dt><a name="index-xcalloc"></a>Replacement: <em>void*</em> <strong>xcalloc</strong> <em>(size_t <var>nelem</var>, size_t <var>elsize</var>)</em></dt>
+<dt id="index-xcalloc">Replacement: <em>void*</em> <strong>xcalloc</strong> <em>(size_t <var>nelem</var>, size_t <var>elsize</var>)</em></dt>
 <dd>
 <p>Allocate memory without fail, and set it to zero.  This routine functions
 like <code>calloc</code>, but will behave the same as <code>xmalloc</code> if memory
@@ -3075,7 +3040,7 @@ cannot be found.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xexit"></a>Replacement: <em>void</em> <strong>xexit</strong> <em>(int <var>code</var>)</em></dt>
+<dt id="index-xexit">Replacement: <em>void</em> <strong>xexit</strong> <em>(int <var>code</var>)</em></dt>
 <dd>
 <p>Terminates the program.  If any functions have been registered with
 the <code>xatexit</code> replacement function, they will be called first.
@@ -3084,7 +3049,7 @@ Termination is handled via the system&rsquo;s normal <code>exit</code> call.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xmalloc"></a>Replacement: <em>void*</em> <strong>xmalloc</strong> <em>(size_t)</em></dt>
+<dt id="index-xmalloc">Replacement: <em>void*</em> <strong>xmalloc</strong> <em>(size_t)</em></dt>
 <dd>
 <p>Allocate memory without fail.  If <code>malloc</code> fails, this will print
 a message to <code>stderr</code> (using the name set by
@@ -3095,7 +3060,7 @@ a program to contain <code>#define malloc xmalloc</code> in its source.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xmalloc_005ffailed"></a>Replacement: <em>void</em> <strong>xmalloc_failed</strong> <em>(size_t)</em></dt>
+<dt id="index-xmalloc_005ffailed">Replacement: <em>void</em> <strong>xmalloc_failed</strong> <em>(size_t)</em></dt>
 <dd>
 <p>This function is not meant to be called by client code, and is listed
 here for completeness only.  If any of the allocation routines fail, this
@@ -3104,7 +3069,7 @@ function will be called to print an error message and terminate execution.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xmalloc_005fset_005fprogram_005fname"></a>Replacement: <em>void</em> <strong>xmalloc_set_program_name</strong> <em>(const char *<var>name</var>)</em></dt>
+<dt id="index-xmalloc_005fset_005fprogram_005fname">Replacement: <em>void</em> <strong>xmalloc_set_program_name</strong> <em>(const char *<var>name</var>)</em></dt>
 <dd>
 <p>You can use this to set the name of the program used by
 <code>xmalloc_failed</code> when printing a failure message.
@@ -3112,7 +3077,7 @@ function will be called to print an error message and terminate execution.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xmemdup"></a>Replacement: <em>void*</em> <strong>xmemdup</strong> <em>(void *<var>input</var>,   size_t <var>copy_size</var>, size_t <var>alloc_size</var>)</em></dt>
+<dt id="index-xmemdup">Replacement: <em>void*</em> <strong>xmemdup</strong> <em>(void *<var>input</var>,   size_t <var>copy_size</var>, size_t <var>alloc_size</var>)</em></dt>
 <dd>
 <p>Duplicates a region of memory without fail.  First, <var>alloc_size</var> bytes
 are allocated, then <var>copy_size</var> bytes from <var>input</var> are copied into
@@ -3122,14 +3087,14 @@ allocated, the remaining memory is zeroed.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xrealloc"></a>Replacement: <em>void*</em> <strong>xrealloc</strong> <em>(void *<var>ptr</var>, size_t <var>size</var>)</em></dt>
+<dt id="index-xrealloc">Replacement: <em>void*</em> <strong>xrealloc</strong> <em>(void *<var>ptr</var>, size_t <var>size</var>)</em></dt>
 <dd><p>Reallocate memory without fail.  This routine functions like <code>realloc</code>,
 but will behave the same as <code>xmalloc</code> if memory cannot be found.
 </p>
 </dd></dl>
 
 <dl>
-<dt><a name="index-xstrdup"></a>Replacement: <em>char*</em> <strong>xstrdup</strong> <em>(const char *<var>s</var>)</em></dt>
+<dt id="index-xstrdup">Replacement: <em>char*</em> <strong>xstrdup</strong> <em>(const char *<var>s</var>)</em></dt>
 <dd>
 <p>Duplicates a character string without fail, using <code>xmalloc</code> to
 obtain memory.
@@ -3137,7 +3102,7 @@ obtain memory.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xstrerror"></a>Replacement: <em>char*</em> <strong>xstrerror</strong> <em>(int <var>errnum</var>)</em></dt>
+<dt id="index-xstrerror">Replacement: <em>char*</em> <strong>xstrerror</strong> <em>(int <var>errnum</var>)</em></dt>
 <dd>
 <p>Behaves exactly like the standard <code>strerror</code> function, but
 will never return a <code>NULL</code> pointer.
@@ -3145,7 +3110,7 @@ will never return a <code>NULL</code> pointer.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xstrndup"></a>Replacement: <em>char*</em> <strong>xstrndup</strong> <em>(const char *<var>s</var>, size_t <var>n</var>)</em></dt>
+<dt id="index-xstrndup">Replacement: <em>char*</em> <strong>xstrndup</strong> <em>(const char *<var>s</var>, size_t <var>n</var>)</em></dt>
 <dd>
 <p>Returns a pointer to a copy of <var>s</var> with at most <var>n</var> characters
 without fail, using <code>xmalloc</code> to obtain memory.  The result is
@@ -3154,7 +3119,7 @@ always NUL terminated.
 </dd></dl>
 
 <dl>
-<dt><a name="index-xvasprintf"></a>Replacement: <em>char*</em> <strong>xvasprintf</strong> <em>(const char *<var>format</var>, va_list <var>args</var>)</em></dt>
+<dt id="index-xvasprintf">Replacement: <em>char*</em> <strong>xvasprintf</strong> <em>(const char *<var>format</var>, va_list <var>args</var>)</em></dt>
 <dd>
 <p>Print to allocated string without fail.  If <code>xvasprintf</code> fails,
 this will print a message to <code>stderr</code> (using the name set by
@@ -3165,39 +3130,35 @@ this will print a message to <code>stderr</code> (using the name set by
 
 
 <hr>
-<a name="Licenses"></a>
-<div class="header">
+<span id="Licenses"></span><div class="header">
 <p>
 Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#Functions" accesskey="p" rel="prev">Functions</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Licenses-1"></a>
-<h2 class="appendix">Appendix A Licenses</h2>
+<span id="Licenses-1"></span><h2 class="appendix">Appendix A Licenses</h2>
 
 <table class="menu" border="0" cellspacing="0">
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Library-Copying" accesskey="1">Library Copying</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The GNU Library General Public License
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Library-Copying" accesskey="1">Library Copying</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The GNU Library General Public License
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#BSD" accesskey="2">BSD</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Regents of the University of California
+<tr><td align="left" valign="top">&bull; <a href="#BSD" accesskey="2">BSD</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Regents of the University of California
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
 </pre></th></tr></table>
 
 <hr>
-<a name="Library-Copying"></a>
-<div class="header">
+<span id="Library-Copying"></span><div class="header">
 <p>
 Next: <a href="#BSD" accesskey="n" rel="next">BSD</a>, Up: <a href="#Licenses" accesskey="u" rel="up">Licenses</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="GNU-LESSER-GENERAL-PUBLIC-LICENSE"></a>
-<h3 class="appendixsec">A.1 GNU LESSER GENERAL PUBLIC LICENSE</h3>
+<span id="GNU-LESSER-GENERAL-PUBLIC-LICENSE"></span><h3 class="appendixsec">A.1 GNU LESSER GENERAL PUBLIC LICENSE</h3>
 
-<a name="index-LGPL_002c-Lesser-General-Public-License"></a>
+<span id="index-LGPL_002c-Lesser-General-Public-License"></span>
 <div align="center">Version 2.1, February 1999
 </div>
 <div class="display">
-<pre class="display">Copyright &copy; 1991-2019 Free Software Foundation, Inc.
+<pre class="display">Copyright &copy; 1991-2020 Free Software Foundation, Inc.
 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA
 
 Everyone is permitted to copy and distribute verbatim copies
@@ -3208,8 +3169,7 @@ as the successor of the GNU Library Public License, version 2, hence the
 version number 2.1.]
 </pre></div>
 
-<a name="Preamble"></a>
-<h4 class="appendixsubsec">A.1.1 Preamble</h4>
+<span id="Preamble"></span><h4 class="appendixsubsec">A.1.1 Preamble</h4>
 
 <p>The licenses for most software are designed to take away your
 freedom to share and change it.  By contrast, the GNU General Public
@@ -3661,8 +3621,7 @@ DAMAGES.
 </li></ol>
 
 
-<a name="How-to-Apply-These-Terms-to-Your-New-Libraries"></a>
-<h4 class="appendixsubsec">A.1.2 How to Apply These Terms to Your New Libraries</h4>
+<span id="How-to-Apply-These-Terms-to-Your-New-Libraries"></span><h4 class="appendixsubsec">A.1.2 How to Apply These Terms to Your New Libraries</h4>
 
 <p>If you develop a new library, and you want it to be of the greatest
 possible use to the public, we recommend making it free software that
@@ -3675,8 +3634,8 @@ safest to attach them to the start of each source file to most effectively
 convey the exclusion of warranty; and each file should have at least the
 &ldquo;copyright&rdquo; line and a pointer to where the full notice is found.
 </p>
-<div class="smallexample">
-<pre class="smallexample"><var>one line to give the library's name and an idea of what it does.</var>
+<div class="example">
+<pre class="example"><var>one line to give the library's name and an idea of what it does.</var>
 Copyright (C) <var>year</var>  <var>name of author</var>
 
 This library is free software; you can redistribute it and/or modify it
@@ -3701,8 +3660,8 @@ USA.
 school, if any, to sign a &ldquo;copyright disclaimer&rdquo; for the library, if
 necessary.  Here is a sample; alter the names:
 </p>
-<div class="smallexample">
-<pre class="smallexample">Yoyodyne, Inc., hereby disclaims all copyright interest in the library
+<div class="example">
+<pre class="example">Yoyodyne, Inc., hereby disclaims all copyright interest in the library
 `Frob' (a library for tweaking knobs) written by James Random Hacker.
 
 <var>signature of Ty Coon</var>, 1 April 1990
@@ -3712,13 +3671,11 @@ Ty Coon, President of Vice
 <p>That&rsquo;s all there is to it!
 </p>
 <hr>
-<a name="BSD"></a>
-<div class="header">
+<span id="BSD"></span><div class="header">
 <p>
 Previous: <a href="#Library-Copying" accesskey="p" rel="prev">Library Copying</a>, Up: <a href="#Licenses" accesskey="u" rel="up">Licenses</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="BSD-1"></a>
-<h3 class="appendixsec">A.2 BSD</h3>
+<span id="BSD-1"></span><h3 class="appendixsec">A.2 BSD</h3>
 
 <p>Copyright &copy; 1990 Regents of the University of California.
 All rights reserved.
@@ -3756,13 +3713,11 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 </p>
 <hr>
-<a name="Index"></a>
-<div class="header">
+<span id="Index"></span><div class="header">
 <p>
 Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Index-1"></a>
-<h2 class="unnumbered">Index</h2>
+<span id="Index-1"></span><h2 class="unnumbered">Index</h2>
 
 <table><tr><th valign="top">Jump to: &nbsp; </th><td><a class="summary-letter" href="#Index_cp_letter-A"><b>A</b></a>
  &nbsp; 
@@ -3808,22 +3763,23 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <table class="index-cp" border="0">
 <tr><td></td><th align="left">Index Entry</th><td>&nbsp;</td><th align="left"> Section</th></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-A">A</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-A">A</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-alignment-_0028in-obstacks_0029">alignment (in obstacks)</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Obstacks-Data-Alignment">Obstacks Data Alignment</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-alloca"><code>alloca</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-allocation-_0028obstacks_0029">allocation (obstacks)</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Allocation-in-an-Obstack">Allocation in an Obstack</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-asprintf"><code>asprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-atexit"><code>atexit</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-B">B</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-B">B</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-basename"><code>basename</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bcmp"><code>bcmp</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bcopy"><code>bcopy</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bsearch"><code>bsearch</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-bsearch_005fr"><code>bsearch_r</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-buildargv"><code>buildargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bzero"><code>bzero</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-C">C</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-C">C</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-calloc"><code>calloc</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-canonical_005ffilename_005feq"><code>canonical_filename_eq</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-changing-the-size-of-a-block-_0028obstacks_0029">changing the size of a block (obstacks)</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Growing-Objects">Growing Objects</a></td></tr>
@@ -3835,10 +3791,10 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-countargv"><code>countargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-crc32"><code>crc32</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-D">D</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-D">D</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dupargv"><code>dupargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-E">E</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-E">E</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-efficiency-and-obstacks">efficiency and obstacks</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Extra-Fast-Growing">Extra Fast Growing</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-efficiency-of-chunks">efficiency of chunks</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Obstack-Chunks">Obstack Chunks</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-errno_005fmax"><code>errno_max</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3847,7 +3803,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-expandargv"><code>expandargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-extensions">extensions</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Extensions">Extensions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-F">F</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-F">F</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-fdmatch"><code>fdmatch</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-fdopen_005funlocked"><code>fdopen_unlocked</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-ffs"><code>ffs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3865,7 +3821,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-functions_002c-replacement">functions, replacement</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Replacement-Functions">Replacement Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-functions_002c-supplemental">functions, supplemental</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Supplemental-Functions">Supplemental Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-G">G</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-G">G</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-getcwd"><code>getcwd</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-getpagesize"><code>getpagesize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-getpwd"><code>getpwd</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3873,7 +3829,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-get_005frun_005ftime"><code>get_run_time</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-growing-objects-_0028in-obstacks_0029">growing objects (in obstacks)</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Growing-Objects">Growing Objects</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-H">H</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-H">H</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-hex_005finit"><code>hex_init</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-hex_005fp"><code>hex_p</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-hex_005fvalue"><code>hex_value</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3884,7 +3840,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-how-to-use">how to use</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Using">Using</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-htab_005fcreate_005ftyped_005falloc"><code>htab_create_typed_alloc</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-I">I</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-I">I</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-index"><code>index</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-initstate"><code>initstate</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-insque"><code>insque</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3907,13 +3863,13 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-IS_005fSPACE_005fOR_005fNUL"><code>IS_SPACE_OR_NUL</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-IS_005fVSPACE"><code>IS_VSPACE</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-L">L</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-L">L</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-lbasename"><code>lbasename</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-LGPL_002c-Lesser-General-Public-License">LGPL, Lesser General Public License</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Library-Copying">Library Copying</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-libiberty-usage">libiberty usage</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Using">Using</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-lrealpath"><code>lrealpath</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-M">M</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-M">M</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-macros">macros</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Obstack-Functions">Obstack Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-make_005frelative_005fprefix"><code>make_relative_prefix</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-make_005ftemp_005ffile"><code>make_temp_file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3927,7 +3883,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-memset"><code>memset</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-mkstemps"><code>mkstemps</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-O">O</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-O">O</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-obstack-status">obstack status</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Status-of-an-Obstack">Status of an Obstack</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-obstack_002eh"><code>obstack.h</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Creating-Obstacks">Creating Obstacks</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-obstacks">obstacks</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Obstacks">Obstacks</a></td></tr>
@@ -3961,7 +3917,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-obstack_005fspecify_005fallocation"><code>obstack_specify_allocation</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preparing-for-Obstacks">Preparing for Obstacks</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-obstack_005fspecify_005fallocation_005fwith_005farg"><code>obstack_specify_allocation_with_arg</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preparing-for-Obstacks">Preparing for Obstacks</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-P">P</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-P">P</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-pexecute"><code>pexecute</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-PEX_005fBINARY_005fERROR"><code>PEX_BINARY_ERROR</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-PEX_005fBINARY_005fINPUT"><code>PEX_BINARY_INPUT</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3989,7 +3945,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-putenv"><code>putenv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-pwait"><code>pwait</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-R">R</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-R">R</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-random"><code>random</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-reconcat"><code>reconcat</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-remque"><code>remque</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -3997,7 +3953,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-replacement-functions">replacement functions</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Replacement-Functions">Replacement Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-rindex"><code>rindex</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-S">S</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-S">S</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-setenv"><code>setenv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-setproctitle"><code>setproctitle</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-setstate"><code>setstate</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -4047,19 +4003,19 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-strverscmp"><code>strverscmp</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-supplemental-functions">supplemental functions</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Supplemental-Functions">Supplemental Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-T">T</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-T">T</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-timeval_005fadd"><code>timeval_add</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-timeval_005fsub"><code>timeval_sub</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tmpnam"><code>tmpnam</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-U">U</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-U">U</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-unlink_005fif_005fordinary"><code>unlink_if_ordinary</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-unlock_005fstd_005fstreams"><code>unlock_std_streams</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-unlock_005fstream"><code>unlock_stream</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-unsetenv"><code>unsetenv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-using-libiberty">using libiberty</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Using">Using</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-V">V</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-V">V</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-vasprintf"><code>vasprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-vfork"><code>vfork</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-vfprintf"><code>vfprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
@@ -4067,11 +4023,11 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-vsnprintf"><code>vsnprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-vsprintf"><code>vsprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-W">W</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-W">W</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-waitpid"><code>waitpid</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-writeargv"><code>writeargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
-<tr><th><a name="Index_cp_letter-X">X</a></th><td></td><td></td></tr>
+<tr><th id="Index_cp_letter-X">X</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-xasprintf"><code>xasprintf</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-xatexit"><code>xatexit</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-xcalloc"><code>xcalloc</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>

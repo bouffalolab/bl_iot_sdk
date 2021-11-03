@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -243,9 +243,10 @@ options are changed via <code>#pragma GCC optimize</code> or by using the
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fOPTION_005fDEFAULT_005fPARAMS"></a>Common Target Hook: <em>void</em> <strong>TARGET_OPTION_DEFAULT_PARAMS</strong> <em>(void)</em></dt>
-<dd><p>Set target-dependent default values for <samp>--param</samp> settings, using calls to <code>set_default_param_value</code>.
+<dt><a name="index-TARGET_005fCOMPUTE_005fMULTILIB"></a>Common Target Hook: <em>const char *</em> <strong>TARGET_COMPUTE_MULTILIB</strong> <em>(const struct switchstr *<var>switches</var>, int <var>n_switches</var>, const char *<var>multilib_dir</var>, const char *<var>multilib_defaults</var>, const char *<var>multilib_select</var>, const char *<var>multilib_matches</var>, const char *<var>multilib_exclusions</var>, const char *<var>multilib_reuse</var>)</em></dt>
+<dd><p>Some target like RISC-V might have complicated multilib reuse rule which is  hard to implemented on current multilib scheme, this hook allow target to  override the result from built-in multilib mechanism.  <var>switches</var> is the raw option list with <var>n_switches</var> items;  <var>multilib_dir</var> is the multi-lib result which compute by the built-in  multi-lib mechanism;  <var>multilib_defaults</var> is the default options list for multi-lib;   <var>multilib_select</var> is the string contain the list of supported multi-lib,   and the option checking list.   <var>multilib_matches</var>, <var>multilib_exclusions</var>, and <var>multilib_reuse</var>   are corresponding to <var>MULTILIB_MATCHES</var>, <var>MULTILIB_EXCLUSIONS</var>   <var>MULTILIB_REUSE</var>.   The default definition does nothing but return <var>multilib_dir</var> directly.
 </p></dd></dl>
+
 
 <dl>
 <dt><a name="index-SWITCHABLE_005fTARGET"></a>Macro: <strong>SWITCHABLE_TARGET</strong></dt>

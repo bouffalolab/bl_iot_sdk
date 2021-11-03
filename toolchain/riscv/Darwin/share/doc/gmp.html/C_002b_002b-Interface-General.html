@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>C++ Interface General (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" rel="up" title="C++ Class Interface">
-<link href="C_002b_002b-Interface-Integers.html#C_002b_002b-Interface-Integers" rel="next" title="C++ Interface Integers">
-<link href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" rel="prev" title="C++ Class Interface">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="C_002b_002b-Class-Interface.html" rel="up" title="C++ Class Interface">
+<link href="C_002b_002b-Interface-Integers.html" rel="next" title="C++ Interface Integers">
+<link href="C_002b_002b-Class-Interface.html" rel="prev" title="C++ Class Interface">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="C_002b_002b-Interface-General"></a>
-<div class="header">
+<span id="C_002b_002b-Interface-General"></span><div class="header">
 <p>
-Next: <a href="C_002b_002b-Interface-Integers.html#C_002b_002b-Interface-Integers" accesskey="n" rel="next">C++ Interface Integers</a>, Previous: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="u" rel="up">C++ Class Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Interface-Integers.html" accesskey="n" rel="next">C++ Interface Integers</a>, Previous: <a href="C_002b_002b-Class-Interface.html" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="C_002b_002b-Class-Interface.html" accesskey="u" rel="up">C++ Class Interface</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="C_002b_002b-Interface-General-1"></a>
-<h3 class="section">12.1 C++ Interface General</h3>
+<span id="C_002b_002b-Interface-General-1"></span><h3 class="section">12.1 C++ Interface General</h3>
 
 <p>All the C++ classes and functions are available with
 </p>
-<a name="index-gmpxx_002eh"></a>
+<span id="index-gmpxx_002eh"></span>
 <div class="example">
 <pre class="example">#include &lt;gmpxx.h&gt;
 </pre></div>
@@ -85,9 +74,9 @@ libraries.  For example,
 <p>The classes defined are
 </p>
 <dl>
-<dt><a name="index-mpz_005fclass"></a>Class: <strong>mpz_class</strong></dt>
-<dt><a name="index-mpq_005fclass"></a>Class: <strong>mpq_class</strong></dt>
-<dt><a name="index-mpf_005fclass"></a>Class: <strong>mpf_class</strong></dt>
+<dt id="index-mpz_005fclass">Class: <strong>mpz_class</strong></dt>
+<dt id="index-mpq_005fclass">Class: <strong>mpq_class</strong></dt>
+<dt id="index-mpf_005fclass">Class: <strong>mpf_class</strong></dt>
 </dl>
 
 <p>The standard operators and various standard functions are overloaded to allow
@@ -135,9 +124,9 @@ GMP C types, instead a reference to the underlying C object can be obtained
 with the following functions,
 </p>
 <dl>
-<dt><a name="index-mpz_005fclass_003a_003aget_005fmpz_005ft"></a>Function: <em>mpz_t</em> <strong>mpz_class::get_mpz_t</strong> <em>()</em></dt>
-<dt><a name="index-mpq_005fclass_003a_003aget_005fmpq_005ft"></a>Function: <em>mpq_t</em> <strong>mpq_class::get_mpq_t</strong> <em>()</em></dt>
-<dt><a name="index-mpf_005fclass_003a_003aget_005fmpf_005ft"></a>Function: <em>mpf_t</em> <strong>mpf_class::get_mpf_t</strong> <em>()</em></dt>
+<dt id="index-mpz_005fclass_003a_003aget_005fmpz_005ft">Function: <em>mpz_t</em> <strong>mpz_class::get_mpz_t</strong> <em>()</em></dt>
+<dt id="index-mpq_005fclass_003a_003aget_005fmpq_005ft">Function: <em>mpq_t</em> <strong>mpq_class::get_mpq_t</strong> <em>()</em></dt>
+<dt id="index-mpf_005fclass_003a_003aget_005fmpf_005ft">Function: <em>mpf_t</em> <strong>mpf_class::get_mpf_t</strong> <em>()</em></dt>
 </dl>
 
 <p>These can be used to call a C function which doesn&rsquo;t have a C++ class
@@ -172,7 +161,7 @@ anything.
 <hr>
 <div class="header">
 <p>
-Next: <a href="C_002b_002b-Interface-Integers.html#C_002b_002b-Interface-Integers" accesskey="n" rel="next">C++ Interface Integers</a>, Previous: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="C_002b_002b-Class-Interface.html#C_002b_002b-Class-Interface" accesskey="u" rel="up">C++ Class Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="C_002b_002b-Interface-Integers.html" accesskey="n" rel="next">C++ Interface Integers</a>, Previous: <a href="C_002b_002b-Class-Interface.html" accesskey="p" rel="prev">C++ Class Interface</a>, Up: <a href="C_002b_002b-Class-Interface.html" accesskey="u" rel="up">C++ Class Interface</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

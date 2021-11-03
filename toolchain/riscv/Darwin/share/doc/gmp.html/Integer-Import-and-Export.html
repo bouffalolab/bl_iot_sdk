@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Integer Import and Export (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Integer-Functions.html#Integer-Functions" rel="up" title="Integer Functions">
-<link href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" rel="next" title="Miscellaneous Integer Functions">
-<link href="Integer-Random-Numbers.html#Integer-Random-Numbers" rel="prev" title="Integer Random Numbers">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Integer-Functions.html" rel="up" title="Integer Functions">
+<link href="Miscellaneous-Integer-Functions.html" rel="next" title="Miscellaneous Integer Functions">
+<link href="Integer-Random-Numbers.html" rel="prev" title="Integer Random Numbers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,22 +50,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Integer-Import-and-Export"></a>
-<div class="header">
+<span id="Integer-Import-and-Export"></span><div class="header">
 <p>
-Next: <a href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" accesskey="n" rel="next">Miscellaneous Integer Functions</a>, Previous: <a href="Integer-Random-Numbers.html#Integer-Random-Numbers" accesskey="p" rel="prev">Integer Random Numbers</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous-Integer-Functions.html" accesskey="n" rel="next">Miscellaneous Integer Functions</a>, Previous: <a href="Integer-Random-Numbers.html" accesskey="p" rel="prev">Integer Random Numbers</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Integer-Import-and-Export-1"></a>
-<h3 class="section">5.14 Integer Import and Export</h3>
+<span id="Integer-Import-and-Export-1"></span><h3 class="section">5.14 Integer Import and Export</h3>
 
 <p><code>mpz_t</code> variables can be converted to and from arbitrary words of binary
 data with the following functions.
 </p>
 <dl>
-<dt><a name="index-mpz_005fimport"></a>Function: <em>void</em> <strong>mpz_import</strong> <em>(mpz_t <var>rop</var>, size_t <var>count</var>, int <var>order</var>, size_t <var>size</var>, int <var>endian</var>, size_t <var>nails</var>, const void *<var>op</var>)</em></dt>
-<dd><a name="index-Integer-import"></a>
-<a name="index-Import"></a>
+<dt id="index-mpz_005fimport">Function: <em>void</em> <strong>mpz_import</strong> <em>(mpz_t <var>rop</var>, size_t <var>count</var>, int <var>order</var>, size_t <var>size</var>, int <var>endian</var>, size_t <var>nails</var>, const void *<var>op</var>)</em></dt>
+<dd><span id="index-Integer-import"></span>
+<span id="index-Import"></span>
 <p>Set <var>rop</var> from an array of word data at <var>op</var>.
 </p>
 <p>The parameters specify the format of the data.  <var>count</var> many words are
@@ -109,9 +98,9 @@ feature can account for this, by passing for instance
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fexport"></a>Function: <em>void *</em> <strong>mpz_export</strong> <em>(void *<var>rop</var>, size_t *<var>countp</var>, int <var>order</var>, size_t <var>size</var>, int <var>endian</var>, size_t <var>nails</var>, const mpz_t <var>op</var>)</em></dt>
-<dd><a name="index-Integer-export"></a>
-<a name="index-Export"></a>
+<dt id="index-mpz_005fexport">Function: <em>void *</em> <strong>mpz_export</strong> <em>(void *<var>rop</var>, size_t *<var>countp</var>, int <var>order</var>, size_t <var>size</var>, int <var>endian</var>, size_t <var>nails</var>, const mpz_t <var>op</var>)</em></dt>
+<dd><span id="index-Integer-export"></span>
+<span id="index-Export"></span>
 <p>Fill <var>rop</var> with word data from <var>op</var>.
 </p>
 <p>The parameters specify the format of the data produced.  Each word will be
@@ -125,7 +114,7 @@ each word are unused and set to zero, this can be 0 to produce full words.
 <var>countp</var> can be <code>NULL</code> to discard the count.  <var>rop</var> must have
 enough space for the data, or if <var>rop</var> is <code>NULL</code> then a result array
 of the necessary size is allocated using the current GMP allocation function
-(see <a href="Custom-Allocation.html#Custom-Allocation">Custom Allocation</a>).  In either case the return value is the
+(see <a href="Custom-Allocation.html">Custom Allocation</a>).  In either case the return value is the
 destination used, either <var>rop</var> or the allocated block.
 </p>
 <p>If <var>op</var> is non-zero then the most significant word produced will be
@@ -135,7 +124,7 @@ block is allocated, just <code>NULL</code> is returned.
 </p>
 <p>The sign of <var>op</var> is ignored, just the absolute value is exported.  An
 application can use <code>mpz_sgn</code> to get the sign and handle it as desired.
-(see <a href="Integer-Comparisons.html#Integer-Comparisons">Integer Comparisons</a>)
+(see <a href="Integer-Comparisons.html">Integer Comparisons</a>)
 </p>
 <p>There are no data alignment restrictions on <var>rop</var>, any address is allowed.
 </p>
@@ -156,7 +145,7 @@ p = malloc (count * size);
 <hr>
 <div class="header">
 <p>
-Next: <a href="Miscellaneous-Integer-Functions.html#Miscellaneous-Integer-Functions" accesskey="n" rel="next">Miscellaneous Integer Functions</a>, Previous: <a href="Integer-Random-Numbers.html#Integer-Random-Numbers" accesskey="p" rel="prev">Integer Random Numbers</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous-Integer-Functions.html" accesskey="n" rel="next">Miscellaneous Integer Functions</a>, Previous: <a href="Integer-Random-Numbers.html" accesskey="p" rel="prev">Integer Random Numbers</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

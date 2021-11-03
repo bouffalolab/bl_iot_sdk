@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Builtin Type Descriptors (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Builtin-Types.html#Builtin-Types" rel="up" title="Builtin Types">
-<link href="Negative-Type-Numbers.html#Negative-Type-Numbers" rel="next" title="Negative Type Numbers">
-<link href="Traditional-Other-Types.html#Traditional-Other-Types" rel="prev" title="Traditional Other Types">
+<link href="Builtin-Types.html" rel="up" title="Builtin Types">
+<link href="Negative-Type-Numbers.html" rel="next" title="Negative Type Numbers">
+<link href="Traditional-Other-Types.html" rel="prev" title="Traditional Other Types">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Builtin-Type-Descriptors"></a>
-<div class="header">
+<span id="Builtin-Type-Descriptors"></span><div class="header">
 <p>
-Next: <a href="Negative-Type-Numbers.html#Negative-Type-Numbers" accesskey="n" rel="next">Negative Type Numbers</a>, Previous: <a href="Traditional-Builtin-Types.html#Traditional-Builtin-Types" accesskey="p" rel="prev">Traditional Builtin Types</a>, Up: <a href="Builtin-Types.html#Builtin-Types" accesskey="u" rel="up">Builtin Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Negative-Type-Numbers.html" accesskey="n" rel="next">Negative Type Numbers</a>, Previous: <a href="Traditional-Builtin-Types.html" accesskey="p" rel="prev">Traditional Builtin Types</a>, Up: <a href="Builtin-Types.html" accesskey="u" rel="up">Builtin Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Defining-Builtin-Types-Using-Builtin-Type-Descriptors"></a>
-<h4 class="subsection">5.1.2 Defining Builtin Types Using Builtin Type Descriptors</h4>
+<span id="Defining-Builtin-Types-Using-Builtin-Type-Descriptors"></span><h4 class="subsection">5.1.2 Defining Builtin Types Using Builtin Type Descriptors</h4>
 
 <p>This is the method used by Sun&rsquo;s <code>acc</code> for defining builtin types.
 These are the type descriptors to define builtin types:
@@ -86,7 +75,7 @@ type.  <var>offset</var> seems to always be zero.  <var>nbits</var> is the numbe
 of bits in the type.
 </p>
 <p>Note that type descriptor &lsquo;<samp>b</samp>&rsquo; used for builtin types conflicts with
-its use for Pascal space types (see <a href="Miscellaneous-Types.html#Miscellaneous-Types">Miscellaneous Types</a>); they can
+its use for Pascal space types (see <a href="Miscellaneous-Types.html">Miscellaneous Types</a>); they can
 be distinguished because the character following the type descriptor
 will be a digit, &lsquo;<samp>(</samp>&rsquo;, or &lsquo;<samp>-</samp>&rsquo; for a Pascal space type, or
 &lsquo;<samp>u</samp>&rsquo; or &lsquo;<samp>s</samp>&rsquo; for a builtin type.
@@ -94,7 +83,7 @@ will be a digit, &lsquo;<samp>(</samp>&rsquo;, or &lsquo;<samp>-</samp>&rsquo; f
 </dd>
 <dt><code>w</code></dt>
 <dd><p>Documented by AIX to define a wide character type, but their compiler
-actually uses negative type numbers (see <a href="Negative-Type-Numbers.html#Negative-Type-Numbers">Negative Type Numbers</a>).
+actually uses negative type numbers (see <a href="Negative-Type-Numbers.html">Negative Type Numbers</a>).
 </p>
 </dd>
 <dt><code>R <var>fp-type</var> ; <var>bytes</var> ;</code></dt>
@@ -133,12 +122,12 @@ understand <var>fp-type</var>.
 </dd>
 <dt><code>g <var>type-information</var> ; <var>nbits</var></code></dt>
 <dd><p>Documented by AIX to define a floating type, but their compiler actually
-uses negative type numbers (see <a href="Negative-Type-Numbers.html#Negative-Type-Numbers">Negative Type Numbers</a>).
+uses negative type numbers (see <a href="Negative-Type-Numbers.html">Negative Type Numbers</a>).
 </p>
 </dd>
 <dt><code>c <var>type-information</var> ; <var>nbits</var></code></dt>
 <dd><p>Documented by AIX to define a complex type, but their compiler actually
-uses negative type numbers (see <a href="Negative-Type-Numbers.html#Negative-Type-Numbers">Negative Type Numbers</a>).
+uses negative type numbers (see <a href="Negative-Type-Numbers.html">Negative Type Numbers</a>).
 </p></dd>
 </dl>
 
@@ -156,7 +145,7 @@ where it ends.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Negative-Type-Numbers.html#Negative-Type-Numbers" accesskey="n" rel="next">Negative Type Numbers</a>, Previous: <a href="Traditional-Builtin-Types.html#Traditional-Builtin-Types" accesskey="p" rel="prev">Traditional Builtin Types</a>, Up: <a href="Builtin-Types.html#Builtin-Types" accesskey="u" rel="up">Builtin Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Negative-Type-Numbers.html" accesskey="n" rel="next">Negative Type Numbers</a>, Previous: <a href="Traditional-Builtin-Types.html" accesskey="p" rel="prev">Traditional Builtin Types</a>, Up: <a href="Builtin-Types.html" accesskey="u" rel="up">Builtin Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>AVR Options (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="AVR_002dDependent.html#AVR_002dDependent" rel="up" title="AVR-Dependent">
-<link href="AVR-Syntax.html#AVR-Syntax" rel="next" title="AVR Syntax">
-<link href="AVR_002dDependent.html#AVR_002dDependent" rel="prev" title="AVR-Dependent">
+<link href="AVR_002dDependent.html" rel="up" title="AVR-Dependent">
+<link href="AVR-Syntax.html" rel="next" title="AVR Syntax">
+<link href="AVR_002dDependent.html" rel="prev" title="AVR-Dependent">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,20 +50,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="AVR-Options"></a>
-<div class="header">
+<span id="AVR-Options"></span><div class="header">
 <p>
-Next: <a href="AVR-Syntax.html#AVR-Syntax" accesskey="n" rel="next">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html#AVR_002dDependent" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR-Syntax.html" accesskey="n" rel="next">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Options-4"></a>
-<h4 class="subsection">9.5.1 Options</h4>
-<a name="index-AVR-options-_0028none_0029"></a>
-<a name="index-options-for-AVR-_0028none_0029"></a>
+<span id="Options-4"></span><h4 class="subsection">9.5.1 Options</h4>
+<span id="index-AVR-options-_0028none_0029"></span>
+<span id="index-options-for-AVR-_0028none_0029"></span>
 
 <dl compact="compact">
 <dd>
-<a name="index-_002dmmcu_003d-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmmcu_003d-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mmcu=<var>mcu</var></code></dt>
 <dd><p>Specify ATMEL AVR instruction set or MCU type.
@@ -173,40 +162,40 @@ atxmega128a1, atxmega128a1u, atxmega128a4u).
 <p>Instruction set avrtiny is for the ATtiny4/5/9/10/20/40
 microcontrollers.
 </p>
-<a name="index-_002dmall_002dopcodes-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmall_002dopcodes-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mall-opcodes</code></dt>
 <dd><p>Accept all AVR opcodes, even if not supported by <code>-mmcu</code>.
 </p>
-<a name="index-_002dmno_002dskip_002dbug-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmno_002dskip_002dbug-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mno-skip-bug</code></dt>
 <dd><p>This option disable warnings for skipping two-word instructions.
 </p>
-<a name="index-_002dmno_002dwrap-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmno_002dwrap-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mno-wrap</code></dt>
 <dd><p>This option reject <code>rjmp/rcall</code> instructions with 8K wrap-around.
 </p>
-<a name="index-_002dmrmw-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmrmw-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mrmw</code></dt>
 <dd><p>Accept Read-Modify-Write (<code>XCH,LAC,LAS,LAT</code>) instructions.
 </p>
-<a name="index-_002dmlink_002drelax-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmlink_002drelax-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mlink-relax</code></dt>
 <dd><p>Enable support for link-time relaxation.  This is now on by default
 and this flag no longer has any effect.
 </p>
-<a name="index-_002dmno_002dlink_002drelax-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmno_002dlink_002drelax-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mno-link-relax</code></dt>
 <dd><p>Disable support for link-time relaxation.  The assembler will resolve
 relocations when it can, and may be able to better compress some debug
 information.
 </p>
-<a name="index-_002dmgcc_002disr-command_002dline-option_002c-AVR"></a>
+<span id="index-_002dmgcc_002disr-command_002dline-option_002c-AVR"></span>
 </dd>
 <dt><code>-mgcc-isr</code></dt>
 <dd><p>Enable the <code>__gcc_isr</code> pseudo instruction.
@@ -218,7 +207,7 @@ information.
 <hr>
 <div class="header">
 <p>
-Next: <a href="AVR-Syntax.html#AVR-Syntax" accesskey="n" rel="next">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html#AVR_002dDependent" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR-Syntax.html" accesskey="n" rel="next">AVR Syntax</a>, Up: <a href="AVR_002dDependent.html" accesskey="u" rel="up">AVR-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

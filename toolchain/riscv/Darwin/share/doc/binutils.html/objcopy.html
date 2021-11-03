@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -9,7 +9,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>objcopy (GNU Binary Utilities)</title>
@@ -19,33 +19,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Binutils-Index.html#Binutils-Index" rel="index" title="Binutils Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Binutils-Index.html" rel="index" title="Binutils Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="objdump.html#objdump" rel="next" title="objdump">
-<link href="nm.html#nm" rel="prev" title="nm">
+<link href="index.html" rel="up" title="Top">
+<link href="objdump.html" rel="next" title="objdump">
+<link href="nm.html" rel="prev" title="nm">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -57,18 +48,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="objcopy"></a>
-<div class="header">
+<span id="objcopy"></span><div class="header">
 <p>
-Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previous: <a href="nm.html#nm" accesskey="p" rel="prev">nm</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="objdump.html" accesskey="n" rel="next">objdump</a>, Previous: <a href="nm.html" accesskey="p" rel="prev">nm</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="objcopy-1"></a>
-<h2 class="chapter">3 objcopy</h2>
+<span id="objcopy-1"></span><h2 class="chapter">3 objcopy</h2>
 
 
-<div class="smallexample">
-<pre class="smallexample">objcopy [<samp>-F</samp> <var>bfdname</var>|<samp>--target=</samp><var>bfdname</var>]
+<div class="example">
+<pre class="example">objcopy [<samp>-F</samp> <var>bfdname</var>|<samp>--target=</samp><var>bfdname</var>]
         [<samp>-I</samp> <var>bfdname</var>|<samp>--input-target=</samp><var>bfdname</var>]
         [<samp>-O</samp> <var>bfdname</var>|<samp>--output-target=</samp><var>bfdname</var>]
         [<samp>-B</samp> <var>bfdarch</var>|<samp>--binary-architecture=</samp><var>bfdarch</var>]
@@ -92,6 +81,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--interleave-width=</samp><var>width</var>]
         [<samp>-j</samp> <var>sectionpattern</var>|<samp>--only-section=</samp><var>sectionpattern</var>]
         [<samp>-R</samp> <var>sectionpattern</var>|<samp>--remove-section=</samp><var>sectionpattern</var>]
+        [<samp>--keep-section=</samp><var>sectionpattern</var>]
         [<samp>--remove-relocations=</samp><var>sectionpattern</var>]
         [<samp>-p</samp>|<samp>--preserve-dates</samp>]
         [<samp>-D</samp>|<samp>--enable-deterministic-archives</samp>]
@@ -107,6 +97,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--change-section-vma</samp> <var>sectionpattern</var>{=,+,-}<var>val</var>]
         [<samp>--change-warnings</samp>] [<samp>--no-change-warnings</samp>]
         [<samp>--set-section-flags</samp> <var>sectionpattern</var>=<var>flags</var>]
+        [<samp>--set-section-alignment</samp> <var>sectionpattern</var>=<var>align</var>]
         [<samp>--add-section</samp> <var>sectionname</var>=<var>filename</var>]
         [<samp>--dump-section</samp> <var>sectionname</var>=<var>filename</var>]
         [<samp>--update-section</samp> <var>sectionname</var>=<var>filename</var>]
@@ -150,6 +141,7 @@ Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previ
         [<samp>--elf-stt-common=<var>val</var></samp>]
         [<samp>--merge-notes</samp>]
         [<samp>--no-merge-notes</samp>]
+        [<samp>--verilog-data-width=<var>val</var></samp>]
         [<samp>-v</samp>|<samp>--verbose</samp>]
         [<samp>-V</samp>|<samp>--version</samp>]
         [<samp>--help</samp>] [<samp>--info</samp>]
@@ -169,7 +161,7 @@ between any two formats may not work as expected.
 deletes them afterward.  <code>objcopy</code> uses <small>BFD</small> to do all its
 translation work; it has access to all the formats described in <small>BFD</small>
 and thus is able to recognize most formats without being told
-explicitly.  See <a href="http://sourceware.org/binutils/docs/ld/BFD.html#BFD">BFD</a> in <cite>Using LD</cite>.
+explicitly.  See <a href="https://sourceware.org/binutils/docs/ld/BFD.html#BFD">BFD</a> in <cite>Using LD</cite>.
 </p>
 <p><code>objcopy</code> can be used to generate S-records by using an output
 target of &lsquo;<samp>srec</samp>&rsquo; (e.g., use &lsquo;<samp>-O srec</samp>&rsquo;).
@@ -206,20 +198,20 @@ the name of <var>infile</var>.
 <dt><code>-I <var>bfdname</var></code></dt>
 <dt><code>--input-target=<var>bfdname</var></code></dt>
 <dd><p>Consider the source file&rsquo;s object format to be <var>bfdname</var>, rather than
-attempting to deduce it.  See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+attempting to deduce it.  See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-O <var>bfdname</var></code></dt>
 <dt><code>--output-target=<var>bfdname</var></code></dt>
 <dd><p>Write the output file using the object format <var>bfdname</var>.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-F <var>bfdname</var></code></dt>
 <dt><code>--target=<var>bfdname</var></code></dt>
 <dd><p>Use <var>bfdname</var> as the object format for both the input and the output
 file; i.e., simply transfer data from source to destination with no
-translation.  See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+translation.  See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 <dt><code>-B <var>bfdarch</var></code></dt>
@@ -246,8 +238,8 @@ point (!) then matching sections will not be copied, even if earlier
 use of <samp>--only-section</samp> on the same command line would
 otherwise copy it.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --only-section=.text.* --only-section=!.text.foo
+<div class="example">
+<pre class="example">  --only-section=.text.* --only-section=!.text.foo
 </pre></div>
 
 <p>will copy all sectinos maching &rsquo;.text.*&rsquo; but not the section
@@ -268,12 +260,17 @@ point (!) then matching sections will not be removed even if an
 earlier use of <samp>--remove-section</samp> on the same command line
 would otherwise remove it.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-section=.text.* --remove-section=!.text.foo
+<div class="example">
+<pre class="example">  --remove-section=.text.* --remove-section=!.text.foo
 </pre></div>
 
 <p>will remove all sections matching the pattern &rsquo;.text.*&rsquo;, but will not
 remove the section &rsquo;.text.foo&rsquo;.
+</p>
+</dd>
+<dt><code>--keep-section=<var>sectionpattern</var></code></dt>
+<dd><p>When removing sections from the output file, keep sections that match
+<var>sectionpattern</var>.
 </p>
 </dd>
 <dt><code>--remove-relocations=<var>sectionpattern</var></code></dt>
@@ -286,8 +283,8 @@ such as &lsquo;<samp>.rela.plt</samp>&rsquo; from an executable or shared librar
 are accepted in <var>sectionpattern</var>.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-relocations=.text.*
+<div class="example">
+<pre class="example">  --remove-relocations=.text.*
 </pre></div>
 
 <p>will remove the relocations for all sections matching the pattern
@@ -299,8 +296,8 @@ removed even if an earlier use of <samp>--remove-relocations</samp> on the
 same command line would otherwise cause the relocations to be removed.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  --remove-relocations=.text.* --remove-relocations=!.text.foo
+<div class="example">
+<pre class="example">  --remove-relocations=.text.* --remove-relocations=!.text.foo
 </pre></div>
 
 <p>will remove all relocations for sections matching the pattern
@@ -382,8 +379,8 @@ name.  If the first character of the symbol name is the exclamation
 point (!) then the sense of the switch is reversed for that symbol.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  -w -W !foo -W fo*
+<div class="example">
+<pre class="example">  -w -W !foo -W fo*
 </pre></div>
 
 <p>would cause objcopy to weaken all symbols that start with &ldquo;fo&rdquo;
@@ -451,8 +448,8 @@ as those of the input file.
 </dd>
 <dt><code>-D</code></dt>
 <dt><code>--enable-deterministic-archives</code></dt>
-<dd><a name="index-deterministic-archives-2"></a>
-<a name="index-_002d_002denable_002ddeterministic_002darchives-2"></a>
+<dd><span id="index-deterministic-archives-2"></span>
+<span id="index-_002d_002denable_002ddeterministic_002darchives-2"></span>
 <p>Operate in <em>deterministic</em> mode.  When copying archive members
 and writing the archive index, use zero for UIDs, GIDs, timestamps,
 and use consistent file modes for all files.
@@ -464,8 +461,8 @@ It can be disabled with the &lsquo;<samp>-U</samp>&rsquo; option, below.
 </dd>
 <dt><code>-U</code></dt>
 <dt><code>--disable-deterministic-archives</code></dt>
-<dd><a name="index-deterministic-archives-3"></a>
-<a name="index-_002d_002denable_002ddeterministic_002darchives-3"></a>
+<dd><span id="index-deterministic-archives-3"></span>
+<span id="index-_002d_002denable_002ddeterministic_002darchives-3"></span>
 <p>Do <em>not</em> operate in <em>deterministic</em> mode.  This is the
 inverse of the <samp>-D</samp> option, above: when copying archive members
 and writing the archive index, use their actual UID, GID, timestamp,
@@ -495,20 +492,22 @@ filled in with the value specified by <samp>--gap-fill</samp> (default zero).
 </p>
 </dd>
 <dt><code>--set-start <var>val</var></code></dt>
-<dd><p>Set the start address of the new file to <var>val</var>.  Not all object file
-formats support setting the start address.
+<dd><p>Set the start address (also known as the entry address) of the new
+file to <var>val</var>.  Not all object file formats support setting the
+start address.
 </p>
 </dd>
 <dt><code>--change-start <var>incr</var></code></dt>
 <dt><code>--adjust-start <var>incr</var></code></dt>
-<dd><a name="index-changing-start-address"></a>
-<p>Change the start address by adding <var>incr</var>.  Not all object file
-formats support setting the start address.
+<dd><span id="index-changing-start-address"></span>
+<p>Change the start address (also known as the entry address) by adding
+<var>incr</var>.  Not all object file formats support setting the start
+address.
 </p>
 </dd>
 <dt><code>--change-addresses <var>incr</var></code></dt>
 <dt><code>--adjust-vma <var>incr</var></code></dt>
-<dd><a name="index-changing-object-addresses"></a>
+<dd><span id="index-changing-object-addresses"></span>
 <p>Change the VMA and LMA addresses of all sections, as well as the start
 address, by adding <var>incr</var>.  Some object file formats do not permit
 section addresses to be changed arbitrarily.  Note that this does not
@@ -519,7 +518,7 @@ that they are loaded at a different address, the program may fail.
 </dd>
 <dt><code>--change-section-address <var>sectionpattern</var>{=,+,-}<var>val</var></code></dt>
 <dt><code>--adjust-section-vma <var>sectionpattern</var>{=,+,-}<var>val</var></code></dt>
-<dd><a name="index-changing-section-address"></a>
+<dd><span id="index-changing-section-address"></span>
 <p>Set or change both the VMA address and the LMA address of any section
 matching <var>sectionpattern</var>.  If &lsquo;<samp>=</samp>&rsquo; is used, the section
 address is set to <var>val</var>.  Otherwise, <var>val</var> is added to or
@@ -530,7 +529,7 @@ match any sections in the input file, a warning will be issued, unless
 </p>
 </dd>
 <dt><code>--change-section-lma <var>sectionpattern</var>{=,+,-}<var>val</var></code></dt>
-<dd><a name="index-changing-section-LMA"></a>
+<dd><span id="index-changing-section-LMA"></span>
 <p>Set or change the LMA address of any sections matching
 <var>sectionpattern</var>.  The LMA address is the address where the
 section will be loaded into memory at program load time.  Normally
@@ -545,7 +544,7 @@ warning will be issued, unless <samp>--no-change-warnings</samp> is used.
 </p>
 </dd>
 <dt><code>--change-section-vma <var>sectionpattern</var>{=,+,-}<var>val</var></code></dt>
-<dd><a name="index-changing-section-VMA"></a>
+<dd><span id="index-changing-section-VMA"></span>
 <p>Set or change the VMA address of any section matching
 <var>sectionpattern</var>.  The VMA address is the address where the
 section will be located once the program has started executing.
@@ -579,11 +578,19 @@ if the section pattern does not match any sections.
 <var>flags</var> argument is a comma separated string of flag names.  The
 recognized names are &lsquo;<samp>alloc</samp>&rsquo;, &lsquo;<samp>contents</samp>&rsquo;, &lsquo;<samp>load</samp>&rsquo;,
 &lsquo;<samp>noload</samp>&rsquo;, &lsquo;<samp>readonly</samp>&rsquo;, &lsquo;<samp>code</samp>&rsquo;, &lsquo;<samp>data</samp>&rsquo;, &lsquo;<samp>rom</samp>&rsquo;,
-&lsquo;<samp>share</samp>&rsquo;, and &lsquo;<samp>debug</samp>&rsquo;.  You can set the &lsquo;<samp>contents</samp>&rsquo; flag
-for a section which does not have contents, but it is not meaningful
-to clear the &lsquo;<samp>contents</samp>&rsquo; flag of a section which does have
-contents&ndash;just remove the section instead.  Not all flags are
-meaningful for all object file formats.
+&lsquo;<samp>exclude</samp>&rsquo;, &lsquo;<samp>share</samp>&rsquo;, and &lsquo;<samp>debug</samp>&rsquo;.  You can set the
+&lsquo;<samp>contents</samp>&rsquo; flag for a section which does not have contents, but it
+is not meaningful to clear the &lsquo;<samp>contents</samp>&rsquo; flag of a section which
+does have contents&ndash;just remove the section instead.  Not all flags are
+meaningful for all object file formats.  In particular the
+&lsquo;<samp>share</samp>&rsquo; flag is only meaningful for COFF format files and not for
+ELF format files.
+</p>
+</dd>
+<dt><code>--set-section-alignment <var>sectionpattern</var>=<var>align</var></code></dt>
+<dd><p>Set the alignment for any sections matching <var>sectionpattern</var>.
+<var>align</var> specifies the alignment in bytes and must be a power of
+two, i.e. 1, 2, 4, 8&hellip;. 
 </p>
 </dd>
 <dt><code>--add-section <var>sectionname</var>=<var>filename</var></code></dt>
@@ -639,15 +646,16 @@ symbol table in the order they appear.
 changing the section&rsquo;s flags to <var>flags</var> in the process.  This has
 the advantage over using a linker script to perform the rename in that
 the output stays as an object file and does not become a linked
-executable.
+executable.  This option accepts the same set of flags as the
+<samp>--sect-section-flags</samp> option.
 </p>
 <p>This option is particularly helpful when the input format is binary,
 since this will always create a section called .data.  If for example,
 you wanted instead to create a section called .rodata containing binary
 data you could use the following command line to achieve it:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  objcopy -I binary -O &lt;output_format&gt; -B &lt;architecture&gt; \
+<div class="example">
+<pre class="example">  objcopy -I binary -O &lt;output_format&gt; -B &lt;architecture&gt; \
    --rename-section .data=.rodata,alloc,load,readonly,data,contents \
    &lt;input_binary_file&gt; &lt;output_object_file&gt;
 </pre></div>
@@ -854,10 +862,10 @@ Instead put the debug info file in the current directory and use the
 <samp>--add-gnu-debuglink</samp> option without any directory components,
 like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample"> objcopy --add-gnu-debuglink=foo.debug
+<div class="example">
+<pre class="example"> objcopy --add-gnu-debuglink=foo.debug
 </pre></div>
- 
+
 <p>At debug time the debugger will attempt to look for the separate debug
 info file in a set of known locations.  The exact set of these
 locations varies depending upon the distribution being used, but it
@@ -977,8 +985,9 @@ for dlls.
 </p>
 </dd>
 <dt><code>--section-alignment <var>num</var></code></dt>
-<dd><p>Sets the section alignment.  Sections in memory will always begin at
-addresses which are a multiple of this number.  Defaults to 0x1000.
+<dd><p>Sets the section alignment field in the PE header.  Sections in memory
+will always begin at addresses which are a multiple of this number.
+Defaults to 0x1000.
 [This option is specific to PE targets.]
 </p>
 </dd>
@@ -1064,6 +1073,12 @@ SHT_NOTE type sections by removing duplicate notes.
 <dd><p>Show the version number of <code>objcopy</code>.
 </p>
 </dd>
+<dt><code>--verilog-data-width=<var>bytes</var></code></dt>
+<dd><p>For Verilog output, this options controls the number of bytes
+converted for each output data element.  The input target controls the
+endianness of the conversion.
+</p>
+</dd>
 <dt><code>-v</code></dt>
 <dt><code>--verbose</code></dt>
 <dd><p>Verbose output: list all object files modified.  In the case of
@@ -1084,7 +1099,7 @@ archives, &lsquo;<samp>objcopy -V</samp>&rsquo; lists all members of the archive
 <hr>
 <div class="header">
 <p>
-Next: <a href="objdump.html#objdump" accesskey="n" rel="next">objdump</a>, Previous: <a href="nm.html#nm" accesskey="p" rel="prev">nm</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="objdump.html" accesskey="n" rel="next">objdump</a>, Previous: <a href="nm.html" accesskey="p" rel="prev">nm</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

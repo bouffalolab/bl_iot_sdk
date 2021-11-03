@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -169,30 +169,6 @@ library from those.
 fine-grained control when necessary. It is also the most portable
 alternative and programs using this approach will work with most modern
 compilers.
-</p>
-</li><li> <a name="index-frepo-1"></a>
-Compile your template-using code with <samp>-frepo</samp>.  The compiler
-generates files with the extension &lsquo;<samp>.rpo</samp>&rsquo; listing all of the
-template instantiations used in the corresponding object files that
-could be instantiated there; the link wrapper, &lsquo;<samp>collect2</samp>&rsquo;,
-then updates the &lsquo;<samp>.rpo</samp>&rsquo; files to tell the compiler where to place
-those instantiations and rebuild any affected object files.  The
-link-time overhead is negligible after the first pass, as the compiler
-continues to place the instantiations in the same files.
-
-<p>This can be a suitable option for application code written for the Borland
-model, as it usually just works.  Code written for the Cfront model 
-needs to be modified so that the template definitions are available at
-one or more points of instantiation; usually this is as simple as adding
-<code>#include &lt;tmethods.cc&gt;</code> to the end of each template header.
-</p>
-<p>For library code, if you want the library to provide all of the template
-instantiations it needs, just try to link all of its object files
-together; the link will fail, but cause the instantiations to be
-generated as a side effect.  Be warned, however, that this may cause
-conflicts if multiple libraries try to provide the same instantiations.
-For greater control, use explicit instantiation as described in the next
-option.
 </p>
 </li><li> <a name="index-fno_002dimplicit_002dtemplates-1"></a>
 Compile your code with <samp>-fno-implicit-templates</samp> to disable the

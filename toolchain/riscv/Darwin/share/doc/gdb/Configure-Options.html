@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Configure Options (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Installing-GDB.html#Installing-GDB" rel="up" title="Installing GDB">
-<link href="System_002dwide-configuration.html#System_002dwide-configuration" rel="next" title="System-wide configuration">
-<link href="Config-Names.html#Config-Names" rel="prev" title="Config Names">
+<link href="Installing-GDB.html" rel="up" title="Installing GDB">
+<link href="System_002dwide-configuration.html" rel="next" title="System-wide configuration">
+<link href="Config-Names.html" rel="prev" title="Config Names">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,23 +51,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Configure-Options"></a>
-<div class="header">
+<span id="Configure-Options"></span><div class="header">
 <p>
-Next: <a href="System_002dwide-configuration.html#System_002dwide-configuration" accesskey="n" rel="next">System-wide configuration</a>, Previous: <a href="Config-Names.html#Config-Names" accesskey="p" rel="prev">Config Names</a>, Up: <a href="Installing-GDB.html#Installing-GDB" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="System_002dwide-configuration.html" accesskey="n" rel="next">System-wide configuration</a>, Previous: <a href="Config-Names.html" accesskey="p" rel="prev">Config Names</a>, Up: <a href="Installing-GDB.html" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="configure-Options"></a>
-<h3 class="section">C.5 <samp>configure</samp> Options</h3>
+<span id="configure-Options"></span><h3 class="section">C.5 <samp>configure</samp> Options</h3>
 
 <p>Here is a summary of the <samp>configure</samp> options and arguments that
 are most often useful for building <small>GDB</small>.  <samp>configure</samp>
-also has several other options not listed here.  See <a href="http://www.gnu.org/software/autoconf/manual/html_node/Running-configure-scripts.html#Running-configure-scripts">(autoconf.info)Running
+also has several other options not listed here.  See <a href="https://www.gnu.org/software/autoconf/manual/html_node/Running-configure-scripts.html#Running-configure-scripts">(autoconf.info)Running
 configure scripts</a>, for a full
 explanation of <samp>configure</samp>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">configure <span class="roman">[</span>--help<span class="roman">]</span>
+<div class="example">
+<pre class="example">configure <span class="roman">[</span>--help<span class="roman">]</span>
           <span class="roman">[</span>--prefix=<var>dir</var><span class="roman">]</span>
           <span class="roman">[</span>--exec-prefix=<var>dir</var><span class="roman">]</span>
           <span class="roman">[</span>--srcdir=<var>dirname</var><span class="roman">]</span>
@@ -138,7 +127,7 @@ specified list of targets.  The special value &lsquo;<samp>all</samp>&rsquo; con
 <dt><code>--with-gdb-datadir=<var>path</var></code></dt>
 <dd><p>Set the <small>GDB</small>-specific data directory.  <small>GDB</small> will look
 here for certain supporting files or scripts.  This defaults to the
-<samp>gdb</samp> subdirectory of &lsquo;<samp>datadi</samp>&rsquo; (which can be set using
+<samp>gdb</samp> subdirectory of &lsquo;<samp>datadir</samp>&rsquo; (which can be set using
 <code>--datadir</code>).
 </p>
 </dd>
@@ -158,7 +147,7 @@ after it is built.
 </dd>
 <dt><code>--disable-gdbmi</code></dt>
 <dd><p>Build <small>GDB</small> without the GDB/MI machine interface
-(see <a href="GDB_002fMI.html#GDB_002fMI">GDB/MI</a>).
+(see <a href="GDB_002fMI.html">GDB/MI</a>).
 </p>
 </dd>
 <dt><code>--enable-tui</code></dt>
@@ -172,6 +161,15 @@ supported).
 terminal operations.
 </p>
 </dd>
+<dt><code>--with-debuginfod</code></dt>
+<dd><p>Build <small>GDB</small> with libdebuginfod, the debuginfod client library.
+Used to automatically fetch source files and separate debug files from
+debuginfod servers using the associated executable&rsquo;s build ID. Enabled
+by default if libdebuginfod is installed and found at configure time.
+debuginfod is packaged with elfutils, starting with version 0.178. You
+can get the latest version from &lsquo;https://sourceware.org/elfutils/&rsquo;.
+</p>
+</dd>
 <dt><code>--with-libunwind-ia64</code></dt>
 <dd><p>Use the libunwind library for unwinding function call stack on ia64
 target platforms.  See http://www.nongnu.org/libunwind/index.html for
@@ -180,7 +178,8 @@ details.
 </dd>
 <dt><code>--with-system-readline</code></dt>
 <dd><p>Use the readline library installed on the host, rather than the
-library supplied as part of <small>GDB</small>.
+library supplied as part of <small>GDB</small>.  Readline 7 or newer is
+required; this is enforced by the build system.
 </p>
 </dd>
 <dt><code>--with-system-zlib</code></dt>
@@ -208,7 +207,7 @@ your host does not have a working <code>iconv</code>, you can get the latest
 version of GNU iconv from &lsquo;https://www.gnu.org/software/libiconv/&rsquo;.
 </p>
 <p><small>GDB</small>&rsquo;s build system also supports building GNU libiconv as
-part of the overall build.   See <a href="Requirements.html#Requirements">Requirements</a>.
+part of the overall build.   See <a href="Requirements.html">Requirements</a>.
 </p>
 </dd>
 <dt><code>--with-lzma</code></dt>
@@ -279,6 +278,15 @@ another location after being built, the location of the system-wide
 init file will be adjusted accordingly.
 </p>
 </dd>
+<dt><code>--with-system-gdbinit-dir=<var>directory</var></code></dt>
+<dd><p>Configure <small>GDB</small> to automatically load init files from a
+system-wide directory.  <var>directory</var> should be an absolute directory
+name.  If <var>directory</var> is in a directory under the configured
+prefix, and <small>GDB</small> is moved to another location after being
+built, the location of the system-wide init directory will be
+adjusted accordingly.
+</p>
+</dd>
 <dt><code>--enable-build-warnings</code></dt>
 <dd><p>When building the <small>GDB</small> sources, ask the compiler to warn about
 any code which looks even vaguely suspicious.  It passes many
@@ -306,7 +314,7 @@ was first introduced in GCC 4.9.
 <hr>
 <div class="header">
 <p>
-Next: <a href="System_002dwide-configuration.html#System_002dwide-configuration" accesskey="n" rel="next">System-wide configuration</a>, Previous: <a href="Config-Names.html#Config-Names" accesskey="p" rel="prev">Config Names</a>, Up: <a href="Installing-GDB.html#Installing-GDB" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="System_002dwide-configuration.html" accesskey="n" rel="next">System-wide configuration</a>, Previous: <a href="Config-Names.html" accesskey="p" rel="prev">Config Names</a>, Up: <a href="Installing-GDB.html" accesskey="u" rel="up">Installing GDB</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>gdbserver man (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Man-Pages.html#Man-Pages" rel="up" title="Man Pages">
-<link href="gcore-man.html#gcore-man" rel="next" title="gcore man">
-<link href="gdb-man.html#gdb-man" rel="prev" title="gdb man">
+<link href="Man-Pages.html" rel="up" title="Man Pages">
+<link href="gcore-man.html" rel="next" title="gcore man">
+<link href="gdb-man.html" rel="prev" title="gdb man">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="gdbserver-man"></a>
-<div class="header">
+<span id="gdbserver-man"></span><div class="header">
 <p>
-Next: <a href="gcore-man.html#gcore-man" accesskey="n" rel="next">gcore man</a>, Previous: <a href="gdb-man.html#gdb-man" accesskey="p" rel="prev">gdb man</a>, Up: <a href="Man-Pages.html#Man-Pages" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="gcore-man.html" accesskey="n" rel="next">gcore man</a>, Previous: <a href="gdb-man.html" accesskey="p" rel="prev">gdb man</a>, Up: <a href="Man-Pages.html" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="node-heading">gdbserver man</h4>
-<a name="gdbserver-man-1"></a>
-<h3 class="heading">gdbserver man</h3>
+<span id="gdbserver-man-1"></span><h3 class="heading">gdbserver man</h3>
 
 <div class="format">
 <pre class="format">gdbserver <var>comm</var> <var>prog</var> [<var>args</var>&hellip;]
@@ -81,8 +70,7 @@ gdbserver &ndash;multi <var>comm</var>
 <p><code>gdbserver</code> is a program that allows you to run <small>GDB</small> on a different machine
 than the one which is running the program being debugged.
 </p>
-<a name="Usage-_0028server-_0028target_0029-side_0029"></a>
-<h4 class="subheading">Usage (server (target) side)</h4>
+<span id="Usage-_0028server-_0028target_0029-side_0029"></span><h4 class="subheading">Usage (server (target) side)</h4>
 
 <p>First, you need to have a copy of the program you want to debug put onto
 the target system.  The program can be stripped to save space if needed, as
@@ -93,14 +81,14 @@ the <small>GDB</small> running on the host system.
 program.  You must tell it (a) how to communicate with <small>GDB</small>, (b) the name of
 your program, and (c) its arguments.  The general syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver <var>comm</var> <var>program</var> [<var>args</var> ...]
+<div class="example">
+<pre class="example">target&gt; gdbserver <var>comm</var> <var>program</var> [<var>args</var> ...]
 </pre></div>
 
 <p>For example, using a serial port, you might say:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver <samp>/dev/com1</samp> emacs foo.txt
+<div class="example">
+<pre class="example">target&gt; gdbserver <samp>/dev/com1</samp> emacs foo.txt
 </pre></div>
 
 <p>This tells <code>gdbserver</code> to debug emacs with an argument of foo.txt, and
@@ -109,8 +97,8 @@ waits patiently for the host <small>GDB</small> to communicate with it.
 </p>
 <p>To use a TCP connection, you could say:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver host:2345 emacs foo.txt
+<div class="example">
+<pre class="example">target&gt; gdbserver host:2345 emacs foo.txt
 </pre></div>
 
 <p>This says pretty much the same thing as the last example, except that we are
@@ -126,8 +114,8 @@ print an error message and exit.
 <p><code>gdbserver</code> can also attach to running programs.
 This is accomplished via the <samp>--attach</samp> argument.  The syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
+<div class="example">
+<pre class="example">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
 </pre></div>
 
 <p><var>pid</var> is the process ID of a currently running process.  It isn&rsquo;t
@@ -138,12 +126,11 @@ or process ID to attach, use the <samp>--multi</samp> command line option.
 In such case you should connect using <kbd>target extended-remote</kbd> to start
 the program you want to debug.
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --multi <var>comm</var>
+<div class="example">
+<pre class="example">target&gt; gdbserver --multi <var>comm</var>
 </pre></div>
 
-<a name="Usage-_0028host-side_0029"></a>
-<h4 class="subheading">Usage (host side)</h4>
+<span id="Usage-_0028host-side_0029"></span><h4 class="subheading">Usage (host side)</h4>
 
 <p>You need an unstripped copy of the target program on your host system, since
 <small>GDB</small> needs to examine its symbol tables and such.  Start up <small>GDB</small> as you normally
@@ -155,14 +142,14 @@ new command you need to know about is <code>target remote</code>
 a device name (usually a serial device, like <samp>/dev/ttyb</samp>), or a <code>HOST:PORT</code>
 descriptor.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) target remote <samp>/dev/ttyb</samp>
+<div class="example">
+<pre class="example">(gdb) target remote <samp>/dev/ttyb</samp>
 </pre></div>
 
 <p>communicates with the server via serial line <samp>/dev/ttyb</samp>, and:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) target remote the-target:2345
+<div class="example">
+<pre class="example">(gdb) target remote the-target:2345
 </pre></div>
 
 <p>communicates via a TCP connection to port 2345 on host &lsquo;the-target&rsquo;, where
@@ -173,11 +160,11 @@ command, otherwise you may get an error that looks something like
 </p>
 <p><code>gdbserver</code> can also debug multiple inferiors at once,
 described in
-<a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Inferiors and Programs</a>.
+<a href="Inferiors-Connections-and-Programs.html">Inferiors Connections and Programs</a>.
 In such case use the <code>extended-remote</code> <small>GDB</small> command variant:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) target extended-remote the-target:2345
+<div class="example">
+<pre class="example">(gdb) target extended-remote the-target:2345
 </pre></div>
 
 <p>The <code>gdbserver</code> option <samp>--multi</samp> may or may not be used in such
@@ -188,8 +175,8 @@ case.
 <ul>
 <li> Debug a specific program specified by its program name:
 
-<div class="smallexample">
-<pre class="smallexample">gdbserver <var>comm</var> <var>prog</var> [<var>args</var>&hellip;]
+<div class="example">
+<pre class="example">gdbserver <var>comm</var> <var>prog</var> [<var>args</var>&hellip;]
 </pre></div>
 
 <p>The <var>comm</var> parameter specifies how should the server communicate
@@ -203,8 +190,8 @@ connection, and <code>gdbserver</code> will exit.
 </li><li> Debug a specific program by specifying the process ID of a running
 program:
 
-<div class="smallexample">
-<pre class="smallexample">gdbserver --attach <var>comm</var> <var>pid</var>
+<div class="example">
+<pre class="example">gdbserver --attach <var>comm</var> <var>pid</var>
 </pre></div>
 
 <p>The <var>comm</var> parameter is as described above.  Supply the process ID
@@ -214,8 +201,8 @@ else.  Like with the previous mode, when the process <var>pid</var> exits,
 </p>
 </li><li> Multi-process mode &ndash; debug more than one program/process:
 
-<div class="smallexample">
-<pre class="smallexample">gdbserver --multi <var>comm</var>
+<div class="example">
+<pre class="example">gdbserver --multi <var>comm</var>
 </pre></div>
 
 <p>In this mode, <small>GDB</small> can instruct <code>gdbserver</code> which
@@ -238,8 +225,8 @@ debug several processes in the same session.
 <dt><code>--attach</code></dt>
 <dd><p><code>gdbserver</code> will attach to a running program.  The syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
+<div class="example">
+<pre class="example">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
 </pre></div>
 
 <p><var>pid</var> is the process ID of a currently running process.  It isn&rsquo;t
@@ -252,8 +239,8 @@ or process ID to attach, use this command line option.
 Then you can connect using <kbd>target extended-remote</kbd> and start
 the program you want to debug.  The syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --multi <var>comm</var>
+<div class="example">
+<pre class="example">target&gt; gdbserver --multi <var>comm</var>
 </pre></div>
 
 </dd>
@@ -266,6 +253,12 @@ the developers.
 </dd>
 <dt><code>--remote-debug</code></dt>
 <dd><p>Instruct <code>gdbserver</code> to display remote protocol debug output.
+This option is intended for <code>gdbserver</code> development and for bug reports to
+the developers.
+</p>
+</dd>
+<dt><code>--debug-file=<var>filename</var></code></dt>
+<dd><p>Instruct <code>gdbserver</code> to send any debug output to the given <var>filename</var>.
 This option is intended for <code>gdbserver</code> development and for bug reports to
 the developers.
 </p>
@@ -298,7 +291,7 @@ connection attempts after connecting to the first <small>GDB</small> session.
 <hr>
 <div class="header">
 <p>
-Next: <a href="gcore-man.html#gcore-man" accesskey="n" rel="next">gcore man</a>, Previous: <a href="gdb-man.html#gdb-man" accesskey="p" rel="prev">gdb man</a>, Up: <a href="Man-Pages.html#Man-Pages" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="gcore-man.html" accesskey="n" rel="next">gcore man</a>, Previous: <a href="gdb-man.html" accesskey="p" rel="prev">gdb man</a>, Up: <a href="Man-Pages.html" accesskey="u" rel="up">Man Pages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Line Numbering (The GNU C Preprocessor Internals)</title>
@@ -10,33 +10,24 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Guard-Macros.html#Guard-Macros" rel="next" title="Guard Macros">
-<link href="Token-Spacing.html#Token-Spacing" rel="prev" title="Token Spacing">
+<link href="index.html" rel="up" title="Top">
+<link href="Guard-Macros.html" rel="next" title="Guard Macros">
+<link href="Token-Spacing.html" rel="prev" title="Token Spacing">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,18 +39,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Line-Numbering"></a>
-<div class="header">
+<span id="Line-Numbering"></span><div class="header">
 <p>
-Next: <a href="Guard-Macros.html#Guard-Macros" accesskey="n" rel="next">Guard Macros</a>, Previous: <a href="Token-Spacing.html#Token-Spacing" accesskey="p" rel="prev">Token Spacing</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Guard-Macros.html" accesskey="n" rel="next">Guard Macros</a>, Previous: <a href="Token-Spacing.html" accesskey="p" rel="prev">Token Spacing</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Line-numbering"></a>
-<h2 class="unnumbered">Line numbering</h2>
-<a name="index-line-numbers"></a>
+<span id="Line-numbering"></span><h2 class="unnumbered">Line numbering</h2>
+<span id="index-line-numbers"></span>
 
-<a name="Just-which-line-number-anyway_003f"></a>
-<h3 class="section">Just which line number anyway?</h3>
+<span id="Just-which-line-number-anyway_003f"></span><h3 class="section">Just which line number anyway?</h3>
 
 <p>There are three reasonable requirements a cpplib client might have for
 the line number of a token passed to it:
@@ -70,8 +58,8 @@ the line number of a token passed to it:
 lexed on if, for example, there are intervening escaped newlines or
 C-style comments.  For example:
 
-<div class="smallexample">
-<pre class="smallexample">foo /* <span class="roman">A long
+<div class="example">
+<pre class="example">foo /* <span class="roman">A long
 comment</span> */ bar \
 baz
 &rArr;
@@ -117,8 +105,7 @@ other than a directive.  It passes this token (which may be a
 callback routine, which can then use the line and column of this token
 to produce correct output.
 </p>
-<a name="Representation-of-line-numbers"></a>
-<h3 class="section">Representation of line numbers</h3>
+<span id="Representation-of-line-numbers"></span><h3 class="section">Representation of line numbers</h3>
 
 <p>As mentioned above, cpplib stores with each token the line number that
 it was lexed on.  In fact, this number is not the number of the line in
@@ -148,7 +135,7 @@ one.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Guard-Macros.html#Guard-Macros" accesskey="n" rel="next">Guard Macros</a>, Previous: <a href="Token-Spacing.html#Token-Spacing" accesskey="p" rel="prev">Token Spacing</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Guard-Macros.html" accesskey="n" rel="next">Guard Macros</a>, Previous: <a href="Token-Spacing.html" accesskey="p" rel="prev">Token Spacing</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

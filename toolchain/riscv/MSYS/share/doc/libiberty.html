@@ -1275,6 +1275,21 @@ is respectively less than, matching, or greater than the array member.
 </dd></dl>
 
 <dl>
+<dt><a name="index-bsearch_005fr"></a>Supplemental: <em>void*</em> <strong>bsearch_r</strong> <em>(const void *<var>key</var>,   const void *<var>base</var>, size_t <var>nmemb</var>, size_t <var>size</var>,   int (*<var>compar</var>)(const void *, const void *, void *), void *<var>arg</var>)</em></dt>
+<dd>
+<p>Performs a search over an array of <var>nmemb</var> elements pointed to by
+<var>base</var> for a member that matches the object pointed to by <var>key</var>.
+The size of each member is specified by <var>size</var>.  The array contents
+should be sorted in ascending order according to the <var>compar</var>
+comparison function.  This routine should take three arguments: the first
+two point to the <var>key</var> and to an array member, and the last is passed
+down unchanged from <code>bsearch_r</code>&rsquo;s last argument.  It should return an
+integer less than, equal to, or greater than zero if the <var>key</var> object
+is respectively less than, matching, or greater than the array member.
+</p>
+</dd></dl>
+
+<dl>
 <dt><a name="index-buildargv"></a>Extension: <em>char**</em> <strong>buildargv</strong> <em>(char *<var>sp</var>)</em></dt>
 <dd>
 <p>Given a pointer to a string, parse the string extracting fields
@@ -1380,10 +1395,9 @@ starting value is <var>init</var>; this may be used to compute the CRC of
 data split across multiple buffers by passing the return value of each
 call as the <var>init</var> parameter of the next.
 </p>
-<p>This is intended to match the CRC used by the <code>gdb</code> remote
-protocol for the &lsquo;<samp>qCRC</samp>&rsquo; command.  In order to get the same
-results as gdb for a block of data, you must pass the first CRC
-parameter as <code>0xffffffff</code>.
+<p>This is used by the <code>gdb</code> remote protocol for the &lsquo;<samp>qCRC</samp>&rsquo;
+command.  In order to get the same results as gdb for a block of data,
+you must pass the first CRC parameter as <code>0xffffffff</code>.
 </p>
 <p>This CRC can be specified as:
 </p>
@@ -2634,7 +2648,11 @@ different types need to be allocated with different allocators.
 </p>
 <p>The splay tree will use <var>compare_fn</var> to compare nodes,
 <var>delete_key_fn</var> to deallocate keys, and <var>delete_value_fn</var> to
-deallocate values.
+deallocate values.  Keys and values will be deallocated when the
+tree is deleted using splay_tree_delete or when a node is removed
+using splay_tree_remove.  splay_tree_insert will release the previously
+inserted key and value using <var>delete_key_fn</var> and <var>delete_value_fn</var>
+if the inserted key is already found in the tree.
 </p>
 </dd></dl>
 
@@ -3197,7 +3215,7 @@ Next: <a href="#BSD" accesskey="n" rel="next">BSD</a>, Up: <a href="#Licenses" a
 <div align="center">Version 2.1, February 1999
 </div>
 <div class="display">
-<pre class="display">Copyright &copy; 1991-2019 Free Software Foundation, Inc.
+<pre class="display">Copyright &copy; 1991-2020 Free Software Foundation, Inc.
 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA
 
 Everyone is permitted to copy and distribute verbatim copies
@@ -3820,6 +3838,7 @@ Previous: <a href="#Licenses" accesskey="p" rel="prev">Licenses</a>, Up: <a href
 <tr><td></td><td valign="top"><a href="#index-bcmp"><code>bcmp</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bcopy"><code>bcopy</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bsearch"><code>bsearch</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-bsearch_005fr"><code>bsearch_r</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-buildargv"><code>buildargv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-bzero"><code>bzero</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Functions">Functions</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>

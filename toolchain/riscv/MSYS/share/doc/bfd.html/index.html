@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -182,7 +182,8 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-bfd_005fmalloc_005fand_005fget_005fsection" href="section-prototypes.html#bfd_005fmalloc_005fand_005fget_005fsection">2.6.5.19 <code>bfd_malloc_and_get_section</code></a></li>
       <li><a name="toc-bfd_005fcopy_005fprivate_005fsection_005fdata" href="section-prototypes.html#bfd_005fcopy_005fprivate_005fsection_005fdata">2.6.5.20 <code>bfd_copy_private_section_data</code></a></li>
       <li><a name="toc-bfd_005fgeneric_005fis_005fgroup_005fsection" href="section-prototypes.html#bfd_005fgeneric_005fis_005fgroup_005fsection">2.6.5.21 <code>bfd_generic_is_group_section</code></a></li>
-      <li><a name="toc-bfd_005fgeneric_005fdiscard_005fgroup" href="section-prototypes.html#bfd_005fgeneric_005fdiscard_005fgroup">2.6.5.22 <code>bfd_generic_discard_group</code></a></li>
+      <li><a name="toc-bfd_005fgeneric_005fgroup_005fname" href="section-prototypes.html#bfd_005fgeneric_005fgroup_005fname">2.6.5.22 <code>bfd_generic_group_name</code></a></li>
+      <li><a name="toc-bfd_005fgeneric_005fdiscard_005fgroup" href="section-prototypes.html#bfd_005fgeneric_005fdiscard_005fgroup">2.6.5.23 <code>bfd_generic_discard_group</code></a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Symbols-1" href="Symbols.html#Symbols">2.7 Symbols</a>
@@ -322,24 +323,23 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-bfd_005fmake_005fwritable" href="Opening-and-Closing.html#bfd_005fmake_005fwritable">2.14.1.10 <code>bfd_make_writable</code></a></li>
       <li><a name="toc-bfd_005fmake_005freadable" href="Opening-and-Closing.html#bfd_005fmake_005freadable">2.14.1.11 <code>bfd_make_readable</code></a></li>
       <li><a name="toc-bfd_005falloc" href="Opening-and-Closing.html#bfd_005falloc">2.14.1.12 <code>bfd_alloc</code></a></li>
-      <li><a name="toc-bfd_005falloc2" href="Opening-and-Closing.html#bfd_005falloc2">2.14.1.13 <code>bfd_alloc2</code></a></li>
-      <li><a name="toc-bfd_005fzalloc" href="Opening-and-Closing.html#bfd_005fzalloc">2.14.1.14 <code>bfd_zalloc</code></a></li>
-      <li><a name="toc-bfd_005fzalloc2" href="Opening-and-Closing.html#bfd_005fzalloc2">2.14.1.15 <code>bfd_zalloc2</code></a></li>
-      <li><a name="toc-bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32" href="Opening-and-Closing.html#bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32">2.14.1.16 <code>bfd_calc_gnu_debuglink_crc32</code></a></li>
-      <li><a name="toc-bfd_005fget_005fdebug_005flink_005finfo_005f1" href="Opening-and-Closing.html#bfd_005fget_005fdebug_005flink_005finfo_005f1">2.14.1.17 <code>bfd_get_debug_link_info_1</code></a></li>
-      <li><a name="toc-bfd_005fget_005fdebug_005flink_005finfo" href="Opening-and-Closing.html#bfd_005fget_005fdebug_005flink_005finfo">2.14.1.18 <code>bfd_get_debug_link_info</code></a></li>
-      <li><a name="toc-bfd_005fget_005falt_005fdebug_005flink_005finfo" href="Opening-and-Closing.html#bfd_005fget_005falt_005fdebug_005flink_005finfo">2.14.1.19 <code>bfd_get_alt_debug_link_info</code></a></li>
-      <li><a name="toc-separate_005fdebug_005ffile_005fexists" href="Opening-and-Closing.html#separate_005fdebug_005ffile_005fexists">2.14.1.20 <code>separate_debug_file_exists</code></a></li>
-      <li><a name="toc-separate_005falt_005fdebug_005ffile_005fexists" href="Opening-and-Closing.html#separate_005falt_005fdebug_005ffile_005fexists">2.14.1.21 <code>separate_alt_debug_file_exists</code></a></li>
-      <li><a name="toc-find_005fseparate_005fdebug_005ffile" href="Opening-and-Closing.html#find_005fseparate_005fdebug_005ffile">2.14.1.22 <code>find_separate_debug_file</code></a></li>
-      <li><a name="toc-bfd_005ffollow_005fgnu_005fdebuglink" href="Opening-and-Closing.html#bfd_005ffollow_005fgnu_005fdebuglink">2.14.1.23 <code>bfd_follow_gnu_debuglink</code></a></li>
-      <li><a name="toc-bfd_005ffollow_005fgnu_005fdebugaltlink" href="Opening-and-Closing.html#bfd_005ffollow_005fgnu_005fdebugaltlink">2.14.1.24 <code>bfd_follow_gnu_debugaltlink</code></a></li>
-      <li><a name="toc-bfd_005fcreate_005fgnu_005fdebuglink_005fsection" href="Opening-and-Closing.html#bfd_005fcreate_005fgnu_005fdebuglink_005fsection">2.14.1.25 <code>bfd_create_gnu_debuglink_section</code></a></li>
-      <li><a name="toc-bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection" href="Opening-and-Closing.html#bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection">2.14.1.26 <code>bfd_fill_in_gnu_debuglink_section</code></a></li>
-      <li><a name="toc-get_005fbuild_005fid" href="Opening-and-Closing.html#get_005fbuild_005fid">2.14.1.27 <code>get_build_id</code></a></li>
-      <li><a name="toc-get_005fbuild_005fid_005fname" href="Opening-and-Closing.html#get_005fbuild_005fid_005fname">2.14.1.28 <code>get_build_id_name</code></a></li>
-      <li><a name="toc-check_005fbuild_005fid_005ffile" href="Opening-and-Closing.html#check_005fbuild_005fid_005ffile">2.14.1.29 <code>check_build_id_file</code></a></li>
-      <li><a name="toc-bfd_005ffollow_005fbuild_005fid_005fdebuglink" href="Opening-and-Closing.html#bfd_005ffollow_005fbuild_005fid_005fdebuglink">2.14.1.30 <code>bfd_follow_build_id_debuglink</code></a></li>
+      <li><a name="toc-bfd_005fzalloc" href="Opening-and-Closing.html#bfd_005fzalloc">2.14.1.13 <code>bfd_zalloc</code></a></li>
+      <li><a name="toc-bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32" href="Opening-and-Closing.html#bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32">2.14.1.14 <code>bfd_calc_gnu_debuglink_crc32</code></a></li>
+      <li><a name="toc-bfd_005fget_005fdebug_005flink_005finfo_005f1" href="Opening-and-Closing.html#bfd_005fget_005fdebug_005flink_005finfo_005f1">2.14.1.15 <code>bfd_get_debug_link_info_1</code></a></li>
+      <li><a name="toc-bfd_005fget_005fdebug_005flink_005finfo" href="Opening-and-Closing.html#bfd_005fget_005fdebug_005flink_005finfo">2.14.1.16 <code>bfd_get_debug_link_info</code></a></li>
+      <li><a name="toc-bfd_005fget_005falt_005fdebug_005flink_005finfo" href="Opening-and-Closing.html#bfd_005fget_005falt_005fdebug_005flink_005finfo">2.14.1.17 <code>bfd_get_alt_debug_link_info</code></a></li>
+      <li><a name="toc-separate_005fdebug_005ffile_005fexists" href="Opening-and-Closing.html#separate_005fdebug_005ffile_005fexists">2.14.1.18 <code>separate_debug_file_exists</code></a></li>
+      <li><a name="toc-separate_005falt_005fdebug_005ffile_005fexists" href="Opening-and-Closing.html#separate_005falt_005fdebug_005ffile_005fexists">2.14.1.19 <code>separate_alt_debug_file_exists</code></a></li>
+      <li><a name="toc-find_005fseparate_005fdebug_005ffile" href="Opening-and-Closing.html#find_005fseparate_005fdebug_005ffile">2.14.1.20 <code>find_separate_debug_file</code></a></li>
+      <li><a name="toc-bfd_005ffollow_005fgnu_005fdebuglink" href="Opening-and-Closing.html#bfd_005ffollow_005fgnu_005fdebuglink">2.14.1.21 <code>bfd_follow_gnu_debuglink</code></a></li>
+      <li><a name="toc-bfd_005ffollow_005fgnu_005fdebugaltlink" href="Opening-and-Closing.html#bfd_005ffollow_005fgnu_005fdebugaltlink">2.14.1.22 <code>bfd_follow_gnu_debugaltlink</code></a></li>
+      <li><a name="toc-bfd_005fcreate_005fgnu_005fdebuglink_005fsection" href="Opening-and-Closing.html#bfd_005fcreate_005fgnu_005fdebuglink_005fsection">2.14.1.23 <code>bfd_create_gnu_debuglink_section</code></a></li>
+      <li><a name="toc-bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection" href="Opening-and-Closing.html#bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection">2.14.1.24 <code>bfd_fill_in_gnu_debuglink_section</code></a></li>
+      <li><a name="toc-get_005fbuild_005fid" href="Opening-and-Closing.html#get_005fbuild_005fid">2.14.1.25 <code>get_build_id</code></a></li>
+      <li><a name="toc-get_005fbuild_005fid_005fname" href="Opening-and-Closing.html#get_005fbuild_005fid_005fname">2.14.1.26 <code>get_build_id_name</code></a></li>
+      <li><a name="toc-check_005fbuild_005fid_005ffile" href="Opening-and-Closing.html#check_005fbuild_005fid_005ffile">2.14.1.27 <code>check_build_id_file</code></a></li>
+      <li><a name="toc-bfd_005ffollow_005fbuild_005fid_005fdebuglink" href="Opening-and-Closing.html#bfd_005ffollow_005fbuild_005fid_005fdebuglink">2.14.1.28 <code>bfd_follow_build_id_debuglink</code></a></li>
+      <li><a name="toc-bfd_005fset_005ffilename" href="Opening-and-Closing.html#bfd_005fset_005ffilename">2.14.1.29 <code>bfd_set_filename</code></a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Implementation-details" href="Internal.html#Internal">2.15 Implementation details</a>

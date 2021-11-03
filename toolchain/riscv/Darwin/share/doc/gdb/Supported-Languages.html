@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Supported Languages (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Languages.html#Languages" rel="up" title="Languages">
-<link href="C.html#C" rel="next" title="C">
-<link href="Range-Checking.html#Range-Checking" rel="prev" title="Range Checking">
+<link href="Languages.html" rel="up" title="Languages">
+<link href="C.html" rel="next" title="C">
+<link href="Range-Checking.html" rel="prev" title="Range Checking">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,20 +51,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Supported-Languages"></a>
-<div class="header">
+<span id="Supported-Languages"></span><div class="header">
 <p>
-Next: <a href="Unsupported-Languages.html#Unsupported-Languages" accesskey="n" rel="next">Unsupported Languages</a>, Previous: <a href="Checks.html#Checks" accesskey="p" rel="prev">Checks</a>, Up: <a href="Languages.html#Languages" accesskey="u" rel="up">Languages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Unsupported-Languages.html" accesskey="n" rel="next">Unsupported Languages</a>, Previous: <a href="Checks.html" accesskey="p" rel="prev">Checks</a>, Up: <a href="Languages.html" accesskey="u" rel="up">Languages</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Supported-Languages-1"></a>
-<h3 class="section">15.4 Supported Languages</h3>
+<span id="Supported-Languages-1"></span><h3 class="section">15.4 Supported Languages</h3>
 
 <p><small>GDB</small> supports C, C<tt>++</tt>, D, Go, Objective-C, Fortran,
 OpenCL C, Pascal, Rust, assembly, Modula-2, and Ada.
 Some <small>GDB</small> features may be used in expressions regardless of the
 language you use: the <small>GDB</small> <code>@</code> and <code>::</code> operators,
-and the &lsquo;<samp>{type}addr</samp>&rsquo; construct (see <a href="Expressions.html#Expressions">Expressions</a>) can be used with the constructs of any supported
+and the &lsquo;<samp>{type}addr</samp>&rsquo; construct (see <a href="Expressions.html">Expressions</a>) can be used with the constructs of any supported
 language.
 </p>
 <p>The following sections detail to what degree each source language is
@@ -85,25 +74,25 @@ books written on each of these languages; please look to these for a
 language reference or tutorial.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="C.html#C" accesskey="1">C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C and C<tt>++</tt>
+<tr><td align="left" valign="top">&bull; <a href="C.html" accesskey="1">C</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C and C<tt>++</tt>
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="D.html#D" accesskey="2">D</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">D
+<tr><td align="left" valign="top">&bull; <a href="D.html" accesskey="2">D</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">D
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Go.html#Go" accesskey="3">Go</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Go
+<tr><td align="left" valign="top">&bull; <a href="Go.html" accesskey="3">Go</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Go
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Objective_002dC.html#Objective_002dC" accesskey="4">Objective-C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Objective-C
+<tr><td align="left" valign="top">&bull; <a href="Objective_002dC.html" accesskey="4">Objective-C</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Objective-C
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="OpenCL-C.html#OpenCL-C" accesskey="5">OpenCL C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">OpenCL C
+<tr><td align="left" valign="top">&bull; <a href="OpenCL-C.html" accesskey="5">OpenCL C</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">OpenCL C
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Fortran.html#Fortran" accesskey="6">Fortran</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Fortran
+<tr><td align="left" valign="top">&bull; <a href="Fortran.html" accesskey="6">Fortran</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Fortran
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Pascal.html#Pascal" accesskey="7">Pascal</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Pascal
+<tr><td align="left" valign="top">&bull; <a href="Pascal.html" accesskey="7">Pascal</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Pascal
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Rust.html#Rust" accesskey="8">Rust</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Rust
+<tr><td align="left" valign="top">&bull; <a href="Rust.html" accesskey="8">Rust</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Rust
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Modula_002d2.html#Modula_002d2" accesskey="9">Modula-2</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modula-2
+<tr><td align="left" valign="top">&bull; <a href="Modula_002d2.html" accesskey="9">Modula-2</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modula-2
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Ada.html#Ada">Ada</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Ada
+<tr><td align="left" valign="top">&bull; <a href="Ada.html">Ada</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Ada
 </td></tr>
 </table>
 

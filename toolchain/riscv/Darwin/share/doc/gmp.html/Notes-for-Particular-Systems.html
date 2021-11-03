@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Notes for Particular Systems (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Installing-GMP.html#Installing-GMP" rel="up" title="Installing GMP">
-<link href="Known-Build-Problems.html#Known-Build-Problems" rel="next" title="Known Build Problems">
-<link href="Notes-for-Package-Builds.html#Notes-for-Package-Builds" rel="prev" title="Notes for Package Builds">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Installing-GMP.html" rel="up" title="Installing GMP">
+<link href="Known-Build-Problems.html" rel="next" title="Known Build Problems">
+<link href="Notes-for-Package-Builds.html" rel="prev" title="Notes for Package Builds">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,20 +50,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Notes-for-Particular-Systems"></a>
-<div class="header">
+<span id="Notes-for-Particular-Systems"></span><div class="header">
 <p>
-Next: <a href="Known-Build-Problems.html#Known-Build-Problems" accesskey="n" rel="next">Known Build Problems</a>, Previous: <a href="Notes-for-Package-Builds.html#Notes-for-Package-Builds" accesskey="p" rel="prev">Notes for Package Builds</a>, Up: <a href="Installing-GMP.html#Installing-GMP" accesskey="u" rel="up">Installing GMP</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Known-Build-Problems.html" accesskey="n" rel="next">Known Build Problems</a>, Previous: <a href="Notes-for-Package-Builds.html" accesskey="p" rel="prev">Notes for Package Builds</a>, Up: <a href="Installing-GMP.html" accesskey="u" rel="up">Installing GMP</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Notes-for-Particular-Systems-1"></a>
-<h3 class="section">2.4 Notes for Particular Systems</h3>
-<a name="index-Build-notes-for-particular-systems"></a>
-<a name="index-Particular-systems"></a>
-<a name="index-Systems"></a>
+<span id="Notes-for-Particular-Systems-1"></span><h3 class="section">2.4 Notes for Particular Systems</h3>
+<span id="index-Build-notes-for-particular-systems"></span>
+<span id="index-Particular-systems"></span>
+<span id="index-Systems"></span>
 <dl compact="compact">
 <dt>AIX 3 and 4</dt>
-<dd><a name="index-AIX-1"></a>
+<dd><span id="index-AIX-1"></span>
 <p>On systems &lsquo;<samp>*-*-aix[34]*</samp>&rsquo; shared libraries are disabled by default, since
 some versions of the native <code>ar</code> fail on the convenience libraries
 used.  A shared build can be attempted with
@@ -89,14 +78,14 @@ available.
 </p>
 </dd>
 <dt>ARM</dt>
-<dd><a name="index-ARM"></a>
+<dd><span id="index-ARM"></span>
 <p>On systems &lsquo;<samp>arm*-*-*</samp>&rsquo;, versions of GCC up to and including 2.95.3 have a
 bug in unsigned division, giving wrong results for some operands.  GMP
 &lsquo;<samp>./configure</samp>&rsquo; will demand GCC 2.95.4 or later.
 </p>
 </dd>
 <dt>Compaq C++</dt>
-<dd><a name="index-Compaq-C_002b_002b"></a>
+<dd><span id="index-Compaq-C_002b_002b"></span>
 <p>Compaq C++ on OSF 5.1 has two flavours of <code>iostream</code>, a standard one and
 an old pre-standard one (see &lsquo;<samp>man iostream_intro</samp>&rsquo;).  GMP can only use the
 standard one, which unfortunately is not the default but must be selected by
@@ -108,10 +97,10 @@ defining <code>__USE_STD_IOSTREAM</code>.  Configure with for instance
 
 </dd>
 <dt>Floating Point Mode</dt>
-<dd><a name="index-Floating-point-mode"></a>
-<a name="index-Hardware-floating-point-mode"></a>
-<a name="index-Precision-of-hardware-floating-point"></a>
-<a name="index-x87"></a>
+<dd><span id="index-Floating-point-mode"></span>
+<span id="index-Hardware-floating-point-mode"></span>
+<span id="index-Precision-of-hardware-floating-point"></span>
+<span id="index-x87"></span>
 <p>On some systems, the hardware floating point has a control mode which can set
 all operations to be done in a particular precision, for instance single,
 double or extended on x86 systems (x87 floating point).  The GMP functions
@@ -121,7 +110,7 @@ affects all code, including application code, not just GMP.
 </p>
 </dd>
 <dt>FreeBSD 7.x, 8.x, 9.0, 9.1, 9.2</dt>
-<dd><a name="index-FreeBSD"></a>
+<dd><span id="index-FreeBSD"></span>
 <p><code>m4</code> in these releases of FreeBSD has an eval function which ignores
 its 2nd and 3rd arguments, which makes it unsuitable for <samp>.asm</samp> file
 processing.  &lsquo;<samp>./configure</samp>&rsquo; will detect the problem and either abort or
@@ -131,19 +120,19 @@ GNU m4 under the name &lsquo;<samp>gm4</samp>&rsquo;, which GMP cannot guess.
 </p>
 </dd>
 <dt>FreeBSD 7.x, 8.x, 9.x</dt>
-<dd><a name="index-FreeBSD-1"></a>
+<dd><span id="index-FreeBSD-1"></span>
 <p>GMP releases starting with 6.0 do not support &lsquo;<samp>ABI=32</samp>&rsquo; on FreeBSD/amd64
 prior to release 10.0 of the system.  The cause is a broken <code>limits.h</code>,
 which GMP no longer works around.
 </p>
 </dd>
 <dt>MS-DOS and MS Windows</dt>
-<dd><a name="index-MS_002dDOS"></a>
-<a name="index-MS-Windows"></a>
-<a name="index-Windows"></a>
-<a name="index-Cygwin"></a>
-<a name="index-DJGPP"></a>
-<a name="index-MINGW"></a>
+<dd><span id="index-MS_002dDOS"></span>
+<span id="index-MS-Windows"></span>
+<span id="index-Windows"></span>
+<span id="index-Cygwin"></span>
+<span id="index-DJGPP"></span>
+<span id="index-MINGW"></span>
 <p>On an MS-DOS system DJGPP can be used to build GMP, and on an MS Windows
 system Cygwin, DJGPP and MINGW can be used.  All three are excellent ports of
 GCC and the various GNU tools.
@@ -154,17 +143,17 @@ GCC and the various GNU tools.
 <a href="http://www.mingw.org/">http://www.mingw.org/</a>
 </pre></div>
 
-<a name="index-Interix"></a>
-<a name="index-Services-for-Unix"></a>
+<span id="index-Interix"></span>
+<span id="index-Services-for-Unix"></span>
 <p>Microsoft also publishes an Interix &ldquo;Services for Unix&rdquo; which can be used to
 build GMP on Windows (with a normal &lsquo;<samp>./configure</samp>&rsquo;), but it&rsquo;s not free
 software.
 </p>
 </dd>
 <dt>MS Windows DLLs</dt>
-<dd><a name="index-DLLs"></a>
-<a name="index-MS-Windows-1"></a>
-<a name="index-Windows-1"></a>
+<dd><span id="index-DLLs"></span>
+<span id="index-MS-Windows-1"></span>
+<span id="index-Windows-1"></span>
 <p>On systems &lsquo;<samp>*-*-cygwin*</samp>&rsquo;, &lsquo;<samp>*-*-mingw*</samp>&rsquo; and &lsquo;<samp>*-*-pw32*</samp>&rsquo; by
 default GMP builds only a static library, but a DLL can be built instead using
 </p>
@@ -193,7 +182,7 @@ to the application.
 </p>
 </dd>
 <dt>Motorola 68k CPU Types</dt>
-<dd><a name="index-68000"></a>
+<dd><span id="index-68000"></span>
 <p>&lsquo;<samp>m68k</samp>&rsquo; is taken to mean 68000.  &lsquo;<samp>m68020</samp>&rsquo; or higher will give a
 performance boost on applicable CPUs.  &lsquo;<samp>m68360</samp>&rsquo; can be used for CPU32
 series chips.  &lsquo;<samp>m68302</samp>&rsquo; can be used for &ldquo;Dragonball&rdquo; series chips,
@@ -201,7 +190,7 @@ though this is merely a synonym for &lsquo;<samp>m68000</samp>&rsquo;.
 </p>
 </dd>
 <dt>NetBSD 5.x</dt>
-<dd><a name="index-NetBSD"></a>
+<dd><span id="index-NetBSD"></span>
 <p><code>m4</code> in these releases of NetBSD has an eval function which ignores its
 2nd and 3rd arguments, which makes it unsuitable for <samp>.asm</samp> file
 processing.  &lsquo;<samp>./configure</samp>&rsquo; will detect the problem and either abort or
@@ -211,7 +200,7 @@ under the name &lsquo;<samp>gm4</samp>&rsquo;, which GMP cannot guess.
 </p>
 </dd>
 <dt>OpenBSD 2.6</dt>
-<dd><a name="index-OpenBSD"></a>
+<dd><span id="index-OpenBSD"></span>
 <p><code>m4</code> in this release of OpenBSD has a bug in <code>eval</code> that makes it
 unsuitable for <samp>.asm</samp> file processing.  &lsquo;<samp>./configure</samp>&rsquo; will detect
 the problem and either abort or choose another m4 in the <code>PATH</code>.  The bug
@@ -219,7 +208,7 @@ is fixed in OpenBSD 2.7, so either upgrade or use GNU m4.
 </p>
 </dd>
 <dt>Power CPU Types</dt>
-<dd><a name="index-Power_002fPowerPC"></a>
+<dd><span id="index-Power_002fPowerPC"></span>
 <p>In GMP, CPU types &lsquo;<samp>power*</samp>&rsquo; and &lsquo;<samp>powerpc*</samp>&rsquo; will each use instructions
 not available on the other, so it&rsquo;s important to choose the right one for the
 CPU that will be used.  Currently GMP has no assembly code support for using
@@ -232,17 +221,17 @@ workstations) is accepted by <samp>config.sub</samp>, but is currently equivalen
 </p>
 </dd>
 <dt>Sparc CPU Types</dt>
-<dd><a name="index-Sparc"></a>
+<dd><span id="index-Sparc"></span>
 <p>&lsquo;<samp>sparcv8</samp>&rsquo; or &lsquo;<samp>supersparc</samp>&rsquo; on relevant systems will give a
 significant performance increase over the V7 code selected by plain
 &lsquo;<samp>sparc</samp>&rsquo;.
 </p>
 </dd>
 <dt>Sparc App Regs</dt>
-<dd><a name="index-Sparc-1"></a>
+<dd><span id="index-Sparc-1"></span>
 <p>The GMP assembly code for both 32-bit and 64-bit Sparc clobbers the
 &ldquo;application registers&rdquo; <code>g2</code>, <code>g3</code> and <code>g4</code>, the same way
-that the GCC default &lsquo;<samp>-mapp-regs</samp>&rsquo; does (see <a href="http://gcc.gnu.org/onlinedocs/gcc/SPARC-Options.html#SPARC-Options">SPARC
+that the GCC default &lsquo;<samp>-mapp-regs</samp>&rsquo; does (see <a href="https://gcc.gnu.org/onlinedocs/gcc/SPARC-Options.html#SPARC-Options">SPARC
 Options</a> in <cite>Using the GNU Compiler Collection (GCC)</cite>).
 </p>
 <p>This makes that code unsuitable for use with the special V9
@@ -253,7 +242,7 @@ cases the only suggestion currently is to build GMP with
 </p>
 </dd>
 <dt>SunOS 4</dt>
-<dd><a name="index-SunOS"></a>
+<dd><span id="index-SunOS"></span>
 <p><code>/usr/bin/m4</code> lacks various features needed to process <samp>.asm</samp>
 files, and instead &lsquo;<samp>./configure</samp>&rsquo; will automatically use
 <code>/usr/5bin/m4</code>, which we believe is always available (if not then use
@@ -261,9 +250,9 @@ GNU m4).
 </p>
 </dd>
 <dt>x86 CPU Types</dt>
-<dd><a name="index-x86"></a>
-<a name="index-80x86"></a>
-<a name="index-i386"></a>
+<dd><span id="index-x86"></span>
+<span id="index-80x86"></span>
+<span id="index-i386"></span>
 <p>&lsquo;<samp>i586</samp>&rsquo;, &lsquo;<samp>pentium</samp>&rsquo; or &lsquo;<samp>pentiummmx</samp>&rsquo; code is good for its intended
 P5 Pentium chips, but quite slow when run on Intel P6 class chips (PPro, P-II,
 P-III).  &lsquo;<samp>i386</samp>&rsquo; is a better choice when making binaries that must run on
@@ -271,8 +260,8 @@ both.
 </p>
 </dd>
 <dt>x86 MMX and SSE2 Code</dt>
-<dd><a name="index-MMX"></a>
-<a name="index-SSE2"></a>
+<dd><span id="index-MMX"></span>
+<span id="index-SSE2"></span>
 <p>If the CPU selected has MMX code but the assembler doesn&rsquo;t support it, a
 warning is given and non-MMX code is used instead.  This will be an inferior
 build, since the MMX code that&rsquo;s present is there because it&rsquo;s faster than the
@@ -292,7 +281,7 @@ Install a recent <code>gas</code> if MMX code is wanted on these systems.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Known-Build-Problems.html#Known-Build-Problems" accesskey="n" rel="next">Known Build Problems</a>, Previous: <a href="Notes-for-Package-Builds.html#Notes-for-Package-Builds" accesskey="p" rel="prev">Notes for Package Builds</a>, Up: <a href="Installing-GMP.html#Installing-GMP" accesskey="u" rel="up">Installing GMP</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Known-Build-Problems.html" accesskey="n" rel="next">Known Build Problems</a>, Previous: <a href="Notes-for-Package-Builds.html" accesskey="p" rel="prev">Notes for Package Builds</a>, Up: <a href="Installing-GMP.html" accesskey="u" rel="up">Installing GMP</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

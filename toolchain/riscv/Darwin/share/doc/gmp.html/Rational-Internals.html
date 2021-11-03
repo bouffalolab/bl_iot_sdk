@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Rational Internals (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Internals.html#Internals" rel="up" title="Internals">
-<link href="Float-Internals.html#Float-Internals" rel="next" title="Float Internals">
-<link href="Integer-Internals.html#Integer-Internals" rel="prev" title="Integer Internals">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Internals.html" rel="up" title="Internals">
+<link href="Float-Internals.html" rel="next" title="Float Internals">
+<link href="Integer-Internals.html" rel="prev" title="Integer Internals">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Rational-Internals"></a>
-<div class="header">
+<span id="Rational-Internals"></span><div class="header">
 <p>
-Next: <a href="Float-Internals.html#Float-Internals" accesskey="n" rel="next">Float Internals</a>, Previous: <a href="Integer-Internals.html#Integer-Internals" accesskey="p" rel="prev">Integer Internals</a>, Up: <a href="Internals.html#Internals" accesskey="u" rel="up">Internals</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Float-Internals.html" accesskey="n" rel="next">Float Internals</a>, Previous: <a href="Integer-Internals.html" accesskey="p" rel="prev">Integer Internals</a>, Up: <a href="Internals.html" accesskey="u" rel="up">Internals</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Rational-Internals-1"></a>
-<h3 class="section">16.2 Rational Internals</h3>
-<a name="index-Rational-internals"></a>
+<span id="Rational-Internals-1"></span><h3 class="section">16.2 Rational Internals</h3>
+<span id="index-Rational-internals"></span>
 
 <p><code>mpq_t</code> variables represent rationals using an <code>mpz_t</code> numerator and
-denominator (see <a href="Integer-Internals.html#Integer-Internals">Integer Internals</a>).
+denominator (see <a href="Integer-Internals.html">Integer Internals</a>).
 </p>
 <p>The canonical form adopted is denominator positive (and non-zero), no common
 factors between numerator and denominator, and zero uniquely represented as
@@ -84,7 +73,7 @@ example in <code>mpq_mul</code> to make only two cross GCDs necessary, not four.
 </p>
 <p>This general approach to common factors is badly sub-optimal in the presence
 of simple factorizations or little prospect for cancellation, but GMP has no
-way to know when this will occur.  As per <a href="Efficiency.html#Efficiency">Efficiency</a>, that&rsquo;s left to
+way to know when this will occur.  As per <a href="Efficiency.html">Efficiency</a>, that&rsquo;s left to
 applications.  The <code>mpq_t</code> framework might still suit, with
 <code>mpq_numref</code> and <code>mpq_denref</code> for direct access to the numerator and
 denominator, or of course <code>mpz_t</code> variables can be used directly.

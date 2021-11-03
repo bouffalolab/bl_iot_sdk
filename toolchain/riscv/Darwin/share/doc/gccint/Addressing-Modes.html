@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Addressing Modes (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Target-Macros.html#Target-Macros" rel="up" title="Target Macros">
-<link href="Anchored-Addresses.html#Anchored-Addresses" rel="next" title="Anchored Addresses">
-<link href="Library-Calls.html#Library-Calls" rel="prev" title="Library Calls">
+<link href="Target-Macros.html" rel="up" title="Target Macros">
+<link href="Anchored-Addresses.html" rel="next" title="Anchored Addresses">
+<link href="Library-Calls.html" rel="prev" title="Library Calls">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,44 +58,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Addressing-Modes"></a>
-<div class="header">
+<span id="Addressing-Modes"></span><div class="header">
 <p>
-Next: <a href="Anchored-Addresses.html#Anchored-Addresses" accesskey="n" rel="next">Anchored Addresses</a>, Previous: <a href="Library-Calls.html#Library-Calls" accesskey="p" rel="prev">Library Calls</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Anchored-Addresses.html" accesskey="n" rel="next">Anchored Addresses</a>, Previous: <a href="Library-Calls.html" accesskey="p" rel="prev">Library Calls</a>, Up: <a href="Target-Macros.html" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Addressing-Modes-1"></a>
-<h3 class="section">18.13 Addressing Modes</h3>
-<a name="index-addressing-modes"></a>
+<span id="Addressing-Modes-1"></span><h3 class="section">18.13 Addressing Modes</h3>
+<span id="index-addressing-modes"></span>
 
 <p>This is about addressing modes.
 </p>
 <dl>
-<dt><a name="index-HAVE_005fPRE_005fINCREMENT"></a>Macro: <strong>HAVE_PRE_INCREMENT</strong></dt>
-<dt><a name="index-HAVE_005fPRE_005fDECREMENT"></a>Macro: <strong>HAVE_PRE_DECREMENT</strong></dt>
-<dt><a name="index-HAVE_005fPOST_005fINCREMENT"></a>Macro: <strong>HAVE_POST_INCREMENT</strong></dt>
-<dt><a name="index-HAVE_005fPOST_005fDECREMENT"></a>Macro: <strong>HAVE_POST_DECREMENT</strong></dt>
+<dt id="index-HAVE_005fPRE_005fINCREMENT">Macro: <strong>HAVE_PRE_INCREMENT</strong></dt>
+<dt id="index-HAVE_005fPRE_005fDECREMENT">Macro: <strong>HAVE_PRE_DECREMENT</strong></dt>
+<dt id="index-HAVE_005fPOST_005fINCREMENT">Macro: <strong>HAVE_POST_INCREMENT</strong></dt>
+<dt id="index-HAVE_005fPOST_005fDECREMENT">Macro: <strong>HAVE_POST_DECREMENT</strong></dt>
 <dd><p>A C expression that is nonzero if the machine supports pre-increment,
 pre-decrement, post-increment, or post-decrement addressing respectively.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-HAVE_005fPRE_005fMODIFY_005fDISP"></a>Macro: <strong>HAVE_PRE_MODIFY_DISP</strong></dt>
-<dt><a name="index-HAVE_005fPOST_005fMODIFY_005fDISP"></a>Macro: <strong>HAVE_POST_MODIFY_DISP</strong></dt>
+<dt id="index-HAVE_005fPRE_005fMODIFY_005fDISP">Macro: <strong>HAVE_PRE_MODIFY_DISP</strong></dt>
+<dt id="index-HAVE_005fPOST_005fMODIFY_005fDISP">Macro: <strong>HAVE_POST_MODIFY_DISP</strong></dt>
 <dd><p>A C expression that is nonzero if the machine supports pre- or
 post-address side-effect generation involving constants other than
 the size of the memory operand.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-HAVE_005fPRE_005fMODIFY_005fREG"></a>Macro: <strong>HAVE_PRE_MODIFY_REG</strong></dt>
-<dt><a name="index-HAVE_005fPOST_005fMODIFY_005fREG"></a>Macro: <strong>HAVE_POST_MODIFY_REG</strong></dt>
+<dt id="index-HAVE_005fPRE_005fMODIFY_005fREG">Macro: <strong>HAVE_PRE_MODIFY_REG</strong></dt>
+<dt id="index-HAVE_005fPOST_005fMODIFY_005fREG">Macro: <strong>HAVE_POST_MODIFY_REG</strong></dt>
 <dd><p>A C expression that is nonzero if the machine supports pre- or
 post-address side-effect generation involving a register displacement.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-CONSTANT_005fADDRESS_005fP"></a>Macro: <strong>CONSTANT_ADDRESS_P</strong> <em>(<var>x</var>)</em></dt>
+<dt id="index-CONSTANT_005fADDRESS_005fP">Macro: <strong>CONSTANT_ADDRESS_P</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>A C expression that is 1 if the RTX <var>x</var> is a constant which
 is a valid address.  On most machines the default definition of
 <code>(CONSTANT_P (<var>x</var>) &amp;&amp; GET_CODE (<var>x</var>) != CONST_DOUBLE)</code>
@@ -113,7 +102,7 @@ constant addresses are supported.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-CONSTANT_005fP"></a>Macro: <strong>CONSTANT_P</strong> <em>(<var>x</var>)</em></dt>
+<dt id="index-CONSTANT_005fP">Macro: <strong>CONSTANT_P</strong> <em>(<var>x</var>)</em></dt>
 <dd><p><code>CONSTANT_P</code>, which is defined by target-independent code,
 accepts integer-values expressions whose values are not explicitly
 known, such as <code>symbol_ref</code>, <code>label_ref</code>, and <code>high</code>
@@ -122,7 +111,7 @@ expressions and <code>const</code> arithmetic expressions, in addition to
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-MAX_005fREGS_005fPER_005fADDRESS"></a>Macro: <strong>MAX_REGS_PER_ADDRESS</strong></dt>
+<dt id="index-MAX_005fREGS_005fPER_005fADDRESS">Macro: <strong>MAX_REGS_PER_ADDRESS</strong></dt>
 <dd><p>A number, the maximum number of registers that can appear in a valid
 memory address.  Note that it is up to you to specify a value equal to
 the maximum number that <code>TARGET_LEGITIMATE_ADDRESS_P</code> would ever
@@ -130,7 +119,7 @@ accept.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fLEGITIMATE_005fADDRESS_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_LEGITIMATE_ADDRESS_P</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>, bool <var>strict</var>)</em></dt>
+<dt id="index-TARGET_005fLEGITIMATE_005fADDRESS_005fP">Target Hook: <em>bool</em> <strong>TARGET_LEGITIMATE_ADDRESS_P</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>, bool <var>strict</var>)</em></dt>
 <dd><p>A function that returns whether <var>x</var> (an RTX) is a legitimate memory
 address on the target machine for a memory operand of mode <var>mode</var>.
 </p>
@@ -163,15 +152,15 @@ sums that are not marked with  <code>const</code>.  It assumes that a naked
 naked constant sums as illegitimate addresses, so that none of them will
 be given to <code>PRINT_OPERAND_ADDRESS</code>.
 </p>
-<a name="index-TARGET_005fENCODE_005fSECTION_005fINFO-and-address-validation"></a>
+<span id="index-TARGET_005fENCODE_005fSECTION_005fINFO-and-address-validation"></span>
 <p>On some machines, whether a symbolic address is legitimate depends on
 the section that the address refers to.  On these machines, define the
 target hook <code>TARGET_ENCODE_SECTION_INFO</code> to store the information
 into the <code>symbol_ref</code>, and then check for it here.  When you see a
 <code>const</code>, you will have to look inside it to find the
-<code>symbol_ref</code> in order to determine the section.  See <a href="Assembler-Format.html#Assembler-Format">Assembler Format</a>.
+<code>symbol_ref</code> in order to determine the section.  See <a href="Assembler-Format.html">Assembler Format</a>.
 </p>
-<a name="index-GO_005fIF_005fLEGITIMATE_005fADDRESS"></a>
+<span id="index-GO_005fIF_005fLEGITIMATE_005fADDRESS"></span>
 <p>Some ports are still using a deprecated legacy substitute for
 this hook, the <code>GO_IF_LEGITIMATE_ADDRESS</code> macro.  This macro
 has this syntax:
@@ -183,7 +172,7 @@ has this syntax:
 <p>and should <code>goto <var>label</var></code> if the address <var>x</var> is a valid
 address on the target machine for a memory operand of mode <var>mode</var>.
 </p>
-<a name="index-REG_005fOK_005fSTRICT"></a>
+<span id="index-REG_005fOK_005fSTRICT"></span>
 <p>Compiler source files that want to use the strict variant of this
 macro define the macro <code>REG_OK_STRICT</code>.  You should use an
 <code>#ifdef REG_OK_STRICT</code> conditional to define the strict variant in
@@ -194,7 +183,7 @@ files that are recompiled when changes are made.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fMEM_005fCONSTRAINT"></a>Macro: <strong>TARGET_MEM_CONSTRAINT</strong></dt>
+<dt id="index-TARGET_005fMEM_005fCONSTRAINT">Macro: <strong>TARGET_MEM_CONSTRAINT</strong></dt>
 <dd><p>A single character to be used instead of the default <code>'m'</code>
 character for general memory addresses.  This defines the constraint
 letter which matches the memory addresses accepted by
@@ -206,7 +195,7 @@ preserve functionality of inline assembly constructs using the
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-FIND_005fBASE_005fTERM"></a>Macro: <strong>FIND_BASE_TERM</strong> <em>(<var>x</var>)</em></dt>
+<dt id="index-FIND_005fBASE_005fTERM">Macro: <strong>FIND_BASE_TERM</strong> <em>(<var>x</var>)</em></dt>
 <dd><p>A C expression to determine the base term of address <var>x</var>,
 or to provide a simplified version of <var>x</var> from which <samp>alias.c</samp>
 can easily find the base term.  This macro is used in only two places:
@@ -220,12 +209,12 @@ a label_ref or symbol_ref within an UNSPEC.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fLEGITIMIZE_005fADDRESS"></a>Target Hook: <em>rtx</em> <strong>TARGET_LEGITIMIZE_ADDRESS</strong> <em>(rtx <var>x</var>, rtx <var>oldx</var>, machine_mode <var>mode</var>)</em></dt>
+<dt id="index-TARGET_005fLEGITIMIZE_005fADDRESS">Target Hook: <em>rtx</em> <strong>TARGET_LEGITIMIZE_ADDRESS</strong> <em>(rtx <var>x</var>, rtx <var>oldx</var>, machine_mode <var>mode</var>)</em></dt>
 <dd><p>This hook is given an invalid memory address <var>x</var> for an
 operand of mode <var>mode</var> and should try to return a valid memory
 address.
 </p>
-<a name="index-break_005fout_005fmemory_005frefs"></a>
+<span id="index-break_005fout_005fmemory_005frefs"></span>
 <p><var>x</var> will always be the result of a call to <code>break_out_memory_refs</code>,
 and <var>oldx</var> will be the operand that was given to that function to produce
 <var>x</var>.
@@ -235,7 +224,7 @@ and <var>oldx</var> will be the operand that was given to that function to produ
 should return the new <var>x</var>.
 </p>
 <p>It is not necessary for this hook to come up with a legitimate address,
-with the exception of native TLS addresses (see <a href="Emulated-TLS.html#Emulated-TLS">Emulated TLS</a>).
+with the exception of native TLS addresses (see <a href="Emulated-TLS.html">Emulated TLS</a>).
 The compiler has standard ways of doing so in all cases.  In fact, if
 the target supports only emulated TLS, it
 is safe to omit this hook or make it return <var>x</var> if it cannot find
@@ -244,7 +233,7 @@ strategy can generate better code.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-LEGITIMIZE_005fRELOAD_005fADDRESS"></a>Macro: <strong>LEGITIMIZE_RELOAD_ADDRESS</strong> <em>(<var>x</var>, <var>mode</var>, <var>opnum</var>, <var>type</var>, <var>ind_levels</var>, <var>win</var>)</em></dt>
+<dt id="index-LEGITIMIZE_005fRELOAD_005fADDRESS">Macro: <strong>LEGITIMIZE_RELOAD_ADDRESS</strong> <em>(<var>x</var>, <var>mode</var>, <var>opnum</var>, <var>type</var>, <var>ind_levels</var>, <var>win</var>)</em></dt>
 <dd><p>A C compound statement that attempts to replace <var>x</var>, which is an address
 that needs reloading, with a valid memory address for an operand of mode
 <var>mode</var>.  <var>win</var> will be a C statement label elsewhere in the code.
@@ -269,7 +258,7 @@ of reload internals.
 previous invocation of this macro.  If it fails to handle such addresses
 then the compiler may generate incorrect code or abort.
 </p>
-<a name="index-push_005freload"></a>
+<span id="index-push_005freload"></span>
 <p>The macro definition should use <code>push_reload</code> to indicate parts that
 need reloading; <var>opnum</var>, <var>type</var> and <var>ind_levels</var> are usually
 suitable to be passed unaltered to <code>push_reload</code>.
@@ -280,11 +269,11 @@ should assign <var>x</var> (which will always be a C variable) a new value.
 This also applies to parts that you change indirectly by calling
 <code>push_reload</code>.
 </p>
-<a name="index-strict_005fmemory_005faddress_005fp"></a>
+<span id="index-strict_005fmemory_005faddress_005fp"></span>
 <p>The macro definition may use <code>strict_memory_address_p</code> to test if
 the address has become legitimate.
 </p>
-<a name="index-copy_005frtx"></a>
+<span id="index-copy_005frtx"></span>
 <p>If you want to change only a part of <var>x</var>, one standard way of doing
 this is to use <code>copy_rtx</code>.  Note, however, that it unshares only a
 single level of rtl.  Thus, if the part to be changed is not at the
@@ -294,7 +283,7 @@ address;  but often a machine-dependent strategy can generate better code.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fMODE_005fDEPENDENT_005fADDRESS_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_MODE_DEPENDENT_ADDRESS_P</strong> <em>(const_rtx <var>addr</var>, addr_space_t <var>addrspace</var>)</em></dt>
+<dt id="index-TARGET_005fMODE_005fDEPENDENT_005fADDRESS_005fP">Target Hook: <em>bool</em> <strong>TARGET_MODE_DEPENDENT_ADDRESS_P</strong> <em>(const_rtx <var>addr</var>, addr_space_t <var>addrspace</var>)</em></dt>
 <dd><p>This hook returns <code>true</code> if memory address <var>addr</var> in address
 space <var>addrspace</var> can have
 different meanings depending on the machine mode of the memory
@@ -312,7 +301,7 @@ addresses.  Many RISC machines have no mode-dependent addresses.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fLEGITIMATE_005fCONSTANT_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_LEGITIMATE_CONSTANT_P</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fLEGITIMATE_005fCONSTANT_005fP">Target Hook: <em>bool</em> <strong>TARGET_LEGITIMATE_CONSTANT_P</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>)</em></dt>
 <dd><p>This hook returns true if <var>x</var> is a legitimate constant for a
 <var>mode</var>-mode immediate operand on the target machine.  You can assume that
 <var>x</var> satisfies <code>CONSTANT_P</code>, so you need not check this.
@@ -321,7 +310,7 @@ addresses.  Many RISC machines have no mode-dependent addresses.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fDELEGITIMIZE_005fADDRESS"></a>Target Hook: <em>rtx</em> <strong>TARGET_DELEGITIMIZE_ADDRESS</strong> <em>(rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fDELEGITIMIZE_005fADDRESS">Target Hook: <em>rtx</em> <strong>TARGET_DELEGITIMIZE_ADDRESS</strong> <em>(rtx <var>x</var>)</em></dt>
 <dd><p>This hook is used to undo the possibly obfuscating effects of the
 <code>LEGITIMIZE_ADDRESS</code> and <code>LEGITIMIZE_RELOAD_ADDRESS</code> target
 macros.  Some backend implementations of these macros wrap symbol
@@ -332,13 +321,13 @@ into their original form.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fCONST_005fNOT_005fOK_005fFOR_005fDEBUG_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_CONST_NOT_OK_FOR_DEBUG_P</strong> <em>(rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fCONST_005fNOT_005fOK_005fFOR_005fDEBUG_005fP">Target Hook: <em>bool</em> <strong>TARGET_CONST_NOT_OK_FOR_DEBUG_P</strong> <em>(rtx <var>x</var>)</em></dt>
 <dd><p>This hook should return true if <var>x</var> should not be emitted into
 debug sections.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fCANNOT_005fFORCE_005fCONST_005fMEM"></a>Target Hook: <em>bool</em> <strong>TARGET_CANNOT_FORCE_CONST_MEM</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fCANNOT_005fFORCE_005fCONST_005fMEM">Target Hook: <em>bool</em> <strong>TARGET_CANNOT_FORCE_CONST_MEM</strong> <em>(machine_mode <var>mode</var>, rtx <var>x</var>)</em></dt>
 <dd><p>This hook should return true if <var>x</var> is of a form that cannot (or
 should not) be spilled to the constant pool.  <var>mode</var> is the mode
 of <var>x</var>.
@@ -353,7 +342,7 @@ of TLS symbols for various targets.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fUSE_005fBLOCKS_005fFOR_005fCONSTANT_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_USE_BLOCKS_FOR_CONSTANT_P</strong> <em>(machine_mode <var>mode</var>, const_rtx <var>x</var>)</em></dt>
+<dt id="index-TARGET_005fUSE_005fBLOCKS_005fFOR_005fCONSTANT_005fP">Target Hook: <em>bool</em> <strong>TARGET_USE_BLOCKS_FOR_CONSTANT_P</strong> <em>(machine_mode <var>mode</var>, const_rtx <var>x</var>)</em></dt>
 <dd><p>This hook should return true if pool entries for constant <var>x</var> can
 be placed in an <code>object_block</code> structure.  <var>mode</var> is the mode
 of <var>x</var>.
@@ -362,7 +351,7 @@ of <var>x</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fUSE_005fBLOCKS_005fFOR_005fDECL_005fP"></a>Target Hook: <em>bool</em> <strong>TARGET_USE_BLOCKS_FOR_DECL_P</strong> <em>(const_tree <var>decl</var>)</em></dt>
+<dt id="index-TARGET_005fUSE_005fBLOCKS_005fFOR_005fDECL_005fP">Target Hook: <em>bool</em> <strong>TARGET_USE_BLOCKS_FOR_DECL_P</strong> <em>(const_tree <var>decl</var>)</em></dt>
 <dd><p>This hook should return true if pool entries for <var>decl</var> should
 be placed in an <code>object_block</code> structure.
 </p>
@@ -370,14 +359,14 @@ be placed in an <code>object_block</code> structure.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fBUILTIN_005fRECIPROCAL"></a>Target Hook: <em>tree</em> <strong>TARGET_BUILTIN_RECIPROCAL</strong> <em>(tree <var>fndecl</var>)</em></dt>
+<dt id="index-TARGET_005fBUILTIN_005fRECIPROCAL">Target Hook: <em>tree</em> <strong>TARGET_BUILTIN_RECIPROCAL</strong> <em>(tree <var>fndecl</var>)</em></dt>
 <dd><p>This hook should return the DECL of a function that implements the
 reciprocal of the machine-specific builtin function <var>fndecl</var>, or
 <code>NULL_TREE</code> if such a function is not available.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fMASK_005fFOR_005fLOAD"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_MASK_FOR_LOAD</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fMASK_005fFOR_005fLOAD">Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_MASK_FOR_LOAD</strong> <em>(void)</em></dt>
 <dd><p>This hook should return the DECL of a function <var>f</var> that given an
 address <var>addr</var> as an argument returns a mask <var>m</var> that can be
 used to extract from two vectors the relevant data that resides in
@@ -407,14 +396,14 @@ log2(<var>VS</var>) - 1 bits of <var>addr</var> will be considered.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fVECTORIZATION_005fCOST"></a>Target Hook: <em>int</em> <strong>TARGET_VECTORIZE_BUILTIN_VECTORIZATION_COST</strong> <em>(enum vect_cost_for_stmt <var>type_of_cost</var>, tree <var>vectype</var>, int <var>misalign</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fVECTORIZATION_005fCOST">Target Hook: <em>int</em> <strong>TARGET_VECTORIZE_BUILTIN_VECTORIZATION_COST</strong> <em>(enum vect_cost_for_stmt <var>type_of_cost</var>, tree <var>vectype</var>, int <var>misalign</var>)</em></dt>
 <dd><p>Returns cost of different scalar or vector statements for vectorization cost model.
 For vector memory operations the cost may depend on type (<var>vectype</var>) and
 misalignment value (<var>misalign</var>).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fPREFERRED_005fVECTOR_005fALIGNMENT"></a>Target Hook: <em>HOST_WIDE_INT</em> <strong>TARGET_VECTORIZE_PREFERRED_VECTOR_ALIGNMENT</strong> <em>(const_tree <var>type</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fPREFERRED_005fVECTOR_005fALIGNMENT">Target Hook: <em>poly_uint64</em> <strong>TARGET_VECTORIZE_PREFERRED_VECTOR_ALIGNMENT</strong> <em>(const_tree <var>type</var>)</em></dt>
 <dd><p>This hook returns the preferred alignment in bits for accesses to
 vectors of type <var>type</var> in vectorized code.  This might be less than
 or greater than the ABI-defined value returned by
@@ -427,12 +416,12 @@ correct for most targets.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fVECTOR_005fALIGNMENT_005fREACHABLE"></a>Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_VECTOR_ALIGNMENT_REACHABLE</strong> <em>(const_tree <var>type</var>, bool <var>is_packed</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fVECTOR_005fALIGNMENT_005fREACHABLE">Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_VECTOR_ALIGNMENT_REACHABLE</strong> <em>(const_tree <var>type</var>, bool <var>is_packed</var>)</em></dt>
 <dd><p>Return true if vector alignment is reachable (by peeling N iterations) for the given scalar type <var>type</var>.  <var>is_packed</var> is false if the scalar access using <var>type</var> is known to be naturally aligned.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fVEC_005fPERM_005fCONST"></a>Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_VEC_PERM_CONST</strong> <em>(machine_mode <var>mode</var>, rtx <var>output</var>, rtx <var>in0</var>, rtx <var>in1</var>, const vec_perm_indices <var>&amp;sel</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fVEC_005fPERM_005fCONST">Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_VEC_PERM_CONST</strong> <em>(machine_mode <var>mode</var>, rtx <var>output</var>, rtx <var>in0</var>, rtx <var>in1</var>, const vec_perm_indices <var>&amp;sel</var>)</em></dt>
 <dd><p>This hook is used to test whether the target can permute up to two
 vectors of mode <var>mode</var> using the permutation vector <code>sel</code>, and
 also to emit such a permutation.  In the former case <var>in0</var>, <var>in1</var>
@@ -444,7 +433,7 @@ registers of mode <var>mode</var>.  <var>in1</var> is the same as <var>in0</var>
 <p>Return true if the operation is possible, emitting instructions for it
 if rtxes are provided.
 </p>
-<a name="index-vec_005fpermm-instruction-pattern-1"></a>
+<span id="index-vec_005fpermm-instruction-pattern-1"></span>
 <p>If the hook returns false for a mode with multibyte elements, GCC will
 try the equivalent byte operation.  If that also fails, it will try forcing
 the selector into a register and using the <var>vec_perm<var>mode</var></var>
@@ -453,20 +442,7 @@ implementation approaches itself.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fCONVERSION"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_CONVERSION</strong> <em>(unsigned <var>code</var>, tree <var>dest_type</var>, tree <var>src_type</var>)</em></dt>
-<dd><p>This hook should return the DECL of a function that implements conversion of the
-input vector of type <var>src_type</var> to type <var>dest_type</var>.
-The value of <var>code</var> is one of the enumerators in <code>enum tree_code</code> and
-specifies how the conversion is to be applied
-(truncation, rounding, etc.).
-</p>
-<p>If this hook is defined, the autovectorizer will use the
-<code>TARGET_VECTORIZE_BUILTIN_CONVERSION</code> target hook when vectorizing
-conversion. Otherwise, it will return <code>NULL_TREE</code>.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fVECTORIZED_005fFUNCTION"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_VECTORIZED_FUNCTION</strong> <em>(unsigned <var>code</var>, tree <var>vec_type_out</var>, tree <var>vec_type_in</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fVECTORIZED_005fFUNCTION">Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_VECTORIZED_FUNCTION</strong> <em>(unsigned <var>code</var>, tree <var>vec_type_out</var>, tree <var>vec_type_in</var>)</em></dt>
 <dd><p>This hook should return the decl of a function that implements the
 vectorized variant of the function with the <code>combined_fn</code> code
 <var>code</var> or <code>NULL_TREE</code> if such a function is not available.
@@ -475,7 +451,7 @@ The return type of the vectorized function shall be of vector type
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fMD_005fVECTORIZED_005fFUNCTION"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_MD_VECTORIZED_FUNCTION</strong> <em>(tree <var>fndecl</var>, tree <var>vec_type_out</var>, tree <var>vec_type_in</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fMD_005fVECTORIZED_005fFUNCTION">Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_MD_VECTORIZED_FUNCTION</strong> <em>(tree <var>fndecl</var>, tree <var>vec_type_out</var>, tree <var>vec_type_in</var>)</em></dt>
 <dd><p>This hook should return the decl of a function that implements the
 vectorized variant of target built-in function <code>fndecl</code>.  The
 return type of the vectorized function shall be of vector type
@@ -483,7 +459,7 @@ return type of the vectorized function shall be of vector type
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fSUPPORT_005fVECTOR_005fMISALIGNMENT"></a>Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_SUPPORT_VECTOR_MISALIGNMENT</strong> <em>(machine_mode <var>mode</var>, const_tree <var>type</var>, int <var>misalignment</var>, bool <var>is_packed</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fSUPPORT_005fVECTOR_005fMISALIGNMENT">Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_SUPPORT_VECTOR_MISALIGNMENT</strong> <em>(machine_mode <var>mode</var>, const_tree <var>type</var>, int <var>misalignment</var>, bool <var>is_packed</var>)</em></dt>
 <dd><p>This hook should return true if the target supports misaligned vector
 store/load of a specific factor denoted in the <var>misalignment</var>
 parameter.  The vector store/load should be of machine mode <var>mode</var> and
@@ -492,7 +468,7 @@ parameter is true if the memory access is defined in a packed struct.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fPREFERRED_005fSIMD_005fMODE"></a>Target Hook: <em>machine_mode</em> <strong>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</strong> <em>(scalar_mode <var>mode</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fPREFERRED_005fSIMD_005fMODE">Target Hook: <em>machine_mode</em> <strong>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</strong> <em>(scalar_mode <var>mode</var>)</em></dt>
 <dd><p>This hook should return the preferred mode for vectorizing scalar
 mode <var>mode</var>.  The default is
 equal to <code>word_mode</code>, because the vectorizer can do some
@@ -500,7 +476,7 @@ transformations even in absence of specialized <acronym>SIMD</acronym> hardware.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fSPLIT_005fREDUCTION"></a>Target Hook: <em>machine_mode</em> <strong>TARGET_VECTORIZE_SPLIT_REDUCTION</strong> <em>(machine_mode)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fSPLIT_005fREDUCTION">Target Hook: <em>machine_mode</em> <strong>TARGET_VECTORIZE_SPLIT_REDUCTION</strong> <em>(machine_mode)</em></dt>
 <dd><p>This hook should return the preferred mode to split the final reduction
 step on <var>mode</var> to.  The reduction is then carried out reducing upper
 against lower halves of vectors recursively until the specified mode is
@@ -508,59 +484,105 @@ reached.  The default is <var>mode</var> which means no splitting.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fAUTOVECTORIZE_005fVECTOR_005fSIZES"></a>Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_AUTOVECTORIZE_VECTOR_SIZES</strong> <em>(vector_sizes *<var>sizes</var>)</em></dt>
-<dd><p>If the mode returned by <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> is not
-the only one that is worth considering, this hook should add all suitable
-vector sizes to <var>sizes</var>, in order of decreasing preference.  The first
-one should be the size of <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code>.
+<dt id="index-TARGET_005fVECTORIZE_005fAUTOVECTORIZE_005fVECTOR_005fMODES">Target Hook: <em>unsigned int</em> <strong>TARGET_VECTORIZE_AUTOVECTORIZE_VECTOR_MODES</strong> <em>(vector_modes *<var>modes</var>, bool <var>all</var>)</em></dt>
+<dd><p>If using the mode returned by <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code>
+is not the only approach worth considering, this hook should add one mode to
+<var>modes</var> for each useful alternative approach.  These modes are then
+passed to <code>TARGET_VECTORIZE_RELATED_MODE</code> to obtain the vector mode
+for a given element mode.
 </p>
+<p>The modes returned in <var>modes</var> should use the smallest element mode
+possible for the vectorization approach that they represent, preferring
+integer modes over floating-poing modes in the event of a tie.  The first
+mode should be the <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> for its
+element mode.
+</p>
+<p>If <var>all</var> is true, add suitable vector modes even when they are generally
+not expected to be worthwhile.
+</p>
+<p>The hook returns a bitmask of flags that control how the modes in
+<var>modes</var> are used.  The flags are:
+</p><dl compact="compact">
+<dt><code>VECT_COMPARE_COSTS</code></dt>
+<dd><p>Tells the loop vectorizer to try all the provided modes and pick the one
+with the lowest cost.  By default the vectorizer will choose the first
+mode that works.
+</p></dd>
+</dl>
+
 <p>The hook does not need to do anything if the vector returned by
 <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> is the only one relevant
-for autovectorization.  The default implementation does nothing.
+for autovectorization.  The default implementation adds no modes and
+returns 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fGET_005fMASK_005fMODE"></a>Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_GET_MASK_MODE</strong> <em>(poly_uint64 <var>nunits</var>, poly_uint64 <var>length</var>)</em></dt>
-<dd><p>A vector mask is a value that holds one boolean result for every element
-in a vector.  This hook returns the machine mode that should be used to
-represent such a mask when the vector in question is <var>length</var> bytes
-long and contains <var>nunits</var> elements.  The hook returns an empty
-<code>opt_machine_mode</code> if no such mode exists.
+<dt id="index-TARGET_005fVECTORIZE_005fRELATED_005fMODE">Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_RELATED_MODE</strong> <em>(machine_mode <var>vector_mode</var>, scalar_mode <var>element_mode</var>, poly_uint64 <var>nunits</var>)</em></dt>
+<dd><p>If a piece of code is using vector mode <var>vector_mode</var> and also wants
+to operate on elements of mode <var>element_mode</var>, return the vector mode
+it should use for those elements.  If <var>nunits</var> is nonzero, ensure that
+the mode has exactly <var>nunits</var> elements, otherwise pick whichever vector
+size pairs the most naturally with <var>vector_mode</var>.  Return an empty
+<code>opt_machine_mode</code> if there is no supported vector mode with the
+required properties.
 </p>
-<p>The default implementation returns the mode of an integer vector that
-is <var>length</var> bytes long and that contains <var>nunits</var> elements,
-if such a mode exists.
+<p>There is no prescribed way of handling the case in which <var>nunits</var>
+is zero.  One common choice is to pick a vector mode with the same size
+as <var>vector_mode</var>; this is the natural choice if the target has a
+fixed vector size.  Another option is to choose a vector mode with the
+same number of elements as <var>vector_mode</var>; this is the natural choice
+if the target has a fixed number of elements.  Alternatively, the hook
+might choose a middle ground, such as trying to keep the number of
+elements as similar as possible while applying maximum and minimum
+vector sizes.
+</p>
+<p>The default implementation uses <code>mode_for_vector</code> to find the
+requested mode, returning a mode with the same size as <var>vector_mode</var>
+when <var>nunits</var> is zero.  This is the correct behavior for most targets.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fEMPTY_005fMASK_005fIS_005fEXPENSIVE"></a>Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_EMPTY_MASK_IS_EXPENSIVE</strong> <em>(unsigned <var>ifn</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fGET_005fMASK_005fMODE">Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_GET_MASK_MODE</strong> <em>(machine_mode <var>mode</var>)</em></dt>
+<dd><p>Return the mode to use for a vector mask that holds one boolean
+result for each element of vector mode <var>mode</var>.  The returned mask mode
+can be a vector of integers (class <code>MODE_VECTOR_INT</code>), a vector of
+booleans (class <code>MODE_VECTOR_BOOL</code>) or a scalar integer (class
+<code>MODE_INT</code>).  Return an empty <code>opt_machine_mode</code> if no such
+mask mode exists.
+</p>
+<p>The default implementation returns a <code>MODE_VECTOR_INT</code> with the
+same size and number of elements as <var>mode</var>, if such a mode exists.
+</p></dd></dl>
+
+<dl>
+<dt id="index-TARGET_005fVECTORIZE_005fEMPTY_005fMASK_005fIS_005fEXPENSIVE">Target Hook: <em>bool</em> <strong>TARGET_VECTORIZE_EMPTY_MASK_IS_EXPENSIVE</strong> <em>(unsigned <var>ifn</var>)</em></dt>
 <dd><p>This hook returns true if masked internal function <var>ifn</var> (really of
 type <code>internal_fn</code>) should be considered expensive when the mask is
 all zeros.  GCC can then try to branch around the instruction instead.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fINIT_005fCOST"></a>Target Hook: <em>void *</em> <strong>TARGET_VECTORIZE_INIT_COST</strong> <em>(struct loop *<var>loop_info</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fINIT_005fCOST">Target Hook: <em>void *</em> <strong>TARGET_VECTORIZE_INIT_COST</strong> <em>(class loop *<var>loop_info</var>)</em></dt>
 <dd><p>This hook should initialize target-specific data structures in preparation for modeling the costs of vectorizing a loop or basic block.  The default allocates three unsigned integers for accumulating costs for the prologue, body, and epilogue of the loop or basic block.  If <var>loop_info</var> is non-NULL, it identifies the loop being vectorized; otherwise a single block is being vectorized.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fADD_005fSTMT_005fCOST"></a>Target Hook: <em>unsigned</em> <strong>TARGET_VECTORIZE_ADD_STMT_COST</strong> <em>(void *<var>data</var>, int <var>count</var>, enum vect_cost_for_stmt <var>kind</var>, struct _stmt_vec_info *<var>stmt_info</var>, int <var>misalign</var>, enum vect_cost_model_location <var>where</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fADD_005fSTMT_005fCOST">Target Hook: <em>unsigned</em> <strong>TARGET_VECTORIZE_ADD_STMT_COST</strong> <em>(void *<var>data</var>, int <var>count</var>, enum vect_cost_for_stmt <var>kind</var>, class _stmt_vec_info *<var>stmt_info</var>, int <var>misalign</var>, enum vect_cost_model_location <var>where</var>)</em></dt>
 <dd><p>This hook should update the target-specific <var>data</var> in response to adding <var>count</var> copies of the given <var>kind</var> of statement to a loop or basic block.  The default adds the builtin vectorizer cost for the copies of the statement to the accumulator specified by <var>where</var>, (the prologue, body, or epilogue) and returns the amount added.  The return value should be viewed as a tentative cost that may later be revised.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fFINISH_005fCOST"></a>Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_FINISH_COST</strong> <em>(void *<var>data</var>, unsigned *<var>prologue_cost</var>, unsigned *<var>body_cost</var>, unsigned *<var>epilogue_cost</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fFINISH_005fCOST">Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_FINISH_COST</strong> <em>(void *<var>data</var>, unsigned *<var>prologue_cost</var>, unsigned *<var>body_cost</var>, unsigned *<var>epilogue_cost</var>)</em></dt>
 <dd><p>This hook should complete calculations of the cost of vectorizing a loop or basic block based on <var>data</var>, and return the prologue, body, and epilogue costs as unsigned integers.  The default returns the value of the three accumulators.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fDESTROY_005fCOST_005fDATA"></a>Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_DESTROY_COST_DATA</strong> <em>(void *<var>data</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fDESTROY_005fCOST_005fDATA">Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_DESTROY_COST_DATA</strong> <em>(void *<var>data</var>)</em></dt>
 <dd><p>This hook should release <var>data</var> and any related data structures allocated by TARGET_VECTORIZE_INIT_COST.  The default releases the accumulator.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fGATHER"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_GATHER</strong> <em>(const_tree <var>mem_vectype</var>, const_tree <var>index_type</var>, int <var>scale</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fGATHER">Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_GATHER</strong> <em>(const_tree <var>mem_vectype</var>, const_tree <var>index_type</var>, int <var>scale</var>)</em></dt>
 <dd><p>Target builtin that implements vector gather operation.  <var>mem_vectype</var>
 is the vector type of the load and <var>index_type</var> is scalar type of
 the index, scaled by <var>scale</var>.
@@ -569,7 +591,7 @@ loads.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fSCATTER"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_SCATTER</strong> <em>(const_tree <var>vectype</var>, const_tree <var>index_type</var>, int <var>scale</var>)</em></dt>
+<dt id="index-TARGET_005fVECTORIZE_005fBUILTIN_005fSCATTER">Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_SCATTER</strong> <em>(const_tree <var>vectype</var>, const_tree <var>index_type</var>, int <var>scale</var>)</em></dt>
 <dd><p>Target builtin that implements vector scatter operation.  <var>vectype</var>
 is the vector type of the store and <var>index_type</var> is scalar type of
 the index, scaled by <var>scale</var>.
@@ -578,7 +600,7 @@ stores.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSIMD_005fCLONE_005fCOMPUTE_005fVECSIZE_005fAND_005fSIMDLEN"></a>Target Hook: <em>int</em> <strong>TARGET_SIMD_CLONE_COMPUTE_VECSIZE_AND_SIMDLEN</strong> <em>(struct cgraph_node *<var></var>, struct cgraph_simd_clone *<var></var>, <var>tree</var>, <var>int</var>)</em></dt>
+<dt id="index-TARGET_005fSIMD_005fCLONE_005fCOMPUTE_005fVECSIZE_005fAND_005fSIMDLEN">Target Hook: <em>int</em> <strong>TARGET_SIMD_CLONE_COMPUTE_VECSIZE_AND_SIMDLEN</strong> <em>(struct cgraph_node *<var></var>, struct cgraph_simd_clone *<var></var>, <var>tree</var>, <var>int</var>)</em></dt>
 <dd><p>This hook should set <var>vecsize_mangle</var>, <var>vecsize_int</var>, <var>vecsize_float</var>
 fields in <var>simd_clone</var> structure pointed by <var>clone_info</var> argument and also
 <var>simdlen</var> field if it was previously 0.
@@ -587,13 +609,13 @@ or number of <var>vecsize_mangle</var> variants that should be emitted.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSIMD_005fCLONE_005fADJUST"></a>Target Hook: <em>void</em> <strong>TARGET_SIMD_CLONE_ADJUST</strong> <em>(struct cgraph_node *<var></var>)</em></dt>
+<dt id="index-TARGET_005fSIMD_005fCLONE_005fADJUST">Target Hook: <em>void</em> <strong>TARGET_SIMD_CLONE_ADJUST</strong> <em>(struct cgraph_node *<var></var>)</em></dt>
 <dd><p>This hook should add implicit <code>attribute(target(&quot;...&quot;))</code> attribute
 to SIMD clone <var>node</var> if needed.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSIMD_005fCLONE_005fUSABLE"></a>Target Hook: <em>int</em> <strong>TARGET_SIMD_CLONE_USABLE</strong> <em>(struct cgraph_node *<var></var>)</em></dt>
+<dt id="index-TARGET_005fSIMD_005fCLONE_005fUSABLE">Target Hook: <em>int</em> <strong>TARGET_SIMD_CLONE_USABLE</strong> <em>(struct cgraph_node *<var></var>)</em></dt>
 <dd><p>This hook should return -1 if SIMD clone <var>node</var> shouldn&rsquo;t be used
 in vectorized loops in current function, or non-negative number if it is
 usable.  In that case, the smaller the number is, the more desirable it is
@@ -601,16 +623,24 @@ to use it.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSIMT_005fVF"></a>Target Hook: <em>int</em> <strong>TARGET_SIMT_VF</strong> <em>(void)</em></dt>
+<dt id="index-TARGET_005fSIMT_005fVF">Target Hook: <em>int</em> <strong>TARGET_SIMT_VF</strong> <em>(void)</em></dt>
 <dd><p>Return number of threads in SIMT thread group on the target.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fGOACC_005fVALIDATE_005fDIMS"></a>Target Hook: <em>bool</em> <strong>TARGET_GOACC_VALIDATE_DIMS</strong> <em>(tree <var>decl</var>, int *<var>dims</var>, int <var>fn_level</var>)</em></dt>
+<dt id="index-TARGET_005fOMP_005fDEVICE_005fKIND_005fARCH_005fISA">Target Hook: <em>int</em> <strong>TARGET_OMP_DEVICE_KIND_ARCH_ISA</strong> <em>(enum omp_device_kind_arch_isa <var>trait</var>, const char *<var>name</var>)</em></dt>
+<dd><p>Return 1 if <var>trait</var> <var>name</var> is present in the OpenMP context&rsquo;s
+device trait set, return 0 if not present in any OpenMP context in the
+whole translation unit, or -1 if not present in the current OpenMP context
+but might be present in another OpenMP context in the same TU.
+</p></dd></dl>
+
+<dl>
+<dt id="index-TARGET_005fGOACC_005fVALIDATE_005fDIMS">Target Hook: <em>bool</em> <strong>TARGET_GOACC_VALIDATE_DIMS</strong> <em>(tree <var>decl</var>, int *<var>dims</var>, int <var>fn_level</var>, unsigned <var>used</var>)</em></dt>
 <dd><p>This hook should check the launch dimensions provided for an OpenACC
 compute region, or routine.  Defaulted values are represented as -1
 and non-constant values as 0.  The <var>fn_level</var> is negative for the
-function corresponding to the compute region.  For a routine is is the
+function corresponding to the compute region.  For a routine it is the
 outermost level at which partitioned execution may be spawned.  The hook
 should verify non-default values.  If DECL is NULL, global defaults
 are being validated and unspecified defaults should be filled in.
@@ -620,13 +650,13 @@ provide dimensions larger than 1.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fGOACC_005fDIM_005fLIMIT"></a>Target Hook: <em>int</em> <strong>TARGET_GOACC_DIM_LIMIT</strong> <em>(int <var>axis</var>)</em></dt>
+<dt id="index-TARGET_005fGOACC_005fDIM_005fLIMIT">Target Hook: <em>int</em> <strong>TARGET_GOACC_DIM_LIMIT</strong> <em>(int <var>axis</var>)</em></dt>
 <dd><p>This hook should return the maximum size of a particular dimension,
 or zero if unbounded.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fGOACC_005fFORK_005fJOIN"></a>Target Hook: <em>bool</em> <strong>TARGET_GOACC_FORK_JOIN</strong> <em>(gcall *<var>call</var>, const int *<var>dims</var>, bool <var>is_fork</var>)</em></dt>
+<dt id="index-TARGET_005fGOACC_005fFORK_005fJOIN">Target Hook: <em>bool</em> <strong>TARGET_GOACC_FORK_JOIN</strong> <em>(gcall *<var>call</var>, const int *<var>dims</var>, bool <var>is_fork</var>)</em></dt>
 <dd><p>This hook can be used to convert IFN_GOACC_FORK and IFN_GOACC_JOIN
 function calls to target-specific gimple, or indicate whether they
 should be retained.  It is executed during the oacc_device_lower pass.
@@ -637,7 +667,7 @@ The default hook returns false, if there are no RTL expanders for them.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fGOACC_005fREDUCTION"></a>Target Hook: <em>void</em> <strong>TARGET_GOACC_REDUCTION</strong> <em>(gcall *<var>call</var>)</em></dt>
+<dt id="index-TARGET_005fGOACC_005fREDUCTION">Target Hook: <em>void</em> <strong>TARGET_GOACC_REDUCTION</strong> <em>(gcall *<var>call</var>)</em></dt>
 <dd><p>This hook is used by the oacc_transform pass to expand calls to the
 <var>GOACC_REDUCTION</var> internal function, into a sequence of gimple
 instructions.  <var>call</var> is gimple statement containing the call to
@@ -646,10 +676,27 @@ expanded sequence has been inserted.  This hook is also responsible
 for allocating any storage for reductions when necessary.
 </p></dd></dl>
 
+<dl>
+<dt id="index-TARGET_005fPREFERRED_005fELSE_005fVALUE">Target Hook: <em>tree</em> <strong>TARGET_PREFERRED_ELSE_VALUE</strong> <em>(unsigned <var>ifn</var>, tree <var>type</var>, unsigned <var>nops</var>, tree *<var>ops</var>)</em></dt>
+<dd><p>This hook returns the target&rsquo;s preferred final argument for a call
+to conditional internal function <var>ifn</var> (really of type
+<code>internal_fn</code>).  <var>type</var> specifies the return type of the
+function and <var>ops</var> are the operands to the conditional operation,
+of which there are <var>nops</var>.
+</p>
+<p>For example, if <var>ifn</var> is <code>IFN_COND_ADD</code>, the hook returns
+a value of type <var>type</var> that should be used when &lsquo;<samp><var>ops</var>[0]</samp>&rsquo;
+and &lsquo;<samp><var>ops</var>[1]</samp>&rsquo; are conditionally added together.
+</p>
+<p>This hook is only relevant if the target supports conditional patterns
+like <code>cond_add<var>m</var></code>.  The default implementation returns a zero
+constant of type <var>type</var>.
+</p></dd></dl>
+
 <hr>
 <div class="header">
 <p>
-Next: <a href="Anchored-Addresses.html#Anchored-Addresses" accesskey="n" rel="next">Anchored Addresses</a>, Previous: <a href="Library-Calls.html#Library-Calls" accesskey="p" rel="prev">Library Calls</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Anchored-Addresses.html" accesskey="n" rel="next">Anchored Addresses</a>, Previous: <a href="Library-Calls.html" accesskey="p" rel="prev">Library Calls</a>, Up: <a href="Target-Macros.html" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

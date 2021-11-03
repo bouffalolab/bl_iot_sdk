@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Initializing Integers (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Integer-Functions.html#Integer-Functions" rel="up" title="Integer Functions">
-<link href="Assigning-Integers.html#Assigning-Integers" rel="next" title="Assigning Integers">
-<link href="Integer-Functions.html#Integer-Functions" rel="prev" title="Integer Functions">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Integer-Functions.html" rel="up" title="Integer Functions">
+<link href="Assigning-Integers.html" rel="next" title="Assigning Integers">
+<link href="Integer-Functions.html" rel="prev" title="Integer Functions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,16 +50,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Initializing-Integers"></a>
-<div class="header">
+<span id="Initializing-Integers"></span><div class="header">
 <p>
-Next: <a href="Assigning-Integers.html#Assigning-Integers" accesskey="n" rel="next">Assigning Integers</a>, Previous: <a href="Integer-Functions.html#Integer-Functions" accesskey="p" rel="prev">Integer Functions</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Assigning-Integers.html" accesskey="n" rel="next">Assigning Integers</a>, Previous: <a href="Integer-Functions.html" accesskey="p" rel="prev">Integer Functions</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Initialization-Functions"></a>
-<h3 class="section">5.1 Initialization Functions</h3>
-<a name="index-Integer-initialization-functions"></a>
-<a name="index-Initialization-functions"></a>
+<span id="Initialization-Functions"></span><h3 class="section">5.1 Initialization Functions</h3>
+<span id="index-Integer-initialization-functions"></span>
+<span id="index-Initialization-functions"></span>
 
 <p>The functions for integer arithmetic assume that all integer objects are
 initialized.  You do that by calling the function <code>mpz_init</code>.  For
@@ -92,18 +81,18 @@ example,
 object is initialized.
 </p>
 <dl>
-<dt><a name="index-mpz_005finit"></a>Function: <em>void</em> <strong>mpz_init</strong> <em>(mpz_t <var>x</var>)</em></dt>
+<dt id="index-mpz_005finit">Function: <em>void</em> <strong>mpz_init</strong> <em>(mpz_t <var>x</var>)</em></dt>
 <dd><p>Initialize <var>x</var>, and set its value to 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005finits"></a>Function: <em>void</em> <strong>mpz_inits</strong> <em>(mpz_t <var>x</var>, ...)</em></dt>
+<dt id="index-mpz_005finits">Function: <em>void</em> <strong>mpz_inits</strong> <em>(mpz_t <var>x</var>, ...)</em></dt>
 <dd><p>Initialize a NULL-terminated list of <code>mpz_t</code> variables, and set their
 values to 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005finit2"></a>Function: <em>void</em> <strong>mpz_init2</strong> <em>(mpz_t <var>x</var>, mp_bitcnt_t <var>n</var>)</em></dt>
+<dt id="index-mpz_005finit2">Function: <em>void</em> <strong>mpz_init2</strong> <em>(mpz_t <var>x</var>, mp_bitcnt_t <var>n</var>)</em></dt>
 <dd><p>Initialize <var>x</var>, with space for <var>n</var>-bit numbers, and set its value to 0.
 Calling this function instead of <code>mpz_init</code> or <code>mpz_inits</code> is never
 necessary; reallocation is handled automatically by GMP when needed.
@@ -118,18 +107,18 @@ ultimately needed.  To make sure GMP will not perform reallocation for
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fclear"></a>Function: <em>void</em> <strong>mpz_clear</strong> <em>(mpz_t <var>x</var>)</em></dt>
+<dt id="index-mpz_005fclear">Function: <em>void</em> <strong>mpz_clear</strong> <em>(mpz_t <var>x</var>)</em></dt>
 <dd><p>Free the space occupied by <var>x</var>.  Call this function for all <code>mpz_t</code>
 variables when you are done with them.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005fclears"></a>Function: <em>void</em> <strong>mpz_clears</strong> <em>(mpz_t <var>x</var>, ...)</em></dt>
+<dt id="index-mpz_005fclears">Function: <em>void</em> <strong>mpz_clears</strong> <em>(mpz_t <var>x</var>, ...)</em></dt>
 <dd><p>Free the space occupied by a NULL-terminated list of <code>mpz_t</code> variables.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-mpz_005frealloc2"></a>Function: <em>void</em> <strong>mpz_realloc2</strong> <em>(mpz_t <var>x</var>, mp_bitcnt_t <var>n</var>)</em></dt>
+<dt id="index-mpz_005frealloc2">Function: <em>void</em> <strong>mpz_realloc2</strong> <em>(mpz_t <var>x</var>, mp_bitcnt_t <var>n</var>)</em></dt>
 <dd><p>Change the space allocated for <var>x</var> to <var>n</var> bits.  The value in <var>x</var>
 is preserved if it fits, or is set to 0 if not.
 </p>
@@ -143,7 +132,7 @@ to give memory back to the heap.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Assigning-Integers.html#Assigning-Integers" accesskey="n" rel="next">Assigning Integers</a>, Previous: <a href="Integer-Functions.html#Integer-Functions" accesskey="p" rel="prev">Integer Functions</a>, Up: <a href="Integer-Functions.html#Integer-Functions" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Assigning-Integers.html" accesskey="n" rel="next">Assigning Integers</a>, Previous: <a href="Integer-Functions.html" accesskey="p" rel="prev">Integer Functions</a>, Up: <a href="Integer-Functions.html" accesskey="u" rel="up">Integer Functions</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

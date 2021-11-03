@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -178,7 +178,7 @@ finish terminating.
 <a name="index-info-task-taskno"></a>
 </dd>
 <dt><code>info task <var>taskno</var></code></dt>
-<dd><p>This command shows detailled informations on the specified task, as in
+<dd><p>This command shows detailed informations on the specified task, as in
 the following example:
 </p><div class="smallexample">
 <pre class="smallexample">(gdb) info tasks
@@ -187,10 +187,10 @@ the following example:
 *  2   807c468    1  15 Runnable               task_1
 (gdb) info task 2
 Ada Task: 0x807c468
-Name: task_1
+Name: &quot;task_1&quot;
 Thread: 0
 LWP: 0x1fac
-Parent: 1 (main_task)
+Parent: 1 (&quot;main_task&quot;)
 Base Priority: 15
 State: Runnable
 </pre></div>
@@ -199,15 +199,15 @@ State: Runnable
 <dt><code>task</code></dt>
 <dd><a name="index-task-_0028Ada_0029"></a>
 <a name="index-current-Ada-task-ID"></a>
-<p>This command prints the ID of the current task.
+<p>This command prints the ID and name of the current task.
 </p>
 <div class="smallexample">
 <pre class="smallexample">(gdb) info tasks
   ID       TID P-ID Pri State                  Name
    1   8077870    0  15 Child Activation Wait  main_task
-*  2   807c458    1  15 Runnable               t
+*  2   807c458    1  15 Runnable               some_task
 (gdb) task
-[Current task is 2]
+[Current task is 2 &quot;some_task&quot;]
 </pre></div>
 
 </dd>
@@ -221,9 +221,9 @@ from the current task to the given task.
 <pre class="smallexample">(gdb) info tasks
   ID       TID P-ID Pri State                  Name
    1   8077870    0  15 Child Activation Wait  main_task
-*  2   807c458    1  15 Runnable               t
+*  2   807c458    1  15 Runnable               some_task
 (gdb) task 1
-[Switching to task 1]
+[Switching to task 1 &quot;main_task&quot;]
 #0  0x8067726 in pthread_cond_wait ()
 (gdb) bt
 #0  0x8067726 in pthread_cond_wait ()

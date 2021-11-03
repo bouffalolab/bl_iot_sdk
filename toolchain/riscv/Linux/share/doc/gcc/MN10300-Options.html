@@ -1,114 +1,186 @@
-<html lang="en">
-<head>
-<title>MN10300 Options - Using the GNU Compiler Collection (GCC)</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Using the GNU Compiler Collection (GCC)">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Submodel-Options.html#Submodel-Options" title="Submodel Options">
-<link rel="prev" href="MMIX-Options.html#MMIX-Options" title="MMIX Options">
-<link rel="next" href="Moxie-Options.html#Moxie-Options" title="Moxie Options">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>Using the GNU Compiler Collection (GCC): MN10300 Options</title>
+
+<meta name="description" content="Using the GNU Compiler Collection (GCC): MN10300 Options">
+<meta name="keywords" content="Using the GNU Compiler Collection (GCC): MN10300 Options">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Submodel-Options.html#Submodel-Options" rel="up" title="Submodel Options">
+<link href="Moxie-Options.html#Moxie-Options" rel="next" title="Moxie Options">
+<link href="MMIX-Options.html#MMIX-Options" rel="prev" title="MMIX Options">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="MN10300-Options"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Moxie-Options.html#Moxie-Options">Moxie Options</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="MMIX-Options.html#MMIX-Options">MMIX Options</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Submodel-Options.html#Submodel-Options">Submodel Options</a>
-<hr>
+Next: <a href="Moxie-Options.html#Moxie-Options" accesskey="n" rel="next">Moxie Options</a>, Previous: <a href="MMIX-Options.html#MMIX-Options" accesskey="p" rel="prev">MMIX Options</a>, Up: <a href="Submodel-Options.html#Submodel-Options" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="MN10300-Options-1"></a>
+<h4 class="subsection">3.19.31 MN10300 Options</h4>
+<a name="index-MN10300-options"></a>
 
-<h4 class="subsection">3.18.28 MN10300 Options</h4>
-
-<p><a name="index-MN10300-options-2325"></a>
-These <samp><span class="option">-m</span></samp> options are defined for Matsushita MN10300 architectures:
-
-     <dl>
-<dt><code>-mmult-bug</code><dd><a name="index-mmult_002dbug-2326"></a>Generate code to avoid bugs in the multiply instructions for the MN10300
+<p>These <samp>-m</samp> options are defined for Matsushita MN10300 architectures:
+</p>
+<dl compact="compact">
+<dt><code>-mmult-bug</code></dt>
+<dd><a name="index-mmult_002dbug"></a>
+<p>Generate code to avoid bugs in the multiply instructions for the MN10300
 processors.  This is the default.
-
-     <br><dt><code>-mno-mult-bug</code><dd><a name="index-mno_002dmult_002dbug-2327"></a>Do not generate code to avoid bugs in the multiply instructions for the
+</p>
+</dd>
+<dt><code>-mno-mult-bug</code></dt>
+<dd><a name="index-mno_002dmult_002dbug"></a>
+<p>Do not generate code to avoid bugs in the multiply instructions for the
 MN10300 processors.
-
-     <br><dt><code>-mam33</code><dd><a name="index-mam33-2328"></a>Generate code using features specific to the AM33 processor.
-
-     <br><dt><code>-mno-am33</code><dd><a name="index-mno_002dam33-2329"></a>Do not generate code using features specific to the AM33 processor.  This
+</p>
+</dd>
+<dt><code>-mam33</code></dt>
+<dd><a name="index-mam33"></a>
+<p>Generate code using features specific to the AM33 processor.
+</p>
+</dd>
+<dt><code>-mno-am33</code></dt>
+<dd><a name="index-mno_002dam33"></a>
+<p>Do not generate code using features specific to the AM33 processor.  This
 is the default.
-
-     <br><dt><code>-mam33-2</code><dd><a name="index-mam33_002d2-2330"></a>Generate code using features specific to the AM33/2.0 processor.
-
-     <br><dt><code>-mam34</code><dd><a name="index-mam34-2331"></a>Generate code using features specific to the AM34 processor.
-
-     <br><dt><code>-mtune=</code><var>cpu-type</var><dd><a name="index-mtune-2332"></a>Use the timing characteristics of the indicated CPU type when
+</p>
+</dd>
+<dt><code>-mam33-2</code></dt>
+<dd><a name="index-mam33_002d2"></a>
+<p>Generate code using features specific to the AM33/2.0 processor.
+</p>
+</dd>
+<dt><code>-mam34</code></dt>
+<dd><a name="index-mam34"></a>
+<p>Generate code using features specific to the AM34 processor.
+</p>
+</dd>
+<dt><code>-mtune=<var>cpu-type</var></code></dt>
+<dd><a name="index-mtune-10"></a>
+<p>Use the timing characteristics of the indicated CPU type when
 scheduling instructions.  This does not change the targeted processor
-type.  The CPU type must be one of &lsquo;<samp><span class="samp">mn10300</span></samp>&rsquo;, &lsquo;<samp><span class="samp">am33</span></samp>&rsquo;,
-&lsquo;<samp><span class="samp">am33-2</span></samp>&rsquo; or &lsquo;<samp><span class="samp">am34</span></samp>&rsquo;.
-
-     <br><dt><code>-mreturn-pointer-on-d0</code><dd><a name="index-mreturn_002dpointer_002don_002dd0-2333"></a>When generating a function that returns a pointer, return the pointer
+type.  The CPU type must be one of &lsquo;<samp>mn10300</samp>&rsquo;, &lsquo;<samp>am33</samp>&rsquo;,
+&lsquo;<samp>am33-2</samp>&rsquo; or &lsquo;<samp>am34</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>-mreturn-pointer-on-d0</code></dt>
+<dd><a name="index-mreturn_002dpointer_002don_002dd0"></a>
+<p>When generating a function that returns a pointer, return the pointer
 in both <code>a0</code> and <code>d0</code>.  Otherwise, the pointer is returned
 only in <code>a0</code>, and attempts to call such functions without a prototype
 result in errors.  Note that this option is on by default; use
-<samp><span class="option">-mno-return-pointer-on-d0</span></samp> to disable it.
-
-     <br><dt><code>-mno-crt0</code><dd><a name="index-mno_002dcrt0-2334"></a>Do not link in the C run-time initialization object file.
-
-     <br><dt><code>-mrelax</code><dd><a name="index-mrelax-2335"></a>Indicate to the linker that it should perform a relaxation optimization pass
+<samp>-mno-return-pointer-on-d0</samp> to disable it.
+</p>
+</dd>
+<dt><code>-mno-crt0</code></dt>
+<dd><a name="index-mno_002dcrt0"></a>
+<p>Do not link in the C run-time initialization object file.
+</p>
+</dd>
+<dt><code>-mrelax</code></dt>
+<dd><a name="index-mrelax-2"></a>
+<p>Indicate to the linker that it should perform a relaxation optimization pass
 to shorten branches, calls and absolute memory addresses.  This option only
 has an effect when used on the command line for the final link step.
-
-     <p>This option makes symbolic debugging impossible.
-
-     <br><dt><code>-mliw</code><dd><a name="index-mliw-2336"></a>Allow the compiler to generate <em>Long Instruction Word</em>
-instructions if the target is the &lsquo;<samp><span class="samp">AM33</span></samp>&rsquo; or later.  This is the
+</p>
+<p>This option makes symbolic debugging impossible.
+</p>
+</dd>
+<dt><code>-mliw</code></dt>
+<dd><a name="index-mliw"></a>
+<p>Allow the compiler to generate <em>Long Instruction Word</em>
+instructions if the target is the &lsquo;<samp>AM33</samp>&rsquo; or later.  This is the
 default.  This option defines the preprocessor macro <code>__LIW__</code>.
-
-     <br><dt><code>-mnoliw</code><dd><a name="index-mnoliw-2337"></a>Do not allow the compiler to generate <em>Long Instruction Word</em>
+</p>
+</dd>
+<dt><code>-mno-liw</code></dt>
+<dd><a name="index-mno_002dliw"></a>
+<p>Do not allow the compiler to generate <em>Long Instruction Word</em>
 instructions.  This option defines the preprocessor macro
 <code>__NO_LIW__</code>.
-
-     <br><dt><code>-msetlb</code><dd><a name="index-msetlb-2338"></a>Allow the compiler to generate the <em>SETLB</em> and <em>Lcc</em>
-instructions if the target is the &lsquo;<samp><span class="samp">AM33</span></samp>&rsquo; or later.  This is the
+</p>
+</dd>
+<dt><code>-msetlb</code></dt>
+<dd><a name="index-msetlb"></a>
+<p>Allow the compiler to generate the <em>SETLB</em> and <em>Lcc</em>
+instructions if the target is the &lsquo;<samp>AM33</samp>&rsquo; or later.  This is the
 default.  This option defines the preprocessor macro <code>__SETLB__</code>.
-
-     <br><dt><code>-mnosetlb</code><dd><a name="index-mnosetlb-2339"></a>Do not allow the compiler to generate <em>SETLB</em> or <em>Lcc</em>
+</p>
+</dd>
+<dt><code>-mno-setlb</code></dt>
+<dd><a name="index-mno_002dsetlb"></a>
+<p>Do not allow the compiler to generate <em>SETLB</em> or <em>Lcc</em>
 instructions.  This option defines the preprocessor macro
 <code>__NO_SETLB__</code>.
+</p>
+</dd>
+</dl>
 
- </dl>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Moxie-Options.html#Moxie-Options" accesskey="n" rel="next">Moxie Options</a>, Previous: <a href="MMIX-Options.html#MMIX-Options" accesskey="p" rel="prev">MMIX Options</a>, Up: <a href="Submodel-Options.html#Submodel-Options" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
- </body></html>
 
+
+</body>
+</html>

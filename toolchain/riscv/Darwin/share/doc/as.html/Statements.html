@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Statements (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Syntax.html#Syntax" rel="up" title="Syntax">
-<link href="Constants.html#Constants" rel="next" title="Constants">
-<link href="Symbol-Intro.html#Symbol-Intro" rel="prev" title="Symbol Intro">
+<link href="Syntax.html" rel="up" title="Syntax">
+<link href="Constants.html" rel="next" title="Constants">
+<link href="Symbol-Intro.html" rel="prev" title="Symbol Intro">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,18 +50,16 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Statements"></a>
-<div class="header">
+<span id="Statements"></span><div class="header">
 <p>
-Next: <a href="Constants.html#Constants" accesskey="n" rel="next">Constants</a>, Previous: <a href="Symbol-Intro.html#Symbol-Intro" accesskey="p" rel="prev">Symbol Intro</a>, Up: <a href="Syntax.html#Syntax" accesskey="u" rel="up">Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Constants.html" accesskey="n" rel="next">Constants</a>, Previous: <a href="Symbol-Intro.html" accesskey="p" rel="prev">Symbol Intro</a>, Up: <a href="Syntax.html" accesskey="u" rel="up">Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Statements-1"></a>
-<h3 class="section">3.5 Statements</h3>
+<span id="Statements-1"></span><h3 class="section">3.5 Statements</h3>
 
-<a name="index-statements_002c-structure-of"></a>
-<a name="index-line-separator-character"></a>
-<a name="index-statement-separator-character"></a>
+<span id="index-statements_002c-structure-of"></span>
+<span id="index-line-separator-character"></span>
+<span id="index-statement-separator-character"></span>
 
 <p>A <em>statement</em> ends at a newline character (&lsquo;<samp>\n</samp>&rsquo;) or a
 <em>line separator character</em>.  The line separator character is target
@@ -80,15 +69,15 @@ The newline or line separator character is considered to be part of the
 preceding statement.  Newlines and separators within character constants are an
 exception: they do not end statements.
 </p>
-<a name="index-newline_002c-required-at-file-end"></a>
-<a name="index-EOF_002c-newline-must-precede"></a>
+<span id="index-newline_002c-required-at-file-end"></span>
+<span id="index-EOF_002c-newline-must-precede"></span>
 <p>It is an error to end any statement with end-of-file:  the last
 character of any input file should be a newline.
 </p>
 <p>An empty statement is allowed, and may include whitespace.  It is ignored.
 </p>
-<a name="index-instructions-and-directives"></a>
-<a name="index-directives-and-instructions"></a>
+<span id="index-instructions-and-directives"></span>
+<span id="index-directives-and-instructions"></span>
 <p>A statement begins with zero or more labels, optionally followed by a
 key symbol which determines what kind of statement it is.  The key
 symbol determines the syntax of the rest of the statement.  If the
@@ -101,18 +90,18 @@ recognize different instructions.  In fact, the same symbol may
 represent a different instruction in a different computer&rsquo;s assembly
 language.
 </p>
-<a name="index-_003a-_0028label_0029"></a>
-<a name="index-label-_0028_003a_0029"></a>
+<span id="index-_003a-_0028label_0029"></span>
+<span id="index-label-_0028_003a_0029"></span>
 <p>A label is a symbol immediately followed by a colon (<code>:</code>).
 Whitespace before a label or after a colon is permitted, but you may not
-have whitespace between a label&rsquo;s symbol and its colon. See <a href="Labels.html#Labels">Labels</a>.
+have whitespace between a label&rsquo;s symbol and its colon. See <a href="Labels.html">Labels</a>.
 </p>
 <p>For HPPA targets, labels need not be immediately followed by a colon, but
 the definition of a label must begin in column zero.  This also implies that
 only one label may be defined on each line.
 </p>
-<div class="smallexample">
-<pre class="smallexample">label:     .directive    followed by something
+<div class="example">
+<pre class="example">label:     .directive    followed by something
 another_label:           # This is an empty statement.
            instruction   operand_1, operand_2, &hellip;
 </pre></div>
@@ -120,7 +109,7 @@ another_label:           # This is an empty statement.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Constants.html#Constants" accesskey="n" rel="next">Constants</a>, Previous: <a href="Symbol-Intro.html#Symbol-Intro" accesskey="p" rel="prev">Symbol Intro</a>, Up: <a href="Syntax.html#Syntax" accesskey="u" rel="up">Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Constants.html" accesskey="n" rel="next">Constants</a>, Previous: <a href="Symbol-Intro.html" accesskey="p" rel="prev">Symbol Intro</a>, Up: <a href="Syntax.html" accesskey="u" rel="up">Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

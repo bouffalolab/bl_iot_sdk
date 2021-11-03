@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Leaf Functions (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Registers.html#Registers" rel="up" title="Registers">
-<link href="Stack-Registers.html#Stack-Registers" rel="next" title="Stack Registers">
-<link href="Values-in-Registers.html#Values-in-Registers" rel="prev" title="Values in Registers">
+<link href="Registers.html" rel="up" title="Registers">
+<link href="Stack-Registers.html" rel="next" title="Stack Registers">
+<link href="Values-in-Registers.html" rel="prev" title="Values in Registers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,17 +58,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Leaf-Functions"></a>
-<div class="header">
+<span id="Leaf-Functions"></span><div class="header">
 <p>
-Next: <a href="Stack-Registers.html#Stack-Registers" accesskey="n" rel="next">Stack Registers</a>, Previous: <a href="Values-in-Registers.html#Values-in-Registers" accesskey="p" rel="prev">Values in Registers</a>, Up: <a href="Registers.html#Registers" accesskey="u" rel="up">Registers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Stack-Registers.html" accesskey="n" rel="next">Stack Registers</a>, Previous: <a href="Values-in-Registers.html" accesskey="p" rel="prev">Values in Registers</a>, Up: <a href="Registers.html" accesskey="u" rel="up">Registers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Handling-Leaf-Functions"></a>
-<h4 class="subsection">18.7.4 Handling Leaf Functions</h4>
+<span id="Handling-Leaf-Functions"></span><h4 class="subsection">18.7.4 Handling Leaf Functions</h4>
 
-<a name="index-leaf-functions"></a>
-<a name="index-functions_002c-leaf"></a>
+<span id="index-leaf-functions"></span>
+<span id="index-functions_002c-leaf"></span>
 <p>On some machines, a leaf function (i.e., one which makes no calls) can run
 more efficiently if it does not make its own register window.  Often this
 means it is required to receive its arguments in the registers where they
@@ -97,7 +86,7 @@ registers in order to output a leaf function.  The following macros
 accomplish this.
 </p>
 <dl>
-<dt><a name="index-LEAF_005fREGISTERS"></a>Macro: <strong>LEAF_REGISTERS</strong></dt>
+<dt id="index-LEAF_005fREGISTERS">Macro: <strong>LEAF_REGISTERS</strong></dt>
 <dd><p>Name of a char vector, indexed by hard register number, which
 contains 1 for a register that is allowable in a candidate for leaf
 function treatment.
@@ -113,7 +102,7 @@ the treatment of leaf functions.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-LEAF_005fREG_005fREMAP"></a>Macro: <strong>LEAF_REG_REMAP</strong> <em>(<var>regno</var>)</em></dt>
+<dt id="index-LEAF_005fREG_005fREMAP">Macro: <strong>LEAF_REG_REMAP</strong> <em>(<var>regno</var>)</em></dt>
 <dd><p>A C expression whose value is the register number to which <var>regno</var>
 should be renumbered, when a function is treated as a leaf function.
 </p>
@@ -126,8 +115,8 @@ treatment of leaf functions, and registers need to be renumbered to do
 this.
 </p></dd></dl>
 
-<a name="index-current_005ffunction_005fis_005fleaf"></a>
-<a name="index-current_005ffunction_005fuses_005fonly_005fleaf_005fregs"></a>
+<span id="index-current_005ffunction_005fis_005fleaf"></span>
+<span id="index-current_005ffunction_005fuses_005fonly_005fleaf_005fregs"></span>
 <p><code>TARGET_ASM_FUNCTION_PROLOGUE</code> and
 <code>TARGET_ASM_FUNCTION_EPILOGUE</code> must usually treat leaf functions
 specially.  They can test the C variable <code>current_function_is_leaf</code>
@@ -143,7 +132,7 @@ that modify the instructions have been run and is only useful if
 <hr>
 <div class="header">
 <p>
-Next: <a href="Stack-Registers.html#Stack-Registers" accesskey="n" rel="next">Stack Registers</a>, Previous: <a href="Values-in-Registers.html#Values-in-Registers" accesskey="p" rel="prev">Values in Registers</a>, Up: <a href="Registers.html#Registers" accesskey="u" rel="up">Registers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Stack-Registers.html" accesskey="n" rel="next">Stack Registers</a>, Previous: <a href="Values-in-Registers.html" accesskey="p" rel="prev">Values in Registers</a>, Up: <a href="Registers.html" accesskey="u" rel="up">Registers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Expression Section (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Expressions.html#Expressions" rel="up" title="Expressions">
-<link href="Builtin-Functions.html#Builtin-Functions" rel="next" title="Builtin Functions">
-<link href="Evaluation.html#Evaluation" rel="prev" title="Evaluation">
+<link href="Expressions.html" rel="up" title="Expressions">
+<link href="Builtin-Functions.html" rel="next" title="Builtin Functions">
+<link href="Evaluation.html" rel="prev" title="Evaluation">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,20 +51,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Expression-Section"></a>
-<div class="header">
+<span id="Expression-Section"></span><div class="header">
 <p>
-Next: <a href="Builtin-Functions.html#Builtin-Functions" accesskey="n" rel="next">Builtin Functions</a>, Previous: <a href="Evaluation.html#Evaluation" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Builtin-Functions.html" accesskey="n" rel="next">Builtin Functions</a>, Previous: <a href="Evaluation.html" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="Expressions.html" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="The-Section-of-an-Expression"></a>
-<h4 class="subsection">3.10.8 The Section of an Expression</h4>
-<a name="index-expression-sections"></a>
-<a name="index-absolute-expressions"></a>
-<a name="index-relative-expressions"></a>
-<a name="index-absolute-and-relocatable-symbols"></a>
-<a name="index-relocatable-and-absolute-symbols"></a>
-<a name="index-symbols_002c-relocatable-and-absolute"></a>
+<span id="The-Section-of-an-Expression"></span><h4 class="subsection">3.10.8 The Section of an Expression</h4>
+<span id="index-expression-sections"></span>
+<span id="index-absolute-expressions"></span>
+<span id="index-relative-expressions"></span>
+<span id="index-absolute-and-relocatable-symbols"></span>
+<span id="index-relocatable-and-absolute-symbols"></span>
+<span id="index-symbols_002c-relocatable-and-absolute"></span>
 <p>Addresses and symbols may be section relative, or absolute.  A section
 relative symbol is relocatable.  If you request relocatable output
 using the &lsquo;<samp>-r</samp>&rsquo; option, a further link operation may change the
@@ -87,7 +76,7 @@ address, such as <code>ADDR</code>, <code>LOADADDR</code>, <code>ORIGIN</code> a
 <code>SEGMENT_START</code>.  Other terms are simply numbers, or are builtin
 functions that return a non-address value, such as <code>LENGTH</code>.
 One complication is that unless you set <code>LD_FEATURE (&quot;SANE_EXPR&quot;)</code>
-(see <a href="Miscellaneous-Commands.html#Miscellaneous-Commands">Miscellaneous Commands</a>), numbers and absolute symbols are treated
+(see <a href="Miscellaneous-Commands.html">Miscellaneous Commands</a>), numbers and absolute symbols are treated
 differently depending on their location, for compatibility with older
 versions of <code>ld</code>.  Expressions appearing outside an output
 section definition treat all numbers as absolute addresses.
@@ -98,8 +87,8 @@ everywhere.
 </p>
 <p>In the following simple example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">SECTIONS
+<div class="example">
+<pre class="example">SECTIONS
   {
     . = 0x100;
     __executable_start = 0x100;
@@ -155,8 +144,8 @@ conversions) is an absolute address.
 to be absolute when it would otherwise be relative.  For example, to
 create an absolute symbol set to the address of the end of the output
 section &lsquo;<samp>.data</samp>&rsquo;:
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS
+</p><div class="example">
+<pre class="example">SECTIONS
   {
     .data : { *(.data) _edata = ABSOLUTE(.); }
   }
@@ -170,7 +159,7 @@ particular builtin function returns an absolute address.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Builtin-Functions.html#Builtin-Functions" accesskey="n" rel="next">Builtin Functions</a>, Previous: <a href="Evaluation.html#Evaluation" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Builtin-Functions.html" accesskey="n" rel="next">Builtin Functions</a>, Previous: <a href="Evaluation.html" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="Expressions.html" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

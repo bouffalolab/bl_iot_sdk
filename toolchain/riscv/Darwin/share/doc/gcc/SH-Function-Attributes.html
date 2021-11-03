@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SH Function Attributes (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Function-Attributes.html#Function-Attributes" rel="up" title="Function Attributes">
-<link href="SPU-Function-Attributes.html#SPU-Function-Attributes" rel="next" title="SPU Function Attributes">
-<link href="S_002f390-Function-Attributes.html#S_002f390-Function-Attributes" rel="prev" title="S/390 Function Attributes">
+<link href="Function-Attributes.html" rel="up" title="Function Attributes">
+<link href="Symbian-OS-Function-Attributes.html" rel="next" title="Symbian OS Function Attributes">
+<link href="S_002f390-Function-Attributes.html" rel="prev" title="S/390 Function Attributes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,21 +58,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="SH-Function-Attributes"></a>
-<div class="header">
+<span id="SH-Function-Attributes"></span><div class="header">
 <p>
-Next: <a href="SPU-Function-Attributes.html#SPU-Function-Attributes" accesskey="n" rel="next">SPU Function Attributes</a>, Previous: <a href="S_002f390-Function-Attributes.html#S_002f390-Function-Attributes" accesskey="p" rel="prev">S/390 Function Attributes</a>, Up: <a href="Function-Attributes.html#Function-Attributes" accesskey="u" rel="up">Function Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbian-OS-Function-Attributes.html" accesskey="n" rel="next">Symbian OS Function Attributes</a>, Previous: <a href="S_002f390-Function-Attributes.html" accesskey="p" rel="prev">S/390 Function Attributes</a>, Up: <a href="Function-Attributes.html" accesskey="u" rel="up">Function Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="SH-Function-Attributes-1"></a>
-<h4 class="subsection">6.31.28 SH Function Attributes</h4>
+<span id="SH-Function-Attributes-1"></span><h4 class="subsection">6.33.30 SH Function Attributes</h4>
 
 <p>These function attributes are supported on the SH family of processors:
 </p>
 <dl compact="compact">
 <dt><code>function_vector</code></dt>
-<dd><a name="index-function_005fvector-function-attribute_002c-SH"></a>
-<a name="index-calling-functions-through-the-function-vector-on-SH2A"></a>
+<dd><span id="index-function_005fvector-function-attribute_002c-SH"></span>
+<span id="index-calling-functions-through-the-function-vector-on-SH2A"></span>
 <p>On SH2A targets, this attribute declares a function to be called using the
 TBR relative addressing mode.  The argument to this attribute is the entry
 number of the same function in a vector table containing all the TBR
@@ -100,7 +89,7 @@ calls.
 </p>
 </dd>
 <dt><code>interrupt_handler</code></dt>
-<dd><a name="index-interrupt_005fhandler-function-attribute_002c-SH"></a>
+<dd><span id="index-interrupt_005fhandler-function-attribute_002c-SH"></span>
 <p>Use this attribute to
 indicate that the specified function is an interrupt handler.  The compiler
 generates function entry and exit sequences suitable for use in an
@@ -108,7 +97,7 @@ interrupt handler when this attribute is present.
 </p>
 </dd>
 <dt><code>nosave_low_regs</code></dt>
-<dd><a name="index-nosave_005flow_005fregs-function-attribute_002c-SH"></a>
+<dd><span id="index-nosave_005flow_005fregs-function-attribute_002c-SH"></span>
 <p>Use this attribute on SH targets to indicate that an <code>interrupt_handler</code>
 function should not save and restore registers R0..R7.  This can be used on SH3*
 and SH4* targets that have a second R0..R7 register bank for non-reentrant
@@ -116,13 +105,13 @@ interrupt handlers.
 </p>
 </dd>
 <dt><code>renesas</code></dt>
-<dd><a name="index-renesas-function-attribute_002c-SH"></a>
+<dd><span id="index-renesas-function-attribute_002c-SH"></span>
 <p>On SH targets this attribute specifies that the function or struct follows the
 Renesas ABI.
 </p>
 </dd>
 <dt><code>resbank</code></dt>
-<dd><a name="index-resbank-function-attribute_002c-SH"></a>
+<dd><span id="index-resbank-function-attribute_002c-SH"></span>
 <p>On the SH2A target, this attribute enables the high-speed register
 saving and restoration using a register bank for <code>interrupt_handler</code>
 routines.  Saving to the bank is performed automatically after the CPU
@@ -136,28 +125,28 @@ from the bank is executed by issuing a RESBANK instruction.
 </p>
 </dd>
 <dt><code>sp_switch</code></dt>
-<dd><a name="index-sp_005fswitch-function-attribute_002c-SH"></a>
+<dd><span id="index-sp_005fswitch-function-attribute_002c-SH"></span>
 <p>Use this attribute on the SH to indicate an <code>interrupt_handler</code>
 function should switch to an alternate stack.  It expects a string
 argument that names a global variable holding the address of the
 alternate stack.
 </p>
-<div class="smallexample">
-<pre class="smallexample">void *alt_stack;
+<div class="example">
+<pre class="example">void *alt_stack;
 void f () __attribute__ ((interrupt_handler,
                           sp_switch (&quot;alt_stack&quot;)));
 </pre></div>
 
 </dd>
 <dt><code>trap_exit</code></dt>
-<dd><a name="index-trap_005fexit-function-attribute_002c-SH"></a>
+<dd><span id="index-trap_005fexit-function-attribute_002c-SH"></span>
 <p>Use this attribute on the SH for an <code>interrupt_handler</code> to return using
 <code>trapa</code> instead of <code>rte</code>.  This attribute expects an integer
 argument specifying the trap number to be used.
 </p>
 </dd>
 <dt><code>trapa_handler</code></dt>
-<dd><a name="index-trapa_005fhandler-function-attribute_002c-SH"></a>
+<dd><span id="index-trapa_005fhandler-function-attribute_002c-SH"></span>
 <p>On SH targets this function attribute is similar to <code>interrupt_handler</code>
 but it does not save and restore all registers.
 </p></dd>
@@ -166,7 +155,7 @@ but it does not save and restore all registers.
 <hr>
 <div class="header">
 <p>
-Next: <a href="SPU-Function-Attributes.html#SPU-Function-Attributes" accesskey="n" rel="next">SPU Function Attributes</a>, Previous: <a href="S_002f390-Function-Attributes.html#S_002f390-Function-Attributes" accesskey="p" rel="prev">S/390 Function Attributes</a>, Up: <a href="Function-Attributes.html#Function-Attributes" accesskey="u" rel="up">Function Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbian-OS-Function-Attributes.html" accesskey="n" rel="next">Symbian OS Function Attributes</a>, Previous: <a href="S_002f390-Function-Attributes.html" accesskey="p" rel="prev">S/390 Function Attributes</a>, Up: <a href="Function-Attributes.html" accesskey="u" rel="up">Function Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

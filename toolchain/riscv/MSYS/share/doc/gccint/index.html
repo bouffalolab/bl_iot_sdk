@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -81,7 +81,7 @@ ul.no-bullet {list-style: none}
 
 <p>This file documents the internals of the GNU compilers.
 </p><br>
-<p>Copyright &copy; 1988-2018 Free Software Foundation, Inc.
+<p>Copyright &copy; 1988-2020 Free Software Foundation, Inc.
 </p>
 <p>Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -134,6 +134,8 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
 <li><a name="stoc-Plugins-1" href="#toc-Plugins-1">24 Plugins</a></li>
 <li><a name="stoc-Link-Time-Optimization" href="#toc-Link-Time-Optimization">25 Link Time Optimization</a></li>
 <li><a name="stoc-Match-and-Simplify-1" href="#toc-Match-and-Simplify-1">26 Match and Simplify</a></li>
+<li><a name="stoc-Static-Analyzer-1" href="#toc-Static-Analyzer-1">27 Static Analyzer</a></li>
+<li><a name="stoc-User-Experience-Guidelines-1" href="#toc-User-Experience-Guidelines-1">28 User Experience Guidelines</a></li>
 <li><a name="stoc-Funding-Free-Software" href="#toc-Funding-Free-Software">Funding Free Software</a></li>
 <li><a name="stoc-The-GNU-Project-and-GNU_002fLinux" href="#toc-The-GNU-Project-and-GNU_002fLinux">The GNU Project and GNU/Linux</a></li>
 <li><a name="stoc-GNU-General-Public-License" href="#toc-GNU-General-Public-License">GNU General Public License</a></li>
@@ -256,8 +258,7 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
         <li><a name="toc-Environment-attributes" href="Effective_002dTarget-Keywords.html#Environment-attributes">7.2.3.12 Environment attributes</a></li>
         <li><a name="toc-Other-attributes" href="Effective_002dTarget-Keywords.html#Other-attributes">7.2.3.13 Other attributes</a></li>
         <li><a name="toc-Local-to-tests-in-gcc_002etarget_002fi386" href="Effective_002dTarget-Keywords.html#Local-to-tests-in-gcc_002etarget_002fi386">7.2.3.14 Local to tests in <code>gcc.target/i386</code></a></li>
-        <li><a name="toc-Local-to-tests-in-gcc_002etarget_002fspu_002fea" href="Effective_002dTarget-Keywords.html#Local-to-tests-in-gcc_002etarget_002fspu_002fea">7.2.3.15 Local to tests in <code>gcc.target/spu/ea</code></a></li>
-        <li><a name="toc-Local-to-tests-in-gcc_002etest_002dframework" href="Effective_002dTarget-Keywords.html#Local-to-tests-in-gcc_002etest_002dframework">7.2.3.16 Local to tests in <code>gcc.test-framework</code></a></li>
+        <li><a name="toc-Local-to-tests-in-gcc_002etest_002dframework" href="Effective_002dTarget-Keywords.html#Local-to-tests-in-gcc_002etest_002dframework">7.2.3.15 Local to tests in <code>gcc.test-framework</code></a></li>
       </ul></li>
       <li><a name="toc-Features-for-dg_002dadd_002doptions" href="Add-Options.html#Add-Options">7.2.4 Features for <code>dg-add-options</code></a></li>
       <li><a name="toc-Variants-of-dg_002drequire_002dsupport" href="Require-Support.html#Require-Support">7.2.5 Variants of <code>dg-require-<var>support</var></code></a></li>
@@ -266,10 +267,9 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
         <li><a name="toc-Scan-a-particular-file" href="Final-Actions.html#Scan-a-particular-file">7.2.6.1 Scan a particular file</a></li>
         <li><a name="toc-Scan-the-assembly-output" href="Final-Actions.html#Scan-the-assembly-output">7.2.6.2 Scan the assembly output</a></li>
         <li><a name="toc-Scan-optimization-dump-files" href="Final-Actions.html#Scan-optimization-dump-files">7.2.6.3 Scan optimization dump files</a></li>
-        <li><a name="toc-Verify-that-an-output-files-exists-or-not" href="Final-Actions.html#Verify-that-an-output-files-exists-or-not">7.2.6.4 Verify that an output files exists or not</a></li>
-        <li><a name="toc-Check-for-LTO-tests" href="Final-Actions.html#Check-for-LTO-tests">7.2.6.5 Check for LTO tests</a></li>
-        <li><a name="toc-Checks-for-gcov-tests" href="Final-Actions.html#Checks-for-gcov-tests">7.2.6.6 Checks for <code>gcov</code> tests</a></li>
-        <li><a name="toc-Clean-up-generated-test-files" href="Final-Actions.html#Clean-up-generated-test-files">7.2.6.7 Clean up generated test files</a></li>
+        <li><a name="toc-Check-for-output-files" href="Final-Actions.html#Check-for-output-files">7.2.6.4 Check for output files</a></li>
+        <li><a name="toc-Checks-for-gcov-tests" href="Final-Actions.html#Checks-for-gcov-tests">7.2.6.5 Checks for <code>gcov</code> tests</a></li>
+        <li><a name="toc-Clean-up-generated-test-files" href="Final-Actions.html#Clean-up-generated-test-files">7.2.6.6 Clean up generated test files</a></li>
       </ul></li>
     </ul></li>
     <li><a name="toc-Ada-Language-Testsuites" href="Ada-Tests.html#Ada-Tests">7.3 Ada Language Testsuites</a></li>
@@ -292,16 +292,22 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
     <li><a name="toc-Parsing-pass-1" href="Parsing-pass.html#Parsing-pass">9.1 Parsing pass</a></li>
     <li><a name="toc-Gimplification-pass-1" href="Gimplification-pass.html#Gimplification-pass">9.2 Gimplification pass</a></li>
     <li><a name="toc-Pass-manager-1" href="Pass-manager.html#Pass-manager">9.3 Pass manager</a></li>
-    <li><a name="toc-Tree-SSA-passes-1" href="Tree-SSA-passes.html#Tree-SSA-passes">9.4 Tree SSA passes</a></li>
-    <li><a name="toc-RTL-passes-1" href="RTL-passes.html#RTL-passes">9.5 RTL passes</a></li>
-    <li><a name="toc-Optimization-info-1" href="Optimization-info.html#Optimization-info">9.6 Optimization info</a>
+    <li><a name="toc-Inter_002dprocedural-optimization-passes" href="IPA-passes.html#IPA-passes">9.4 Inter-procedural optimization passes</a>
     <ul class="no-bullet">
-      <li><a name="toc-Dump-setup-1" href="Dump-setup.html#Dump-setup">9.6.1 Dump setup</a></li>
-      <li><a name="toc-Optimization-groups-1" href="Optimization-groups.html#Optimization-groups">9.6.2 Optimization groups</a></li>
-      <li><a name="toc-Dump-files-and-streams-1" href="Dump-files-and-streams.html#Dump-files-and-streams">9.6.3 Dump files and streams</a></li>
-      <li><a name="toc-Dump-output-verbosity-1" href="Dump-output-verbosity.html#Dump-output-verbosity">9.6.4 Dump output verbosity</a></li>
-      <li><a name="toc-Dump-types-1" href="Dump-types.html#Dump-types">9.6.5 Dump types</a></li>
-      <li><a name="toc-Dump-examples-1" href="Dump-examples.html#Dump-examples">9.6.6 Dump examples</a></li>
+      <li><a name="toc-Small-IPA-passes-1" href="Small-IPA-passes.html#Small-IPA-passes">9.4.1 Small IPA passes</a></li>
+      <li><a name="toc-Regular-IPA-passes-1" href="Regular-IPA-passes.html#Regular-IPA-passes">9.4.2 Regular IPA passes</a></li>
+      <li><a name="toc-Late-IPA-passes-1" href="Late-IPA-passes.html#Late-IPA-passes">9.4.3 Late IPA passes</a></li>
+    </ul></li>
+    <li><a name="toc-Tree-SSA-passes-1" href="Tree-SSA-passes.html#Tree-SSA-passes">9.5 Tree SSA passes</a></li>
+    <li><a name="toc-RTL-passes-1" href="RTL-passes.html#RTL-passes">9.6 RTL passes</a></li>
+    <li><a name="toc-Optimization-info-1" href="Optimization-info.html#Optimization-info">9.7 Optimization info</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Dump-setup-1" href="Dump-setup.html#Dump-setup">9.7.1 Dump setup</a></li>
+      <li><a name="toc-Optimization-groups-1" href="Optimization-groups.html#Optimization-groups">9.7.2 Optimization groups</a></li>
+      <li><a name="toc-Dump-files-and-streams-1" href="Dump-files-and-streams.html#Dump-files-and-streams">9.7.3 Dump files and streams</a></li>
+      <li><a name="toc-Dump-output-verbosity-1" href="Dump-output-verbosity.html#Dump-output-verbosity">9.7.4 Dump output verbosity</a></li>
+      <li><a name="toc-Dump-types-1" href="Dump-types.html#Dump-types">9.7.5 Dump types</a></li>
+      <li><a name="toc-Dump-examples-1" href="Dump-examples.html#Dump-examples">9.7.6 Dump examples</a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Sizes-and-offsets-as-runtime-invariants" href="poly_005fint.html#poly_005fint">10 Sizes and offsets as runtime invariants</a>
@@ -387,7 +393,6 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
       </ul></li>
       <li><a name="toc-C_002b_002b-Expressions-1" href="C_002b_002b-Expressions.html#C_002b_002b-Expressions">11.10.6 C++ Expressions</a></li>
     </ul></li>
-    <li><a name="toc-Java-Trees-1" href="Java-Trees.html#Java-Trees">11.11 Java Trees</a></li>
   </ul></li>
   <li><a name="toc-GIMPLE-1" href="GIMPLE.html#GIMPLE">12 GIMPLE</a>
   <ul class="no-bullet">
@@ -586,6 +591,7 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
       <li><a name="toc-Code-Iterators-1" href="Code-Iterators.html#Code-Iterators">17.23.2 Code Iterators</a></li>
       <li><a name="toc-Int-Iterators-1" href="Int-Iterators.html#Int-Iterators">17.23.3 Int Iterators</a></li>
       <li><a name="toc-Subst-Iterators-1" href="Subst-Iterators.html#Subst-Iterators">17.23.4 Subst Iterators</a></li>
+      <li><a name="toc-Parameterized-Names-1" href="Parameterized-Names.html#Parameterized-Names">17.23.5 Parameterized Names</a></li>
     </ul></li>
   </ul></li>
   <li><a name="toc-Target-Description-Macros-and-Functions" href="Target-Macros.html#Target-Macros">18 Target Description Macros and Functions</a>
@@ -625,7 +631,7 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
       <li><a name="toc-Miscellaneous-register-hooks" href="Miscellaneous-Register-Hooks.html#Miscellaneous-Register-Hooks">18.9.16 Miscellaneous register hooks</a></li>
     </ul></li>
     <li><a name="toc-Implementing-the-Varargs-Macros" href="Varargs.html#Varargs">18.10 Implementing the Varargs Macros</a></li>
-    <li><a name="toc-Trampolines-for-Nested-Functions" href="Trampolines.html#Trampolines">18.11 Trampolines for Nested Functions</a></li>
+    <li><a name="toc-Support-for-Nested-Functions" href="Trampolines.html#Trampolines">18.11 Support for Nested Functions</a></li>
     <li><a name="toc-Implicit-Calls-to-Library-Routines" href="Library-Calls.html#Library-Calls">18.12 Implicit Calls to Library Routines</a></li>
     <li><a name="toc-Addressing-Modes-1" href="Addressing-Modes.html#Addressing-Modes">18.13 Addressing Modes</a></li>
     <li><a name="toc-Anchored-Addresses-1" href="Anchored-Addresses.html#Anchored-Addresses">18.14 Anchored Addresses</a></li>
@@ -667,8 +673,9 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
     <li><a name="toc-Defining-coprocessor-specifics-for-MIPS-targets_002e" href="MIPS-Coprocessors.html#MIPS-Coprocessors">18.26 Defining coprocessor specifics for MIPS targets.</a></li>
     <li><a name="toc-Parameters-for-Precompiled-Header-Validity-Checking" href="PCH-Target.html#PCH-Target">18.27 Parameters for Precompiled Header Validity Checking</a></li>
     <li><a name="toc-C_002b_002b-ABI-parameters" href="C_002b_002b-ABI.html#C_002b_002b-ABI">18.28 C++ ABI parameters</a></li>
-    <li><a name="toc-Adding-support-for-named-address-spaces" href="Named-Address-Spaces.html#Named-Address-Spaces">18.29 Adding support for named address spaces</a></li>
-    <li><a name="toc-Miscellaneous-Parameters" href="Misc.html#Misc">18.30 Miscellaneous Parameters</a></li>
+    <li><a name="toc-D-ABI-parameters" href="D-Language-and-ABI.html#D-Language-and-ABI">18.29 D ABI parameters</a></li>
+    <li><a name="toc-Adding-support-for-named-address-spaces" href="Named-Address-Spaces.html#Named-Address-Spaces">18.30 Adding support for named address spaces</a></li>
+    <li><a name="toc-Miscellaneous-Parameters" href="Misc.html#Misc">18.31 Miscellaneous Parameters</a></li>
   </ul></li>
   <li><a name="toc-Host-Configuration" href="Host-Config.html#Host-Config">19 Host Configuration</a>
   <ul class="no-bullet">
@@ -735,6 +742,47 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
     <li><a name="toc-GIMPLE-API-1" href="GIMPLE-API.html#GIMPLE-API">26.1 GIMPLE API</a></li>
     <li><a name="toc-The-Language-1" href="The-Language.html#The-Language">26.2 The Language</a></li>
   </ul></li>
+  <li><a name="toc-Static-Analyzer-1" href="Static-Analyzer.html#Static-Analyzer">27 Static Analyzer</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Analyzer-Internals-1" href="Analyzer-Internals.html#Analyzer-Internals">27.1 Analyzer Internals</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Overview-2" href="Analyzer-Internals.html#Overview-2">27.1.1 Overview</a></li>
+      <li><a name="toc-Graphs" href="Analyzer-Internals.html#Graphs">27.1.2 Graphs</a></li>
+      <li><a name="toc-State-Tracking" href="Analyzer-Internals.html#State-Tracking">27.1.3 State Tracking</a></li>
+      <li><a name="toc-Region-Model" href="Analyzer-Internals.html#Region-Model">27.1.4 Region Model</a></li>
+      <li><a name="toc-Analyzer-Paths" href="Analyzer-Internals.html#Analyzer-Paths">27.1.5 Analyzer Paths</a></li>
+      <li><a name="toc-Limitations" href="Analyzer-Internals.html#Limitations">27.1.6 Limitations</a></li>
+    </ul></li>
+    <li><a name="toc-Debugging-the-Analyzer-1" href="Debugging-the-Analyzer.html#Debugging-the-Analyzer">27.2 Debugging the Analyzer</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Special-Functions-for-Debugging-the-Analyzer" href="Debugging-the-Analyzer.html#Special-Functions-for-Debugging-the-Analyzer">27.2.1 Special Functions for Debugging the Analyzer</a></li>
+      <li><a name="toc-Other-Debugging-Techniques" href="Debugging-the-Analyzer.html#Other-Debugging-Techniques">27.2.2 Other Debugging Techniques</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-User-Experience-Guidelines-1" href="User-Experience-Guidelines.html#User-Experience-Guidelines">28 User Experience Guidelines</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Guidelines-for-Diagnostics-1" href="Guidelines-for-Diagnostics.html#Guidelines-for-Diagnostics">28.1 Guidelines for Diagnostics</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Talk-in-terms-of-the-user_0027s-code" href="Guidelines-for-Diagnostics.html#Talk-in-terms-of-the-user_0027s-code">28.1.1 Talk in terms of the user&rsquo;s code</a></li>
+      <li><a name="toc-Diagnostics-are-actionable" href="Guidelines-for-Diagnostics.html#Diagnostics-are-actionable">28.1.2 Diagnostics are actionable</a></li>
+      <li><a name="toc-The-user_0027s-attention-is-important" href="Guidelines-for-Diagnostics.html#The-user_0027s-attention-is-important">28.1.3 The user&rsquo;s attention is important</a></li>
+      <li><a name="toc-Precision-of-Wording" href="Guidelines-for-Diagnostics.html#Precision-of-Wording">28.1.4 Precision of Wording</a></li>
+      <li><a name="toc-Try-the-diagnostic-on-real_002dworld-code" href="Guidelines-for-Diagnostics.html#Try-the-diagnostic-on-real_002dworld-code">28.1.5 Try the diagnostic on real-world code</a></li>
+      <li><a name="toc-Make-mismatches-clear" href="Guidelines-for-Diagnostics.html#Make-mismatches-clear">28.1.6 Make mismatches clear</a></li>
+      <li><a name="toc-Location-Information" href="Guidelines-for-Diagnostics.html#Location-Information">28.1.7 Location Information</a></li>
+      <li><a name="toc-Coding-Conventions" href="Guidelines-for-Diagnostics.html#Coding-Conventions">28.1.8 Coding Conventions</a></li>
+      <li><a name="toc-Group-logically_002drelated-diagnostics" href="Guidelines-for-Diagnostics.html#Group-logically_002drelated-diagnostics">28.1.9 Group logically-related diagnostics</a></li>
+      <li><a name="toc-Quoting" href="Guidelines-for-Diagnostics.html#Quoting">28.1.10 Quoting</a></li>
+      <li><a name="toc-Spelling-and-Terminology" href="Guidelines-for-Diagnostics.html#Spelling-and-Terminology">28.1.11 Spelling and Terminology</a></li>
+      <li><a name="toc-Fix_002dit-hints" href="Guidelines-for-Diagnostics.html#Fix_002dit-hints">28.1.12 Fix-it hints</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Fix_002dit-hints-should-work" href="Guidelines-for-Diagnostics.html#Fix_002dit-hints-should-work">28.1.12.1 Fix-it hints should work</a></li>
+        <li><a name="toc-Express-deletion-in-terms-of-deletion_002c-not-replacement" href="Guidelines-for-Diagnostics.html#Express-deletion-in-terms-of-deletion_002c-not-replacement">28.1.12.2 Express deletion in terms of deletion, not replacement</a></li>
+        <li><a name="toc-Multiple-suggestions" href="Guidelines-for-Diagnostics.html#Multiple-suggestions">28.1.12.3 Multiple suggestions</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a name="toc-Guidelines-for-Options-1" href="Guidelines-for-Options.html#Guidelines-for-Options">28.2 Guidelines for Options</a></li>
+  </ul></li>
   <li><a name="toc-Funding-Free-Software" href="Funding.html#Funding">Funding Free Software</a></li>
   <li><a name="toc-The-GNU-Project-and-GNU_002fLinux" href="GNU-Project.html#GNU-Project">The GNU Project and GNU/Linux</a></li>
   <li><a name="toc-GNU-General-Public-License" href="Copying.html#Copying">GNU General Public License</a></li>
@@ -762,8 +810,8 @@ Next: <a href="Contributing.html#Contributing" accesskey="n" rel="next">Contribu
 <p>This manual documents the internals of the GNU compilers, including
 how to port them to new targets and some information about how to
 write front ends for new languages.  It corresponds to the compilers
-(SiFive GCC 8.3.0-2019.08.0)
-version 8.3.0.  The use of the GNU compilers is documented in a
+(SiFive GCC-Metal 10.2.0-2020.12.8)
+version 10.2.0.  The use of the GNU compilers is documented in a
 separate manual.  See <a href="http://gcc.gnu.org/onlinedocs/gcc/index.html#Top">Introduction</a> in <cite>Using the GNU
 Compiler Collection (GCC)</cite>.
 </p>
@@ -834,6 +882,10 @@ implemented in GCC.
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
 </pre></th></tr><tr><td align="left" valign="top">&bull; <a href="Match-and-Simplify.html#Match-and-Simplify">Match and Simplify</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to write expression simplification patterns for GIMPLE and GENERIC
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Static-Analyzer.html#Static-Analyzer">Static Analyzer</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Working with the static analyzer.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="User-Experience-Guidelines.html#User-Experience-Guidelines">User Experience Guidelines</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Guidelines for implementing diagnostics and options.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="Funding.html#Funding">Funding</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to help assure funding for free software.
 </td></tr>

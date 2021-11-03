@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -132,10 +132,7 @@ the direction of traversal and the set of loops visited.  Each loop is
 guaranteed to be visited exactly once, regardless of the changes to the
 loop tree, and the loops may be removed during the traversal.  The newly
 created loops are never traversed, if they need to be visited, this
-must be done separately after their creation.  The <code>FOR_EACH_LOOP</code>
-macro allocates temporary variables.  If the <code>FOR_EACH_LOOP</code> loop
-were ended using break or goto, they would not be released;
-<code>FOR_EACH_LOOP_BREAK</code> macro must be used instead.
+must be done separately after their creation.
 </p>
 <p>Each basic block contains the reference to the innermost loop it belongs
 to (<code>loop_father</code>).  For this reason, it is only possible to have

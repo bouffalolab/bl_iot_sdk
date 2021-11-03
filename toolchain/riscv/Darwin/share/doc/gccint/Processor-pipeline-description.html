@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Processor pipeline description (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Insn-Attributes.html#Insn-Attributes" rel="up" title="Insn Attributes">
-<link href="Conditional-Execution.html#Conditional-Execution" rel="next" title="Conditional Execution">
-<link href="Delay-Slots.html#Delay-Slots" rel="prev" title="Delay Slots">
+<link href="Insn-Attributes.html" rel="up" title="Insn Attributes">
+<link href="Conditional-Execution.html" rel="next" title="Conditional Execution">
+<link href="Delay-Slots.html" rel="prev" title="Delay Slots">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,27 +58,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Processor-pipeline-description"></a>
-<div class="header">
+<span id="Processor-pipeline-description"></span><div class="header">
 <p>
-Previous: <a href="Delay-Slots.html#Delay-Slots" accesskey="p" rel="prev">Delay Slots</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Delay-Slots.html" accesskey="p" rel="prev">Delay Slots</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Specifying-processor-pipeline-description"></a>
-<h4 class="subsection">17.19.9 Specifying processor pipeline description</h4>
-<a name="index-processor-pipeline-description"></a>
-<a name="index-processor-functional-units"></a>
-<a name="index-instruction-latency-time"></a>
-<a name="index-interlock-delays"></a>
-<a name="index-data-dependence-delays"></a>
-<a name="index-reservation-delays"></a>
-<a name="index-pipeline-hazard-recognizer"></a>
-<a name="index-automaton-based-pipeline-description"></a>
-<a name="index-regular-expressions"></a>
-<a name="index-deterministic-finite-state-automaton"></a>
-<a name="index-automaton-based-scheduler"></a>
-<a name="index-RISC"></a>
-<a name="index-VLIW"></a>
+<span id="Specifying-processor-pipeline-description"></span><h4 class="subsection">17.19.9 Specifying processor pipeline description</h4>
+<span id="index-processor-pipeline-description"></span>
+<span id="index-processor-functional-units"></span>
+<span id="index-instruction-latency-time"></span>
+<span id="index-interlock-delays"></span>
+<span id="index-data-dependence-delays"></span>
+<span id="index-reservation-delays"></span>
+<span id="index-pipeline-hazard-recognizer"></span>
+<span id="index-automaton-based-pipeline-description"></span>
+<span id="index-regular-expressions"></span>
+<span id="index-deterministic-finite-state-automaton"></span>
+<span id="index-automaton-based-scheduler"></span>
+<span id="index-RISC"></span>
+<span id="index-VLIW"></span>
 
 <p>To achieve better performance, most modern processors
 (super-pipelined, superscalar <acronym>RISC</acronym>, and <acronym>VLIW</acronym>
@@ -133,16 +122,16 @@ is based on a deterministic finite state automaton (<acronym>DFA</acronym>):
 the instruction issue is possible if there is a transition from one
 automaton state to another one.  This algorithm is very fast, and
 furthermore, its speed is not dependent on processor
-complexity<a name="DOCF5" href="#FOOT5"><sup>5</sup></a>.
+complexity<a id="DOCF5" href="#FOOT5"><sup>5</sup></a>.
 </p>
-<a name="index-automaton-based-pipeline-description-1"></a>
+<span id="index-automaton-based-pipeline-description-1"></span>
 <p>The rest of this section describes the directives that constitute
 an automaton-based processor pipeline description.  The order of
 these constructions within the machine description file is not
 important.
 </p>
-<a name="index-define_005fautomaton"></a>
-<a name="index-pipeline-hazard-recognizer-1"></a>
+<span id="index-define_005fautomaton"></span>
+<span id="index-pipeline-hazard-recognizer-1"></span>
 <p>The following optional construction describes names of automata
 generated and used for the pipeline hazards recognition.  Sometimes
 the generated finite state automaton used by the pipeline hazard
@@ -151,8 +140,8 @@ units to the automata, the total size of the automata is usually
 less than the size of the single automaton.  If there is no one such
 construction, only one finite state automaton is generated.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_automaton <var>automata-names</var>)
+<div class="example">
+<pre class="example">(define_automaton <var>automata-names</var>)
 </pre></div>
 
 <p><var>automata-names</var> is a string giving names of the automata.  The
@@ -160,13 +149,13 @@ names are separated by commas.  All the automata should have unique names.
 The automaton name is used in the constructions <code>define_cpu_unit</code> and
 <code>define_query_cpu_unit</code>.
 </p>
-<a name="index-define_005fcpu_005funit"></a>
-<a name="index-processor-functional-units-1"></a>
+<span id="index-define_005fcpu_005funit"></span>
+<span id="index-processor-functional-units-1"></span>
 <p>Each processor functional unit used in the description of instruction
 reservations should be described by the following construction.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_cpu_unit <var>unit-names</var> [<var>automaton-name</var>])
+<div class="example">
+<pre class="example">(define_cpu_unit <var>unit-names</var> [<var>automaton-name</var>])
 </pre></div>
 
 <p><var>unit-names</var> is a string giving the names of the functional units
@@ -186,8 +175,8 @@ be present on the same cycle for the other alternatives of the insn
 reservation.  The rest of the constraints are mentioned in the
 description of the subsequent constructions.
 </p>
-<a name="index-define_005fquery_005fcpu_005funit"></a>
-<a name="index-querying-function-unit-reservations"></a>
+<span id="index-define_005fquery_005fcpu_005funit"></span>
+<span id="index-querying-function-unit-reservations"></span>
 <p>The following construction describes CPU functional units analogously
 to <code>define_cpu_unit</code>.  The reservation of such units can be
 queried for an automaton state.  The instruction scheduler never
@@ -196,8 +185,8 @@ as a rule, you don&rsquo;t need this construction.  This construction could
 be used for future code generation goals (e.g. to generate
 <acronym>VLIW</acronym> insn templates).
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_query_cpu_unit <var>unit-names</var> [<var>automaton-name</var>])
+<div class="example">
+<pre class="example">(define_query_cpu_unit <var>unit-names</var> [<var>automaton-name</var>])
 </pre></div>
 
 <p><var>unit-names</var> is a string giving names of the functional units
@@ -206,15 +195,15 @@ separated by commas.
 <p><var>automaton-name</var> is a string giving the name of the automaton with
 which the unit is bound.
 </p>
-<a name="index-define_005finsn_005freservation"></a>
-<a name="index-instruction-latency-time-1"></a>
-<a name="index-regular-expressions-1"></a>
-<a name="index-data-bypass"></a>
+<span id="index-define_005finsn_005freservation"></span>
+<span id="index-instruction-latency-time-1"></span>
+<span id="index-regular-expressions-1"></span>
+<span id="index-data-bypass"></span>
 <p>The following construction is the major one to describe pipeline
 characteristics of an instruction.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn_reservation <var>insn-name</var> <var>default_latency</var>
+<div class="example">
+<pre class="example">(define_insn_reservation <var>insn-name</var> <var>default_latency</var>
                          <var>condition</var> <var>regexp</var>)
 </pre></div>
 
@@ -228,7 +217,7 @@ zero and the cost of output dependencies is the difference between
 latency times of the producing and consuming insns (if the difference
 is negative, the cost is considered to be zero).  You can always
 change the default costs for any description by using the target hook
-<code>TARGET_SCHED_ADJUST_COST</code> (see <a href="Scheduling.html#Scheduling">Scheduling</a>).
+<code>TARGET_SCHED_ADJUST_COST</code> (see <a href="Scheduling.html">Scheduling</a>).
 </p>
 <p><var>insn-name</var> is a string giving the internal name of the insn.  The
 internal names are used in constructions <code>define_bypass</code> and in
@@ -252,8 +241,8 @@ recognizer considerably.
 units by the instruction.  The reservations are described by a regular
 expression according to the following syntax:
 </p>
-<div class="smallexample">
-<pre class="smallexample">       regexp = regexp &quot;,&quot; oneof
+<div class="example">
+<pre class="example">       regexp = regexp &quot;,&quot; oneof
               | oneof
 
        oneof = oneof &quot;|&quot; allof
@@ -297,28 +286,28 @@ functional unit.
 </li><li> &lsquo;<samp>nothing</samp>&rsquo; denotes no unit reservations.
 </li></ul>
 
-<a name="index-define_005freservation"></a>
+<span id="index-define_005freservation"></span>
 <p>Sometimes unit reservations for different insns contain common parts.
 In such case, you can simplify the pipeline description by describing
 the common part by the following construction
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_reservation <var>reservation-name</var> <var>regexp</var>)
+<div class="example">
+<pre class="example">(define_reservation <var>reservation-name</var> <var>regexp</var>)
 </pre></div>
 
 <p><var>reservation-name</var> is a string giving name of <var>regexp</var>.
 Functional unit names and reservation names are in the same name
 space.  So the reservation names should be different from the
-functional unit names and can not be the reserved name &lsquo;<samp>nothing</samp>&rsquo;.
+functional unit names and cannot be the reserved name &lsquo;<samp>nothing</samp>&rsquo;.
 </p>
-<a name="index-define_005fbypass"></a>
-<a name="index-instruction-latency-time-2"></a>
-<a name="index-data-bypass-1"></a>
+<span id="index-define_005fbypass"></span>
+<span id="index-instruction-latency-time-2"></span>
+<span id="index-data-bypass-1"></span>
 <p>The following construction is used to describe exceptions in the
 latency time for given instruction pair.  This is so called bypasses.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_bypass <var>number</var> <var>out_insn_names</var> <var>in_insn_names</var>
+<div class="example">
+<pre class="example">(define_bypass <var>number</var> <var>out_insn_names</var> <var>in_insn_names</var>
                [<var>guard</var>])
 </pre></div>
 
@@ -328,8 +317,8 @@ instructions given in string <var>in_insn_names</var>.  Each of these
 strings is a comma-separated list of filename-style globs and
 they refer to the names of <code>define_insn_reservation</code>s.
 For example:
-</p><div class="smallexample">
-<pre class="smallexample">(define_bypass 1 &quot;cpu1_load_*, cpu1_store_*&quot; &quot;cpu1_load_*&quot;)
+</p><div class="example">
+<pre class="example">(define_bypass 1 &quot;cpu1_load_*, cpu1_store_*&quot; &quot;cpu1_load_*&quot;)
 </pre></div>
 <p>defines a bypass between instructions that start with
 &lsquo;<samp>cpu1_load_</samp>&rsquo; or &lsquo;<samp>cpu1_store_</samp>&rsquo; and those that start with
@@ -347,20 +336,20 @@ chosen bypass is the first bypass with a guard in description whose
 guard function returns nonzero.  If there is no such bypass, then
 bypass without the guard function is chosen.
 </p>
-<a name="index-exclusion_005fset"></a>
-<a name="index-presence_005fset"></a>
-<a name="index-final_005fpresence_005fset"></a>
-<a name="index-absence_005fset"></a>
-<a name="index-final_005fabsence_005fset"></a>
-<a name="index-VLIW-1"></a>
-<a name="index-RISC-1"></a>
+<span id="index-exclusion_005fset"></span>
+<span id="index-presence_005fset"></span>
+<span id="index-final_005fpresence_005fset"></span>
+<span id="index-absence_005fset"></span>
+<span id="index-final_005fabsence_005fset"></span>
+<span id="index-VLIW-1"></span>
+<span id="index-RISC-1"></span>
 <p>The following five constructions are usually used to describe
 <acronym>VLIW</acronym> processors, or more precisely, to describe a placement
 of small instructions into <acronym>VLIW</acronym> instruction slots.  They
 can be used for <acronym>RISC</acronym> processors, too.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(exclusion_set <var>unit-names</var> <var>unit-names</var>)
+<div class="example">
+<pre class="example">(exclusion_set <var>unit-names</var> <var>unit-names</var>)
 (presence_set <var>unit-names</var> <var>patterns</var>)
 (final_presence_set <var>unit-names</var> <var>patterns</var>)
 (absence_set <var>unit-names</var> <var>patterns</var>)
@@ -375,7 +364,7 @@ separated by comma.  Currently pattern is one unit or units
 separated by white-spaces.
 </p>
 <p>The first construction (&lsquo;<samp>exclusion_set</samp>&rsquo;) means that each
-functional unit in the first string can not be reserved simultaneously
+functional unit in the first string cannot be reserved simultaneously
 with a unit whose name is in the second string and vice versa.  For
 example, the construction is useful for describing processors
 (e.g. some SPARC processors) with a fully pipelined floating point
@@ -383,22 +372,22 @@ functional unit which can execute simultaneously only single floating
 point insns or only double floating point insns.
 </p>
 <p>The second construction (&lsquo;<samp>presence_set</samp>&rsquo;) means that each
-functional unit in the first string can not be reserved unless at
+functional unit in the first string cannot be reserved unless at
 least one of pattern of units whose names are in the second string is
 reserved.  This is an asymmetric relation.  For example, it is useful
 for description that <acronym>VLIW</acronym> &lsquo;<samp>slot1</samp>&rsquo; is reserved after
 &lsquo;<samp>slot0</samp>&rsquo; reservation.  We could describe it by the following
 construction
 </p>
-<div class="smallexample">
-<pre class="smallexample">(presence_set &quot;slot1&quot; &quot;slot0&quot;)
+<div class="example">
+<pre class="example">(presence_set &quot;slot1&quot; &quot;slot0&quot;)
 </pre></div>
 
 <p>Or &lsquo;<samp>slot1</samp>&rsquo; is reserved only after &lsquo;<samp>slot0</samp>&rsquo; and unit &lsquo;<samp>b0</samp>&rsquo;
 reservation.  In this case we could write
 </p>
-<div class="smallexample">
-<pre class="smallexample">(presence_set &quot;slot1&quot; &quot;slot0 b0&quot;)
+<div class="example">
+<pre class="example">(presence_set &quot;slot1&quot; &quot;slot0 b0&quot;)
 </pre></div>
 
 <p>The third construction (&lsquo;<samp>final_presence_set</samp>&rsquo;) is analogous to
@@ -412,15 +401,15 @@ done on the result reservation.  This construction is useful to
 describe a reservation which is actually two subsequent reservations.
 For example, if we use
 </p>
-<div class="smallexample">
-<pre class="smallexample">(presence_set &quot;slot1&quot; &quot;slot0&quot;)
+<div class="example">
+<pre class="example">(presence_set &quot;slot1&quot; &quot;slot0&quot;)
 </pre></div>
 
 <p>the following insn will be never issued (because &lsquo;<samp>slot1</samp>&rsquo; requires
 &lsquo;<samp>slot0</samp>&rsquo; which is absent in the source state).
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_reservation &quot;insn_and_nop&quot; &quot;slot0 + slot1&quot;)
+<div class="example">
+<pre class="example">(define_reservation &quot;insn_and_nop&quot; &quot;slot0 + slot1&quot;)
 </pre></div>
 
 <p>but it can be issued if we use analogous &lsquo;<samp>final_presence_set</samp>&rsquo;.
@@ -434,16 +423,16 @@ this one but it is symmetric).  For example it might be useful in a
 after either &lsquo;<samp>slot1</samp>&rsquo; or &lsquo;<samp>slot2</samp>&rsquo; have been reserved.  This
 can be described as:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(absence_set &quot;slot0&quot; &quot;slot1, slot2&quot;)
+<div class="example">
+<pre class="example">(absence_set &quot;slot0&quot; &quot;slot1, slot2&quot;)
 </pre></div>
 
-<p>Or &lsquo;<samp>slot2</samp>&rsquo; can not be reserved if &lsquo;<samp>slot0</samp>&rsquo; and unit &lsquo;<samp>b0</samp>&rsquo;
+<p>Or &lsquo;<samp>slot2</samp>&rsquo; cannot be reserved if &lsquo;<samp>slot0</samp>&rsquo; and unit &lsquo;<samp>b0</samp>&rsquo;
 are reserved or &lsquo;<samp>slot1</samp>&rsquo; and unit &lsquo;<samp>b1</samp>&rsquo; are reserved.  In
 this case we could write
 </p>
-<div class="smallexample">
-<pre class="smallexample">(absence_set &quot;slot2&quot; &quot;slot0 b0, slot1 b1&quot;)
+<div class="example">
+<pre class="example">(absence_set &quot;slot2&quot; &quot;slot0 b0, slot1 b1&quot;)
 </pre></div>
 
 <p>All functional units mentioned in a set should belong to the same
@@ -453,15 +442,15 @@ automaton.
 &lsquo;<samp>absence_set</samp>&rsquo; but checking is done on the result (state)
 reservation.  See comments for &lsquo;<samp>final_presence_set</samp>&rsquo;.
 </p>
-<a name="index-automata_005foption"></a>
-<a name="index-deterministic-finite-state-automaton-1"></a>
-<a name="index-nondeterministic-finite-state-automaton"></a>
-<a name="index-finite-state-automaton-minimization"></a>
+<span id="index-automata_005foption"></span>
+<span id="index-deterministic-finite-state-automaton-1"></span>
+<span id="index-nondeterministic-finite-state-automaton"></span>
+<span id="index-finite-state-automaton-minimization"></span>
 <p>You can control the generator of the pipeline hazard recognizer with
 the following construction.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(automata_option <var>options</var>)
+<div class="example">
+<pre class="example">(automata_option <var>options</var>)
 </pre></div>
 
 <p><var>options</var> is a string giving options which affect the generated
@@ -520,8 +509,8 @@ issue three insns (two integer insns and one floating point insn) on
 the cycle but can finish only two insns.  To describe this, we define
 the following functional units.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_cpu_unit &quot;i0_pipeline, i1_pipeline, f_pipeline&quot;)
+<div class="example">
+<pre class="example">(define_cpu_unit &quot;i0_pipeline, i1_pipeline, f_pipeline&quot;)
 (define_cpu_unit &quot;port0, port1&quot;)
 </pre></div>
 
@@ -532,14 +521,14 @@ are issued into the second pipeline.  Integer division and
 multiplication insns can be executed only in the second integer
 pipeline and their results are ready correspondingly in 9 and 4
 cycles.  The integer division is not pipelined, i.e. the subsequent
-integer division insn can not be issued until the current division
+integer division insn cannot be issued until the current division
 insn finished.  Floating point insns are fully pipelined and their
 results are ready in 3 cycles.  Where the result of a floating point
 insn is used by an integer insn, an additional delay of one cycle is
 incurred.  To describe all of this we could specify
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_cpu_unit &quot;div&quot;)
+<div class="example">
+<pre class="example">(define_cpu_unit &quot;div&quot;)
 
 (define_insn_reservation &quot;simple&quot; 2 (eq_attr &quot;type&quot; &quot;int&quot;)
                          &quot;(i0_pipeline | i1_pipeline), (port0 | port1)&quot;)
@@ -558,15 +547,15 @@ incurred.  To describe all of this we could specify
 
 <p>To simplify the description we could describe the following reservation
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_reservation &quot;finish&quot; &quot;port0|port1&quot;)
+<div class="example">
+<pre class="example">(define_reservation &quot;finish&quot; &quot;port0|port1&quot;)
 </pre></div>
 
 <p>and use it in all <code>define_insn_reservation</code> as in the following
 construction
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn_reservation &quot;simple&quot; 2 (eq_attr &quot;type&quot; &quot;int&quot;)
+<div class="example">
+<pre class="example">(define_insn_reservation &quot;simple&quot; 2 (eq_attr &quot;type&quot; &quot;int&quot;)
                          &quot;(i0_pipeline | i1_pipeline), finish&quot;)
 </pre></div>
 
@@ -575,7 +564,7 @@ construction
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT5" href="#DOCF5">(5)</a></h3>
+<h5><a id="FOOT5" href="#DOCF5">(5)</a></h3>
 <p>However, the size of the automaton depends on
 processor complexity.  To limit this effect, machine descriptions
 can split orthogonal parts of the machine description among several
@@ -585,7 +574,7 @@ this does cause a small decrease in the algorithm&rsquo;s performance.</p>
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Delay-Slots.html#Delay-Slots" accesskey="p" rel="prev">Delay Slots</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Delay-Slots.html" accesskey="p" rel="prev">Delay Slots</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

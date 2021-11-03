@@ -1,5 +1,5 @@
 # -*- python -*-
-# Copyright (C) 2009-2018 Free Software Foundation, Inc.
+# Copyright (C) 2009-2020 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@ import gdb
 import os
 import os.path
 
-pythondir = '/Users/mac/git/freedom-tools-master/obj/x86_64-apple-darwin/install/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-apple-darwin/share/gcc-8.3.0/python'
-libdir = '/Users/mac/git/freedom-tools-master/obj/x86_64-apple-darwin/install/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-apple-darwin/riscv64-unknown-elf/lib/rv32imafdc/ilp32d'
+pythondir = '/scratch/jenkins/workspace/tpp-freedom-tools/tpp01--build-binary-packages--parameterized/obj/x86_64-apple-darwin/install/riscv64-unknown-elf-gcc-10.2.0-2020.12.8-x86_64-apple-darwin/share/gcc-10.2.0/python'
+libdir = '/scratch/jenkins/workspace/tpp-freedom-tools/tpp01--build-binary-packages--parameterized/obj/x86_64-apple-darwin/install/riscv64-unknown-elf-gcc-10.2.0-2020.12.8-x86_64-apple-darwin/riscv64-unknown-elf/lib/rv32imafdc/ilp32d'
 
 # This file might be loaded when there is no current objfile.  This
 # can happen if the user loads it manually.  In this case we don't

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Auto Display (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Data.html#Data" rel="up" title="Data">
-<link href="Print-Settings.html#Print-Settings" rel="next" title="Print Settings">
-<link href="Memory.html#Memory" rel="prev" title="Memory">
+<link href="Data.html" rel="up" title="Data">
+<link href="Print-Settings.html" rel="next" title="Print Settings">
+<link href="Memory.html" rel="prev" title="Memory">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,16 +51,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Auto-Display"></a>
-<div class="header">
+<span id="Auto-Display"></span><div class="header">
 <p>
-Next: <a href="Print-Settings.html#Print-Settings" accesskey="n" rel="next">Print Settings</a>, Previous: <a href="Memory.html#Memory" accesskey="p" rel="prev">Memory</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Print-Settings.html" accesskey="n" rel="next">Print Settings</a>, Previous: <a href="Memory.html" accesskey="p" rel="prev">Memory</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Automatic-Display"></a>
-<h3 class="section">10.7 Automatic Display</h3>
-<a name="index-automatic-display"></a>
-<a name="index-display-of-expressions"></a>
+<span id="Automatic-Display"></span><h3 class="section">10.7 Automatic Display</h3>
+<span id="index-automatic-display"></span>
+<span id="index-display-of-expressions"></span>
 
 <p>If you find that you want to print the value of an expression frequently
 (to see how it changes), you might want to add it to the <em>automatic
@@ -78,8 +67,8 @@ Each expression added to the list is given a number to identify it;
 to remove an expression from the list, you specify that number.
 The automatic display looks like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">2: foo = 38
+<div class="example">
+<pre class="example">2: foo = 38
 3: bar[5] = (struct hack *) 0x3804
 </pre></div>
 
@@ -91,11 +80,11 @@ specification&mdash;it uses <code>x</code> if you specify either the &lsquo;<sam
 or &lsquo;<samp>s</samp>&rsquo; format, or a unit size; otherwise it uses <code>print</code>.
 </p>
 <dl compact="compact">
-<dd><a name="index-display"></a>
+<dd><span id="index-display"></span>
 </dd>
 <dt><code>display <var>expr</var></code></dt>
 <dd><p>Add the expression <var>expr</var> to the list of expressions to display
-each time your program stops.  See <a href="Expressions.html#Expressions">Expressions</a>.
+each time your program stops.  See <a href="Expressions.html">Expressions</a>.
 </p>
 <p><code>display</code> does not repeat if you press <tt class="key">RET</tt> again after using it.
 </p>
@@ -104,24 +93,24 @@ each time your program stops.  See <a href="Expressions.html#Expressions">Expres
 <dd><p>For <var>fmt</var> specifying only a display format and not a size or
 count, add the expression <var>expr</var> to the auto-display list but
 arrange to display it each time in the specified format <var>fmt</var>.
-See <a href="Output-Formats.html#Output-Formats">Output Formats</a>.
+See <a href="Output-Formats.html">Output Formats</a>.
 </p>
 </dd>
 <dt><code>display/<var>fmt</var> <var>addr</var></code></dt>
 <dd><p>For <var>fmt</var> &lsquo;<samp>i</samp>&rsquo; or &lsquo;<samp>s</samp>&rsquo;, or including a unit-size or a
 number of units, add the expression <var>addr</var> as a memory address to
 be examined each time your program stops.  Examining means in effect
-doing &lsquo;<samp>x/<var>fmt</var> <var>addr</var></samp>&rsquo;.  See <a href="Memory.html#Memory">Examining Memory</a>.
+doing &lsquo;<samp>x/<var>fmt</var> <var>addr</var></samp>&rsquo;.  See <a href="Memory.html">Examining Memory</a>.
 </p></dd>
 </dl>
 
 <p>For example, &lsquo;<samp>display/i $pc</samp>&rsquo; can be helpful, to see the machine
 instruction about to be executed each time execution stops (&lsquo;<samp>$pc</samp>&rsquo;
-is a common name for the program counter; see <a href="Registers.html#Registers">Registers</a>).
+is a common name for the program counter; see <a href="Registers.html">Registers</a>).
 </p>
 <dl compact="compact">
-<dd><a name="index-delete-display"></a>
-<a name="index-undisplay"></a>
+<dd><span id="index-delete-display"></span>
+<span id="index-undisplay"></span>
 </dd>
 <dt><code>undisplay <var>dnums</var>&hellip;</code></dt>
 <dt><code>delete display <var>dnums</var>&hellip;</code></dt>
@@ -134,7 +123,7 @@ or it could be a range of display numbers, as in <code>2-4</code>.
 <p><code>undisplay</code> does not repeat if you press <tt class="key">RET</tt> after using it.
 (Otherwise you would just get the error &lsquo;<samp>No display number &hellip;</samp>&rsquo;.)
 </p>
-<a name="index-disable-display"></a>
+<span id="index-disable-display"></span>
 </dd>
 <dt><code>disable display <var>dnums</var>&hellip;</code></dt>
 <dd><p>Disable the display of item numbers <var>dnums</var>.  A disabled display
@@ -145,7 +134,7 @@ single display number, one of the numbers shown in the first field of
 the &lsquo;<samp>info display</samp>&rsquo; display; or it could be a range of display
 numbers, as in <code>2-4</code>.
 </p>
-<a name="index-enable-display"></a>
+<span id="index-enable-display"></span>
 </dd>
 <dt><code>enable display <var>dnums</var>&hellip;</code></dt>
 <dd><p>Enable display of item numbers <var>dnums</var>.  It becomes effective once
@@ -160,7 +149,7 @@ display; or it could be a range of display numbers, as in <code>2-4</code>.
 <dd><p>Display the current values of the expressions on the list, just as is
 done when your program stops.
 </p>
-<a name="index-info-display"></a>
+<span id="index-info-display"></span>
 </dd>
 <dt><code>info display</code></dt>
 <dd><p>Print the list of expressions previously set up to display
@@ -171,7 +160,7 @@ because they refer to automatic variables not currently available.
 </p></dd>
 </dl>
 
-<a name="index-display-disabled-out-of-scope"></a>
+<span id="index-display-disabled-out-of-scope"></span>
 <p>If a display expression refers to local variables, then it does not make
 sense outside the lexical context for which it was set up.  Such an
 expression is disabled when execution enters a context where one of its
@@ -186,7 +175,7 @@ is meaningful, you can enable the display expression once again.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Print-Settings.html#Print-Settings" accesskey="n" rel="next">Print Settings</a>, Previous: <a href="Memory.html#Memory" accesskey="p" rel="prev">Memory</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Print-Settings.html" accesskey="n" rel="next">Print Settings</a>, Previous: <a href="Memory.html" accesskey="p" rel="prev">Memory</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

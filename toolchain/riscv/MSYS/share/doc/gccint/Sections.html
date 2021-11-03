@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -293,6 +293,15 @@ local relocations should be placed in a read-write section.
 is in effect, and 0 otherwise.  The hook is typically redefined
 when the target cannot support (some kinds of) dynamic relocations
 in read-only sections even in executables.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TARGET_005fASM_005fGENERATE_005fPIC_005fADDR_005fDIFF_005fVEC"></a>Target Hook: <em>bool</em> <strong>TARGET_ASM_GENERATE_PIC_ADDR_DIFF_VEC</strong> <em>(void)</em></dt>
+<dd><p>Return true to generate ADDR_DIF_VEC table
+or false to generate ADDR_VEC table for jumps in case of -fPIC.
+</p>
+<p>The default version of this function returns true if flag_pic
+equals true and false otherwise
 </p></dd></dl>
 
 <dl>

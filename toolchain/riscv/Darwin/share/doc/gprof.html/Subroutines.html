@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the gprof profiler of the GNU system.
 
-Copyright (C) 1988-2019 Free Software Foundation, Inc.
+Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Subroutines (GNU gprof)</title>
@@ -21,32 +21,23 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Call-Graph.html#Call-Graph" rel="up" title="Call Graph">
-<link href="Cycles.html#Cycles" rel="next" title="Cycles">
-<link href="Callers.html#Callers" rel="prev" title="Callers">
+<link href="Call-Graph.html" rel="up" title="Call Graph">
+<link href="Cycles.html" rel="next" title="Cycles">
+<link href="Callers.html" rel="prev" title="Callers">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Subroutines"></a>
-<div class="header">
+<span id="Subroutines"></span><div class="header">
 <p>
-Next: <a href="Cycles.html#Cycles" accesskey="n" rel="next">Cycles</a>, Previous: <a href="Callers.html#Callers" accesskey="p" rel="prev">Callers</a>, Up: <a href="Call-Graph.html#Call-Graph" accesskey="u" rel="up">Call Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Cycles.html" accesskey="n" rel="next">Cycles</a>, Previous: <a href="Callers.html" accesskey="p" rel="prev">Callers</a>, Up: <a href="Call-Graph.html" accesskey="u" rel="up">Call Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Lines-for-a-Function_0027s-Subroutines"></a>
-<h4 class="subsection">5.2.3 Lines for a Function&rsquo;s Subroutines</h4>
+<span id="Lines-for-a-Function_0027s-Subroutines"></span><h4 class="subsection">5.2.3 Lines for a Function&rsquo;s Subroutines</h4>
 
 <p>A function&rsquo;s entry has a line for each of its subroutines&mdash;in other
 words, a line for each other function that it called.  These lines&rsquo;
@@ -76,8 +65,8 @@ are different because of the difference in context.
 <code>main</code>, the primary line and a line for a subroutine, together
 with the heading line that shows the names of the fields:
 </p>
-<div class="smallexample">
-<pre class="smallexample">index  % time    self  children called     name
+<div class="example">
+<pre class="example">index  % time    self  children called     name
 &hellip;
 [2]    100.0    0.00    0.05       1         main [2]
                 0.00    0.05       1/1           report [3]
@@ -105,7 +94,7 @@ of the total time spent in calls to <code>report</code> from <code>main</code>.
 followed by the total number of non-recursive calls to <code>report</code>.
 This ratio is used to determine how much of <code>report</code>&rsquo;s <code>self</code>
 and <code>children</code> time gets credited to <code>main</code>.
-See <a href="Assumptions.html#Assumptions">Estimating <code>children</code> Times</a>.
+See <a href="Assumptions.html">Estimating <code>children</code> Times</a>.
 </p>
 </dd>
 <dt><code>name</code></dt>
@@ -120,7 +109,7 @@ printed between the name and the index number.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Cycles.html#Cycles" accesskey="n" rel="next">Cycles</a>, Previous: <a href="Callers.html#Callers" accesskey="p" rel="prev">Callers</a>, Up: <a href="Call-Graph.html#Call-Graph" accesskey="u" rel="up">Call Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Cycles.html" accesskey="n" rel="next">Cycles</a>, Previous: <a href="Callers.html" accesskey="p" rel="prev">Callers</a>, Up: <a href="Call-Graph.html" accesskey="u" rel="up">Call Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

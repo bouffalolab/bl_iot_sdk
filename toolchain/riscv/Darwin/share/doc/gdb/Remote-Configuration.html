@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Remote Configuration (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Debugging.html#Remote-Debugging" rel="up" title="Remote Debugging">
-<link href="Remote-Stub.html#Remote-Stub" rel="next" title="Remote Stub">
-<link href="Server.html#Server" rel="prev" title="Server">
+<link href="Remote-Debugging.html" rel="up" title="Remote Debugging">
+<link href="Remote-Stub.html" rel="next" title="Remote Stub">
+<link href="Server.html" rel="prev" title="Server">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,25 +51,23 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Remote-Configuration"></a>
-<div class="header">
+<span id="Remote-Configuration"></span><div class="header">
 <p>
-Next: <a href="Remote-Stub.html#Remote-Stub" accesskey="n" rel="next">Remote Stub</a>, Previous: <a href="Server.html#Server" accesskey="p" rel="prev">Server</a>, Up: <a href="Remote-Debugging.html#Remote-Debugging" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Remote-Stub.html" accesskey="n" rel="next">Remote Stub</a>, Previous: <a href="Server.html" accesskey="p" rel="prev">Server</a>, Up: <a href="Remote-Debugging.html" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Remote-Configuration-1"></a>
-<h3 class="section">20.4 Remote Configuration</h3>
+<span id="Remote-Configuration-1"></span><h3 class="section">20.4 Remote Configuration</h3>
 
-<a name="index-set-remote"></a>
-<a name="index-show-remote"></a>
+<span id="index-set-remote"></span>
+<span id="index-show-remote"></span>
 <p>This section documents the configuration options available when
 debugging remote programs.  For the options related to the File I/O
-extensions of the remote protocol, see <a href="system.html#system">system-call-allowed</a>.
+extensions of the remote protocol, see <a href="system.html">system-call-allowed</a>.
 </p>
 <dl compact="compact">
 <dt><code>set remoteaddresssize <var>bits</var></code></dt>
-<dd><a name="index-address-size-for-remote-targets"></a>
-<a name="index-bits-in-remote-address"></a>
+<dd><span id="index-address-size-for-remote-targets"></span>
+<span id="index-bits-in-remote-address"></span>
 <p>Set the maximum size of address in a memory packet to the specified
 number of bits.  <small>GDB</small> will mask off the address bits above
 that number, when it passes addresses to the remote target.  The
@@ -90,7 +79,7 @@ default value is the number of bits in the target&rsquo;s address.
 </p>
 </dd>
 <dt><code>set serial baud <var>n</var></code></dt>
-<dd><a name="index-baud-rate-for-remote-targets"></a>
+<dd><span id="index-baud-rate-for-remote-targets"></span>
 <p>Set the baud rate for the remote serial I/O to <var>n</var> baud.  The
 value is used to set the speed of the serial port used for debugging
 remote targets.
@@ -110,9 +99,9 @@ remote targets.
 </p>
 </dd>
 <dt><code>set remotebreak</code></dt>
-<dd><a name="index-interrupt-remote-programs"></a>
-<a name="index-BREAK-signal-instead-of-Ctrl_002dC"></a>
-<a name="set-remotebreak"></a><p>If set to on, <small>GDB</small> sends a <code>BREAK</code> signal to the remote
+<dd><span id="index-interrupt-remote-programs"></span>
+<span id="index-BREAK-signal-instead-of-Ctrl_002dC"></span>
+<span id="set-remotebreak"></span><p>If set to on, <small>GDB</small> sends a <code>BREAK</code> signal to the remote
 when you type <kbd>Ctrl-c</kbd> to interrupt the program running
 on the remote.  If set to off, <small>GDB</small> sends the &lsquo;<samp>Ctrl-C</samp>&rsquo;
 character instead.  The default is off, since most remote systems
@@ -126,13 +115,13 @@ interrupt the remote program.
 </dd>
 <dt><code>set remoteflow on</code></dt>
 <dt><code>set remoteflow off</code></dt>
-<dd><a name="index-set-remoteflow"></a>
+<dd><span id="index-set-remoteflow"></span>
 <p>Enable or disable hardware flow control (<code>RTS</code>/<code>CTS</code>)
 on the serial port used to communicate to the remote target.
 </p>
 </dd>
 <dt><code>show remoteflow</code></dt>
-<dd><a name="index-show-remoteflow"></a>
+<dd><span id="index-show-remoteflow"></span>
 <p>Show the current setting of hardware flow control.
 </p>
 </dd>
@@ -149,7 +138,7 @@ protocol.
 </p>
 </dd>
 <dt><code>set remotelogfile <var>file</var></code></dt>
-<dd><a name="index-record-serial-communications-on-file"></a>
+<dd><span id="index-record-serial-communications-on-file"></span>
 <p>Record remote serial communications on the named <var>file</var>.  The
 default is not to record at all.
 </p>
@@ -160,8 +149,8 @@ serial communications.
 </p>
 </dd>
 <dt><code>set remotetimeout <var>num</var></code></dt>
-<dd><a name="index-timeout-for-serial-communications"></a>
-<a name="index-remote-timeout"></a>
+<dd><span id="index-timeout-for-serial-communications"></span>
+<span id="index-remote-timeout"></span>
 <p>Set the timeout limit to wait for the remote target to respond to
 <var>num</var> seconds.  The default is 2 seconds.
 </p>
@@ -170,9 +159,9 @@ serial communications.
 <dd><p>Show the current number of seconds to wait for the remote target
 responses.
 </p>
-<a name="index-limit-hardware-breakpoints-and-watchpoints"></a>
-<a name="index-remote-target_002c-limit-break_002d-and-watchpoints"></a>
-<a name="set-remote-hardware_002dwatchpoint_002dlimit"></a><a name="set-remote-hardware_002dbreakpoint_002dlimit"></a></dd>
+<span id="index-limit-hardware-breakpoints-and-watchpoints"></span>
+<span id="index-remote-target_002c-limit-break_002d-and-watchpoints"></span>
+<span id="set-remote-hardware_002dwatchpoint_002dlimit"></span><span id="set-remote-hardware_002dbreakpoint_002dlimit"></span></dd>
 <dt><code>set remote hardware-watchpoint-limit <var>limit</var></code></dt>
 <dt><code>set remote hardware-breakpoint-limit <var>limit</var></code></dt>
 <dd><p>Restrict <small>GDB</small> to using <var>limit</var> remote hardware watchpoints
@@ -186,9 +175,9 @@ watchpoints or breakpoints.
 <dd><p>Show the current limit for the number of hardware watchpoints or
 breakpoints that <small>GDB</small> can use.
 </p>
-<a name="index-limit-hardware-watchpoints-length"></a>
-<a name="index-remote-target_002c-limit-watchpoints-length"></a>
-<a name="set-remote-hardware_002dwatchpoint_002dlength_002dlimit"></a></dd>
+<span id="index-limit-hardware-watchpoints-length"></span>
+<span id="index-remote-target_002c-limit-watchpoints-length"></span>
+<span id="set-remote-hardware_002dwatchpoint_002dlength_002dlimit"></span></dd>
 <dt><code>set remote hardware-watchpoint-length-limit <var>limit</var></code></dt>
 <dd><p>Restrict <small>GDB</small> to using <var>limit</var> bytes for the maximum
 length of a remote hardware watchpoint.  A <var>limit</var> of 0 disables
@@ -203,7 +192,7 @@ a remote hardware watchpoint.
 </dd>
 <dt><code>set remote exec-file <var>filename</var></code></dt>
 <dt><code>show remote exec-file</code></dt>
-<dd><a name="set-remote-exec_002dfile"></a><a name="index-executable-file_002c-for-remote-target"></a>
+<dd><span id="set-remote-exec_002dfile"></span><span id="index-executable-file_002c-for-remote-target"></span>
 <p>Select the file used for <code>run</code> with <code>target
 extended-remote</code>.  This should be set to a filename valid on the
 target system.  If it is not set, the target will use a default
@@ -211,8 +200,8 @@ filename (e.g. the last program run).
 </p>
 </dd>
 <dt><code>set remote interrupt-sequence</code></dt>
-<dd><a name="index-interrupt-remote-programs-1"></a>
-<a name="index-select-Ctrl_002dC_002c-BREAK-or-BREAK_002dg"></a>
+<dd><span id="index-interrupt-remote-programs-1"></span>
+<span id="index-select-Ctrl_002dC_002c-BREAK-or-BREAK_002dg"></span>
 <p>Allow the user to select one of &lsquo;<samp>Ctrl-C</samp>&rsquo;, a <code>BREAK</code> or
 &lsquo;<samp>BREAK-g</samp>&rsquo; as the
 sequence to the remote target in order to interrupt the execution.
@@ -230,7 +219,7 @@ also known as Magic SysRq g.
 </p>
 </dd>
 <dt><code>set remote interrupt-on-connect</code></dt>
-<dd><a name="index-send-interrupt_002dsequence-on-start"></a>
+<dd><span id="index-send-interrupt_002dsequence-on-start"></span>
 <p>Specify whether interrupt-sequence is sent to remote target when
 <small>GDB</small> connects to it.  This is mostly needed when you debug
 Linux kernel.  Linux kernel expects <code>BREAK</code> followed by <code>g</code>
@@ -241,11 +230,11 @@ which is known as Magic SysRq g in order to connect <small>GDB</small>.
 <dd><p>Show whether interrupt-sequence is sent
 to remote target when <small>GDB</small> connects to it.
 </p>
-<a name="index-set-tcp"></a>
-<a name="index-show-tcp"></a>
+<span id="index-set-tcp"></span>
+<span id="index-show-tcp"></span>
 </dd>
 <dt><code>set tcp auto-retry on</code></dt>
-<dd><a name="index-auto_002dretry_002c-for-remote-TCP-target"></a>
+<dd><span id="index-auto_002dretry_002c-for-remote-TCP-target"></span>
 <p>Enable auto-retry for remote TCP connections.  This is useful if the remote
 debugging agent is launched in parallel with <small>GDB</small>; there is a race
 condition because the agent may not become ready to accept the connection
@@ -265,8 +254,8 @@ to establish the connection using the timeout specified by
 </dd>
 <dt><code>set tcp connect-timeout <var>seconds</var></code></dt>
 <dt><code>set tcp connect-timeout unlimited</code></dt>
-<dd><a name="index-connection-timeout_002c-for-remote-TCP-target"></a>
-<a name="index-timeout_002c-for-remote-target-connection"></a>
+<dd><span id="index-connection-timeout_002c-for-remote-TCP-target"></span>
+<span id="index-timeout_002c-for-remote-target-connection"></span>
 <p>Set the timeout for establishing a TCP connection to the remote target to
 <var>seconds</var>.  The timeout affects both polling to retry failed connections 
 (enabled by <code>set tcp auto-retry on</code>) and waiting for connections
@@ -281,7 +270,7 @@ unless interrupted with <kbd>Ctrl-c</kbd>.  The default is 15 seconds.
 </p></dd>
 </dl>
 
-<a name="index-remote-packets_002c-enabling-and-disabling"></a>
+<span id="index-remote-packets_002c-enabling-and-disabling"></span>
 <p>The <small>GDB</small> remote protocol autodetects the packets supported by
 your debugging stub.  If you need to override the autodetection, you
 can use these commands to enable or disable individual packets.  Each
@@ -289,7 +278,7 @@ packet can be set to &lsquo;<samp>on</samp>&rsquo; (the remote target supports t
 packet), &lsquo;<samp>off</samp>&rsquo; (the remote target does not support this packet),
 or &lsquo;<samp>auto</samp>&rsquo; (detect remote target support for this packet).  They
 all default to &lsquo;<samp>auto</samp>&rsquo;.  For more information about each packet,
-see <a href="Remote-Protocol.html#Remote-Protocol">Remote Protocol</a>.
+see <a href="Remote-Protocol.html">Remote Protocol</a>.
 </p>
 <p>During normal use, you should not have to use any of these commands.
 If you do, that may be a bug in your remote debugging stub, or a bug
@@ -320,8 +309,6 @@ are:
 <tr><td width="28%"><code>library-info</code></td><td width="32%"><code>qXfer:libraries:read</code></td><td width="25%"><code>info sharedlibrary</code></td></tr>
 <tr><td width="28%"><code>memory-map</code></td><td width="32%"><code>qXfer:memory-map:read</code></td><td width="25%"><code>info mem</code></td></tr>
 <tr><td width="28%"><code>read-sdata-object</code></td><td width="32%"><code>qXfer:sdata:read</code></td><td width="25%"><code>print $_sdata</code></td></tr>
-<tr><td width="28%"><code>read-spu-object</code></td><td width="32%"><code>qXfer:spu:read</code></td><td width="25%"><code>info spu</code></td></tr>
-<tr><td width="28%"><code>write-spu-object</code></td><td width="32%"><code>qXfer:spu:write</code></td><td width="25%"><code>info spu</code></td></tr>
 <tr><td width="28%"><code>read-siginfo-object</code></td><td width="32%"><code>qXfer:siginfo:read</code></td><td width="25%"><code>print $_siginfo</code></td></tr>
 <tr><td width="28%"><code>write-siginfo-object</code></td><td width="32%"><code>qXfer:siginfo:write</code></td><td width="25%"><code>set $_siginfo</code></td></tr>
 <tr><td width="28%"><code>threads</code></td><td width="32%"><code>qXfer:threads:read</code></td><td width="25%"><code>info threads</code></td></tr>
@@ -367,7 +354,7 @@ are:
 <hr>
 <div class="header">
 <p>
-Next: <a href="Remote-Stub.html#Remote-Stub" accesskey="n" rel="next">Remote Stub</a>, Previous: <a href="Server.html#Server" accesskey="p" rel="prev">Server</a>, Up: <a href="Remote-Debugging.html#Remote-Debugging" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Remote-Stub.html" accesskey="n" rel="next">Remote Stub</a>, Previous: <a href="Server.html" accesskey="p" rel="prev">Server</a>, Up: <a href="Remote-Debugging.html" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Edges (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Control-Flow.html#Control-Flow" rel="up" title="Control Flow">
-<link href="Profile-information.html#Profile-information" rel="next" title="Profile information">
-<link href="Basic-Blocks.html#Basic-Blocks" rel="prev" title="Basic Blocks">
+<link href="Control-Flow.html" rel="up" title="Control Flow">
+<link href="Profile-information.html" rel="next" title="Profile information">
+<link href="Basic-Blocks.html" rel="prev" title="Basic Blocks">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,17 +58,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Edges"></a>
-<div class="header">
+<span id="Edges"></span><div class="header">
 <p>
-Next: <a href="Profile-information.html#Profile-information" accesskey="n" rel="next">Profile information</a>, Previous: <a href="Basic-Blocks.html#Basic-Blocks" accesskey="p" rel="prev">Basic Blocks</a>, Up: <a href="Control-Flow.html#Control-Flow" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Profile-information.html" accesskey="n" rel="next">Profile information</a>, Previous: <a href="Basic-Blocks.html" accesskey="p" rel="prev">Basic Blocks</a>, Up: <a href="Control-Flow.html" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Edges-1"></a>
-<h3 class="section">15.2 Edges</h3>
+<span id="Edges-1"></span><h3 class="section">15.2 Edges</h3>
 
-<a name="index-edge-in-the-flow-graph"></a>
-<a name="index-edge"></a>
+<span id="index-edge-in-the-flow-graph"></span>
+<span id="index-edge"></span>
 <p>Edges represent possible control flow transfers from the end of some
 basic block A to the head of another basic block B.  We say that A is
 a predecessor of B, and B is a successor of A.  Edges are represented
@@ -88,7 +77,7 @@ The members <code>preds</code> and <code>succs</code> of the <code>basic_block</
 type point to type-safe vectors of edges to the predecessors and
 successors of the block.
 </p>
-<a name="index-edge-iterators"></a>
+<span id="index-edge-iterators"></span>
 <p>When walking the edges in an edge vector, <em>edge iterators</em> should
 be used.  Edge iterators are constructed using the
 <code>edge_iterator</code> data structure and several methods are available
@@ -96,56 +85,56 @@ to operate on them:
 </p>
 <dl compact="compact">
 <dt><code>ei_start</code>
-<a name="index-ei_005fstart"></a>
+<span id="index-ei_005fstart"></span>
 </dt>
 <dd><p>This function initializes an <code>edge_iterator</code> that points to the
 first edge in a vector of edges.
 </p>
 </dd>
 <dt><code>ei_last</code>
-<a name="index-ei_005flast"></a>
+<span id="index-ei_005flast"></span>
 </dt>
 <dd><p>This function initializes an <code>edge_iterator</code> that points to the
 last edge in a vector of edges.
 </p>
 </dd>
 <dt><code>ei_end_p</code>
-<a name="index-ei_005fend_005fp"></a>
+<span id="index-ei_005fend_005fp"></span>
 </dt>
 <dd><p>This predicate is <code>true</code> if an <code>edge_iterator</code> represents
 the last edge in an edge vector.
 </p>
 </dd>
 <dt><code>ei_one_before_end_p</code>
-<a name="index-ei_005fone_005fbefore_005fend_005fp"></a>
+<span id="index-ei_005fone_005fbefore_005fend_005fp"></span>
 </dt>
 <dd><p>This predicate is <code>true</code> if an <code>edge_iterator</code> represents
 the second last edge in an edge vector.
 </p>
 </dd>
 <dt><code>ei_next</code>
-<a name="index-ei_005fnext"></a>
+<span id="index-ei_005fnext"></span>
 </dt>
 <dd><p>This function takes a pointer to an <code>edge_iterator</code> and makes it
 point to the next edge in the sequence.
 </p>
 </dd>
 <dt><code>ei_prev</code>
-<a name="index-ei_005fprev"></a>
+<span id="index-ei_005fprev"></span>
 </dt>
 <dd><p>This function takes a pointer to an <code>edge_iterator</code> and makes it
 point to the previous edge in the sequence.
 </p>
 </dd>
 <dt><code>ei_edge</code>
-<a name="index-ei_005fedge"></a>
+<span id="index-ei_005fedge"></span>
 </dt>
 <dd><p>This function returns the <code>edge</code> currently pointed to by an
 <code>edge_iterator</code>.
 </p>
 </dd>
 <dt><code>ei_safe_safe</code>
-<a name="index-ei_005fsafe_005fsafe"></a>
+<span id="index-ei_005fsafe_005fsafe"></span>
 </dt>
 <dd><p>This function returns the <code>edge</code> currently pointed to by an
 <code>edge_iterator</code>, but returns <code>NULL</code> if the iterator is
@@ -162,8 +151,8 @@ not be used when an element might be removed during the traversal,
 otherwise elements will be missed.  Here is an example of how to use
 the macro:
 </p>
-<div class="smallexample">
-<pre class="smallexample">edge e;
+<div class="example">
+<pre class="example">edge e;
 edge_iterator ei;
 
 FOR_EACH_EDGE (e, ei, bb-&gt;succs)
@@ -173,7 +162,7 @@ FOR_EACH_EDGE (e, ei, bb-&gt;succs)
   }
 </pre></div>
 
-<a name="index-fall_002dthru"></a>
+<span id="index-fall_002dthru"></span>
 <p>There are various reasons why control flow may transfer from one block
 to another.  One possibility is that some instruction, for example a
 <code>CODE_LABEL</code>, in a linearized instruction stream just always
@@ -193,7 +182,7 @@ may be freely redirected when the flow graph is not in SSA form.
 </p>
 </dd>
 <dt><em>fall-thru</em></dt>
-<dd><a name="index-EDGE_005fFALLTHRU_002c-force_005fnonfallthru"></a>
+<dd><span id="index-EDGE_005fFALLTHRU_002c-force_005fnonfallthru"></span>
 <p>Fall-thru edges are present in case where the basic block may continue
 execution to the following one without branching.  These edges have
 the <code>EDGE_FALLTHRU</code> flag set.  Unlike other types of edges, these
@@ -204,8 +193,8 @@ is needed.  Note that this may require creation of a new basic block.
 </p>
 </dd>
 <dt><em>exception handling</em></dt>
-<dd><a name="index-exception-handling"></a>
-<a name="index-EDGE_005fABNORMAL_002c-EDGE_005fEH"></a>
+<dd><span id="index-exception-handling"></span>
+<span id="index-EDGE_005fABNORMAL_002c-EDGE_005fEH"></span>
 <p>Exception handling edges represent possible control transfers from a
 trapping instruction to an exception handler.  The definition of
 &ldquo;trapping&rdquo; varies.  In C++, only function calls can throw, but for
@@ -214,19 +203,19 @@ defined and thus each instruction possibly throwing this kind of
 exception needs to be handled as control flow instruction.  Exception
 edges have the <code>EDGE_ABNORMAL</code> and <code>EDGE_EH</code> flags set.
 </p>
-<a name="index-purge_005fdead_005fedges"></a>
+<span id="index-purge_005fdead_005fedges"></span>
 <p>When updating the instruction stream it is easy to change possibly
 trapping instruction to non-trapping, by simply removing the exception
 edge.  The opposite conversion is difficult, but should not happen
 anyway.  The edges can be eliminated via <code>purge_dead_edges</code> call.
 </p>
-<a name="index-REG_005fEH_005fREGION_002c-EDGE_005fABNORMAL_005fCALL"></a>
+<span id="index-REG_005fEH_005fREGION_002c-EDGE_005fABNORMAL_005fCALL"></span>
 <p>In the RTL representation, the destination of an exception edge is
 specified by <code>REG_EH_REGION</code> note attached to the insn.
 In case of a trapping call the <code>EDGE_ABNORMAL_CALL</code> flag is set
 too.  In the <code>GIMPLE</code> representation, this extra flag is not set.
 </p>
-<a name="index-may_005ftrap_005fp_002c-tree_005fcould_005ftrap_005fp"></a>
+<span id="index-may_005ftrap_005fp_002c-tree_005fcould_005ftrap_005fp"></span>
 <p>In the RTL representation, the predicate <code>may_trap_p</code> may be used
 to check whether instruction still may trap or not.  For the tree
 representation, the <code>tree_could_trap_p</code> predicate is available,
@@ -236,8 +225,8 @@ dereferencing an invalid pointer location.
 
 </dd>
 <dt><em>sibling calls</em></dt>
-<dd><a name="index-sibling-call"></a>
-<a name="index-EDGE_005fABNORMAL_002c-EDGE_005fSIBCALL"></a>
+<dd><span id="index-sibling-call"></span>
+<span id="index-EDGE_005fABNORMAL_002c-EDGE_005fSIBCALL"></span>
 <p>Sibling calls or tail calls terminate the function in a non-standard
 way and thus an edge to the exit must be present.
 <code>EDGE_SIBCALL</code> and <code>EDGE_ABNORMAL</code> are set in such case.
@@ -245,8 +234,8 @@ These edges only exist in the RTL representation.
 </p>
 </dd>
 <dt><em>computed jumps</em></dt>
-<dd><a name="index-computed-jump"></a>
-<a name="index-EDGE_005fABNORMAL"></a>
+<dd><span id="index-computed-jump"></span>
+<span id="index-EDGE_005fABNORMAL"></span>
 <p>Computed jumps contain edges to all labels in the function referenced
 from the code.  All those edges have <code>EDGE_ABNORMAL</code> flag set.
 The edges used to represent computed jumps often cause compile time
@@ -257,8 +246,8 @@ stages of the compilation process, GCC tries to avoid such dense flow
 graphs by factoring computed jumps.  For example, given the following
 series of jumps,
 </p>
-<div class="smallexample">
-<pre class="smallexample">  goto *x;
+<div class="example">
+<pre class="example">  goto *x;
   [ &hellip; ]
 
   goto *x;
@@ -271,8 +260,8 @@ series of jumps,
 <p>factoring the computed jumps results in the following code sequence
 which has a much simpler flow graph:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  goto y;
+<div class="example">
+<pre class="example">  goto y;
   [ &hellip; ]
 
   goto y;
@@ -285,7 +274,7 @@ y:
   goto *x;
 </pre></div>
 
-<a name="index-pass_005fduplicate_005fcomputed_005fgotos"></a>
+<span id="index-pass_005fduplicate_005fcomputed_005fgotos"></span>
 <p>However, the classic problem with this transformation is that it has a
 runtime cost in there resulting code: An extra jump.  Therefore, the
 computed jumps are un-factored in the later passes of the compiler
@@ -296,8 +285,8 @@ unfactored computed jumps caused some serious headaches.
 </p>
 </dd>
 <dt><em>nonlocal goto handlers</em></dt>
-<dd><a name="index-nonlocal-goto-handler"></a>
-<a name="index-EDGE_005fABNORMAL_002c-EDGE_005fABNORMAL_005fCALL"></a>
+<dd><span id="index-nonlocal-goto-handler"></span>
+<span id="index-EDGE_005fABNORMAL_002c-EDGE_005fABNORMAL_005fCALL"></span>
 <p>GCC allows nested functions to return into caller using a <code>goto</code>
 to a label passed to as an argument to the callee.  The labels passed
 to nested functions contain special code to cleanup after function
@@ -308,8 +297,8 @@ edge from the call to the label is created with the
 </p>
 </dd>
 <dt><em>function entry points</em></dt>
-<dd><a name="index-function-entry-point_002c-alternate-function-entry-point"></a>
-<a name="index-LABEL_005fALTERNATE_005fNAME"></a>
+<dd><span id="index-function-entry-point_002c-alternate-function-entry-point"></span>
+<span id="index-LABEL_005fALTERNATE_005fNAME"></span>
 <p>By definition, execution of function starts at basic block 0, so there
 is always an edge from the <code>ENTRY_BLOCK_PTR</code> to basic block 0.
 There is no <code>GIMPLE</code> representation for alternate entry points at
@@ -336,7 +325,7 @@ return instructions that are represented by edges with no flags set.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Profile-information.html#Profile-information" accesskey="n" rel="next">Profile information</a>, Previous: <a href="Basic-Blocks.html#Basic-Blocks" accesskey="p" rel="prev">Basic Blocks</a>, Up: <a href="Control-Flow.html#Control-Flow" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Profile-information.html" accesskey="n" rel="next">Profile information</a>, Previous: <a href="Basic-Blocks.html" accesskey="p" rel="prev">Basic Blocks</a>, Up: <a href="Control-Flow.html" accesskey="u" rel="up">Control Flow</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

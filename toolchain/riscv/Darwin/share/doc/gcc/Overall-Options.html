@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Overall Options (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Invoking-GCC.html#Invoking-GCC" rel="up" title="Invoking GCC">
-<link href="Invoking-G_002b_002b.html#Invoking-G_002b_002b" rel="next" title="Invoking G++">
-<link href="Option-Summary.html#Option-Summary" rel="prev" title="Option Summary">
+<link href="Invoking-GCC.html" rel="up" title="Invoking GCC">
+<link href="Invoking-G_002b_002b.html" rel="next" title="Invoking G++">
+<link href="Option-Summary.html" rel="prev" title="Option Summary">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,14 +58,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Overall-Options"></a>
-<div class="header">
+<span id="Overall-Options"></span><div class="header">
 <p>
-Next: <a href="Invoking-G_002b_002b.html#Invoking-G_002b_002b" accesskey="n" rel="next">Invoking G++</a>, Previous: <a href="Option-Summary.html#Option-Summary" accesskey="p" rel="prev">Option Summary</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Invoking-G_002b_002b.html" accesskey="n" rel="next">Invoking G++</a>, Previous: <a href="Option-Summary.html" accesskey="p" rel="prev">Option Summary</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Options-Controlling-the-Kind-of-Output"></a>
-<h3 class="section">3.2 Options Controlling the Kind of Output</h3>
+<span id="Options-Controlling-the-Kind-of-Output"></span><h3 class="section">3.2 Options Controlling the Kind of Output</h3>
 
 <p>Compilation can involve up to four stages: preprocessing, compilation
 proper, assembly and linking, always in that order.  GCC is capable of
@@ -84,7 +73,7 @@ assembler input file produces an object file, and linking combines all
 the object files (those newly compiled, and those specified as input)
 into an executable file.
 </p>
-<a name="index-file-name-suffix"></a>
+<span id="index-file-name-suffix"></span>
 <p>For any given input file, the file name suffix determines what kind of
 compilation is done:
 </p>
@@ -197,6 +186,18 @@ traditional preprocessor).
 <dd><p>BRIG files (binary representation of HSAIL).
 </p>
 </dd>
+<dt><code><var>file</var>.d</code></dt>
+<dd><p>D source code.
+</p>
+</dd>
+<dt><code><var>file</var>.di</code></dt>
+<dd><p>D interface file.
+</p>
+</dd>
+<dt><code><var>file</var>.dd</code></dt>
+<dd><p>D documentation code (Ddoc).
+</p>
+</dd>
 <dt><code><var>file</var>.ads</code></dt>
 <dd><p>Ada source code file that contains a library unit declaration (a
 declaration of a package, subprogram, or generic, or a generic
@@ -226,7 +227,7 @@ Any file name with no recognized suffix is treated this way.
 </p></dd>
 </dl>
 
-<a name="index-x"></a>
+<span id="index-x"></span>
 <p>You can specify the input language explicitly with the <samp>-x</samp> option:
 </p>
 <dl compact="compact">
@@ -235,13 +236,14 @@ Any file name with no recognized suffix is treated this way.
 (rather than letting the compiler choose a default based on the file
 name suffix).  This option applies to all following input files until
 the next <samp>-x</samp> option.  Possible values for <var>language</var> are:
-</p><div class="smallexample">
-<pre class="smallexample">c  c-header  cpp-output
+</p><div class="example">
+<pre class="example">c  c-header  cpp-output
 c++  c++-header  c++-cpp-output
 objective-c  objective-c-header  objective-c-cpp-output
 objective-c++ objective-c++-header objective-c++-cpp-output
 assembler  assembler-with-cpp
 ada
+d
 f77  f77-cpp-input f95  f95-cpp-input
 go
 brig
@@ -263,7 +265,7 @@ one of the options <samp>-c</samp>, <samp>-S</samp>, or <samp>-E</samp> to say w
 </p>
 <dl compact="compact">
 <dt><code>-c</code></dt>
-<dd><a name="index-c"></a>
+<dd><span id="index-c"></span>
 <p>Compile or assemble the source files, but do not link.  The linking
 stage simply is not done.  The ultimate output is in the form of an
 object file for each source file.
@@ -276,7 +278,7 @@ ignored.
 </p>
 </dd>
 <dt><code>-S</code></dt>
-<dd><a name="index-S"></a>
+<dd><span id="index-S"></span>
 <p>Stop after the stage of compilation proper; do not assemble.  The output
 is in the form of an assembler code file for each non-assembler input
 file specified.
@@ -288,17 +290,17 @@ replacing the suffix &lsquo;<samp>.c</samp>&rsquo;, &lsquo;<samp>.i</samp>&rsquo
 </p>
 </dd>
 <dt><code>-E</code></dt>
-<dd><a name="index-E"></a>
+<dd><span id="index-E"></span>
 <p>Stop after the preprocessing stage; do not run the compiler proper.  The
 output is in the form of preprocessed source code, which is sent to the
 standard output.
 </p>
 <p>Input files that don&rsquo;t require preprocessing are ignored.
 </p>
-<a name="index-output-file-option"></a>
+<span id="index-output-file-option"></span>
 </dd>
 <dt><code>-o <var>file</var></code></dt>
-<dd><a name="index-o"></a>
+<dd><span id="index-o"></span>
 <p>Place output in file <var>file</var>.  This applies to whatever
 sort of output is being produced, whether it be an executable file,
 an object file, an assembler file or preprocessed C code.
@@ -312,21 +314,21 @@ standard output.
 </p>
 </dd>
 <dt><code>-v</code></dt>
-<dd><a name="index-v"></a>
+<dd><span id="index-v"></span>
 <p>Print (on standard error output) the commands executed to run the stages
 of compilation.  Also print the version number of the compiler driver
 program and of the preprocessor and the compiler proper.
 </p>
 </dd>
 <dt><code>-###</code></dt>
-<dd><a name="index-_0023_0023_0023"></a>
+<dd><span id="index-_0023_0023_0023"></span>
 <p>Like <samp>-v</samp> except the commands are not executed and arguments
 are quoted unless they contain only alphanumeric characters or <code>./-_</code>.
 This is useful for shell scripts to capture the driver-generated command lines.
 </p>
 </dd>
 <dt><code>--help</code></dt>
-<dd><a name="index-help"></a>
+<dd><span id="index-help"></span>
 <p>Print (on the standard output) a description of the command-line options
 understood by <code>gcc</code>.  If the <samp>-v</samp> option is also specified
 then <samp>--help</samp> is also passed on to the various processes
@@ -337,7 +339,7 @@ have no documentation associated with them are also displayed.
 </p>
 </dd>
 <dt><code>--target-help</code></dt>
-<dd><a name="index-target_002dhelp"></a>
+<dd><span id="index-target_002dhelp"></span>
 <p>Print (on the standard output) a description of target-specific command-line
 options for each tool.  For some targets extra target-specific
 information may also be printed.
@@ -374,7 +376,8 @@ option.
 <dt><var>language</var></dt>
 <dd><p>Display the options supported for <var>language</var>, where
 <var>language</var> is the name of one of the languages supported in this
-version of GCC.
+version of GCC.  If an option is supported by all languages, one needs
+to select &lsquo;<samp>common</samp>&rsquo; class.
 </p>
 </dd>
 <dt>&lsquo;<samp>common</samp>&rsquo;</dt>
@@ -404,8 +407,8 @@ following the original option, such as: &lsquo;<samp>-o output-file</samp>&rsquo
 <p>Thus for example to display all the undocumented target-specific
 switches supported by the compiler, use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">--help=target,undocumented
+<div class="example">
+<pre class="example">--help=target,undocumented
 </pre></div>
 
 <p>The sense of a qualifier can be inverted by prefixing it with the
@@ -413,8 +416,8 @@ switches supported by the compiler, use:
 options (i.e., ones that are either on or off and that do not take an
 argument) that have a description, use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">--help=warnings,^joined,^undocumented
+<div class="example">
+<pre class="example">--help=warnings,^joined,^undocumented
 </pre></div>
 
 <p>The argument to <samp>--help=</samp> should not consist solely of inverted
@@ -426,13 +429,15 @@ case where it does work, however, is when one of the classes is
 <var>target</var>.  For example, to display all the target-specific
 optimization options, use:
 </p>
-<div class="smallexample">
-<pre class="smallexample">--help=target,optimizers
+<div class="example">
+<pre class="example">--help=target,optimizers
 </pre></div>
 
 <p>The <samp>--help=</samp> option can be repeated on the command line.  Each
 successive use displays its requested class of options, skipping
-those that have already been displayed.
+those that have already been displayed.  If <samp>--help</samp> is also
+specified anywhere on the command line then this takes precedence
+over any <samp>--help=</samp> option.
 </p>
 <p>If the <samp>-Q</samp> option appears on the command line before the
 <samp>--help=</samp> option, then the descriptive text displayed by
@@ -443,8 +448,8 @@ knows this at the point where the <samp>--help=</samp> option is used).
 </p>
 <p>Here is a truncated example from the ARM port of <code>gcc</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  % gcc -Q -mabi=2 --help=target -c
+<div class="example">
+<pre class="example">  % gcc -Q -mabi=2 --help=target -c
   The following options are target specific:
   -mabi=                                2
   -mabort-on-noreturn                   [disabled]
@@ -455,27 +460,27 @@ knows this at the point where the <samp>--help=</samp> option is used).
 options, so for example it is possible to find out which optimizations
 are enabled at <samp>-O2</samp> by using:
 </p>
-<div class="smallexample">
-<pre class="smallexample">-Q -O2 --help=optimizers
+<div class="example">
+<pre class="example">-Q -O2 --help=optimizers
 </pre></div>
 
 <p>Alternatively you can discover which binary optimizations are enabled
 by <samp>-O3</samp> by using:
 </p>
-<div class="smallexample">
-<pre class="smallexample">gcc -c -Q -O3 --help=optimizers &gt; /tmp/O3-opts
+<div class="example">
+<pre class="example">gcc -c -Q -O3 --help=optimizers &gt; /tmp/O3-opts
 gcc -c -Q -O2 --help=optimizers &gt; /tmp/O2-opts
 diff /tmp/O2-opts /tmp/O3-opts | grep enabled
 </pre></div>
 
 </dd>
 <dt><code>--version</code></dt>
-<dd><a name="index-version"></a>
+<dd><span id="index-version"></span>
 <p>Display the version number and copyrights of the invoked GCC.
 </p>
 </dd>
 <dt><code>-pass-exit-codes</code></dt>
-<dd><a name="index-pass_002dexit_002dcodes"></a>
+<dd><span id="index-pass_002dexit_002dcodes"></span>
 <p>Normally the <code>gcc</code> program exits with the code of 1 if any
 phase of the compiler returns a non-success return code.  If you specify
 <samp>-pass-exit-codes</samp>, the <code>gcc</code> program instead returns with
@@ -485,7 +490,7 @@ compiler error is encountered.
 </p>
 </dd>
 <dt><code>-pipe</code></dt>
-<dd><a name="index-pipe"></a>
+<dd><span id="index-pipe"></span>
 <p>Use pipes rather than temporary files for communication between the
 various stages of compilation.  This fails to work on some systems where
 the assembler is unable to read from a pipe; but the GNU assembler has
@@ -493,24 +498,24 @@ no trouble.
 </p>
 </dd>
 <dt><code>-specs=<var>file</var></code></dt>
-<dd><a name="index-specs"></a>
+<dd><span id="index-specs"></span>
 <p>Process <var>file</var> after the compiler reads in the standard <samp>specs</samp>
 file, in order to override the defaults which the <code>gcc</code> driver
 program uses when determining what switches to pass to <code>cc1</code>,
 <code>cc1plus</code>, <code>as</code>, <code>ld</code>, etc.  More than one
 <samp>-specs=<var>file</var></samp> can be specified on the command line, and they
-are processed in order, from left to right.  See <a href="Spec-Files.html#Spec-Files">Spec Files</a>, for
+are processed in order, from left to right.  See <a href="Spec-Files.html">Spec Files</a>, for
 information about the format of the <var>file</var>.
 </p>
 </dd>
 <dt><code>-wrapper</code></dt>
-<dd><a name="index-wrapper"></a>
+<dd><span id="index-wrapper"></span>
 <p>Invoke all subcommands under a wrapper program.  The name of the
 wrapper program and its parameters are passed as a comma separated
 list.
 </p>
-<div class="smallexample">
-<pre class="smallexample">gcc -c t.c -wrapper gdb,--args
+<div class="example">
+<pre class="example">gcc -c t.c -wrapper gdb,--args
 </pre></div>
 
 <p>This invokes all subprograms of <code>gcc</code> under
@@ -519,7 +524,7 @@ list.
 </p>
 </dd>
 <dt><code>-ffile-prefix-map=<var>old</var>=<var>new</var></code></dt>
-<dd><a name="index-ffile_002dprefix_002dmap"></a>
+<dd><span id="index-ffile_002dprefix_002dmap"></span>
 <p>When compiling files residing in directory <samp><var>old</var></samp>, record
 any references to them in the result of the compilation as if the
 files resided in directory <samp><var>new</var></samp> instead.  Specifying this
@@ -530,7 +535,7 @@ builds that are location independent.  See also
 </p>
 </dd>
 <dt><code>-fplugin=<var>name</var>.so</code></dt>
-<dd><a name="index-fplugin"></a>
+<dd><span id="index-fplugin"></span>
 <p>Load the plugin code in file <var>name</var>.so, assumed to be a
 shared object to be dlopen&rsquo;d by the compiler.  The base name of
 the shared object file is used to identify the plugin for the
@@ -541,25 +546,25 @@ Plugins API.
 </p>
 </dd>
 <dt><code>-fplugin-arg-<var>name</var>-<var>key</var>=<var>value</var></code></dt>
-<dd><a name="index-fplugin_002darg"></a>
+<dd><span id="index-fplugin_002darg"></span>
 <p>Define an argument called <var>key</var> with a value of <var>value</var>
 for the plugin called <var>name</var>.
 </p>
 </dd>
 <dt><code>-fdump-ada-spec<span class="roman">[</span>-slim<span class="roman">]</span></code></dt>
-<dd><a name="index-fdump_002dada_002dspec"></a>
+<dd><span id="index-fdump_002dada_002dspec"></span>
 <p>For C and C++ source and include files, generate corresponding Ada specs.
-See <a href="http://gcc.gnu.org/onlinedocs/gnat_ugn/Generating-Ada-Bindings-for-C-and-C_002b_002b-headers.html#Generating-Ada-Bindings-for-C-and-C_002b_002b-headers">Generating Ada Bindings for C and C++ headers</a> in <cite>GNAT User&rsquo;s Guide</cite>, which provides detailed documentation on this feature.
+See <a href="https://gcc.gnu.org/onlinedocs/gnat_ugn/Generating-Ada-Bindings-for-C-and-C_002b_002b-headers.html#Generating-Ada-Bindings-for-C-and-C_002b_002b-headers">Generating Ada Bindings for C and C++ headers</a> in <cite>GNAT User&rsquo;s Guide</cite>, which provides detailed documentation on this feature.
 </p>
 </dd>
 <dt><code>-fada-spec-parent=<var>unit</var></code></dt>
-<dd><a name="index-fada_002dspec_002dparent"></a>
+<dd><span id="index-fada_002dspec_002dparent"></span>
 <p>In conjunction with <samp>-fdump-ada-spec<span class="roman">[</span>-slim<span class="roman">]</span></samp> above, generate
 Ada specs as child units of parent <var>unit</var>.
 </p>
 </dd>
 <dt><code>-fdump-go-spec=<var>file</var></code></dt>
-<dd><a name="index-fdump_002dgo_002dspec"></a>
+<dd><span id="index-fdump_002dgo_002dspec"></span>
 <p>For input files in any language, generate corresponding Go
 declarations in <var>file</var>.  This generates Go <code>const</code>,
 <code>type</code>, <code>var</code>, and <code>func</code> declarations which may be a
@@ -586,7 +591,7 @@ with a backslash.  The <var>file</var> may itself contain additional
 <hr>
 <div class="header">
 <p>
-Next: <a href="Invoking-G_002b_002b.html#Invoking-G_002b_002b" accesskey="n" rel="next">Invoking G++</a>, Previous: <a href="Option-Summary.html#Option-Summary" accesskey="p" rel="prev">Option Summary</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Invoking-G_002b_002b.html" accesskey="n" rel="next">Invoking G++</a>, Previous: <a href="Option-Summary.html" accesskey="p" rel="prev">Option Summary</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

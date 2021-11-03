@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Directives (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Test-Directives.html#Test-Directives" rel="up" title="Test Directives">
-<link href="Selectors.html#Selectors" rel="next" title="Selectors">
-<link href="Test-Directives.html#Test-Directives" rel="prev" title="Test Directives">
+<link href="Test-Directives.html" rel="up" title="Test Directives">
+<link href="Selectors.html" rel="next" title="Selectors">
+<link href="Test-Directives.html" rel="prev" title="Test Directives">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,14 +58,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Directives"></a>
-<div class="header">
+<span id="Directives"></span><div class="header">
 <p>
-Next: <a href="Selectors.html#Selectors" accesskey="n" rel="next">Selectors</a>, Up: <a href="Test-Directives.html#Test-Directives" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Selectors.html" accesskey="n" rel="next">Selectors</a>, Up: <a href="Test-Directives.html" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Syntax-and-Descriptions-of-test-directives"></a>
-<h4 class="subsection">7.2.1 Syntax and Descriptions of test directives</h4>
+<span id="Syntax-and-Descriptions-of-test-directives"></span><h4 class="subsection">7.2.1 Syntax and Descriptions of test directives</h4>
 
 <p>Test directives appear within comments in a test source file and begin
 with <code>dg-</code>.  Some of these are defined within DejaGnu and others
@@ -85,11 +74,10 @@ directives local to GCC sometimes override information used by the
 DejaGnu directives, which know nothing about the GCC directives, so the
 DejaGnu directives must precede GCC directives.
 </p>
-<p>Several test directives include selectors (see <a href="Selectors.html#Selectors">Selectors</a>)
+<p>Several test directives include selectors (see <a href="Selectors.html">Selectors</a>)
 which are usually preceded by the keyword <code>target</code> or <code>xfail</code>.
 </p>
-<a name="Specify-how-to-build-the-test"></a>
-<h4 class="subsubsection">7.2.1.1 Specify how to build the test</h4>
+<span id="Specify-how-to-build-the-test"></span><h4 class="subsubsection">7.2.1.1 Specify how to build the test</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-do <var>do-what-keyword</var> [{ target/xfail <var>selector</var> }] }</code></dt>
@@ -131,8 +119,7 @@ directive <code>dg-xfail-if</code>.
 </p></dd>
 </dl>
 
-<a name="Specify-additional-compiler-options"></a>
-<h4 class="subsubsection">7.2.1.2 Specify additional compiler options</h4>
+<span id="Specify-additional-compiler-options"></span><h4 class="subsubsection">7.2.1.2 Specify additional compiler options</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-options <var>options</var> [{ target <var>selector</var> }] }</code></dt>
@@ -146,7 +133,7 @@ options used for this set of tests.
 This directive does nothing on targets that enable the features by
 default, or that don&rsquo;t provide them at all.  It must come after
 all <code>dg-options</code> directives.
-For supported values of <var>feature</var> see <a href="Add-Options.html#Add-Options">Add Options</a>.
+For supported values of <var>feature</var> see <a href="Add-Options.html">Add Options</a>.
 </p>
 </dd>
 <dt><code>{ dg-additional-options <var>options</var> [{ target <var>selector</var> }] }</code></dt>
@@ -156,8 +143,7 @@ options used for this set of tests.
 </p></dd>
 </dl>
 
-<a name="Modify-the-test-timeout-value"></a>
-<h4 class="subsubsection">7.2.1.3 Modify the test timeout value</h4>
+<span id="Modify-the-test-timeout-value"></span><h4 class="subsubsection">7.2.1.3 Modify the test timeout value</h4>
 
 <p>The normal timeout limit, in seconds, is found by searching the
 following in order:
@@ -185,8 +171,7 @@ by the specified floating-point factor.
 </p></dd>
 </dl>
 
-<a name="Skip-a-test-for-some-targets"></a>
-<h4 class="subsubsection">7.2.1.4 Skip a test for some targets</h4>
+<span id="Skip-a-test-for-some-targets"></span><h4 class="subsubsection">7.2.1.4 Skip a test for some targets</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-skip-if <var>comment</var> { <var>selector</var> } [{ <var>include-opts</var> } [{ <var>exclude-opts</var> }]] }</code></dt>
@@ -210,33 +195,33 @@ that is the default if <var>exclude-opts</var> is not specified
 
 <p>For example, to skip a test if option <code>-Os</code> is present:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-Os&quot; } { &quot;&quot; } } */
+<div class="example">
+<pre class="example">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-Os&quot; } { &quot;&quot; } } */
 </pre></div>
 
 <p>To skip a test if both options <code>-O2</code> and <code>-g</code> are present:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2 -g&quot; } { &quot;&quot; } } */
+<div class="example">
+<pre class="example">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2 -g&quot; } { &quot;&quot; } } */
 </pre></div>
 
 <p>To skip a test if either <code>-O2</code> or <code>-O3</code> is present:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2&quot; &quot;-O3&quot; } { &quot;&quot; } } */
+<div class="example">
+<pre class="example">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2&quot; &quot;-O3&quot; } { &quot;&quot; } } */
 </pre></div>
 
 <p>To skip a test unless option <code>-Os</code> is present:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;*&quot; } { &quot;-Os&quot; } } */
+<div class="example">
+<pre class="example">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;*&quot; } { &quot;-Os&quot; } } */
 </pre></div>
 
 <p>To skip a test if either <code>-O2</code> or <code>-O3</code> is used with <code>-g</code>
 but not if <code>-fpic</code> is also present:
 </p>
-<div class="smallexample">
-<pre class="smallexample">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2 -g&quot; &quot;-O3 -g&quot; } { &quot;-fpic&quot; } } */
+<div class="example">
+<pre class="example">/* { dg-skip-if &quot;&quot; { *-*-* }  { &quot;-O2 -g&quot; &quot;-O3 -g&quot; } { &quot;-fpic&quot; } } */
 </pre></div>
 
 </dd>
@@ -248,7 +233,7 @@ then the effective-target test is only performed if the target system
 matches the <var>selector</var>.
 This directive must appear after any <code>dg-do</code> directive in the test
 and before any <code>dg-additional-sources</code> directive.
-See <a href="Effective_002dTarget-Keywords.html#Effective_002dTarget-Keywords">Effective-Target Keywords</a>.
+See <a href="Effective_002dTarget-Keywords.html">Effective-Target Keywords</a>.
 </p>
 </dd>
 <dt><code>{ dg-require-<var>support</var> args }</code></dt>
@@ -257,12 +242,11 @@ These directives must appear after any <code>dg-do</code> directive in the test
 and before any <code>dg-additional-sources</code> directive.
 They require at least one argument, which can be an empty string if the
 specific procedure does not examine the argument.
-See <a href="Require-Support.html#Require-Support">Require Support</a>, for a complete list of these directives.
+See <a href="Require-Support.html">Require Support</a>, for a complete list of these directives.
 </p></dd>
 </dl>
 
-<a name="Expect-a-test-to-fail-for-some-targets"></a>
-<h4 class="subsubsection">7.2.1.5 Expect a test to fail for some targets</h4>
+<span id="Expect-a-test-to-fail-for-some-targets"></span><h4 class="subsubsection">7.2.1.5 Expect a test to fail for some targets</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-xfail-if <var>comment</var> { <var>selector</var> } [{ <var>include-opts</var> } [{ <var>exclude-opts</var> }]] }</code></dt>
@@ -276,8 +260,7 @@ the same as for <code>dg-skip-if</code>) are met.
 </p></dd>
 </dl>
 
-<a name="Expect-the-test-executable-to-fail"></a>
-<h4 class="subsubsection">7.2.1.6 Expect the test executable to fail</h4>
+<span id="Expect-the-test-executable-to-fail"></span><h4 class="subsubsection">7.2.1.6 Expect the test executable to fail</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-shouldfail <var>comment</var> [{ <var>selector</var> } [{ <var>include-opts</var> } [{ <var>exclude-opts</var> }]]] }</code></dt>
@@ -286,9 +269,10 @@ conditions (which are the same as for <code>dg-skip-if</code>) are met.
 </p></dd>
 </dl>
 
-<a name="Verify-compiler-messages"></a>
-<h4 class="subsubsection">7.2.1.7 Verify compiler messages</h4>
-
+<span id="Verify-compiler-messages"></span><h4 class="subsubsection">7.2.1.7 Verify compiler messages</h4>
+<p>Where <var>line</var> is an accepted argument for these commands, a value of &lsquo;<samp>0</samp>&rsquo;
+can be used if there is no line associated with the message.
+</p>
 <dl compact="compact">
 <dt><code>{ dg-error <var>regexp</var> [<var>comment</var> [{ target/xfail <var>selector</var> } [<var>line</var>] ]] }</code></dt>
 <dd><p>This DejaGnu directive appears on a source line that is expected to get
@@ -329,8 +313,8 @@ the source line.  The variable <var>linenumvar</var> can then be used in subsequ
 <code>dg-error</code>, <code>dg-warning</code>, <code>dg-message</code> and <code>dg-bogus</code>
 directives.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">int a;   /* { dg-line first_def_a } */
+<div class="example">
+<pre class="example">int a;   /* { dg-line first_def_a } */
 float a; /* { dg-error &quot;conflicting types of&quot; } */
 /* { dg-message &quot;previous declaration of&quot; &quot;&quot; { target *-*-* } first_def_a } */
 </pre></div>
@@ -348,8 +332,7 @@ has the same effect as &lsquo;<samp>target</samp>&rsquo;.
 </p></dd>
 </dl>
 
-<a name="Verify-output-of-the-test-executable"></a>
-<h4 class="subsubsection">7.2.1.8 Verify output of the test executable</h4>
+<span id="Verify-output-of-the-test-executable"></span><h4 class="subsubsection">7.2.1.8 Verify output of the test executable</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-output <var>regexp</var> [{ target/xfail <var>selector</var> }] }</code></dt>
@@ -358,8 +341,7 @@ that the test executable writes to <samp>stdout</samp> and <samp>stderr</samp>.
 </p></dd>
 </dl>
 
-<a name="Specify-additional-files-for-a-test"></a>
-<h4 class="subsubsection">7.2.1.9 Specify additional files for a test</h4>
+<span id="Specify-additional-files-for-a-test"></span><h4 class="subsubsection">7.2.1.9 Specify additional files for a test</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-additional-files &quot;<var>filelist</var>&quot; }</code></dt>
@@ -373,15 +355,14 @@ following the main test file.
 </p></dd>
 </dl>
 
-<a name="Add-checks-at-the-end-of-a-test"></a>
-<h4 class="subsubsection">7.2.1.10 Add checks at the end of a test</h4>
+<span id="Add-checks-at-the-end-of-a-test"></span><h4 class="subsubsection">7.2.1.10 Add checks at the end of a test</h4>
 
 <dl compact="compact">
 <dt><code>{ dg-final { <var>local-directive</var> } }</code></dt>
 <dd><p>This DejaGnu directive is placed within a comment anywhere in the
 source file and is processed after the test has been compiled and run.
 Multiple &lsquo;<samp>dg-final</samp>&rsquo; commands are processed in the order in which
-they appear in the source file.  See <a href="Final-Actions.html#Final-Actions">Final Actions</a>, for a list
+they appear in the source file.  See <a href="Final-Actions.html">Final Actions</a>, for a list
 of directives that can be used within <code>dg-final</code>.
 </p></dd>
 </dl>
@@ -389,7 +370,7 @@ of directives that can be used within <code>dg-final</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Selectors.html#Selectors" accesskey="n" rel="next">Selectors</a>, Up: <a href="Test-Directives.html#Test-Directives" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Selectors.html" accesskey="n" rel="next">Selectors</a>, Up: <a href="Test-Directives.html" accesskey="u" rel="up">Test Directives</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

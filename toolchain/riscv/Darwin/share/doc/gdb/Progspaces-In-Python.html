@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Progspaces In Python (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Python-API.html#Python-API" rel="up" title="Python API">
-<link href="Objfiles-In-Python.html#Objfiles-In-Python" rel="next" title="Objfiles In Python">
-<link href="Functions-In-Python.html#Functions-In-Python" rel="prev" title="Functions In Python">
+<link href="Python-API.html" rel="up" title="Python API">
+<link href="Objfiles-In-Python.html" rel="next" title="Objfiles In Python">
+<link href="Functions-In-Python.html" rel="prev" title="Functions In Python">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,40 +51,38 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Progspaces-In-Python"></a>
-<div class="header">
+<span id="Progspaces-In-Python"></span><div class="header">
 <p>
-Next: <a href="Objfiles-In-Python.html#Objfiles-In-Python" accesskey="n" rel="next">Objfiles In Python</a>, Previous: <a href="Functions-In-Python.html#Functions-In-Python" accesskey="p" rel="prev">Functions In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Objfiles-In-Python.html" accesskey="n" rel="next">Objfiles In Python</a>, Previous: <a href="Functions-In-Python.html" accesskey="p" rel="prev">Functions In Python</a>, Up: <a href="Python-API.html" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Program-Spaces-In-Python"></a>
-<h4 class="subsubsection">23.2.2.23 Program Spaces In Python</h4>
+<span id="Program-Spaces-In-Python"></span><h4 class="subsubsection">23.2.2.23 Program Spaces In Python</h4>
 
-<a name="index-progspaces-in-python"></a>
-<a name="index-gdb_002eProgspace"></a>
-<a name="index-Progspace"></a>
+<span id="index-progspaces-in-python"></span>
+<span id="index-gdb_002eProgspace"></span>
+<span id="index-Progspace"></span>
 <p>A program space, or <em>progspace</em>, represents a symbolic view
 of an address space.
 It consists of all of the objfiles of the program.
-See <a href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>.
-See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">program spaces</a>, for more details
+See <a href="Objfiles-In-Python.html">Objfiles In Python</a>.
+See <a href="Inferiors-Connections-and-Programs.html">program spaces</a>, for more details
 about program spaces.
 </p>
 <p>The following progspace-related functions are available in the
 <code>gdb</code> module:
 </p>
-<a name="index-gdb_002ecurrent_005fprogspace"></a>
+<span id="index-gdb_002ecurrent_005fprogspace"></span>
 <dl>
-<dt><a name="index-gdb_002ecurrent_005fprogspace-1"></a>Function: <strong>gdb.current_progspace</strong> <em>()</em></dt>
+<dt id="index-gdb_002ecurrent_005fprogspace-1">Function: <strong>gdb.current_progspace</strong> <em>()</em></dt>
 <dd><p>This function returns the program space of the currently selected inferior.
-See <a href="Inferiors-and-Programs.html#Inferiors-and-Programs">Inferiors and Programs</a>.  This is identical to
-<code>gdb.selected_inferior().progspace</code> (see <a href="Inferiors-In-Python.html#Inferiors-In-Python">Inferiors In Python</a>) and is
+See <a href="Inferiors-Connections-and-Programs.html">Inferiors Connections and Programs</a>.  This is identical to
+<code>gdb.selected_inferior().progspace</code> (see <a href="Inferiors-In-Python.html">Inferiors In Python</a>) and is
 included for historical compatibility.
 </p></dd></dl>
 
-<a name="index-gdb_002eprogspaces"></a>
+<span id="index-gdb_002eprogspaces"></span>
 <dl>
-<dt><a name="index-gdb_002eprogspaces-1"></a>Function: <strong>gdb.progspaces</strong> <em>()</em></dt>
+<dt id="index-gdb_002eprogspaces-1">Function: <strong>gdb.progspaces</strong> <em>()</em></dt>
 <dd><p>Return a sequence of all the progspaces currently known to <small>GDB</small>.
 </p></dd></dl>
 
@@ -101,55 +90,55 @@ included for historical compatibility.
 class.
 </p>
 <dl>
-<dt><a name="index-Progspace_002efilename"></a>Variable: <strong>Progspace.filename</strong></dt>
+<dt id="index-Progspace_002efilename">Variable: <strong>Progspace.filename</strong></dt>
 <dd><p>The file name of the progspace as a string.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-Progspace_002epretty_005fprinters"></a>Variable: <strong>Progspace.pretty_printers</strong></dt>
+<dt id="index-Progspace_002epretty_005fprinters">Variable: <strong>Progspace.pretty_printers</strong></dt>
 <dd><p>The <code>pretty_printers</code> attribute is a list of functions.  It is
 used to look up pretty-printers.  A <code>Value</code> is passed to each
 function in order; if the function returns <code>None</code>, then the
 search continues.  Otherwise, the return value should be an object
-which is used to format the value.  See <a href="Pretty-Printing-API.html#Pretty-Printing-API">Pretty Printing API</a>, for more
+which is used to format the value.  See <a href="Pretty-Printing-API.html">Pretty Printing API</a>, for more
 information.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-Progspace_002etype_005fprinters"></a>Variable: <strong>Progspace.type_printers</strong></dt>
+<dt id="index-Progspace_002etype_005fprinters">Variable: <strong>Progspace.type_printers</strong></dt>
 <dd><p>The <code>type_printers</code> attribute is a list of type printer objects.
-See <a href="Type-Printing-API.html#Type-Printing-API">Type Printing API</a>, for more information.
+See <a href="Type-Printing-API.html">Type Printing API</a>, for more information.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-Progspace_002eframe_005ffilters"></a>Variable: <strong>Progspace.frame_filters</strong></dt>
+<dt id="index-Progspace_002eframe_005ffilters">Variable: <strong>Progspace.frame_filters</strong></dt>
 <dd><p>The <code>frame_filters</code> attribute is a dictionary of frame filter
-objects.  See <a href="Frame-Filter-API.html#Frame-Filter-API">Frame Filter API</a>, for more information.
+objects.  See <a href="Frame-Filter-API.html">Frame Filter API</a>, for more information.
 </p></dd></dl>
 
 <p>A program space has the following methods:
 </p>
-<a name="index-Progspace_002eblock_005ffor_005fpc"></a>
+<span id="index-Progspace_002eblock_005ffor_005fpc"></span>
 <dl>
-<dt><a name="index-Progspace_002eblock_005ffor_005fpc-1"></a>Function: <strong>Progspace.block_for_pc</strong> <em>(pc)</em></dt>
+<dt id="index-Progspace_002eblock_005ffor_005fpc-1">Function: <strong>Progspace.block_for_pc</strong> <em>(pc)</em></dt>
 <dd><p>Return the innermost <code>gdb.Block</code> containing the given <var>pc</var>
 value.  If the block cannot be found for the <var>pc</var> value specified,
 the function will return <code>None</code>.
 </p></dd></dl>
 
-<a name="index-Progspace_002efind_005fpc_005fline"></a>
+<span id="index-Progspace_002efind_005fpc_005fline"></span>
 <dl>
-<dt><a name="index-Progspace_002efind_005fpc_005fline-1"></a>Function: <strong>Progspace.find_pc_line</strong> <em>(pc)</em></dt>
+<dt id="index-Progspace_002efind_005fpc_005fline-1">Function: <strong>Progspace.find_pc_line</strong> <em>(pc)</em></dt>
 <dd><p>Return the <code>gdb.Symtab_and_line</code> object corresponding to the
-<var>pc</var> value.  See <a href="Symbol-Tables-In-Python.html#Symbol-Tables-In-Python">Symbol Tables In Python</a>.  If an invalid value
+<var>pc</var> value.  See <a href="Symbol-Tables-In-Python.html">Symbol Tables In Python</a>.  If an invalid value
 of <var>pc</var> is passed as an argument, then the <code>symtab</code> and
 <code>line</code> attributes of the returned <code>gdb.Symtab_and_line</code>
 object will be <code>None</code> and 0 respectively.
 </p></dd></dl>
 
-<a name="index-Progspace_002eis_005fvalid"></a>
+<span id="index-Progspace_002eis_005fvalid"></span>
 <dl>
-<dt><a name="index-Progspace_002eis_005fvalid-1"></a>Function: <strong>Progspace.is_valid</strong> <em>()</em></dt>
+<dt id="index-Progspace_002eis_005fvalid-1">Function: <strong>Progspace.is_valid</strong> <em>()</em></dt>
 <dd><p>Returns <code>True</code> if the <code>gdb.Progspace</code> object is valid,
 <code>False</code> if not.  A <code>gdb.Progspace</code> object can become invalid
 if the program space file it refers to is not referenced by any
@@ -157,16 +146,16 @@ inferior.  All other <code>gdb.Progspace</code> methods will throw an
 exception if it is invalid at the time the method is called.
 </p></dd></dl>
 
-<a name="index-Progspace_002eobjfiles"></a>
+<span id="index-Progspace_002eobjfiles"></span>
 <dl>
-<dt><a name="index-Progspace_002eobjfiles-1"></a>Function: <strong>Progspace.objfiles</strong> <em>()</em></dt>
+<dt id="index-Progspace_002eobjfiles-1">Function: <strong>Progspace.objfiles</strong> <em>()</em></dt>
 <dd><p>Return a sequence of all the objfiles referenced by this program
-space.  See <a href="Objfiles-In-Python.html#Objfiles-In-Python">Objfiles In Python</a>.
+space.  See <a href="Objfiles-In-Python.html">Objfiles In Python</a>.
 </p></dd></dl>
 
-<a name="index-Progspace_002esolib_005fname"></a>
+<span id="index-Progspace_002esolib_005fname"></span>
 <dl>
-<dt><a name="index-Progspace_002esolib_005fname-1"></a>Function: <strong>Progspace.solib_name</strong> <em>(address)</em></dt>
+<dt id="index-Progspace_002esolib_005fname-1">Function: <strong>Progspace.solib_name</strong> <em>(address)</em></dt>
 <dd><p>Return the name of the shared library holding the given <var>address</var>
 as a string, or <code>None</code>.
 </p></dd></dl>
@@ -182,8 +171,8 @@ this once because it is expensive.  To achieve this we record the results
 with the program space because we can&rsquo;t predict when the desired objfile
 will be loaded.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) python
+<div class="example">
+<pre class="example">(gdb) python
 def clear_objfiles_handler(event):
     event.progspace.expensive_computation = None
 def expensive(symbol):
@@ -205,7 +194,7 @@ gdb.events.clear_objfiles.connect(clear_objfiles_handler)
 gdb.events.new_objfile.connect(new_objfile_handler)
 end
 (gdb) file /tmp/hello
-Reading symbols from /tmp/hello...done.
+Reading symbols from /tmp/hello...
 Computing the answer to the ultimate question ...
 (gdb) python print gdb.current_progspace().expensive_computation
 42
@@ -218,7 +207,7 @@ Hello.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Objfiles-In-Python.html#Objfiles-In-Python" accesskey="n" rel="next">Objfiles In Python</a>, Previous: <a href="Functions-In-Python.html#Functions-In-Python" accesskey="p" rel="prev">Functions In Python</a>, Up: <a href="Python-API.html#Python-API" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Objfiles-In-Python.html" accesskey="n" rel="next">Objfiles In Python</a>, Previous: <a href="Functions-In-Python.html" accesskey="p" rel="prev">Functions In Python</a>, Up: <a href="Python-API.html" accesskey="u" rel="up">Python API</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

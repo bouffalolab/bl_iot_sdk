@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -96,6 +96,34 @@ the program is not found) by using the source file search path
 the <code>file</code> command to load the program.  See <a href="Files.html#Files">Commands to
 Specify Files</a>.
 </p>
+<a name="set-exec_002dfile_002dmismatch"></a><p>If the debugger can determine that the executable file running in the
+process it is attaching to does not match the current exec-file loaded
+by <small>GDB</small>, the option <code>exec-file-mismatch</code> specifies how to
+handle the mismatch.  <small>GDB</small> tries to compare the files by
+comparing their build IDs (see <a href="Separate-Debug-Files.html#build-ID">build ID</a>), if available.
+</p>
+<dl compact="compact">
+<dd><a name="index-exec_002dfile_002dmismatch"></a>
+<a name="index-set-exec_002dfile_002dmismatch"></a>
+</dd>
+<dt><code>set exec-file-mismatch &lsquo;<samp>ask|warn|off</samp>&rsquo;</code></dt>
+<dd>
+<p>Whether to detect mismatch between the current executable file loaded
+by <small>GDB</small> and the executable file used to start the process.  If
+&lsquo;<samp>ask</samp>&rsquo;, the default, display a warning and ask the user whether to
+load the process executable file; if &lsquo;<samp>warn</samp>&rsquo;, just display a
+warning; if &lsquo;<samp>off</samp>&rsquo;, don&rsquo;t attempt to detect a mismatch.
+If the user confirms loading the process executable file, then its symbols
+will be loaded as well.
+</p>
+<a name="index-show-exec_002dfile_002dmismatch"></a>
+</dd>
+<dt><code>show exec-file-mismatch</code></dt>
+<dd><p>Show the current value of <code>exec-file-mismatch</code>.
+</p>
+</dd>
+</dl>
+
 <p>The first thing <small>GDB</small> does after arranging to debug the specified
 process is to stop it.  You can examine and modify an attached process
 with all the <small>GDB</small> commands that are ordinarily available when

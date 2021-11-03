@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -166,10 +166,12 @@ typedef struct bfd_link_info _bfd_link_info;
 /* Forward declaration.  */
 typedef struct flag_info flag_info;
 
+typedef void (*bfd_cleanup) (bfd *);
+
 typedef struct bfd_target
 {
   /* Identifies the kind of target, e.g., SunOS4, Ultrix, etc.  */
-  char *name;
+  const char *name;
 
  /* The &quot;flavour&quot; of a back end is a general indication about
     the contents of a file.  */
@@ -230,9 +232,9 @@ typedef struct bfd_target
   /* Format dependent routines: these are vectors of entry points
      within the target vector structure, one for each format to check.  */
 
-  /* Check the format of a file being read.  Return a <code>bfd_target *</code> or zero.  */
-  const struct bfd_target *
-              (*_bfd_check_format[bfd_type_end]) (bfd *);
+  /* Check the format of a file being read.  Return a <code>bfd_cleanup</code> on
+     success or zero on failure.  */
+  bfd_cleanup (*_bfd_check_format[bfd_type_end]) (bfd *);
 
   /* Set the format of a file being written.  */
   bfd_boolean (*_bfd_set_format[bfd_type_end]) (bfd *);
@@ -383,9 +385,10 @@ BFD_JUMP_TABLE macros.
 #define bfd_get_symbol_info(b,p,e) \
        BFD_SEND (b, _bfd_get_symbol_info, (b,p,e))
   const char *(*_bfd_get_symbol_version_string) (bfd *, struct bfd_symbol *,
+                                                 bfd_boolean,
                                                  bfd_boolean *);
-#define bfd_get_symbol_version_string(b,s,h) \
-       BFD_SEND (b, _bfd_get_symbol_version_string, (b,s,h))
+#define bfd_get_symbol_version_string(b,s,p,h) \
+       BFD_SEND (b, _bfd_get_symbol_version_string, (b,s,p,h))
   bfd_boolean (*_bfd_is_local_label_name) (bfd *, const char *);
   bfd_boolean (*_bfd_is_target_special_symbol) (bfd *, asymbol *);
   alent *     (*_get_lineno) (bfd *, struct bfd_symbol *);
@@ -455,6 +458,7 @@ BFD_JUMP_TABLE macros.
   NAME##_bfd_lookup_section_flags, \
   NAME##_bfd_merge_sections, \
   NAME##_bfd_is_group_section, \
+  NAME##_bfd_group_name, \
   NAME##_bfd_discard_group, \
   NAME##_section_already_linked, \
   NAME##_bfd_define_common_symbol, \
@@ -512,6 +516,9 @@ BFD_JUMP_TABLE macros.
 
   /* Is this section a member of a group?  */
   bfd_boolean (*_bfd_is_group_section) (bfd *, const struct bfd_section *);
+
+  /* The group name, if section is a member of a group.  */
+  const char *(*_bfd_group_name) (bfd *, const struct bfd_section *);
 
   /* Discard members of a group.  */
   bfd_boolean (*_bfd_discard_group) (bfd *, struct bfd_section *);
@@ -571,6 +578,74 @@ to find an alternative output format that is suitable.
   const void *backend_data;
 
 } bfd_target;
+
+static inline const char *
+bfd_get_target (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;name;
+}
+
+static inline enum bfd_flavour
+bfd_get_flavour (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;flavour;
+}
+
+static inline flagword
+bfd_applicable_file_flags (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;object_flags;
+}
+
+static inline bfd_boolean
+bfd_family_coff (const bfd *abfd)
+{
+  return (bfd_get_flavour (abfd) == bfd_target_coff_flavour
+          || bfd_get_flavour (abfd) == bfd_target_xcoff_flavour);
+}
+
+static inline bfd_boolean
+bfd_big_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;byteorder == BFD_ENDIAN_BIG;
+}
+static inline bfd_boolean
+bfd_little_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;byteorder == BFD_ENDIAN_LITTLE;
+}
+
+static inline bfd_boolean
+bfd_header_big_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;header_byteorder == BFD_ENDIAN_BIG;
+}
+
+static inline bfd_boolean
+bfd_header_little_endian (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;header_byteorder == BFD_ENDIAN_LITTLE;
+}
+
+static inline flagword
+bfd_applicable_section_flags (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;section_flags;
+}
+
+static inline char
+bfd_get_symbol_leading_char (const bfd *abfd)
+{
+  return abfd-&gt;xvec-&gt;symbol_leading_char;
+}
+
+static inline enum bfd_flavour
+bfd_asymbol_flavour (const asymbol *sy)
+{
+  if ((sy-&gt;flags &amp; BSF_SYNTHETIC) != 0)
+    return bfd_target_unknown_flavour;
+  return sy-&gt;the_bfd-&gt;xvec-&gt;flavour;
+}
 
 </pre></div>
 

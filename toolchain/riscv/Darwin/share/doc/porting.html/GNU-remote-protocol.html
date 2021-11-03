@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GNU remote protocol (Embed with GNU)</title>
@@ -10,32 +10,23 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="leds_002ec.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB.html#GDB" rel="up" title="GDB">
-<link href="Exception-handler.html#Exception-handler" rel="next" title="Exception handler">
-<link href="GDB.html#GDB" rel="prev" title="GDB">
+<link href="GDB.html" rel="up" title="GDB">
+<link href="Exception-handler.html" rel="next" title="Exception handler">
+<link href="GDB.html" rel="prev" title="GDB">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -47,21 +38,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GNU-remote-protocol"></a>
-<div class="header">
+<span id="GNU-remote-protocol"></span><div class="header">
 <p>
-Next: <a href="Exception-handler.html#Exception-handler" accesskey="n" rel="next">Exception handler</a>, Up: <a href="GDB.html#GDB" accesskey="u" rel="up">GDB</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Exception-handler.html" accesskey="n" rel="next">Exception handler</a>, Up: <a href="GDB.html" accesskey="u" rel="up">GDB</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="The-standard-remote-protocol"></a>
-<h3 class="section">4.1 The standard remote protocol</h3>
+<span id="The-standard-remote-protocol"></span><h3 class="section">4.1 The standard remote protocol</h3>
 
 <p>The standard remote protocol is a simple, packet based scheme. A debug
 packet whose contents are <em>&lt;data&gt;</em> is encapsulated for transmission
 in the form:
 </p>
-<div class="smallexample">
-<pre class="smallexample">	$ &lt;data&gt; # CSUM1 CSUM2
+<div class="example">
+<pre class="example">	$ &lt;data&gt; # CSUM1 CSUM2
 </pre></div>
 
 <p><em>&lt;data&gt;</em> must be ASCII alphanumeric and cannot include characters
@@ -70,8 +59,8 @@ followed by <code>:</code>, then the existing stubs interpret this as a
 sequence number. For example, the command <code>g</code> is used to read the
 values of the registers. So, a packet to do this would look like
 </p>
-<div class="smallexample">
-<pre class="smallexample">        $g#67
+<div class="example">
+<pre class="example">        $g#67
 </pre></div>
 
 <p><em>CSUM1</em> and <em>CSUM2</em> are an ascii representation in hex of an
@@ -243,7 +232,7 @@ would be a <code>0*03</code> means the same thing as <code>0000</code>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Exception-handler.html#Exception-handler" accesskey="n" rel="next">Exception handler</a>, Up: <a href="GDB.html#GDB" accesskey="u" rel="up">GDB</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Exception-handler.html" accesskey="n" rel="next">Exception handler</a>, Up: <a href="GDB.html" accesskey="u" rel="up">GDB</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -11,7 +11,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>ARC Directives (Using as)</title>
@@ -21,33 +21,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="AS-Index.html#AS-Index" rel="index" title="AS Index">
+<link href="index.html" rel="start" title="Top">
+<link href="AS-Index.html" rel="index" title="AS Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="ARC_002dDependent.html#ARC_002dDependent" rel="up" title="ARC-Dependent">
-<link href="ARC-Modifiers.html#ARC-Modifiers" rel="next" title="ARC Modifiers">
-<link href="ARC_002dRegs.html#ARC_002dRegs" rel="prev" title="ARC-Regs">
+<link href="ARC_002dDependent.html" rel="up" title="ARC-Dependent">
+<link href="ARC-Modifiers.html" rel="next" title="ARC Modifiers">
+<link href="ARC_002dRegs.html" rel="prev" title="ARC-Regs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,23 +50,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="ARC-Directives"></a>
-<div class="header">
+<span id="ARC-Directives"></span><div class="header">
 <p>
-Next: <a href="ARC-Modifiers.html#ARC-Modifiers" accesskey="n" rel="next">ARC Modifiers</a>, Previous: <a href="ARC-Syntax.html#ARC-Syntax" accesskey="p" rel="prev">ARC Syntax</a>, Up: <a href="ARC_002dDependent.html#ARC_002dDependent" accesskey="u" rel="up">ARC-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="ARC-Modifiers.html" accesskey="n" rel="next">ARC Modifiers</a>, Previous: <a href="ARC-Syntax.html" accesskey="p" rel="prev">ARC Syntax</a>, Up: <a href="ARC_002dDependent.html" accesskey="u" rel="up">ARC-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="ARC-Machine-Directives"></a>
-<h4 class="subsection">9.3.3 ARC Machine Directives</h4>
+<span id="ARC-Machine-Directives"></span><h4 class="subsection">9.3.3 ARC Machine Directives</h4>
 
-<a name="index-machine-directives_002c-ARC"></a>
-<a name="index-ARC-machine-directives"></a>
+<span id="index-machine-directives_002c-ARC"></span>
+<span id="index-ARC-machine-directives"></span>
 <p>The ARC version of <code>as</code> supports the following additional
 machine directives:
 </p>
 <dl compact="compact">
 <dd>
-<a name="index-lcomm-directive-1"></a>
+<span id="index-lcomm-directive-1"></span>
 </dd>
 <dt><code>.lcomm <var>symbol</var>, <var>length</var>[, <var>alignment</var>]</code></dt>
 <dd><p>Reserve <var>length</var> (an absolute expression) bytes for a local common
@@ -92,12 +81,12 @@ two.  If no alignment is specified, as will set the alignment to the
 largest power of two less than or equal to the size of the symbol, up
 to a maximum of 16.
 </p>
-<a name="index-lcommon-directive_002c-ARC"></a>
+<span id="index-lcommon-directive_002c-ARC"></span>
 </dd>
 <dt><code>.lcommon <var>symbol</var>, <var>length</var>[, <var>alignment</var>]</code></dt>
 <dd><p>The same as <code>lcomm</code> directive.
 </p>
-<a name="index-cpu-directive_002c-ARC"></a>
+<span id="index-cpu-directive_002c-ARC"></span>
 </dd>
 <dt><code>.cpu <var>cpu</var></code></dt>
 <dd><p>The <code>.cpu</code> directive must be followed by the desired core
@@ -204,7 +193,7 @@ consistent between the two.
 </p>
 </dd>
 <dt><code>.extAuxRegister <var>name</var>, <var>addr</var>, <var>mode</var></code></dt>
-<dd><a name="index-extAuxRegister-directive_002c-ARC"></a>
+<dd><span id="index-extAuxRegister-directive_002c-ARC"></span>
 <p>Auxiliary registers can be defined in the assembler source code by
 using this directive.  The first parameter, <var>name</var>, is the name of the
 new auxiliary register.  The second parameter, <var>addr</var>, is
@@ -235,7 +224,7 @@ address 0x12.
 </p>
 </dd>
 <dt><code>.extCondCode <var>suffix</var>, <var>val</var></code></dt>
-<dd><a name="index-extCondCode-directive_002c-ARC"></a>
+<dd><span id="index-extCondCode-directive_002c-ARC"></span>
 <p>ARC supports extensible condition codes.  This directive defines a new
 condition code, to be known by the suffix, <var>suffix</var> and will
 depend on the value, <var>val</var> in the condition code.
@@ -250,7 +239,7 @@ value is 0x14.
 </p>
 </dd>
 <dt><code>.extCoreRegister <var>name</var>, <var>regnum</var>, <var>mode</var>, <var>shortcut</var></code></dt>
-<dd><a name="index-extCoreRegister-directive_002c-ARC"></a>
+<dd><span id="index-extCoreRegister-directive_002c-ARC"></span>
 <p>Specifies an extension core register named <var>name</var> as a synonym for
 the register numbered <var>regnum</var>.  The register number must be
 between 32 and 59.  The third argument, <var>mode</var>, indicates whether
@@ -291,7 +280,7 @@ register 57, and can short cut the pipeline.
 </p>
 </dd>
 <dt><code>.extInstruction <var>name</var>, <var>opcode</var>, <var>subopcode</var>, <var>suffixclass</var>, <var>syntaxclass</var></code></dt>
-<dd><a name="index-extInstruction-directive_002c-ARC"></a>
+<dd><span id="index-extInstruction-directive_002c-ARC"></span>
 <p>ARC allows the user to specify extension instructions.  These
 extension instructions are not macros; the assembler creates encodings
 for use of these instructions according to the specification by the
@@ -391,7 +380,7 @@ discarding the result of the operation.
 <p>which describes a two operand instruction with an implicit first
 immediate operand.  The result of this operation would be discarded.
 </p>
-<a name="index-_002earc_005fattribute-directive_002c-ARC"></a>
+<span id="index-_002earc_005fattribute-directive_002c-ARC"></span>
 </dd>
 <dt><code>.arc_attribute <var>tag</var>, <var>value</var></code></dt>
 <dd><p>Set the ARC object attribute <var>tag</var> to <var>value</var>.
@@ -414,7 +403,7 @@ immediate operand.  The result of this operation would be discarded.
 <hr>
 <div class="header">
 <p>
-Next: <a href="ARC-Modifiers.html#ARC-Modifiers" accesskey="n" rel="next">ARC Modifiers</a>, Previous: <a href="ARC-Syntax.html#ARC-Syntax" accesskey="p" rel="prev">ARC Syntax</a>, Up: <a href="ARC_002dDependent.html#ARC_002dDependent" accesskey="u" rel="up">ARC-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html#AS-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="ARC-Modifiers.html" accesskey="n" rel="next">ARC Modifiers</a>, Previous: <a href="ARC-Syntax.html" accesskey="p" rel="prev">ARC Syntax</a>, Up: <a href="ARC_002dDependent.html" accesskey="u" rel="up">ARC-Dependent</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="AS-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

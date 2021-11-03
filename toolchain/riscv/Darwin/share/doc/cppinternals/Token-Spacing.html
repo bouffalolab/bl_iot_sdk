@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Token Spacing (The GNU C Preprocessor Internals)</title>
@@ -10,33 +10,24 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Line-Numbering.html#Line-Numbering" rel="next" title="Line Numbering">
-<link href="Macro-Expansion.html#Macro-Expansion" rel="prev" title="Macro Expansion">
+<link href="index.html" rel="up" title="Top">
+<link href="Line-Numbering.html" rel="next" title="Line Numbering">
+<link href="Macro-Expansion.html" rel="prev" title="Macro Expansion">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,17 +39,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Token-Spacing"></a>
-<div class="header">
+<span id="Token-Spacing"></span><div class="header">
 <p>
-Next: <a href="Line-Numbering.html#Line-Numbering" accesskey="n" rel="next">Line Numbering</a>, Previous: <a href="Macro-Expansion.html#Macro-Expansion" accesskey="p" rel="prev">Macro Expansion</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Numbering.html" accesskey="n" rel="next">Line Numbering</a>, Previous: <a href="Macro-Expansion.html" accesskey="p" rel="prev">Macro Expansion</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Token-Spacing-1"></a>
-<h2 class="unnumbered">Token Spacing</h2>
-<a name="index-paste-avoidance"></a>
-<a name="index-spacing"></a>
-<a name="index-token-spacing"></a>
+<span id="Token-Spacing-1"></span><h2 class="unnumbered">Token Spacing</h2>
+<span id="index-paste-avoidance"></span>
+<span id="index-spacing"></span>
+<span id="index-token-spacing"></span>
 
 <p>First, consider an issue that only concerns the stand-alone
 preprocessor: there needs to be a guarantee that re-reading its preprocessed
@@ -66,8 +55,8 @@ output results in an identical token stream.  Without taking special
 measures, this might not be the case because of macro substitution.
 For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define PLUS +
+<div class="example">
+<pre class="example">#define PLUS +
 #define EMPTY
 #define f(x) =x=
 +PLUS -EMPTY- PLUS+ f(=)
@@ -99,8 +88,8 @@ decide whether to insert a space between tokens in the output.
 </p>
 <p>Now consider the result of the following macro expansion:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define add(x, y, z) x + y +z;
+<div class="example">
+<pre class="example">#define add(x, y, z) x + y +z;
 sum = add (1,2, 3);
         &rarr; sum = 1 + 2 +3;
 </pre></div>
@@ -130,8 +119,8 @@ macro replacement list, respectively.
 <p>It is quite easy to get multiple padding tokens in a row, for example if
 a macro&rsquo;s first replacement token expands straight into another macro.
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define foo bar
+<div class="example">
+<pre class="example">#define foo bar
 #define bar baz
 [foo]
         &rarr; [baz]
@@ -146,8 +135,8 @@ padding token in a sequence is the one that matters.
 <p>But what if a macro expansion is left?  Adjusting the above
 example slightly:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define foo bar
+<div class="example">
+<pre class="example">#define foo bar
 #define bar EMPTY baz
 #define EMPTY
 [foo] EMPTY;
@@ -193,7 +182,7 @@ space where one is not strictly needed.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Line-Numbering.html#Line-Numbering" accesskey="n" rel="next">Line Numbering</a>, Previous: <a href="Macro-Expansion.html#Macro-Expansion" accesskey="p" rel="prev">Macro Expansion</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Numbering.html" accesskey="n" rel="next">Line Numbering</a>, Previous: <a href="Macro-Expansion.html" accesskey="p" rel="prev">Macro Expansion</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

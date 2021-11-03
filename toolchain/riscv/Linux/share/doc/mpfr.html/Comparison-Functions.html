@@ -1,17 +1,6 @@
-<html lang="en">
-<head>
-<title>Comparison Functions - GNU MPFR 3.1.4</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
-floating-point arithmetic, version 3.1.4.">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="MPFR-Interface.html#MPFR-Interface" title="MPFR Interface">
-<link rel="prev" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" title="Basic Arithmetic Functions">
-<link rel="next" href="Special-Functions.html#Special-Functions" title="Special Functions">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-This manual documents how to install and use the Multiple Precision
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This manual documents how to install and use the Multiple Precision
 Floating-Point Reliable Library, version 3.1.4.
 
 Copyright 1991, 1993-2016 Free Software Foundation, Inc.
@@ -20,122 +9,161 @@ Permission is granted to copy, distribute and/or modify this document under
 the terms of the GNU Free Documentation License, Version 1.2 or any later
 version published by the Free Software Foundation; with no Invariant Sections,
 with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the
-license is included in *note GNU Free Documentation License::.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+license is included in GNU Free Documentation License. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU MPFR 3.1.4: Comparison Functions</title>
+
+<meta name="description" content="How to install and use GNU MPFR, a library for reliable multiple precision
+floating-point arithmetic, version 3.1.4.">
+<meta name="keywords" content="GNU MPFR 3.1.4: Comparison Functions">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="MPFR-Interface.html#MPFR-Interface" rel="up" title="MPFR Interface">
+<link href="Special-Functions.html#Special-Functions" rel="next" title="Special Functions">
+<link href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" rel="prev" title="Basic Arithmetic Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="Comparison-Functions"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Special-Functions.html#Special-Functions">Special Functions</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions">Basic Arithmetic Functions</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="MPFR-Interface.html#MPFR-Interface">MPFR Interface</a>
-<hr>
+Next: <a href="Special-Functions.html#Special-Functions" accesskey="n" rel="next">Special Functions</a>, Previous: <a href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" accesskey="p" rel="prev">Basic Arithmetic Functions</a>, Up: <a href="MPFR-Interface.html#MPFR-Interface" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
-<!-- node-name,  next,  previous,  up -->
-   <p><a name="index-Float-comparisons-functions-151"></a><a name="index-Comparison-functions-152"></a>
-
+<hr>
+<a name="index-Float-comparisons-functions"></a>
+<a name="index-Comparison-functions"></a>
+<a name="Comparison-Functions-1"></a>
 <h3 class="section">5.6 Comparison Functions</h3>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_cmp</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fcmp-153"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_ui</b> (<var>mpfr_t op1, unsigned long int op2</var>)<var><a name="index-mpfr_005fcmp_005fui-154"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_si</b> (<var>mpfr_t op1, long int op2</var>)<var><a name="index-mpfr_005fcmp_005fsi-155"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_d</b> (<var>mpfr_t op1, double op2</var>)<var><a name="index-mpfr_005fcmp_005fd-156"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_ld</b> (<var>mpfr_t op1, long double op2</var>)<var><a name="index-mpfr_005fcmp_005fld-157"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_z</b> (<var>mpfr_t op1, mpz_t op2</var>)<var><a name="index-mpfr_005fcmp_005fz-158"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_q</b> (<var>mpfr_t op1, mpq_t op2</var>)<var><a name="index-mpfr_005fcmp_005fq-159"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_f</b> (<var>mpfr_t op1, mpf_t op2</var>)<var><a name="index-mpfr_005fcmp_005ff-160"></a></var><br>
-<blockquote><p>Compare <var>op1</var> and <var>op2</var>.  Return a positive value if <var>op1</var> &gt;
-<var>op2</var>, zero if <var>op1</var> = <var>op2</var>, and a negative value if
-<var>op1</var> &lt; <var>op2</var>. 
+<dl>
+<dt><a name="index-mpfr_005fcmp"></a>Function: <em>int</em> <strong>mpfr_cmp</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fui"></a>Function: <em>int</em> <strong>mpfr_cmp_ui</strong> <em>(mpfr_t <var>op1</var>, unsigned long int <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fsi"></a>Function: <em>int</em> <strong>mpfr_cmp_si</strong> <em>(mpfr_t <var>op1</var>, long int <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fd"></a>Function: <em>int</em> <strong>mpfr_cmp_d</strong> <em>(mpfr_t <var>op1</var>, double <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fld"></a>Function: <em>int</em> <strong>mpfr_cmp_ld</strong> <em>(mpfr_t <var>op1</var>, long double <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fz"></a>Function: <em>int</em> <strong>mpfr_cmp_z</strong> <em>(mpfr_t <var>op1</var>, mpz_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fq"></a>Function: <em>int</em> <strong>mpfr_cmp_q</strong> <em>(mpfr_t <var>op1</var>, mpq_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005ff"></a>Function: <em>int</em> <strong>mpfr_cmp_f</strong> <em>(mpfr_t <var>op1</var>, mpf_t <var>op2</var>)</em></dt>
+<dd><p>Compare <var>op1</var> and <var>op2</var>.  Return a positive value if <em><var>op1</var> &gt;
+<var>op2</var></em>, zero if <em><var>op1</var> = <var>op2</var></em>, and a negative value if
+<em><var>op1</var> &lt; <var>op2</var></em>.
 Both <var>op1</var> and <var>op2</var> are considered to their full own precision,
-which may differ. 
+which may differ.
 If one of the operands is NaN, set the <em>erange</em> flag and return zero.
-
-        <p>Note: These functions may be useful to distinguish the three possible cases. 
+</p>
+<p>Note: These functions may be useful to distinguish the three possible cases.
 If you need to distinguish two cases only, it is recommended to use the
 predicate functions (e.g., <code>mpfr_equal_p</code> for the equality) described
 below; they behave like the IEEE 754 comparisons, in particular when one
 or both arguments are NaN. But only floating-point numbers can be compared
-(you may need to do a conversion first). 
-</p></blockquote></div>
+(you may need to do a conversion first).
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_cmp_ui_2exp</b> (<var>mpfr_t op1, unsigned long int op2, mpfr_exp_t e</var>)<var><a name="index-mpfr_005fcmp_005fui_005f2exp-161"></a></var><br>
-&mdash; Function: int <b>mpfr_cmp_si_2exp</b> (<var>mpfr_t op1, long int op2, mpfr_exp_t e</var>)<var><a name="index-mpfr_005fcmp_005fsi_005f2exp-162"></a></var><br>
-<blockquote><p>Compare <var>op1</var> and <var>op2</var> multiplied by two to
-the power <var>e</var>. Similar as above. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005fcmp_005fui_005f2exp"></a>Function: <em>int</em> <strong>mpfr_cmp_ui_2exp</strong> <em>(mpfr_t <var>op1</var>, unsigned long int <var>op2</var>, mpfr_exp_t <var>e</var>)</em></dt>
+<dt><a name="index-mpfr_005fcmp_005fsi_005f2exp"></a>Function: <em>int</em> <strong>mpfr_cmp_si_2exp</strong> <em>(mpfr_t <var>op1</var>, long int <var>op2</var>, mpfr_exp_t <var>e</var>)</em></dt>
+<dd><p>Compare <var>op1</var> and <em><var>op2</var> multiplied by two to
+the power <var>e</var></em>. Similar as above.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_cmpabs</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fcmpabs-163"></a></var><br>
-<blockquote><p>Compare |<var>op1</var>| and |<var>op2</var>|.  Return a positive value if
-|<var>op1</var>| &gt; |<var>op2</var>|, zero if |<var>op1</var>| = |<var>op2</var>|, and
-a negative value if |<var>op1</var>| &lt; |<var>op2</var>|. 
-If one of the operands is NaN, set the <em>erange</em> flag and return zero. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005fcmpabs"></a>Function: <em>int</em> <strong>mpfr_cmpabs</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dd><p>Compare <em>|<var>op1</var>|</em> and <em>|<var>op2</var>|</em>.  Return a positive value if
+<em>|<var>op1</var>| &gt; |<var>op2</var>|</em>, zero if <em>|<var>op1</var>| = |<var>op2</var>|</em>, and
+a negative value if <em>|<var>op1</var>| &lt; |<var>op2</var>|</em>.
+If one of the operands is NaN, set the <em>erange</em> flag and return zero.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_nan_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fnan_005fp-164"></a></var><br>
-&mdash; Function: int <b>mpfr_inf_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005finf_005fp-165"></a></var><br>
-&mdash; Function: int <b>mpfr_number_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fnumber_005fp-166"></a></var><br>
-&mdash; Function: int <b>mpfr_zero_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fzero_005fp-167"></a></var><br>
-&mdash; Function: int <b>mpfr_regular_p</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fregular_005fp-168"></a></var><br>
-<blockquote><p>Return non-zero if <var>op</var> is respectively NaN, an infinity, an ordinary
+<dl>
+<dt><a name="index-mpfr_005fnan_005fp"></a>Function: <em>int</em> <strong>mpfr_nan_p</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dt><a name="index-mpfr_005finf_005fp"></a>Function: <em>int</em> <strong>mpfr_inf_p</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dt><a name="index-mpfr_005fnumber_005fp"></a>Function: <em>int</em> <strong>mpfr_number_p</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dt><a name="index-mpfr_005fzero_005fp"></a>Function: <em>int</em> <strong>mpfr_zero_p</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dt><a name="index-mpfr_005fregular_005fp"></a>Function: <em>int</em> <strong>mpfr_regular_p</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dd><p>Return non-zero if <var>op</var> is respectively NaN, an infinity, an ordinary
 number (i.e., neither NaN nor an infinity), zero, or a regular number
-(i.e., neither NaN, nor an infinity nor zero). Return zero otherwise. 
-</p></blockquote></div>
+(i.e., neither NaN, nor an infinity nor zero). Return zero otherwise.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Macro: int <b>mpfr_sgn</b> (<var>mpfr_t op</var>)<var><a name="index-mpfr_005fsgn-169"></a></var><br>
-<blockquote><p>Return a positive value if <var>op</var> &gt; 0, zero if <var>op</var> = 0,
-and a negative value if <var>op</var> &lt; 0. 
-If the operand is NaN, set the <em>erange</em> flag and return zero. 
-This is equivalent to <code>mpfr_cmp_ui (op, 0)</code>, but more efficient. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005fsgn"></a>Macro: <em>int</em> <strong>mpfr_sgn</strong> <em>(mpfr_t <var>op</var>)</em></dt>
+<dd><p>Return a positive value if <em><var>op</var> &gt; 0</em>, zero if <em><var>op</var> = 0</em>,
+and a negative value if <em><var>op</var> &lt; 0</em>.
+If the operand is NaN, set the <em>erange</em> flag and return zero.
+This is equivalent to <code>mpfr_cmp_ui (op, 0)</code>, but more efficient.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_greater_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fgreater_005fp-170"></a></var><br>
-&mdash; Function: int <b>mpfr_greaterequal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fgreaterequal_005fp-171"></a></var><br>
-&mdash; Function: int <b>mpfr_less_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fless_005fp-172"></a></var><br>
-&mdash; Function: int <b>mpfr_lessequal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005flessequal_005fp-173"></a></var><br>
-&mdash; Function: int <b>mpfr_equal_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005fequal_005fp-174"></a></var><br>
-<blockquote><p>Return non-zero if
-<var>op1</var> &gt; <var>op2</var>,
-<var>op1</var> &gt;= <var>op2</var>,
-<var>op1</var> &lt; <var>op2</var>,
-<var>op1</var> &lt;= <var>op2</var>,
-<var>op1</var> = <var>op2</var> respectively,
-and zero otherwise. 
-Those functions return zero whenever <var>op1</var> and/or <var>op2</var> is NaN. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005fgreater_005fp"></a>Function: <em>int</em> <strong>mpfr_greater_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fgreaterequal_005fp"></a>Function: <em>int</em> <strong>mpfr_greaterequal_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fless_005fp"></a>Function: <em>int</em> <strong>mpfr_less_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005flessequal_005fp"></a>Function: <em>int</em> <strong>mpfr_lessequal_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dt><a name="index-mpfr_005fequal_005fp"></a>Function: <em>int</em> <strong>mpfr_equal_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dd><p>Return non-zero if
+<em><var>op1</var> &gt; <var>op2</var></em>,
+<em><var>op1</var> &gt;= <var>op2</var></em>,
+<em><var>op1</var> &lt; <var>op2</var></em>,
+<em><var>op1</var> &lt;= <var>op2</var></em>,
+<em><var>op1</var> = <var>op2</var></em> respectively,
+and zero otherwise.
+Those functions return zero whenever <var>op1</var> and/or <var>op2</var> is NaN.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_lessgreater_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005flessgreater_005fp-175"></a></var><br>
-<blockquote><p>Return non-zero if <var>op1</var> &lt; <var>op2</var> or
-<var>op1</var> &gt; <var>op2</var> (i.e., neither <var>op1</var>, nor <var>op2</var> is
-NaN, and <var>op1</var> &lt;&gt; <var>op2</var>), zero otherwise (i.e., <var>op1</var>
-and/or <var>op2</var> is NaN, or <var>op1</var> = <var>op2</var>). 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005flessgreater_005fp"></a>Function: <em>int</em> <strong>mpfr_lessgreater_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dd><p>Return non-zero if <em><var>op1</var> &lt; <var>op2</var></em> or
+<em><var>op1</var> &gt; <var>op2</var></em> (i.e., neither <var>op1</var>, nor <var>op2</var> is
+NaN, and <em><var>op1</var> &lt;&gt; <var>op2</var></em>), zero otherwise (i.e., <var>op1</var>
+and/or <var>op2</var> is NaN, or <em><var>op1</var> = <var>op2</var></em>).
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Function: int <b>mpfr_unordered_p</b> (<var>mpfr_t op1, mpfr_t op2</var>)<var><a name="index-mpfr_005funordered_005fp-176"></a></var><br>
-<blockquote><p>Return non-zero if <var>op1</var> or <var>op2</var> is a NaN (i.e., they cannot be
-compared), zero otherwise. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-mpfr_005funordered_005fp"></a>Function: <em>int</em> <strong>mpfr_unordered_p</strong> <em>(mpfr_t <var>op1</var>, mpfr_t <var>op2</var>)</em></dt>
+<dd><p>Return non-zero if <var>op1</var> or <var>op2</var> is a NaN (i.e., they cannot be
+compared), zero otherwise.
+</p></dd></dl>
 
-   </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Special-Functions.html#Special-Functions" accesskey="n" rel="next">Special Functions</a>, Previous: <a href="Basic-Arithmetic-Functions.html#Basic-Arithmetic-Functions" accesskey="p" rel="prev">Basic Arithmetic Functions</a>, Up: <a href="MPFR-Interface.html#MPFR-Interface" accesskey="u" rel="up">MPFR Interface</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

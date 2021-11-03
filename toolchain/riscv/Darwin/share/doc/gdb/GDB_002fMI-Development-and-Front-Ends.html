@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GDB/MI Development and Front Ends (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB_002fMI.html#GDB_002fMI" rel="up" title="GDB/MI">
-<link href="GDB_002fMI-Output-Records.html#GDB_002fMI-Output-Records" rel="next" title="GDB/MI Output Records">
-<link href="GDB_002fMI-Compatibility-with-CLI.html#GDB_002fMI-Compatibility-with-CLI" rel="prev" title="GDB/MI Compatibility with CLI">
+<link href="GDB_002fMI.html" rel="up" title="GDB/MI">
+<link href="GDB_002fMI-Output-Records.html" rel="next" title="GDB/MI Output Records">
+<link href="GDB_002fMI-Compatibility-with-CLI.html" rel="prev" title="GDB/MI Compatibility with CLI">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GDB_002fMI-Development-and-Front-Ends"></a>
-<div class="header">
+<span id="GDB_002fMI-Development-and-Front-Ends"></span><div class="header">
 <p>
-Next: <a href="GDB_002fMI-Output-Records.html#GDB_002fMI-Output-Records" accesskey="n" rel="next">GDB/MI Output Records</a>, Previous: <a href="GDB_002fMI-Compatibility-with-CLI.html#GDB_002fMI-Compatibility-with-CLI" accesskey="p" rel="prev">GDB/MI Compatibility with CLI</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Output-Records.html" accesskey="n" rel="next">GDB/MI Output Records</a>, Previous: <a href="GDB_002fMI-Compatibility-with-CLI.html" accesskey="p" rel="prev">GDB/MI Compatibility with CLI</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GDB_002fMI-Development-and-Front-Ends-1"></a>
-<h3 class="section">27.4 <small>GDB/MI</small> Development and Front Ends</h3>
-<a name="index-GDB_002fMI-development"></a>
+<span id="GDB_002fMI-Development-and-Front-Ends-1"></span><h3 class="section">27.4 <small>GDB/MI</small> Development and Front Ends</h3>
+<span id="index-GDB_002fMI-development"></span>
 
 <p>The application which takes the MI output and presents the state of the
 program being debugged to the user is called a <em>front end</em>.
@@ -104,7 +93,7 @@ recommended that front ends request a specific version of MI when launching
 <small>GDB</small> (e.g. <code>--interpreter=mi2</code>) to make sure they get an
 interpreter with the MI version they expect.
 </p>
-<p>The following table gives a summary of the the released versions of the MI
+<p>The following table gives a summary of the released versions of the MI
 interface: the version number, the version of GDB in which it first appeared
 and the breaking changes compared to the previous version.
 </p>
@@ -126,18 +115,40 @@ than a tuple.
 </li><li> <code>-var-update</code>&rsquo;s <code>changelist</code> result field is now a list, rather than
 a tuple.
 </li></ul></td></tr>
+<tr><td width="5%"><div align="center">3
+</div></td><td width="5%"><div align="center">9.1
+</div></td><td width="90%"><ul>
+<li> The output of information about multi-location breakpoints has changed in the
+responses to the <code>-break-insert</code> and <code>-break-info</code> commands, as well
+as in the <code>=breakpoint-created</code> and <code>=breakpoint-modified</code> events.
+The multiple locations are now placed in a <code>locations</code> field, whose value
+is a list.
+</li></ul></td></tr>
 </table>
+
+<p>If your front end cannot yet migrate to a more recent version of the
+MI protocol, you can nevertheless selectively enable specific features
+available in those recent MI versions, using the following commands:
+</p>
+<dl compact="compact">
+<dt><code>-fix-multi-location-breakpoint-output</code></dt>
+<dd><p>Use the output for multi-location breakpoints which was introduced by
+MI 3, even when using MI versions 2 or 1.  This command has no
+effect when using MI version 3 or later.
+</p>
+</dd>
+</dl>
 
 <p>The best way to avoid unexpected changes in MI that might break your front
 end is to make your project known to <small>GDB</small> developers and
 follow development on <a href="mailto:gdb@sourceware.org">gdb@sourceware.org</a> and
 <a href="mailto:gdb-patches@sourceware.org">gdb-patches@sourceware.org</a>.
-<a name="index-mailing-lists"></a>
+<span id="index-mailing-lists"></span>
 </p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="GDB_002fMI-Output-Records.html#GDB_002fMI-Output-Records" accesskey="n" rel="next">GDB/MI Output Records</a>, Previous: <a href="GDB_002fMI-Compatibility-with-CLI.html#GDB_002fMI-Compatibility-with-CLI" accesskey="p" rel="prev">GDB/MI Compatibility with CLI</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-Output-Records.html" accesskey="n" rel="next">GDB/MI Output Records</a>, Previous: <a href="GDB_002fMI-Compatibility-with-CLI.html" accesskey="p" rel="prev">GDB/MI Compatibility with CLI</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

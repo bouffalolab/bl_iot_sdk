@@ -1,164 +1,205 @@
-<html lang="en">
-<head>
-<title>Dispatch Tables - GNU Compiler Collection (GCC) Internals</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Compiler Collection (GCC) Internals">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Assembler-Format.html#Assembler-Format" title="Assembler Format">
-<link rel="prev" href="Instruction-Output.html#Instruction-Output" title="Instruction Output">
-<link rel="next" href="Exception-Region-Output.html#Exception-Region-Output" title="Exception Region Output">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Dispatch-Tables"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Exception-Region-Output.html#Exception-Region-Output">Exception Region Output</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Instruction-Output.html#Instruction-Output">Instruction Output</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-Format.html#Assembler-Format">Assembler Format</a>
-<hr>
-</div>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Compiler Collection (GCC) Internals: Dispatch Tables</title>
 
+<meta name="description" content="GNU Compiler Collection (GCC) Internals: Dispatch Tables">
+<meta name="keywords" content="GNU Compiler Collection (GCC) Internals: Dispatch Tables">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Assembler-Format.html#Assembler-Format" rel="up" title="Assembler Format">
+<link href="Exception-Region-Output.html#Exception-Region-Output" rel="next" title="Exception Region Output">
+<link href="Instruction-Output.html#Instruction-Output" rel="prev" title="Instruction Output">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Dispatch-Tables"></a>
+<div class="header">
+<p>
+Next: <a href="Exception-Region-Output.html#Exception-Region-Output" accesskey="n" rel="next">Exception Region Output</a>, Previous: <a href="Instruction-Output.html#Instruction-Output" accesskey="p" rel="prev">Instruction Output</a>, Up: <a href="Assembler-Format.html#Assembler-Format" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Output-of-Dispatch-Tables"></a>
 <h4 class="subsection">18.20.8 Output of Dispatch Tables</h4>
 
-<!-- prevent bad page break with this line -->
 <p>This concerns dispatch tables.
-
- <p><a name="index-dispatch-table-4851"></a>
-
-<div class="defun">
-&mdash; Macro: <b>ASM_OUTPUT_ADDR_DIFF_ELT</b> (<var>stream, body, value, rel</var>)<var><a name="index-ASM_005fOUTPUT_005fADDR_005fDIFF_005fELT-4852"></a></var><br>
-<blockquote><p>A C statement to output to the stdio stream <var>stream</var> an assembler
-pseudo-instruction to generate a difference between two labels. 
+</p>
+<a name="index-dispatch-table"></a>
+<dl>
+<dt><a name="index-ASM_005fOUTPUT_005fADDR_005fDIFF_005fELT"></a>Macro: <strong>ASM_OUTPUT_ADDR_DIFF_ELT</strong> <em>(<var>stream</var>, <var>body</var>, <var>value</var>, <var>rel</var>)</em></dt>
+<dd><p>A C statement to output to the stdio stream <var>stream</var> an assembler
+pseudo-instruction to generate a difference between two labels.
 <var>value</var> and <var>rel</var> are the numbers of two internal labels.  The
 definitions of these labels are output using
 <code>(*targetm.asm_out.internal_label)</code>, and they must be printed in the same
 way here.  For example,
+</p>
+<div class="smallexample">
+<pre class="smallexample">fprintf (<var>stream</var>, &quot;\t.word L%d-L%d\n&quot;,
+         <var>value</var>, <var>rel</var>)
+</pre></div>
 
-     <pre class="smallexample">          fprintf (<var>stream</var>, "\t.word L%d-L%d\n",
-                   <var>value</var>, <var>rel</var>)
-</pre>
-      <p>You must provide this macro on machines where the addresses in a
-dispatch table are relative to the table's own address.  If defined, GCC
-will also use this macro on all machines when producing PIC. 
+<p>You must provide this macro on machines where the addresses in a
+dispatch table are relative to the table&rsquo;s own address.  If defined, GCC
+will also use this macro on all machines when producing PIC.
 <var>body</var> is the body of the <code>ADDR_DIFF_VEC</code>; it is provided so that the
-mode and flags can be read. 
-</p></blockquote></div>
+mode and flags can be read.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Macro: <b>ASM_OUTPUT_ADDR_VEC_ELT</b> (<var>stream, value</var>)<var><a name="index-ASM_005fOUTPUT_005fADDR_005fVEC_005fELT-4853"></a></var><br>
-<blockquote><p>This macro should be provided on machines where the addresses
+<dl>
+<dt><a name="index-ASM_005fOUTPUT_005fADDR_005fVEC_005fELT"></a>Macro: <strong>ASM_OUTPUT_ADDR_VEC_ELT</strong> <em>(<var>stream</var>, <var>value</var>)</em></dt>
+<dd><p>This macro should be provided on machines where the addresses
 in a dispatch table are absolute.
-
-      <p>The definition should be a C statement to output to the stdio stream
+</p>
+<p>The definition should be a C statement to output to the stdio stream
 <var>stream</var> an assembler pseudo-instruction to generate a reference to
 a label.  <var>value</var> is the number of an internal label whose
-definition is output using <code>(*targetm.asm_out.internal_label)</code>. 
+definition is output using <code>(*targetm.asm_out.internal_label)</code>.
 For example,
+</p>
+<div class="smallexample">
+<pre class="smallexample">fprintf (<var>stream</var>, &quot;\t.word L%d\n&quot;, <var>value</var>)
+</pre></div>
+</dd></dl>
 
-     <pre class="smallexample">          fprintf (<var>stream</var>, "\t.word L%d\n", <var>value</var>)
-</pre>
-      </blockquote></div>
-
-<div class="defun">
-&mdash; Macro: <b>ASM_OUTPUT_CASE_LABEL</b> (<var>stream, prefix, num, table</var>)<var><a name="index-ASM_005fOUTPUT_005fCASE_005fLABEL-4854"></a></var><br>
-<blockquote><p>Define this if the label before a jump-table needs to be output
+<dl>
+<dt><a name="index-ASM_005fOUTPUT_005fCASE_005fLABEL"></a>Macro: <strong>ASM_OUTPUT_CASE_LABEL</strong> <em>(<var>stream</var>, <var>prefix</var>, <var>num</var>, <var>table</var>)</em></dt>
+<dd><p>Define this if the label before a jump-table needs to be output
 specially.  The first three arguments are the same as for
 <code>(*targetm.asm_out.internal_label)</code>; the fourth argument is the
 jump-table which follows (a <code>jump_table_data</code> containing an
 <code>addr_vec</code> or <code>addr_diff_vec</code>).
-
-      <p>This feature is used on system V to output a <code>swbeg</code> statement
+</p>
+<p>This feature is used on system V to output a <code>swbeg</code> statement
 for the table.
+</p>
+<p>If this macro is not defined, these labels are output with
+<code>(*targetm.asm_out.internal_label)</code>.
+</p></dd></dl>
 
-      <p>If this macro is not defined, these labels are output with
-<code>(*targetm.asm_out.internal_label)</code>. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Macro: <b>ASM_OUTPUT_CASE_END</b> (<var>stream, num, table</var>)<var><a name="index-ASM_005fOUTPUT_005fCASE_005fEND-4855"></a></var><br>
-<blockquote><p>Define this if something special must be output at the end of a
+<dl>
+<dt><a name="index-ASM_005fOUTPUT_005fCASE_005fEND"></a>Macro: <strong>ASM_OUTPUT_CASE_END</strong> <em>(<var>stream</var>, <var>num</var>, <var>table</var>)</em></dt>
+<dd><p>Define this if something special must be output at the end of a
 jump-table.  The definition should be a C statement to be executed
 after the assembler code for the table is written.  It should write
 the appropriate code to stdio stream <var>stream</var>.  The argument
 <var>table</var> is the jump-table insn, and <var>num</var> is the label-number
 of the preceding label.
+</p>
+<p>If this macro is not defined, nothing special is output at the end of
+the jump-table.
+</p></dd></dl>
 
-      <p>If this macro is not defined, nothing special is output at the end of
-the jump-table. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-TARGET_005fASM_005fPOST_005fCFI_005fSTARTPROC"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_POST_CFI_STARTPROC</strong> <em>(FILE *<var></var>, <var>tree</var>)</em></dt>
+<dd><p>This target hook is used to emit assembly strings required by the target
+after the .cfi_startproc directive.  The first argument is the file stream to
+write the strings to and the second argument is the function&rsquo;s declaration.  The
+expected use is to add more .cfi_* directives.
+</p>
+<p>The default is to not output any assembly strings.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Target Hook: void <b>TARGET_ASM_EMIT_UNWIND_LABEL</b> (<var>FILE *stream, tree decl, int for_eh, int empty</var>)<var><a name="index-TARGET_005fASM_005fEMIT_005fUNWIND_005fLABEL-4856"></a></var><br>
-<blockquote><p>This target hook emits a label at the beginning of each FDE.  It
+<dl>
+<dt><a name="index-TARGET_005fASM_005fEMIT_005fUNWIND_005fLABEL"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_EMIT_UNWIND_LABEL</strong> <em>(FILE *<var>stream</var>, tree <var>decl</var>, int <var>for_eh</var>, int <var>empty</var>)</em></dt>
+<dd><p>This target hook emits a label at the beginning of each FDE.  It
 should be defined on targets where FDEs need special labels, and it
 should write the appropriate label, for the FDE associated with the
-function declaration <var>decl</var>, to the stdio stream <var>stream</var>. 
+function declaration <var>decl</var>, to the stdio stream <var>stream</var>.
 The third argument, <var>for_eh</var>, is a boolean: true if this is for an
 exception table.  The fourth argument, <var>empty</var>, is a boolean:
 true if this is a placeholder label for an omitted FDE.
+</p>
+<p>The default is that FDEs are not given nonlocal labels.
+</p></dd></dl>
 
-      <p>The default is that FDEs are not given nonlocal labels. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Target Hook: void <b>TARGET_ASM_EMIT_EXCEPT_TABLE_LABEL</b> (<var>FILE *stream</var>)<var><a name="index-TARGET_005fASM_005fEMIT_005fEXCEPT_005fTABLE_005fLABEL-4857"></a></var><br>
-<blockquote><p>This target hook emits a label at the beginning of the exception table. 
+<dl>
+<dt><a name="index-TARGET_005fASM_005fEMIT_005fEXCEPT_005fTABLE_005fLABEL"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_EMIT_EXCEPT_TABLE_LABEL</strong> <em>(FILE *<var>stream</var>)</em></dt>
+<dd><p>This target hook emits a label at the beginning of the exception table.
 It should be defined on targets where it is desirable for the table
 to be broken up according to function.
+</p>
+<p>The default is that no label is emitted.
+</p></dd></dl>
 
-      <p>The default is that no label is emitted. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-TARGET_005fASM_005fEMIT_005fEXCEPT_005fPERSONALITY"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_EMIT_EXCEPT_PERSONALITY</strong> <em>(rtx <var>personality</var>)</em></dt>
+<dd><p>If the target implements <code>TARGET_ASM_UNWIND_EMIT</code>, this hook may be used to emit a directive to install a personality hook into the unwind info.  This hook should not be used if dwarf2 unwind info is used.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Target Hook: void <b>TARGET_ASM_EMIT_EXCEPT_PERSONALITY</b> (<var>rtx personality</var>)<var><a name="index-TARGET_005fASM_005fEMIT_005fEXCEPT_005fPERSONALITY-4858"></a></var><br>
-<blockquote><p>If the target implements <code>TARGET_ASM_UNWIND_EMIT</code>, this hook may be used to emit a directive to install a personality hook into the unwind info.  This hook should not be used if dwarf2 unwind info is used. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Target Hook: void <b>TARGET_ASM_UNWIND_EMIT</b> (<var>FILE *stream, rtx_insn *insn</var>)<var><a name="index-TARGET_005fASM_005fUNWIND_005fEMIT-4859"></a></var><br>
-<blockquote><p>This target hook emits assembly directives required to unwind the
+<dl>
+<dt><a name="index-TARGET_005fASM_005fUNWIND_005fEMIT"></a>Target Hook: <em>void</em> <strong>TARGET_ASM_UNWIND_EMIT</strong> <em>(FILE *<var>stream</var>, rtx_insn *<var>insn</var>)</em></dt>
+<dd><p>This target hook emits assembly directives required to unwind the
 given instruction.  This is only used when <code>TARGET_EXCEPT_UNWIND_INFO</code>
-returns <code>UI_TARGET</code>. 
-</p></blockquote></div>
+returns <code>UI_TARGET</code>.
+</p></dd></dl>
 
-<div class="defun">
-&mdash; Target Hook: bool <b>TARGET_ASM_UNWIND_EMIT_BEFORE_INSN</b><var><a name="index-TARGET_005fASM_005fUNWIND_005fEMIT_005fBEFORE_005fINSN-4860"></a></var><br>
-<blockquote><p>True if the <code>TARGET_ASM_UNWIND_EMIT</code> hook should be called before the assembly for <var>insn</var> has been emitted, false if the hook should be called afterward. 
-</p></blockquote></div>
+<dl>
+<dt><a name="index-TARGET_005fASM_005fUNWIND_005fEMIT_005fBEFORE_005fINSN"></a>Target Hook: <em>bool</em> <strong>TARGET_ASM_UNWIND_EMIT_BEFORE_INSN</strong></dt>
+<dd><p>True if the <code>TARGET_ASM_UNWIND_EMIT</code> hook should be called before the assembly for <var>insn</var> has been emitted, false if the hook should be called afterward.
+</p></dd></dl>
 
- </body></html>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Exception-Region-Output.html#Exception-Region-Output" accesskey="n" rel="next">Exception Region Output</a>, Previous: <a href="Instruction-Output.html#Instruction-Output" accesskey="p" rel="prev">Instruction Output</a>, Up: <a href="Assembler-Format.html#Assembler-Format" accesskey="u" rel="up">Assembler Format</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

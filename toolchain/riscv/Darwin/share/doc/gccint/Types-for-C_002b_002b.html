@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Types for C++ (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" rel="up" title="C and C++ Trees">
-<link href="Namespaces.html#Namespaces" rel="next" title="Namespaces">
-<link href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" rel="prev" title="C and C++ Trees">
+<link href="C-and-C_002b_002b-Trees.html" rel="up" title="C and C++ Trees">
+<link href="Namespaces.html" rel="next" title="Namespaces">
+<link href="C-and-C_002b_002b-Trees.html" rel="prev" title="C and C++ Trees">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,37 +58,35 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Types-for-C_002b_002b"></a>
-<div class="header">
+<span id="Types-for-C_002b_002b"></span><div class="header">
 <p>
-Next: <a href="Namespaces.html#Namespaces" accesskey="n" rel="next">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Namespaces.html" accesskey="n" rel="next">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Types-for-C_002b_002b-1"></a>
-<h4 class="subsection">11.10.1 Types for C++</h4>
-<a name="index-UNKNOWN_005fTYPE-1"></a>
-<a name="index-TYPENAME_005fTYPE"></a>
-<a name="index-TYPEOF_005fTYPE"></a>
-<a name="index-cp_005ftype_005fquals"></a>
-<a name="index-TYPE_005fUNQUALIFIED-1"></a>
-<a name="index-TYPE_005fQUAL_005fCONST-1"></a>
-<a name="index-TYPE_005fQUAL_005fVOLATILE-1"></a>
-<a name="index-TYPE_005fQUAL_005fRESTRICT-1"></a>
-<a name="index-TYPE_005fMAIN_005fVARIANT-2"></a>
-<a name="index-qualified-type-1"></a>
-<a name="index-TYPE_005fSIZE-2"></a>
-<a name="index-TYPE_005fALIGN-2"></a>
-<a name="index-TYPE_005fPRECISION-1"></a>
-<a name="index-TYPE_005fARG_005fTYPES-1"></a>
-<a name="index-TYPE_005fMETHOD_005fBASETYPE-1"></a>
-<a name="index-TYPE_005fPTRDATAMEM_005fP"></a>
-<a name="index-TYPE_005fOFFSET_005fBASETYPE-1"></a>
-<a name="index-TREE_005fTYPE-6"></a>
-<a name="index-TYPE_005fCONTEXT-1"></a>
-<a name="index-TYPE_005fNAME-2"></a>
-<a name="index-TYPENAME_005fTYPE_005fFULLNAME-1"></a>
-<a name="index-TYPE_005fFIELDS-1"></a>
-<a name="index-TYPE_005fPTROBV_005fP"></a>
+<span id="Types-for-C_002b_002b-1"></span><h4 class="subsection">11.10.1 Types for C++</h4>
+<span id="index-UNKNOWN_005fTYPE-1"></span>
+<span id="index-TYPENAME_005fTYPE"></span>
+<span id="index-TYPEOF_005fTYPE"></span>
+<span id="index-cp_005ftype_005fquals"></span>
+<span id="index-TYPE_005fUNQUALIFIED-1"></span>
+<span id="index-TYPE_005fQUAL_005fCONST-1"></span>
+<span id="index-TYPE_005fQUAL_005fVOLATILE-1"></span>
+<span id="index-TYPE_005fQUAL_005fRESTRICT-1"></span>
+<span id="index-TYPE_005fMAIN_005fVARIANT-2"></span>
+<span id="index-qualified-type-1"></span>
+<span id="index-TYPE_005fSIZE-2"></span>
+<span id="index-TYPE_005fALIGN-2"></span>
+<span id="index-TYPE_005fPRECISION-1"></span>
+<span id="index-TYPE_005fARG_005fTYPES-1"></span>
+<span id="index-TYPE_005fMETHOD_005fBASETYPE-1"></span>
+<span id="index-TYPE_005fPTRDATAMEM_005fP"></span>
+<span id="index-TYPE_005fOFFSET_005fBASETYPE-1"></span>
+<span id="index-TREE_005fTYPE-6"></span>
+<span id="index-TYPE_005fCONTEXT-1"></span>
+<span id="index-TYPE_005fNAME-2"></span>
+<span id="index-TYPENAME_005fTYPE_005fFULLNAME-1"></span>
+<span id="index-TYPE_005fFIELDS-1"></span>
+<span id="index-TYPE_005fPTROBV_005fP"></span>
 
 <p>In C++, an array type is not qualified; rather the type of the array
 elements is qualified.  This situation is reflected in the intermediate
@@ -111,7 +100,7 @@ the type <code>const int ()[7]</code>, denoting an array of seven <code>int</cod
 <p>The following functions and macros deal with cv-qualification of types:
 </p><dl compact="compact">
 <dt><code>cp_type_quals</code>
-<a name="index-cp_005ftype_005fquals-1"></a>
+<span id="index-cp_005ftype_005fquals-1"></span>
 </dt>
 <dd><p>This function returns the set of type qualifiers applied to this type.
 This value is <code>TYPE_UNQUALIFIED</code> if no qualifiers have been
@@ -122,25 +111,25 @@ set if the type is <code>restrict</code>-qualified.
 </p>
 </dd>
 <dt><code>CP_TYPE_CONST_P</code>
-<a name="index-CP_005fTYPE_005fCONST_005fP"></a>
+<span id="index-CP_005fTYPE_005fCONST_005fP"></span>
 </dt>
 <dd><p>This macro holds if the type is <code>const</code>-qualified.
 </p>
 </dd>
 <dt><code>CP_TYPE_VOLATILE_P</code>
-<a name="index-CP_005fTYPE_005fVOLATILE_005fP"></a>
+<span id="index-CP_005fTYPE_005fVOLATILE_005fP"></span>
 </dt>
 <dd><p>This macro holds if the type is <code>volatile</code>-qualified.
 </p>
 </dd>
 <dt><code>CP_TYPE_RESTRICT_P</code>
-<a name="index-CP_005fTYPE_005fRESTRICT_005fP"></a>
+<span id="index-CP_005fTYPE_005fRESTRICT_005fP"></span>
 </dt>
 <dd><p>This macro holds if the type is <code>restrict</code>-qualified.
 </p>
 </dd>
 <dt><code>CP_TYPE_CONST_NON_VOLATILE_P</code>
-<a name="index-CP_005fTYPE_005fCONST_005fNON_005fVOLATILE_005fP"></a>
+<span id="index-CP_005fTYPE_005fCONST_005fNON_005fVOLATILE_005fP"></span>
 </dt>
 <dd><p>This predicate holds for a type that is <code>const</code>-qualified, but
 <em>not</em> <code>volatile</code>-qualified; other cv-qualifiers are ignored as
@@ -152,7 +141,7 @@ well: only the <code>const</code>-ness is tested.
 <p>A few other macros and functions are usable with all types:
 </p><dl compact="compact">
 <dt><code>TYPE_SIZE</code>
-<a name="index-TYPE_005fSIZE-3"></a>
+<span id="index-TYPE_005fSIZE-3"></span>
 </dt>
 <dd><p>The number of bits required to represent the type, represented as an
 <code>INTEGER_CST</code>.  For an incomplete type, <code>TYPE_SIZE</code> will be
@@ -160,13 +149,13 @@ well: only the <code>const</code>-ness is tested.
 </p>
 </dd>
 <dt><code>TYPE_ALIGN</code>
-<a name="index-TYPE_005fALIGN-3"></a>
+<span id="index-TYPE_005fALIGN-3"></span>
 </dt>
 <dd><p>The alignment of the type, in bits, represented as an <code>int</code>.
 </p>
 </dd>
 <dt><code>TYPE_NAME</code>
-<a name="index-TYPE_005fNAME-3"></a>
+<span id="index-TYPE_005fNAME-3"></span>
 </dt>
 <dd><p>This macro returns a declaration (in the form of a <code>TYPE_DECL</code>) for
 the type.  (Note this macro does <em>not</em> return an
@@ -178,52 +167,52 @@ named class type.
 </p>
 </dd>
 <dt><code>CP_INTEGRAL_TYPE</code>
-<a name="index-CP_005fINTEGRAL_005fTYPE"></a>
+<span id="index-CP_005fINTEGRAL_005fTYPE"></span>
 </dt>
 <dd><p>This predicate holds if the type is an integral type.  Notice that in
 C++, enumerations are <em>not</em> integral types.
 </p>
 </dd>
 <dt><code>ARITHMETIC_TYPE_P</code>
-<a name="index-ARITHMETIC_005fTYPE_005fP"></a>
+<span id="index-ARITHMETIC_005fTYPE_005fP"></span>
 </dt>
 <dd><p>This predicate holds if the type is an integral type (in the C++ sense)
 or a floating point type.
 </p>
 </dd>
 <dt><code>CLASS_TYPE_P</code>
-<a name="index-CLASS_005fTYPE_005fP"></a>
+<span id="index-CLASS_005fTYPE_005fP"></span>
 </dt>
 <dd><p>This predicate holds for a class-type.
 </p>
 </dd>
 <dt><code>TYPE_BUILT_IN</code>
-<a name="index-TYPE_005fBUILT_005fIN"></a>
+<span id="index-TYPE_005fBUILT_005fIN"></span>
 </dt>
 <dd><p>This predicate holds for a built-in type.
 </p>
 </dd>
 <dt><code>TYPE_PTRDATAMEM_P</code>
-<a name="index-TYPE_005fPTRDATAMEM_005fP-1"></a>
+<span id="index-TYPE_005fPTRDATAMEM_005fP-1"></span>
 </dt>
 <dd><p>This predicate holds if the type is a pointer to data member.
 </p>
 </dd>
 <dt><code>TYPE_PTR_P</code>
-<a name="index-TYPE_005fPTR_005fP"></a>
+<span id="index-TYPE_005fPTR_005fP"></span>
 </dt>
 <dd><p>This predicate holds if the type is a pointer type, and the pointee is
 not a data member.
 </p>
 </dd>
 <dt><code>TYPE_PTRFN_P</code>
-<a name="index-TYPE_005fPTRFN_005fP"></a>
+<span id="index-TYPE_005fPTRFN_005fP"></span>
 </dt>
 <dd><p>This predicate holds for a pointer to function type.
 </p>
 </dd>
 <dt><code>TYPE_PTROB_P</code>
-<a name="index-TYPE_005fPTROB_005fP"></a>
+<span id="index-TYPE_005fPTROB_005fP"></span>
 </dt>
 <dd><p>This predicate holds for a pointer to object type.  Note however that it
 does not hold for the generic pointer to object type <code>void *</code>.  You
@@ -253,7 +242,7 @@ type.  In that case, the <code>TYPE_PTRMEMFUNC_FN_TYPE</code> is a
 <code>POINTER_TYPE</code> pointing to a <code>METHOD_TYPE</code>.  The
 <code>METHOD_TYPE</code> is the type of a function pointed to by the
 pointer-to-member function.  If <code>TYPE_PTRMEMFUNC_P</code> does not hold,
-this type is a class type.  For more information, see <a href="Classes.html#Classes">Classes</a>.
+this type is a class type.  For more information, see <a href="Classes.html">Classes</a>.
 </p>
 </dd>
 <dt><code>UNKNOWN_TYPE</code></dt>
@@ -285,7 +274,7 @@ represented.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Namespaces.html#Namespaces" accesskey="n" rel="next">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html#C-and-C_002b_002b-Trees" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Namespaces.html" accesskey="n" rel="next">Namespaces</a>, Up: <a href="C-and-C_002b_002b-Trees.html" accesskey="u" rel="up">C and C++ Trees</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

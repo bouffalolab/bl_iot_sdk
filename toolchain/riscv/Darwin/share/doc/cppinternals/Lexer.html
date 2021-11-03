@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Lexer (The GNU C Preprocessor Internals)</title>
@@ -10,33 +10,24 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Hash-Nodes.html#Hash-Nodes" rel="next" title="Hash Nodes">
-<link href="Conventions.html#Conventions" rel="prev" title="Conventions">
+<link href="index.html" rel="up" title="Top">
+<link href="Hash-Nodes.html" rel="next" title="Hash Nodes">
+<link href="Conventions.html" rel="prev" title="Conventions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,20 +39,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Lexer"></a>
-<div class="header">
+<span id="Lexer"></span><div class="header">
 <p>
-Next: <a href="Hash-Nodes.html#Hash-Nodes" accesskey="n" rel="next">Hash Nodes</a>, Previous: <a href="Conventions.html#Conventions" accesskey="p" rel="prev">Conventions</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Hash-Nodes.html" accesskey="n" rel="next">Hash Nodes</a>, Previous: <a href="Conventions.html" accesskey="p" rel="prev">Conventions</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="The-Lexer"></a>
-<h2 class="unnumbered">The Lexer</h2>
-<a name="index-lexer"></a>
-<a name="index-newlines"></a>
-<a name="index-escaped-newlines"></a>
+<span id="The-Lexer"></span><h2 class="unnumbered">The Lexer</h2>
+<span id="index-lexer"></span>
+<span id="index-newlines"></span>
+<span id="index-escaped-newlines"></span>
 
-<a name="Overview"></a>
-<h3 class="section">Overview</h3>
+<span id="Overview"></span><h3 class="section">Overview</h3>
 <p>The lexer is contained in the file <samp>lex.c</samp>.  It is a hand-coded
 lexer, and not implemented as a state machine.  It can understand C, C++
 and Objective-C source code, and has been extended to allow reasonably
@@ -79,8 +67,7 @@ clients of the library can easily spell a given token, such as
 useful when generating diagnostics, and for emitting the preprocessed
 output.
 </p>
-<a name="Lexing-a-token"></a>
-<h3 class="section">Lexing a token</h3>
+<span id="Lexing-a-token"></span><h3 class="section">Lexing a token</h3>
 <p>Lexing of an individual token is handled by <code>_cpp_lex_direct</code> and
 its subroutines.  In its current form the code is quite complicated,
 with read ahead characters and such-like, since it strives to not step
@@ -145,16 +132,16 @@ be distinguished sometimes.  One such time is here: the lexer sets the
 <code>parsing_args</code> is set to 2.  It doesn&rsquo;t set it if it meets a new
 line when <code>parsing_args</code> is 1, since then code like
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define foo() bar
+<div class="example">
+<pre class="example">#define foo() bar
 foo
 baz
 </pre></div>
 
 <p>would be output with an erroneous space before &lsquo;<samp>baz</samp>&rsquo;:
 </p>
-<div class="smallexample">
-<pre class="smallexample">foo
+<div class="example">
+<pre class="example">foo
  baz
 </pre></div>
 
@@ -214,7 +201,7 @@ should be done even within C-style comments; they can appear in the
 middle of a line, and we want to report diagnostics in the correct
 position for text appearing after the end of the comment.
 </p>
-<a name="Invalid-identifiers"></a><p>Some identifiers, such as <code>__VA_ARGS__</code> and poisoned identifiers,
+<span id="Invalid-identifiers"></span><p>Some identifiers, such as <code>__VA_ARGS__</code> and poisoned identifiers,
 may be invalid and require a diagnostic.  However, if they appear in a
 macro expansion we don&rsquo;t want to complain with each use of the macro.
 It is therefore best to catch them during the lexing stage, in
@@ -249,9 +236,8 @@ The storage holding the spellings of such tokens remains until the
 client program calls cpp_destroy, probably at the end of the translation
 unit.
 </p>
-<a name="Lexing-a-line"></a><a name="Lexing-a-line-1"></a>
-<h3 class="section">Lexing a line</h3>
-<a name="index-token-run"></a>
+<span id="Lexing-a-line"></span><span id="Lexing-a-line-1"></span><h3 class="section">Lexing a line</h3>
+<span id="index-token-run"></span>
 
 <p>When the preprocessor was changed to return pointers to tokens, one
 feature I wanted was some sort of guarantee regarding how long a
@@ -336,7 +322,7 @@ themselves with such issues.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Hash-Nodes.html#Hash-Nodes" accesskey="n" rel="next">Hash Nodes</a>, Previous: <a href="Conventions.html#Conventions" accesskey="p" rel="prev">Conventions</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Hash-Nodes.html" accesskey="n" rel="next">Hash Nodes</a>, Previous: <a href="Conventions.html" accesskey="p" rel="prev">Conventions</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

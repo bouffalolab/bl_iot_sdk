@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -91,7 +91,13 @@ the values of memory and/or registers that were changed by that
 instruction are reverted to their previous states.  After executing
 a piece of source code in reverse, all side effects of that code
 should be &ldquo;undone&rdquo;, and all variables should be returned to their
-prior values<a name="DOCF6" href="#FOOT6"><sup>6</sup></a>.
+prior values<a name="DOCF7" href="#FOOT7"><sup>7</sup></a>.
+</p>
+<p>On some platforms, <small>GDB</small> has built-in support for reverse
+execution, activated with the <code>record</code> or <code>record btrace</code>
+commands.  See <a href="Process-Record-and-Replay.html#Process-Record-and-Replay">Process Record and Replay</a>.  Some remote targets,
+typically full system emulators, support reverse execution directly
+without requiring any special command.
 </p>
 <p>If you are debugging in a target environment that supports
 reverse execution, <small>GDB</small> provides the following commands.
@@ -145,7 +151,7 @@ the first line of a function, <code>reverse-next</code> will take you back
 to the caller of that function, <em>before</em> the function was called,
 just as the normal <code>next</code> command would take you from the last 
 line of a function back to its return to its caller
-<a name="DOCF7" href="#FOOT7"><sup>7</sup></a>.
+<a name="DOCF8" href="#FOOT8"><sup>8</sup></a>.
 </p>
 <a name="index-reverse_002dnexti"></a>
 <a name="index-rni-_0028reverse_002dnexti_0029"></a>
@@ -189,7 +195,7 @@ This is the default.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT6" href="#DOCF6">(6)</a></h3>
+<h3><a name="FOOT7" href="#DOCF7">(7)</a></h3>
 <p>Note that some side effects are easier to undo than others.  For instance,
 memory and registers are relatively easy, but device I/O is hard.  Some
 targets may be able undo things like device I/O, and some may not.
@@ -200,9 +206,9 @@ requires only that the target do something reasonable when
 results back to <small>GDB</small>.  Whatever the target reports back to
 <small>GDB</small>, <small>GDB</small> will report back to the user.  <small>GDB</small>
 assumes that the memory and registers that the target reports are in a
-consistant state, but <small>GDB</small> accepts whatever it is given.
+consistent state, but <small>GDB</small> accepts whatever it is given.
 </p>
-<h3><a name="FOOT7" href="#DOCF7">(7)</a></h3>
+<h3><a name="FOOT8" href="#DOCF8">(8)</a></h3>
 <p>Unless the code is too heavily optimized.</p>
 </div>
 <hr>

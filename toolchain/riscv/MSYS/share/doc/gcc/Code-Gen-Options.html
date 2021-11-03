@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -74,7 +74,7 @@ Next: <a href="Developer-Options.html#Developer-Options" accesskey="n" rel="next
 </div>
 <hr>
 <a name="Options-for-Code-Generation-Conventions"></a>
-<h3 class="section">3.16 Options for Code Generation Conventions</h3>
+<h3 class="section">3.17 Options for Code Generation Conventions</h3>
 <a name="index-code-generation-conventions"></a>
 <a name="index-options_002c-code-generation"></a>
 <a name="index-run_002dtime-options"></a>
@@ -258,6 +258,7 @@ unwinding from asynchronous events (such as debugger or garbage collector).
 </dd>
 <dt><code>-fno-gnu-unique</code></dt>
 <dd><a name="index-fno_002dgnu_002dunique"></a>
+<a name="index-fgnu_002dunique"></a>
 <p>On systems with recent GNU assembler and C library, the C++ compiler
 uses the <code>STB_GNU_UNIQUE</code> binding to make sure that definitions
 of template static data members and static local variables in inline
@@ -332,38 +333,32 @@ code that is not binary compatible with code generated without that switch.
 Use it to conform to a non-default application binary interface.
 </p>
 </dd>
-<dt><code>-fno-common</code></dt>
-<dd><a name="index-fno_002dcommon"></a>
+<dt><code>-fcommon</code></dt>
+<dd><a name="index-fcommon"></a>
+<a name="index-fno_002dcommon"></a>
 <a name="index-tentative-definitions"></a>
-<p>In C code, this option controls the placement of global variables 
-defined without an initializer, known as <em>tentative definitions</em> 
-in the C standard.  Tentative definitions are distinct from declarations 
+<p>In C code, this option controls the placement of global variables
+defined without an initializer, known as <em>tentative definitions</em>
+in the C standard.  Tentative definitions are distinct from declarations
 of a variable with the <code>extern</code> keyword, which do not allocate storage.
 </p>
-<p>Unix C compilers have traditionally allocated storage for
-uninitialized global variables in a common block.  This allows the
-linker to resolve all tentative definitions of the same variable
-in different compilation units to the same object, or to a non-tentative
-definition.  
-This is the behavior specified by <samp>-fcommon</samp>, and is the default for 
-GCC on most targets.  
-On the other hand, this behavior is not required by ISO
-C, and on some targets may carry a speed or code size penalty on
-variable references.
+<p>The default is <samp>-fno-common</samp>, which specifies that the compiler places
+uninitialized global variables in the BSS section of the object file.
+This inhibits the merging of tentative definitions by the linker so you get a
+multiple-definition error if the same variable is accidentally defined in more
+than one compilation unit.
 </p>
-<p>The <samp>-fno-common</samp> option specifies that the compiler should instead
-place uninitialized global variables in the data section of the object file.
-This inhibits the merging of tentative definitions by the linker so
-you get a multiple-definition error if the same 
-variable is defined in more than one compilation unit.
-Compiling with <samp>-fno-common</samp> is useful on targets for which
-it provides better performance, or if you wish to verify that the
-program will work on other systems that always treat uninitialized
-variable definitions this way.
+<p>The <samp>-fcommon</samp> places uninitialized global variables in a common block.
+This allows the linker to resolve all tentative definitions of the same variable
+in different compilation units to the same object, or to a non-tentative
+definition.  This behavior is inconsistent with C++, and on many targets implies
+a speed and code size penalty on global variable references.  It is mainly
+useful to enable legacy code to link without errors.
 </p>
 </dd>
 <dt><code>-fno-ident</code></dt>
 <dd><a name="index-fno_002dident"></a>
+<a name="index-fident"></a>
 <p>Ignore the <code>#ident</code> directive.
 </p>
 </dd>
@@ -523,10 +518,10 @@ are defined to 2.
 <dt><code>-fPIE</code></dt>
 <dd><a name="index-fpie"></a>
 <a name="index-fPIE"></a>
-<p>These options are similar to <samp>-fpic</samp> and <samp>-fPIC</samp>, but
-generated position independent code can be only linked into executables.
-Usually these options are used when <samp>-pie</samp> GCC option is
-used during linking.
+<p>These options are similar to <samp>-fpic</samp> and <samp>-fPIC</samp>, but the
+generated position-independent code can be only linked into executables.
+Usually these options are used to compile code that will be linked using
+the <samp>-pie</samp> GCC option.
 </p>
 <p><samp>-fpie</samp> and <samp>-fPIE</samp> both define the macros
 <code>__pie__</code> and <code>__PIE__</code>.  The macros have the value 1
@@ -535,6 +530,7 @@ for <samp>-fpie</samp> and 2 for <samp>-fPIE</samp>.
 </dd>
 <dt><code>-fno-plt</code></dt>
 <dd><a name="index-fno_002dplt"></a>
+<a name="index-fplt"></a>
 <p>Do not use the PLT for external function calls in position-independent code.
 Instead, load the callee address at call sites from the GOT and branch to it.
 This leads to more efficient code by eliminating PLT stubs and exposing
@@ -553,6 +549,7 @@ functions that are marked to not use the PLT to use the GOT instead.
 </dd>
 <dt><code>-fno-jump-tables</code></dt>
 <dd><a name="index-fno_002djump_002dtables"></a>
+<a name="index-fjump_002dtables"></a>
 <p>Do not use jump tables for switch statements even where it would be
 more efficient than other code generation strategies.  This option is
 of use in conjunction with <samp>-fpic</samp> or <samp>-fPIC</samp> for

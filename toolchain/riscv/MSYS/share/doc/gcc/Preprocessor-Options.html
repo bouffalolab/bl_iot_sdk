@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -74,7 +74,7 @@ Next: <a href="Assembler-Options.html#Assembler-Options" accesskey="n" rel="next
 </div>
 <hr>
 <a name="Options-Controlling-the-Preprocessor"></a>
-<h3 class="section">3.12 Options Controlling the Preprocessor</h3>
+<h3 class="section">3.13 Options Controlling the Preprocessor</h3>
 <a name="index-preprocessor-options"></a>
 <a name="index-options_002c-preprocessor"></a>
 
@@ -94,7 +94,7 @@ Options to control preprocessor diagnostics are listed in
 </p>
 <dl compact="compact">
 <dt><code>-D <var>name</var></code></dt>
-<dd><a name="index-D"></a>
+<dd><a name="index-D-1"></a>
 <p>Predefine <var>name</var> as a macro, with definition <code>1</code>.
 </p>
 </dd>
@@ -349,13 +349,19 @@ files previously preprocessed with <code>-E -fdirectives-only</code>.
 </dd>
 <dt><code>-fextended-identifiers</code></dt>
 <dd><a name="index-fextended_002didentifiers"></a>
-<p>Accept universal character names in identifiers.  This option is
-enabled by default for C99 (and later C standard versions) and C++.
+<p>Accept universal character names and extended characters in
+identifiers.  This option is enabled by default for C99 (and later C
+standard versions) and C++.
 </p>
 </dd>
 <dt><code>-fno-canonical-system-headers</code></dt>
 <dd><a name="index-fno_002dcanonical_002dsystem_002dheaders"></a>
 <p>When preprocessing, do not shorten system header paths with canonicalization.
+</p>
+</dd>
+<dt><code>-fmax-include-depth=<var>depth</var></code></dt>
+<dd><a name="index-fmax_002dinclude_002ddepth"></a>
+<p>Set the maximum depth of the nested #include. The default is 200. 
 </p>
 </dd>
 <dt><code>-ftabstop=<var>width</var></code></dt>

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1991-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -9,7 +9,7 @@ with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License".
  -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>nm (GNU Binary Utilities)</title>
@@ -19,33 +19,24 @@ section entitled "GNU Free Documentation License".
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Binutils-Index.html#Binutils-Index" rel="index" title="Binutils Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Binutils-Index.html" rel="index" title="Binutils Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="objcopy.html#objcopy" rel="next" title="objcopy">
-<link href="ar-scripts.html#ar-scripts" rel="prev" title="ar scripts">
+<link href="index.html" rel="up" title="Top">
+<link href="objcopy.html" rel="next" title="objcopy">
+<link href="ar-scripts.html" rel="prev" title="ar scripts">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -57,20 +48,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="nm"></a>
-<div class="header">
+<span id="nm"></span><div class="header">
 <p>
-Next: <a href="objcopy.html#objcopy" accesskey="n" rel="next">objcopy</a>, Previous: <a href="ar.html#ar" accesskey="p" rel="prev">ar</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="objcopy.html" accesskey="n" rel="next">objcopy</a>, Previous: <a href="ar.html" accesskey="p" rel="prev">ar</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="nm-1"></a>
-<h2 class="chapter">2 nm</h2>
-<a name="index-symbols"></a>
-<a name="index-nm"></a>
+<span id="nm-1"></span><h2 class="chapter">2 nm</h2>
+<span id="index-symbols"></span>
+<span id="index-nm"></span>
 
 
-<div class="smallexample">
-<pre class="smallexample">nm [<samp>-A</samp>|<samp>-o</samp>|<samp>--print-file-name</samp>] [<samp>-a</samp>|<samp>--debug-syms</samp>]
+<div class="example">
+<pre class="example">nm [<samp>-A</samp>|<samp>-o</samp>|<samp>--print-file-name</samp>] [<samp>-a</samp>|<samp>--debug-syms</samp>]
    [<samp>-B</samp>|<samp>--format=bsd</samp>] [<samp>-C</samp>|<samp>--demangle</samp>[=<var>style</var>]]
    [<samp>-D</samp>|<samp>--dynamic</samp>] [<samp>-f</samp><var>format</var>|<samp>--format=</samp><var>format</var>]
    [<samp>-g</samp>|<samp>--extern-only</samp>] [<samp>-h</samp>|<samp>--help</samp>]
@@ -123,7 +112,7 @@ linking, multiple common symbols may appear with the same name.  If the
 symbol is defined anywhere, the common symbols are treated as undefined
 references.
 For more details on common symbols, see the discussion of
-&ndash;warn-common in <a href="http://sourceware.org/binutils/docs/ld/Options.html#Options">Linker options</a> in <cite>The GNU linker</cite>.
+&ndash;warn-common in <a href="https://sourceware.org/binutils/docs/ld/Options.html#Options">Linker options</a> in <cite>The GNU linker</cite>.
 </p>
 </dd>
 <dt><code>D</code></dt>
@@ -156,8 +145,12 @@ execution will then return the value to be used in the relocation.
 <dd><p>The symbol is a debugging symbol.
 </p>
 </dd>
+<dt><code>n</code></dt>
+<dd><p>The symbol is in the read-only data section.
+</p>
+</dd>
 <dt><code>p</code></dt>
-<dd><p>The symbols is in a stack unwind section.
+<dd><p>The symbol is in a stack unwind section.
 </p>
 </dd>
 <dt><code>R</code></dt>
@@ -229,9 +222,9 @@ equivalent.
 <dt><code>-A</code></dt>
 <dt><code>-o</code></dt>
 <dt><code>--print-file-name</code></dt>
-<dd><a name="index-input-file-name"></a>
-<a name="index-file-name"></a>
-<a name="index-source-file-name"></a>
+<dd><span id="index-input-file-name"></span>
+<span id="index-file-name"></span>
+<span id="index-source-file-name"></span>
 <p>Precede each symbol by the name of the input file (or archive member)
 in which it was found, rather than identifying the input file once only,
 before all of its symbols.
@@ -239,25 +232,25 @@ before all of its symbols.
 </dd>
 <dt><code>-a</code></dt>
 <dt><code>--debug-syms</code></dt>
-<dd><a name="index-debugging-symbols"></a>
+<dd><span id="index-debugging-symbols"></span>
 <p>Display all symbols, even debugger-only symbols; normally these are not
 listed.
 </p>
 </dd>
 <dt><code>-B</code></dt>
-<dd><a name="index-nm-format"></a>
-<a name="index-nm-compatibility"></a>
+<dd><span id="index-nm-format"></span>
+<span id="index-nm-compatibility"></span>
 <p>The same as <samp>--format=bsd</samp> (for compatibility with the MIPS <code>nm</code>).
 </p>
 </dd>
 <dt><code>-C</code></dt>
 <dt><code>--demangle[=<var>style</var>]</code></dt>
-<dd><a name="index-demangling-in-nm"></a>
+<dd><span id="index-demangling-in-nm"></span>
 <p>Decode (<em>demangle</em>) low-level symbol names into user-level names.
 Besides removing any initial underscore prepended by the system, this
 makes C++ function names readable. Different compilers have different
 mangling styles. The optional demangling style argument can be used to
-choose an appropriate demangling style for your compiler. See <a href="c_002b_002bfilt.html#c_002b_002bfilt">c++filt</a>,
+choose an appropriate demangling style for your compiler. See <a href="c_002b_002bfilt.html">c++filt</a>,
 for more information on demangling.
 </p>
 </dd>
@@ -284,7 +277,7 @@ possible and any bug reports about such an event will be rejected.
 </dd>
 <dt><code>-D</code></dt>
 <dt><code>--dynamic</code></dt>
-<dd><a name="index-dynamic-symbols"></a>
+<dd><span id="index-dynamic-symbols"></span>
 <p>Display the dynamic symbols rather than the normal symbols.  This is
 only meaningful for dynamic objects, such as certain types of shared
 libraries.
@@ -292,8 +285,8 @@ libraries.
 </dd>
 <dt><code>-f <var>format</var></code></dt>
 <dt><code>--format=<var>format</var></code></dt>
-<dd><a name="index-nm-format-1"></a>
-<a name="index-nm-compatibility-1"></a>
+<dd><span id="index-nm-format-1"></span>
+<span id="index-nm-compatibility-1"></span>
 <p>Use the output format <var>format</var>, which can be <code>bsd</code>,
 <code>sysv</code>, or <code>posix</code>.  The default is <code>bsd</code>.
 Only the first character of <var>format</var> is significant; it can be
@@ -302,7 +295,7 @@ either upper or lower case.
 </dd>
 <dt><code>-g</code></dt>
 <dt><code>--extern-only</code></dt>
-<dd><a name="index-external-symbols"></a>
+<dd><span id="index-external-symbols"></span>
 <p>Display only external symbols.
 </p>
 </dd>
@@ -313,7 +306,7 @@ either upper or lower case.
 </dd>
 <dt><code>-l</code></dt>
 <dt><code>--line-numbers</code></dt>
-<dd><a name="index-symbol-line-numbers"></a>
+<dd><span id="index-symbol-line-numbers"></span>
 <p>For each symbol, use debugging information to try to find a filename and
 line number.  For a defined symbol, look for the line number of the
 address of the symbol.  For an undefined symbol, look for the line
@@ -322,7 +315,7 @@ information can be found, print it after the other symbol information.
 </p>
 </dd>
 <dt><code>--inlines</code></dt>
-<dd><a name="index-objdump-inlines"></a>
+<dd><span id="index-objdump-inlines"></span>
 <p>When option <samp>-l</samp> is active, if the address belongs to a
 function that was inlined, then this option causes the source 
 information for all enclosing scopes back to the first non-inlined
@@ -341,7 +334,7 @@ by their names.
 </dd>
 <dt><code>-p</code></dt>
 <dt><code>--no-sort</code></dt>
-<dd><a name="index-sorting-symbols"></a>
+<dd><span id="index-sorting-symbols"></span>
 <p>Do not bother to sort the symbols in any order; print them in the order
 encountered.
 </p>
@@ -368,7 +361,7 @@ calculated size is displayed.
 </dd>
 <dt><code>-s</code></dt>
 <dt><code>--print-armap</code></dt>
-<dd><a name="index-symbol-index_002c-listing"></a>
+<dd><span id="index-symbol-index_002c-listing"></span>
 <p>When listing symbols from archive members, include the index: a mapping
 (stored in the archive by <code>ar</code> or <code>ranlib</code>) of which modules
 contain definitions for which names.
@@ -382,8 +375,8 @@ contain definitions for which names.
 </dd>
 <dt><code>-u</code></dt>
 <dt><code>--undefined-only</code></dt>
-<dd><a name="index-external-symbols-1"></a>
-<a name="index-undefined-symbols"></a>
+<dd><span id="index-external-symbols-1"></span>
+<span id="index-undefined-symbols"></span>
 <p>Display only undefined symbols (those external to each object file).
 </p>
 </dd>
@@ -400,13 +393,13 @@ to <samp>-X 32</samp>, which is not supported by <small>GNU</small> <code>nm</co
 </p>
 </dd>
 <dt><code>--defined-only</code></dt>
-<dd><a name="index-external-symbols-2"></a>
-<a name="index-undefined-symbols-1"></a>
+<dd><span id="index-external-symbols-2"></span>
+<span id="index-undefined-symbols-1"></span>
 <p>Display only defined symbols for each object file.
 </p>
 </dd>
 <dt><code>--plugin <var>name</var></code></dt>
-<dd><a name="index-plugins-1"></a>
+<dd><span id="index-plugins-1"></span>
 <p>Load the plugin called <var>name</var> to add support for extra target
 types.  This option is only available if the toolchain has been built
 with plugin support enabled.
@@ -459,9 +452,9 @@ characters.  For example &lsquo;<samp>foo@@VER_2</samp>&rsquo;.
 </p>
 </dd>
 <dt><code>--target=<var>bfdname</var></code></dt>
-<dd><a name="index-object-code-format"></a>
+<dd><span id="index-object-code-format"></span>
 <p>Specify an object code format other than your system&rsquo;s default format.
-See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for more information.
+See <a href="Target-Selection.html">Target Selection</a>, for more information.
 </p>
 </dd>
 </dl>
@@ -471,7 +464,7 @@ See <a href="Target-Selection.html#Target-Selection">Target Selection</a>, for m
 <hr>
 <div class="header">
 <p>
-Next: <a href="objcopy.html#objcopy" accesskey="n" rel="next">objcopy</a>, Previous: <a href="ar.html#ar" accesskey="p" rel="prev">ar</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html#Binutils-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="objcopy.html" accesskey="n" rel="next">objcopy</a>, Previous: <a href="ar.html" accesskey="p" rel="prev">ar</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Binutils-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

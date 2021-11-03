@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Builtin Functions (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Expressions.html#Expressions" rel="up" title="Expressions">
-<link href="Implicit-Linker-Scripts.html#Implicit-Linker-Scripts" rel="next" title="Implicit Linker Scripts">
-<link href="Expression-Section.html#Expression-Section" rel="prev" title="Expression Section">
+<link href="Expressions.html" rel="up" title="Expressions">
+<link href="Implicit-Linker-Scripts.html" rel="next" title="Implicit Linker Scripts">
+<link href="Expression-Section.html" rel="prev" title="Expression Section">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,39 +51,37 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Builtin-Functions"></a>
-<div class="header">
+<span id="Builtin-Functions"></span><div class="header">
 <p>
-Previous: <a href="Expression-Section.html#Expression-Section" accesskey="p" rel="prev">Expression Section</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Expression-Section.html" accesskey="p" rel="prev">Expression Section</a>, Up: <a href="Expressions.html" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Builtin-Functions-1"></a>
-<h4 class="subsection">3.10.9 Builtin Functions</h4>
-<a name="index-functions-in-expressions"></a>
+<span id="Builtin-Functions-1"></span><h4 class="subsection">3.10.9 Builtin Functions</h4>
+<span id="index-functions-in-expressions"></span>
 <p>The linker script language includes a number of builtin functions for
 use in linker script expressions.
 </p>
 <dl compact="compact">
 <dt><code>ABSOLUTE(<var>exp</var>)</code></dt>
-<dd><a name="index-ABSOLUTE_0028exp_0029"></a>
-<a name="index-expression_002c-absolute"></a>
+<dd><span id="index-ABSOLUTE_0028exp_0029"></span>
+<span id="index-expression_002c-absolute"></span>
 <p>Return the absolute (non-relocatable, as opposed to non-negative) value
 of the expression <var>exp</var>.  Primarily useful to assign an absolute
 value to a symbol within a section definition, where symbol values are
-normally section relative.  See <a href="Expression-Section.html#Expression-Section">Expression Section</a>.
+normally section relative.  See <a href="Expression-Section.html">Expression Section</a>.
 </p>
 </dd>
 <dt><code>ADDR(<var>section</var>)</code></dt>
-<dd><a name="index-ADDR_0028section_0029"></a>
-<a name="index-section-address-in-expression"></a>
+<dd><span id="index-ADDR_0028section_0029"></span>
+<span id="index-section-address-in-expression"></span>
 <p>Return the address (VMA) of the named <var>section</var>.  Your
 script must previously have defined the location of that section.  In
 the following example, <code>start_of_output_1</code>, <code>symbol_1</code> and
 <code>symbol_2</code> are assigned equivalent values, except that
 <code>symbol_1</code> will be relative to the <code>.output1</code> section while
 the other two will be absolute:
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS { &hellip;
+</p><div class="example">
+<pre class="example">SECTIONS { &hellip;
   .output1 :
     {
     start_of_output_1 = ABSOLUTE(.);
@@ -109,12 +98,12 @@ the other two will be absolute:
 </dd>
 <dt><code>ALIGN(<var>align</var>)</code></dt>
 <dt><code>ALIGN(<var>exp</var>,<var>align</var>)</code></dt>
-<dd><a name="index-ALIGN_0028align_0029"></a>
-<a name="index-ALIGN_0028exp_002calign_0029"></a>
-<a name="index-round-up-location-counter"></a>
-<a name="index-align-location-counter"></a>
-<a name="index-round-up-expression"></a>
-<a name="index-align-expression"></a>
+<dd><span id="index-ALIGN_0028align_0029"></span>
+<span id="index-ALIGN_0028exp_002calign_0029"></span>
+<span id="index-round-up-location-counter"></span>
+<span id="index-align-location-counter"></span>
+<span id="index-round-up-expression"></span>
+<span id="index-align-expression"></span>
 <p>Return the location counter (<code>.</code>) or arbitrary expression aligned
 to the next <var>align</var> boundary.  The single operand <code>ALIGN</code>
 doesn&rsquo;t change the value of the location counter&mdash;it just does
@@ -126,8 +115,8 @@ equivalent to <code>ALIGN(ABSOLUTE(.), <var>align</var>)</code>).
 next <code>0x2000</code> byte boundary after the preceding section and sets a
 variable within the section to the next <code>0x8000</code> boundary after the
 input sections:
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS { &hellip;
+</p><div class="example">
+<pre class="example">SECTIONS { &hellip;
   .data ALIGN(0x2000): {
     *(.data)
     variable = ALIGN(0x8000);
@@ -136,22 +125,22 @@ input sections:
 </pre></div>
 <p>The first use of <code>ALIGN</code> in this example specifies the location of
 a section because it is used as the optional <var>address</var> attribute of
-a section definition (see <a href="Output-Section-Address.html#Output-Section-Address">Output Section Address</a>).  The second use
+a section definition (see <a href="Output-Section-Address.html">Output Section Address</a>).  The second use
 of <code>ALIGN</code> is used to defines the value of a symbol.
 </p>
 <p>The builtin function <code>NEXT</code> is closely related to <code>ALIGN</code>.
 </p>
 </dd>
 <dt><code>ALIGNOF(<var>section</var>)</code></dt>
-<dd><a name="index-ALIGNOF_0028section_0029"></a>
-<a name="index-section-alignment"></a>
+<dd><span id="index-ALIGNOF_0028section_0029"></span>
+<span id="index-section-alignment"></span>
 <p>Return the alignment in bytes of the named <var>section</var>, if that section has
 been allocated.  If the section has not been allocated when this is
 evaluated, the linker will report an error. In the following example,
 the alignment of the <code>.output</code> section is stored as the first
 value in that section.
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS{ &hellip;
+</p><div class="example">
+<pre class="example">SECTIONS{ &hellip;
   .output {
     LONG (ALIGNOF (.output))
     &hellip;
@@ -161,21 +150,21 @@ value in that section.
 
 </dd>
 <dt><code>BLOCK(<var>exp</var>)</code></dt>
-<dd><a name="index-BLOCK_0028exp_0029"></a>
+<dd><span id="index-BLOCK_0028exp_0029"></span>
 <p>This is a synonym for <code>ALIGN</code>, for compatibility with older linker
 scripts.  It is most often seen when setting the address of an output
 section.
 </p>
 </dd>
 <dt><code>DATA_SEGMENT_ALIGN(<var>maxpagesize</var>, <var>commonpagesize</var>)</code></dt>
-<dd><a name="index-DATA_005fSEGMENT_005fALIGN_0028maxpagesize_002c-commonpagesize_0029"></a>
+<dd><span id="index-DATA_005fSEGMENT_005fALIGN_0028maxpagesize_002c-commonpagesize_0029"></span>
 <p>This is equivalent to either
-</p><div class="smallexample">
-<pre class="smallexample">(ALIGN(<var>maxpagesize</var>) + (. &amp; (<var>maxpagesize</var> - 1)))
+</p><div class="example">
+<pre class="example">(ALIGN(<var>maxpagesize</var>) + (. &amp; (<var>maxpagesize</var> - 1)))
 </pre></div>
 <p>or
-</p><div class="smallexample">
-<pre class="smallexample">(ALIGN(<var>maxpagesize</var>)
+</p><div class="example">
+<pre class="example">(ALIGN(<var>maxpagesize</var>)
  + ((. + <var>commonpagesize</var> - 1) &amp; (<var>maxpagesize</var> - <var>commonpagesize</var>)))
 </pre></div>
 <p>depending on whether the latter uses fewer <var>commonpagesize</var> sized pages
@@ -194,23 +183,23 @@ that &lsquo;<samp>-z relro</samp>&rsquo; protection will not be effective if the
 page size is larger than <var>commonpagesize</var>.
 </p>
 <p>Example:
-</p><div class="smallexample">
-<pre class="smallexample">  . = DATA_SEGMENT_ALIGN(0x10000, 0x2000);
+</p><div class="example">
+<pre class="example">  . = DATA_SEGMENT_ALIGN(0x10000, 0x2000);
 </pre></div>
 
 </dd>
 <dt><code>DATA_SEGMENT_END(<var>exp</var>)</code></dt>
-<dd><a name="index-DATA_005fSEGMENT_005fEND_0028exp_0029"></a>
+<dd><span id="index-DATA_005fSEGMENT_005fEND_0028exp_0029"></span>
 <p>This defines the end of data segment for <code>DATA_SEGMENT_ALIGN</code>
 evaluation purposes.
 </p>
-<div class="smallexample">
-<pre class="smallexample">  . = DATA_SEGMENT_END(.);
+<div class="example">
+<pre class="example">  . = DATA_SEGMENT_END(.);
 </pre></div>
 
 </dd>
 <dt><code>DATA_SEGMENT_RELRO_END(<var>offset</var>, <var>exp</var>)</code></dt>
-<dd><a name="index-DATA_005fSEGMENT_005fRELRO_005fEND_0028offset_002c-exp_0029"></a>
+<dd><span id="index-DATA_005fSEGMENT_005fRELRO_005fEND_0028offset_002c-exp_0029"></span>
 <p>This defines the end of the <code>PT_GNU_RELRO</code> segment when
 &lsquo;<samp>-z relro</samp>&rsquo; option is used.
 When &lsquo;<samp>-z relro</samp>&rsquo; option is not present, <code>DATA_SEGMENT_RELRO_END</code>
@@ -222,14 +211,14 @@ script, it must be placed between <code>DATA_SEGMENT_ALIGN</code> and
 padding needed at the end of the <code>PT_GNU_RELRO</code> segment due to
 section alignment.
 </p>
-<div class="smallexample">
-<pre class="smallexample">  . = DATA_SEGMENT_RELRO_END(24, .);
+<div class="example">
+<pre class="example">  . = DATA_SEGMENT_RELRO_END(24, .);
 </pre></div>
 
 </dd>
 <dt><code>DEFINED(<var>symbol</var>)</code></dt>
-<dd><a name="index-DEFINED_0028symbol_0029"></a>
-<a name="index-symbol-defaults"></a>
+<dd><span id="index-DEFINED_0028symbol_0029"></span>
+<span id="index-symbol-defaults"></span>
 <p>Return 1 if <var>symbol</var> is in the linker global symbol table and is
 defined before the statement using DEFINED in the script, otherwise
 return 0.  You can use this function to provide
@@ -238,8 +227,8 @@ shows how to set a global symbol &lsquo;<samp>begin</samp>&rsquo; to the first l
 the &lsquo;<samp>.text</samp>&rsquo; section&mdash;but if a symbol called &lsquo;<samp>begin</samp>&rsquo; already
 existed, its value is preserved:
 </p>
-<div class="smallexample">
-<pre class="smallexample">SECTIONS { &hellip;
+<div class="example">
+<pre class="example">SECTIONS { &hellip;
   .text : {
     begin = DEFINED(begin) ? begin : . ;
     &hellip;
@@ -250,35 +239,35 @@ existed, its value is preserved:
 
 </dd>
 <dt><code>LENGTH(<var>memory</var>)</code></dt>
-<dd><a name="index-LENGTH_0028memory_0029"></a>
+<dd><span id="index-LENGTH_0028memory_0029"></span>
 <p>Return the length of the memory region named <var>memory</var>.
 </p>
 </dd>
 <dt><code>LOADADDR(<var>section</var>)</code></dt>
-<dd><a name="index-LOADADDR_0028section_0029"></a>
-<a name="index-section-load-address-in-expression"></a>
-<p>Return the absolute LMA of the named <var>section</var>.  (see <a href="Output-Section-LMA.html#Output-Section-LMA">Output Section LMA</a>).
+<dd><span id="index-LOADADDR_0028section_0029"></span>
+<span id="index-section-load-address-in-expression"></span>
+<p>Return the absolute LMA of the named <var>section</var>.  (see <a href="Output-Section-LMA.html">Output Section LMA</a>).
 </p>
 </dd>
 <dt><code>LOG2CEIL(<var>exp</var>)</code></dt>
-<dd><a name="index-LOG2CEIL_0028exp_0029"></a>
+<dd><span id="index-LOG2CEIL_0028exp_0029"></span>
 <p>Return the binary logarithm of <var>exp</var> rounded towards infinity.
 <code>LOG2CEIL(0)</code> returns 0.
 </p>
-<a name="index-MAX"></a>
+<span id="index-MAX"></span>
 </dd>
 <dt><code>MAX(<var>exp1</var>, <var>exp2</var>)</code></dt>
 <dd><p>Returns the maximum of <var>exp1</var> and <var>exp2</var>.
 </p>
-<a name="index-MIN"></a>
+<span id="index-MIN"></span>
 </dd>
 <dt><code>MIN(<var>exp1</var>, <var>exp2</var>)</code></dt>
 <dd><p>Returns the minimum of <var>exp1</var> and <var>exp2</var>.
 </p>
 </dd>
 <dt><code>NEXT(<var>exp</var>)</code></dt>
-<dd><a name="index-NEXT_0028exp_0029"></a>
-<a name="index-unallocated-address_002c-next"></a>
+<dd><span id="index-NEXT_0028exp_0029"></span>
+<span id="index-unallocated-address_002c-next"></span>
 <p>Return the next unallocated address that is a multiple of <var>exp</var>.
 This function is closely related to <code>ALIGN(<var>exp</var>)</code>; unless you
 use the <code>MEMORY</code> command to define discontinuous memory for the
@@ -286,12 +275,12 @@ output file, the two functions are equivalent.
 </p>
 </dd>
 <dt><code>ORIGIN(<var>memory</var>)</code></dt>
-<dd><a name="index-ORIGIN_0028memory_0029"></a>
+<dd><span id="index-ORIGIN_0028memory_0029"></span>
 <p>Return the origin of the memory region named <var>memory</var>.
 </p>
 </dd>
 <dt><code>SEGMENT_START(<var>segment</var>, <var>default</var>)</code></dt>
-<dd><a name="index-SEGMENT_005fSTART_0028segment_002c-default_0029"></a>
+<dd><span id="index-SEGMENT_005fSTART_0028segment_002c-default_0029"></span>
 <p>Return the base address of the named <var>segment</var>.  If an explicit
 value has already been given for this segment (with a command-line
 &lsquo;<samp>-T</samp>&rsquo; option) then that value will be returned otherwise the value
@@ -302,14 +291,14 @@ name.
 </p>
 </dd>
 <dt><code>SIZEOF(<var>section</var>)</code></dt>
-<dd><a name="index-SIZEOF_0028section_0029"></a>
-<a name="index-section-size"></a>
+<dd><span id="index-SIZEOF_0028section_0029"></span>
+<span id="index-section-size"></span>
 <p>Return the size in bytes of the named <var>section</var>, if that section has
 been allocated.  If the section has not been allocated when this is
 evaluated, the linker will report an error.  In the following example,
 <code>symbol_1</code> and <code>symbol_2</code> are assigned identical values:
-</p><div class="smallexample">
-<pre class="smallexample">SECTIONS{ &hellip;
+</p><div class="example">
+<pre class="example">SECTIONS{ &hellip;
   .output {
     .start = . ;
     &hellip;
@@ -323,15 +312,15 @@ evaluated, the linker will report an error.  In the following example,
 </dd>
 <dt><code>SIZEOF_HEADERS</code></dt>
 <dt><code>sizeof_headers</code></dt>
-<dd><a name="index-SIZEOF_005fHEADERS"></a>
-<a name="index-header-size"></a>
+<dd><span id="index-SIZEOF_005fHEADERS"></span>
+<span id="index-header-size"></span>
 <p>Return the size in bytes of the output file&rsquo;s headers.  This is
 information which appears at the start of the output file.  You can use
 this number when setting the start address of the first section, if you
 choose, to facilitate paging.
 </p>
-<a name="index-not-enough-room-for-program-headers"></a>
-<a name="index-program-headers_002c-not-enough-room"></a>
+<span id="index-not-enough-room-for-program-headers"></span>
+<span id="index-program-headers_002c-not-enough-room"></span>
 <p>When producing an ELF output file, if the linker script uses the
 <code>SIZEOF_HEADERS</code> builtin function, the linker must compute the
 number of program headers before it has determined all the section
@@ -341,14 +330,14 @@ room for program headers</samp>&rsquo;.  To avoid this error, you must avoid usi
 the <code>SIZEOF_HEADERS</code> function, or you must rework your linker
 script to avoid forcing the linker to use additional program headers, or
 you must define the program headers yourself using the <code>PHDRS</code>
-command (see <a href="PHDRS.html#PHDRS">PHDRS</a>).
+command (see <a href="PHDRS.html">PHDRS</a>).
 </p></dd>
 </dl>
 
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Expression-Section.html#Expression-Section" accesskey="p" rel="prev">Expression Section</a>, Up: <a href="Expressions.html#Expressions" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Expression-Section.html" accesskey="p" rel="prev">Expression Section</a>, Up: <a href="Expressions.html" accesskey="u" rel="up">Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

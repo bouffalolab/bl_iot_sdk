@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Spec Files (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Invoking-GCC.html#Invoking-GCC" rel="up" title="Invoking GCC">
-<link href="Environment-Variables.html#Environment-Variables" rel="next" title="Environment Variables">
-<link href="zSeries-Options.html#zSeries-Options" rel="prev" title="zSeries Options">
+<link href="Invoking-GCC.html" rel="up" title="Invoking GCC">
+<link href="Environment-Variables.html" rel="next" title="Environment Variables">
+<link href="zSeries-Options.html" rel="prev" title="zSeries Options">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,15 +58,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Spec-Files"></a>
-<div class="header">
+<span id="Spec-Files"></span><div class="header">
 <p>
-Next: <a href="Environment-Variables.html#Environment-Variables" accesskey="n" rel="next">Environment Variables</a>, Previous: <a href="Submodel-Options.html#Submodel-Options" accesskey="p" rel="prev">Submodel Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Environment-Variables.html" accesskey="n" rel="next">Environment Variables</a>, Previous: <a href="Submodel-Options.html" accesskey="p" rel="prev">Submodel Options</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Specifying-Subprocesses-and-the-Switches-to-Pass-to-Them"></a>
-<h3 class="section">3.19 Specifying Subprocesses and the Switches to Pass to Them</h3>
-<a name="index-Spec-Files"></a>
+<span id="Specifying-Subprocesses-and-the-Switches-to-Pass-to-Them"></span><h3 class="section">3.20 Specifying Subprocesses and the Switches to Pass to Them</h3>
+<span id="index-Spec-Files"></span>
 
 <p><code>gcc</code> is a driver program.  It performs its job by invoking a
 sequence of other programs to do the work of compiling, assembling and
@@ -100,19 +89,19 @@ appear here are:
 </p>
 <dl compact="compact">
 <dt><code>%include &lt;<var>file</var>&gt;</code></dt>
-<dd><a name="index-_0025include"></a>
+<dd><span id="index-_0025include"></span>
 <p>Search for <var>file</var> and insert its text at the current point in the
 specs file.
 </p>
 </dd>
 <dt><code>%include_noerr &lt;<var>file</var>&gt;</code></dt>
-<dd><a name="index-_0025include_005fnoerr"></a>
+<dd><span id="index-_0025include_005fnoerr"></span>
 <p>Just like &lsquo;<samp>%include</samp>&rsquo;, but do not generate an error message if the include
 file cannot be found.
 </p>
 </dd>
 <dt><code>%rename <var>old_name</var> <var>new_name</var></code></dt>
-<dd><a name="index-_0025rename"></a>
+<dd><span id="index-_0025rename"></span>
 <p>Rename the spec string <var>old_name</var> to <var>new_name</var>.
 </p>
 </dd>
@@ -138,8 +127,8 @@ spec string for the indicated suffix.  When the compiler encounters an
 input file with the named suffix, it processes the spec string in
 order to work out how to compile that file.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">.ZZ:
+<div class="example">
+<pre class="example">.ZZ:
 z-compile -input %i
 </pre></div>
 
@@ -157,8 +146,8 @@ suffix directive can be one of the following:
 similar to using the <samp>-x</samp> command-line switch to GCC to specify a
 language explicitly.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">.ZZ:
+<div class="example">
+<pre class="example">.ZZ:
 @c++
 </pre></div>
 
@@ -168,8 +157,8 @@ language explicitly.  For example:
 <dt><code>#<var>name</var></code></dt>
 <dd><p>This causes an error messages saying:
 </p>
-<div class="smallexample">
-<pre class="smallexample"><var>name</var> compiler not installed on this system.
+<div class="example">
+<pre class="example"><var>name</var> compiler not installed on this system.
 </pre></div>
 </dd>
 </dl>
@@ -186,8 +175,8 @@ possible to override earlier entries using this technique.
 override these strings or create their own.  Note that individual
 targets can also add their own spec strings to this list.
 </p>
-<div class="smallexample">
-<pre class="smallexample">asm          Options to pass to the assembler
+<div class="example">
+<pre class="example">asm          Options to pass to the assembler
 asm_final    Options to pass to the assembler post-processor
 cpp          Options to pass to the C preprocessor
 cc1          Options to pass to the C compiler
@@ -205,8 +194,8 @@ startfile    Object files to include at the start of the link
 
 <p>Here is a small example of a spec file:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%rename lib                 old_lib
+<div class="example">
+<pre class="example">%rename lib                 old_lib
 
 *lib:
 --start-group -lgcc -lc -leval1 --end-group %(old_lib)
@@ -301,7 +290,7 @@ disposal mechanism.
 all.  These are the two most common ways to instruct a program that it
 should read from standard input or write to standard output.  If you
 need something more elaborate you can use an &lsquo;<samp>%{pipe:<code>X</code>}</samp>&rsquo;
-construct: see for example <samp>f/lang-specs.h</samp>.
+construct: see for example <samp>gcc/fortran/lang-specs.h</samp>.
 </p>
 </dd>
 <dt><code>%.<var>SUFFIX</var></code></dt>
@@ -486,8 +475,8 @@ defined, a fatal error is issued.  Otherwise, the return value is the
 value of the environment variable concatenated with the string.  For
 example, if <code>TOPDIR</code> is defined as <samp>/path/to/top</samp>, then:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%:getenv(TOPDIR /include)
+<div class="example">
+<pre class="example">%:getenv(TOPDIR /include)
 </pre></div>
 
 <p>expands to <samp>/path/to/top/include</samp>.
@@ -498,8 +487,8 @@ example, if <code>TOPDIR</code> is defined as <samp>/path/to/top</samp>, then:
 pathname to a file.  If the file exists, <code>if-exists</code> returns the
 pathname.  Here is a small example of its usage:
 </p>
-<div class="smallexample">
-<pre class="smallexample">*startfile:
+<div class="example">
+<pre class="example">*startfile:
 crt0%O%s %:if-exists(crti%O%s) crtbegin%O%s
 </pre></div>
 
@@ -512,8 +501,8 @@ returns the pathname.  If it does not exist, it returns the second argument.
 This way, <code>if-exists-else</code> can be used to select one file or another,
 based on the existence of the first.  Here is a small example of its usage:
 </p>
-<div class="smallexample">
-<pre class="smallexample">*startfile:
+<div class="example">
+<pre class="example">*startfile:
 crt0%O%s %:if-exists(crti%O%s) \
 %:if-exists-else(crtbeginT%O%s crtbegin%O%s)
 </pre></div>
@@ -524,8 +513,8 @@ crt0%O%s %:if-exists(crti%O%s) \
 first argument in the outfiles array and replaces it with the second argument.  Here
 is a small example of its usage:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%{fgnu-runtime:%:replace-outfile(-lobjc -lobjc-gnu)}
+<div class="example">
+<pre class="example">%{fgnu-runtime:%:replace-outfile(-lobjc -lobjc-gnu)}
 </pre></div>
 
 </dd>
@@ -534,8 +523,8 @@ is a small example of its usage:
 first argument in the outfiles array and removes it.  Here is a small example
 its usage:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%:remove-outfile(-lm)
+<div class="example">
+<pre class="example">%:remove-outfile(-lm)
 </pre></div>
 
 </dd>
@@ -547,8 +536,8 @@ result containing all the found arguments each prepended by
 <samp>-plugin-opt=-pass-through=</samp> and joined by spaces.  This list is
 intended to be passed to the LTO linker plugin.
 </p>
-<div class="smallexample">
-<pre class="smallexample">%:pass-through-libs(%G %L %G)
+<div class="example">
+<pre class="example">%:pass-through-libs(%G %L %G)
 </pre></div>
 
 </dd>
@@ -556,8 +545,8 @@ intended to be passed to the LTO linker plugin.
 <dd><p>The <code>print-asm-header</code> function takes no arguments and simply
 prints a banner like:
 </p>
-<div class="smallexample">
-<pre class="smallexample">Assembler options
+<div class="example">
+<pre class="example">Assembler options
 =================
 
 Use &quot;-Wa,OPTION&quot; to pass &quot;OPTION&quot; to the assembler.
@@ -621,14 +610,14 @@ text in the sequence, however, then a space is not generated.  This
 allows the <code>%*</code> substitution to be used as part of a larger
 string.  For example, a spec string like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%{mcu=*:--script=%*/memory.ld}
+<div class="example">
+<pre class="example">%{mcu=*:--script=%*/memory.ld}
 </pre></div>
 
 <p>when matching an option like <samp>-mcu=newchip</samp> produces:
 </p>
-<div class="smallexample">
-<pre class="smallexample">--script=newchip/memory.ld
+<div class="example">
+<pre class="example">--script=newchip/memory.ld
 </pre></div>
 
 </dd>
@@ -658,15 +647,15 @@ is substituted.
 </p>
 <p>For example, a spec string like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">%{.c:-foo} %{!.c:-bar} %{.c|d:-baz} %{!.c|d:-boggle}
+<div class="example">
+<pre class="example">%{.c:-foo} %{!.c:-bar} %{.c|d:-baz} %{!.c|d:-boggle}
 </pre></div>
 
 <p>outputs the following command-line options from the following input
 command-line options:
 </p>
-<div class="smallexample">
-<pre class="smallexample">fred.c        -foo -baz
+<div class="example">
+<pre class="example">fred.c        -foo -baz
 jim.d         -bar -boggle
 -d fred.c     -foo -baz -boggle
 -d jim.d      -bar -baz -boggle
@@ -724,7 +713,7 @@ proper position among the other output files.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Environment-Variables.html#Environment-Variables" accesskey="n" rel="next">Environment Variables</a>, Previous: <a href="Submodel-Options.html#Submodel-Options" accesskey="p" rel="prev">Submodel Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Environment-Variables.html" accesskey="n" rel="next">Environment Variables</a>, Previous: <a href="Submodel-Options.html" accesskey="p" rel="prev">Submodel Options</a>, Up: <a href="Invoking-GCC.html" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

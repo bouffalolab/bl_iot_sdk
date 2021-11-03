@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -178,7 +178,7 @@ or after each operand.  For example:
 <code>Tag_CPU_raw_name</code>, <code>Tag_CPU_name</code>, <code>Tag_CPU_arch</code>,
 <code>Tag_CPU_arch_profile</code>, <code>Tag_ARM_ISA_use</code>,
 <code>Tag_THUMB_ISA_use</code>, <code>Tag_FP_arch</code>, <code>Tag_WMMX_arch</code>,
-<code>Tag_Advanced_SIMD_arch</code>, <code>Tag_PCS_config</code>,
+<code>Tag_Advanced_SIMD_arch</code>, <code>Tag_MVE_arch</code>, <code>Tag_PCS_config</code>,
 <code>Tag_ABI_PCS_R9_use</code>, <code>Tag_ABI_PCS_RW_data</code>,
 <code>Tag_ABI_PCS_RO_data</code>, <code>Tag_ABI_PCS_GOT_use</code>,
 <code>Tag_ABI_PCS_wchar_t</code>, <code>Tag_ABI_FP_rounding</code>,
@@ -217,6 +217,25 @@ output section.  These are not compatible with current ARM processors
 or ABIs.
 </p>
 
+<a name="index-_002efloat16-directive_002c-ARM"></a>
+</dd>
+<dt><code>.float16 <var>value [,...,value_n]</var></code></dt>
+<dd><p>Place the half precision floating point representation of one or more
+floating-point values into the current section. The exact format of the
+encoding is specified by <code>.float16_format</code>. If the format has not
+been explicitly set yet (either via the <code>.float16_format</code> directive or
+the command line option) then the IEEE 754-2008 format is used.
+</p>
+<a name="index-_002efloat16_005fformat-directive_002c-ARM"></a>
+</dd>
+<dt><code>.float16_format <var>format</var></code></dt>
+<dd><p>Set the format to use when encoding float16 values emitted by
+the <code>.float16</code> directive.
+Once the format has been set it cannot be changed.
+<code>format</code> should be one of the following: <code>ieee</code> (encode in
+the IEEE 754-2008 half precision format) or <code>alternative</code> (encode in
+the Arm alternative half precision format).
+</p>
 <a name="arm_005ffnend"></a><a name="index-_002efnend-directive_002c-ARM"></a>
 </dd>
 <dt><code>.fnend</code></dt>

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>General Query Packets (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Protocol.html#Remote-Protocol" rel="up" title="Remote Protocol">
-<link href="Architecture_002dSpecific-Protocol-Details.html#Architecture_002dSpecific-Protocol-Details" rel="next" title="Architecture-Specific Protocol Details">
-<link href="Stop-Reply-Packets.html#Stop-Reply-Packets" rel="prev" title="Stop Reply Packets">
+<link href="Remote-Protocol.html" rel="up" title="Remote Protocol">
+<link href="Architecture_002dSpecific-Protocol-Details.html" rel="next" title="Architecture-Specific Protocol Details">
+<link href="Stop-Reply-Packets.html" rel="prev" title="Stop Reply Packets">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="General-Query-Packets"></a>
-<div class="header">
+<span id="General-Query-Packets"></span><div class="header">
 <p>
-Next: <a href="Architecture_002dSpecific-Protocol-Details.html#Architecture_002dSpecific-Protocol-Details" accesskey="n" rel="next">Architecture-Specific Protocol Details</a>, Previous: <a href="Stop-Reply-Packets.html#Stop-Reply-Packets" accesskey="p" rel="prev">Stop Reply Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Architecture_002dSpecific-Protocol-Details.html" accesskey="n" rel="next">Architecture-Specific Protocol Details</a>, Previous: <a href="Stop-Reply-Packets.html" accesskey="p" rel="prev">Stop Reply Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="General-Query-Packets-1"></a>
-<h3 class="section">E.4 General Query Packets</h3>
-<a name="index-remote-query-requests"></a>
+<span id="General-Query-Packets-1"></span><h3 class="section">E.4 General Query Packets</h3>
+<span id="index-remote-query-requests"></span>
 
 <p>Packets starting with &lsquo;<samp>q</samp>&rsquo; are <em>general query packets</em>;
 packets starting with &lsquo;<samp>Q</samp>&rsquo; are <em>general set packets</em>.  General
@@ -96,7 +85,7 @@ parameters by a &lsquo;<samp>:</samp>&rsquo;; the parameters themselves should b
 separated by &lsquo;<samp>,</samp>&rsquo; or &lsquo;<samp>;</samp>&rsquo;.  Stubs must be careful to match the
 full packet name, and check for a separator or the end of the packet,
 in case two packet names share a common prefix.  New packets should not begin
-with &lsquo;<samp>qC</samp>&rsquo;, &lsquo;<samp>qP</samp>&rsquo;, or &lsquo;<samp>qL</samp>&rsquo;<a name="DOCF19" href="#FOOT19"><sup>19</sup></a>.
+with &lsquo;<samp>qC</samp>&rsquo;, &lsquo;<samp>qP</samp>&rsquo;, or &lsquo;<samp>qL</samp>&rsquo;<a id="DOCF20" href="#FOOT20"><sup>20</sup></a>.
 </p>
 <p>Like the descriptions of the other packets, each description here
 has a template showing the packet&rsquo;s overall syntax, followed by an
@@ -114,7 +103,7 @@ delegated from <small>GDB</small> (see <a href="In_002dProcess-Agent.html#Contro
 </p>
 </dd>
 <dt>&lsquo;<samp>QAllow:<var>op</var>:<var>val</var>&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-QAllow-packet"></a>
+<dd><span id="index-QAllow-packet"></span>
 <p>Specify which operations <small>GDB</small> expects to request of the
 target, as a semicolon-separated list of operation name and value
 pairs.  Possible values for <var>op</var> include &lsquo;<samp>WriteReg</samp>&rsquo;,
@@ -127,8 +116,8 @@ insert breakpoints, it may not need to install its own trap handler.)
 </p>
 </dd>
 <dt>&lsquo;<samp>qC</samp>&rsquo;</dt>
-<dd><a name="index-current-thread_002c-remote-request"></a>
-<a name="index-qC-packet"></a>
+<dd><span id="index-current-thread_002c-remote-request"></span>
+<span id="index-qC-packet"></span>
 <p>Return the current thread ID.
 </p>
 <p>Reply:
@@ -144,15 +133,15 @@ insert breakpoints, it may not need to install its own trap handler.)
 
 </dd>
 <dt>&lsquo;<samp>qCRC:<var>addr</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="index-CRC-of-memory-block_002c-remote-request"></a>
-<a name="index-qCRC-packet"></a>
-<a name="qCRC-packet"></a><p>Compute the CRC checksum of a block of memory using CRC-32 defined in
+<dd><span id="index-CRC-of-memory-block_002c-remote-request"></span>
+<span id="index-qCRC-packet"></span>
+<span id="qCRC-packet"></span><p>Compute the CRC checksum of a block of memory using CRC-32 defined in
 IEEE 802.3.  The CRC is computed byte at a time, taking the most
 significant bit of each byte first.  The initial pattern code
 <code>0xffffffff</code> is used to ensure leading zeros affect the CRC.
 </p>
 <p><em>Note:</em> This is the same CRC used in validating separate debug
-files (see <a href="Separate-Debug-Files.html#Separate-Debug-Files">Debugging Information in Separate
+files (see <a href="Separate-Debug-Files.html">Debugging Information in Separate
 Files</a>).  However the algorithm is slightly different.  When validating
 separate debug files, the CRC is computed taking the <em>least</em>
 significant bit of each byte first, and the final result is inverted to
@@ -170,8 +159,8 @@ detect trailing zeros.
 
 </dd>
 <dt>&lsquo;<samp>QDisableRandomization:<var>value</var></samp>&rsquo;</dt>
-<dd><a name="index-disable-address-space-randomization_002c-remote-request"></a>
-<a name="index-QDisableRandomization-packet"></a>
+<dd><span id="index-disable-address-space-randomization_002c-remote-request"></span>
+<span id="index-QDisableRandomization-packet"></span>
 <p>Some target operating systems will randomize the virtual address space
 of the inferior process as a security feature, but provide a feature
 to disable such randomization, e.g. to allow for a more deterministic
@@ -206,8 +195,8 @@ address space randomization.
 </p>
 </dd>
 <dt>&lsquo;<samp>QStartupWithShell:<var>value</var></samp>&rsquo;</dt>
-<dd><a name="index-startup-with-shell_002c-remote-request"></a>
-<a name="index-QStartupWithShell-packet"></a>
+<dd><span id="index-startup-with-shell_002c-remote-request"></span>
+<span id="index-QStartupWithShell-packet"></span>
 <p>On UNIX-like targets, it is possible to start the inferior using a
 shell program.  This is the default behavior on both <small>GDB</small> and
 <code>gdbserver</code> (see <a href="Starting.html#set-startup_002dwith_002dshell">set startup-with-shell</a>).  This packet is
@@ -242,8 +231,8 @@ command; see <a href="Starting.html#set-startup_002dwith_002dshell">set startup-
 </p>
 </dd>
 <dt>&lsquo;<samp>QEnvironmentHexEncoded:<var>hex-value</var></samp>&rsquo;</dt>
-<dd><a name="QEnvironmentHexEncoded"></a><a name="index-set-environment-variable_002c-remote-request"></a>
-<a name="index-QEnvironmentHexEncoded-packet"></a>
+<dd><span id="QEnvironmentHexEncoded"></span><span id="index-set-environment-variable_002c-remote-request"></span>
+<span id="index-QEnvironmentHexEncoded-packet"></span>
 <p>On UNIX-like targets, it is possible to set environment variables that
 will be passed to the inferior during the startup process.  This
 packet is used to inform <code>gdbserver</code> of an environment
@@ -277,8 +266,8 @@ see <a href="Environment.html#set-environment">set environment</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>QEnvironmentUnset:<var>hex-value</var></samp>&rsquo;</dt>
-<dd><a name="QEnvironmentUnset"></a><a name="index-unset-environment-variable_002c-remote-request"></a>
-<a name="index-QEnvironmentUnset-packet"></a>
+<dd><span id="QEnvironmentUnset"></span><span id="index-unset-environment-variable_002c-remote-request"></span>
+<span id="index-QEnvironmentUnset-packet"></span>
 <p>On UNIX-like targets, it is possible to unset environment variables
 before starting the inferior in the remote target.  This packet is
 used to inform <code>gdbserver</code> of an environment variable that has
@@ -307,8 +296,8 @@ see <a href="Environment.html#unset-environment">unset environment</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>QEnvironmentReset</samp>&rsquo;</dt>
-<dd><a name="QEnvironmentReset"></a><a name="index-reset-environment_002c-remote-request"></a>
-<a name="index-QEnvironmentReset-packet"></a>
+<dd><span id="QEnvironmentReset"></span><span id="index-reset-environment_002c-remote-request"></span>
+<span id="index-QEnvironmentReset-packet"></span>
 <p>On UNIX-like targets, this packet is used to reset the state of
 environment variables in the remote target before starting the
 inferior.  In this context, reset means unsetting all environment
@@ -335,8 +324,8 @@ inferior.
 </p>
 </dd>
 <dt>&lsquo;<samp>QSetWorkingDir:<span class="roman">[</span><var>directory</var><span class="roman">]</span></samp>&rsquo;</dt>
-<dd><a name="QSetWorkingDir-packet"></a><a name="index-set-working-directory_002c-remote-request"></a>
-<a name="index-QSetWorkingDir-packet"></a>
+<dd><span id="QSetWorkingDir-packet"></span><span id="index-set-working-directory_002c-remote-request"></span>
+<span id="index-QSetWorkingDir-packet"></span>
 <p>This packet is used to inform the remote server of the intended
 current working directory for programs that are going to be executed.
 </p>
@@ -358,9 +347,9 @@ directory to its original, empty value.
 </dd>
 <dt>&lsquo;<samp>qfThreadInfo</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>qsThreadInfo</samp>&rsquo;</dt>
-<dd><a name="index-list-active-threads_002c-remote-request"></a>
-<a name="index-qfThreadInfo-packet"></a>
-<a name="index-qsThreadInfo-packet"></a>
+<dd><span id="index-list-active-threads_002c-remote-request"></span>
+<span id="index-qfThreadInfo-packet"></span>
+<span id="index-qsThreadInfo-packet"></span>
 <p>Obtain a list of all active thread IDs from the target (OS).  Since there
 may be too many active threads to fit into one reply packet, this query
 works iteratively: it may require more than one query/reply sequence to
@@ -399,8 +388,8 @@ the <code>qfThreadInfo</code> reply is suitable for being stopped by <small>GDB<
 </p>
 </dd>
 <dt>&lsquo;<samp>qGetTLSAddr:<var>thread-id</var>,<var>offset</var>,<var>lm</var></samp>&rsquo;</dt>
-<dd><a name="index-get-thread_002dlocal-storage-address_002c-remote-request"></a>
-<a name="index-qGetTLSAddr-packet"></a>
+<dd><span id="index-get-thread_002dlocal-storage-address_002c-remote-request"></span>
+<span id="index-qGetTLSAddr-packet"></span>
 <p>Fetch the address associated with thread local storage specified
 by <var>thread-id</var>, <var>offset</var>, and <var>lm</var>.
 </p>
@@ -436,8 +425,8 @@ local storage requested.
 
 </dd>
 <dt>&lsquo;<samp>qGetTIBAddr:<var>thread-id</var></samp>&rsquo;</dt>
-<dd><a name="index-get-thread-information-block-address"></a>
-<a name="index-qGetTIBAddr-packet"></a>
+<dd><span id="index-get-thread-information-block-address"></span>
+<span id="index-qGetTIBAddr-packet"></span>
 <p>Fetch address of the Windows OS specific Thread Information Block.
 </p>
 <p><var>thread-id</var> is the thread ID associated with the thread.
@@ -484,8 +473,8 @@ digits), from the target.  See <code>remote.c:parse_threadlist_response()</code>
 
 </dd>
 <dt>&lsquo;<samp>qOffsets</samp>&rsquo;</dt>
-<dd><a name="index-section-offsets_002c-remote-request"></a>
-<a name="index-qOffsets-packet"></a>
+<dd><span id="index-section-offsets_002c-remote-request"></span>
+<span id="index-qOffsets-packet"></span>
 <p>Get section offsets that the target used when relocating the downloaded
 image.
 </p>
@@ -517,8 +506,8 @@ kept at fixed offsets relative to the last relocated segment.
 
 </dd>
 <dt>&lsquo;<samp>qP <var>mode</var> <var>thread-id</var></samp>&rsquo;</dt>
-<dd><a name="index-thread-information_002c-remote-request"></a>
-<a name="index-qP-packet"></a>
+<dd><span id="index-thread-information_002c-remote-request"></span>
+<span id="index-qP-packet"></span>
 <p>Returns information on <var>thread-id</var>.  Where: <var>mode</var> is a hex
 encoded 32 bit mode; <var>thread-id</var> is a thread ID 
 (see <a href="Packets.html#thread_002did-syntax">thread-id syntax</a>).
@@ -531,10 +520,10 @@ encoded 32 bit mode; <var>thread-id</var> is a thread ID
 </dd>
 <dt>&lsquo;<samp>QNonStop:1</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>QNonStop:0</samp>&rsquo;</dt>
-<dd><a name="index-non_002dstop-mode_002c-remote-request"></a>
-<a name="index-QNonStop-packet"></a>
-<a name="QNonStop"></a><p>Enter non-stop (&lsquo;<samp>QNonStop:1</samp>&rsquo;) or all-stop (&lsquo;<samp>QNonStop:0</samp>&rsquo;) mode.
-See <a href="Remote-Non_002dStop.html#Remote-Non_002dStop">Remote Non-Stop</a>, for more information.
+<dd><span id="index-non_002dstop-mode_002c-remote-request"></span>
+<span id="index-QNonStop-packet"></span>
+<span id="QNonStop"></span><p>Enter non-stop (&lsquo;<samp>QNonStop:1</samp>&rsquo;) or all-stop (&lsquo;<samp>QNonStop:0</samp>&rsquo;) mode.
+See <a href="Remote-Non_002dStop.html">Remote Non-Stop</a>, for more information.
 </p>
 <p>Reply:
 </p><dl compact="compact">
@@ -555,14 +544,14 @@ the stub.
 <p>This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 Use of this packet is controlled by the <code>set non-stop</code> command; 
-see <a href="Non_002dStop-Mode.html#Non_002dStop-Mode">Non-Stop Mode</a>.
+see <a href="Non_002dStop-Mode.html">Non-Stop Mode</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>QCatchSyscalls:1 <span class="roman">[</span>;<var>sysno</var><span class="roman">]</span>&hellip;</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>QCatchSyscalls:0</samp>&rsquo;</dt>
-<dd><a name="index-catch-syscalls-from-inferior_002c-remote-request"></a>
-<a name="index-QCatchSyscalls-packet"></a>
-<a name="QCatchSyscalls"></a><p>Enable (&lsquo;<samp>QCatchSyscalls:1</samp>&rsquo;) or disable (&lsquo;<samp>QCatchSyscalls:0</samp>&rsquo;)
+<dd><span id="index-catch-syscalls-from-inferior_002c-remote-request"></span>
+<span id="index-QCatchSyscalls-packet"></span>
+<span id="QCatchSyscalls"></span><p>Enable (&lsquo;<samp>QCatchSyscalls:1</samp>&rsquo;) or disable (&lsquo;<samp>QCatchSyscalls:0</samp>&rsquo;)
 catching syscalls from the inferior process.
 </p>
 <p>For &lsquo;<samp>QCatchSyscalls:1</samp>&rsquo;, each listed syscall <var>sysno</var> (encoded
@@ -599,17 +588,17 @@ the stub.
 </dl>
 
 <p>Use of this packet is controlled by the <code>set remote catch-syscalls</code>
-command (see <a href="Remote-Configuration.html#Remote-Configuration">set remote catch-syscalls</a>).
+command (see <a href="Remote-Configuration.html">set remote catch-syscalls</a>).
 This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>QPassSignals: <var>signal</var> <span class="roman">[</span>;<var>signal</var><span class="roman">]</span>&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-pass-signals-to-inferior_002c-remote-request"></a>
-<a name="index-QPassSignals-packet"></a>
-<a name="QPassSignals"></a><p>Each listed <var>signal</var> should be passed directly to the inferior process. 
+<dd><span id="index-pass-signals-to-inferior_002c-remote-request"></span>
+<span id="index-QPassSignals-packet"></span>
+<span id="QPassSignals"></span><p>Each listed <var>signal</var> should be passed directly to the inferior process. 
 Signals are numbered identically to continue packets and stop replies
-(see <a href="Stop-Reply-Packets.html#Stop-Reply-Packets">Stop Reply Packets</a>).  Each <var>signal</var> list item should be
+(see <a href="Stop-Reply-Packets.html">Stop Reply Packets</a>).  Each <var>signal</var> list item should be
 strictly greater than the previous item.  These signals do not need to stop
 the inferior, or be reported to <small>GDB</small>.  All other signals should be
 reported to <small>GDB</small>.  Multiple &lsquo;<samp>QPassSignals</samp>&rsquo; packets do not
@@ -634,15 +623,15 @@ the stub.
 </dl>
 
 <p>Use of this packet is controlled by the <code>set remote pass-signals</code>
-command (see <a href="Remote-Configuration.html#Remote-Configuration">set remote pass-signals</a>).
+command (see <a href="Remote-Configuration.html">set remote pass-signals</a>).
 This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>QProgramSignals: <var>signal</var> <span class="roman">[</span>;<var>signal</var><span class="roman">]</span>&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-signals-the-inferior-may-see_002c-remote-request"></a>
-<a name="index-QProgramSignals-packet"></a>
-<a name="QProgramSignals"></a><p>Each listed <var>signal</var> may be delivered to the inferior process.
+<dd><span id="index-signals-the-inferior-may-see_002c-remote-request"></span>
+<span id="index-QProgramSignals-packet"></span>
+<span id="QProgramSignals"></span><p>Each listed <var>signal</var> may be delivered to the inferior process.
 Others should be silently discarded.
 </p>
 <p>In some cases, the remote stub may need to decide whether to deliver a
@@ -657,7 +646,7 @@ signals.
 resumption packet (see <a href="Packets.html#vCont-packet">vCont packet</a>).
 </p>
 <p>Signals are numbered identically to continue packets and stop replies
-(see <a href="Stop-Reply-Packets.html#Stop-Reply-Packets">Stop Reply Packets</a>).  Each <var>signal</var> list item should be
+(see <a href="Stop-Reply-Packets.html">Stop Reply Packets</a>).  Each <var>signal</var> list item should be
 strictly greater than the previous item.  Multiple
 &lsquo;<samp>QProgramSignals</samp>&rsquo; packets do not combine; any earlier
 &lsquo;<samp>QProgramSignals</samp>&rsquo; list is completely replaced by the new list.
@@ -679,15 +668,15 @@ by the stub.
 </dl>
 
 <p>Use of this packet is controlled by the <code>set remote program-signals</code>
-command (see <a href="Remote-Configuration.html#Remote-Configuration">set remote program-signals</a>).
+command (see <a href="Remote-Configuration.html">set remote program-signals</a>).
 This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p>
-<a name="QThreadEvents"></a></dd>
+<span id="QThreadEvents"></span></dd>
 <dt>&lsquo;<samp>QThreadEvents:1</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>QThreadEvents:0</samp>&rsquo;</dt>
-<dd><a name="index-thread-create_002fexit-events_002c-remote-request"></a>
-<a name="index-QThreadEvents-packet"></a>
+<dd><span id="index-thread-create_002fexit-events_002c-remote-request"></span>
+<span id="index-QThreadEvents-packet"></span>
 
 <p>Enable (&lsquo;<samp>QThreadEvents:1</samp>&rsquo;) or disable (&lsquo;<samp>QThreadEvents:0</samp>&rsquo;)
 reporting of thread create and exit events.  See <a href="Stop-Reply-Packets.html#thread-create-event">thread create event</a>, for the reply specifications.  For example, this is used in
@@ -716,12 +705,12 @@ the stub.
 </dl>
 
 <p>Use of this packet is controlled by the <code>set remote thread-events</code>
-command (see <a href="Remote-Configuration.html#Remote-Configuration">set remote thread-events</a>).
+command (see <a href="Remote-Configuration.html">set remote thread-events</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>qRcmd,<var>command</var></samp>&rsquo;</dt>
-<dd><a name="index-execute-remote-command_002c-remote-request"></a>
-<a name="index-qRcmd-packet"></a>
+<dd><span id="index-execute-remote-command_002c-remote-request"></span>
+<span id="index-qRcmd-packet"></span>
 <p><var>command</var> (hex encoded) is passed to the local interpreter for
 execution.  Invalid commands should be reported using the output
 string.  Before the final result packet, the target may also respond
@@ -752,10 +741,10 @@ packets.)
 </p>
 </dd>
 <dt>&lsquo;<samp>qSearch:memory:<var>address</var>;<var>length</var>;<var>search-pattern</var></samp>&rsquo;</dt>
-<dd><a name="index-searching-memory_002c-in-remote-debugging"></a>
-<a name="index-qSearch_003amemory-packet"></a>
-<a name="index-qSearch-memory-packet"></a>
-<a name="qSearch-memory"></a><p>Search <var>length</var> bytes at <var>address</var> for <var>search-pattern</var>.
+<dd><span id="index-searching-memory_002c-in-remote-debugging"></span>
+<span id="index-qSearch_003amemory-packet"></span>
+<span id="index-qSearch-memory-packet"></span>
+<span id="qSearch-memory"></span><p>Search <var>length</var> bytes at <var>address</var> for <var>search-pattern</var>.
 Both <var>address</var> and <var>length</var> are encoded in hex;
 <var>search-pattern</var> is a sequence of bytes, also hex encoded.
 </p>
@@ -777,15 +766,15 @@ Both <var>address</var> and <var>length</var> are encoded in hex;
 
 </dd>
 <dt>&lsquo;<samp>QStartNoAckMode</samp>&rsquo;</dt>
-<dd><a name="index-QStartNoAckMode-packet"></a>
-<a name="QStartNoAckMode"></a><p>Request that the remote stub disable the normal &lsquo;<samp>+</samp>&rsquo;/&lsquo;<samp>-</samp>&rsquo;
-protocol acknowledgments (see <a href="Packet-Acknowledgment.html#Packet-Acknowledgment">Packet Acknowledgment</a>).
+<dd><span id="index-QStartNoAckMode-packet"></span>
+<span id="QStartNoAckMode"></span><p>Request that the remote stub disable the normal &lsquo;<samp>+</samp>&rsquo;/&lsquo;<samp>-</samp>&rsquo;
+protocol acknowledgments (see <a href="Packet-Acknowledgment.html">Packet Acknowledgment</a>).
 </p>
 <p>Reply:
 </p><dl compact="compact">
 <dt>&lsquo;<samp>OK</samp>&rsquo;</dt>
 <dd><p>The stub has switched to no-acknowledgment mode.
-<small>GDB</small> acknowledges this reponse,
+<small>GDB</small> acknowledges this response,
 but neither the stub nor <small>GDB</small> shall send or expect further
 &lsquo;<samp>+</samp>&rsquo;/&lsquo;<samp>-</samp>&rsquo; acknowledgments in the current connection.
 </p></dd>
@@ -796,10 +785,10 @@ but neither the stub nor <small>GDB</small> shall send or expect further
 
 </dd>
 <dt>&lsquo;<samp>qSupported <span class="roman">[</span>:<var>gdbfeature</var> <span class="roman">[</span>;<var>gdbfeature</var><span class="roman">]</span>&hellip; <span class="roman">]</span></samp>&rsquo;</dt>
-<dd><a name="index-supported-packets_002c-remote-query"></a>
-<a name="index-features-of-the-remote-protocol"></a>
-<a name="index-qSupported-packet"></a>
-<a name="qSupported"></a><p>Tell the remote stub about features supported by <small>GDB</small>, and
+<dd><span id="index-supported-packets_002c-remote-query"></span>
+<span id="index-features-of-the-remote-protocol"></span>
+<span id="index-qSupported-packet"></span>
+<span id="qSupported"></span><p>Tell the remote stub about features supported by <small>GDB</small>, and
 query the stub for features it supports.  This packet allows
 <small>GDB</small> and the remote stub to take advantage of each others&rsquo;
 features.  &lsquo;<samp>qSupported</samp>&rsquo; also consolidates multiple feature probes
@@ -879,7 +868,7 @@ description.
 </dd>
 <dt>&lsquo;<samp>qRelocInsn</samp>&rsquo;</dt>
 <dd><p>This feature indicates whether <small>GDB</small> supports the
-&lsquo;<samp>qRelocInsn</samp>&rsquo; packet (see <a href="Tracepoint-Packets.html#Tracepoint-Packets">Relocate
+&lsquo;<samp>qRelocInsn</samp>&rsquo; packet (see <a href="Tracepoint-Packets.html">Relocate
 instruction reply packet</a>).
 </p>
 </dd>
@@ -966,8 +955,6 @@ stubs which may be configured for multiple targets.
 <tr><td width="35%">&lsquo;<samp>augmented-libraries-svr4-read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">No</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:memory-map:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:sdata:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
-<tr><td width="35%">&lsquo;<samp>qXfer:spu:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
-<tr><td width="35%">&lsquo;<samp>qXfer:spu:write</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:siginfo:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:siginfo:write</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
 <tr><td width="35%">&lsquo;<samp>qXfer:threads:read</samp>&rsquo;</td><td width="20%">No</td><td width="12%">&lsquo;<samp>-</samp>&rsquo;</td><td width="20%">Yes</td></tr>
@@ -1008,7 +995,7 @@ stubs which may be configured for multiple targets.
 <p>These are the currently defined stub features, in more detail:
 </p>
 <dl compact="compact">
-<dd><a name="index-packet-size_002c-remote-protocol"></a>
+<dd><span id="index-packet-size_002c-remote-protocol"></span>
 </dd>
 <dt>&lsquo;<samp>PacketSize=<var>bytes</var></samp>&rsquo;</dt>
 <dd><p>The remote stub can accept packets up to at least <var>bytes</var> in
@@ -1072,16 +1059,6 @@ packet (see <a href="#qXfer-btrace_002dconf-read">qXfer btrace-conf read</a>).
 (see <a href="#qXfer-sdata-read">qXfer sdata read</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>qXfer:spu:read</samp>&rsquo;</dt>
-<dd><p>The remote stub understands the &lsquo;<samp>qXfer:spu:read</samp>&rsquo; packet
-(see <a href="#qXfer-spu-read">qXfer spu read</a>).
-</p>
-</dd>
-<dt>&lsquo;<samp>qXfer:spu:write</samp>&rsquo;</dt>
-<dd><p>The remote stub understands the &lsquo;<samp>qXfer:spu:write</samp>&rsquo; packet
-(see <a href="#qXfer-spu-write">qXfer spu write</a>).
-</p>
-</dd>
 <dt>&lsquo;<samp>qXfer:siginfo:read</samp>&rsquo;</dt>
 <dd><p>The remote stub understands the &lsquo;<samp>qXfer:siginfo:read</samp>&rsquo; packet
 (see <a href="#qXfer-siginfo-read">qXfer siginfo read</a>).
@@ -1129,11 +1106,11 @@ packet (see <a href="#qXfer-fdpic-loadmap-read">qXfer fdpic loadmap read</a>).
 </dd>
 <dt>&lsquo;<samp>QStartNoAckMode</samp>&rsquo;</dt>
 <dd><p>The remote stub understands the &lsquo;<samp>QStartNoAckMode</samp>&rsquo; packet and
-prefers to operate in no-acknowledgment mode.  See <a href="Packet-Acknowledgment.html#Packet-Acknowledgment">Packet Acknowledgment</a>.
+prefers to operate in no-acknowledgment mode.  See <a href="Packet-Acknowledgment.html">Packet Acknowledgment</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>multiprocess</samp>&rsquo;</dt>
-<dd><a name="multiprocess-extensions"></a><a name="index-multiprocess-extensions_002c-in-remote-protocol"></a>
+<dd><span id="multiprocess-extensions"></span><span id="index-multiprocess-extensions_002c-in-remote-protocol"></span>
 <p>The remote stub understands the multiprocess extensions to the remote
 protocol syntax.  The multiprocess extensions affect the syntax of
 thread IDs in both packets and replies (see <a href="Packets.html#thread_002did-syntax">thread-id syntax</a>), and
@@ -1153,12 +1130,12 @@ indicated it supports them in its &lsquo;<samp>qSupported</samp>&rsquo; request.
 <dt>&lsquo;<samp>ConditionalBreakpoints</samp>&rsquo;</dt>
 <dd><p>The target accepts and implements evaluation of conditional expressions
 defined for breakpoints.  The target will only report breakpoint triggers
-when such conditions are true (see <a href="Conditions.html#Conditions">Break Conditions</a>).
+when such conditions are true (see <a href="Conditions.html">Break Conditions</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>ConditionalTracepoints</samp>&rsquo;</dt>
 <dd><p>The remote stub accepts and implements conditional expressions defined
-for tracepoints (see <a href="Tracepoint-Conditions.html#Tracepoint-Conditions">Tracepoint Conditions</a>).
+for tracepoints (see <a href="Tracepoint-Conditions.html">Tracepoint Conditions</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>ReverseContinue</samp>&rsquo;</dt>
@@ -1189,12 +1166,12 @@ the source form of tracepoint definitions.
 </p>
 </dd>
 <dt>&lsquo;<samp>StaticTracepoint</samp>&rsquo;</dt>
-<dd><a name="index-static-tracepoints_002c-in-remote-protocol"></a>
+<dd><span id="index-static-tracepoints_002c-in-remote-protocol"></span>
 <p>The remote stub supports static tracepoints.
 </p>
 </dd>
 <dt>&lsquo;<samp>InstallInTrace</samp>&rsquo;</dt>
-<dd><a name="install-tracepoint-in-tracing"></a><p>The remote stub supports installing tracepoint in tracing.
+<dd><span id="install-tracepoint-in-tracing"></span><p>The remote stub supports installing tracepoint in tracing.
 </p>
 </dd>
 <dt>&lsquo;<samp>EnableDisableTracepoints</samp>&rsquo;</dt>
@@ -1209,13 +1186,13 @@ packet that allows to change the size of the trace buffer.
 </p>
 </dd>
 <dt>&lsquo;<samp>tracenz</samp>&rsquo;</dt>
-<dd><a name="index-string-tracing_002c-in-remote-protocol"></a>
+<dd><span id="index-string-tracing_002c-in-remote-protocol"></span>
 <p>The remote stub supports the &lsquo;<samp>tracenz</samp>&rsquo; bytecode for collecting strings.
-See <a href="Bytecode-Descriptions.html#Bytecode-Descriptions">Bytecode Descriptions</a> for details about the bytecode.
+See <a href="Bytecode-Descriptions.html">Bytecode Descriptions</a> for details about the bytecode.
 </p>
 </dd>
 <dt>&lsquo;<samp>BreakpointCommands</samp>&rsquo;</dt>
-<dd><a name="index-breakpoint-commands_002c-in-remote-protocol"></a>
+<dd><span id="index-breakpoint-commands_002c-in-remote-protocol"></span>
 <p>The remote stub supports running a breakpoint&rsquo;s command list itself,
 rather than reporting the hit to <small>GDB</small>.
 </p>
@@ -1280,8 +1257,8 @@ and vforkdone events.
 
 </dd>
 <dt>&lsquo;<samp>qSymbol::</samp>&rsquo;</dt>
-<dd><a name="index-symbol-lookup_002c-remote-request"></a>
-<a name="index-qSymbol-packet"></a>
+<dd><span id="index-symbol-lookup_002c-remote-request"></span>
+<span id="index-qSymbol-packet"></span>
 <p>Notify the target that <small>GDB</small> is prepared to serve symbol lookup
 requests.  Accept requests from the target for the values of symbols.
 </p>
@@ -1333,12 +1310,12 @@ encoded).  <small>GDB</small> will continue to supply the values of symbols
 <dt>&lsquo;<samp>QTFrame</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>qTMinFTPILen</samp>&rsquo;</dt>
 <dd>
-<p>See <a href="Tracepoint-Packets.html#Tracepoint-Packets">Tracepoint Packets</a>.
+<p>See <a href="Tracepoint-Packets.html">Tracepoint Packets</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>qThreadExtraInfo,<var>thread-id</var></samp>&rsquo;</dt>
-<dd><a name="index-thread-attributes-info_002c-remote-request"></a>
-<a name="index-qThreadExtraInfo-packet"></a>
+<dd><span id="index-thread-attributes-info_002c-remote-request"></span>
+<span id="index-qThreadExtraInfo-packet"></span>
 <p>Obtain from the target OS a printable string description of thread
 attributes for the thread <var>thread-id</var>; see <a href="Packets.html#thread_002did-syntax">thread-id syntax</a>,
 for the forms of <var>thread-id</var>.  This
@@ -1379,13 +1356,13 @@ packets.)
 <dt>&lsquo;<samp>qTfSTM</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>qTsSTM</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>qTSTMat</samp>&rsquo;</dt>
-<dd><p>See <a href="Tracepoint-Packets.html#Tracepoint-Packets">Tracepoint Packets</a>.
+<dd><p>See <a href="Tracepoint-Packets.html">Tracepoint Packets</a>.
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:<var>object</var>:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="index-read-special-object_002c-remote-request"></a>
-<a name="index-qXfer-packet"></a>
-<a name="qXfer-read"></a><p>Read uninterpreted bytes from the target&rsquo;s special data area
+<dd><span id="index-read-special-object_002c-remote-request"></span>
+<span id="index-qXfer-packet"></span>
+<span id="qXfer-read"></span><p>Read uninterpreted bytes from the target&rsquo;s special data area
 identified by the keyword <var>object</var>.  Request <var>length</var> bytes
 starting at <var>offset</var> bytes into the data.  The content and
 encoding of <var>annex</var> is specific to <var>object</var>; it can supply
@@ -1434,16 +1411,16 @@ formats, listed above.
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>qXfer:auxv:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-auxiliary-vector-read"></a><p>Access the target&rsquo;s <em>auxiliary vector</em>.  See <a href="OS-Information.html#OS-Information">auxiliary vector</a>.  Note <var>annex</var> must be empty.
+<dd><span id="qXfer-auxiliary-vector-read"></span><p>Access the target&rsquo;s <em>auxiliary vector</em>.  See <a href="OS-Information.html">auxiliary vector</a>.  Note <var>annex</var> must be empty.
 </p>
 <p>This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:btrace:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-btrace-read"></a>
+<dd><span id="qXfer-btrace-read"></span>
 <p>Return a description of the current branch trace.
-See <a href="Branch-Trace-Format.html#Branch-Trace-Format">Branch Trace Format</a>.  The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo;
+See <a href="Branch-Trace-Format.html">Branch Trace Format</a>.  The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo;
 packet may have one of the following values:
 </p>
 <dl compact="compact">
@@ -1471,16 +1448,16 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:btrace-conf:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-btrace_002dconf-read"></a>
+<dd><span id="qXfer-btrace_002dconf-read"></span>
 <p>Return a description of the current branch trace configuration.
-See <a href="Branch-Trace-Configuration-Format.html#Branch-Trace-Configuration-Format">Branch Trace Configuration Format</a>.
+See <a href="Branch-Trace-Configuration-Format.html">Branch Trace Configuration Format</a>.
 </p>
 <p>This packet is not probed by default; the remote stub must request it
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:exec-file:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-executable-filename-read"></a><p>Return the full absolute name of the file that was executed to create
+<dd><span id="qXfer-executable-filename-read"></span><p>Return the full absolute name of the file that was executed to create
 a process running on the remote system.  The annex specifies the
 numeric process ID of the process to query, encoded as a hexadecimal
 number.  If the annex part is empty the remote stub should return the
@@ -1491,7 +1468,7 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:features:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-target-description-read"></a><p>Access the <em>target description</em>.  See <a href="Target-Descriptions.html#Target-Descriptions">Target Descriptions</a>.  The
+<dd><span id="qXfer-target-description-read"></span><p>Access the <em>target description</em>.  See <a href="Target-Descriptions.html">Target Descriptions</a>.  The
 annex specifies which XML document to access.  The main description is
 always loaded from the &lsquo;<samp>target.xml</samp>&rsquo; annex.
 </p>
@@ -1500,7 +1477,7 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:libraries:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-library-list-read"></a><p>Access the target&rsquo;s list of loaded libraries.  See <a href="Library-List-Format.html#Library-List-Format">Library List Format</a>.
+<dd><span id="qXfer-library-list-read"></span><p>Access the target&rsquo;s list of loaded libraries.  See <a href="Library-List-Format.html">Library List Format</a>.
 The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty
 (see <a href="#qXfer-read">qXfer read</a>).
 </p>
@@ -1513,8 +1490,8 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:libraries-svr4:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-svr4-library-list-read"></a><p>Access the target&rsquo;s list of loaded libraries when the target is an SVR4
-platform.  See <a href="Library-List-Format-for-SVR4-Targets.html#Library-List-Format-for-SVR4-Targets">Library List Format for SVR4 Targets</a>.  The annex part
+<dd><span id="qXfer-svr4-library-list-read"></span><p>Access the target&rsquo;s list of loaded libraries when the target is an SVR4
+platform.  See <a href="Library-List-Format-for-SVR4-Targets.html">Library List Format for SVR4 Targets</a>.  The annex part
 of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty unless the remote
 stub indicated it supports the augmented form of this packet
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
@@ -1554,7 +1531,7 @@ ignored.
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:memory-map:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-memory-map-read"></a><p>Access the target&rsquo;s <em>memory-map</em>.  See <a href="Memory-Map-Format.html#Memory-Map-Format">Memory Map Format</a>.  The
+<dd><span id="qXfer-memory-map-read"></span><p>Access the target&rsquo;s <em>memory-map</em>.  See <a href="Memory-Map-Format.html">Memory Map Format</a>.  The
 annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty
 (see <a href="#qXfer-read">qXfer read</a>).
 </p>
@@ -1563,10 +1540,10 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:sdata:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-sdata-read"></a>
+<dd><span id="qXfer-sdata-read"></span>
 <p>Read contents of the extra collected static tracepoint marker
 information.  The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must
-be empty (see <a href="#qXfer-read">qXfer read</a>).  See <a href="Tracepoint-Actions.html#Tracepoint-Actions">Tracepoint
+be empty (see <a href="#qXfer-read">qXfer read</a>).  See <a href="Tracepoint-Actions.html">Tracepoint
 Action Lists</a>.
 </p>
 <p>This packet is not probed by default; the remote stub must request it,
@@ -1575,7 +1552,7 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:siginfo:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-siginfo-read"></a><p>Read contents of the extra signal information on the target
+<dd><span id="qXfer-siginfo-read"></span><p>Read contents of the extra signal information on the target
 system.  The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be
 empty (see <a href="#qXfer-read">qXfer read</a>).
 </p>
@@ -1584,20 +1561,8 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
 (see <a href="#qSupported">qSupported</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>qXfer:spu:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-spu-read"></a><p>Read contents of an <code>spufs</code> file on the target system.  The
-annex specifies which file to read; it must be of the form 
-<samp><var>id</var>/<var>name</var></samp>, where <var>id</var> specifies an SPU context ID
-in the target process, and <var>name</var> identifes the <code>spufs</code> file
-in that context to be accessed.
-</p>
-<p>This packet is not probed by default; the remote stub must request it,
-by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
-(see <a href="#qSupported">qSupported</a>).
-</p>
-</dd>
 <dt>&lsquo;<samp>qXfer:threads:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-threads-read"></a><p>Access the list of threads on target.  See <a href="Thread-List-Format.html#Thread-List-Format">Thread List Format</a>.  The
+<dd><span id="qXfer-threads-read"></span><p>Access the list of threads on target.  See <a href="Thread-List-Format.html">Thread List Format</a>.  The
 annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty
 (see <a href="#qXfer-read">qXfer read</a>).
 </p>
@@ -1606,9 +1571,9 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:traceframe-info:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-traceframe-info-read"></a>
+<dd><span id="qXfer-traceframe-info-read"></span>
 <p>Return a description of the current traceframe&rsquo;s contents.
-See <a href="Traceframe-Info-Format.html#Traceframe-Info-Format">Traceframe Info Format</a>.  The annex part of the generic
+See <a href="Traceframe-Info-Format.html">Traceframe Info Format</a>.  The annex part of the generic
 &lsquo;<samp>qXfer</samp>&rsquo; packet must be empty (see <a href="#qXfer-read">qXfer read</a>).
 </p>
 <p>This packet is not probed by default; the remote stub must request it,
@@ -1616,7 +1581,7 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:uib:read:<var>pc</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-unwind-info-block"></a>
+<dd><span id="qXfer-unwind-info-block"></span>
 <p>Return the unwind information block for <var>pc</var>.  This packet is used
 on OpenVMS/ia64 to ask the kernel unwind information.
 </p>
@@ -1624,7 +1589,7 @@ on OpenVMS/ia64 to ask the kernel unwind information.
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:fdpic:read:<var>annex</var>:<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-fdpic-loadmap-read"></a><p>Read contents of <code>loadmap</code>s on the target system.  The
+<dd><span id="qXfer-fdpic-loadmap-read"></span><p>Read contents of <code>loadmap</code>s on the target system.  The
 annex, either &lsquo;<samp>exec</samp>&rsquo; or &lsquo;<samp>interp</samp>&rsquo;, specifies which <code>loadmap</code>,
 executable <code>loadmap</code> or interpreter <code>loadmap</code> to read.
 </p>
@@ -1633,16 +1598,16 @@ by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see 
 </p>
 </dd>
 <dt>&lsquo;<samp>qXfer:osdata:read::<var>offset</var>,<var>length</var></samp>&rsquo;</dt>
-<dd><a name="qXfer-osdata-read"></a><p>Access the target&rsquo;s <em>operating system information</em>.
-See <a href="Operating-System-Information.html#Operating-System-Information">Operating System Information</a>.
+<dd><span id="qXfer-osdata-read"></span><p>Access the target&rsquo;s <em>operating system information</em>.
+See <a href="Operating-System-Information.html">Operating System Information</a>.
 </p>
 </dd>
 </dl>
 
 </dd>
 <dt>&lsquo;<samp>qXfer:<var>object</var>:write:<var>annex</var>:<var>offset</var>:<var>data</var>&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-write-data-into-object_002c-remote-request"></a>
-<a name="qXfer-write"></a><p>Write uninterpreted bytes into the target&rsquo;s special data area
+<dd><span id="index-write-data-into-object_002c-remote-request"></span>
+<span id="qXfer-write"></span><p>Write uninterpreted bytes into the target&rsquo;s special data area
 identified by the keyword <var>object</var>, starting at <var>offset</var> bytes
 into the data.  The binary-encoded data (see <a href="Overview.html#Binary-Data">Binary Data</a>) to be
 written is given by <var>data</var>&hellip;.  The content and encoding of <var>annex</var>
@@ -1677,24 +1642,13 @@ formats, listed above.
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>qXfer:siginfo:write::<var>offset</var>:<var>data</var>&hellip;</samp>&rsquo;</dt>
-<dd><a name="qXfer-siginfo-write"></a><p>Write <var>data</var> to the extra signal information on the target system.
+<dd><span id="qXfer-siginfo-write"></span><p>Write <var>data</var> to the extra signal information on the target system.
 The annex part of the generic &lsquo;<samp>qXfer</samp>&rsquo; packet must be
 empty (see <a href="#qXfer-write">qXfer write</a>).
 </p>
 <p>This packet is not probed by default; the remote stub must request it,
 by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response
 (see <a href="#qSupported">qSupported</a>).
-</p>
-</dd>
-<dt>&lsquo;<samp>qXfer:spu:write:<var>annex</var>:<var>offset</var>:<var>data</var>&hellip;</samp>&rsquo;</dt>
-<dd><a name="qXfer-spu-write"></a><p>Write <var>data</var> to an <code>spufs</code> file on the target system.  The
-annex specifies which file to write; it must be of the form
-<samp><var>id</var>/<var>name</var></samp>, where <var>id</var> specifies an SPU context ID
-in the target process, and <var>name</var> identifes the <code>spufs</code> file
-in that context to be accessed.
-</p>
-<p>This packet is not probed by default; the remote stub must request it,
-by supplying an appropriate &lsquo;<samp>qSupported</samp>&rsquo; response (see <a href="#qSupported">qSupported</a>).
 </p></dd>
 </dl>
 
@@ -1707,8 +1661,8 @@ must respond with an empty packet.
 </p>
 </dd>
 <dt>&lsquo;<samp>qAttached:<var>pid</var></samp>&rsquo;</dt>
-<dd><a name="index-query-attached_002c-remote-request"></a>
-<a name="index-qAttached-packet"></a>
+<dd><span id="index-query-attached_002c-remote-request"></span>
+<span id="index-qAttached-packet"></span>
 <p>Return an indication of whether the remote server attached to an
 existing process or created a new process.  When the multiprocess
 protocol extensions are supported (see <a href="#multiprocess-extensions">multiprocess extensions</a>),
@@ -1812,7 +1766,7 @@ btrace recording method in pt format.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT19" href="#DOCF19">(19)</a></h3>
+<h5><a id="FOOT20" href="#DOCF20">(20)</a></h3>
 <p>The &lsquo;<samp>qP</samp>&rsquo; and &lsquo;<samp>qL</samp>&rsquo;
 packets predate these conventions, and have arguments without any terminator
 for the packet name; we suspect they are in widespread use in places that
@@ -1823,7 +1777,7 @@ packet.</p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Architecture_002dSpecific-Protocol-Details.html#Architecture_002dSpecific-Protocol-Details" accesskey="n" rel="next">Architecture-Specific Protocol Details</a>, Previous: <a href="Stop-Reply-Packets.html#Stop-Reply-Packets" accesskey="p" rel="prev">Stop Reply Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Architecture_002dSpecific-Protocol-Details.html" accesskey="n" rel="next">Architecture-Specific Protocol Details</a>, Previous: <a href="Stop-Reply-Packets.html" accesskey="p" rel="prev">Stop Reply Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

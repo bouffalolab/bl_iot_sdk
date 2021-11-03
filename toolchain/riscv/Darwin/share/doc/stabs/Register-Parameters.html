@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Register Parameters (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Parameters.html#Parameters" rel="up" title="Parameters">
-<link href="Local-Variable-Parameters.html#Local-Variable-Parameters" rel="next" title="Local Variable Parameters">
-<link href="Parameters.html#Parameters" rel="prev" title="Parameters">
+<link href="Parameters.html" rel="up" title="Parameters">
+<link href="Local-Variable-Parameters.html" rel="next" title="Local Variable Parameters">
+<link href="Parameters.html" rel="prev" title="Parameters">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,14 +49,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Register-Parameters"></a>
-<div class="header">
+<span id="Register-Parameters"></span><div class="header">
 <p>
-Next: <a href="Local-Variable-Parameters.html#Local-Variable-Parameters" accesskey="n" rel="next">Local Variable Parameters</a>, Up: <a href="Parameters.html#Parameters" accesskey="u" rel="up">Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Local-Variable-Parameters.html" accesskey="n" rel="next">Local Variable Parameters</a>, Up: <a href="Parameters.html" accesskey="u" rel="up">Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Passing-Parameters-in-Registers"></a>
-<h4 class="subsection">4.7.1 Passing Parameters in Registers</h4>
+<span id="Passing-Parameters-in-Registers"></span><h4 class="subsection">4.7.1 Passing Parameters in Registers</h4>
 
 <p>If the parameter is passed in a register, then traditionally there are
 two symbols for each argument:
@@ -78,8 +67,8 @@ two symbols for each argument:
 <p>Debuggers use the second one to find the value, and the first one to
 know that it is an argument.
 </p>
-<a name="index-C_005fRPSYM"></a>
-<a name="index-N_005fRSYM_002c-for-parameters"></a>
+<span id="index-C_005fRPSYM"></span>
+<span id="index-N_005fRSYM_002c-for-parameters"></span>
 <p>Because that approach is kind of ugly, some compilers use symbol
 descriptor &lsquo;<samp>P</samp>&rsquo; or &lsquo;<samp>R</samp>&rsquo; to indicate an argument which is in a
 register.  Symbol type <code>C_RPSYM</code> is used in XCOFF and <code>N_RSYM</code>
@@ -110,12 +99,12 @@ case (it is said to mean &quot;value parameter by reference, indirect
 access&quot;; I don&rsquo;t know the source for this information), but I don&rsquo;t know
 details or what compilers or debuggers use it, if any (not GDB or GCC).
 It is not clear to me whether this case needs to be dealt with
-differently than parameters passed by reference (see <a href="Reference-Parameters.html#Reference-Parameters">Reference Parameters</a>).
+differently than parameters passed by reference (see <a href="Reference-Parameters.html">Reference Parameters</a>).
 </p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Local-Variable-Parameters.html#Local-Variable-Parameters" accesskey="n" rel="next">Local Variable Parameters</a>, Up: <a href="Parameters.html#Parameters" accesskey="u" rel="up">Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Local-Variable-Parameters.html" accesskey="n" rel="next">Local Variable Parameters</a>, Up: <a href="Parameters.html" accesskey="u" rel="up">Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

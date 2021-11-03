@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insn Canonicalizations (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Machine-Desc.html#Machine-Desc" rel="up" title="Machine Desc">
-<link href="Expander-Definitions.html#Expander-Definitions" rel="next" title="Expander Definitions">
-<link href="Looping-Patterns.html#Looping-Patterns" rel="prev" title="Looping Patterns">
+<link href="Machine-Desc.html" rel="up" title="Machine Desc">
+<link href="Expander-Definitions.html" rel="next" title="Expander Definitions">
+<link href="Looping-Patterns.html" rel="prev" title="Looping Patterns">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,16 +58,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Insn-Canonicalizations"></a>
-<div class="header">
+<span id="Insn-Canonicalizations"></span><div class="header">
 <p>
-Next: <a href="Expander-Definitions.html#Expander-Definitions" accesskey="n" rel="next">Expander Definitions</a>, Previous: <a href="Looping-Patterns.html#Looping-Patterns" accesskey="p" rel="prev">Looping Patterns</a>, Up: <a href="Machine-Desc.html#Machine-Desc" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Expander-Definitions.html" accesskey="n" rel="next">Expander Definitions</a>, Previous: <a href="Looping-Patterns.html" accesskey="p" rel="prev">Looping Patterns</a>, Up: <a href="Machine-Desc.html" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Canonicalization-of-Instructions"></a>
-<h3 class="section">17.14 Canonicalization of Instructions</h3>
-<a name="index-canonicalization-of-instructions"></a>
-<a name="index-insn-canonicalization"></a>
+<span id="Canonicalization-of-Instructions"></span><h3 class="section">17.14 Canonicalization of Instructions</h3>
+<span id="index-canonicalization-of-instructions"></span>
+<span id="index-insn-canonicalization"></span>
 
 <p>There are often cases where multiple RTL expressions could represent an
 operation performed by a single machine instruction.  This situation is
@@ -101,11 +90,11 @@ can itself be a <code>plus</code>.  <code>and</code>, <code>ior</code>, <code>xo
 <code>umax</code> are associative when applied to integers, and sometimes to
 floating-point.
 
-</li><li> <a name="index-neg_002c-canonicalization-of"></a>
-<a name="index-not_002c-canonicalization-of"></a>
-<a name="index-mult_002c-canonicalization-of"></a>
-<a name="index-plus_002c-canonicalization-of"></a>
-<a name="index-minus_002c-canonicalization-of"></a>
+</li><li> <span id="index-neg_002c-canonicalization-of"></span>
+<span id="index-not_002c-canonicalization-of"></span>
+<span id="index-mult_002c-canonicalization-of"></span>
+<span id="index-plus_002c-canonicalization-of"></span>
+<span id="index-minus_002c-canonicalization-of"></span>
 For these operators, if only one operand is a <code>neg</code>, <code>not</code>,
 <code>mult</code>, <code>plus</code>, or <code>minus</code> expression, it will be the
 first operand.
@@ -117,7 +106,7 @@ the operations as far as possible.  For instance,
 <code>(plus (mult (neg B) C) A)</code> is canonicalized as
 <code>(minus A (mult B C))</code>.
 
-</li><li> <a name="index-compare_002c-canonicalization-of"></a>
+</li><li> <span id="index-compare_002c-canonicalization-of"></span>
 For the <code>compare</code> operator, a constant is always the second operand
 if the first argument is a condition code register or <code>(cc0)</code>.
 
@@ -125,8 +114,8 @@ if the first argument is a condition code register or <code>(cc0)</code>.
 <code>compare</code> operator is always written as the first RTL expression of
 the <code>parallel</code> instruction pattern.  For example,
 
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;&quot;
   [(set (reg:CCZ FLAGS_REG)
 	(compare:CCZ
 	  (plus:SI
@@ -153,9 +142,9 @@ of <code>ltu</code>.
 </li><li> Within address computations (i.e., inside <code>mem</code>), a left shift is
 converted into the appropriate multiplication by a power of two.
 
-</li><li> <a name="index-ior_002c-canonicalization-of"></a>
-<a name="index-and_002c-canonicalization-of"></a>
-<a name="index-De-Morgan_0027s-law"></a>
+</li><li> <span id="index-ior_002c-canonicalization-of"></span>
+<span id="index-and_002c-canonicalization-of"></span>
+<span id="index-De-Morgan_0027s-law"></span>
 De Morgan&rsquo;s Law is used to move bitwise negation inside a bitwise
 logical-and or logical-or operation.  If this results in only one
 operand being a <code>not</code> expression, it will be the first one.
@@ -164,8 +153,8 @@ operand being a <code>not</code> expression, it will be the first one.
 operand with the bitwise negation of the other should specify the pattern
 for that instruction as
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;&quot;
   [(set (match_operand:<var>m</var> 0 &hellip;)
         (and:<var>m</var> (not:<var>m</var> (match_operand:<var>m</var> 1 &hellip;))
                      (match_operand:<var>m</var> 2 &hellip;)))]
@@ -175,8 +164,8 @@ for that instruction as
 
 <p>Similarly, a pattern for a &ldquo;NAND&rdquo; instruction should be written
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;&quot;
   [(set (match_operand:<var>m</var> 0 &hellip;)
         (ior:<var>m</var> (not:<var>m</var> (match_operand:<var>m</var> 1 &hellip;))
                      (not:<var>m</var> (match_operand:<var>m</var> 2 &hellip;))))]
@@ -187,7 +176,7 @@ for that instruction as
 <p>In both cases, it is not necessary to include patterns for the many
 logically equivalent RTL expressions.
 </p>
-</li><li> <a name="index-xor_002c-canonicalization-of"></a>
+</li><li> <span id="index-xor_002c-canonicalization-of"></span>
 The only possible RTL expressions involving both bitwise exclusive-or
 and bitwise negation are <code>(xor:<var>m</var> <var>x</var> <var>y</var>)</code>
 and <code>(not:<var>m</var> (xor:<var>m</var> <var>x</var> <var>y</var>))</code>.
@@ -195,17 +184,17 @@ and <code>(not:<var>m</var> (xor:<var>m</var> <var>x</var> <var>y</var>))</code>
 </li><li> The sum of three items, one of which is a constant, will only appear in
 the form
 
-<div class="smallexample">
-<pre class="smallexample">(plus:<var>m</var> (plus:<var>m</var> <var>x</var> <var>y</var>) <var>constant</var>)
+<div class="example">
+<pre class="example">(plus:<var>m</var> (plus:<var>m</var> <var>x</var> <var>y</var>) <var>constant</var>)
 </pre></div>
 
-</li><li> <a name="index-zero_005fextract_002c-canonicalization-of"></a>
-<a name="index-sign_005fextract_002c-canonicalization-of"></a>
+</li><li> <span id="index-zero_005fextract_002c-canonicalization-of"></span>
+<span id="index-sign_005fextract_002c-canonicalization-of"></span>
 Equality comparisons of a group of bits (usually a single bit) with zero
 will be written using <code>zero_extract</code> rather than the equivalent
 <code>and</code> or <code>sign_extract</code> operations.
 
-</li><li> <a name="index-mult_002c-canonicalization-of-1"></a>
+</li><li> <span id="index-mult_002c-canonicalization-of-1"></span>
 <code>(sign_extend:<var>m1</var> (mult:<var>m2</var> (sign_extend:<var>m2</var> <var>x</var>)
 (sign_extend:<var>m2</var> <var>y</var>)))</code> is converted to <code>(mult:<var>m1</var>
 (sign_extend:<var>m1</var> <var>x</var>) (sign_extend:<var>m1</var> <var>y</var>))</code>, and likewise
@@ -228,7 +217,7 @@ original operation had sufficient precision to prevent overflow.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Expander-Definitions.html#Expander-Definitions" accesskey="n" rel="next">Expander Definitions</a>, Previous: <a href="Looping-Patterns.html#Looping-Patterns" accesskey="p" rel="prev">Looping Patterns</a>, Up: <a href="Machine-Desc.html#Machine-Desc" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Expander-Definitions.html" accesskey="n" rel="next">Expander Definitions</a>, Previous: <a href="Looping-Patterns.html" accesskey="p" rel="prev">Looping Patterns</a>, Up: <a href="Machine-Desc.html" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

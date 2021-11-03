@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -152,7 +152,7 @@ to use as the return of <code>__builtin_saveregs</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fSETUP_005fINCOMING_005fVARARGS"></a>Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARGS</strong> <em>(cumulative_args_t <var>args_so_far</var>, machine_mode <var>mode</var>, tree <var>type</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
+<dt><a name="index-TARGET_005fSETUP_005fINCOMING_005fVARARGS"></a>Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARGS</strong> <em>(cumulative_args_t <var>args_so_far</var>, const function_arg_info <var>&amp;arg</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
 <dd><p>This target hook offers an alternative to using
 <code>__builtin_saveregs</code> and defining the hook
 <code>TARGET_EXPAND_BUILTIN_SAVEREGS</code>.  Use it to store the anonymous
@@ -163,8 +163,8 @@ pass all their arguments on the stack.
 </p>
 <p>The argument <var>args_so_far</var> points to the <code>CUMULATIVE_ARGS</code> data
 structure, containing the values that are obtained after processing the
-named arguments.  The arguments <var>mode</var> and <var>type</var> describe the
-last named argument&mdash;its machine mode and its data type as a tree node.
+named arguments.  The argument <var>arg</var> describes the last of these named
+arguments.
 </p>
 <p>The target hook should do two things: first, push onto the stack all the
 argument registers <em>not</em> used for the named arguments, and second,
@@ -270,20 +270,6 @@ loaded bounds.
 <dt><a name="index-TARGET_005fSTORE_005fRETURNED_005fBOUNDS"></a>Target Hook: <em>void</em> <strong>TARGET_STORE_RETURNED_BOUNDS</strong> <em>(rtx <var>slot</var>, rtx <var>bounds</var>)</em></dt>
 <dd><p>This hook is used by expand pass to emit insn to store <var>bounds</var>
 returned by function call into <var>slot</var>.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fCHKP_005fFUNCTION_005fVALUE_005fBOUNDS"></a>Target Hook: <em>rtx</em> <strong>TARGET_CHKP_FUNCTION_VALUE_BOUNDS</strong> <em>(const_tree <var>ret_type</var>, const_tree <var>fn_decl_or_type</var>, bool <var>outgoing</var>)</em></dt>
-<dd><p>Define this to return an RTX representing the place where a function
-returns bounds for returned pointers.  Arguments meaning is similar to
-<code>TARGET_FUNCTION_VALUE</code>.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fSETUP_005fINCOMING_005fVARARG_005fBOUNDS"></a>Target Hook: <em>void</em> <strong>TARGET_SETUP_INCOMING_VARARG_BOUNDS</strong> <em>(cumulative_args_t <var>args_so_far</var>, machine_mode <var>mode</var>, tree <var>type</var>, int *<var>pretend_args_size</var>, int <var>second_time</var>)</em></dt>
-<dd><p>Use it to store bounds for anonymous register arguments stored
-into the stack.  Arguments meaning is similar to
-<code>TARGET_SETUP_INCOMING_VARARGS</code>.
 </p></dd></dl>
 
 <hr>

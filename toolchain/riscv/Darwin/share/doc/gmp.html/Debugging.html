@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Debugging (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="GMP-Basics.html#GMP-Basics" rel="up" title="GMP Basics">
-<link href="Profiling.html#Profiling" rel="next" title="Profiling">
-<link href="Efficiency.html#Efficiency" rel="prev" title="Efficiency">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="GMP-Basics.html" rel="up" title="GMP Basics">
+<link href="Profiling.html" rel="next" title="Profiling">
+<link href="Efficiency.html" rel="prev" title="Efficiency">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,47 +50,45 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Debugging"></a>
-<div class="header">
+<span id="Debugging"></span><div class="header">
 <p>
-Next: <a href="Profiling.html#Profiling" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Efficiency.html#Efficiency" accesskey="p" rel="prev">Efficiency</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Profiling.html" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Efficiency.html" accesskey="p" rel="prev">Efficiency</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Debugging-1"></a>
-<h3 class="section">3.12 Debugging</h3>
-<a name="index-Debugging"></a>
+<span id="Debugging-1"></span><h3 class="section">3.12 Debugging</h3>
+<span id="index-Debugging"></span>
 
 <dl compact="compact">
 <dt>Stack Overflow</dt>
-<dd><a name="index-Stack-overflow-1"></a>
-<a name="index-Segmentation-violation"></a>
-<a name="index-Bus-error"></a>
+<dd><span id="index-Stack-overflow-1"></span>
+<span id="index-Segmentation-violation"></span>
+<span id="index-Bus-error"></span>
 <p>Depending on the system, a segmentation violation or bus error might be the
 only indication of stack overflow.  See &lsquo;<samp>--enable-alloca</samp>&rsquo; choices in
-<a href="Build-Options.html#Build-Options">Build Options</a>, for how to address this.
+<a href="Build-Options.html">Build Options</a>, for how to address this.
 </p>
 <p>In new enough versions of GCC, &lsquo;<samp>-fstack-check</samp>&rsquo; may be able to ensure an
 overflow is recognised by the system before too much damage is done, or
 &lsquo;<samp>-fstack-limit-symbol</samp>&rsquo; or &lsquo;<samp>-fstack-limit-register</samp>&rsquo; may be able to
-add checking if the system itself doesn&rsquo;t do any (see <a href="http://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation</a> in <cite>Using the GNU Compiler Collection (GCC)</cite>).
+add checking if the system itself doesn&rsquo;t do any (see <a href="https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation</a> in <cite>Using the GNU Compiler Collection (GCC)</cite>).
 These options must be added to the &lsquo;<samp>CFLAGS</samp>&rsquo; used in the GMP build
-(see <a href="Build-Options.html#Build-Options">Build Options</a>), adding them just to an application will have no
+(see <a href="Build-Options.html">Build Options</a>), adding them just to an application will have no
 effect.  Note also they&rsquo;re a slowdown, adding overhead to each function call
 and each stack allocation.
 </p>
 </dd>
 <dt>Heap Problems</dt>
-<dd><a name="index-Heap-problems"></a>
-<a name="index-Malloc-problems"></a>
+<dd><span id="index-Heap-problems"></span>
+<span id="index-Malloc-problems"></span>
 <p>The most likely cause of application problems with GMP is heap corruption.
 Failing to <code>init</code> GMP variables will have unpredictable effects, and
 corruption arising elsewhere in a program may well affect GMP.  Initializing
 GMP variables more than once or failing to clear them will cause memory leaks.
 </p>
-<a name="index-Malloc-debugger"></a>
+<span id="index-Malloc-debugger"></span>
 <p>In all such cases a <code>malloc</code> debugger is recommended.  On a GNU or BSD
 system the standard C library <code>malloc</code> has some diagnostic facilities,
-see <a href="http://www.gnu.org/software/libc/manual/html_node/Allocation-Debugging.html#Allocation-Debugging">Allocation Debugging</a> in <cite>The GNU C Library
+see <a href="https://www.gnu.org/software/libc/manual/html_node/Allocation-Debugging.html#Allocation-Debugging">Allocation Debugging</a> in <cite>The GNU C Library
 Reference Manual</cite>, or &lsquo;<samp>man 3 malloc</samp>&rsquo;.  Other possibilities, in no
 particular order, include
 </p>
@@ -120,7 +109,7 @@ but might find other uses.
 </p>
 </dd>
 <dt>Stack Backtraces</dt>
-<dd><a name="index-Stack-backtrace"></a>
+<dd><span id="index-Stack-backtrace"></span>
 <p>On some systems the compiler options GMP uses by default can interfere with
 debugging.  In particular on x86 and 68k systems &lsquo;<samp>-fomit-frame-pointer</samp>&rsquo;
 is used and this generally inhibits stack backtracing.  Recompiling without
@@ -129,8 +118,8 @@ potentially moving a memory problem or hiding a compiler bug will apply.
 </p>
 </dd>
 <dt>GDB, the GNU Debugger</dt>
-<dd><a name="index-GDB"></a>
-<a name="index-GNU-Debugger"></a>
+<dd><span id="index-GDB"></span>
+<span id="index-GNU-Debugger"></span>
 <p>A sample <samp>.gdbinit</samp> is included in the distribution, showing how to call
 some undocumented dump functions to print GMP variables from within GDB.  Note
 that these functions shouldn&rsquo;t be used in final application code since they&rsquo;re
@@ -156,9 +145,9 @@ appropriately.
 </p>
 </dd>
 <dt>Assertion Checking</dt>
-<dd><a name="index-Assertion-checking-1"></a>
+<dd><span id="index-Assertion-checking-1"></span>
 <p>The build option <samp>--enable-assert</samp> is available to add some consistency
-checks to the library (see <a href="Build-Options.html#Build-Options">Build Options</a>).  These are likely to be of
+checks to the library (see <a href="Build-Options.html">Build Options</a>).  These are likely to be of
 limited value to most applications.  Assertion failures are just as likely to
 indicate memory corruption as a library or compiler bug.
 </p>
@@ -193,8 +182,8 @@ nowhere near any malloc debugger hooks.
 </p>
 </dd>
 <dt>Checker</dt>
-<dd><a name="index-Checker"></a>
-<a name="index-GCC-Checker"></a>
+<dd><span id="index-Checker"></span>
+<span id="index-GCC-Checker"></span>
 <p>The GCC checker (<a href="https://savannah.nongnu.org/projects/checker/">https://savannah.nongnu.org/projects/checker/</a>) can be
 used with GMP.  It contains a stub library which means GMP applications
 compiled with checker can use a normal GMP build.
@@ -202,7 +191,7 @@ compiled with checker can use a normal GMP build.
 <p>A build of GMP with checking within GMP itself can be made.  This will run
 very very slowly.  On GNU/Linux for example,
 </p>
-<a name="index-checkergcc"></a>
+<span id="index-checkergcc"></span>
 <div class="example">
 <pre class="example">./configure --disable-assembly CC=checkergcc
 </pre></div>
@@ -214,7 +203,7 @@ library.
 </p>
 </dd>
 <dt>Valgrind</dt>
-<dd><a name="index-Valgrind"></a>
+<dd><span id="index-Valgrind"></span>
 <p>Valgrind (<a href="http://valgrind.org/">http://valgrind.org/</a>) is a memory checker for x86, ARM, MIPS,
 PowerPC, and S/390.  It translates and emulates machine instructions to do
 strong checks for uninitialized data (at the level of individual bits), memory
@@ -233,7 +222,7 @@ Valgrind.  Valgrind&rsquo;s option &lsquo;<samp>--partial-loads-ok=yes</samp>&rs
 </dd>
 <dt>Other Problems</dt>
 <dd><p>Any suspected bug in GMP itself should be isolated to make sure it&rsquo;s not an
-application problem, see <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting Bugs</a>.
+application problem, see <a href="Reporting-Bugs.html">Reporting Bugs</a>.
 </p></dd>
 </dl>
 
@@ -241,7 +230,7 @@ application problem, see <a href="Reporting-Bugs.html#Reporting-Bugs">Reporting 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Profiling.html#Profiling" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Efficiency.html#Efficiency" accesskey="p" rel="prev">Efficiency</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Profiling.html" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Efficiency.html" accesskey="p" rel="prev">Efficiency</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

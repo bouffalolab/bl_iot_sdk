@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Attr Example (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Insn-Attributes.html#Insn-Attributes" rel="up" title="Insn Attributes">
-<link href="Insn-Lengths.html#Insn-Lengths" rel="next" title="Insn Lengths">
-<link href="Tagging-Insns.html#Tagging-Insns" rel="prev" title="Tagging Insns">
+<link href="Insn-Attributes.html" rel="up" title="Insn Attributes">
+<link href="Insn-Lengths.html" rel="next" title="Insn Lengths">
+<link href="Tagging-Insns.html" rel="prev" title="Tagging Insns">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,16 +58,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Attr-Example"></a>
-<div class="header">
+<span id="Attr-Example"></span><div class="header">
 <p>
-Next: <a href="Insn-Lengths.html#Insn-Lengths" accesskey="n" rel="next">Insn Lengths</a>, Previous: <a href="Tagging-Insns.html#Tagging-Insns" accesskey="p" rel="prev">Tagging Insns</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Insn-Lengths.html" accesskey="n" rel="next">Insn Lengths</a>, Previous: <a href="Tagging-Insns.html" accesskey="p" rel="prev">Tagging Insns</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Example-of-Attribute-Specifications"></a>
-<h4 class="subsection">17.19.4 Example of Attribute Specifications</h4>
-<a name="index-attribute-specifications-example"></a>
-<a name="index-attribute-specifications"></a>
+<span id="Example-of-Attribute-Specifications"></span><h4 class="subsection">17.19.4 Example of Attribute Specifications</h4>
+<span id="index-attribute-specifications-example"></span>
+<span id="index-attribute-specifications"></span>
 
 <p>The judicious use of defaulting is important in the efficient use of
 insn attributes.  Typically, insns are divided into <em>types</em> and an
@@ -98,8 +87,8 @@ modified.
 </p>
 <p>Here is part of a sample <samp>md</samp> file for such a machine:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_attr &quot;type&quot; &quot;load,store,arith,fp,branch&quot; (const_string &quot;arith&quot;))
+<div class="example">
+<pre class="example">(define_attr &quot;type&quot; &quot;load,store,arith,fp,branch&quot; (const_string &quot;arith&quot;))
 
 (define_attr &quot;cc&quot; &quot;clobber,unchanged,set,change0&quot;
              (cond [(eq_attr &quot;type&quot; &quot;load&quot;)
@@ -131,7 +120,7 @@ full-word result.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Insn-Lengths.html#Insn-Lengths" accesskey="n" rel="next">Insn Lengths</a>, Previous: <a href="Tagging-Insns.html#Tagging-Insns" accesskey="p" rel="prev">Tagging Insns</a>, Up: <a href="Insn-Attributes.html#Insn-Attributes" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Insn-Lengths.html" accesskey="n" rel="next">Insn Lengths</a>, Previous: <a href="Tagging-Insns.html" accesskey="p" rel="prev">Tagging Insns</a>, Up: <a href="Insn-Attributes.html" accesskey="u" rel="up">Insn Attributes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

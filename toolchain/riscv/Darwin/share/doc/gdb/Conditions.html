@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Conditions (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Breakpoints.html#Breakpoints" rel="up" title="Breakpoints">
-<link href="Break-Commands.html#Break-Commands" rel="next" title="Break Commands">
-<link href="Disabling.html#Disabling" rel="prev" title="Disabling">
+<link href="Breakpoints.html" rel="up" title="Breakpoints">
+<link href="Break-Commands.html" rel="next" title="Break Commands">
+<link href="Disabling.html" rel="prev" title="Disabling">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,21 +51,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Conditions"></a>
-<div class="header">
+<span id="Conditions"></span><div class="header">
 <p>
-Next: <a href="Break-Commands.html#Break-Commands" accesskey="n" rel="next">Break Commands</a>, Previous: <a href="Disabling.html#Disabling" accesskey="p" rel="prev">Disabling</a>, Up: <a href="Breakpoints.html#Breakpoints" accesskey="u" rel="up">Breakpoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Break-Commands.html" accesskey="n" rel="next">Break Commands</a>, Previous: <a href="Disabling.html" accesskey="p" rel="prev">Disabling</a>, Up: <a href="Breakpoints.html" accesskey="u" rel="up">Breakpoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Break-Conditions"></a>
-<h4 class="subsection">5.1.6 Break Conditions</h4>
-<a name="index-conditional-breakpoints"></a>
-<a name="index-breakpoint-conditions"></a>
+<span id="Break-Conditions"></span><h4 class="subsection">5.1.6 Break Conditions</h4>
+<span id="index-conditional-breakpoints"></span>
+<span id="index-breakpoint-conditions"></span>
 
 <p>The simplest sort of breakpoint breaks every time your program reaches a
 specified place.  You can also specify a <em>condition</em> for a
 breakpoint.  A condition is just a Boolean expression in your
-programming language (see <a href="Expressions.html#Expressions">Expressions</a>).  A breakpoint with
+programming language (see <a href="Expressions.html">Expressions</a>).  A breakpoint with
 a condition evaluates the expression each time your program reaches it,
 and your program stops only if the condition is <em>true</em>.
 </p>
@@ -100,12 +89,12 @@ program without checking the condition of this one.)  Note that
 breakpoint commands are usually more convenient and flexible than break
 conditions for the
 purpose of performing side effects when a breakpoint is reached
-(see <a href="Break-Commands.html#Break-Commands">Breakpoint Command Lists</a>).
+(see <a href="Break-Commands.html">Breakpoint Command Lists</a>).
 </p>
 <p>Breakpoint conditions can also be evaluated on the target&rsquo;s side if
 the target supports it.  Instead of evaluating the conditions locally,
 <small>GDB</small> encodes the expression into an agent expression
-(see <a href="Agent-Expressions.html#Agent-Expressions">Agent Expressions</a>) suitable for execution on the target,
+(see <a href="Agent-Expressions.html">Agent Expressions</a>) suitable for execution on the target,
 independently of <small>GDB</small>.  Global variables become raw memory
 locations, locals become stack accesses, and so forth.
 </p>
@@ -116,7 +105,7 @@ since it does not need to keep <small>GDB</small> informed about
 every breakpoint trigger, even those with false conditions.
 </p>
 <p>Break conditions can be specified when a breakpoint is set, by using
-&lsquo;<samp>if</samp>&rsquo; in the arguments to the <code>break</code> command.  See <a href="Set-Breaks.html#Set-Breaks">Setting Breakpoints</a>.  They can also be changed at any time
+&lsquo;<samp>if</samp>&rsquo; in the arguments to the <code>break</code> command.  See <a href="Set-Breaks.html">Setting Breakpoints</a>.  They can also be changed at any time
 with the <code>condition</code> command.
 </p>
 <p>You can also use the <code>if</code> keyword with the <code>watch</code> command.
@@ -125,7 +114,7 @@ The <code>catch</code> command does not recognize the <code>if</code> keyword;
 catchpoint.
 </p>
 <dl compact="compact">
-<dd><a name="index-condition"></a>
+<dd><span id="index-condition"></span>
 </dd>
 <dt><code>condition <var>bnum</var> <var>expression</var></code></dt>
 <dd><p>Specify <var>expression</var> as the break condition for breakpoint,
@@ -138,14 +127,14 @@ referents in the context of your breakpoint.  If <var>expression</var> uses
 symbols not referenced in the context of the breakpoint, <small>GDB</small>
 prints an error message:
 </p>
-<div class="smallexample">
-<pre class="smallexample">No symbol &quot;foo&quot; in current context.
+<div class="example">
+<pre class="example">No symbol &quot;foo&quot; in current context.
 </pre></div>
 
 <p><small>GDB</small> does
 not actually evaluate <var>expression</var> at the time the <code>condition</code>
 command (or a command that sets a breakpoint with a condition, like
-<code>break if &hellip;</code>) is given, however.  See <a href="Expressions.html#Expressions">Expressions</a>.
+<code>break if &hellip;</code>) is given, however.  See <a href="Expressions.html">Expressions</a>.
 </p>
 </dd>
 <dt><code>condition <var>bnum</var></code></dt>
@@ -154,7 +143,7 @@ an ordinary unconditional breakpoint.
 </p></dd>
 </dl>
 
-<a name="index-ignore-count-_0028of-breakpoint_0029"></a>
+<span id="index-ignore-count-_0028of-breakpoint_0029"></span>
 <p>A special case of a breakpoint condition is to stop only when the
 breakpoint has been reached a certain number of times.  This is so
 useful that there is a special way to do it, using the <em>ignore
@@ -167,7 +156,7 @@ value is <var>n</var>, the breakpoint does not stop the next <var>n</var> times
 your program reaches it.
 </p>
 <dl compact="compact">
-<dd><a name="index-ignore"></a>
+<dd><span id="index-ignore"></span>
 </dd>
 <dt><code>ignore <var>bnum</var> <var>count</var></code></dt>
 <dd><p>Set the ignore count of breakpoint number <var>bnum</var> to <var>count</var>.
@@ -180,7 +169,7 @@ a count of zero.
 </p>
 <p>When you use <code>continue</code> to resume execution of your program from a
 breakpoint, you can specify an ignore count directly as an argument to
-<code>continue</code>, rather than using <code>ignore</code>.  See <a href="Continuing-and-Stepping.html#Continuing-and-Stepping">Continuing and Stepping</a>.
+<code>continue</code>, rather than using <code>ignore</code>.  See <a href="Continuing-and-Stepping.html">Continuing and Stepping</a>.
 </p>
 <p>If a breakpoint has a positive ignore count and a condition, the
 condition is not checked.  Once the ignore count reaches zero,
@@ -188,7 +177,7 @@ condition is not checked.  Once the ignore count reaches zero,
 </p>
 <p>You could achieve the effect of the ignore count with a condition such
 as &lsquo;<samp><span class="nolinebreak">$foo--</span>&nbsp;&lt;=&nbsp;0</samp>&rsquo;<!-- /@w --> using a debugger convenience variable that
-is decremented each time.  See <a href="Convenience-Vars.html#Convenience-Vars">Convenience
+is decremented each time.  See <a href="Convenience-Vars.html">Convenience
 Variables</a>.
 </p></dd>
 </dl>
@@ -199,7 +188,7 @@ Variables</a>.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Break-Commands.html#Break-Commands" accesskey="n" rel="next">Break Commands</a>, Previous: <a href="Disabling.html#Disabling" accesskey="p" rel="prev">Disabling</a>, Up: <a href="Breakpoints.html#Breakpoints" accesskey="u" rel="up">Breakpoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Break-Commands.html" accesskey="n" rel="next">Break Commands</a>, Previous: <a href="Disabling.html" accesskey="p" rel="prev">Disabling</a>, Up: <a href="Breakpoints.html" accesskey="u" rel="up">Breakpoints</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Linespec Locations (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Specify-Location.html#Specify-Location" rel="up" title="Specify Location">
-<link href="Explicit-Locations.html#Explicit-Locations" rel="next" title="Explicit Locations">
-<link href="Specify-Location.html#Specify-Location" rel="prev" title="Specify Location">
+<link href="Specify-Location.html" rel="up" title="Specify Location">
+<link href="Explicit-Locations.html" rel="next" title="Explicit Locations">
+<link href="Specify-Location.html" rel="prev" title="Specify Location">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Linespec-Locations"></a>
-<div class="header">
+<span id="Linespec-Locations"></span><div class="header">
 <p>
-Next: <a href="Explicit-Locations.html#Explicit-Locations" accesskey="n" rel="next">Explicit Locations</a>, Up: <a href="Specify-Location.html#Specify-Location" accesskey="u" rel="up">Specify Location</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Explicit-Locations.html" accesskey="n" rel="next">Explicit Locations</a>, Up: <a href="Specify-Location.html" accesskey="u" rel="up">Specify Location</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Linespec-Locations-1"></a>
-<h4 class="subsection">9.2.1 Linespec Locations</h4>
-<a name="index-linespec-locations"></a>
+<span id="Linespec-Locations-1"></span><h4 class="subsection">9.2.1 Linespec Locations</h4>
+<span id="index-linespec-locations"></span>
 
 <p>A <em>linespec</em> is a colon-separated list of source location parameters such
 as file name, function name, etc.  Here are all the different ways of
@@ -85,7 +74,7 @@ specifying a linespec:
 line</em>.  For the <code>list</code> command, the current line is the last one
 printed; for the breakpoint commands, this is the line at which
 execution stopped in the currently selected <em>stack frame</em>
-(see <a href="Frames.html#Frames">Frames</a>, for a description of stack frames.)  When
+(see <a href="Frames.html">Frames</a>, for a description of stack frames.)  When
 used as the second of the two linespecs in a <code>list</code> command,
 this specifies the line <var>offset</var> lines up or down from the first
 linespec.
@@ -116,7 +105,7 @@ means in all packages.
 <code>-qualified</code> option.  For example, <kbd>break&nbsp;<span class="nolinebreak">-qualified</span>&nbsp;func</kbd><!-- /@w --> sets a breakpoint on a free-function named <code>func</code> ignoring
 any C<tt>++</tt> class methods and namespace functions called <code>func</code>.
 </p>
-<p>See <a href="Explicit-Locations.html#Explicit-Locations">Explicit Locations</a>.
+<p>See <a href="Explicit-Locations.html">Explicit Locations</a>.
 </p>
 </dd>
 <dt><code><var>function</var>:<var>label</var></code></dt>
@@ -136,11 +125,11 @@ in the function corresponding to the currently selected stack frame.
 If there is no current selected stack frame (for instance, if the inferior
 is not running), then <small>GDB</small> will not search for a label.
 </p>
-<a name="index-breakpoint-at-static-probe-point"></a>
+<span id="index-breakpoint-at-static-probe-point"></span>
 </dd>
 <dt><code>-pstap|-probe-stap <span class="roman">[</span><var>objfile</var>:<span class="roman">[</span><var>provider</var>:<span class="roman">]</span><span class="roman">]</span><var>name</var></code></dt>
 <dd><p>The <small>GNU</small>/Linux tool <code>SystemTap</code> provides a way for
-applications to embed static probes.  See <a href="Static-Probe-Points.html#Static-Probe-Points">Static Probe Points</a>, for more
+applications to embed static probes.  See <a href="Static-Probe-Points.html">Static Probe Points</a>, for more
 information on finding and using static probes.  This form of linespec
 specifies the location of such a static probe.
 </p>
@@ -155,7 +144,7 @@ each one of those probes.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Explicit-Locations.html#Explicit-Locations" accesskey="n" rel="next">Explicit Locations</a>, Up: <a href="Specify-Location.html#Specify-Location" accesskey="u" rel="up">Specify Location</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Explicit-Locations.html" accesskey="n" rel="next">Explicit Locations</a>, Up: <a href="Specify-Location.html" accesskey="u" rel="up">Specify Location</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

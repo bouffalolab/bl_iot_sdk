@@ -1,58 +1,79 @@
-<html lang="en">
-<head>
-<title>C and C++ Trees - GNU Compiler Collection (GCC) Internals</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Compiler Collection (GCC) Internals">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="GENERIC.html#GENERIC" title="GENERIC">
-<link rel="prev" href="Language_002ddependent-trees.html#Language_002ddependent-trees" title="Language-dependent trees">
-<link rel="next" href="Java-Trees.html#Java-Trees" title="Java Trees">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="C-and-C++-Trees"></a>
-<a name="C-and-C_002b_002b-Trees"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Java-Trees.html#Java-Trees">Java Trees</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Language_002ddependent-trees.html#Language_002ddependent-trees">Language-dependent trees</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="GENERIC.html#GENERIC">GENERIC</a>
-<hr>
-</div>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Compiler Collection (GCC) Internals: C and C++ Trees</title>
 
+<meta name="description" content="GNU Compiler Collection (GCC) Internals: C and C++ Trees">
+<meta name="keywords" content="GNU Compiler Collection (GCC) Internals: C and C++ Trees">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GENERIC.html#GENERIC" rel="up" title="GENERIC">
+<link href="Types-for-C_002b_002b.html#Types-for-C_002b_002b" rel="next" title="Types for C++">
+<link href="Language_002ddependent-trees.html#Language_002ddependent-trees" rel="prev" title="Language-dependent trees">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="C-and-C_002b_002b-Trees"></a>
+<div class="header">
+<p>
+Previous: <a href="Language_002ddependent-trees.html#Language_002ddependent-trees" accesskey="p" rel="prev">Language-dependent trees</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="C-and-C_002b_002b-Trees-1"></a>
 <h3 class="section">11.10 C and C++ Trees</h3>
 
 <p>This section documents the internal representation used by GCC to
@@ -66,8 +87,8 @@ by a code-generator in order to produce machine code, but could also be
 used in the creation of source browsers, intelligent editors, automatic
 documentation generators, interpreters, and any other programs needing
 the ability to process C or C++ code.
-
- <p>This section explains the internal representation.  In particular, it
+</p>
+<p>This section explains the internal representation.  In particular, it
 documents the internal representation for C and C++ source
 constructs, and the macros, functions, and variables that can be used to
 access these constructs.  The C++ representation is largely a superset
@@ -76,15 +97,15 @@ construct used in C that does not appear in the C++ front end and that
 is the GNU &ldquo;nested function&rdquo; extension.  Many of the macros documented
 here do not apply in C because the corresponding language constructs do
 not appear in C.
-
- <p>The C and C++ front ends generate a mix of GENERIC trees and ones
+</p>
+<p>The C and C++ front ends generate a mix of GENERIC trees and ones
 specific to C and C++.  These language-specific trees are higher-level
-constructs than the ones in GENERIC to make the parser's job easier. 
-This section describes those trees that aren't part of GENERIC as well
+constructs than the ones in GENERIC to make the parser&rsquo;s job easier.
+This section describes those trees that aren&rsquo;t part of GENERIC as well
 as aspects of GENERIC trees that are treated in a language-specific
 manner.
-
- <p>If you are developing a &ldquo;back end&rdquo;, be it is a code-generator or some
+</p>
+<p>If you are developing a &ldquo;back end&rdquo;, be it is a code-generator or some
 other tool, that uses this representation, you may occasionally find
 that you need to ask questions not easily answered by the functions and
 macros available here.  If that situation occurs, it is quite likely
@@ -95,15 +116,29 @@ documenting the functionality you require.  Similarly, if you find
 yourself writing functions that do not deal directly with your back end,
 but instead might be useful to other people using the GCC front end, you
 should submit your patches for inclusion in GCC.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Types-for-C_002b_002b.html#Types-for-C_002b_002b" accesskey="1">Types for C++</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Fundamental and aggregate types.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Namespaces.html#Namespaces" accesskey="2">Namespaces</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Namespaces.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Classes.html#Classes" accesskey="3">Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Classes.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Functions-for-C_002b_002b.html#Functions-for-C_002b_002b" accesskey="4">Functions for C++</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overloading and accessors for C++.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Statements-for-C_002b_002b.html#Statements-for-C_002b_002b" accesskey="5">Statements for C++</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Statements specific to C and C++.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="C_002b_002b-Expressions.html#C_002b_002b-Expressions" accesskey="6">C++ Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">From <code>typeid</code> to <code>throw</code>.
+</td></tr>
+</table>
 
-<ul class="menu">
-<li><a accesskey="1" href="Types-for-C_002b_002b.html#Types-for-C_002b_002b">Types for C++</a>:                Fundamental and aggregate types. 
-<li><a accesskey="2" href="Namespaces.html#Namespaces">Namespaces</a>:                   Namespaces. 
-<li><a accesskey="3" href="Classes.html#Classes">Classes</a>:                      Classes. 
-<li><a accesskey="4" href="Functions-for-C_002b_002b.html#Functions-for-C_002b_002b">Functions for C++</a>:            Overloading and accessors for C++. 
-<li><a accesskey="5" href="Statements-for-C_002b_002b.html#Statements-for-C_002b_002b">Statements for C++</a>:           Statements specific to C and C++. 
-<li><a accesskey="6" href="C_002b_002b-Expressions.html#C_002b_002b-Expressions">C++ Expressions</a>:     From <code>typeid</code> to <code>throw</code>. 
-</ul>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Language_002ddependent-trees.html#Language_002ddependent-trees" accesskey="p" rel="prev">Language-dependent trees</a>, Up: <a href="GENERIC.html#GENERIC" accesskey="u" rel="up">GENERIC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
- </body></html>
 
+
+</body>
+</html>

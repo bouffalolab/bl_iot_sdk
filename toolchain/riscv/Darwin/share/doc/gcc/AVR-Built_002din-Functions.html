@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>AVR Built-in Functions (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Target-Builtins.html#Target-Builtins" rel="up" title="Target Builtins">
-<link href="Blackfin-Built_002din-Functions.html#Blackfin-Built_002din-Functions" rel="next" title="Blackfin Built-in Functions">
-<link href="ARM-ARMv8_002dM-Security-Extensions.html#ARM-ARMv8_002dM-Security-Extensions" rel="prev" title="ARM ARMv8-M Security Extensions">
+<link href="Target-Builtins.html" rel="up" title="Target Builtins">
+<link href="Blackfin-Built_002din-Functions.html" rel="next" title="Blackfin Built-in Functions">
+<link href="ARM-ARMv8_002dM-Security-Extensions.html" rel="prev" title="ARM ARMv8-M Security Extensions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,14 +58,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="AVR-Built_002din-Functions"></a>
-<div class="header">
+<span id="AVR-Built_002din-Functions"></span><div class="header">
 <p>
-Next: <a href="Blackfin-Built_002din-Functions.html#Blackfin-Built_002din-Functions" accesskey="n" rel="next">Blackfin Built-in Functions</a>, Previous: <a href="ARM-ARMv8_002dM-Security-Extensions.html#ARM-ARMv8_002dM-Security-Extensions" accesskey="p" rel="prev">ARM ARMv8-M Security Extensions</a>, Up: <a href="Target-Builtins.html#Target-Builtins" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blackfin-Built_002din-Functions.html" accesskey="n" rel="next">Blackfin Built-in Functions</a>, Previous: <a href="ARM-ARMv8_002dM-Security-Extensions.html" accesskey="p" rel="prev">ARM ARMv8-M Security Extensions</a>, Up: <a href="Target-Builtins.html" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="AVR-Built_002din-Functions-1"></a>
-<h4 class="subsection">6.59.10 AVR Built-in Functions</h4>
+<span id="AVR-Built_002din-Functions-1"></span><h4 class="subsection">6.60.10 AVR Built-in Functions</h4>
 
 <p>For each built-in function for AVR, there is an equally named,
 uppercase built-in macro defined. That way users can easily query if
@@ -132,29 +121,29 @@ then the <var>n</var>-th result bit is undefined.
 <p>One typical use case for this built-in is adjusting input and
 output values to non-contiguous port layouts. Some examples:
 </p>
-<div class="smallexample">
-<pre class="smallexample">// same as val, bits is unused
+<div class="example">
+<pre class="example">// same as val, bits is unused
 __builtin_avr_insert_bits (0xffffffff, bits, val)
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">// same as bits, val is unused
+<div class="example">
+<pre class="example">// same as bits, val is unused
 __builtin_avr_insert_bits (0x76543210, bits, val)
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">// same as rotating bits by 4
+<div class="example">
+<pre class="example">// same as rotating bits by 4
 __builtin_avr_insert_bits (0x32107654, bits, 0)
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">// high nibble of result is the high nibble of val
+<div class="example">
+<pre class="example">// high nibble of result is the high nibble of val
 // low nibble of result is the low nibble of bits
 __builtin_avr_insert_bits (0xffff3210, bits, val)
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">// reverse the bit order of bits
+<div class="example">
+<pre class="example">// reverse the bit order of bits
 __builtin_avr_insert_bits (0x01234567, bits, 0)
 </pre></div>
 
@@ -172,8 +161,8 @@ section 7.18a.6.  You don&rsquo;t need to use these built-ins directly.
 Instead, use the declarations as supplied by the <code>stdfix.h</code> header
 with GNU-C99:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#include &lt;stdfix.h&gt;
+<div class="example">
+<pre class="example">#include &lt;stdfix.h&gt;
 
 // Re-interpret the bit representation of unsigned 16-bit
 // integer <var>uval</var> as Q-format 0.16 value.
@@ -186,7 +175,7 @@ unsigned fract get_bits (uint_ur_t uval)
 <hr>
 <div class="header">
 <p>
-Next: <a href="Blackfin-Built_002din-Functions.html#Blackfin-Built_002din-Functions" accesskey="n" rel="next">Blackfin Built-in Functions</a>, Previous: <a href="ARM-ARMv8_002dM-Security-Extensions.html#ARM-ARMv8_002dM-Security-Extensions" accesskey="p" rel="prev">ARM ARMv8-M Security Extensions</a>, Up: <a href="Target-Builtins.html#Target-Builtins" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blackfin-Built_002din-Functions.html" accesskey="n" rel="next">Blackfin Built-in Functions</a>, Previous: <a href="ARM-ARMv8_002dM-Security-Extensions.html" accesskey="p" rel="prev">ARM ARMv8-M Security Extensions</a>, Up: <a href="Target-Builtins.html" accesskey="u" rel="up">Target Builtins</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

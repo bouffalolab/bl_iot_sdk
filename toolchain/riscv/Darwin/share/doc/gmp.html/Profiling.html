@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Profiling (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="GMP-Basics.html#GMP-Basics" rel="up" title="GMP Basics">
-<link href="Autoconf.html#Autoconf" rel="next" title="Autoconf">
-<link href="Debugging.html#Debugging" rel="prev" title="Debugging">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="GMP-Basics.html" rel="up" title="GMP Basics">
+<link href="Autoconf.html" rel="next" title="Autoconf">
+<link href="Debugging.html" rel="prev" title="Debugging">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,17 +50,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Profiling"></a>
-<div class="header">
+<span id="Profiling"></span><div class="header">
 <p>
-Next: <a href="Autoconf.html#Autoconf" accesskey="n" rel="next">Autoconf</a>, Previous: <a href="Debugging.html#Debugging" accesskey="p" rel="prev">Debugging</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Autoconf.html" accesskey="n" rel="next">Autoconf</a>, Previous: <a href="Debugging.html" accesskey="p" rel="prev">Debugging</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Profiling-1"></a>
-<h3 class="section">3.13 Profiling</h3>
-<a name="index-Profiling"></a>
-<a name="index-Execution-profiling-1"></a>
-<a name="index-_002d_002denable_002dprofiling-1"></a>
+<span id="Profiling-1"></span><h3 class="section">3.13 Profiling</h3>
+<span id="index-Profiling"></span>
+<span id="index-Execution-profiling-1"></span>
+<span id="index-_002d_002denable_002dprofiling-1"></span>
 
 <p>Running a program under a profiler is a good way to find where it&rsquo;s spending
 most time and where improvements can be best sought.  The profiling choices
@@ -90,7 +79,7 @@ milliseconds for instance), requiring long runs to get accurate information.
 </p>
 </dd>
 <dt>&lsquo;<samp>--enable-profiling=prof</samp>&rsquo;</dt>
-<dd><a name="index-prof"></a>
+<dd><span id="index-prof"></span>
 <p>Build with support for the system <code>prof</code>, which means &lsquo;<samp>-p</samp>&rsquo; added
 to the &lsquo;<samp>CFLAGS</samp>&rsquo;.
 </p>
@@ -108,7 +97,7 @@ instead.
 </p>
 </dd>
 <dt>&lsquo;<samp>--enable-profiling=gprof</samp>&rsquo;</dt>
-<dd><a name="index-gprof"></a>
+<dd><span id="index-gprof"></span>
 <p>Build with support for <code>gprof</code>, which means &lsquo;<samp>-pg</samp>&rsquo; added to the
 &lsquo;<samp>CFLAGS</samp>&rsquo;.
 </p>
@@ -134,10 +123,10 @@ the &lsquo;<samp>gprof -q</samp>&rsquo; call graph.
 </p>
 </dd>
 <dt>&lsquo;<samp>--enable-profiling=instrument</samp>&rsquo;</dt>
-<dd><a name="index-_002dfinstrument_002dfunctions"></a>
-<a name="index-instrument_002dfunctions"></a>
+<dd><span id="index-_002dfinstrument_002dfunctions"></span>
+<span id="index-instrument_002dfunctions"></span>
 <p>Build with the GCC option &lsquo;<samp>-finstrument-functions</samp>&rsquo; added to the
-&lsquo;<samp>CFLAGS</samp>&rsquo; (see <a href="http://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation</a> in <cite>Using the GNU Compiler Collection (GCC)</cite>).
+&lsquo;<samp>CFLAGS</samp>&rsquo; (see <a href="https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation</a> in <cite>Using the GNU Compiler Collection (GCC)</cite>).
 </p>
 <p>This inserts special instrumenting calls at the start and end of each
 function, allowing exact timing and full call graph construction.
@@ -145,8 +134,8 @@ function, allowing exact timing and full call graph construction.
 <p>This instrumenting is not normally a standard system feature and will require
 support from an external library, such as
 </p>
-<a name="index-FunctionCheck"></a>
-<a name="index-fnccheck"></a>
+<span id="index-FunctionCheck"></span>
+<span id="index-fnccheck"></span>
 <div class="display">
 <pre class="display"><a href="http://sourceforge.net/projects/fnccheck/">http://sourceforge.net/projects/fnccheck/</a>
 </pre></div>
@@ -173,7 +162,7 @@ attributed to their caller.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Autoconf.html#Autoconf" accesskey="n" rel="next">Autoconf</a>, Previous: <a href="Debugging.html#Debugging" accesskey="p" rel="prev">Debugging</a>, Up: <a href="GMP-Basics.html#GMP-Basics" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Autoconf.html" accesskey="n" rel="next">Autoconf</a>, Previous: <a href="Debugging.html" accesskey="p" rel="prev">Debugging</a>, Up: <a href="GMP-Basics.html" accesskey="u" rel="up">GMP Basics</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

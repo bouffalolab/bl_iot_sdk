@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Server (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Debugging.html#Remote-Debugging" rel="up" title="Remote Debugging">
-<link href="Remote-Configuration.html#Remote-Configuration" rel="next" title="Remote Configuration">
-<link href="File-Transfer.html#File-Transfer" rel="prev" title="File Transfer">
+<link href="Remote-Debugging.html" rel="up" title="Remote Debugging">
+<link href="Remote-Configuration.html" rel="next" title="Remote Configuration">
+<link href="File-Transfer.html" rel="prev" title="File Transfer">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,17 +51,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Server"></a>
-<div class="header">
+<span id="Server"></span><div class="header">
 <p>
-Next: <a href="Remote-Configuration.html#Remote-Configuration" accesskey="n" rel="next">Remote Configuration</a>, Previous: <a href="File-Transfer.html#File-Transfer" accesskey="p" rel="prev">File Transfer</a>, Up: <a href="Remote-Debugging.html#Remote-Debugging" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Remote-Configuration.html" accesskey="n" rel="next">Remote Configuration</a>, Previous: <a href="File-Transfer.html" accesskey="p" rel="prev">File Transfer</a>, Up: <a href="Remote-Debugging.html" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Using-the-gdbserver-Program"></a>
-<h3 class="section">20.3 Using the <code>gdbserver</code> Program</h3>
+<span id="Using-the-gdbserver-Program"></span><h3 class="section">20.3 Using the <code>gdbserver</code> Program</h3>
 
-<a name="index-gdbserver"></a>
-<a name="index-remote-connection-without-stubs"></a>
+<span id="index-gdbserver"></span>
+<span id="index-remote-connection-without-stubs"></span>
 <p><code>gdbserver</code> is a control program for Unix-like systems, which
 allows you to connect your program with a remote <small>GDB</small> via
 <code>target remote</code> or <code>target extended-remote</code>&mdash;but without
@@ -102,10 +91,9 @@ target system with the same privileges as the user running
 <code>gdbserver</code>.
 </p></blockquote>
 
-<a name="Running-gdbserver"></a><a name="Running-gdbserver-1"></a>
-<h4 class="subsection">20.3.1 Running <code>gdbserver</code></h4>
-<a name="index-arguments_002c-to-gdbserver"></a>
-<a name="index-gdbserver_002c-command_002dline-arguments"></a>
+<span id="Running-gdbserver"></span><span id="Running-gdbserver-1"></span><h4 class="subsection">20.3.1 Running <code>gdbserver</code></h4>
+<span id="index-arguments_002c-to-gdbserver"></span>
+<span id="index-gdbserver_002c-command_002dline-arguments"></span>
 
 <p>Run <code>gdbserver</code> on the target system.  You need a copy of the
 program you want to debug, including any libraries it requires.
@@ -117,8 +105,8 @@ system does all the symbol handling.
 the name of your program; and the arguments for your program.  The usual
 syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver <var>comm</var> <var>program</var> [ <var>args</var> &hellip; ]
+<div class="example">
+<pre class="example">target&gt; gdbserver <var>comm</var> <var>program</var> [ <var>args</var> &hellip; ]
 </pre></div>
 
 <p><var>comm</var> is either a device name (to use a serial line), or a TCP
@@ -128,8 +116,8 @@ For example, to debug Emacs with the argument
 &lsquo;<samp>foo.txt</samp>&rsquo; and communicate with <small>GDB</small> over the serial port
 <samp>/dev/com1</samp>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver /dev/com1 emacs foo.txt
+<div class="example">
+<pre class="example">target&gt; gdbserver /dev/com1 emacs foo.txt
 </pre></div>
 
 <p><code>gdbserver</code> waits passively for the host <small>GDB</small> to communicate
@@ -137,8 +125,8 @@ with it.
 </p>
 <p>To use a TCP connection instead of a serial line:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver host:2345 emacs foo.txt
+<div class="example">
+<pre class="example">target&gt; gdbserver host:2345 emacs foo.txt
 </pre></div>
 
 <p>The only difference from the previous example is the first argument,
@@ -148,14 +136,14 @@ expect a TCP connection from machine &lsquo;<samp>host</samp>&rsquo; to local TC
 (Currently, the &lsquo;<samp>host</samp>&rsquo; part is ignored.)  You can choose any number
 you want for the port number as long as it does not conflict with any
 TCP ports already in use on the target system (for example, <code>23</code> is
-reserved for <code>telnet</code>).<a name="DOCF15" href="#FOOT15"><sup>15</sup></a>  You must use the same port number with the host <small>GDB</small>
+reserved for <code>telnet</code>).<a id="DOCF16" href="#FOOT16"><sup>16</sup></a>  You must use the same port number with the host <small>GDB</small>
 <code>target remote</code> command.
 </p>
 <p>The <code>stdio</code> connection is useful when starting <code>gdbserver</code>
 with ssh:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) target remote | ssh -T hostname gdbserver - hello
+<div class="example">
+<pre class="example">(gdb) target remote | ssh -T hostname gdbserver - hello
 </pre></div>
 
 <p>The &lsquo;<samp>-T</samp>&rsquo; option to ssh is provided because we don&rsquo;t need a remote pty,
@@ -168,16 +156,15 @@ You could elide it if you want to.
 display through a pipe connected to gdbserver.
 Both <code>stdout</code> and <code>stderr</code> use the same pipe.
 </p>
-<a name="Attaching-to-a-program"></a><a name="Attaching-to-a-Running-Program"></a>
-<h4 class="subsubsection">20.3.1.1 Attaching to a Running Program</h4>
-<a name="index-attach-to-a-program_002c-gdbserver"></a>
-<a name="index-_002d_002dattach_002c-gdbserver-option"></a>
+<span id="Attaching-to-a-program"></span><span id="Attaching-to-a-Running-Program"></span><h4 class="subsubsection">20.3.1.1 Attaching to a Running Program</h4>
+<span id="index-attach-to-a-program_002c-gdbserver"></span>
+<span id="index-_002d_002dattach_002c-gdbserver-option"></span>
 
 <p>On some targets, <code>gdbserver</code> can also attach to running programs.
 This is accomplished via the <code>--attach</code> argument.  The syntax is:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
+<div class="example">
+<pre class="example">target&gt; gdbserver --attach <var>comm</var> <var>pid</var>
 </pre></div>
 
 <p><var>pid</var> is the process ID of a currently running process.  It isn&rsquo;t
@@ -187,20 +174,19 @@ necessary to point <code>gdbserver</code> at a binary for the running process.
 <small>GDB</small> attach command
 (see <a href="Connecting.html#Attaching-in-Types-of-Remote-Connections">Attaching in Types of Remote Connections</a>).
 </p>
-<a name="index-pidof"></a>
+<span id="index-pidof"></span>
 <p>You can debug processes by name instead of process ID if your target has the
 <code>pidof</code> utility:
 </p>
-<div class="smallexample">
-<pre class="smallexample">target&gt; gdbserver --attach <var>comm</var> `pidof <var>program</var>`
+<div class="example">
+<pre class="example">target&gt; gdbserver --attach <var>comm</var> `pidof <var>program</var>`
 </pre></div>
 
 <p>In case more than one copy of <var>program</var> is running, or <var>program</var>
 has multiple threads, most versions of <code>pidof</code> support the
 <code>-s</code> option to only return the first process ID.
 </p>
-<a name="TCP-port-allocation-lifecycle-of-gdbserver"></a>
-<h4 class="subsubsection">20.3.1.2 TCP port allocation lifecycle of <code>gdbserver</code></h4>
+<span id="TCP-port-allocation-lifecycle-of-gdbserver"></span><h4 class="subsubsection">20.3.1.2 TCP port allocation lifecycle of <code>gdbserver</code></h4>
 
 <p>This section applies only when <code>gdbserver</code> is run to listen on a TCP
 port.
@@ -218,7 +204,7 @@ stays running even in the <kbd>target remote</kbd> mode.
 Such reconnecting is useful for features like <a href="Starting-and-Stopping-Trace-Experiments.html#disconnected-tracing">disconnected tracing</a>.  For
 completeness, at most one <small>GDB</small> can be connected at a time.
 </p>
-<a name="index-_002d_002donce_002c-gdbserver-option"></a>
+<span id="index-_002d_002donce_002c-gdbserver-option"></span>
 <p>By default, <code>gdbserver</code> keeps the listening TCP port open, so that
 subsequent connections are possible.  However, if you start <code>gdbserver</code>
 with the <samp>--once</samp> option, it will stop listening for any further
@@ -231,8 +217,7 @@ connections and even in the <kbd>target extended-remote</kbd> mode.  The
 multiple instances of <code>gdbserver</code> running on the same host, since each
 instance closes its port after the first connection.
 </p>
-<a name="Other-Command_002dLine-Arguments-for-gdbserver"></a><a name="Other-Command_002dLine-Arguments-for-gdbserver-1"></a>
-<h4 class="subsubsection">20.3.1.3 Other Command-Line Arguments for <code>gdbserver</code></h4>
+<span id="Other-Command_002dLine-Arguments-for-gdbserver"></span><span id="Other-Command_002dLine-Arguments-for-gdbserver-1"></span><h4 class="subsubsection">20.3.1.3 Other Command-Line Arguments for <code>gdbserver</code></h4>
 
 <p>You can use the <samp>--multi</samp> option to start <code>gdbserver</code> without
 specifying a program to debug or a process to attach to.  Then you can
@@ -240,15 +225,19 @@ attach in <code>target extended-remote</code> mode and run or attach to a
 program.  For more information,
 see <a href="Connecting.html#g_t_002d_002dmulti-Option-in-Types-of-Remote-Connnections">--multi Option in Types of Remote Connnections</a>.
 </p>
-<a name="index-_002d_002ddebug_002c-gdbserver-option"></a>
+<span id="index-_002d_002ddebug_002c-gdbserver-option"></span>
 <p>The <samp>--debug</samp> option tells <code>gdbserver</code> to display extra
 status information about the debugging process.
-<a name="index-_002d_002dremote_002ddebug_002c-gdbserver-option"></a>
+<span id="index-_002d_002dremote_002ddebug_002c-gdbserver-option"></span>
 The <samp>--remote-debug</samp> option tells <code>gdbserver</code> to display
-remote protocol debug output.  These options are intended for
-<code>gdbserver</code> development and for bug reports to the developers.
+remote protocol debug output.
+<span id="index-_002d_002ddebug_002dfile_002c-gdbserver-option"></span>
+<span id="index-gdbserver_002c-send-all-debug-output-to-a-single-file"></span>
+The <samp>--debug-file=<var>filename</var></samp> option tells <code>gdbserver</code> to
+write any debug output to the given <var>filename</var>.  These options are intended
+for <code>gdbserver</code> development and for bug reports to the developers.
 </p>
-<a name="index-_002d_002ddebug_002dformat_002c-gdbserver-option"></a>
+<span id="index-_002d_002ddebug_002dformat_002c-gdbserver-option"></span>
 <p>The <samp>--debug-format=option1[,option2,...]</samp> option tells
 <code>gdbserver</code> to include additional information in each output.
 Possible options are:
@@ -268,7 +257,7 @@ Possible options are:
 <p>Options are processed in order.  Thus, for example, if <samp>none</samp>
 appears last then no additional information is added to debugging output.
 </p>
-<a name="index-_002d_002dwrapper_002c-gdbserver-option"></a>
+<span id="index-_002d_002dwrapper_002c-gdbserver-option"></span>
 <p>The <samp>--wrapper</samp> option specifies a wrapper to launch programs
 for debugging.  The option should be followed by the name of the
 wrapper, then any command-line arguments to pass to the wrapper, then
@@ -288,21 +277,20 @@ with <code>exec &quot;$@&quot;</code> will also work.
 the debugged program, without setting the variable in <code>gdbserver</code>&rsquo;s
 environment:
 </p>
-<div class="smallexample">
-<pre class="smallexample">$ gdbserver --wrapper env LD_PRELOAD=libtest.so -- :2222 ./testprog
+<div class="example">
+<pre class="example">$ gdbserver --wrapper env LD_PRELOAD=libtest.so -- :2222 ./testprog
 </pre></div>
 
-<a name="index-_002d_002dselftest"></a>
+<span id="index-_002d_002dselftest"></span>
 <p>The <samp>--selftest</samp> option runs the self tests in <code>gdbserver</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">$ gdbserver --selftest
+<div class="example">
+<pre class="example">$ gdbserver --selftest
 Ran 2 unit tests, 0 failed
 </pre></div>
 
 <p>These tests are disabled in release.
-</p><a name="Connecting-to-gdbserver"></a>
-<h4 class="subsection">20.3.2 Connecting to <code>gdbserver</code></h4>
+</p><span id="Connecting-to-gdbserver"></span><h4 class="subsection">20.3.2 Connecting to <code>gdbserver</code></h4>
 
 <p>The basic procedure for connecting to the remote target is:
 </p><ul>
@@ -315,7 +303,7 @@ connect.  Use <code>set sysroot</code> to locate target libraries (unless your
 <small>GDB</small> was compiled with the correct sysroot using
 <code>--with-sysroot</code>).
 
-</li><li> Connect to your target (see <a href="Connecting.html#Connecting">Connecting to a Remote Target</a>).
+</li><li> Connect to your target (see <a href="Connecting.html">Connecting to a Remote Target</a>).
 For TCP connections, you must start up <code>gdbserver</code> prior to using
 the <code>target</code> command.  Otherwise you may get an error whose
 text depends on the host system, but which usually looks something like
@@ -325,9 +313,8 @@ program is already on the target.
 
 </li></ul>
 
-<a name="Monitor-Commands-for-gdbserver"></a><a name="Monitor-Commands-for-gdbserver-1"></a>
-<h4 class="subsection">20.3.3 Monitor Commands for <code>gdbserver</code></h4>
-<a name="index-monitor-commands_002c-for-gdbserver"></a>
+<span id="Monitor-Commands-for-gdbserver"></span><span id="Monitor-Commands-for-gdbserver-1"></span><h4 class="subsection">20.3.3 Monitor Commands for <code>gdbserver</code></h4>
+<span id="index-monitor-commands_002c-for-gdbserver"></span>
 
 <p>During a <small>GDB</small> session using <code>gdbserver</code>, you can use the
 <code>monitor</code> command to send special requests to <code>gdbserver</code>.
@@ -346,7 +333,12 @@ Here are the available commands.
 <dt><code>monitor set remote-debug 0</code></dt>
 <dt><code>monitor set remote-debug 1</code></dt>
 <dd><p>Disable or enable specific debugging messages associated with the remote
-protocol (see <a href="Remote-Protocol.html#Remote-Protocol">Remote Protocol</a>).
+protocol (see <a href="Remote-Protocol.html">Remote Protocol</a>).
+</p>
+</dd>
+<dt><code>monitor set debug-file filename</code></dt>
+<dt><code>monitor set debug-file</code></dt>
+<dd><p>Send any debug output to the given file, or to stderr.
 </p>
 </dd>
 <dt><code>monitor set debug-format option1<span class="roman">[</span>,option2,...<span class="roman">]</span></code></dt>
@@ -370,9 +362,9 @@ appears last then no additional information is added to debugging output.
 </p>
 </dd>
 <dt><code>monitor set libthread-db-search-path [PATH]</code></dt>
-<dd><a name="index-gdbserver_002c-search-path-for-libthread_005fdb"></a>
+<dd><span id="index-gdbserver_002c-search-path-for-libthread_005fdb"></span>
 <p>When this command is issued, <var>path</var> is a colon-separated list of
-directories to search for <code>libthread_db</code> (see <a href="Threads.html#Threads">set
+directories to search for <code>libthread_db</code> (see <a href="Threads.html">set
 libthread-db-search-path</a>).  If you omit <var>path</var>,
 &lsquo;<samp>libthread-db-search-path</samp>&rsquo; will be reset to its default value.
 </p>
@@ -390,9 +382,8 @@ of a multi-process mode debug session.
 </dd>
 </dl>
 
-<a name="Tracepoints-support-in-gdbserver"></a>
-<h4 class="subsection">20.3.4 Tracepoints support in <code>gdbserver</code></h4>
-<a name="index-tracepoints-support-in-gdbserver"></a>
+<span id="Tracepoints-support-in-gdbserver"></span><h4 class="subsection">20.3.4 Tracepoints support in <code>gdbserver</code></h4>
+<span id="index-tracepoints-support-in-gdbserver"></span>
 
 <p>On some targets, <code>gdbserver</code> supports tracepoints, fast
 tracepoints and static tracepoints.
@@ -438,8 +429,8 @@ of dynamically looking up and loading a shared library.  On most Unix
 systems, the function is <code>dlopen</code>.  You&rsquo;ll use the <code>call</code>
 command for that.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) call dlopen (&quot;libinproctrace.so&quot;, ...)
+<div class="example">
+<pre class="example">(gdb) call dlopen (&quot;libinproctrace.so&quot;, ...)
 </pre></div>
 
 <p>Note that on most Unix systems, for the <code>dlopen</code> function to be
@@ -458,14 +449,14 @@ libraries.  The simplest way to do that is to run the program to the
 main procedure.  E.g., if debugging a C or C<tt>++</tt> program, start
 <code>gdbserver</code> like so:
 </p>
-<div class="smallexample">
-<pre class="smallexample">$ gdbserver :9999 myprogram
+<div class="example">
+<pre class="example">$ gdbserver :9999 myprogram
 </pre></div>
 
 <p>Start GDB and connect to <code>gdbserver</code> like so, and run to main:
 </p>
-<div class="smallexample">
-<pre class="smallexample">$ gdb myprogram
+<div class="example">
+<pre class="example">$ gdb myprogram
 (gdb) target remote myhost:9999
 0x00007f215893ba60 in ?? () from /lib64/ld-linux-x86-64.so.2
 (gdb) b main
@@ -483,7 +474,7 @@ tracing.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT15" href="#DOCF15">(15)</a></h3>
+<h5><a id="FOOT16" href="#DOCF16">(16)</a></h3>
 <p>If you choose a port number that
 conflicts with another service, <code>gdbserver</code> prints an error message
 and exits.</p>
@@ -491,7 +482,7 @@ and exits.</p>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Remote-Configuration.html#Remote-Configuration" accesskey="n" rel="next">Remote Configuration</a>, Previous: <a href="File-Transfer.html#File-Transfer" accesskey="p" rel="prev">File Transfer</a>, Up: <a href="Remote-Debugging.html#Remote-Debugging" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Remote-Configuration.html" accesskey="n" rel="next">Remote Configuration</a>, Previous: <a href="File-Transfer.html" accesskey="p" rel="prev">File Transfer</a>, Up: <a href="Remote-Debugging.html" accesskey="u" rel="up">Remote Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

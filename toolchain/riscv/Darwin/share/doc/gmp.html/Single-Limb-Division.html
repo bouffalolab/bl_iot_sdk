@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Single Limb Division (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Division-Algorithms.html#Division-Algorithms" rel="up" title="Division Algorithms">
-<link href="Basecase-Division.html#Basecase-Division" rel="next" title="Basecase Division">
-<link href="Division-Algorithms.html#Division-Algorithms" rel="prev" title="Division Algorithms">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Division-Algorithms.html" rel="up" title="Division Algorithms">
+<link href="Basecase-Division.html" rel="next" title="Basecase Division">
+<link href="Division-Algorithms.html" rel="prev" title="Division Algorithms">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,21 +50,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Single-Limb-Division"></a>
-<div class="header">
+<span id="Single-Limb-Division"></span><div class="header">
 <p>
-Next: <a href="Basecase-Division.html#Basecase-Division" accesskey="n" rel="next">Basecase Division</a>, Previous: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="p" rel="prev">Division Algorithms</a>, Up: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Basecase-Division.html" accesskey="n" rel="next">Basecase Division</a>, Previous: <a href="Division-Algorithms.html" accesskey="p" rel="prev">Division Algorithms</a>, Up: <a href="Division-Algorithms.html" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Single-Limb-Division-1"></a>
-<h4 class="subsection">15.2.1 Single Limb Division</h4>
+<span id="Single-Limb-Division-1"></span><h4 class="subsection">15.2.1 Single Limb Division</h4>
 
 <p>Nx1 division is implemented using repeated 2x1 divisions from
 high to low, either with a hardware divide instruction or a multiplication by
 inverse, whichever is best on a given CPU.
 </p>
 <p>The multiply by inverse follows &ldquo;Improved division by invariant integers&rdquo; by
-M&ouml;ller and Granlund (see <a href="References.html#References">References</a>) and is implemented as
+M&ouml;ller and Granlund (see <a href="References.html">References</a>) and is implemented as
 <code>udiv_qrnnd_preinv</code> in <samp>gmp-impl.h</samp>.  The idea is to have a
 fixed-point approximation to <em>1/d</em> (see <code>invert_limb</code>) and then
 multiply by the high limb (plus one bit) of the dividend to get a quotient
@@ -118,7 +107,7 @@ if the only multiply is a half limb, and especially if it&rsquo;s not pipelined.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Basecase-Division.html#Basecase-Division" accesskey="n" rel="next">Basecase Division</a>, Previous: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="p" rel="prev">Division Algorithms</a>, Up: <a href="Division-Algorithms.html#Division-Algorithms" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Basecase-Division.html" accesskey="n" rel="next">Basecase Division</a>, Previous: <a href="Division-Algorithms.html" accesskey="p" rel="prev">Division Algorithms</a>, Up: <a href="Division-Algorithms.html" accesskey="u" rel="up">Division Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

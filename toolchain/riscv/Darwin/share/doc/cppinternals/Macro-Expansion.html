@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Macro Expansion (The GNU C Preprocessor Internals)</title>
@@ -10,33 +10,24 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="index.html#Top" rel="up" title="Top">
-<link href="Token-Spacing.html#Token-Spacing" rel="next" title="Token Spacing">
-<link href="Hash-Nodes.html#Hash-Nodes" rel="prev" title="Hash Nodes">
+<link href="index.html" rel="up" title="Top">
+<link href="Token-Spacing.html" rel="next" title="Token Spacing">
+<link href="Hash-Nodes.html" rel="prev" title="Hash Nodes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -48,15 +39,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Macro-Expansion"></a>
-<div class="header">
+<span id="Macro-Expansion"></span><div class="header">
 <p>
-Next: <a href="Token-Spacing.html#Token-Spacing" accesskey="n" rel="next">Token Spacing</a>, Previous: <a href="Hash-Nodes.html#Hash-Nodes" accesskey="p" rel="prev">Hash Nodes</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Token-Spacing.html" accesskey="n" rel="next">Token Spacing</a>, Previous: <a href="Hash-Nodes.html" accesskey="p" rel="prev">Hash Nodes</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Macro-Expansion-Algorithm"></a>
-<h2 class="unnumbered">Macro Expansion Algorithm</h2>
-<a name="index-macro-expansion"></a>
+<span id="Macro-Expansion-Algorithm"></span><h2 class="unnumbered">Macro Expansion Algorithm</h2>
+<span id="index-macro-expansion"></span>
 
 <p>Macro expansion is a tricky operation, fraught with nasty corner cases
 and situations that render what you thought was a nifty way to
@@ -70,9 +59,8 @@ picture of how things like nested macro expansion, stringizing and
 token pasting are supposed to work, damage to your sanity can quickly
 result.
 </p>
-<a name="Internal-representation-of-macros"></a>
-<h3 class="section">Internal representation of macros</h3>
-<a name="index-macro-representation-_0028internal_0029"></a>
+<span id="Internal-representation-of-macros"></span><h3 class="section">Internal representation of macros</h3>
+<span id="index-macro-representation-_0028internal_0029"></span>
 
 <p>The preprocessor stores macro expansions in tokenized form.  This
 saves repeated lexing passes during expansion, at the cost of a small
@@ -92,8 +80,7 @@ the original parameters to the macro, both for dumping with e.g.,
 <samp>-dD</samp>, and to warn about non-trivial macro redefinitions when
 the parameter names have changed.
 </p>
-<a name="Macro-expansion-overview"></a>
-<h3 class="section">Macro expansion overview</h3>
+<span id="Macro-expansion-overview"></span><h3 class="section">Macro expansion overview</h3>
 <p>The preprocessor maintains a <em>context stack</em>, implemented as a
 linked list of <code>cpp_context</code> structures, which together represent
 the macro expansion state at any one time.  The <code>struct
@@ -126,7 +113,7 @@ have been fully macro expanded first.
 <p><code>enter_macro_context</code> also handles special macros like
 <code>__LINE__</code>.  Although these macros expand to a single token which
 cannot contain any further macros, for reasons of token spacing
-(see <a href="Token-Spacing.html#Token-Spacing">Token Spacing</a>) and simplicity of implementation, cpplib
+(see <a href="Token-Spacing.html">Token Spacing</a>) and simplicity of implementation, cpplib
 handles these special macros by pushing a context containing just that
 one token.
 </p>
@@ -138,8 +125,7 @@ ordering ensures that a macro is disabled whilst its expansion is
 being scanned, but that it is <em>not</em> disabled whilst any arguments
 to it are being expanded.
 </p>
-<a name="Scanning-the-replacement-list-for-macros-to-expand"></a>
-<h3 class="section">Scanning the replacement list for macros to expand</h3>
+<span id="Scanning-the-replacement-list-for-macros-to-expand"></span><h3 class="section">Scanning the replacement list for macros to expand</h3>
 <p>The C standard states that, after any parameters have been replaced
 with their possibly-expanded arguments, the replacement list is
 scanned for nested macros.  Further, any identifiers in the
@@ -167,8 +153,8 @@ context is still disabled when we are considering the last token of
 its replacement list for expansion (or indeed expanding it).  As an
 example, which illustrates many of the points above, consider
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define foo(x) bar x
+<div class="example">
+<pre class="example">#define foo(x) bar x
 foo(foo) (2)
 </pre></div>
 
@@ -190,12 +176,11 @@ In the example above, the replacement list of &lsquo;<samp>foo</samp>&rsquo; wou
 popped in the process of finding the parenthesis, re-enabling
 &lsquo;<samp>foo</samp>&rsquo; and expanding it a second time.
 </p>
-<a name="Looking-for-a-function_002dlike-macro_0027s-opening-parenthesis"></a>
-<h3 class="section">Looking for a function-like macro&rsquo;s opening parenthesis</h3>
+<span id="Looking-for-a-function_002dlike-macro_0027s-opening-parenthesis"></span><h3 class="section">Looking for a function-like macro&rsquo;s opening parenthesis</h3>
 <p>Function-like macros only expand when immediately followed by a
 parenthesis.  To do this cpplib needs to temporarily disable macros
 and read the next token.  Unfortunately, because of spacing issues
-(see <a href="Token-Spacing.html#Token-Spacing">Token Spacing</a>), there can be fake padding tokens in-between,
+(see <a href="Token-Spacing.html">Token Spacing</a>), there can be fake padding tokens in-between,
 and if the next real token is not a parenthesis cpplib needs to be
 able to back up that one token as well as retain the information in
 any intervening padding tokens.
@@ -209,8 +194,7 @@ information as it reads tokens.  If the next real token is not an
 opening parenthesis, it backs up that one token, and then pushes an
 extra context just containing the padding information if necessary.
 </p>
-<a name="Marking-tokens-ineligible-for-future-expansion"></a>
-<h3 class="section">Marking tokens ineligible for future expansion</h3>
+<span id="Marking-tokens-ineligible-for-future-expansion"></span><h3 class="section">Marking tokens ineligible for future expansion</h3>
 <p>As discussed above, cpplib needs a way of marking tokens as
 unexpandable.  Since the tokens cpplib handles are read-only once they
 have been lexed, it instead makes a copy of the token and adds the
@@ -231,7 +215,7 @@ is safe.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Token-Spacing.html#Token-Spacing" accesskey="n" rel="next">Token Spacing</a>, Previous: <a href="Hash-Nodes.html#Hash-Nodes" accesskey="p" rel="prev">Hash Nodes</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Token-Spacing.html" accesskey="n" rel="next">Token Spacing</a>, Previous: <a href="Hash-Nodes.html" accesskey="p" rel="prev">Hash Nodes</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

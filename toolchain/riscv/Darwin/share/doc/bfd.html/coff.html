@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>coff (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="BFD-back-ends.html#BFD-back-ends" rel="up" title="BFD back ends">
-<link href="elf.html#elf" rel="next" title="elf">
-<link href="aout.html#aout" rel="prev" title="aout">
+<link href="BFD-back-ends.html" rel="up" title="BFD back ends">
+<link href="elf.html" rel="next" title="elf">
+<link href="aout.html" rel="prev" title="aout">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,14 +60,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="coff"></a>
-<div class="header">
+<span id="coff"></span><div class="header">
 <p>
-Next: <a href="elf.html#elf" accesskey="n" rel="next">elf</a>, Previous: <a href="aout.html#aout" accesskey="p" rel="prev">aout</a>, Up: <a href="BFD-back-ends.html#BFD-back-ends" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="elf.html" accesskey="n" rel="next">elf</a>, Previous: <a href="aout.html" accesskey="p" rel="prev">aout</a>, Up: <a href="BFD-back-ends.html" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="coff-backends"></a>
-<h3 class="section">3.3 coff backends</h3>
+<span id="coff-backends"></span><h3 class="section">3.3 coff backends</h3>
 <p>BFD supports a number of different flavours of coff format.
 The major differences between formats are the sizes and
 alignments of fields in structures on disk, and the occasional
@@ -90,10 +79,9 @@ example, the i386 coff format is implemented in the file
 coff format for the i386, and <samp>coff/internal.h</samp> which
 defines the internal structure. <samp>coff-i386.c</samp> also
 defines the relocations used by the i386 coff format
-See <a href="Relocations.html#Relocations">Relocations</a>.
+See <a href="Relocations.html">Relocations</a>.
 </p>
-<a name="Porting-to-a-new-version-of-coff"></a>
-<h4 class="subsection">3.3.1 Porting to a new version of coff</h4>
+<span id="Porting-to-a-new-version-of-coff"></span><h4 class="subsection">3.3.1 Porting to a new version of coff</h4>
 <p>The recommended method is to select from the existing
 implementations the version of coff which is most like the one
 you want to use.  For example, we&rsquo;ll say that i386 coff is
@@ -116,12 +104,10 @@ dump utility, usually called <code>att-dump</code> or just
 what you&rsquo;ve done to Cygnus. Then your stuff will be in the
 next release, and you won&rsquo;t have to keep integrating it.
 </p>
-<a name="How-the-coff-backend-works"></a>
-<h4 class="subsection">3.3.2 How the coff backend works</h4>
+<span id="How-the-coff-backend-works"></span><h4 class="subsection">3.3.2 How the coff backend works</h4>
 
 
-<a name="File-layout-1"></a>
-<h4 class="subsubsection">3.3.2.1 File layout</h4>
+<span id="File-layout-1"></span><h4 class="subsubsection">3.3.2.1 File layout</h4>
 <p>The Coff backend is split into generic routines that are
 applicable to any Coff target and routines that are specific
 to a particular target.  The target-specific routines are
@@ -143,8 +129,7 @@ then include <samp>coffcode.h</samp>.
 <p>Some of the Coff targets then also have additional routines in
 the target source file itself.
 </p>
-<a name="Coff-long-section-names"></a>
-<h4 class="subsubsection">3.3.2.2 Coff long section names</h4>
+<span id="Coff-long-section-names"></span><h4 class="subsubsection">3.3.2.2 Coff long section names</h4>
 <p>In the standard Coff object format, section names are limited to
 the eight bytes available in the <code>s_name</code> field of the
 <code>SCNHDR</code> section header structure.  The format requires the
@@ -204,8 +189,7 @@ defines a macro, <code>COFF_DEFAULT_LONG_SECTION_NAMES</code>, which is
 used in the backends to initialise the backend data structure fields
 appropriately; see the comments for further detail.
 </p>
-<a name="Bit-twiddling"></a>
-<h4 class="subsubsection">3.3.2.3 Bit twiddling</h4>
+<span id="Bit-twiddling"></span><h4 class="subsubsection">3.3.2.3 Bit twiddling</h4>
 <p>Each flavour of coff supported in BFD has its own header file
 describing the external layout of the structures. There is also
 an internal description of the coff layout, in
@@ -238,8 +222,7 @@ on the way out, making cross ports much safer.  Doing so also
 allows BFD (and thus the linker) to use the same header files
 as <code>gas</code>, which makes one avenue to disaster disappear.
 </p>
-<a name="Symbol-reading"></a>
-<h4 class="subsubsection">3.3.2.4 Symbol reading</h4>
+<span id="Symbol-reading"></span><h4 class="subsubsection">3.3.2.4 Symbol reading</h4>
 <p>The simple canonical form for symbols used by BFD is not rich
 enough to keep all the information available in a coff symbol
 table. The back end gets around this problem by keeping the original
@@ -272,14 +255,13 @@ into memory and replaces them with pointers to the strings.
 the canonical table used by the BFD application. Each symbol
 is inspected in turn, and a decision made (using the
 <code>sclass</code> field) about the various flags to set in the
-<code>asymbol</code>.  See <a href="Symbols.html#Symbols">Symbols</a>. The generated canonical table
+<code>asymbol</code>.  See <a href="Symbols.html">Symbols</a>. The generated canonical table
 shares strings with the hidden internal symbol table.
 </p>
 <p>Any linenumbers are read from the coff file too, and attached
 to the symbols which own the functions the linenumbers belong to.
 </p>
-<a name="Symbol-writing"></a>
-<h4 class="subsubsection">3.3.2.5 Symbol writing</h4>
+<span id="Symbol-writing"></span><h4 class="subsubsection">3.3.2.5 Symbol writing</h4>
 <p>Writing a symbol to a coff file which didn&rsquo;t come from a coff
 file will lose any debugging information. The <code>asymbol</code>
 structure remembers the BFD from which the symbol was taken, and on
@@ -309,7 +291,7 @@ contain their final value, so symbols have their values
 changed at this point to reflect their sum with their owning
 section.  This transformation uses the
 <code>output_section</code> field of the <code>asymbol</code>&rsquo;s
-<code>asection</code> See <a href="Sections.html#Sections">Sections</a>.
+<code>asection</code> See <a href="Sections.html">Sections</a>.
 </p>
 <ul>
 <li> <code>coff_mangle_symbols</code>
@@ -327,9 +309,8 @@ to a symbol into the index into the symbol table of the asymbol.
 symbols from their internal form into the coff way, calls the
 bit twiddlers, and writes out the table to the file.
 </p>
-<a name="index-coff_005fsymbol_005ftype"></a>
-<a name="coff_005fsymbol_005ftype"></a>
-<h4 class="subsubsection">3.3.2.6 <code>coff_symbol_type</code></h4>
+<span id="index-coff_005fsymbol_005ftype"></span>
+<span id="coff_005fsymbol_005ftype"></span><h4 class="subsubsection">3.3.2.6 <code>coff_symbol_type</code></h4>
 <p><strong>Description</strong><br>
 The hidden information for an <code>asymbol</code> is described in a
 <code>combined_entry_type</code>:
@@ -394,9 +375,8 @@ typedef struct coff_symbol_struct
   bfd_boolean done_lineno;
 } coff_symbol_type;
 </pre></div>
-<a name="index-bfd_005fcoff_005fbackend_005fdata"></a>
-<a name="bfd_005fcoff_005fbackend_005fdata"></a>
-<h4 class="subsubsection">3.3.2.7 <code>bfd_coff_backend_data</code></h4>
+<span id="index-bfd_005fcoff_005fbackend_005fdata"></span>
+<span id="bfd_005fcoff_005fbackend_005fdata"></span><h4 class="subsubsection">3.3.2.7 <code>bfd_coff_backend_data</code></h4>
 
 <div class="example">
 <pre class="example">/* COFF symbol classifications.  */
@@ -704,8 +684,7 @@ typedef asection * (*coff_gc_mark_hook_fn)
 #define bfd_pei_p(abfd) \
   (CONST_STRNEQ ((abfd)-&gt;xvec-&gt;name, &quot;pei-&quot;))
 </pre></div>
-<a name="Writing-relocations"></a>
-<h4 class="subsubsection">3.3.2.8 Writing relocations</h4>
+<span id="Writing-relocations"></span><h4 class="subsubsection">3.3.2.8 Writing relocations</h4>
 <p>To write relocations, the back end steps though the
 canonical relocation table and create an
 <code>internal_reloc</code>. The symbol index to use is removed from
@@ -716,8 +695,7 @@ from the howto field.  Then the <code>internal_reloc</code> is
 swapped into the shape of an <code>external_reloc</code> and written
 out to disk.
 </p>
-<a name="Reading-linenumbers"></a>
-<h4 class="subsubsection">3.3.2.9 Reading linenumbers</h4>
+<span id="Reading-linenumbers"></span><h4 class="subsubsection">3.3.2.9 Reading linenumbers</h4>
 <p>Creating the linenumber table is done by reading in the entire
 coff linenumber table, and creating another table for internal use.
 </p>
@@ -736,8 +714,7 @@ pointing its...
 </p>
 <p>How does this work ?
 </p>
-<a name="Reading-relocations"></a>
-<h4 class="subsubsection">3.3.2.10 Reading relocations</h4>
+<span id="Reading-relocations"></span><h4 class="subsubsection">3.3.2.10 Reading relocations</h4>
 <p>Coff relocations are easily transformed into the internal BFD form
 (<code>arelent</code>).
 </p>
@@ -765,7 +742,7 @@ into a howto table vector.
 <hr>
 <div class="header">
 <p>
-Next: <a href="elf.html#elf" accesskey="n" rel="next">elf</a>, Previous: <a href="aout.html#aout" accesskey="p" rel="prev">aout</a>, Up: <a href="BFD-back-ends.html#BFD-back-ends" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="elf.html" accesskey="n" rel="next">elf</a>, Previous: <a href="aout.html" accesskey="p" rel="prev">aout</a>, Up: <a href="BFD-back-ends.html" accesskey="u" rel="up">BFD back ends</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

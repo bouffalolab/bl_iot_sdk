@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -85,10 +85,11 @@ printed.  You can stop the backtrace at any time by typing the system
 interrupt character, normally <kbd>Ctrl-c</kbd>.
 </p>
 <dl compact="compact">
-<dt><code>backtrace [<var>args</var>&hellip;]</code></dt>
-<dt><code>bt [<var>args</var>&hellip;]</code></dt>
-<dd><p>Print the backtrace of the entire stack.  The optional <var>args</var> can
-be one of the following:
+<dt><code>backtrace [<var>option</var>]&hellip; [<var>qualifier</var>]&hellip; [<var>count</var>]</code></dt>
+<dt><code>bt [<var>option</var>]&hellip; [<var>qualifier</var>]&hellip; [<var>count</var>]</code></dt>
+<dd><p>Print the backtrace of the entire stack.
+</p>
+<p>The optional <var>count</var> can be one of the following:
 </p>
 <dl compact="compact">
 <dt><code><var>n</var></code></dt>
@@ -101,26 +102,84 @@ number.
 <dt><code>-<var>n</var></code></dt>
 <dd><p>Print only the outermost <var>n</var> frames, where <var>n</var> is a positive
 number.
+</p></dd>
+</dl>
+
+<p>Options:
 </p>
-</dd>
-<dt><code>full</code></dt>
+<dl compact="compact">
+<dt><code>-full</code></dt>
 <dd><p>Print the values of the local variables also.  This can be combined
-with a number to limit the number of frames shown.
+with the optional <var>count</var> to limit the number of frames shown.
 </p>
 </dd>
-<dt><code>no-filters</code></dt>
+<dt><code>-no-filters</code></dt>
 <dd><p>Do not run Python frame filters on this backtrace.  See <a href="Frame-Filter-API.html#Frame-Filter-API">Frame Filter API</a>, for more information.  Additionally use <a href="Frame-Filter-Management.html#disable-frame_002dfilter-all">disable frame-filter all</a> to turn off all frame filters.  This is only
 relevant when <small>GDB</small> has been configured with <code>Python</code>
 support.
 </p>
 </dd>
-<dt><code>hide</code></dt>
+<dt><code>-hide</code></dt>
 <dd><p>A Python frame filter might decide to &ldquo;elide&rdquo; some frames.  Normally
 such elided frames are still printed, but they are indented relative
-to the filtered frames that cause them to be elided.  The <code>hide</code>
+to the filtered frames that cause them to be elided.  The <code>-hide</code>
 option causes elided frames to not be printed at all.
 </p></dd>
 </dl>
+
+<p>The <code>backtrace</code> command also supports a number of options that
+allow overriding relevant global print settings as set by <code>set
+backtrace</code> and <code>set print</code> subcommands:
+</p>
+<dl compact="compact">
+<dt><code>-past-main [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set whether backtraces should continue past <code>main</code>.  Related setting:
+<a href="#set-backtrace-past_002dmain">set backtrace past-main</a>.
+</p>
+</dd>
+<dt><code>-past-entry [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set whether backtraces should continue past the entry point of a program.
+Related setting: <a href="#set-backtrace-past_002dentry">set backtrace past-entry</a>.
+</p>
+</dd>
+<dt><code>-entry-values <code>no</code>|<code>only</code>|<code>preferred</code>|<code>if-needed</code>|<code>both</code>|<code>compact</code>|<code>default</code></code></dt>
+<dd><p>Set printing of function arguments at function entry.
+Related setting: <a href="Print-Settings.html#set-print-entry_002dvalues">set print entry-values</a>.
+</p>
+</dd>
+<dt><code>-frame-arguments <code>all</code>|<code>scalars</code>|<code>none</code></code></dt>
+<dd><p>Set printing of non-scalar frame arguments.
+Related setting: <a href="Print-Settings.html#set-print-frame_002darguments">set print frame-arguments</a>.
+</p>
+</dd>
+<dt><code>-raw-frame-arguments [<code>on</code>|<code>off</code>]</code></dt>
+<dd><p>Set whether to print frame arguments in raw form.
+Related setting: <a href="Print-Settings.html#set-print-raw_002dframe_002darguments">set print raw-frame-arguments</a>.
+</p>
+</dd>
+<dt><code>-frame-info <code>auto</code>|<code>source-line</code>|<code>location</code>|<code>source-and-location</code>|<code>location-and-address</code>|<code>short-location</code></code></dt>
+<dd><p>Set printing of frame information.
+Related setting: <a href="Print-Settings.html#set-print-frame_002dinfo">set print frame-info</a>.
+</p></dd>
+</dl>
+
+<p>The optional <var>qualifier</var> is maintained for backward compatibility.
+It can be one of the following:
+</p>
+<dl compact="compact">
+<dt><code>full</code></dt>
+<dd><p>Equivalent to the <code>-full</code> option.
+</p>
+</dd>
+<dt><code>no-filters</code></dt>
+<dd><p>Equivalent to the <code>-no-filters</code> option.
+</p>
+</dd>
+<dt><code>hide</code></dt>
+<dd><p>Equivalent to the <code>-hide</code> option.
+</p></dd>
+</dl>
+
 </dd>
 </dl>
 
@@ -166,6 +225,8 @@ code for line <code>993</code> of <code>builtin.c</code>.
 only if it is a scalar (integer, pointer, enumeration, etc).  See command
 <kbd>set print frame-arguments</kbd> in <a href="Print-Settings.html#Print-Settings">Print Settings</a> for more details
 on how to configure the way function parameter values are printed.
+The command <kbd>set print frame-info</kbd> (see <a href="Print-Settings.html#Print-Settings">Print Settings</a>) controls
+what frame information is printed.
 </p>
 <a name="index-optimized-out_002c-in-backtrace"></a>
 <a name="index-function-call-arguments_002c-optimized-out"></a>
@@ -198,7 +259,7 @@ you are interested in, or recompile without optimizations.
 <a name="index-startup-code_002c-and-backtrace"></a>
 <p>Most programs have a standard user entry point&mdash;a place where system
 libraries and startup code transition into user code.  For C this is
-<code>main</code><a name="DOCF8" href="#FOOT8"><sup>8</sup></a>.
+<code>main</code><a name="DOCF9" href="#FOOT9"><sup>9</sup></a>.
 When <small>GDB</small> finds the entry function in a backtrace
 it will terminate the backtrace, to avoid tracing into highly
 system-specific (and generally uninteresting) code.
@@ -209,7 +270,7 @@ in a backtrace, you can change this behavior:
 <dl compact="compact">
 <dt><code>set backtrace past-main</code></dt>
 <dt><code>set backtrace past-main on</code></dt>
-<dd><a name="index-set-backtrace"></a>
+<dd><a name="set-backtrace-past_002dmain"></a><a name="index-set-backtrace"></a>
 <p>Backtraces will continue past the user entry point.
 </p>
 </dd>
@@ -225,7 +286,7 @@ default.
 </dd>
 <dt><code>set backtrace past-entry</code></dt>
 <dt><code>set backtrace past-entry on</code></dt>
-<dd><p>Backtraces will continue past the internal entry point of an application.
+<dd><a name="set-backtrace-past_002dentry"></a><p>Backtraces will continue past the internal entry point of an application.
 This entry point is encoded by the linker when the application is built,
 and is likely before the user entry point <code>main</code> (or equivalent) is called.
 </p>
@@ -242,7 +303,7 @@ application.  This is the default.
 <dt><code>set backtrace limit <var>n</var></code></dt>
 <dt><code>set backtrace limit 0</code></dt>
 <dt><code>set backtrace limit unlimited</code></dt>
-<dd><a name="index-backtrace-limit"></a>
+<dd><a name="set-backtrace-limit"></a><a name="index-backtrace-limit"></a>
 <p>Limit the backtrace to <var>n</var> levels.  A value of <code>unlimited</code>
 or zero means unlimited levels.
 </p>
@@ -278,7 +339,7 @@ or zero means unlimited levels.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT8" href="#DOCF8">(8)</a></h3>
+<h3><a name="FOOT9" href="#DOCF9">(9)</a></h3>
 <p>Note that embedded programs (the so-called &ldquo;free-standing&rdquo;
 environment) are not required to have a <code>main</code> function as the
 entry point.  They could even have multiple entry points.</p>

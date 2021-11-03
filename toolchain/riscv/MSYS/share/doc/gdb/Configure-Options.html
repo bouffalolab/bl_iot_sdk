@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -138,7 +138,7 @@ specified list of targets.  The special value &lsquo;<samp>all</samp>&rsquo; con
 <dt><code>--with-gdb-datadir=<var>path</var></code></dt>
 <dd><p>Set the <small>GDB</small>-specific data directory.  <small>GDB</small> will look
 here for certain supporting files or scripts.  This defaults to the
-<samp>gdb</samp> subdirectory of &lsquo;<samp>datadi</samp>&rsquo; (which can be set using
+<samp>gdb</samp> subdirectory of &lsquo;<samp>datadir</samp>&rsquo; (which can be set using
 <code>--datadir</code>).
 </p>
 </dd>
@@ -172,6 +172,15 @@ supported).
 terminal operations.
 </p>
 </dd>
+<dt><code>--with-debuginfod</code></dt>
+<dd><p>Build <small>GDB</small> with libdebuginfod, the debuginfod client library.
+Used to automatically fetch source files and separate debug files from
+debuginfod servers using the associated executable&rsquo;s build ID. Enabled
+by default if libdebuginfod is installed and found at configure time.
+debuginfod is packaged with elfutils, starting with version 0.178. You
+can get the latest version from &lsquo;https://sourceware.org/elfutils/&rsquo;.
+</p>
+</dd>
 <dt><code>--with-libunwind-ia64</code></dt>
 <dd><p>Use the libunwind library for unwinding function call stack on ia64
 target platforms.  See http://www.nongnu.org/libunwind/index.html for
@@ -180,7 +189,8 @@ details.
 </dd>
 <dt><code>--with-system-readline</code></dt>
 <dd><p>Use the readline library installed on the host, rather than the
-library supplied as part of <small>GDB</small>.
+library supplied as part of <small>GDB</small>.  Readline 7 or newer is
+required; this is enforced by the build system.
 </p>
 </dd>
 <dt><code>--with-system-zlib</code></dt>
@@ -277,6 +287,15 @@ default system root will be automatically adjusted if and when
 directory under the configured prefix, and <small>GDB</small> is moved to
 another location after being built, the location of the system-wide
 init file will be adjusted accordingly.
+</p>
+</dd>
+<dt><code>--with-system-gdbinit-dir=<var>directory</var></code></dt>
+<dd><p>Configure <small>GDB</small> to automatically load init files from a
+system-wide directory.  <var>directory</var> should be an absolute directory
+name.  If <var>directory</var> is in a directory under the configured
+prefix, and <small>GDB</small> is moved to another location after being
+built, the location of the system-wide init directory will be
+adjusted accordingly.
 </p>
 </dd>
 <dt><code>--enable-build-warnings</code></dt>

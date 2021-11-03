@@ -1,107 +1,140 @@
-<html lang="en">
-<head>
-<title>Configuration Files - GNU Compiler Collection (GCC) Internals</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Compiler Collection (GCC) Internals">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Configuration.html#Configuration" title="Configuration">
-<link rel="prev" href="System-Config.html#System-Config" title="System Config">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Compiler Collection (GCC) Internals: Configuration Files</title>
+
+<meta name="description" content="GNU Compiler Collection (GCC) Internals: Configuration Files">
+<meta name="keywords" content="GNU Compiler Collection (GCC) Internals: Configuration Files">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Configuration.html#Configuration" rel="up" title="Configuration">
+<link href="Build.html#Build" rel="next" title="Build">
+<link href="System-Config.html#System-Config" rel="prev" title="System Config">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="Configuration-Files"></a>
+<div class="header">
 <p>
-Previous:&nbsp;<a rel="previous" accesskey="p" href="System-Config.html#System-Config">System Config</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Configuration.html#Configuration">Configuration</a>
-<hr>
+Previous: <a href="System-Config.html#System-Config" accesskey="p" rel="prev">System Config</a>, Up: <a href="Configuration.html#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
 </div>
+<hr>
+<a name="Files-Created-by-configure"></a>
+<h4 class="subsubsection">6.3.2.3 Files Created by <code>configure</code></h4>
 
-<h5 class="subsubsection">6.3.2.3 Files Created by <code>configure</code></h5>
-
-<p>Here we spell out what files will be set up by <samp><span class="file">configure</span></samp> in the
-<samp><span class="file">gcc</span></samp> directory.  Some other files are created as temporary files
+<p>Here we spell out what files will be set up by <samp>configure</samp> in the
+<samp>gcc</samp> directory.  Some other files are created as temporary files
 in the configuration process, and are not used in the subsequent
 build; these are not documented.
+</p>
+<ul>
+<li> <samp>Makefile</samp> is constructed from <samp>Makefile.in</samp>, together with
+the host and target fragments (see <a href="Fragments.html#Fragments">Makefile
+Fragments</a>) <samp>t-<var>target</var></samp> and <samp>x-<var>host</var></samp> from
+<samp>config</samp>, if any, and language Makefile fragments
+<samp><var>language</var>/Make-lang.in</samp>.
+</li><li> <samp>auto-host.h</samp> contains information about the host machine
+determined by <samp>configure</samp>.  If the host machine is different from
+the build machine, then <samp>auto-build.h</samp> is also created,
+containing such information about the build machine.
+</li><li> <samp>config.status</samp> is a script that may be run to recreate the
+current configuration.
+</li><li> <samp>configargs.h</samp> is a header containing details of the arguments
+passed to <samp>configure</samp> to configure GCC, and of the thread model
+used.
+</li><li> <samp>cstamp-h</samp> is used as a timestamp.
+</li><li> If a language <samp>config-lang.in</samp> file (see <a href="Front-End-Config.html#Front-End-Config">The Front End <samp>config-lang.in</samp> File</a>) sets <code>outputs</code>, then
+the files listed in <code>outputs</code> there are also generated.
+</li></ul>
 
-     <ul>
-<li><samp><span class="file">Makefile</span></samp> is constructed from <samp><span class="file">Makefile.in</span></samp>, together with
-the host and target fragments (see <a href="Fragments.html#Fragments">Makefile Fragments</a>) <samp><span class="file">t-</span><var>target</var></samp> and <samp><span class="file">x-</span><var>host</var></samp> from
-<samp><span class="file">config</span></samp>, if any, and language Makefile fragments
-<samp><var>language</var><span class="file">/Make-lang.in</span></samp>. 
-<li><samp><span class="file">auto-host.h</span></samp> contains information about the host machine
-determined by <samp><span class="file">configure</span></samp>.  If the host machine is different from
-the build machine, then <samp><span class="file">auto-build.h</span></samp> is also created,
-containing such information about the build machine. 
-<li><samp><span class="file">config.status</span></samp> is a script that may be run to recreate the
-current configuration. 
-<li><samp><span class="file">configargs.h</span></samp> is a header containing details of the arguments
-passed to <samp><span class="file">configure</span></samp> to configure GCC, and of the thread model
-used. 
-<li><samp><span class="file">cstamp-h</span></samp> is used as a timestamp. 
-<li>If a language <samp><span class="file">config-lang.in</span></samp> file (see <a href="Front-End-Config.html#Front-End-Config">The Front End <samp><span class="file">config-lang.in</span></samp> File</a>) sets <code>outputs</code>, then
-the files listed in <code>outputs</code> there are also generated. 
-</ul>
-
- <p>The following configuration headers are created from the Makefile,
-using <samp><span class="file">mkconfig.sh</span></samp>, rather than directly by <samp><span class="file">configure</span></samp>. 
-<samp><span class="file">config.h</span></samp>, <samp><span class="file">bconfig.h</span></samp> and <samp><span class="file">tconfig.h</span></samp> all contain the
-<samp><span class="file">xm-</span><var>machine</var><span class="file">.h</span></samp> header, if any, appropriate to the host,
+<p>The following configuration headers are created from the Makefile,
+using <samp>mkconfig.sh</samp>, rather than directly by <samp>configure</samp>.
+<samp>config.h</samp>, <samp>bconfig.h</samp> and <samp>tconfig.h</samp> all contain the
+<samp>xm-<var>machine</var>.h</samp> header, if any, appropriate to the host,
 build and target machines respectively, the configuration headers for
 the target, and some definitions; for the host and build machines,
 these include the autoconfigured headers generated by
-<samp><span class="file">configure</span></samp>.  The other configuration headers are determined by
-<samp><span class="file">config.gcc</span></samp>.  They also contain the typedefs for <code>rtx</code>,
+<samp>configure</samp>.  The other configuration headers are determined by
+<samp>config.gcc</samp>.  They also contain the typedefs for <code>rtx</code>,
 <code>rtvec</code> and <code>tree</code>.
-
-     <ul>
-<li><samp><span class="file">config.h</span></samp>, for use in programs that run on the host machine. 
-<li><samp><span class="file">bconfig.h</span></samp>, for use in programs that run on the build machine. 
-<li><samp><span class="file">tconfig.h</span></samp>, for use in programs and libraries for the target
-machine. 
-<li><samp><span class="file">tm_p.h</span></samp>, which includes the header <samp><var>machine</var><span class="file">-protos.h</span></samp>
+</p>
+<ul>
+<li> <samp>config.h</samp>, for use in programs that run on the host machine.
+</li><li> <samp>bconfig.h</samp>, for use in programs that run on the build machine.
+</li><li> <samp>tconfig.h</samp>, for use in programs and libraries for the target
+machine.
+</li><li> <samp>tm_p.h</samp>, which includes the header <samp><var>machine</var>-protos.h</samp>
 that contains prototypes for functions in the target
-<samp><var>machine</var><span class="file">.c</span></samp> file.  The
-<samp><var>machine</var><span class="file">-protos.h</span></samp> header is included after the <samp><span class="file">rtl.h</span></samp>
-and/or <samp><span class="file">tree.h</span></samp> would have been included. 
-The <samp><span class="file">tm_p.h</span></samp> also
-includes the header <samp><span class="file">tm-preds.h</span></samp> which is generated by
-<samp><span class="file">genpreds</span></samp> program during the build to define the declarations
-and inline functions for the predicate functions. 
-</ul>
+<samp><var>machine</var>.c</samp> file.  The
+<samp><var>machine</var>-protos.h</samp> header is included after the <samp>rtl.h</samp>
+and/or <samp>tree.h</samp> would have been included.
+The <samp>tm_p.h</samp> also
+includes the header <samp>tm-preds.h</samp> which is generated by
+<samp>genpreds</samp> program during the build to define the declarations
+and inline functions for the predicate functions.
+</li></ul>
 
- </body></html>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="System-Config.html#System-Config" accesskey="p" rel="prev">System Config</a>, Up: <a href="Configuration.html#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
+
+
+</body>
+</html>

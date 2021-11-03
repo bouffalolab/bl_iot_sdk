@@ -1,79 +1,102 @@
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
 <head>
-<title>div - Untitled</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="Untitled">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Stdlib.html#Stdlib" title="Stdlib">
-<link rel="prev" href="calloc.html#calloc" title="calloc">
-<link rel="next" href="ecvtbuf.html#ecvtbuf" title="ecvtbuf">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+<title>The Red Hat newlib C Library: div</title>
+
+<meta name="description" content="The Red Hat newlib C Library: div">
+<meta name="keywords" content="The Red Hat newlib C Library: div">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Document-Index.html#Document-Index" rel="index" title="Document Index">
+<link href="Document-Index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Stdlib.html#Stdlib" rel="up" title="Stdlib">
+<link href="ecvt.html#ecvt" rel="next" title="ecvt">
+<link href="calloc.html#calloc" rel="prev" title="calloc">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="div"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="ecvtbuf.html#ecvtbuf">ecvtbuf</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="calloc.html#calloc">calloc</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Stdlib.html#Stdlib">Stdlib</a>
-<hr>
+Next: <a href="ecvt.html#ecvt" accesskey="n" rel="next">ecvt</a>, Previous: <a href="calloc.html#calloc" accesskey="p" rel="prev">calloc</a>, Up: <a href="Stdlib.html#Stdlib" accesskey="u" rel="up">Stdlib</a> &nbsp; [<a href="Document-Index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Document-Index.html#Document-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="div_002d_002d_002ddivide-two-integers"></a>
 <h3 class="section">2.12 <code>div</code>&mdash;divide two integers</h3>
+<a name="index-div"></a>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">#include &lt;stdlib.h&gt;
+div_t div(int <var>n</var>, int <var>d</var>);
 
-<p><a name="index-div-19"></a><strong>Synopsis</strong>
-<pre class="example">     #include &lt;stdlib.h&gt;
-     div_t div(int <var>n</var>, int <var>d</var>);
-     
-</pre>
-   <p><strong>Description</strong><br>
+</pre></div>
+<p><strong>Description</strong><br>
 Divide
 <var>n</var>/<var>d</var>,
 returning quotient and remainder as two integers in a structure <code>div_t</code>.
-
-   <pre class="sp">
-
-</pre>
-<strong>Returns</strong><br>
+</p>
+<br>
+<p><strong>Returns</strong><br>
 The result is represented with the structure
+</p>
+<div class="smallexample">
+<pre class="smallexample"> typedef struct
+ {
+  int quot;
+  int rem;
+ } div_t;
+</pre></div>
 
-<pre class="smallexample">      typedef struct
-      {
-       int quot;
-       int rem;
-      } div_t;
-</pre>
-   <p>where the <code>quot</code> field represents the quotient, and <code>rem</code> the
-remainder.  For nonzero <var>d</var>, if `<var>r</var><code> = div(</code><var>n</var><code>,</code><var>d</var><code>);</code>' then
-<var>n</var> equals `<var>r</var><code>.rem + </code><var>d</var><code>*</code><var>r</var><code>.quot</code>'.
-
-   <p>To divide <code>long</code> rather than <code>int</code> values, use the similar
+<p>where the <code>quot</code> field represents the quotient, and <code>rem</code> the
+remainder.  For nonzero <var>d</var>, if &lsquo;<code><var>r</var> = div(<var>n</var>,<var>d</var>);</code>&rsquo; then
+<var>n</var> equals &lsquo;<code><var>r</var>.rem + <var>d</var>*<var>r</var>.quot</code>&rsquo;.
+</p>
+<p>To divide <code>long</code> rather than <code>int</code> values, use the similar
 function <code>ldiv</code>.
-
-   <pre class="sp">
-
-</pre>
-<strong>Portability</strong><br>
+</p>
+<br>
+<p><strong>Portability</strong><br>
 <code>div</code> is ANSI.
+</p>
+<p>No supporting OS subroutines are required.
+</p>
+<br>
 
-   <p>No supporting OS subroutines are required.
 
-   <pre class="sp">
 
-</pre>
 
-   </body></html>
-
+</body>
+</html>

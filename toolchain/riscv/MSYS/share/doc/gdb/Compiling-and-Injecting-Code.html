@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -144,18 +144,19 @@ inferior symbols otherwise.
 </dl>
 
 <dl compact="compact">
-<dt><code>compile print <var>expr</var></code></dt>
-<dt><code>compile print /<var>f</var> <var>expr</var></code></dt>
+<dt><code>compile print [[<var>options</var>] --] <var>expr</var></code></dt>
+<dt><code>compile print [[<var>options</var>] --] /<var>f</var> <var>expr</var></code></dt>
 <dd><p>Compile and execute <var>expr</var> with the compiler language found as the
 current language in <small>GDB</small> (see <a href="Languages.html#Languages">Languages</a>).  By default the
 value of <var>expr</var> is printed in a format appropriate to its data type;
 you can choose a different format by specifying &lsquo;<samp>/<var>f</var></samp>&rsquo;, where
 <var>f</var> is a letter specifying the format; see <a href="Output-Formats.html#Output-Formats">Output
-Formats</a>.
+Formats</a>.  The <code>compile print</code> command accepts the same options
+as the <code>print</code> command; see <a href="Data.html#print-options">print options</a>.
 </p>
 </dd>
-<dt><code>compile print</code></dt>
-<dt><code>compile print /<var>f</var></code></dt>
+<dt><code>compile print [[<var>options</var>] --]</code></dt>
+<dt><code>compile print [[<var>options</var>] --] /<var>f</var></code></dt>
 <dd><a name="index-reprint-the-last-value-1"></a>
 <p>Alternatively you can enter the expression (source code producing it) as
 multiple lines of text.  To enter this mode, invoke the &lsquo;<samp>compile print</samp>&rsquo;

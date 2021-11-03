@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Include Files (STABS)</title>
@@ -20,33 +20,24 @@ Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Types-Index.html" rel="index" title="Symbol Types Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Program-Structure.html#Program-Structure" rel="up" title="Program Structure">
-<link href="Line-Numbers.html#Line-Numbers" rel="next" title="Line Numbers">
-<link href="Source-Files.html#Source-Files" rel="prev" title="Source Files">
+<link href="Program-Structure.html" rel="up" title="Program Structure">
+<link href="Line-Numbers.html" rel="next" title="Line Numbers">
+<link href="Source-Files.html" rel="prev" title="Source Files">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -58,30 +49,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Include-Files"></a>
-<div class="header">
+<span id="Include-Files"></span><div class="header">
 <p>
-Next: <a href="Line-Numbers.html#Line-Numbers" accesskey="n" rel="next">Line Numbers</a>, Previous: <a href="Source-Files.html#Source-Files" accesskey="p" rel="prev">Source Files</a>, Up: <a href="Program-Structure.html#Program-Structure" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Numbers.html" accesskey="n" rel="next">Line Numbers</a>, Previous: <a href="Source-Files.html" accesskey="p" rel="prev">Source Files</a>, Up: <a href="Program-Structure.html" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Names-of-Include-Files"></a>
-<h3 class="section">2.3 Names of Include Files</h3>
+<span id="Names-of-Include-Files"></span><h3 class="section">2.3 Names of Include Files</h3>
 
 <p>There are several schemes for dealing with include files: the
 traditional <code>N_SOL</code> approach, Sun&rsquo;s <code>N_BINCL</code> approach, and the
 XCOFF <code>C_BINCL</code> approach (which despite the similar name has little in
 common with <code>N_BINCL</code>).
 </p>
-<a name="index-N_005fSOL"></a>
+<span id="index-N_005fSOL"></span>
 <p>An <code>N_SOL</code> symbol specifies which include file subsequent symbols
 refer to.  The string field is the name of the file and the value is the
 text address corresponding to the end of the previous include file and
 the start of this one.  To specify the main source file again, use an
 <code>N_SOL</code> symbol with the name of the main source file.
 </p>
-<a name="index-N_005fBINCL"></a>
-<a name="index-N_005fEINCL"></a>
-<a name="index-N_005fEXCL"></a>
+<span id="index-N_005fBINCL"></span>
+<span id="index-N_005fEINCL"></span>
+<span id="index-N_005fEXCL"></span>
 <p>The <code>N_BINCL</code> approach works as follows.  An <code>N_BINCL</code> symbol
 specifies the start of an include file.  In an object file, only the
 string is significant; the linker puts data into some of the other
@@ -106,8 +95,8 @@ match up <code>N_EXCL</code> and <code>N_BINCL</code> symbols which have the sam
 filename.  The <code>N_EINCL</code> value, and the values of the other and
 description fields for all three, appear to always be zero.
 </p>
-<a name="index-C_005fBINCL"></a>
-<a name="index-C_005fEINCL"></a>
+<span id="index-C_005fBINCL"></span>
+<span id="index-C_005fEINCL"></span>
 <p>For the start of an include file in XCOFF, use the <samp>.bi</samp> assembler
 directive, which generates a <code>C_BINCL</code> symbol.  A <samp>.ei</samp>
 directive, which generates a <code>C_EINCL</code> symbol, denotes the end of
@@ -122,7 +111,7 @@ file.  <code>C_BINCL</code> and <code>C_EINCL</code> do not nest.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Line-Numbers.html#Line-Numbers" accesskey="n" rel="next">Line Numbers</a>, Previous: <a href="Source-Files.html#Source-Files" accesskey="p" rel="prev">Source Files</a>, Up: <a href="Program-Structure.html#Program-Structure" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Numbers.html" accesskey="n" rel="next">Line Numbers</a>, Previous: <a href="Source-Files.html" accesskey="p" rel="prev">Source Files</a>, Up: <a href="Program-Structure.html" accesskey="u" rel="up">Program Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

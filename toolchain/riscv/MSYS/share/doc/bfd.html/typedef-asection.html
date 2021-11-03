@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -91,6 +91,10 @@ typedef struct bfd_section
 
   /* A unique sequence number.  */
   unsigned int id;
+
+  /* A unique section number which can be used by assembler to
+     distinguish different sections with the same section name.  */
+  unsigned int section_id;
 
   /* Which section in the bfd; 0..n-1 as sections are created in a bfd.  */
   unsigned int index;
@@ -225,6 +229,10 @@ typedef struct bfd_section
      else up the line will take care of it later.  */
 #define SEC_LINKER_CREATED           0x100000
 
+  /* This section contains a section ID to distinguish different
+     sections with the same section name.  */
+#define SEC_ASSEMBLER_SECTION_ID     0x100000
+
   /* This section should not be subject to garbage collection.
      Also set to inform the linker that this section should not be
      listed in the link map as discarded.  */
@@ -288,6 +296,11 @@ typedef struct bfd_section
 
   /* This section contains vliw code.  This is for Toshiba MeP only.  */
 #define SEC_MEP_VLIW               0x20000000
+
+  /* All symbols, sizes and relocations in this section are octets
+     instead of bytes.  Required for DWARF debug sections as DWARF
+     information is organized in octets, not bytes.  */
+#define SEC_ELF_OCTETS             0x40000000
 
   /* Indicate that section has the no read flag set. This happens
      when memory read flag isn't set. */
@@ -469,11 +482,17 @@ typedef struct bfd_section
   /* Early in the link process, map_head and map_tail are used to build
      a list of input sections attached to an output section.  Later,
      output sections use these fields for a list of bfd_link_order
-     structs.  */
+     structs.  The linked_to_symbol_name field is for ELF assembler
+     internal use.  */
   union {
     struct bfd_link_order *link_order;
     struct bfd_section *s;
+    const char *linked_to_symbol_name;
   } map_head, map_tail;
+ /* Points to the output section this section is already assigned to, if any.
+    This is used when support for non-contiguous memory regions is enabled.  */
+ struct bfd_section *already_assigned;
+
 } asection;
 
 /* Relax table contains information about instructions which can
@@ -487,31 +506,83 @@ struct relax_table {
   int size;
 };
 
+static inline const char *
+bfd_section_name (const asection *sec)
+{
+  return sec-&gt;name;
+}
+
+static inline bfd_size_type
+bfd_section_size (const asection *sec)
+{
+  return sec-&gt;size;
+}
+
+static inline bfd_vma
+bfd_section_vma (const asection *sec)
+{
+  return sec-&gt;vma;
+}
+
+static inline bfd_vma
+bfd_section_lma (const asection *sec)
+{
+  return sec-&gt;lma;
+}
+
+static inline unsigned int
+bfd_section_alignment (const asection *sec)
+{
+  return sec-&gt;alignment_power;
+}
+
+static inline flagword
+bfd_section_flags (const asection *sec)
+{
+  return sec-&gt;flags;
+}
+
+static inline void *
+bfd_section_userdata (const asection *sec)
+{
+  return sec-&gt;userdata;
+}
+static inline bfd_boolean
+bfd_is_com_section (const asection *sec)
+{
+  return (sec-&gt;flags &amp; SEC_IS_COMMON) != 0;
+}
+
 /* Note: the following are provided as inline functions rather than macros
    because not all callers use the return value.  A macro implementation
    would use a comma expression, eg: &quot;((ptr)-&gt;foo = val, TRUE)&quot; and some
    compilers will complain about comma expressions that have no effect.  */
 static inline bfd_boolean
-bfd_set_section_userdata (bfd * abfd ATTRIBUTE_UNUSED, asection * ptr,
-                          void * val)
+bfd_set_section_userdata (asection *sec, void *val)
 {
-  ptr-&gt;userdata = val;
+  sec-&gt;userdata = val;
   return TRUE;
 }
 
 static inline bfd_boolean
-bfd_set_section_vma (bfd * abfd ATTRIBUTE_UNUSED, asection * ptr, bfd_vma val)
+bfd_set_section_vma (asection *sec, bfd_vma val)
 {
-  ptr-&gt;vma = ptr-&gt;lma = val;
-  ptr-&gt;user_set_vma = TRUE;
+  sec-&gt;vma = sec-&gt;lma = val;
+  sec-&gt;user_set_vma = TRUE;
   return TRUE;
 }
 
 static inline bfd_boolean
-bfd_set_section_alignment (bfd * abfd ATTRIBUTE_UNUSED, asection * ptr,
-                           unsigned int val)
+bfd_set_section_lma (asection *sec, bfd_vma val)
 {
-  ptr-&gt;alignment_power = val;
+  sec-&gt;lma = val;
+  return TRUE;
+}
+
+static inline bfd_boolean
+bfd_set_section_alignment (asection *sec, unsigned int val)
+{
+  sec-&gt;alignment_power = val;
   return TRUE;
 }
 
@@ -534,142 +605,79 @@ extern asection _bfd_std_section[4];
 /* Pointer to the indirect section.  */
 #define bfd_ind_section_ptr (&amp;_bfd_std_section[3])
 
-#define bfd_is_und_section(sec) ((sec) == bfd_und_section_ptr)
-#define bfd_is_abs_section(sec) ((sec) == bfd_abs_section_ptr)
-#define bfd_is_ind_section(sec) ((sec) == bfd_ind_section_ptr)
+static inline bfd_boolean
+bfd_is_und_section (const asection *sec)
+{
+  return sec == bfd_und_section_ptr;
+}
 
-#define bfd_is_const_section(SEC)              \
- (   ((SEC) == bfd_abs_section_ptr)            \
-  || ((SEC) == bfd_und_section_ptr)            \
-  || ((SEC) == bfd_com_section_ptr)            \
-  || ((SEC) == bfd_ind_section_ptr))
+static inline bfd_boolean
+bfd_is_abs_section (const asection *sec)
+{
+  return sec == bfd_abs_section_ptr;
+}
 
-/* Macros to handle insertion and deletion of a bfd's sections.  These
-   only handle the list pointers, ie. do not adjust section_count,
-   target_index etc.  */
-#define bfd_section_list_remove(ABFD, S) \
-  do                                                   \
-    {                                                  \
-      asection *_s = S;                                \
-      asection *_next = _s-&gt;next;                      \
-      asection *_prev = _s-&gt;prev;                      \
-      if (_prev)                                       \
-        _prev-&gt;next = _next;                           \
-      else                                             \
-        (ABFD)-&gt;sections = _next;                      \
-      if (_next)                                       \
-        _next-&gt;prev = _prev;                           \
-      else                                             \
-        (ABFD)-&gt;section_last = _prev;                  \
-    }                                                  \
-  while (0)
-#define bfd_section_list_append(ABFD, S) \
-  do                                                   \
-    {                                                  \
-      asection *_s = S;                                \
-      bfd *_abfd = ABFD;                               \
-      _s-&gt;next = NULL;                                 \
-      if (_abfd-&gt;section_last)                         \
-        {                                              \
-          _s-&gt;prev = _abfd-&gt;section_last;              \
-          _abfd-&gt;section_last-&gt;next = _s;              \
-        }                                              \
-      else                                             \
-        {                                              \
-          _s-&gt;prev = NULL;                             \
-          _abfd-&gt;sections = _s;                        \
-        }                                              \
-      _abfd-&gt;section_last = _s;                        \
-    }                                                  \
-  while (0)
-#define bfd_section_list_prepend(ABFD, S) \
-  do                                                   \
-    {                                                  \
-      asection *_s = S;                                \
-      bfd *_abfd = ABFD;                               \
-      _s-&gt;prev = NULL;                                 \
-      if (_abfd-&gt;sections)                             \
-        {                                              \
-          _s-&gt;next = _abfd-&gt;sections;                  \
-          _abfd-&gt;sections-&gt;prev = _s;                  \
-        }                                              \
-      else                                             \
-        {                                              \
-          _s-&gt;next = NULL;                             \
-          _abfd-&gt;section_last = _s;                    \
-        }                                              \
-      _abfd-&gt;sections = _s;                            \
-    }                                                  \
-  while (0)
-#define bfd_section_list_insert_after(ABFD, A, S) \
-  do                                                   \
-    {                                                  \
-      asection *_a = A;                                \
-      asection *_s = S;                                \
-      asection *_next = _a-&gt;next;                      \
-      _s-&gt;next = _next;                                \
-      _s-&gt;prev = _a;                                   \
-      _a-&gt;next = _s;                                   \
-      if (_next)                                       \
-        _next-&gt;prev = _s;                              \
-      else                                             \
-        (ABFD)-&gt;section_last = _s;                     \
-    }                                                  \
-  while (0)
-#define bfd_section_list_insert_before(ABFD, B, S) \
-  do                                                   \
-    {                                                  \
-      asection *_b = B;                                \
-      asection *_s = S;                                \
-      asection *_prev = _b-&gt;prev;                      \
-      _s-&gt;prev = _prev;                                \
-      _s-&gt;next = _b;                                   \
-      _b-&gt;prev = _s;                                   \
-      if (_prev)                                       \
-        _prev-&gt;next = _s;                              \
-      else                                             \
-        (ABFD)-&gt;sections = _s;                         \
-    }                                                  \
-  while (0)
-#define bfd_section_removed_from_list(ABFD, S) \
-  ((S)-&gt;next == NULL ? (ABFD)-&gt;section_last != (S) : (S)-&gt;next-&gt;prev != (S))
+static inline bfd_boolean
+bfd_is_ind_section (const asection *sec)
+{
+  return sec == bfd_ind_section_ptr;
+}
+
+static inline bfd_boolean
+bfd_is_const_section (const asection *sec)
+{
+  return (sec &gt;= _bfd_std_section
+          &amp;&amp; sec &lt; _bfd_std_section + (sizeof (_bfd_std_section)
+                                       / sizeof (_bfd_std_section[0])));
+}
+
+/* Return TRUE if input section SEC has been discarded.  */
+static inline bfd_boolean
+discarded_section (const asection *sec)
+{
+  return (!bfd_is_abs_section (sec)
+          &amp;&amp; bfd_is_abs_section (sec-&gt;output_section)
+          &amp;&amp; sec-&gt;sec_info_type != SEC_INFO_TYPE_MERGE
+          &amp;&amp; sec-&gt;sec_info_type != SEC_INFO_TYPE_JUST_SYMS);
+}
 
 #define BFD_FAKE_SECTION(SEC, SYM, NAME, IDX, FLAGS)                   \
-  /* name, id,  index, next, prev, flags, user_set_vma,            */  \
-  {  NAME, IDX, 0,     NULL, NULL, FLAGS, 0,                           \
+  /* name, id,  section_id, index, next, prev, flags, user_set_vma, */ \
+  {  NAME, IDX, 0,          0,     NULL, NULL, FLAGS, 0,               \
                                                                        \
-  /* linker_mark, linker_has_input, gc_mark, decompress_status,    */  \
+  /* linker_mark, linker_has_input, gc_mark, decompress_status,     */ \
      0,           0,                1,       0,                        \
                                                                        \
-  /* segment_mark, sec_info_type, use_rela_p,                      */  \
+  /* segment_mark, sec_info_type, use_rela_p,                       */ \
      0,            0,             0,                                   \
                                                                        \
-  /* sec_flg0, sec_flg1, sec_flg2, sec_flg3, sec_flg4, sec_flg5,   */  \
+  /* sec_flg0, sec_flg1, sec_flg2, sec_flg3, sec_flg4, sec_flg5,    */ \
      0,        0,        0,        0,        0,        0,              \
                                                                        \
-  /* vma, lma, size, rawsize, compressed_size, relax, relax_count, */  \
+  /* vma, lma, size, rawsize, compressed_size, relax, relax_count,  */ \
      0,   0,   0,    0,       0,               0,     0,               \
                                                                        \
-  /* output_offset, output_section, alignment_power,               */  \
+  /* output_offset, output_section, alignment_power,                */ \
      0,             &amp;SEC,           0,                                 \
                                                                        \
-  /* relocation, orelocation, reloc_count, filepos, rel_filepos,   */  \
+  /* relocation, orelocation, reloc_count, filepos, rel_filepos,    */ \
      NULL,       NULL,        0,           0,       0,                 \
                                                                        \
-  /* line_filepos, userdata, contents, lineno, lineno_count,       */  \
+  /* line_filepos, userdata, contents, lineno, lineno_count,        */ \
      0,            NULL,     NULL,     NULL,   0,                      \
                                                                        \
   /* entsize, kept_section, moving_line_filepos,                    */ \
-     0,       NULL,          0,                                        \
+     0,       NULL,         0,                                         \
                                                                        \
-  /* target_index, used_by_bfd, constructor_chain, owner,          */  \
+  /* target_index, used_by_bfd, constructor_chain, owner,           */ \
      0,            NULL,        NULL,              NULL,               \
                                                                        \
-  /* symbol,                    symbol_ptr_ptr,                    */  \
+  /* symbol,                    symbol_ptr_ptr,                     */ \
      (struct bfd_symbol *) SYM, &amp;SEC.symbol,                           \
                                                                        \
-  /* map_head, map_tail                                            */  \
-     { NULL }, { NULL }                                                \
+  /* map_head, map_tail, already_assigned                           */ \
+     { NULL }, { NULL }, NULL                                          \
+                                                                       \
     }
 
 /* We use a macro to initialize the static asymbol structures because

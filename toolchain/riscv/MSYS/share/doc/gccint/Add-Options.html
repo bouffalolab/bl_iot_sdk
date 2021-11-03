@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -86,6 +86,12 @@ in certain modes; see the <a href="Effective_002dTarget-Keywords.html#arm_005ffp
 keyword</a>.
 </p>
 </dd>
+<dt><code>arm_fp_dp</code></dt>
+<dd><p><code>__ARM_FP</code> definition with double-precision support.  Only ARM
+targets support this feature, and only then in certain modes; see the
+<a href="Effective_002dTarget-Keywords.html#arm_005ffp_005fdp_005fok">arm_fp_dp_ok effective target keyword</a>.
+</p>
+</dd>
 <dt><code>arm_neon</code></dt>
 <dd><p>NEON support.  Only ARM targets support this feature, and only then
 in certain modes; see the <a href="Effective_002dTarget-Keywords.html#arm_005fneon_005fok">arm_neon_ok effective target
@@ -126,6 +132,12 @@ the <a href="Effective_002dTarget-Keywords.html#arm_005fneon_005ffp16_005fok">ar
 the <a href="Effective_002dTarget-Keywords.html#arm_005fvfp3_005fok">arm_vfp3_ok effective target keyword</a>.
 </p>
 </dd>
+<dt><code>arm_arch_v8a_hard</code></dt>
+<dd><p>Add options for ARMv8-A and the hard-float variant of the AAPCS,
+if this is supported by the compiler; see the
+<a href="Effective_002dTarget-Keywords.html#arm_005farch_005fv8a_005fhard_005fok">arm_arch_v8a_hard_ok</a> effective target keyword.
+</p>
+</dd>
 <dt><code>arm_v8_1a_neon</code></dt>
 <dd><p>Add options for ARMv8.1-A with Adv.SIMD support, if this is supported
 by the target; see the <a href="Effective_002dTarget-Keywords.html#arm_005fv8_005f1a_005fneon_005fok">arm_v8_1a_neon_ok</a>
@@ -163,10 +175,6 @@ instructions, if this is supported by the target; see the
 locally when using pic/PIC passes in the testsuite.
 </p>
 </dd>
-<dt><code>c99_runtime</code></dt>
-<dd><p>Add the target-specific flags needed to access the C99 runtime.
-</p>
-</dd>
 <dt><code>float<var>n</var></code></dt>
 <dd><p>Add the target-specific flags needed to use the <code>_Float<var>n</var></code> type.
 </p>
@@ -189,6 +197,11 @@ Only MIPS targets support this feature, and only then in certain modes.
 <dd><a name="stack_005fsize_005fao"></a><p>Add the flags needed to define macro STACK_SIZE and set it to the stack size
 limit associated with the <a href="Effective_002dTarget-Keywords.html#stack_005fsize_005fet"><code>stack_size</code> effective
 target</a>.
+</p>
+</dd>
+<dt><code>sqrt_insn</code></dt>
+<dd><p>Add the target-specific flags needed to enable hardware square root
+instructions, if any.
 </p>
 </dd>
 <dt><code>tls</code></dt>

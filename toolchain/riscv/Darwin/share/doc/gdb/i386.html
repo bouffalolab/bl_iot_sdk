@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>i386 (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Architectures.html#Architectures" rel="up" title="Architectures">
-<link href="Alpha.html#Alpha" rel="next" title="Alpha">
-<link href="AArch64.html#AArch64" rel="prev" title="AArch64">
+<link href="Architectures.html" rel="up" title="Architectures">
+<link href="Alpha.html" rel="next" title="Alpha">
+<link href="AArch64.html" rel="prev" title="AArch64">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,20 +51,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="i386"></a>
-<div class="header">
+<span id="i386"></span><div class="header">
 <p>
-Next: <a href="Alpha.html#Alpha" accesskey="n" rel="next">Alpha</a>, Previous: <a href="AArch64.html#AArch64" accesskey="p" rel="prev">AArch64</a>, Up: <a href="Architectures.html#Architectures" accesskey="u" rel="up">Architectures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alpha.html" accesskey="n" rel="next">Alpha</a>, Previous: <a href="AArch64.html" accesskey="p" rel="prev">AArch64</a>, Up: <a href="Architectures.html" accesskey="u" rel="up">Architectures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="x86-Architecture_002dspecific-Issues"></a>
-<h4 class="subsection">21.4.2 x86 Architecture-specific Issues</h4>
+<span id="x86-Architecture_002dspecific-Issues"></span><h4 class="subsection">21.4.2 x86 Architecture-specific Issues</h4>
 
 <dl compact="compact">
 <dt><code>set struct-convention <var>mode</var></code></dt>
-<dd><a name="index-set-struct_002dconvention"></a>
-<a name="index-struct-return-convention"></a>
-<a name="index-struct_002funion-returned-in-registers"></a>
+<dd><span id="index-set-struct_002dconvention"></span>
+<span id="index-struct-return-convention"></span>
+<span id="index-struct_002funion-returned-in-registers"></span>
 <p>Set the convention used by the inferior to return <code>struct</code>s and
 <code>union</code>s from functions to <var>mode</var>.  Possible values of
 <var>mode</var> are <code>&quot;pcc&quot;</code>, <code>&quot;reg&quot;</code>, and <code>&quot;default&quot;</code> (the
@@ -84,19 +73,18 @@ be returned in a register.
 </p>
 </dd>
 <dt><code>show struct-convention</code></dt>
-<dd><a name="index-show-struct_002dconvention"></a>
+<dd><span id="index-show-struct_002dconvention"></span>
 <p>Show the current setting of the convention to return <code>struct</code>s
 from functions.
 </p></dd>
 </dl>
 
 
-<a name="Intel-Memory-Protection-Extensions-_0028MPX_0029_002e"></a>
-<h4 class="subsubsection">21.4.2.1 Intel <em>Memory Protection Extensions</em> (MPX).</h4>
-<a name="index-Intel-Memory-Protection-Extensions-_0028MPX_0029_002e"></a>
+<span id="Intel-Memory-Protection-Extensions-_0028MPX_0029_002e"></span><h4 class="subsubsection">21.4.2.1 Intel <em>Memory Protection Extensions</em> (MPX).</h4>
+<span id="index-Intel-Memory-Protection-Extensions-_0028MPX_0029_002e"></span>
 
 <p>Memory Protection Extension (MPX) adds the bound registers &lsquo;<samp>BND0</samp>&rsquo;
-<a name="DOCF16" href="#FOOT16"><sup>16</sup></a> through &lsquo;<samp>BND3</samp>&rsquo;.  Bound registers store a pair of 64-bit values
+<a id="DOCF17" href="#FOOT17"><sup>17</sup></a> through &lsquo;<samp>BND3</samp>&rsquo;.  Bound registers store a pair of 64-bit values
 which are the lower bound and upper bound.  Bounds are effective addresses or
 memory locations.  The upper bounds are architecturally represented in 1&rsquo;s
 complement form.  A bound having lower bound = 0, and upper bound = 0
@@ -113,8 +101,8 @@ can also be noted that the upper bounds are inclusive.
 access allowed for the range between 0x32 and 0x71.  The values present on
 bnd0raw and bnd registers are presented as follows:
 </p>
-<div class="smallexample">
-<pre class="smallexample">	bnd0raw = {0x32, 0xffffffff8e}
+<div class="example">
+<pre class="example">	bnd0raw = {0x32, 0xffffffff8e}
 	bnd0 = {lbound = 0x32, ubound = 0x71} : size 64
 </pre></div>
 
@@ -132,12 +120,12 @@ bugs on MPX context.  <small>GDB</small> provides commands for this purpose:
 </p>
 <dl compact="compact">
 <dt><code>show mpx bound <var>pointer</var></code></dt>
-<dd><a name="index-show-mpx-bound"></a>
+<dd><span id="index-show-mpx-bound"></span>
 <p>Display bounds of the given <var>pointer</var>.
 </p>
 </dd>
 <dt><code>set mpx bound <var>pointer</var>, <var>lbound</var>, <var>ubound</var></code></dt>
-<dd><a name="index-set-mpx-bound"></a>
+<dd><span id="index-set-mpx-bound"></span>
 <p>Set the bounds of a pointer in the bound table.
 This command takes three parameters: <var>pointer</var> is the pointers
 whose bounds are to be changed, <var>lbound</var> and <var>ubound</var> are new values
@@ -161,8 +149,8 @@ execution of the called function by stopping the execution of the
 called function at its prologue, setting bound registers, and
 continuing the execution.  For example:
 </p>
-<div class="smallexample">
-<pre class="smallexample">	$ break *upper
+<div class="example">
+<pre class="example">	$ break *upper
 	Breakpoint 2 at 0x4009de: file i386-mpx-call.c, line 47.
 	$ print upper (a, b, c, d, 1)
 	Breakpoint 2, upper (a=0x0, b=0x6e0000005b, c=0x0, d=0x0, len=48)....
@@ -178,14 +166,14 @@ set the bound registers or bound table for the call consult the ABI.
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h3><a name="FOOT16" href="#DOCF16">(16)</a></h3>
+<h5><a id="FOOT17" href="#DOCF17">(17)</a></h3>
 <p>The register named with capital letters represent the architecture
 registers.</p>
 </div>
 <hr>
 <div class="header">
 <p>
-Next: <a href="Alpha.html#Alpha" accesskey="n" rel="next">Alpha</a>, Previous: <a href="AArch64.html#AArch64" accesskey="p" rel="prev">AArch64</a>, Up: <a href="Architectures.html#Architectures" accesskey="u" rel="up">Architectures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Alpha.html" accesskey="n" rel="next">Alpha</a>, Previous: <a href="AArch64.html" accesskey="p" rel="prev">AArch64</a>, Up: <a href="Architectures.html" accesskey="u" rel="up">Architectures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

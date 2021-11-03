@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>PowerPC Embedded (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Embedded-Processors.html#Embedded-Processors" rel="up" title="Embedded Processors">
-<link href="AVR.html#AVR" rel="next" title="AVR">
-<link href="OpenRISC-1000.html#OpenRISC-1000" rel="prev" title="OpenRISC 1000">
+<link href="Embedded-Processors.html" rel="up" title="Embedded Processors">
+<link href="AVR.html" rel="next" title="AVR">
+<link href="OpenRISC-1000.html" rel="prev" title="OpenRISC 1000">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,21 +51,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="PowerPC-Embedded"></a>
-<div class="header">
+<span id="PowerPC-Embedded"></span><div class="header">
 <p>
-Next: <a href="AVR.html#AVR" accesskey="n" rel="next">AVR</a>, Previous: <a href="OpenRISC-1000.html#OpenRISC-1000" accesskey="p" rel="prev">OpenRISC 1000</a>, Up: <a href="Embedded-Processors.html#Embedded-Processors" accesskey="u" rel="up">Embedded Processors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR.html" accesskey="n" rel="next">AVR</a>, Previous: <a href="OpenRISC-1000.html" accesskey="p" rel="prev">OpenRISC 1000</a>, Up: <a href="Embedded-Processors.html" accesskey="u" rel="up">Embedded Processors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="PowerPC-Embedded-1"></a>
-<h4 class="subsection">21.3.7 PowerPC Embedded</h4>
+<span id="PowerPC-Embedded-1"></span><h4 class="subsection">21.3.8 PowerPC Embedded</h4>
 
-<a name="index-DVC-register"></a>
+<span id="index-DVC-register"></span>
 <p><small>GDB</small> supports using the DVC (Data Value Compare) register to
 implement in hardware simple hardware watchpoint conditions of the form:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) watch <var>ADDRESS|VARIABLE</var> \
+<div class="example">
+<pre class="example">(gdb) watch <var>ADDRESS|VARIABLE</var> \
   if  <var>ADDRESS|VARIABLE</var> == <var>CONSTANT EXPRESSION</var>
 </pre></div>
 
@@ -91,17 +80,17 @@ in which case watchpoints using only one debug register are created when
 watching variables of scalar types.
 </p>
 <p>You can create an artificial array to watch an arbitrary memory
-region using one of the following commands (see <a href="Expressions.html#Expressions">Expressions</a>):
+region using one of the following commands (see <a href="Expressions.html">Expressions</a>):
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) watch *((char *) <var>address</var>)@<var>length</var>
+<div class="example">
+<pre class="example">(gdb) watch *((char *) <var>address</var>)@<var>length</var>
 (gdb) watch {char[<var>length</var>]} <var>address</var>
 </pre></div>
 
 <p>PowerPC embedded processors support masked watchpoints.  See the discussion
-about the <code>mask</code> argument in <a href="Set-Watchpoints.html#Set-Watchpoints">Set Watchpoints</a>.
+about the <code>mask</code> argument in <a href="Set-Watchpoints.html">Set Watchpoints</a>.
 </p>
-<a name="index-ranged-breakpoint"></a>
+<span id="index-ranged-breakpoint"></span>
 <p>PowerPC embedded processors support hardware accelerated
 <em>ranged breakpoints</em>.  A ranged breakpoint stops execution of
 the inferior whenever it executes an instruction at any address within
@@ -111,19 +100,19 @@ use the <code>break-range</code> command.
 <p><small>GDB</small> provides the following PowerPC-specific commands:
 </p>
 <dl compact="compact">
-<dd><a name="index-break_002drange"></a>
+<dd><span id="index-break_002drange"></span>
 </dd>
 <dt><code>break-range <var>start-location</var>, <var>end-location</var></code></dt>
 <dd><p>Set a breakpoint for an address range given by
 <var>start-location</var> and <var>end-location</var>, which can specify a function name,
 a line number, an offset of lines from the current line or from the start
-location, or an address of an instruction (see <a href="Specify-Location.html#Specify-Location">Specify Location</a>,
+location, or an address of an instruction (see <a href="Specify-Location.html">Specify Location</a>,
 for a list of all the possible ways to specify a <var>location</var>.)
 The breakpoint will stop execution of the inferior whenever it
 executes an instruction at any address within the specified range,
 (including <var>start-location</var> and <var>end-location</var>.)
 </p>
-<a name="index-set-powerpc"></a>
+<span id="index-set-powerpc"></span>
 </dd>
 <dt><code>set powerpc soft-float</code></dt>
 <dt><code>show powerpc soft-float</code></dt>
@@ -154,7 +143,7 @@ address of its first byte.
 <hr>
 <div class="header">
 <p>
-Next: <a href="AVR.html#AVR" accesskey="n" rel="next">AVR</a>, Previous: <a href="OpenRISC-1000.html#OpenRISC-1000" accesskey="p" rel="prev">OpenRISC 1000</a>, Up: <a href="Embedded-Processors.html#Embedded-Processors" accesskey="u" rel="up">Embedded Processors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="AVR.html" accesskey="n" rel="next">AVR</a>, Previous: <a href="OpenRISC-1000.html" accesskey="p" rel="prev">OpenRISC 1000</a>, Up: <a href="Embedded-Processors.html" accesskey="u" rel="up">Embedded Processors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

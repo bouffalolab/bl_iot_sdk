@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -12,7 +12,7 @@ or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts, and with no
 Back-Cover Texts.  A copy of the license is included in the
 section entitled "GNU Free Documentation License". -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>PHDRS (LD)</title>
@@ -22,33 +22,24 @@ section entitled "GNU Free Documentation License". -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="LD-Index.html#LD-Index" rel="index" title="LD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="LD-Index.html" rel="index" title="LD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Scripts.html#Scripts" rel="up" title="Scripts">
-<link href="VERSION.html#VERSION" rel="next" title="VERSION">
-<link href="MEMORY.html#MEMORY" rel="prev" title="MEMORY">
+<link href="Scripts.html" rel="up" title="Scripts">
+<link href="VERSION.html" rel="next" title="VERSION">
+<link href="MEMORY.html" rel="prev" title="MEMORY">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,19 +51,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="PHDRS"></a>
-<div class="header">
+<span id="PHDRS"></span><div class="header">
 <p>
-Next: <a href="VERSION.html#VERSION" accesskey="n" rel="next">VERSION</a>, Previous: <a href="MEMORY.html#MEMORY" accesskey="p" rel="prev">MEMORY</a>, Up: <a href="Scripts.html#Scripts" accesskey="u" rel="up">Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="VERSION.html" accesskey="n" rel="next">VERSION</a>, Previous: <a href="MEMORY.html" accesskey="p" rel="prev">MEMORY</a>, Up: <a href="Scripts.html" accesskey="u" rel="up">Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="PHDRS-Command"></a>
-<h3 class="section">3.8 PHDRS Command</h3>
-<a name="index-PHDRS"></a>
-<a name="index-program-headers"></a>
-<a name="index-ELF-program-headers"></a>
-<a name="index-program-segments"></a>
-<a name="index-segments_002c-ELF"></a>
+<span id="PHDRS-Command"></span><h3 class="section">3.8 PHDRS Command</h3>
+<span id="index-PHDRS"></span>
+<span id="index-program-headers"></span>
+<span id="index-ELF-program-headers"></span>
+<span id="index-program-segments"></span>
+<span id="index-segments_002c-ELF"></span>
 <p>The ELF object file format uses <em>program headers</em>, also knows as
 <em>segments</em>.  The program headers describe how the program should be
 loaded into memory.  You can print them out by using the <code>objdump</code>
@@ -97,8 +86,8 @@ ignore <code>PHDRS</code>.
 <p>This is the syntax of the <code>PHDRS</code> command.  The words <code>PHDRS</code>,
 <code>FILEHDR</code>, <code>AT</code>, and <code>FLAGS</code> are keywords.
 </p>
-<div class="smallexample">
-<pre class="smallexample">PHDRS
+<div class="example">
+<pre class="example">PHDRS
 {
   <var>name</var> <var>type</var> [ FILEHDR ] [ PHDRS ] [ AT ( <var>address</var> ) ]
         [ FLAGS ( <var>flags</var> ) ] ;
@@ -116,7 +105,7 @@ is usual for them to map to sections in ascending load address order.
 system loader will load from the file.  In the linker script, you
 specify the contents of these segments by placing allocatable output
 sections in the segments.  You use the &lsquo;<samp>:<var>phdr</var></samp>&rsquo; output section
-attribute to place a section in a particular segment.  See <a href="Output-Section-Phdr.html#Output-Section-Phdr">Output Section Phdr</a>.
+attribute to place a section in a particular segment.  See <a href="Output-Section-Phdr.html">Output Section Phdr</a>.
 </p>
 <p>It is normal to put certain sections in more than one segment.  This
 merely implies that one segment of memory contains another.  You may
@@ -131,8 +120,8 @@ placed in a single segment.  You can use <code>:NONE</code> to override the
 default segment and tell the linker to not put the section in any
 segment at all.
 </p>
-<a name="index-FILEHDR"></a>
-<a name="index-PHDRS-1"></a>
+<span id="index-FILEHDR"></span>
+<span id="index-PHDRS-1"></span>
 <p>You may use the <code>FILEHDR</code> and <code>PHDRS</code> keywords after
 the program header type to further describe the contents of the segment.
 The <code>FILEHDR</code> keyword means that the segment should include the ELF
@@ -188,7 +177,7 @@ be used for types not defined above.
 
 <p>You can specify that a segment should be loaded at a particular address
 in memory by using an <code>AT</code> expression.  This is identical to the
-<code>AT</code> command used as an output section attribute (see <a href="Output-Section-LMA.html#Output-Section-LMA">Output Section LMA</a>).  The <code>AT</code> command for a program header overrides the
+<code>AT</code> command used as an output section attribute (see <a href="Output-Section-LMA.html">Output Section LMA</a>).  The <code>AT</code> command for a program header overrides the
 output section attribute.
 </p>
 <p>The linker will normally set the segment flags based on the sections
@@ -227,7 +216,7 @@ SECTIONS
 <hr>
 <div class="header">
 <p>
-Next: <a href="VERSION.html#VERSION" accesskey="n" rel="next">VERSION</a>, Previous: <a href="MEMORY.html#MEMORY" accesskey="p" rel="prev">MEMORY</a>, Up: <a href="Scripts.html#Scripts" accesskey="u" rel="up">Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html#LD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="VERSION.html" accesskey="n" rel="next">VERSION</a>, Previous: <a href="MEMORY.html" accesskey="p" rel="prev">MEMORY</a>, Up: <a href="Scripts.html" accesskey="u" rel="up">Scripts</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="LD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

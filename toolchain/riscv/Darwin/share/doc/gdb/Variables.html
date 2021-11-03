@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Variables (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Data.html#Data" rel="up" title="Data">
-<link href="Arrays.html#Arrays" rel="next" title="Arrays">
-<link href="Ambiguous-Expressions.html#Ambiguous-Expressions" rel="prev" title="Ambiguous Expressions">
+<link href="Data.html" rel="up" title="Data">
+<link href="Arrays.html" rel="next" title="Arrays">
+<link href="Ambiguous-Expressions.html" rel="prev" title="Ambiguous Expressions">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,20 +51,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Variables"></a>
-<div class="header">
+<span id="Variables"></span><div class="header">
 <p>
-Next: <a href="Arrays.html#Arrays" accesskey="n" rel="next">Arrays</a>, Previous: <a href="Ambiguous-Expressions.html#Ambiguous-Expressions" accesskey="p" rel="prev">Ambiguous Expressions</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Arrays.html" accesskey="n" rel="next">Arrays</a>, Previous: <a href="Ambiguous-Expressions.html" accesskey="p" rel="prev">Ambiguous Expressions</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Program-Variables"></a>
-<h3 class="section">10.3 Program Variables</h3>
+<span id="Program-Variables"></span><h3 class="section">10.3 Program Variables</h3>
 
 <p>The most common kind of expression to use is the name of a variable
 in your program.
 </p>
 <p>Variables in expressions are understood in the selected stack frame
-(see <a href="Selection.html#Selection">Selecting a Frame</a>); they must be either:
+(see <a href="Selection.html">Selecting a Frame</a>); they must be either:
 </p>
 <ul>
 <li> global (or file-static)
@@ -88,8 +77,8 @@ programming language from the point of execution in that frame
 
 <p>This means that in the function
 </p>
-<div class="smallexample">
-<pre class="smallexample">foo (a)
+<div class="example">
+<pre class="example">foo (a)
      int a;
 {
   bar (a);
@@ -105,7 +94,7 @@ executing within the function <code>foo</code>, but you can only use or
 examine the variable <code>b</code> while your program is executing inside
 the block where <code>b</code> is declared.
 </p>
-<a name="index-variable-name-conflict"></a>
+<span id="index-variable-name-conflict"></span>
 <p>There is an exception: you can refer to a variable or function whose
 scope is a single source file even if the current execution point is not
 in this file.  But it is possible to have more than one such variable or
@@ -114,10 +103,10 @@ happens, referring to that name has unpredictable effects.  If you wish,
 you can specify a static variable in a particular function or file by
 using the colon-colon (<code>::</code>) notation:
 </p>
-<a name="index-colon_002dcolon_002c-context-for-variables_002ffunctions"></a>
-<a name="index-_003a_003a_002c-context-for-variables_002ffunctions"></a>
-<div class="smallexample">
-<pre class="smallexample"><var>file</var>::<var>variable</var>
+<span id="index-colon_002dcolon_002c-context-for-variables_002ffunctions"></span>
+<span id="index-_003a_003a_002c-context-for-variables_002ffunctions"></span>
+<div class="example">
+<pre class="example"><var>file</var>::<var>variable</var>
 <var>function</var>::<var>variable</var>
 </pre></div>
 
@@ -126,8 +115,8 @@ static <var>variable</var>.  In the case of file names, you can use quotes to
 make sure <small>GDB</small> parses the file name as a single word&mdash;for example,
 to print a global value of <code>x</code> defined in <samp>f2.c</samp>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) p 'f2.c'::x
+<div class="example">
+<pre class="example">(gdb) p 'f2.c'::x
 </pre></div>
 
 <p>The <code>::</code> notation is normally used for referring to
@@ -136,8 +125,8 @@ in functions by selecting the appropriate frame and using the
 simple name of the variable.  However, you may also use this notation
 to refer to local variables in frames enclosing the selected frame:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void
+<div class="example">
+<pre class="example">void
 foo (int a)
 {
   if (a &lt; 10)
@@ -157,8 +146,8 @@ bar (int a)
 here is what you might see
 when the program stops after executing the call <code>bar(0)</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) p a
+<div class="example">
+<pre class="example">(gdb) p a
 $1 = 10
 (gdb) p bar::a
 $2 = 5
@@ -170,7 +159,7 @@ $3 = 5
 $4 = 0
 </pre></div>
 
-<a name="index-C_002b_002b-scope-resolution"></a>
+<span id="index-C_002b_002b-scope-resolution"></span>
 <p>These uses of &lsquo;<samp>::</samp>&rsquo; are very rarely in conflict with the very
 similar use of the same notation in C<tt>++</tt>.  When they are in
 conflict, the C<tt>++</tt> meaning takes precedence; however, this can be
@@ -181,8 +170,8 @@ that has a field named <code>includefile</code>, and there is also an
 include file named <samp>includefile</samp> that defines a variable,
 <code>some_global</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) p includefile
+<div class="example">
+<pre class="example">(gdb) p includefile
 $1 = 23
 (gdb) p includefile::some_global
 A syntax error in expression, near `'.
@@ -190,10 +179,10 @@ A syntax error in expression, near `'.
 $2 = 27
 </pre></div>
 
-<a name="index-wrong-values"></a>
-<a name="index-variable-values_002c-wrong"></a>
-<a name="index-function-entry_002fexit_002c-wrong-values-of-variables"></a>
-<a name="index-optimized-code_002c-wrong-values-of-variables"></a>
+<span id="index-wrong-values"></span>
+<span id="index-variable-values_002c-wrong"></span>
+<span id="index-function-entry_002fexit_002c-wrong-values-of-variables"></span>
+<span id="index-optimized-code_002c-wrong-values-of-variables"></span>
 <blockquote>
 <p><em>Warning:</em> Occasionally, a local variable may appear to have the
 wrong value at certain points in a function&mdash;just after entry to a new
@@ -212,7 +201,7 @@ variable definitions may be gone.
 To be sure of always seeing accurate values, turn off all optimization
 when compiling.
 </p>
-<a name="index-_0060_0060No-symbol-_0022foo_0022-in-current-context_0027_0027"></a>
+<span id="index-_0060_0060No-symbol-_0022foo_0022-in-current-context_0027_0027"></span>
 <p>Another possible effect of compiler optimizations is to optimize
 unused variables out of existence, or assign variables to registers (as
 opposed to memory addresses).  Depending on the support for such cases
@@ -220,32 +209,32 @@ offered by the debug info format used by the compiler, <small>GDB</small>
 might not be able to display values for such local variables.  If that
 happens, <small>GDB</small> will print a message like this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">No symbol &quot;foo&quot; in current context.
+<div class="example">
+<pre class="example">No symbol &quot;foo&quot; in current context.
 </pre></div>
 
 <p>To solve such problems, either recompile without optimizations, or use a
 different debug info format, if the compiler supports several such
-formats.  See <a href="Compilation.html#Compilation">Compilation</a>, for more information on choosing compiler
-options.  See <a href="C.html#C">C and C<tt>++</tt></a>, for more information about debug
+formats.  See <a href="Compilation.html">Compilation</a>, for more information on choosing compiler
+options.  See <a href="C.html">C and C<tt>++</tt></a>, for more information about debug
 info formats that are best suited to C<tt>++</tt> programs.
 </p>
 <p>If you ask to print an object whose contents are unknown to
 <small>GDB</small>, e.g., because its data type is not completely specified
 by the debug information, <small>GDB</small> will say &lsquo;<samp>&lt;incomplete
-type&gt;</samp>&rsquo;.  See <a href="Symbols.html#Symbols">incomplete type</a>, for more about this.
+type&gt;</samp>&rsquo;.  See <a href="Symbols.html">incomplete type</a>, for more about this.
 </p>
-<a name="index-no-debug-info-variables"></a>
+<span id="index-no-debug-info-variables"></span>
 <p>If you try to examine or use the value of a (global) variable for
 which <small>GDB</small> has no type information, e.g., because the program
 includes no debug information, <small>GDB</small> displays an error message.
-See <a href="Symbols.html#Symbols">unknown type</a>, for more about unknown types.  If you
+See <a href="Symbols.html">unknown type</a>, for more about unknown types.  If you
 cast the variable to its declared type, <small>GDB</small> gets the
 variable&rsquo;s value using the cast-to type as the variable&rsquo;s type.  For
 example, in a C program:
 </p>
-<div class="smallexample">
-<pre class="smallexample">  (gdb) p var
+<div class="example">
+<pre class="example">  (gdb) p var
   'var' has unknown type; cast it to its declared type
   (gdb) p (float) var
   $1 = 3.14
@@ -257,8 +246,8 @@ error message is printed.  Entry values are available only with some compilers.
 Entry values are normally also printed at the function parameter list according
 to <a href="Print-Settings.html#set-print-entry_002dvalues">set print entry-values</a>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">Breakpoint 1, d (i=30) at gdb.base/entry-value.c:29
+<div class="example">
+<pre class="example">Breakpoint 1, d (i=30) at gdb.base/entry-value.c:29
 29	  i++;
 (gdb) next
 30	  e (i);
@@ -275,14 +264,14 @@ printed as arrays of 1 byte sized integers.  <code>-fsigned-char</code> or
 defines literal string type <code>&quot;char&quot;</code> as <code>char</code> without a sign.
 For program code
 </p>
-<div class="smallexample">
-<pre class="smallexample">char var0[] = &quot;A&quot;;
+<div class="example">
+<pre class="example">char var0[] = &quot;A&quot;;
 signed char var1[] = &quot;A&quot;;
 </pre></div>
 
 <p>You get during debugging
-</p><div class="smallexample">
-<pre class="smallexample">(gdb) print var0
+</p><div class="example">
+<pre class="example">(gdb) print var0
 $1 = &quot;A&quot;
 (gdb) print var1
 $2 = {65 'A', 0 '\0'}
@@ -291,7 +280,7 @@ $2 = {65 'A', 0 '\0'}
 <hr>
 <div class="header">
 <p>
-Next: <a href="Arrays.html#Arrays" accesskey="n" rel="next">Arrays</a>, Previous: <a href="Ambiguous-Expressions.html#Ambiguous-Expressions" accesskey="p" rel="prev">Ambiguous Expressions</a>, Up: <a href="Data.html#Data" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Arrays.html" accesskey="n" rel="next">Arrays</a>, Previous: <a href="Ambiguous-Expressions.html" accesskey="p" rel="prev">Ambiguous Expressions</a>, Up: <a href="Data.html" accesskey="u" rel="up">Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

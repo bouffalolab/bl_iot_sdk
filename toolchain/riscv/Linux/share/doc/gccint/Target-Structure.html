@@ -1,103 +1,144 @@
-<html lang="en">
-<head>
-<title>Target Structure - GNU Compiler Collection (GCC) Internals</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="GNU Compiler Collection (GCC) Internals">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="up" href="Target-Macros.html#Target-Macros" title="Target Macros">
-<link rel="next" href="Driver.html#Driver" title="Driver">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Funding Free Software'', the Front-Cover
+Invariant Sections being "Funding Free Software", the Front-Cover
 Texts being (a) (see below), and with the Back-Cover Texts being (b)
 (see below).  A copy of the license is included in the section entitled
-``GNU Free Documentation License''.
+"GNU Free Documentation License".
 
 (a) The FSF's Front-Cover Text is:
 
-     A GNU Manual
+A GNU Manual
 
 (b) The FSF's Back-Cover Text is:
 
-     You have freedom to copy and modify this GNU Manual, like GNU
+You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
-     funds for GNU development.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
+     funds for GNU development. -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU Compiler Collection (GCC) Internals: Target Structure</title>
+
+<meta name="description" content="GNU Compiler Collection (GCC) Internals: Target Structure">
+<meta name="keywords" content="GNU Compiler Collection (GCC) Internals: Target Structure">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Target-Macros.html#Target-Macros" rel="up" title="Target Macros">
+<link href="Driver.html#Driver" rel="next" title="Driver">
+<link href="Target-Macros.html#Target-Macros" rel="prev" title="Target Macros">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
 </head>
-<body>
-<div class="node">
+
+<body lang="en">
 <a name="Target-Structure"></a>
+<div class="header">
 <p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Driver.html#Driver">Driver</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Target-Macros.html#Target-Macros">Target Macros</a>
-<hr>
+Next: <a href="Driver.html#Driver" accesskey="n" rel="next">Driver</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-
+<hr>
+<a name="The-Global-targetm-Variable"></a>
 <h3 class="section">18.1 The Global <code>targetm</code> Variable</h3>
+<a name="index-target-hooks"></a>
+<a name="index-target-functions"></a>
 
-<p><a name="index-target-hooks-3945"></a><a name="index-target-functions-3946"></a>
-
-<div class="defun">
-&mdash; Variable: struct gcc_target <b>targetm</b><var><a name="index-targetm-3947"></a></var><br>
-<blockquote><p>The target <samp><span class="file">.c</span></samp> file must define the global <code>targetm</code> variable
+<dl>
+<dt><a name="index-targetm"></a>Variable: <em>struct gcc_target</em> <strong>targetm</strong></dt>
+<dd><p>The target <samp>.c</samp> file must define the global <code>targetm</code> variable
 which contains pointers to functions and data relating to the target
-machine.  The variable is declared in <samp><span class="file">target.h</span></samp>;
-<samp><span class="file">target-def.h</span></samp> defines the macro <code>TARGET_INITIALIZER</code> which is
+machine.  The variable is declared in <samp>target.h</samp>;
+<samp>target-def.h</samp> defines the macro <code>TARGET_INITIALIZER</code> which is
 used to initialize the variable, and macros for the default initializers
-for elements of the structure.  The <samp><span class="file">.c</span></samp> file should override those
+for elements of the structure.  The <samp>.c</samp> file should override those
 macros for which the default definition is inappropriate.  For example:
-     <pre class="smallexample">          #include "target.h"
-          #include "target-def.h"
-          
-          /* <span class="roman">Initialize the GCC target structure.</span>  */
-          
-          #undef TARGET_COMP_TYPE_ATTRIBUTES
-          #define TARGET_COMP_TYPE_ATTRIBUTES <var>machine</var>_comp_type_attributes
-          
-          struct gcc_target targetm = TARGET_INITIALIZER;
-</pre>
-      </blockquote></div>
+</p><div class="smallexample">
+<pre class="smallexample">#include &quot;target.h&quot;
+#include &quot;target-def.h&quot;
 
- <p>Where a macro should be defined in the <samp><span class="file">.c</span></samp> file in this manner to
+/* <span class="roman">Initialize the GCC target structure.</span>  */
+
+#undef TARGET_COMP_TYPE_ATTRIBUTES
+#define TARGET_COMP_TYPE_ATTRIBUTES <var>machine</var>_comp_type_attributes
+
+struct gcc_target targetm = TARGET_INITIALIZER;
+</pre></div>
+</dd></dl>
+
+<p>Where a macro should be defined in the <samp>.c</samp> file in this manner to
 form part of the <code>targetm</code> structure, it is documented below as a
 &ldquo;Target Hook&rdquo; with a prototype.  Many macros will change in future
-from being defined in the <samp><span class="file">.h</span></samp> file to being part of the
+from being defined in the <samp>.h</samp> file to being part of the
 <code>targetm</code> structure.
-
- <p>Similarly, there is a <code>targetcm</code> variable for hooks that are
+</p>
+<p>Similarly, there is a <code>targetcm</code> variable for hooks that are
 specific to front ends for C-family languages, documented as &ldquo;C
-Target Hook&rdquo;.  This is declared in <samp><span class="file">c-family/c-target.h</span></samp>, the
+Target Hook&rdquo;.  This is declared in <samp>c-family/c-target.h</samp>, the
 initializer <code>TARGETCM_INITIALIZER</code> in
-<samp><span class="file">c-family/c-target-def.h</span></samp>.  If targets initialize <code>targetcm</code>
+<samp>c-family/c-target-def.h</samp>.  If targets initialize <code>targetcm</code>
 themselves, they should set <code>target_has_targetcm=yes</code> in
-<samp><span class="file">config.gcc</span></samp>; otherwise a default definition is used.
-
- <p>Similarly, there is a <code>targetm_common</code> variable for hooks that
+<samp>config.gcc</samp>; otherwise a default definition is used.
+</p>
+<p>Similarly, there is a <code>targetm_common</code> variable for hooks that
 are shared between the compiler driver and the compilers proper,
 documented as &ldquo;Common Target Hook&rdquo;.  This is declared in
-<samp><span class="file">common/common-target.h</span></samp>, the initializer
+<samp>common/common-target.h</samp>, the initializer
 <code>TARGETM_COMMON_INITIALIZER</code> in
-<samp><span class="file">common/common-target-def.h</span></samp>.  If targets initialize
+<samp>common/common-target-def.h</samp>.  If targets initialize
 <code>targetm_common</code> themselves, they should set
-<code>target_has_targetm_common=yes</code> in <samp><span class="file">config.gcc</span></samp>; otherwise a
+<code>target_has_targetm_common=yes</code> in <samp>config.gcc</samp>; otherwise a
 default definition is used.
+</p>
+<p>Similarly, there is a <code>targetdm</code> variable for hooks that are
+specific to the D language front end, documented as &ldquo;D Target Hook&rdquo;.
+This is declared in <samp>d/d-target.h</samp>, the initializer
+<code>TARGETDM_INITIALIZER</code> in <samp>d/d-target-def.h</samp>.  If targets
+initialize <code>targetdm</code> themselves, they should set
+<code>target_has_targetdm=yes</code> in <samp>config.gcc</samp>; otherwise a default
+definition is used.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Driver.html#Driver" accesskey="n" rel="next">Driver</a>, Up: <a href="Target-Macros.html#Target-Macros" accesskey="u" rel="up">Target Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
- </body></html>
 
+
+</body>
+</html>

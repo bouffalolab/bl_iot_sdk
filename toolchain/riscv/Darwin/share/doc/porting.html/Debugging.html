@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Debugging (Embed with GNU)</title>
@@ -10,32 +10,23 @@
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html" rel="start" title="Top">
 <link href="leds_002ec.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Libc.html#Libc" rel="up" title="Libc">
-<link href="GDB.html#GDB" rel="next" title="GDB">
-<link href="Misc-Support.html#Misc-Support" rel="prev" title="Misc Support">
+<link href="Libc.html" rel="up" title="Libc">
+<link href="GDB.html" rel="next" title="GDB">
+<link href="Misc-Support.html" rel="prev" title="Misc Support">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -47,14 +38,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Debugging"></a>
-<div class="header">
+<span id="Debugging"></span><div class="header">
 <p>
-Previous: <a href="Misc-Support.html#Misc-Support" accesskey="p" rel="prev">Misc Support</a>, Up: <a href="Libc.html#Libc" accesskey="u" rel="up">Libc</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Previous: <a href="Misc-Support.html" accesskey="p" rel="prev">Misc Support</a>, Up: <a href="Libc.html" accesskey="u" rel="up">Libc</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Useful-debugging-functions"></a>
-<h4 class="subsection">3.4.4 Useful debugging functions</h4>
+<span id="Useful-debugging-functions"></span><h4 class="subsection">3.4.4 Useful debugging functions</h4>
 
 <p>There are always a few useful functions for debugging your project in
 progress. I typically implement a simple <code>print()</code> routine that
@@ -64,8 +53,8 @@ times print will work when there are problems that cause <code>printf()</code> t
 cause an exception. <code>putnum()</code> is just to print out values in hex
 so they are easier to read.
 </p>
-<div class="smallexample">
-<pre class="smallexample">/*
+<div class="example">
+<pre class="example">/*
  * print -- do a raw print of a string
  */ 
 int
@@ -120,14 +109,14 @@ LED display. This LED is set by setting a bit mask to an address, where
 decimal point on the LED display, so it gets the leftmost bit. The other
 bits specify the segment location. The bits look like:
 </p>
-<div class="smallexample">
-<pre class="smallexample">        [d.p | g | f | e | d | c | b | a ] is the byte.
+<div class="example">
+<pre class="example">        [d.p | g | f | e | d | c | b | a ] is the byte.
 </pre></div>
 
 <p>The locations are set up as:
 </p>
-<div class="smallexample">
-<pre class="smallexample">             a
+<div class="example">
+<pre class="example">             a
            -----
         f |     | b
           |  g  |
@@ -141,8 +130,8 @@ bits specify the segment location. The bits look like:
 <p>This takes a number that&rsquo;s already been converted to a string, and
 prints it. 
 </p>
-<div class="smallexample">
-<pre class="smallexample">#define LED_ADDR	0xd00003
+<div class="example">
+<pre class="example">#define LED_ADDR	0xd00003
 
 void
 led_putnum ( num )
@@ -189,7 +178,7 @@ zylons()
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Misc-Support.html#Misc-Support" accesskey="p" rel="prev">Misc Support</a>, Up: <a href="Libc.html#Libc" accesskey="u" rel="up">Libc</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Previous: <a href="Misc-Support.html" accesskey="p" rel="prev">Misc Support</a>, Up: <a href="Libc.html" accesskey="u" rel="up">Libc</a> &nbsp; [<a href="leds_002ec.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

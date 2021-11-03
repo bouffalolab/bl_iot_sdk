@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Machine Code (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Source.html#Source" rel="up" title="Source">
-<link href="Data.html#Data" rel="next" title="Data">
-<link href="Source-Path.html#Source-Path" rel="prev" title="Source Path">
+<link href="Source.html" rel="up" title="Source">
+<link href="Data.html" rel="next" title="Data">
+<link href="Source-Path.html" rel="prev" title="Source Path">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Machine-Code"></a>
-<div class="header">
+<span id="Machine-Code"></span><div class="header">
 <p>
-Previous: <a href="Source-Path.html#Source-Path" accesskey="p" rel="prev">Source Path</a>, Up: <a href="Source.html#Source" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Source-Path.html" accesskey="p" rel="prev">Source Path</a>, Up: <a href="Source.html" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Source-and-Machine-Code"></a>
-<h3 class="section">9.6 Source and Machine Code</h3>
-<a name="index-source-line-and-its-code-address"></a>
+<span id="Source-and-Machine-Code"></span><h3 class="section">9.6 Source and Machine Code</h3>
+<span id="index-source-line-and-its-code-address"></span>
 
 <p>You can use the command <code>info line</code> to map source lines to program
 addresses (and vice versa), and the command <code>disassemble</code> to display
@@ -80,13 +69,13 @@ line specified.  Also, <code>info line</code> prints addresses in symbolic form 
 well as hex.
 </p>
 <dl compact="compact">
-<dd><a name="index-info-line"></a>
+<dd><span id="index-info-line"></span>
 </dd>
 <dt><code>info line</code></dt>
 <dt><code>info line <var>location</var></code></dt>
 <dd><p>Print the starting and ending addresses of the compiled code for
 source line <var>location</var>.  You can specify source lines in any of
-the ways documented in <a href="Specify-Location.html#Specify-Location">Specify Location</a>.  With no <var>location</var>
+the ways documented in <a href="Specify-Location.html">Specify Location</a>.  With no <var>location</var>
 information about the current source line is printed.
 </p></dd>
 </dl>
@@ -95,41 +84,41 @@ information about the current source line is printed.
 the object code for the first line of function
 <code>m4_changequote</code>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) info line m4_changequote
+<div class="example">
+<pre class="example">(gdb) info line m4_changequote
 Line 895 of &quot;builtin.c&quot; starts at pc 0x634c &lt;m4_changequote&gt; and \
         ends at 0x6350 &lt;m4_changequote+4&gt;.
 </pre></div>
 
-<p><a name="index-code-address-and-its-source-line"></a>
+<p><span id="index-code-address-and-its-source-line"></span>
 We can also inquire (using <code>*<var>addr</var></code> as the form for
 <var>location</var>) what source line covers a particular address:
-</p><div class="smallexample">
-<pre class="smallexample">(gdb) info line *0x63ff
+</p><div class="example">
+<pre class="example">(gdb) info line *0x63ff
 Line 926 of &quot;builtin.c&quot; starts at pc 0x63e4 &lt;m4_changequote+152&gt; and \
         ends at 0x6404 &lt;m4_changequote+184&gt;.
 </pre></div>
 
-<a name="index-_0024_005f-and-info-line"></a>
-<a name="index-x-command_002c-default-address"></a>
-<a name="index-x_0028examine_0029_002c-and-info-line"></a>
+<span id="index-_0024_005f-and-info-line"></span>
+<span id="index-x-command_002c-default-address"></span>
+<span id="index-x_0028examine_0029_002c-and-info-line"></span>
 <p>After <code>info line</code>, the default address for the <code>x</code> command
 is changed to the starting address of the line, so that &lsquo;<samp>x/i</samp>&rsquo; is
-sufficient to begin examining the machine code (see <a href="Memory.html#Memory">Examining Memory</a>).  Also, this address is saved as the value of the
-convenience variable <code>$_</code> (see <a href="Convenience-Vars.html#Convenience-Vars">Convenience
+sufficient to begin examining the machine code (see <a href="Memory.html">Examining Memory</a>).  Also, this address is saved as the value of the
+convenience variable <code>$_</code> (see <a href="Convenience-Vars.html">Convenience
 Variables</a>).
 </p>
-<a name="index-info-line_002c-repeated-calls"></a>
+<span id="index-info-line_002c-repeated-calls"></span>
 <p>After <code>info line</code>, using <code>info line</code> again without
 specifying a location will display information about the next source
 line.
 </p>
 <dl compact="compact">
-<dd><a name="index-disassemble"></a>
-<a name="index-assembly-instructions"></a>
-<a name="index-instructions_002c-assembly"></a>
-<a name="index-machine-instructions"></a>
-<a name="index-listing-machine-instructions"></a>
+<dd><span id="index-disassemble"></span>
+<span id="index-assembly-instructions"></span>
+<span id="index-instructions_002c-assembly"></span>
+<span id="index-machine-instructions"></span>
+<span id="index-listing-machine-instructions"></span>
 </dd>
 <dt><code>disassemble</code></dt>
 <dt><code>disassemble /m</code></dt>
@@ -170,8 +159,8 @@ the instruction at that location is shown with a <code>=&gt;</code> marker.
 <p>The following example shows the disassembly of a range of addresses of
 HP PA-RISC 2.0 code:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) disas 0x32c4, 0x32e4
+<div class="example">
+<pre class="example">(gdb) disas 0x32c4, 0x32e4
 Dump of assembler code from 0x32c4 to 0x32e4:
    0x32c4 &lt;main+204&gt;:      addil 0,dp
    0x32c8 &lt;main+208&gt;:      ldw 0x22c(sr0,r1),r26
@@ -188,8 +177,8 @@ End of assembler dump.
 with <code>/m</code> or <code>/s</code>, when the program is stopped just after
 function prologue in a non-optimized function with no inline code.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) disas /m main
+<div class="example">
+<pre class="example">(gdb) disas /m main
 Dump of assembler code for function main:
 5       {
    0x08048330 &lt;+0&gt;:    push   %ebp
@@ -223,8 +212,8 @@ several instructions that are present in the <code>/s</code> output.
 </p>
 <p><samp>foo.h</samp>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">int
+<div class="example">
+<pre class="example">int
 foo (int a)
 {
   if (a &lt; 0)
@@ -237,8 +226,8 @@ foo (int a)
 
 <p><samp>foo.c</samp>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">#include &quot;foo.h&quot;
+<div class="example">
+<pre class="example">#include &quot;foo.h&quot;
 volatile int x, y;
 int
 main ()
@@ -248,8 +237,8 @@ main ()
 }
 </pre></div>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb) disas /m main
+<div class="example">
+<pre class="example">(gdb) disas /m main
 Dump of assembler code for function main:
 5	{
 
@@ -303,8 +292,8 @@ End of assembler dump.
 
 <p>Here is another example showing raw instructions in hex for AMD x86-64,
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb) disas /r 0x400281,+10
+<div class="example">
+<pre class="example">(gdb) disas /r 0x400281,+10
 Dump of assembler code from 0x400281 to 0x40028b:
    0x0000000000400281:  38 36  cmp    %dh,(%rsi)
    0x0000000000400283:  2d 36 34 2e 73 sub    $0x732e3436,%eax
@@ -313,7 +302,7 @@ Dump of assembler code from 0x400281 to 0x40028b:
 End of assembler dump.
 </pre></div>
 
-<p>Addresses cannot be specified as a location (see <a href="Specify-Location.html#Specify-Location">Specify Location</a>).
+<p>Addresses cannot be specified as a location (see <a href="Specify-Location.html">Specify Location</a>).
 So, for example, if you want to disassemble function <code>bar</code>
 in file <samp>foo.c</samp>, you must type &lsquo;<samp>disassemble 'foo.c'::bar</samp>&rsquo;
 and not &lsquo;<samp>disassemble foo.c:bar</samp>&rsquo;.
@@ -328,15 +317,15 @@ location of the relocation table.  On some architectures, <small>GDB</small>
 might be able to resolve these to actual function names.
 </p>
 <dl compact="compact">
-<dd><a name="index-set-disassembler_002doptions"></a>
-<a name="index-disassembler-options"></a>
+<dd><span id="index-set-disassembler_002doptions"></span>
+<span id="index-disassembler-options"></span>
 </dd>
 <dt><code>set disassembler-options <var>option1</var>[,<var>option2</var>&hellip;]</code></dt>
 <dd><p>This command controls the passing of target specific information to
 the disassembler.  For a list of valid options, please refer to the
 <code>-M</code>/<code>--disassembler-options</code> section of the &lsquo;<samp>objdump</samp>&rsquo;
 manual and/or the output of <kbd>objdump --help</kbd>
-(see <a href="http://sourceware.org/binutils/docs/binutils/objdump.html#objdump">objdump</a> in <cite>The GNU Binary Utilities</cite>).
+(see <a href="https://sourceware.org/binutils/docs/binutils/objdump.html#objdump">objdump</a> in <cite>The GNU Binary Utilities</cite>).
 The default value is the empty string.
 </p>
 <p>If it is necessary to specify more than one disassembler option, then
@@ -344,7 +333,7 @@ multiple options can be placed together into a comma separated list.
 Currently this command is only supported on targets ARM, MIPS, PowerPC
 and S/390.
 </p>
-<a name="index-show-disassembler_002doptions"></a>
+<span id="index-show-disassembler_002doptions"></span>
 </dd>
 <dt><code>show disassembler-options</code></dt>
 <dd><p>Show the current setting of the disassembler options.
@@ -352,9 +341,9 @@ and S/390.
 </dl>
 
 <dl compact="compact">
-<dd><a name="index-set-disassembly_002dflavor"></a>
-<a name="index-Intel-disassembly-flavor"></a>
-<a name="index-AT_0026T-disassembly-flavor"></a>
+<dd><span id="index-set-disassembly_002dflavor"></span>
+<span id="index-Intel-disassembly-flavor"></span>
+<span id="index-AT_0026T-disassembly-flavor"></span>
 </dd>
 <dt><code>set disassembly-flavor <var>instruction-set</var></code></dt>
 <dd><p>Select the instruction set to use when disassembling the
@@ -365,7 +354,7 @@ can set <var>instruction-set</var> to either <code>intel</code> or <code>att</co
 The default is <code>att</code>, the AT&amp;T flavor used by default by Unix
 assemblers for x86-based targets.
 </p>
-<a name="index-show-disassembly_002dflavor"></a>
+<span id="index-show-disassembly_002dflavor"></span>
 </dd>
 <dt><code>show disassembly-flavor</code></dt>
 <dd><p>Show the current setting of the disassembly flavor.
@@ -373,8 +362,8 @@ assemblers for x86-based targets.
 </dl>
 
 <dl compact="compact">
-<dd><a name="index-set-disassemble_002dnext_002dline"></a>
-<a name="index-show-disassemble_002dnext_002dline"></a>
+<dd><span id="index-set-disassemble_002dnext_002dline"></span>
+<span id="index-show-disassemble_002dnext_002dline"></span>
 </dd>
 <dt><code>set disassemble-next-line</code></dt>
 <dt><code>show disassemble-next-line</code></dt>
@@ -400,7 +389,7 @@ instruction.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Source-Path.html#Source-Path" accesskey="p" rel="prev">Source Path</a>, Up: <a href="Source.html#Source" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Source-Path.html" accesskey="p" rel="prev">Source Path</a>, Up: <a href="Source.html" accesskey="u" rel="up">Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

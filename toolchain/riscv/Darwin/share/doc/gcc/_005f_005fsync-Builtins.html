@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>__sync Builtins (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="C-Extensions.html#C-Extensions" rel="up" title="C Extensions">
-<link href="_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins" rel="next" title="__atomic Builtins">
-<link href="Offsetof.html#Offsetof" rel="prev" title="Offsetof">
+<link href="C-Extensions.html" rel="up" title="C Extensions">
+<link href="_005f_005fatomic-Builtins.html" rel="next" title="__atomic Builtins">
+<link href="Offsetof.html" rel="prev" title="Offsetof">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,14 +58,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="g_t_005f_005fsync-Builtins"></a>
-<div class="header">
+<span id="g_t_005f_005fsync-Builtins"></span><div class="header">
 <p>
-Next: <a href="_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins" accesskey="n" rel="next">__atomic Builtins</a>, Previous: <a href="Offsetof.html#Offsetof" accesskey="p" rel="prev">Offsetof</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="_005f_005fatomic-Builtins.html" accesskey="n" rel="next">__atomic Builtins</a>, Previous: <a href="Offsetof.html" accesskey="p" rel="prev">Offsetof</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Legacy-_005f_005fsync-Built_002din-Functions-for-Atomic-Memory-Access"></a>
-<h3 class="section">6.52 Legacy <code>__sync</code> Built-in Functions for Atomic Memory Access</h3>
+<span id="Legacy-_005f_005fsync-Built_002din-Functions-for-Atomic-Memory-Access"></span><h3 class="section">6.54 Legacy <code>__sync</code> Built-in Functions for Atomic Memory Access</h3>
 
 <p>The following built-in functions
 are intended to be compatible with those described
@@ -92,7 +81,7 @@ of the <code>uintptr_t</code> type.  That is, they are not scaled by the size
 of the type to which the pointer points.
 </p>
 <p>These functions are implemented in terms of the &lsquo;<samp>__atomic</samp>&rsquo;
-builtins (see <a href="_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins">__atomic Builtins</a>).  They should not be used for new
+builtins (see <a href="_005f_005fatomic-Builtins.html">__atomic Builtins</a>).  They should not be used for new
 code which should use the &lsquo;<samp>__atomic</samp>&rsquo; builtins instead.
 </p>
 <p>Not all operations are supported by all target processors.  If a particular
@@ -125,12 +114,12 @@ accessible variables should be protected.
 <dt><code><var>type</var> __sync_fetch_and_and (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
 <dt><code><var>type</var> __sync_fetch_and_xor (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
 <dt><code><var>type</var> __sync_fetch_and_nand (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
-<dd><a name="index-_005f_005fsync_005ffetch_005fand_005fadd"></a>
-<a name="index-_005f_005fsync_005ffetch_005fand_005fsub"></a>
-<a name="index-_005f_005fsync_005ffetch_005fand_005for"></a>
-<a name="index-_005f_005fsync_005ffetch_005fand_005fand"></a>
-<a name="index-_005f_005fsync_005ffetch_005fand_005fxor"></a>
-<a name="index-_005f_005fsync_005ffetch_005fand_005fnand"></a>
+<dd><span id="index-_005f_005fsync_005ffetch_005fand_005fadd"></span>
+<span id="index-_005f_005fsync_005ffetch_005fand_005fsub"></span>
+<span id="index-_005f_005fsync_005ffetch_005fand_005for"></span>
+<span id="index-_005f_005fsync_005ffetch_005fand_005fand"></span>
+<span id="index-_005f_005fsync_005ffetch_005fand_005fxor"></span>
+<span id="index-_005f_005fsync_005ffetch_005fand_005fnand"></span>
 <p>These built-in functions perform the operation suggested by the name, and
 returns the value that had previously been in memory.  That is, operations
 on integer operands have the following semantics.  Operations on pointer
@@ -138,8 +127,8 @@ arguments are performed as if the operands were of the <code>uintptr_t</code>
 type.  That is, they are not scaled by the size of the type to which
 the pointer points.
 </p>
-<div class="smallexample">
-<pre class="smallexample">{ tmp = *ptr; *ptr <var>op</var>= value; return tmp; }
+<div class="example">
+<pre class="example">{ tmp = *ptr; *ptr <var>op</var>= value; return tmp; }
 { tmp = *ptr; *ptr = ~(tmp &amp; value); return tmp; }   // nand
 </pre></div>
 
@@ -156,19 +145,19 @@ as <code>*ptr = ~(tmp &amp; value)</code> instead of <code>*ptr = ~tmp &amp; val
 <dt><code><var>type</var> __sync_and_and_fetch (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
 <dt><code><var>type</var> __sync_xor_and_fetch (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
 <dt><code><var>type</var> __sync_nand_and_fetch (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
-<dd><a name="index-_005f_005fsync_005fadd_005fand_005ffetch"></a>
-<a name="index-_005f_005fsync_005fsub_005fand_005ffetch"></a>
-<a name="index-_005f_005fsync_005for_005fand_005ffetch"></a>
-<a name="index-_005f_005fsync_005fand_005fand_005ffetch"></a>
-<a name="index-_005f_005fsync_005fxor_005fand_005ffetch"></a>
-<a name="index-_005f_005fsync_005fnand_005fand_005ffetch"></a>
+<dd><span id="index-_005f_005fsync_005fadd_005fand_005ffetch"></span>
+<span id="index-_005f_005fsync_005fsub_005fand_005ffetch"></span>
+<span id="index-_005f_005fsync_005for_005fand_005ffetch"></span>
+<span id="index-_005f_005fsync_005fand_005fand_005ffetch"></span>
+<span id="index-_005f_005fsync_005fxor_005fand_005ffetch"></span>
+<span id="index-_005f_005fsync_005fnand_005fand_005ffetch"></span>
 <p>These built-in functions perform the operation suggested by the name, and
 return the new value.  That is, operations on integer operands have
 the following semantics.  Operations on pointer operands are performed as
 if the operand&rsquo;s type were <code>uintptr_t</code>.
 </p>
-<div class="smallexample">
-<pre class="smallexample">{ *ptr <var>op</var>= value; return *ptr; }
+<div class="example">
+<pre class="example">{ *ptr <var>op</var>= value; return *ptr; }
 { *ptr = ~(*ptr &amp; value); return *ptr; }   // nand
 </pre></div>
 
@@ -182,25 +171,25 @@ as <code>*ptr = ~(*ptr &amp; value)</code> instead of
 </dd>
 <dt><code>bool __sync_bool_compare_and_swap (<var>type</var> *ptr, <var>type</var> oldval, <var>type</var> newval, ...)</code></dt>
 <dt><code><var>type</var> __sync_val_compare_and_swap (<var>type</var> *ptr, <var>type</var> oldval, <var>type</var> newval, ...)</code></dt>
-<dd><a name="index-_005f_005fsync_005fbool_005fcompare_005fand_005fswap"></a>
-<a name="index-_005f_005fsync_005fval_005fcompare_005fand_005fswap"></a>
+<dd><span id="index-_005f_005fsync_005fbool_005fcompare_005fand_005fswap"></span>
+<span id="index-_005f_005fsync_005fval_005fcompare_005fand_005fswap"></span>
 <p>These built-in functions perform an atomic compare and swap.
 That is, if the current
 value of <code>*<var>ptr</var></code> is <var>oldval</var>, then write <var>newval</var> into
 <code>*<var>ptr</var></code>.
 </p>
-<p>The &ldquo;bool&rdquo; version returns true if the comparison is successful and
+<p>The &ldquo;bool&rdquo; version returns <code>true</code> if the comparison is successful and
 <var>newval</var> is written.  The &ldquo;val&rdquo; version returns the contents
 of <code>*<var>ptr</var></code> before the operation.
 </p>
 </dd>
 <dt><code>__sync_synchronize (...)</code></dt>
-<dd><a name="index-_005f_005fsync_005fsynchronize"></a>
+<dd><span id="index-_005f_005fsync_005fsynchronize"></span>
 <p>This built-in function issues a full memory barrier.
 </p>
 </dd>
 <dt><code><var>type</var> __sync_lock_test_and_set (<var>type</var> *ptr, <var>type</var> value, ...)</code></dt>
-<dd><a name="index-_005f_005fsync_005flock_005ftest_005fand_005fset"></a>
+<dd><span id="index-_005f_005fsync_005flock_005ftest_005fand_005fset"></span>
 <p>This built-in function, as described by Intel, is not a traditional test-and-set
 operation, but rather an atomic exchange operation.  It writes <var>value</var>
 into <code>*<var>ptr</var></code>, and returns the previous contents of
@@ -221,7 +210,7 @@ satisfied.
 </p>
 </dd>
 <dt><code>void __sync_lock_release (<var>type</var> *ptr, ...)</code></dt>
-<dd><a name="index-_005f_005fsync_005flock_005frelease"></a>
+<dd><span id="index-_005f_005fsync_005flock_005frelease"></span>
 <p>This built-in function releases the lock acquired by
 <code>__sync_lock_test_and_set</code>.
 Normally this means writing the constant 0 to <code>*<var>ptr</var></code>.
@@ -237,7 +226,7 @@ are not prevented from being speculated to before the barrier.
 <hr>
 <div class="header">
 <p>
-Next: <a href="_005f_005fatomic-Builtins.html#g_t_005f_005fatomic-Builtins" accesskey="n" rel="next">__atomic Builtins</a>, Previous: <a href="Offsetof.html#Offsetof" accesskey="p" rel="prev">Offsetof</a>, Up: <a href="C-Extensions.html#C-Extensions" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="_005f_005fatomic-Builtins.html" accesskey="n" rel="next">__atomic Builtins</a>, Previous: <a href="Offsetof.html" accesskey="p" rel="prev">Offsetof</a>, Up: <a href="C-Extensions.html" accesskey="u" rel="up">C Extensions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

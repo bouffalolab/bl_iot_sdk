@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -277,6 +277,50 @@ will contain a colon separated list of audit interfaces to use.  This
 option is only meaningful on ELF platforms supporting the rtld-audit interface.
 The -P option is provided for Solaris compatibility.
 </p>
+<a name="index-_002d_002denable_002dnon_002dcontiguous_002dregions"></a>
+</dd>
+<dt><code>--enable-non-contiguous-regions</code></dt>
+<dd><p>This option avoids generating an error if an input section does not
+fit a matching output section. The linker tries to allocate the input
+section to subseque nt matching output sections, and generates an
+error only if no output section is large enough.  This is useful when
+several non-contiguous memory regions are available and the input
+section does not require a particular one.  The order in which input
+sections are evaluated does not change, for instance:
+</p>
+<div class="smallexample">
+<pre class="smallexample">  MEMORY {
+    MEM1 (rwx) : ORIGIN : 0x1000, LENGTH = 0x14
+    MEM2 (rwx) : ORIGIN : 0x1000, LENGTH = 0x40
+    MEM3 (rwx) : ORIGIN : 0x2000, LENGTH = 0x40
+  }
+  SECTIONS {
+    mem1 : { *(.data.*); } &gt; MEM1
+    mem2 : { *(.data.*); } &gt; MEM2
+    mem3 : { *(.data.*); } &gt; MEM2
+  }
+
+  with input sections:
+  .data.1: size 8
+  .data.2: size 0x10
+  .data.3: size 4
+
+  results in .data.1 affected to mem1, and .data.2 and .data.3
+  affected to mem2, even though .data.3 would fit in mem3.
+</pre></div>
+
+<p>This option is incompatible with INSERT statements because it changes
+the way input sections are mapped to output sections.
+</p>
+<a name="index-_002d_002denable_002dnon_002dcontiguous_002dregions_002dwarnings"></a>
+</dd>
+<dt><code>--enable-non-contiguous-regions-warnings</code></dt>
+<dd><p>This option enables warnings when
+<code>--enable-non-contiguous-regions</code> allows possibly unexpected
+matches in sections mapping, potentially leading to silently
+discarding a section instead of failing because it does not fit any
+output region.
+</p>
 <a name="index-entry-point_002c-from-command-line"></a>
 <a name="index-_002de-entry"></a>
 <a name="index-_002d_002dentry_003dentry"></a>
@@ -348,6 +392,26 @@ See the description of &lsquo;<samp>--dynamic-list</samp>&rsquo;.
 support a similar function to export all symbols from a DLL or EXE; see
 the description of &lsquo;<samp>--export-all-symbols</samp>&rsquo; below.
 </p>
+<a name="index-_002d_002dexport_002ddynamic_002dsymbol_003dglob"></a>
+<a name="index-export-dynamic-symbol"></a>
+</dd>
+<dt><code>--export-dynamic-symbol=<var>glob</var></code></dt>
+<dd><p>When creating a dynamically linked executable, symbols matching
+<var>glob</var> will be added to the dynamic symbol table. When creating a
+shared library, references to symbols matching <var>glob</var> will not be
+bound to the definitions within the shared library. This option is a
+no-op when creating a shared library and &lsquo;<samp>-Bsymbolic</samp>&rsquo; or
+&lsquo;<samp>--dynamic-list</samp>&rsquo; are not specified. This option is only meaningful
+on ELF platforms which support shared libraries.
+</p>
+<a name="index-_002d_002dexport_002ddynamic_002dsymbol_002dlist_003dfile"></a>
+<a name="index-export-dynamic-symbol-list"></a>
+</dd>
+<dt><code>--export-dynamic-symbol-list=<var>file</var></code></dt>
+<dd><p>Specify a &lsquo;<samp>--export-dynamic-symbol</samp>&rsquo; for each pattern in the file.
+The format of the file is the same as the version node without
+scope and node name.  See <a href="VERSION.html#VERSION">VERSION</a> for more information.
+</p>
 <a name="index-big_002dendian-objects"></a>
 <a name="index-endianness"></a>
 <a name="index-_002dEB"></a>
@@ -379,7 +443,7 @@ first check whether there is a definition in the shared object
 in the filter object.  The shared object <var>name</var> need not exist.
 Thus the shared object <var>name</var> may be used to provide an alternative
 implementation of certain functions, perhaps for debugging or for
-machine specific performance.
+machine-specific performance.
 </p>
 <p>This option may be specified more than once.  The DT_AUXILIARY entries
 will be created in the order in which they appear on the command line.
@@ -586,27 +650,36 @@ scripts.
 </p>
 </li><li> How GNU properties are merged.
 
-<p>When linker merges input .note.gnu.property sections into one output
-.note.gnu.property section, some properties are removed or updated,
-which are reported in the link map as
+<p>When the linker merges input .note.gnu.property sections into one output
+.note.gnu.property section, some properties are removed or updated.
+These actions are reported in the link map.  For example:
 </p>
 <div class="smallexample">
 <pre class="smallexample">Removed property 0xc0000002 to merge foo.o (0x1) and bar.o (not found)
 </pre></div>
 
-<p>It indicates that property 0xc0000002 is removed from output when
+<p>This indicates that property 0xc0000002 is removed from output when
 merging properties in  <samp>foo.o</samp>, whose property 0xc0000002 value
 is 0x1, and <samp>bar.o</samp>, which doesn&rsquo;t have property 0xc0000002.
 </p>
 <div class="smallexample">
-<pre class="smallexample">Updated property 0xc0000002 (0x1) to merge foo.o (0x1) and bar.o (0x1)
+<pre class="smallexample">Updated property 0xc0010001 (0x1) to merge foo.o (0x1) and bar.o (0x1)
 </pre></div>
 
-<p>It indicates that property 0xc0010001 value is updated to 0x1 in output
+<p>This indicates that property 0xc0010001 value is updated to 0x1 in output
 when merging properties in  <samp>foo.o</samp>, whose 0xc0010001 property value
 is 0x1, and <samp>bar.o</samp>, whose 0xc0010001 property value is 0x1.
 </p></li></ul>
 
+<a name="index-link-map-discarded"></a>
+<a name="index-_002d_002dprint_002dmap_002ddiscarded"></a>
+<a name="index-_002d_002dno_002dprint_002dmap_002ddiscarded"></a>
+</dd>
+<dt><code>--print-map-discarded</code></dt>
+<dt><code>--no-print-map-discarded</code></dt>
+<dd><p>Print (or do not print) the list of discarded and garbage collected sections
+in the link map.  Enabled by default.
+</p>
 <a name="index-_002dn"></a>
 <a name="index-read_002donly-text"></a>
 <a name="index-NMAGIC"></a>
@@ -650,6 +723,22 @@ shared libraries.  Use <samp>-Bdynamic</samp> for this.
 <dd><p>Use <var>output</var> as the name for the program produced by <code>ld</code>; if this
 option is not specified, the name <samp>a.out</samp> is used by default.  The
 script command <code>OUTPUT</code> can also specify the output file name.
+</p>
+<a name="index-_002d_002ddependency_002dfile_003ddepfile"></a>
+<a name="index-dependency-file"></a>
+</dd>
+<dt><code>--dependency-file=<var>depfile</var></code></dt>
+<dd><p>Write a <em>dependency file</em> to <var>depfile</var>.  This file contains a rule
+suitable for <code>make</code> describing the output file and all the input files
+that were read to produce it.  The output is similar to the compiler&rsquo;s
+output with &lsquo;<samp>-M -MP</samp>&rsquo; (see <a href="http://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html#Preprocessor-Options">Options
+Controlling the Preprocessor</a> in <cite>Using the GNU Compiler
+Collection</cite>).  Note that there is no option like the compiler&rsquo;s &lsquo;<samp>-MM</samp>&rsquo;,
+to exclude &ldquo;system files&rdquo; (which is not a well-specified concept in the
+linker, unlike &ldquo;system headers&rdquo; in the compiler).  So the output from
+&lsquo;<samp>--dependency-file</samp>&rsquo; is always specific to the exact state of the
+installation where it was produced, and should not be copied into
+distributed makefiles without careful editing.
 </p>
 <a name="index-_002dO-level"></a>
 <a name="index-generating-optimized-output"></a>
@@ -994,6 +1083,22 @@ to a locally defined function, foo, via its GOT slot.
 Supported for i386 and x86_64.
 </p>
 </dd>
+<dt>&lsquo;<samp>cet-report=none</samp>&rsquo;</dt>
+<dt>&lsquo;<samp>cet-report=warning</samp>&rsquo;</dt>
+<dt>&lsquo;<samp>cet-report=error</samp>&rsquo;</dt>
+<dd><p>Specify how to report the missing GNU_PROPERTY_X86_FEATURE_1_IBT and
+GNU_PROPERTY_X86_FEATURE_1_SHSTK properties in input .note.gnu.property
+section.  <samp>cet-report=none</samp>, which is the default, will make the
+linker not report missing properties in input files.
+<samp>cet-report=warning</samp> will make the linker issue a warning for
+missing properties in input files.  <samp>cet-report=error</samp> will make
+the linker issue an error for missing properties in input files.
+Note that <samp>ibt</samp> will turn off the missing
+GNU_PROPERTY_X86_FEATURE_1_IBT property report and <samp>shstk</samp> will
+turn off the missing GNU_PROPERTY_X86_FEATURE_1_SHSTK property report.
+Supported for Linux/i386 and Linux/x86_64.
+</p>
+</dd>
 <dt>&lsquo;<samp>combreloc</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>nocombreloc</samp>&rsquo;</dt>
 <dd><p>Combine multiple dynamic relocation sections and sort to improve
@@ -1175,12 +1280,25 @@ Specifying zero will override any default non-zero sized
 <code>PT_GNU_STACK</code> segment creation.
 </p>
 </dd>
+<dt>&lsquo;<samp>start-stop-visibility=<var>value</var></samp>&rsquo;</dt>
+<dd><a name="index-visibility"></a>
+<a name="index-ELF-symbol-visibility"></a>
+<p>Specify the ELF symbol visibility for synthesized
+<code>__start_SECNAME</code> and <code>__stop_SECNAME</code> symbols (see <a href="Input-Section-Example.html#Input-Section-Example">Input Section Example</a>).  <var>value</var> must be exactly &lsquo;<samp>default</samp>&rsquo;,
+&lsquo;<samp>internal</samp>&rsquo;, &lsquo;<samp>hidden</samp>&rsquo;, or &lsquo;<samp>protected</samp>&rsquo;.  If no &lsquo;<samp>-z
+start-stop-visibility</samp>&rsquo; option is given, &lsquo;<samp>protected</samp>&rsquo; is used for
+compatibility with historical practice.  However, it&rsquo;s highly
+recommended to use &lsquo;<samp>-z start-stop-visibility=hidden</samp>&rsquo; in new
+programs and shared libraries so that these symbols are not exported
+between shared objects, which is not usually what&rsquo;s intended.
+</p>
+</dd>
 <dt>&lsquo;<samp>text</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>notext</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>textoff</samp>&rsquo;</dt>
-<dd><p>Report an error if DT_TEXTREL is set, i.e., if the binary has dynamic
-relocations in read-only sections.  Don&rsquo;t report an error if
-&lsquo;<samp>notext</samp>&rsquo; or &lsquo;<samp>textoff</samp>&rsquo;.
+<dd><p>Report an error if DT_TEXTREL is set, i.e., if the position-independent
+or shared object has dynamic relocations in read-only sections.  Don&rsquo;t
+report an error if &lsquo;<samp>notext</samp>&rsquo; or &lsquo;<samp>textoff</samp>&rsquo;.
 </p>
 </dd>
 <dt>&lsquo;<samp>undefs</samp>&rsquo;</dt>
@@ -1207,7 +1325,7 @@ the order that it is specified on the command line.  If a symbol in that
 archive is needed to resolve an undefined symbol referred to by an
 object in an archive that appears later on the command line, the linker
 would not be able to resolve that reference.  By grouping the archives,
-they all be searched repeatedly until all possible references are
+they will all be searched repeatedly until all possible references are
 resolved.
 </p>
 <p>Using this option has a significant performance cost.  It is best to use
@@ -1310,22 +1428,16 @@ libraries.
 <dd><p>When creating a shared library, bind references to global symbols to the
 definition within the shared library, if any.  Normally, it is possible
 for a program linked against a shared library to override the definition
-within the shared library.  This option can also be used with the
-<samp>--export-dynamic</samp> option, when creating a position independent
-executable, to bind references to global symbols to the definition within
-the executable.  This option is only meaningful on ELF platforms which
-support shared libraries and position independent executables.
+within the shared library.  This option is only meaningful on ELF
+platforms which support shared libraries.
 </p>
 <a name="index-_002dBsymbolic_002dfunctions"></a>
 </dd>
 <dt><code>-Bsymbolic-functions</code></dt>
 <dd><p>When creating a shared library, bind references to global function
 symbols to the definition within the shared library, if any.
-This option can also be used with the <samp>--export-dynamic</samp> option,
-when creating a position independent executable, to bind references
-to global function symbols to the definition within the executable.
 This option is only meaningful on ELF platforms which support shared
-libraries and position independent executables.
+libraries.
 </p>
 <a name="index-_002d_002ddynamic_002dlist_003ddynamic_002dlist_002dfile"></a>
 </dd>
@@ -1497,7 +1609,7 @@ entry point code that is capable of processing these relocations.
 </dd>
 <dt><code>--embedded-relocs</code></dt>
 <dd><p>This option is similar to the <samp>--emit-relocs</samp> option except
-that the relocs are stored in a target specific section.  This option
+that the relocs are stored in a target-specific section.  This option
 is only supported by the &lsquo;<samp>BFIN</samp>&rsquo;, &lsquo;<samp>CR16</samp>&rsquo; and <em>M68K</em>
 targets.
 </p>
@@ -1617,13 +1729,16 @@ parsable by tools.  Here is an example of an output:
 <a name="index-_002d_002dtarget_002dhelp"></a>
 </dd>
 <dt><code>--target-help</code></dt>
-<dd><p>Print a summary of all target specific options on the standard output and exit.
+<dd><p>Print a summary of all target-specific options on the standard output and exit.
 </p>
 <a name="index-_002dMap_003dmapfile"></a>
 </dd>
 <dt><code>-Map=<var>mapfile</var></code></dt>
 <dd><p>Print a link map to the file <var>mapfile</var>.  See the description of the
-<samp>-M</samp> option, above.
+<samp>-M</samp> option, above.  Specifying a directory as <var>mapfile</var>
+causes the linker map to be written into a file inside the directory.
+The name of the file is based upon the <var>output</var> filename with
+<code>.map</code> appended.
 </p>
 <a name="index-memory-usage-1"></a>
 <a name="index-_002d_002dno_002dkeep_002dmemory"></a>
@@ -1812,7 +1927,7 @@ See <a href="M68HC11_002f68HC12.html#M68HC11_002f68HC12"><code>ld</code> and the
 See <a href="Nios-II.html#Nios-II"><code>ld</code> and the Altera Nios II</a>.
 See <a href="PowerPC-ELF32.html#PowerPC-ELF32"><code>ld</code> and PowerPC 32-bit ELF Support</a>.
 </p>
-<p>On some platforms the &lsquo;<samp>--relax</samp>&rsquo; option performs target specific,
+<p>On some platforms the &lsquo;<samp>--relax</samp>&rsquo; option performs target-specific,
 global optimizations that become possible when the linker resolves
 addressing in the program, such as relaxing address modes,
 synthesizing new instructions, selecting shorter version of current
@@ -1855,12 +1970,17 @@ line.  It overrides &lsquo;<samp>-s</samp>&rsquo; and &lsquo;<samp>-S</samp>&rsq
 <p>Add a directory to the runtime library search path.  This is used when
 linking an ELF executable with shared objects.  All <samp>-rpath</samp>
 arguments are concatenated and passed to the runtime linker, which uses
-them to locate shared objects at runtime.  The <samp>-rpath</samp> option is
-also used when locating shared objects which are needed by shared
-objects explicitly included in the link; see the description of the
-<samp>-rpath-link</samp> option.  If <samp>-rpath</samp> is not used when linking an
-ELF executable, the contents of the environment variable
-<code>LD_RUN_PATH</code> will be used if it is defined.
+them to locate shared objects at runtime.
+</p>
+<p>The <samp>-rpath</samp> option is also used when locating shared objects which
+are needed by shared objects explicitly included in the link; see the
+description of the <samp>-rpath-link</samp> option.  Searching <samp>-rpath</samp>
+in this way is only supported by native linkers and cross linkers which
+have been configured with the <samp>--with-sysroot</samp> option.
+</p>
+<p>If <samp>-rpath</samp> is not used when linking an ELF executable, the
+contents of the environment variable <code>LD_RUN_PATH</code> will be used if it
+is defined.
 </p>
 <p>The <samp>-rpath</samp> option may also be used on SunOS.  By default, on
 SunOS, the linker will form a runtime search path out of all the
@@ -1908,7 +2028,8 @@ runtime linker would do.
 </p>
 <p>The linker uses the following search paths to locate required shared
 libraries:
-</p><ol>
+</p>
+<ol>
 <li> Any directories specified by <samp>-rpath-link</samp> options.
 </li><li> Any directories specified by <samp>-rpath</samp> options.  The difference
 between <samp>-rpath</samp> and <samp>-rpath-link</samp> is that directories
@@ -1929,8 +2050,16 @@ variable <code>LD_LIBRARY_PATH</code>.
 libraries needed by it. The <code>DT_RPATH</code> entries are ignored if
 <code>DT_RUNPATH</code> entries exist.
 </li><li> The default directories, normally <samp>/lib</samp> and <samp>/usr/lib</samp>.
-</li><li> For a native linker on an ELF system, if the file <samp>/etc/ld.so.conf</samp>
-exists, the list of directories found in that file.
+</li><li> For a linker for a Linux system, if the file <samp>/etc/ld.so.conf</samp>
+exists, the list of directories found in that file.  Note: the path
+to this file is prefixed with the <code>sysroot</code> value, if that is
+defined, and then any <code>prefix</code> string if the linker was
+configured with the <code>--prefix=&lt;path&gt;</code> option.
+</li><li> For a native linker on a FreeBSD system, any directories specified by
+the <code>_PATH_ELF_HINTS</code> macro defined in the <samp>elf-hints.h</samp>
+header file.
+</li><li> Any directories specifed by a <code>SEARCH_DIR</code> command in the
+linker script being used.
 </li></ol>
 
 <p>If the required shared library is not found, the linker will issue a
@@ -2264,10 +2393,11 @@ The address will only be changed if it not explicitly specified; that
 is, if the <code>SECTIONS</code> command does not specify a start address for
 the section (see <a href="SECTIONS.html#SECTIONS">SECTIONS</a>).
 </p>
-<a name="index-_002d_002dwarn_002dshared_002dtextrel"></a>
+<a name="index-_002d_002dwarn_002dtextrel"></a>
 </dd>
-<dt><code>--warn-shared-textrel</code></dt>
-<dd><p>Warn if the linker adds a DT_TEXTREL to a shared object.
+<dt><code>--warn-textrel</code></dt>
+<dd><p>Warn if the linker adds DT_TEXTREL to a position-independent executable
+or shared object.
 </p>
 <a name="index-_002d_002dwarn_002dalternate_002dem"></a>
 </dd>
@@ -2957,6 +3087,8 @@ of the PE file header:
 <dt><code>--high-entropy-va</code></dt>
 <dd><p>Image is compatible with 64-bit address space layout randomization
 (ASLR).
+This option also implies <samp>--dynamicbase</samp> and
+<samp>--enable-reloc-section</samp>.
 </p>
 <a name="index-_002d_002ddynamicbase"></a>
 </dd>
@@ -2964,6 +3096,7 @@ of the PE file header:
 <dd><p>The image base address may be relocated using address space layout
 randomization (ASLR).  This feature was introduced with MS Windows
 Vista for i386 PE targets.
+This option also implies <samp>--enable-reloc-section</samp>.
 </p>
 <a name="index-_002d_002dforceinteg"></a>
 </dd>
@@ -3014,6 +3147,12 @@ same sources are linked.  The option <samp>--no-insert-timestamp</samp>
 can be used to insert a zero value for the timestamp, this ensuring
 that binaries produced from identical sources will compare
 identically.
+</p>
+<a name="index-_002d_002denable_002dreloc_002dsection"></a>
+</dd>
+<dt><code>--enable-reloc-section</code></dt>
+<dd><p>Create the base relocation table, which is necessary if the image
+is loaded at a different image base than specified in the PE header.
 </p></dd>
 </dl>
 
@@ -3168,6 +3307,87 @@ equivalent <code>JALX</code> instructions as the associated relocation is
 calculated.  By default or if &lsquo;<samp>--no-ignore-branch-isa</samp>&rsquo; is used
 a check is made causing the loss of an ISA mode transition to produce
 an error.
+</p>
+<a name="index-_002d_002dcompact_002dbranches"></a>
+</dd>
+<dt><code>--compact-branches</code></dt>
+<dd><a name="index-_002d_002dno_002dcompact_002dbranches"></a>
+</dd>
+<dt><code>--no-compact-branches</code></dt>
+<dd><p>These options control the generation of compact instructions by the linker
+in the PLT entries for MIPS R6.
+</p>
+</dd>
+</dl>
+
+
+
+<a name="Options-specific-to-PDP11-targets"></a>
+<h4 class="subsection">2.1.7 Options specific to PDP11 targets</h4>
+
+
+<p>For the pdp11-aout target, three variants of the output format can be
+produced as selected by the following options.  The default variant
+for pdp11-aout is the &lsquo;<samp>--omagic</samp>&rsquo; option, whereas for other
+targets &lsquo;<samp>--nmagic</samp>&rsquo; is the default.  The &lsquo;<samp>--imagic</samp>&rsquo; option is
+defined only for the pdp11-aout target, while the others are described
+here as they apply to the pdp11-aout target.
+</p>
+<dl compact="compact">
+<dd>
+<a name="index-_002dN-1"></a>
+</dd>
+<dt><code>-N</code></dt>
+<dd><a name="index-_002d_002domagic-1"></a>
+</dd>
+<dt><code>--omagic</code></dt>
+<dd>
+<p>Mark the output as <code>OMAGIC</code> (0407) in the <samp>a.out</samp> header to
+indicate that the text segment is not to be write-protected and
+shared.  Since the text and data sections are both readable and
+writable, the data section is allocated immediately contiguous after
+the text segment.  This is the oldest format for PDP11 executable
+programs and is the default for <code>ld</code> on PDP11 Unix systems
+from the beginning through 2.11BSD.
+</p>
+<a name="index-_002dn-1"></a>
+</dd>
+<dt><code>-n</code></dt>
+<dd><a name="index-_002d_002dnmagic-1"></a>
+</dd>
+<dt><code>--nmagic</code></dt>
+<dd>
+<p>Mark the output as <code>NMAGIC</code> (0410) in the <samp>a.out</samp> header to
+indicate that when the output file is executed, the text portion will
+be read-only and shareable among all processes executing the same
+file.  This involves moving the data areas up to the first possible 8K
+byte page boundary following the end of the text.  This option creates
+a <em>pure executable</em> format.
+</p>
+<a name="index-_002dz"></a>
+</dd>
+<dt><code>-z</code></dt>
+<dd><a name="index-_002d_002dimagic"></a>
+</dd>
+<dt><code>--imagic</code></dt>
+<dd>
+<p>Mark the output as <code>IMAGIC</code> (0411) in the <samp>a.out</samp> header to
+indicate that when the output file is executed, the program text and
+data areas will be loaded into separate address spaces using the split
+instruction and data space feature of the memory management unit in
+larger models of the PDP11.  This doubles the address space available
+to the program.  The text segment is again pure, write-protected, and
+shareable.  The only difference in the output format between this
+option and the others, besides the magic number, is that both the text
+and data sections start at location 0.  The &lsquo;<samp>-z</samp>&rsquo; option selected
+this format in 2.11BSD.  This option creates a <em>separate
+executable</em> format.
+</p>
+<a name="index-_002d_002dno_002domagic-1"></a>
+</dd>
+<dt><code>--no-omagic</code></dt>
+<dd>
+<p>Equivalent to &lsquo;<samp>--nmagic</samp>&rsquo; for pdp11-aout.
 </p>
 </dd>
 </dl>

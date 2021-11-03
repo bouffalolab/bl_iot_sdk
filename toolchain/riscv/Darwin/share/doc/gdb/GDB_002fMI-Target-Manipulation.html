@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>GDB/MI Target Manipulation (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="GDB_002fMI.html#GDB_002fMI" rel="up" title="GDB/MI">
-<link href="GDB_002fMI-File-Transfer-Commands.html#GDB_002fMI-File-Transfer-Commands" rel="next" title="GDB/MI File Transfer Commands">
-<link href="GDB_002fMI-File-Commands.html#GDB_002fMI-File-Commands" rel="prev" title="GDB/MI File Commands">
+<link href="GDB_002fMI.html" rel="up" title="GDB/MI">
+<link href="GDB_002fMI-File-Transfer-Commands.html" rel="next" title="GDB/MI File Transfer Commands">
+<link href="GDB_002fMI-File-Commands.html" rel="prev" title="GDB/MI File Commands">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,25 +51,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="GDB_002fMI-Target-Manipulation"></a>
-<div class="header">
+<span id="GDB_002fMI-Target-Manipulation"></span><div class="header">
 <p>
-Next: <a href="GDB_002fMI-File-Transfer-Commands.html#GDB_002fMI-File-Transfer-Commands" accesskey="n" rel="next">GDB/MI File Transfer Commands</a>, Previous: <a href="GDB_002fMI-File-Commands.html#GDB_002fMI-File-Commands" accesskey="p" rel="prev">GDB/MI File Commands</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-File-Transfer-Commands.html" accesskey="n" rel="next">GDB/MI File Transfer Commands</a>, Previous: <a href="GDB_002fMI-File-Commands.html" accesskey="p" rel="prev">GDB/MI File Commands</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="GDB_002fMI-Target-Manipulation-Commands"></a>
-<h3 class="section">27.20 <small>GDB/MI</small> Target Manipulation Commands</h3>
+<span id="GDB_002fMI-Target-Manipulation-Commands"></span><h3 class="section">27.20 <small>GDB/MI</small> Target Manipulation Commands</h3>
 
 
-<a name="The-_002dtarget_002dattach-Command"></a>
-<h4 class="subheading">The <code>-target-attach</code> Command</h4>
-<a name="index-_002dtarget_002dattach"></a>
+<span id="The-_002dtarget_002dattach-Command"></span><h4 class="subheading">The <code>-target-attach</code> Command</h4>
+<span id="index-_002dtarget_002dattach"></span>
 
-<a name="Synopsis-84"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-93"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-attach <var>pid</var> | <var>gid</var> | <var>file</var>
+<div class="example">
+<pre class="example"> -target-attach <var>pid</var> | <var>gid</var> | <var>file</var>
 </pre></div>
 
 <p>Attach to a process <var>pid</var> or a file <var>file</var> outside of
@@ -86,15 +73,13 @@ Next: <a href="GDB_002fMI-File-Transfer-Commands.html#GDB_002fMI-File-Transfer-C
 group, the id previously returned by 
 &lsquo;<samp>-list-thread-groups --available</samp>&rsquo; must be used.
 </p>
-<a name="GDB-Command-66"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-75"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>attach</samp>&rsquo;.
 </p>
-<a name="Example-66"></a>
-<h4 class="subsubheading">Example</h4>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<span id="Example-75"></span><h4 class="subsubheading">Example</h4>
+<div class="example">
+<pre class="example">(gdb)
 -target-attach 34
 =thread-created,id=&quot;1&quot;
 *stopped,thread-id=&quot;1&quot;,frame={addr=&quot;0xb7f7e410&quot;,func=&quot;bar&quot;,args=[]}
@@ -104,76 +89,66 @@ group, the id previously returned by
 
 
 
-<a name="The-_002dtarget_002ddetach-Command"></a>
-<h4 class="subheading">The <code>-target-detach</code> Command</h4>
-<a name="index-_002dtarget_002ddetach"></a>
+<span id="The-_002dtarget_002ddetach-Command"></span><h4 class="subheading">The <code>-target-detach</code> Command</h4>
+<span id="index-_002dtarget_002ddetach"></span>
 
-<a name="Synopsis-85"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-94"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-detach [ <var>pid</var> | <var>gid</var> ]
+<div class="example">
+<pre class="example"> -target-detach [ <var>pid</var> | <var>gid</var> ]
 </pre></div>
 
 <p>Detach from the remote target which normally resumes its execution.
 If either <var>pid</var> or <var>gid</var> is specified, detaches from either
 the specified process, or specified thread group.  There&rsquo;s no output.
 </p>
-<a name="GDB-Command-67"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-76"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>detach</samp>&rsquo;.
 </p>
-<a name="Example-67"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-76"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -target-detach
 ^done
 (gdb)
 </pre></div>
 
 
-<a name="The-_002dtarget_002ddisconnect-Command"></a>
-<h4 class="subheading">The <code>-target-disconnect</code> Command</h4>
-<a name="index-_002dtarget_002ddisconnect"></a>
+<span id="The-_002dtarget_002ddisconnect-Command"></span><h4 class="subheading">The <code>-target-disconnect</code> Command</h4>
+<span id="index-_002dtarget_002ddisconnect"></span>
 
-<a name="Synopsis-86"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-95"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-disconnect
+<div class="example">
+<pre class="example"> -target-disconnect
 </pre></div>
 
 <p>Disconnect from the remote target.  There&rsquo;s no output and the target is
 generally not resumed.
 </p>
-<a name="GDB-Command-68"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-77"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>disconnect</samp>&rsquo;.
 </p>
-<a name="Example-68"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-77"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -target-disconnect
 ^done
 (gdb)
 </pre></div>
 
 
-<a name="The-_002dtarget_002ddownload-Command"></a>
-<h4 class="subheading">The <code>-target-download</code> Command</h4>
-<a name="index-_002dtarget_002ddownload"></a>
+<span id="The-_002dtarget_002ddownload-Command"></span><h4 class="subheading">The <code>-target-download</code> Command</h4>
+<span id="index-_002dtarget_002ddownload"></span>
 
-<a name="Synopsis-87"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-96"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-download
+<div class="example">
+<pre class="example"> -target-download
 </pre></div>
 
 <p>Loads the executable onto the remote target.
@@ -197,7 +172,7 @@ It prints out an update message every half second, which includes the fields:
 </p></dd>
 </dl>
 
-<p>Each message is sent as status record (see <a href="GDB_002fMI-Output-Syntax.html#GDB_002fMI-Output-Syntax"><small>GDB/MI</small> Output Syntax</a>).
+<p>Each message is sent as status record (see <a href="GDB_002fMI-Output-Syntax.html"><small>GDB/MI</small> Output Syntax</a>).
 </p>
 <p>In addition, it prints the name and size of the sections, as they are
 downloaded.  These messages include the following fields:
@@ -216,19 +191,17 @@ downloaded.  These messages include the following fields:
 
 <p>At the end, a summary is printed.
 </p>
-<a name="GDB-Command-69"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-78"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>load</samp>&rsquo;.
 </p>
-<a name="Example-69"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-78"></span><h4 class="subsubheading">Example</h4>
 
 <p>Note: each status message appears on a single line.  Here the messages
 have been broken down so that they can fit onto a page.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -target-download
 +download,{section=&quot;.text&quot;,section-size=&quot;6668&quot;,total-size=&quot;9880&quot;}
 +download,{section=&quot;.text&quot;,section-sent=&quot;512&quot;,section-size=&quot;6668&quot;,
@@ -279,24 +252,20 @@ write-rate=&quot;429&quot;
 
 
 
-<a name="GDB-Command-70"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-79"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>No equivalent.
 </p>
-<a name="Example-70"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-79"></span><h4 class="subsubheading">Example</h4>
 <p>N.A.
 </p>
-<a name="The-_002dtarget_002dflash_002derase-Command"></a>
-<h4 class="subheading">The <code>-target-flash-erase</code> Command</h4>
-<a name="index-_002dtarget_002dflash_002derase"></a>
+<span id="The-_002dtarget_002dflash_002derase-Command"></span><h4 class="subheading">The <code>-target-flash-erase</code> Command</h4>
+<span id="index-_002dtarget_002dflash_002derase"></span>
 
-<a name="Synopsis-88"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-97"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-flash-erase
+<div class="example">
+<pre class="example"> -target-flash-erase
 </pre></div>
 
 <p>Erases all known flash memory regions on the target.
@@ -306,22 +275,20 @@ write-rate=&quot;429&quot;
 <p>The output is a list of flash regions that have been erased, with starting
 addresses and memory region sizes.
 </p>
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -target-flash-erase
 ^done,erased-regions={address=&quot;0x0&quot;,size=&quot;0x40000&quot;}
 (gdb)
 </pre></div>
 
-<a name="The-_002dtarget_002dselect-Command"></a>
-<h4 class="subheading">The <code>-target-select</code> Command</h4>
-<a name="index-_002dtarget_002dselect"></a>
+<span id="The-_002dtarget_002dselect-Command"></span><h4 class="subheading">The <code>-target-select</code> Command</h4>
+<span id="index-_002dtarget_002dselect"></span>
 
-<a name="Synopsis-89"></a>
-<h4 class="subsubheading">Synopsis</h4>
+<span id="Synopsis-98"></span><h4 class="subsubheading">Synopsis</h4>
 
-<div class="smallexample">
-<pre class="smallexample"> -target-select <var>type</var> <var>parameters &hellip;</var>
+<div class="example">
+<pre class="example"> -target-select <var>type</var> <var>parameters &hellip;</var>
 </pre></div>
 
 <p>Connect <small>GDB</small> to the remote target.  This command takes two args:
@@ -331,28 +298,26 @@ addresses and memory region sizes.
 <dd><p>The type of target, for instance &lsquo;<samp>remote</samp>&rsquo;, etc.
 </p></dd>
 <dt>&lsquo;<samp><var>parameters</var></samp>&rsquo;</dt>
-<dd><p>Device names, host names and the like.  See <a href="Target-Commands.html#Target-Commands">Commands for Managing Targets</a>, for more details.
+<dd><p>Device names, host names and the like.  See <a href="Target-Commands.html">Commands for Managing Targets</a>, for more details.
 </p></dd>
 </dl>
 
 <p>The output is a connection notification, followed by the address at
 which the target program is, in the following form:
 </p>
-<div class="smallexample">
-<pre class="smallexample">^connected,addr=&quot;<var>address</var>&quot;,func=&quot;<var>function name</var>&quot;,
+<div class="example">
+<pre class="example">^connected,addr=&quot;<var>address</var>&quot;,func=&quot;<var>function name</var>&quot;,
   args=[<var>arg list</var>]
 </pre></div>
 
-<a name="GDB-Command-71"></a>
-<h4 class="subsubheading"><small>GDB</small> Command</h4>
+<span id="GDB-Command-80"></span><h4 class="subsubheading"><small>GDB</small> Command</h4>
 
 <p>The corresponding <small>GDB</small> command is &lsquo;<samp>target</samp>&rsquo;.
 </p>
-<a name="Example-71"></a>
-<h4 class="subsubheading">Example</h4>
+<span id="Example-80"></span><h4 class="subsubheading">Example</h4>
 
-<div class="smallexample">
-<pre class="smallexample">(gdb)
+<div class="example">
+<pre class="example">(gdb)
 -target-select remote /dev/ttya
 ^connected,addr=&quot;0xfe00a300&quot;,func=&quot;??&quot;,args=[]
 (gdb)
@@ -361,7 +326,7 @@ which the target program is, in the following form:
 <hr>
 <div class="header">
 <p>
-Next: <a href="GDB_002fMI-File-Transfer-Commands.html#GDB_002fMI-File-Transfer-Commands" accesskey="n" rel="next">GDB/MI File Transfer Commands</a>, Previous: <a href="GDB_002fMI-File-Commands.html#GDB_002fMI-File-Commands" accesskey="p" rel="prev">GDB/MI File Commands</a>, Up: <a href="GDB_002fMI.html#GDB_002fMI" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GDB_002fMI-File-Transfer-Commands.html" accesskey="n" rel="next">GDB/MI File Transfer Commands</a>, Previous: <a href="GDB_002fMI-File-Commands.html" accesskey="p" rel="prev">GDB/MI File Commands</a>, Up: <a href="GDB_002fMI.html" accesskey="u" rel="up">GDB/MI</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

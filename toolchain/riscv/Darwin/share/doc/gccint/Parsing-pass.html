@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Parsing pass (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Passes.html#Passes" rel="up" title="Passes">
-<link href="Gimplification-pass.html#Gimplification-pass" rel="next" title="Gimplification pass">
-<link href="Passes.html#Passes" rel="prev" title="Passes">
+<link href="Passes.html" rel="up" title="Passes">
+<link href="Gimplification-pass.html" rel="next" title="Gimplification pass">
+<link href="Passes.html" rel="prev" title="Passes">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,34 +58,32 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Parsing-pass"></a>
-<div class="header">
+<span id="Parsing-pass"></span><div class="header">
 <p>
-Next: <a href="Gimplification-pass.html#Gimplification-pass" accesskey="n" rel="next">Gimplification pass</a>, Up: <a href="Passes.html#Passes" accesskey="u" rel="up">Passes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Gimplification-pass.html" accesskey="n" rel="next">Gimplification pass</a>, Up: <a href="Passes.html" accesskey="u" rel="up">Passes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Parsing-pass-1"></a>
-<h3 class="section">9.1 Parsing pass</h3>
-<a name="index-GENERIC"></a>
-<a name="index-lang_005fhooks_002eparse_005ffile"></a>
+<span id="Parsing-pass-1"></span><h3 class="section">9.1 Parsing pass</h3>
+<span id="index-GENERIC"></span>
+<span id="index-lang_005fhooks_002eparse_005ffile"></span>
 <p>The language front end is invoked only once, via
 <code>lang_hooks.parse_file</code>, to parse the entire input.  The language
 front end may use any intermediate language representation deemed
-appropriate.  The C front end uses GENERIC trees (see <a href="GENERIC.html#GENERIC">GENERIC</a>), plus
+appropriate.  The C front end uses GENERIC trees (see <a href="GENERIC.html">GENERIC</a>), plus
 a double handful of language specific tree codes defined in
 <samp>c-common.def</samp>.  The Fortran front end uses a completely different
 private representation.
 </p>
-<a name="index-GIMPLE"></a>
-<a name="index-gimplification"></a>
-<a name="index-gimplifier"></a>
-<a name="index-language_002dindependent-intermediate-representation"></a>
-<a name="index-intermediate-representation-lowering"></a>
-<a name="index-lowering_002c-language_002ddependent-intermediate-representation"></a>
+<span id="index-GIMPLE"></span>
+<span id="index-gimplification"></span>
+<span id="index-gimplifier"></span>
+<span id="index-language_002dindependent-intermediate-representation"></span>
+<span id="index-intermediate-representation-lowering"></span>
+<span id="index-lowering_002c-language_002ddependent-intermediate-representation"></span>
 <p>At some point the front end must translate the representation used in the
 front end to a representation understood by the language-independent
 portions of the compiler.  Current practice takes one of two forms.
-The C front end manually invokes the gimplifier (see <a href="GIMPLE.html#GIMPLE">GIMPLE</a>) on each function,
+The C front end manually invokes the gimplifier (see <a href="GIMPLE.html">GIMPLE</a>) on each function,
 and uses the gimplifier callbacks to convert the language-specific tree
 nodes directly to GIMPLE before passing the function off to be compiled.
 The Fortran front end converts from a private representation to GENERIC,
@@ -131,9 +120,9 @@ function and data <em>definitions</em> be passed to the middle-end.  For
 complete debug information, function, data and type declarations
 should all be passed as well.
 </p>
-<a name="index-rest_005fof_005fdecl_005fcompilation"></a>
-<a name="index-rest_005fof_005ftype_005fcompilation"></a>
-<a name="index-cgraph_005ffinalize_005ffunction"></a>
+<span id="index-rest_005fof_005fdecl_005fcompilation"></span>
+<span id="index-rest_005fof_005ftype_005fcompilation"></span>
+<span id="index-cgraph_005ffinalize_005ffunction"></span>
 <p>In any case, the front end needs each complete top-level function or
 data declaration, and each data definition should be passed to
 <code>rest_of_decl_compilation</code>.  Each complete type definition should
@@ -154,7 +143,7 @@ definitions immediately or queue them for later processing.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Gimplification-pass.html#Gimplification-pass" accesskey="n" rel="next">Gimplification pass</a>, Up: <a href="Passes.html#Passes" accesskey="u" rel="up">Passes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Gimplification-pass.html" accesskey="n" rel="next">Gimplification pass</a>, Up: <a href="Passes.html" accesskey="u" rel="up">Passes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

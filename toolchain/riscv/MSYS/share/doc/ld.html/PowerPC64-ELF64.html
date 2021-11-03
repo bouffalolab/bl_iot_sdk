@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(SiFive Binutils 2.32.0-2019.08.0)
-version 2.32.
+(SiFive Binutils-Metal 2.35.0-2020.12.8)
+version 2.35.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -141,19 +141,28 @@ disable the optimization.
 <a name="index-PowerPC64-_005f_005ftls_005fget_005faddr-optimization"></a>
 <a name="index-_002d_002dtls_002dget_002daddr_002doptimize"></a>
 <a name="index-_002d_002dno_002dtls_002dget_002daddr_002doptimize"></a>
+<a name="index-_002d_002dtls_002dget_002daddr_002dregsave"></a>
+<a name="index-_002d_002dno_002dtls_002dget_002daddr_002dregsave"></a>
 </dd>
 <dt><samp>--tls-get-addr-optimize</samp></dt>
 <dt><samp>--no-tls-get-addr-optimize</samp></dt>
-<dd><p>These options control whether PowerPC64 <code>ld</code> uses a special
+<dd><p>These options control how PowerPC64 <code>ld</code> uses a special
 stub to call __tls_get_addr.  PowerPC64 glibc 2.22 and later support
 an optimization that allows the second and subsequent calls to
 <code>__tls_get_addr</code> for a given symbol to be resolved by the special
-stub without calling in to glibc.  By default the linker enables this
-option when glibc advertises the availability of __tls_get_addr_opt.
-Forcing this option on when using an older glibc won&rsquo;t do much besides
-slow down your applications, but may be useful if linking an
-application against an older glibc with the expectation that it will
-normally be used on systems having a newer glibc.
+stub without calling in to glibc.  By default the linker enables
+generation of the stub when glibc advertises the availability of
+__tls_get_addr_opt.
+Using <samp>--tls-get-addr-optimize</samp> with an older glibc won&rsquo;t do
+much besides slow down your applications, but may be useful if linking
+an application against an older glibc with the expectation that it
+will normally be used on systems having a newer glibc.
+<samp>--tls-get-addr-regsave</samp> forces generation of a stub that saves
+and restores volatile registers around the call into glibc.  Normally,
+this is done when the linker detects a call to __tls_get_addr_desc.
+Such calls then go via the register saving stub to __tls_get_addr_opt.
+<samp>--no-tls-get-addr-regsave</samp> disables generation of the
+register saves.
 </p>
 <a name="index-PowerPC64-OPD-optimization"></a>
 <a name="index-_002d_002dno_002dopd_002doptimize"></a>
@@ -189,6 +198,17 @@ discarded as per the nearest marked preceding word.  This works
 reliably for compiler generated code, but may be incorrect if assembly
 code is used to insert TOC entries.  Use this option to disable the
 optimization.
+</p>
+<a name="index-PowerPC64-inline-PLT-call-optimization"></a>
+<a name="index-_002d_002dno_002dinline_002doptimize"></a>
+</dd>
+<dt><samp>--no-inline-optimize</samp></dt>
+<dd><p>PowerPC64 <code>ld</code> normally replaces inline PLT call sequences
+marked with <code>R_PPC64_PLTSEQ</code>, <code>R_PPC64_PLTCALL</code>,
+<code>R_PPC64_PLT16_HA</code> and <code>R_PPC64_PLT16_LO_DS</code> relocations by
+a number of <code>nop</code>s and a direct call when the function is defined
+locally and can&rsquo;t be overridden by some other definition.  This option
+disables that optimization.
 </p>
 <a name="index-PowerPC64-multi_002dTOC"></a>
 <a name="index-_002d_002dno_002dmulti_002dtoc"></a>
@@ -277,6 +297,22 @@ including system libraries, can cause a function that was localentry:0
 to become localentry:8.  This will result in a dynamic loader
 complaint and failure to run.  The option is experimental, use with
 care.  <samp>--no-plt-localentry</samp> is the default.
+</p>
+<a name="index-PowerPC64-Power10-stubs"></a>
+<a name="index-_002d_002dpower10_002dstubs"></a>
+<a name="index-_002d_002dno_002dpower10_002dstubs"></a>
+</dd>
+<dt><samp>--power10-stubs</samp></dt>
+<dt><samp>--no-power10-stubs</samp></dt>
+<dd><p>When PowerPC64 <code>ld</code> links input object files containing
+relocations used on power10 prefixed instructions it normally creates
+linkage stubs (PLT call and long branch) using power10 instructions
+for <code>@notoc</code> PLT calls where <code>r2</code> is not known.  The
+power10 notoc stubs are smaller and faster, so are preferred for
+power10.  <samp>--power10-stubs</samp> and <samp>--no-power10-stubs</samp>
+allow you to override the linker&rsquo;s selection of stub instructions.
+<samp>--power10-stubs=auto</samp> allows the user to select the default
+auto mode.
 </p></dd>
 </dl>
 

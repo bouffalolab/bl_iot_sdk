@@ -12,7 +12,7 @@ with the Front-Cover Texts being "A GNU Manual", and with the Back-Cover
 Texts being "You have freedom to copy and modify this GNU Manual, like GNU
 software".  A copy of the license is included in
 GNU Free Documentation License. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Assembly Coding (GNU MP 6.1.0)</title>
@@ -22,32 +22,23 @@ GNU Free Documentation License. -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
-<link href="Algorithms.html#Algorithms" rel="up" title="Algorithms">
-<link href="Assembly-Code-Organisation.html#Assembly-Code-Organisation" rel="next" title="Assembly Code Organisation">
-<link href="Random-Number-Algorithms.html#Random-Number-Algorithms" rel="prev" title="Random Number Algorithms">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
+<link href="Algorithms.html" rel="up" title="Algorithms">
+<link href="Assembly-Code-Organisation.html" rel="next" title="Assembly Code Organisation">
+<link href="Random-Number-Algorithms.html" rel="prev" title="Random Number Algorithms">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -59,15 +50,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Assembly-Coding"></a>
-<div class="header">
+<span id="Assembly-Coding"></span><div class="header">
 <p>
-Previous: <a href="Other-Algorithms.html#Other-Algorithms" accesskey="p" rel="prev">Other Algorithms</a>, Up: <a href="Algorithms.html#Algorithms" accesskey="u" rel="up">Algorithms</a> &nbsp; [<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Other-Algorithms.html" accesskey="p" rel="prev">Other Algorithms</a>, Up: <a href="Algorithms.html" accesskey="u" rel="up">Algorithms</a> &nbsp; [<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Assembly-Coding-1"></a>
-<h3 class="section">15.8 Assembly Coding</h3>
-<a name="index-Assembly-coding"></a>
+<span id="Assembly-Coding-1"></span><h3 class="section">15.8 Assembly Coding</h3>
+<span id="index-Assembly-coding"></span>
 
 <p>The assembly subroutines in GMP are the most significant source of speed at
 small to moderate sizes.  At larger sizes algorithm selection becomes more
@@ -80,25 +69,25 @@ easily expressed in C.  GCC <code>asm</code> blocks help a lot and are provided 
 speedup over generic C by a factor of anything from 2 to 10.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Code-Organisation.html#Assembly-Code-Organisation" accesskey="1">Assembly Code Organisation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Code-Organisation.html" accesskey="1">Assembly Code Organisation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Basics.html#Assembly-Basics" accesskey="2">Assembly Basics</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Basics.html" accesskey="2">Assembly Basics</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Carry-Propagation.html#Assembly-Carry-Propagation" accesskey="3">Assembly Carry Propagation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Carry-Propagation.html" accesskey="3">Assembly Carry Propagation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Cache-Handling.html#Assembly-Cache-Handling" accesskey="4">Assembly Cache Handling</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Cache-Handling.html" accesskey="4">Assembly Cache Handling</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Functional-Units.html#Assembly-Functional-Units" accesskey="5">Assembly Functional Units</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Functional-Units.html" accesskey="5">Assembly Functional Units</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Floating-Point.html#Assembly-Floating-Point" accesskey="6">Assembly Floating Point</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Floating-Point.html" accesskey="6">Assembly Floating Point</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-SIMD-Instructions.html#Assembly-SIMD-Instructions" accesskey="7">Assembly SIMD Instructions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-SIMD-Instructions.html" accesskey="7">Assembly SIMD Instructions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Software-Pipelining.html#Assembly-Software-Pipelining" accesskey="8">Assembly Software Pipelining</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Software-Pipelining.html" accesskey="8">Assembly Software Pipelining</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Loop-Unrolling.html#Assembly-Loop-Unrolling" accesskey="9">Assembly Loop Unrolling</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Loop-Unrolling.html" accesskey="9">Assembly Loop Unrolling</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Assembly-Writing-Guide.html#Assembly-Writing-Guide">Assembly Writing Guide</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Assembly-Writing-Guide.html">Assembly Writing Guide</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 

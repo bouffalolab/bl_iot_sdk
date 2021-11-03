@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Opening and Closing (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="BFD-front-end.html#BFD-front-end" rel="up" title="BFD front end">
-<link href="Internal.html#Internal" rel="next" title="Internal">
-<link href="Architectures.html#Architectures" rel="prev" title="Architectures">
+<link href="BFD-front-end.html" rel="up" title="BFD front end">
+<link href="Internal.html" rel="next" title="Internal">
+<link href="Architectures.html" rel="prev" title="Architectures">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,10 +60,9 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Opening-and-Closing"></a>
-<div class="header">
+<span id="Opening-and-Closing"></span><div class="header">
 <p>
-Next: <a href="Internal.html#Internal" accesskey="n" rel="next">Internal</a>, Previous: <a href="Architectures.html#Architectures" accesskey="p" rel="prev">Architectures</a>, Up: <a href="BFD-front-end.html#BFD-front-end" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Internal.html" accesskey="n" rel="next">Internal</a>, Previous: <a href="Architectures.html" accesskey="p" rel="prev">Architectures</a>, Up: <a href="BFD-front-end.html" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 
@@ -80,17 +70,14 @@ Next: <a href="Internal.html#Internal" accesskey="n" rel="next">Internal</a>, Pr
 <pre class="example">/* Set to N to open the next N BFDs using an alternate id space.  */
 extern unsigned int bfd_use_reserved_id;
 </pre></div>
-<a name="Opening-and-closing-BFDs"></a>
-<h3 class="section">2.14 Opening and closing BFDs</h3>
+<span id="Opening-and-closing-BFDs"></span><h3 class="section">2.14 Opening and closing BFDs</h3>
 
 
-<a name="Functions-for-opening-and-closing"></a>
-<h4 class="subsection">2.14.1 Functions for opening and closing</h4>
+<span id="Functions-for-opening-and-closing"></span><h4 class="subsection">2.14.1 Functions for opening and closing</h4>
 
 
-<a name="index-bfd_005ffopen"></a>
-<a name="bfd_005ffopen"></a>
-<h4 class="subsubsection">2.14.1.1 <code>bfd_fopen</code></h4>
+<span id="index-bfd_005ffopen"></span>
+<span id="bfd_005ffopen"></span><h4 class="subsubsection">2.14.1.1 <code>bfd_fopen</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_fopen (const char *filename, const char *target,
@@ -117,9 +104,8 @@ are <code>bfd_error_no_memory</code>, <code>bfd_error_invalid_target</code> or
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fopenr"></a>
-<a name="bfd_005fopenr"></a>
-<h4 class="subsubsection">2.14.1.2 <code>bfd_openr</code></h4>
+<span id="index-bfd_005fopenr"></span>
+<span id="bfd_005fopenr"></span><h4 class="subsubsection">2.14.1.2 <code>bfd_openr</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_openr (const char *filename, const char *target);
@@ -138,9 +124,8 @@ are <code>bfd_error_no_memory</code>, <code>bfd_error_invalid_target</code> or
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005ffdopenr"></a>
-<a name="bfd_005ffdopenr"></a>
-<h4 class="subsubsection">2.14.1.3 <code>bfd_fdopenr</code></h4>
+<span id="index-bfd_005ffdopenr"></span>
+<span id="bfd_005ffdopenr"></span><h4 class="subsubsection">2.14.1.3 <code>bfd_fdopenr</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_fdopenr (const char *filename, const char *target, int fd);
@@ -168,9 +153,8 @@ on other files.
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fopenstreamr"></a>
-<a name="bfd_005fopenstreamr"></a>
-<h4 class="subsubsection">2.14.1.4 <code>bfd_openstreamr</code></h4>
+<span id="index-bfd_005fopenstreamr"></span>
+<span id="bfd_005fopenstreamr"></span><h4 class="subsubsection">2.14.1.4 <code>bfd_openstreamr</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_openstreamr (const char * filename, const char * target,
@@ -183,9 +167,8 @@ the BFD is passed to <code>bfd_close</code>, the stream will be closed.
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fopenr_005fiovec"></a>
-<a name="bfd_005fopenr_005fiovec"></a>
-<h4 class="subsubsection">2.14.1.5 <code>bfd_openr_iovec</code></h4>
+<span id="index-bfd_005fopenr_005fiovec"></span>
+<span id="bfd_005fopenr_005fiovec"></span><h4 class="subsubsection">2.14.1.5 <code>bfd_openr_iovec</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_openr_iovec (const char *filename, const char *target,
@@ -238,9 +221,8 @@ occurred.  Possible errors are <code>bfd_error_no_memory</code>,
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fopenw"></a>
-<a name="bfd_005fopenw"></a>
-<h4 class="subsubsection">2.14.1.6 <code>bfd_openw</code></h4>
+<span id="index-bfd_005fopenw"></span>
+<span id="bfd_005fopenw"></span><h4 class="subsubsection">2.14.1.6 <code>bfd_openw</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_openw (const char *filename, const char *target);
@@ -255,9 +237,8 @@ file format <var>target</var>, and return a pointer to it.
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fclose"></a>
-<a name="bfd_005fclose"></a>
-<h4 class="subsubsection">2.14.1.7 <code>bfd_close</code></h4>
+<span id="index-bfd_005fclose"></span>
+<span id="bfd_005fclose"></span><h4 class="subsubsection">2.14.1.7 <code>bfd_close</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_close (bfd *abfd);
@@ -276,9 +257,8 @@ if it was passed in to BFD by <code>bfd_fdopenr</code>).
 <p><strong>Returns</strong><br>
 <code>TRUE</code> is returned if all is ok, otherwise <code>FALSE</code>.
 </p>
-<a name="index-bfd_005fclose_005fall_005fdone"></a>
-<a name="bfd_005fclose_005fall_005fdone"></a>
-<h4 class="subsubsection">2.14.1.8 <code>bfd_close_all_done</code></h4>
+<span id="index-bfd_005fclose_005fall_005fdone"></span>
+<span id="bfd_005fclose_005fall_005fdone"></span><h4 class="subsubsection">2.14.1.8 <code>bfd_close_all_done</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_close_all_done (bfd *);
@@ -297,9 +277,8 @@ to mark it as such.
 <p><strong>Returns</strong><br>
 <code>TRUE</code> is returned if all is ok, otherwise <code>FALSE</code>.
 </p>
-<a name="index-bfd_005fcreate"></a>
-<a name="bfd_005fcreate"></a>
-<h4 class="subsubsection">2.14.1.9 <code>bfd_create</code></h4>
+<span id="index-bfd_005fcreate"></span>
+<span id="bfd_005fcreate"></span><h4 class="subsubsection">2.14.1.9 <code>bfd_create</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd *bfd_create (const char *filename, bfd *templ);
@@ -312,9 +291,8 @@ used by <var>templ</var>. The format is always set to <code>bfd_object</code>.
 <p>A copy of the <var>filename</var> argument is stored in the newly created
 BFD.  It can be accessed via the bfd_get_filename() macro.
 </p>
-<a name="index-bfd_005fmake_005fwritable"></a>
-<a name="bfd_005fmake_005fwritable"></a>
-<h4 class="subsubsection">2.14.1.10 <code>bfd_make_writable</code></h4>
+<span id="index-bfd_005fmake_005fwritable"></span>
+<span id="bfd_005fmake_005fwritable"></span><h4 class="subsubsection">2.14.1.10 <code>bfd_make_writable</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_make_writable (bfd *abfd);
@@ -328,9 +306,8 @@ you will call <code>bfd_make_readable</code> on this bfd later.
 <p><strong>Returns</strong><br>
 <code>TRUE</code> is returned if all is ok, otherwise <code>FALSE</code>.
 </p>
-<a name="index-bfd_005fmake_005freadable"></a>
-<a name="bfd_005fmake_005freadable"></a>
-<h4 class="subsubsection">2.14.1.11 <code>bfd_make_readable</code></h4>
+<span id="index-bfd_005fmake_005freadable"></span>
+<span id="bfd_005fmake_005freadable"></span><h4 class="subsubsection">2.14.1.11 <code>bfd_make_readable</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_make_readable (bfd *abfd);
@@ -345,9 +322,8 @@ direction.
 <p><strong>Returns</strong><br>
 <code>TRUE</code> is returned if all is ok, otherwise <code>FALSE</code>.
 </p>
-<a name="index-bfd_005falloc"></a>
-<a name="bfd_005falloc"></a>
-<h4 class="subsubsection">2.14.1.12 <code>bfd_alloc</code></h4>
+<span id="index-bfd_005falloc"></span>
+<span id="bfd_005falloc"></span><h4 class="subsubsection">2.14.1.12 <code>bfd_alloc</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void *bfd_alloc (bfd *abfd, bfd_size_type wanted);
@@ -356,20 +332,8 @@ direction.
 Allocate a block of <var>wanted</var> bytes of memory attached to
 <code>abfd</code> and return a pointer to it.
 </p>
-<a name="index-bfd_005falloc2"></a>
-<a name="bfd_005falloc2"></a>
-<h4 class="subsubsection">2.14.1.13 <code>bfd_alloc2</code></h4>
-<p><strong>Synopsis</strong>
-</p><div class="example">
-<pre class="example">void *bfd_alloc2 (bfd *abfd, bfd_size_type nmemb, bfd_size_type size);
-</pre></div>
-<p><strong>Description</strong><br>
-Allocate a block of <var>nmemb</var> elements of <var>size</var> bytes each
-of memory attached to <code>abfd</code> and return a pointer to it.
-</p>
-<a name="index-bfd_005fzalloc"></a>
-<a name="bfd_005fzalloc"></a>
-<h4 class="subsubsection">2.14.1.14 <code>bfd_zalloc</code></h4>
+<span id="index-bfd_005fzalloc"></span>
+<span id="bfd_005fzalloc"></span><h4 class="subsubsection">2.14.1.13 <code>bfd_zalloc</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void *bfd_zalloc (bfd *abfd, bfd_size_type wanted);
@@ -378,20 +342,8 @@ of memory attached to <code>abfd</code> and return a pointer to it.
 Allocate a block of <var>wanted</var> bytes of zeroed memory
 attached to <code>abfd</code> and return a pointer to it.
 </p>
-<a name="index-bfd_005fzalloc2"></a>
-<a name="bfd_005fzalloc2"></a>
-<h4 class="subsubsection">2.14.1.15 <code>bfd_zalloc2</code></h4>
-<p><strong>Synopsis</strong>
-</p><div class="example">
-<pre class="example">void *bfd_zalloc2 (bfd *abfd, bfd_size_type nmemb, bfd_size_type size);
-</pre></div>
-<p><strong>Description</strong><br>
-Allocate a block of <var>nmemb</var> elements of <var>size</var> bytes each
-of zeroed memory attached to <code>abfd</code> and return a pointer to it.
-</p>
-<a name="index-bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></a>
-<a name="bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></a>
-<h4 class="subsubsection">2.14.1.16 <code>bfd_calc_gnu_debuglink_crc32</code></h4>
+<span id="index-bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></span>
+<span id="bfd_005fcalc_005fgnu_005fdebuglink_005fcrc32"></span><h4 class="subsubsection">2.14.1.14 <code>bfd_calc_gnu_debuglink_crc32</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">unsigned long bfd_calc_gnu_debuglink_crc32
@@ -405,9 +357,8 @@ and adding in the crc32 for <var>len</var> bytes of <var>buf</var>.
 <p><strong>Returns</strong><br>
 Return the updated CRC32 value.
 </p>
-<a name="index-bfd_005fget_005fdebug_005flink_005finfo_005f1"></a>
-<a name="bfd_005fget_005fdebug_005flink_005finfo_005f1"></a>
-<h4 class="subsubsection">2.14.1.17 <code>bfd_get_debug_link_info_1</code></h4>
+<span id="index-bfd_005fget_005fdebug_005flink_005finfo_005f1"></span>
+<span id="bfd_005fget_005fdebug_005flink_005finfo_005f1"></span><h4 class="subsubsection">2.14.1.15 <code>bfd_get_debug_link_info_1</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_debug_link_info_1 (bfd *abfd, void *crc32_out);
@@ -429,9 +380,8 @@ CRC32 value for the file.
 <p>The returned filename is allocated with <code>malloc</code>; freeing
 it is the responsibility of the caller.
 </p>
-<a name="index-bfd_005fget_005fdebug_005flink_005finfo"></a>
-<a name="bfd_005fget_005fdebug_005flink_005finfo"></a>
-<h4 class="subsubsection">2.14.1.18 <code>bfd_get_debug_link_info</code></h4>
+<span id="index-bfd_005fget_005fdebug_005flink_005finfo"></span>
+<span id="bfd_005fget_005fdebug_005flink_005finfo"></span><h4 class="subsubsection">2.14.1.16 <code>bfd_get_debug_link_info</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_debug_link_info (bfd *abfd, unsigned long *crc32_out);
@@ -449,9 +399,8 @@ CRC32 value for the file.
 <p>The returned filename is allocated with <code>malloc</code>; freeing
 it is the responsibility of the caller.
 </p>
-<a name="index-bfd_005fget_005falt_005fdebug_005flink_005finfo"></a>
-<a name="bfd_005fget_005falt_005fdebug_005flink_005finfo"></a>
-<h4 class="subsubsection">2.14.1.19 <code>bfd_get_alt_debug_link_info</code></h4>
+<span id="index-bfd_005fget_005falt_005fdebug_005flink_005finfo"></span>
+<span id="bfd_005fget_005falt_005fdebug_005flink_005finfo"></span><h4 class="subsubsection">2.14.1.17 <code>bfd_get_alt_debug_link_info</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_get_alt_debug_link_info (bfd * abfd,
@@ -466,9 +415,8 @@ otherwise return filename and update <var>buildid_len</var> and
 allocated with <code>malloc</code>; freeing them is the responsibility
 of the caller.
 </p>
-<a name="index-separate_005fdebug_005ffile_005fexists"></a>
-<a name="separate_005fdebug_005ffile_005fexists"></a>
-<h4 class="subsubsection">2.14.1.20 <code>separate_debug_file_exists</code></h4>
+<span id="index-separate_005fdebug_005ffile_005fexists"></span>
+<span id="separate_005fdebug_005ffile_005fexists"></span><h4 class="subsubsection">2.14.1.18 <code>separate_debug_file_exists</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean separate_debug_file_exists
@@ -482,9 +430,8 @@ long</code> containing a CRC32.
 <p>The <var>crc32_p</var> parameter is an untyped pointer because
 this routine is used as a <code>check_func_type</code> function.
 </p>
-<a name="index-separate_005falt_005fdebug_005ffile_005fexists"></a>
-<a name="separate_005falt_005fdebug_005ffile_005fexists"></a>
-<h4 class="subsubsection">2.14.1.21 <code>separate_alt_debug_file_exists</code></h4>
+<span id="index-separate_005falt_005fdebug_005ffile_005fexists"></span>
+<span id="separate_005falt_005fdebug_005ffile_005fexists"></span><h4 class="subsubsection">2.14.1.19 <code>separate_alt_debug_file_exists</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean separate_alt_debug_file_exists
@@ -493,9 +440,8 @@ this routine is used as a <code>check_func_type</code> function.
 <p><strong>Description</strong><br>
 Checks to see if <var>name</var> is a file.
 </p>
-<a name="index-find_005fseparate_005fdebug_005ffile"></a>
-<a name="find_005fseparate_005fdebug_005ffile"></a>
-<h4 class="subsubsection">2.14.1.22 <code>find_separate_debug_file</code></h4>
+<span id="index-find_005fseparate_005fdebug_005ffile"></span>
+<span id="find_005fseparate_005fdebug_005ffile"></span><h4 class="subsubsection">2.14.1.20 <code>find_separate_debug_file</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *find_separate_debug_file
@@ -521,9 +467,8 @@ Returns the filename of the first file to be found which
 receives a TRUE result from the <var>check</var> function.
 Returns NULL if no valid file could be found.
 </p>
-<a name="index-bfd_005ffollow_005fgnu_005fdebuglink"></a>
-<a name="bfd_005ffollow_005fgnu_005fdebuglink"></a>
-<h4 class="subsubsection">2.14.1.23 <code>bfd_follow_gnu_debuglink</code></h4>
+<span id="index-bfd_005ffollow_005fgnu_005fdebuglink"></span>
+<span id="bfd_005ffollow_005fgnu_005fdebuglink"></span><h4 class="subsubsection">2.14.1.21 <code>bfd_follow_gnu_debuglink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_gnu_debuglink (bfd *abfd, const char *dir);
@@ -544,9 +489,8 @@ the current directory.
 otherwise a pointer to a heap-allocated string containing the
 filename.  The caller is responsible for freeing this string.
 </p>
-<a name="index-bfd_005ffollow_005fgnu_005fdebugaltlink"></a>
-<a name="bfd_005ffollow_005fgnu_005fdebugaltlink"></a>
-<h4 class="subsubsection">2.14.1.24 <code>bfd_follow_gnu_debugaltlink</code></h4>
+<span id="index-bfd_005ffollow_005fgnu_005fdebugaltlink"></span>
+<span id="bfd_005ffollow_005fgnu_005fdebugaltlink"></span><h4 class="subsubsection">2.14.1.22 <code>bfd_follow_gnu_debugaltlink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_gnu_debugaltlink (bfd *abfd, const char *dir);
@@ -567,9 +511,8 @@ the current directory.
 otherwise a pointer to a heap-allocated string containing the
 filename.  The caller is responsible for freeing this string.
 </p>
-<a name="index-bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></a>
-<a name="bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></a>
-<h4 class="subsubsection">2.14.1.25 <code>bfd_create_gnu_debuglink_section</code></h4>
+<span id="index-bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></span>
+<span id="bfd_005fcreate_005fgnu_005fdebuglink_005fsection"></span><h4 class="subsubsection">2.14.1.23 <code>bfd_create_gnu_debuglink_section</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">struct bfd_section *bfd_create_gnu_debuglink_section
@@ -584,9 +527,8 @@ section is sized to be big enough to contain a link to the specified
 A pointer to the new section is returned if all is ok.  Otherwise
 <code>NULL</code> is returned and bfd_error is set.
 </p>
-<a name="index-bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></a>
-<a name="bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></a>
-<h4 class="subsubsection">2.14.1.26 <code>bfd_fill_in_gnu_debuglink_section</code></h4>
+<span id="index-bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></span>
+<span id="bfd_005ffill_005fin_005fgnu_005fdebuglink_005fsection"></span><h4 class="subsubsection">2.14.1.24 <code>bfd_fill_in_gnu_debuglink_section</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean bfd_fill_in_gnu_debuglink_section
@@ -602,9 +544,8 @@ current directory.
 <code>TRUE</code> is returned if all is ok.  Otherwise <code>FALSE</code> is returned
 and bfd_error is set.
 </p>
-<a name="index-get_005fbuild_005fid"></a>
-<a name="get_005fbuild_005fid"></a>
-<h4 class="subsubsection">2.14.1.27 <code>get_build_id</code></h4>
+<span id="index-get_005fbuild_005fid"></span>
+<span id="get_005fbuild_005fid"></span><h4 class="subsubsection">2.14.1.25 <code>get_build_id</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">struct bfd_build_id * get_build_id (bfd *abfd);
@@ -620,9 +561,8 @@ Returns a pointer to the build-id structure if a build-id could be
 found.  If no build-id is found NULL is returned and error code is
 set.
 </p>
-<a name="index-get_005fbuild_005fid_005fname"></a>
-<a name="get_005fbuild_005fid_005fname"></a>
-<h4 class="subsubsection">2.14.1.28 <code>get_build_id_name</code></h4>
+<span id="index-get_005fbuild_005fid_005fname"></span>
+<span id="get_005fbuild_005fid_005fname"></span><h4 class="subsubsection">2.14.1.26 <code>get_build_id_name</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char * get_build_id_name (bfd *abfd, void *build_id_out_p)
@@ -640,9 +580,8 @@ If a filename is returned then the <var>build_id_out_p</var>
 parameter (which points to a <code>struct bfd_build_id</code>
 pointer) is set to a pointer to the build_id structure.
 </p>
-<a name="index-check_005fbuild_005fid_005ffile"></a>
-<a name="check_005fbuild_005fid_005ffile"></a>
-<h4 class="subsubsection">2.14.1.29 <code>check_build_id_file</code></h4>
+<span id="index-check_005fbuild_005fid_005ffile"></span>
+<span id="check_005fbuild_005fid_005ffile"></span><h4 class="subsubsection">2.14.1.27 <code>check_build_id_file</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_boolean check_build_id_file (char *name, void *buildid_p);
@@ -656,9 +595,8 @@ Returns TRUE if the file exists, is readable, and contains a
 build-id which matches the build-id pointed at by
 <var>build_id_p</var> (which is really a <code>struct bfd_build_id **</code>).
 </p>
-<a name="index-bfd_005ffollow_005fbuild_005fid_005fdebuglink"></a>
-<a name="bfd_005ffollow_005fbuild_005fid_005fdebuglink"></a>
-<h4 class="subsubsection">2.14.1.30 <code>bfd_follow_build_id_debuglink</code></h4>
+<span id="index-bfd_005ffollow_005fbuild_005fid_005fdebuglink"></span>
+<span id="bfd_005ffollow_005fbuild_005fid_005fdebuglink"></span><h4 class="subsubsection">2.14.1.28 <code>bfd_follow_build_id_debuglink</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">char *bfd_follow_build_id_debuglink (bfd *abfd, const char *dir);
@@ -683,11 +621,22 @@ the current directory.
 otherwise a pointer to a heap-allocated string containing the
 filename.  The caller is responsible for freeing this string.
 </p>
+<span id="index-bfd_005fset_005ffilename"></span>
+<span id="bfd_005fset_005ffilename"></span><h4 class="subsubsection">2.14.1.29 <code>bfd_set_filename</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">const char *bfd_set_filename (bfd *abfd, const char *filename);
+</pre></div>
+<p><strong>Description</strong><br>
+Set the filename of <var>abfd</var>, copying the FILENAME parameter to
+bfd_alloc&rsquo;d memory owned by <var>abfd</var>.  Returns a pointer the
+newly allocated name, or NULL if the allocation failed.
+</p>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Internal.html#Internal" accesskey="n" rel="next">Internal</a>, Previous: <a href="Architectures.html#Architectures" accesskey="p" rel="prev">Architectures</a>, Up: <a href="BFD-front-end.html#BFD-front-end" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Internal.html" accesskey="n" rel="next">Internal</a>, Previous: <a href="Architectures.html" accesskey="p" rel="prev">Architectures</a>, Up: <a href="BFD-front-end.html" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

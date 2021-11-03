@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2019 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -12,7 +12,7 @@ and with the Back-Cover Texts as in (a) below.
 (a) The FSF's Back-Cover Text is: "You are free to copy and modify
 this GNU Manual.  Buying copies from GNU Press supports the FSF in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Stop Reply Packets (Debugging with GDB)</title>
@@ -22,33 +22,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Concept-Index.html#Concept-Index" rel="index" title="Concept Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Concept-Index.html" rel="index" title="Concept Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Remote-Protocol.html#Remote-Protocol" rel="up" title="Remote Protocol">
-<link href="General-Query-Packets.html#General-Query-Packets" rel="next" title="General Query Packets">
-<link href="Packets.html#Packets" rel="prev" title="Packets">
+<link href="Remote-Protocol.html" rel="up" title="Remote Protocol">
+<link href="General-Query-Packets.html" rel="next" title="General Query Packets">
+<link href="Packets.html" rel="prev" title="Packets">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -60,15 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Stop-Reply-Packets"></a>
-<div class="header">
+<span id="Stop-Reply-Packets"></span><div class="header">
 <p>
-Next: <a href="General-Query-Packets.html#General-Query-Packets" accesskey="n" rel="next">General Query Packets</a>, Previous: <a href="Packets.html#Packets" accesskey="p" rel="prev">Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="General-Query-Packets.html" accesskey="n" rel="next">General Query Packets</a>, Previous: <a href="Packets.html" accesskey="p" rel="prev">Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Stop-Reply-Packets-1"></a>
-<h3 class="section">E.3 Stop Reply Packets</h3>
-<a name="index-stop-reply-packets"></a>
+<span id="Stop-Reply-Packets-1"></span><h3 class="section">E.3 Stop Reply Packets</h3>
+<span id="index-stop-reply-packets"></span>
 
 <p>The &lsquo;<samp>C</samp>&rsquo;, &lsquo;<samp>c</samp>&rsquo;, &lsquo;<samp>S</samp>&rsquo;, &lsquo;<samp>s</samp>&rsquo;, &lsquo;<samp>vCont</samp>&rsquo;,
 &lsquo;<samp>vAttach</samp>&rsquo;, &lsquo;<samp>vRun</samp>&rsquo;, &lsquo;<samp>vStopped</samp>&rsquo;, and &lsquo;<samp>?</samp>&rsquo; packets can
@@ -80,7 +69,7 @@ number</em> is defined by the header <samp>include/gdb/signals.h</samp> in the
 </p>
 <p>In non-stop mode, the server will simply reply &lsquo;<samp>OK</samp>&rsquo; to commands
 such as &lsquo;<samp>vCont</samp>&rsquo;; any stop will be the subject of a future
-notification.  See <a href="Remote-Non_002dStop.html#Remote-Non_002dStop">Remote Non-Stop</a>.
+notification.  See <a href="Remote-Non_002dStop.html">Remote Non-Stop</a>.
 </p>
 <p>As in the description of request packets, we include spaces in the
 reply templates for clarity; these are not part of the reply packet&rsquo;s
@@ -95,7 +84,7 @@ number).  This is equivalent to a &lsquo;<samp>T</samp>&rsquo; response with no
 </p>
 </dd>
 <dt>&lsquo;<samp>T <var>AA</var> <var>n1</var>:<var>r1</var>;<var>n2</var>:<var>r2</var>;&hellip;</samp>&rsquo;</dt>
-<dd><a name="index-T-packet-reply"></a>
+<dd><span id="index-T-packet-reply"></span>
 <p>The program received signal number <var>AA</var> (a two-digit hexadecimal
 number).  This is equivalent to an &lsquo;<samp>S</samp>&rsquo; response, except that the
 &lsquo;<samp><var>n</var>:<var>r</var></samp>&rsquo; pairs can carry values of important registers
@@ -140,25 +129,25 @@ hex.
 <dd><p>The packet indicates a syscall entry or return, and <var>r</var> is the
 syscall number, in hex.
 </p>
-<a name="index-shared-library-events_002c-remote-reply"></a>
+<span id="index-shared-library-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>library</samp>&rsquo;</dt>
 <dd><p>The packet indicates that the loaded libraries have changed.
 <small>GDB</small> should use &lsquo;<samp>qXfer:libraries:read</samp>&rsquo; to fetch a new
 list of loaded libraries.  The <var>r</var> part is ignored.
 </p>
-<a name="index-replay-log-events_002c-remote-reply"></a>
+<span id="index-replay-log-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>replaylog</samp>&rsquo;</dt>
 <dd><p>The packet indicates that the target cannot continue replaying 
 logged execution events, because it has reached the end (or the
 beginning when executing backward) of the log.  The value of <var>r</var>
-will be either &lsquo;<samp>begin</samp>&rsquo; or &lsquo;<samp>end</samp>&rsquo;.  See <a href="Reverse-Execution.html#Reverse-Execution">Reverse Execution</a>, 
+will be either &lsquo;<samp>begin</samp>&rsquo; or &lsquo;<samp>end</samp>&rsquo;.  See <a href="Reverse-Execution.html">Reverse Execution</a>, 
 for more information.
 </p>
 </dd>
 <dt>&lsquo;<samp>swbreak</samp>&rsquo;</dt>
-<dd><a name="swbreak-stop-reason"></a><p>The packet indicates a software breakpoint instruction was executed,
+<dd><span id="swbreak-stop-reason"></span><p>The packet indicates a software breakpoint instruction was executed,
 irrespective of whether it was <small>GDB</small> that planted the
 breakpoint or the breakpoint is hardcoded in the program.  The <var>r</var>
 part must be left empty.
@@ -185,7 +174,7 @@ The <var>r</var> part must be left empty.
 <p>The same remarks about &lsquo;<samp>qSupported</samp>&rsquo; and non-stop mode above
 apply.
 </p>
-<a name="index-fork-events_002c-remote-reply"></a>
+<span id="index-fork-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>fork</samp>&rsquo;</dt>
 <dd><p>The packet indicates that <code>fork</code> was called, and <var>r</var>
@@ -200,7 +189,7 @@ appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature (see <a href="General-
 remote stub must also supply the appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature
 indicating support.
 </p>
-<a name="index-vfork-events_002c-remote-reply"></a>
+<span id="index-vfork-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>vfork</samp>&rsquo;</dt>
 <dd><p>The packet indicates that <code>vfork</code> was called, and <var>r</var>
@@ -215,7 +204,7 @@ appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature (see <a href="General-
 remote stub must also supply the appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature
 indicating support.
 </p>
-<a name="index-vforkdone-events_002c-remote-reply"></a>
+<span id="index-vforkdone-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>vforkdone</samp>&rsquo;</dt>
 <dd><p>The packet indicates that a child process created by a vfork
@@ -230,7 +219,7 @@ appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature (see <a href="General-
 remote stub must also supply the appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature
 indicating support.
 </p>
-<a name="index-exec-events_002c-remote-reply"></a>
+<span id="index-exec-events_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>exec</samp>&rsquo;</dt>
 <dd><p>The packet indicates that <code>execve</code> was called, and <var>r</var>
@@ -243,8 +232,8 @@ appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature (see <a href="General-
 remote stub must also supply the appropriate &lsquo;<samp>qSupported</samp>&rsquo; feature
 indicating support.
 </p>
-<a name="index-thread-create-event_002c-remote-reply"></a>
-<a name="thread-create-event"></a></dd>
+<span id="index-thread-create-event_002c-remote-reply"></span>
+<span id="thread-create-event"></span></dd>
 <dt>&lsquo;<samp>create</samp>&rsquo;</dt>
 <dd><p>The packet indicates that the thread was just created.  The new thread
 is stopped until <small>GDB</small> sets it running with a resumption packet
@@ -277,7 +266,7 @@ terminated process, can be used only when <small>GDB</small> has reported
 support for multiprocess protocol extensions; see <a href="General-Query-Packets.html#multiprocess-extensions">multiprocess extensions</a>.  Both <var>AA</var> and <var>pid</var> are formatted as big-endian
 hex strings.
 </p>
-<a name="thread-exit-event"></a><a name="index-thread-exit-event_002c-remote-reply"></a>
+<span id="thread-exit-event"></span><span id="index-thread-exit-event_002c-remote-reply"></span>
 </dd>
 <dt>&lsquo;<samp>w <var>AA</var> ; <var>tid</var></samp>&rsquo;</dt>
 <dd>
@@ -314,7 +303,7 @@ for &lsquo;<samp>W</samp>&rsquo;, &lsquo;<samp>T</samp>&rsquo;, etc.  This reply
 <dd><p><var>call-id</var> is the identifier which says which host system call should
 be called.  This is just the name of the function.  Translation into the
 correct system call is only applicable as it&rsquo;s defined in <small>GDB</small>.
-See <a href="File_002dI_002fO-Remote-Protocol-Extension.html#File_002dI_002fO-Remote-Protocol-Extension">File-I/O Remote Protocol Extension</a>, for a list of implemented
+See <a href="File_002dI_002fO-Remote-Protocol-Extension.html">File-I/O Remote Protocol Extension</a>, for a list of implemented
 system calls.
 </p>
 <p>&lsquo;<samp><var>parameter</var>&hellip;</samp>&rsquo; is a list of parameters as defined for
@@ -324,7 +313,7 @@ this very system call.
 call a host system call on behalf of the target.  <small>GDB</small> replies
 with an appropriate &lsquo;<samp>F</samp>&rsquo; packet and keeps up waiting for the next
 reply packet from the target.  The latest &lsquo;<samp>C</samp>&rsquo;, &lsquo;<samp>c</samp>&rsquo;, &lsquo;<samp>S</samp>&rsquo;
-or &lsquo;<samp>s</samp>&rsquo; action is expected to be continued.  See <a href="File_002dI_002fO-Remote-Protocol-Extension.html#File_002dI_002fO-Remote-Protocol-Extension">File-I/O Remote Protocol Extension</a>, for more details.
+or &lsquo;<samp>s</samp>&rsquo; action is expected to be continued.  See <a href="File_002dI_002fO-Remote-Protocol-Extension.html">File-I/O Remote Protocol Extension</a>, for more details.
 </p>
 </dd>
 </dl>
@@ -332,7 +321,7 @@ or &lsquo;<samp>s</samp>&rsquo; action is expected to be continued.  See <a href
 <hr>
 <div class="header">
 <p>
-Next: <a href="General-Query-Packets.html#General-Query-Packets" accesskey="n" rel="next">General Query Packets</a>, Previous: <a href="Packets.html#Packets" accesskey="p" rel="prev">Packets</a>, Up: <a href="Remote-Protocol.html#Remote-Protocol" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html#Concept-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="General-Query-Packets.html" accesskey="n" rel="next">General Query Packets</a>, Previous: <a href="Packets.html" accesskey="p" rel="prev">Packets</a>, Up: <a href="Remote-Protocol.html" accesskey="u" rel="up">Remote Protocol</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Concept-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

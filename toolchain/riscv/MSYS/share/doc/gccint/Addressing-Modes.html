@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -414,7 +414,7 @@ misalignment value (<var>misalign</var>).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fPREFERRED_005fVECTOR_005fALIGNMENT"></a>Target Hook: <em>HOST_WIDE_INT</em> <strong>TARGET_VECTORIZE_PREFERRED_VECTOR_ALIGNMENT</strong> <em>(const_tree <var>type</var>)</em></dt>
+<dt><a name="index-TARGET_005fVECTORIZE_005fPREFERRED_005fVECTOR_005fALIGNMENT"></a>Target Hook: <em>poly_uint64</em> <strong>TARGET_VECTORIZE_PREFERRED_VECTOR_ALIGNMENT</strong> <em>(const_tree <var>type</var>)</em></dt>
 <dd><p>This hook returns the preferred alignment in bits for accesses to
 vectors of type <var>type</var> in vectorized code.  This might be less than
 or greater than the ABI-defined value returned by
@@ -450,19 +450,6 @@ try the equivalent byte operation.  If that also fails, it will try forcing
 the selector into a register and using the <var>vec_perm<var>mode</var></var>
 instruction pattern.  There is no need for the hook to handle these two
 implementation approaches itself.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fBUILTIN_005fCONVERSION"></a>Target Hook: <em>tree</em> <strong>TARGET_VECTORIZE_BUILTIN_CONVERSION</strong> <em>(unsigned <var>code</var>, tree <var>dest_type</var>, tree <var>src_type</var>)</em></dt>
-<dd><p>This hook should return the DECL of a function that implements conversion of the
-input vector of type <var>src_type</var> to type <var>dest_type</var>.
-The value of <var>code</var> is one of the enumerators in <code>enum tree_code</code> and
-specifies how the conversion is to be applied
-(truncation, rounding, etc.).
-</p>
-<p>If this hook is defined, the autovectorizer will use the
-<code>TARGET_VECTORIZE_BUILTIN_CONVERSION</code> target hook when vectorizing
-conversion. Otherwise, it will return <code>NULL_TREE</code>.
 </p></dd></dl>
 
 <dl>
@@ -508,28 +495,74 @@ reached.  The default is <var>mode</var> which means no splitting.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fAUTOVECTORIZE_005fVECTOR_005fSIZES"></a>Target Hook: <em>void</em> <strong>TARGET_VECTORIZE_AUTOVECTORIZE_VECTOR_SIZES</strong> <em>(vector_sizes *<var>sizes</var>)</em></dt>
-<dd><p>If the mode returned by <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> is not
-the only one that is worth considering, this hook should add all suitable
-vector sizes to <var>sizes</var>, in order of decreasing preference.  The first
-one should be the size of <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code>.
+<dt><a name="index-TARGET_005fVECTORIZE_005fAUTOVECTORIZE_005fVECTOR_005fMODES"></a>Target Hook: <em>unsigned int</em> <strong>TARGET_VECTORIZE_AUTOVECTORIZE_VECTOR_MODES</strong> <em>(vector_modes *<var>modes</var>, bool <var>all</var>)</em></dt>
+<dd><p>If using the mode returned by <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code>
+is not the only approach worth considering, this hook should add one mode to
+<var>modes</var> for each useful alternative approach.  These modes are then
+passed to <code>TARGET_VECTORIZE_RELATED_MODE</code> to obtain the vector mode
+for a given element mode.
 </p>
+<p>The modes returned in <var>modes</var> should use the smallest element mode
+possible for the vectorization approach that they represent, preferring
+integer modes over floating-poing modes in the event of a tie.  The first
+mode should be the <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> for its
+element mode.
+</p>
+<p>If <var>all</var> is true, add suitable vector modes even when they are generally
+not expected to be worthwhile.
+</p>
+<p>The hook returns a bitmask of flags that control how the modes in
+<var>modes</var> are used.  The flags are:
+</p><dl compact="compact">
+<dt><code>VECT_COMPARE_COSTS</code></dt>
+<dd><p>Tells the loop vectorizer to try all the provided modes and pick the one
+with the lowest cost.  By default the vectorizer will choose the first
+mode that works.
+</p></dd>
+</dl>
+
 <p>The hook does not need to do anything if the vector returned by
 <code>TARGET_VECTORIZE_PREFERRED_SIMD_MODE</code> is the only one relevant
-for autovectorization.  The default implementation does nothing.
+for autovectorization.  The default implementation adds no modes and
+returns 0.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fGET_005fMASK_005fMODE"></a>Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_GET_MASK_MODE</strong> <em>(poly_uint64 <var>nunits</var>, poly_uint64 <var>length</var>)</em></dt>
-<dd><p>A vector mask is a value that holds one boolean result for every element
-in a vector.  This hook returns the machine mode that should be used to
-represent such a mask when the vector in question is <var>length</var> bytes
-long and contains <var>nunits</var> elements.  The hook returns an empty
-<code>opt_machine_mode</code> if no such mode exists.
+<dt><a name="index-TARGET_005fVECTORIZE_005fRELATED_005fMODE"></a>Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_RELATED_MODE</strong> <em>(machine_mode <var>vector_mode</var>, scalar_mode <var>element_mode</var>, poly_uint64 <var>nunits</var>)</em></dt>
+<dd><p>If a piece of code is using vector mode <var>vector_mode</var> and also wants
+to operate on elements of mode <var>element_mode</var>, return the vector mode
+it should use for those elements.  If <var>nunits</var> is nonzero, ensure that
+the mode has exactly <var>nunits</var> elements, otherwise pick whichever vector
+size pairs the most naturally with <var>vector_mode</var>.  Return an empty
+<code>opt_machine_mode</code> if there is no supported vector mode with the
+required properties.
 </p>
-<p>The default implementation returns the mode of an integer vector that
-is <var>length</var> bytes long and that contains <var>nunits</var> elements,
-if such a mode exists.
+<p>There is no prescribed way of handling the case in which <var>nunits</var>
+is zero.  One common choice is to pick a vector mode with the same size
+as <var>vector_mode</var>; this is the natural choice if the target has a
+fixed vector size.  Another option is to choose a vector mode with the
+same number of elements as <var>vector_mode</var>; this is the natural choice
+if the target has a fixed number of elements.  Alternatively, the hook
+might choose a middle ground, such as trying to keep the number of
+elements as similar as possible while applying maximum and minimum
+vector sizes.
+</p>
+<p>The default implementation uses <code>mode_for_vector</code> to find the
+requested mode, returning a mode with the same size as <var>vector_mode</var>
+when <var>nunits</var> is zero.  This is the correct behavior for most targets.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TARGET_005fVECTORIZE_005fGET_005fMASK_005fMODE"></a>Target Hook: <em>opt_machine_mode</em> <strong>TARGET_VECTORIZE_GET_MASK_MODE</strong> <em>(machine_mode <var>mode</var>)</em></dt>
+<dd><p>Return the mode to use for a vector mask that holds one boolean
+result for each element of vector mode <var>mode</var>.  The returned mask mode
+can be a vector of integers (class <code>MODE_VECTOR_INT</code>), a vector of
+booleans (class <code>MODE_VECTOR_BOOL</code>) or a scalar integer (class
+<code>MODE_INT</code>).  Return an empty <code>opt_machine_mode</code> if no such
+mask mode exists.
+</p>
+<p>The default implementation returns a <code>MODE_VECTOR_INT</code> with the
+same size and number of elements as <var>mode</var>, if such a mode exists.
 </p></dd></dl>
 
 <dl>
@@ -540,12 +573,12 @@ all zeros.  GCC can then try to branch around the instruction instead.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fINIT_005fCOST"></a>Target Hook: <em>void *</em> <strong>TARGET_VECTORIZE_INIT_COST</strong> <em>(struct loop *<var>loop_info</var>)</em></dt>
+<dt><a name="index-TARGET_005fVECTORIZE_005fINIT_005fCOST"></a>Target Hook: <em>void *</em> <strong>TARGET_VECTORIZE_INIT_COST</strong> <em>(class loop *<var>loop_info</var>)</em></dt>
 <dd><p>This hook should initialize target-specific data structures in preparation for modeling the costs of vectorizing a loop or basic block.  The default allocates three unsigned integers for accumulating costs for the prologue, body, and epilogue of the loop or basic block.  If <var>loop_info</var> is non-NULL, it identifies the loop being vectorized; otherwise a single block is being vectorized.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fVECTORIZE_005fADD_005fSTMT_005fCOST"></a>Target Hook: <em>unsigned</em> <strong>TARGET_VECTORIZE_ADD_STMT_COST</strong> <em>(void *<var>data</var>, int <var>count</var>, enum vect_cost_for_stmt <var>kind</var>, struct _stmt_vec_info *<var>stmt_info</var>, int <var>misalign</var>, enum vect_cost_model_location <var>where</var>)</em></dt>
+<dt><a name="index-TARGET_005fVECTORIZE_005fADD_005fSTMT_005fCOST"></a>Target Hook: <em>unsigned</em> <strong>TARGET_VECTORIZE_ADD_STMT_COST</strong> <em>(void *<var>data</var>, int <var>count</var>, enum vect_cost_for_stmt <var>kind</var>, class _stmt_vec_info *<var>stmt_info</var>, int <var>misalign</var>, enum vect_cost_model_location <var>where</var>)</em></dt>
 <dd><p>This hook should update the target-specific <var>data</var> in response to adding <var>count</var> copies of the given <var>kind</var> of statement to a loop or basic block.  The default adds the builtin vectorizer cost for the copies of the statement to the accumulator specified by <var>where</var>, (the prologue, body, or epilogue) and returns the amount added.  The return value should be viewed as a tentative cost that may later be revised.
 </p></dd></dl>
 
@@ -606,11 +639,19 @@ to use it.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fGOACC_005fVALIDATE_005fDIMS"></a>Target Hook: <em>bool</em> <strong>TARGET_GOACC_VALIDATE_DIMS</strong> <em>(tree <var>decl</var>, int *<var>dims</var>, int <var>fn_level</var>)</em></dt>
+<dt><a name="index-TARGET_005fOMP_005fDEVICE_005fKIND_005fARCH_005fISA"></a>Target Hook: <em>int</em> <strong>TARGET_OMP_DEVICE_KIND_ARCH_ISA</strong> <em>(enum omp_device_kind_arch_isa <var>trait</var>, const char *<var>name</var>)</em></dt>
+<dd><p>Return 1 if <var>trait</var> <var>name</var> is present in the OpenMP context&rsquo;s
+device trait set, return 0 if not present in any OpenMP context in the
+whole translation unit, or -1 if not present in the current OpenMP context
+but might be present in another OpenMP context in the same TU.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TARGET_005fGOACC_005fVALIDATE_005fDIMS"></a>Target Hook: <em>bool</em> <strong>TARGET_GOACC_VALIDATE_DIMS</strong> <em>(tree <var>decl</var>, int *<var>dims</var>, int <var>fn_level</var>, unsigned <var>used</var>)</em></dt>
 <dd><p>This hook should check the launch dimensions provided for an OpenACC
 compute region, or routine.  Defaulted values are represented as -1
 and non-constant values as 0.  The <var>fn_level</var> is negative for the
-function corresponding to the compute region.  For a routine is is the
+function corresponding to the compute region.  For a routine it is the
 outermost level at which partitioned execution may be spawned.  The hook
 should verify non-default values.  If DECL is NULL, global defaults
 are being validated and unspecified defaults should be filled in.
@@ -644,6 +685,23 @@ instructions.  <var>call</var> is gimple statement containing the call to
 the function.  This hook removes statement <var>call</var> after the
 expanded sequence has been inserted.  This hook is also responsible
 for allocating any storage for reductions when necessary.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TARGET_005fPREFERRED_005fELSE_005fVALUE"></a>Target Hook: <em>tree</em> <strong>TARGET_PREFERRED_ELSE_VALUE</strong> <em>(unsigned <var>ifn</var>, tree <var>type</var>, unsigned <var>nops</var>, tree *<var>ops</var>)</em></dt>
+<dd><p>This hook returns the target&rsquo;s preferred final argument for a call
+to conditional internal function <var>ifn</var> (really of type
+<code>internal_fn</code>).  <var>type</var> specifies the return type of the
+function and <var>ops</var> are the operands to the conditional operation,
+of which there are <var>nops</var>.
+</p>
+<p>For example, if <var>ifn</var> is <code>IFN_COND_ADD</code>, the hook returns
+a value of type <var>type</var> that should be used when &lsquo;<samp><var>ops</var>[0]</samp>&rsquo;
+and &lsquo;<samp><var>ops</var>[1]</samp>&rsquo; are conditionally added together.
+</p>
+<p>This hook is only relevant if the target supports conditional patterns
+like <code>cond_add<var>m</var></code>.  The default implementation returns a zero
+constant of type <var>type</var>.
 </p></dd></dl>
 
 <hr>

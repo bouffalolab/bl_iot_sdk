@@ -1,15 +1,6 @@
-<html lang="en">
-<head>
-<title>Cplusplus - STABS</title>
-<meta http-equiv="Content-Type" content="text/html">
-<meta name="description" content="STABS">
-<meta name="generator" content="makeinfo 4.13">
-<link title="Top" rel="start" href="index.html#Top">
-<link rel="prev" href="Symbol-Tables.html#Symbol-Tables" title="Symbol Tables">
-<link rel="next" href="Stab-Types.html#Stab-Types" title="Stab Types">
-<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
-<!--
-Copyright (C) 1992-2019 Free Software Foundation, Inc.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Copyright (C) 1992-2020 Free Software Foundation, Inc.
 Contributed by Cygnus Support.  Written by Julia Menapace, Jim Kingdon,
 and David MacKenzie.
 
@@ -17,49 +8,98 @@ Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
-Texts.  A copy of the license is included in the section entitled ``GNU
-Free Documentation License''.-->
-<meta http-equiv="Content-Style-Type" content="text/css">
-<style type="text/css"><!--
-  pre.display { font-family:inherit }
-  pre.format  { font-family:inherit }
-  pre.smalldisplay { font-family:inherit; font-size:smaller }
-  pre.smallformat  { font-family:inherit; font-size:smaller }
-  pre.smallexample { font-size:smaller }
-  pre.smalllisp    { font-size:smaller }
-  span.sc    { font-variant:small-caps }
-  span.roman { font-family:serif; font-weight:normal; } 
-  span.sansserif { font-family:sans-serif; font-weight:normal; } 
---></style>
-</head>
-<body>
-<div class="node">
-<a name="Cplusplus"></a>
-<p>
-Next:&nbsp;<a rel="next" accesskey="n" href="Stab-Types.html#Stab-Types">Stab Types</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="Symbol-Tables.html#Symbol-Tables">Symbol Tables</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
-<hr>
-</div>
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License". -->
+<!-- Created by GNU Texinfo 6.1, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>STABS: Cplusplus</title>
 
+<meta name="description" content="STABS: Cplusplus">
+<meta name="keywords" content="STABS: Cplusplus">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Symbol-Types-Index.html#Symbol-Types-Index" rel="index" title="Symbol Types Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Class-Names.html#Class-Names" rel="next" title="Class Names">
+<link href="Stab-Section-Transformations.html#Stab-Section-Transformations" rel="prev" title="Stab Section Transformations">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Cplusplus"></a>
+<div class="header">
+<p>
+Next: <a href="Stab-Types.html#Stab-Types" accesskey="n" rel="next">Stab Types</a>, Previous: <a href="Symbol-Tables.html#Symbol-Tables" accesskey="p" rel="prev">Symbol Tables</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Types-Index.html#Symbol-Types-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="GNU-C_002b_002b-Stabs"></a>
 <h2 class="chapter">8 GNU C<tt>++</tt> Stabs</h2>
 
-<ul class="menu">
-<li><a accesskey="1" href="Class-Names.html#Class-Names">Class Names</a>: 			C++ class names are both tags and typedefs. 
-<li><a accesskey="2" href="Nested-Symbols.html#Nested-Symbols">Nested Symbols</a>: 		C++ symbol names can be within other types. 
-<li><a accesskey="3" href="Basic-Cplusplus-Types.html#Basic-Cplusplus-Types">Basic Cplusplus Types</a>
-<li><a accesskey="4" href="Simple-Classes.html#Simple-Classes">Simple Classes</a>
-<li><a accesskey="5" href="Class-Instance.html#Class-Instance">Class Instance</a>
-<li><a accesskey="6" href="Methods.html#Methods">Methods</a>: 			Method definition
-<li><a accesskey="7" href="Method-Type-Descriptor.html#Method-Type-Descriptor">Method Type Descriptor</a>:       The &lsquo;<samp><span class="samp">#</span></samp>&rsquo; type descriptor
-<li><a accesskey="8" href="Member-Type-Descriptor.html#Member-Type-Descriptor">Member Type Descriptor</a>:       The &lsquo;<samp><span class="samp">@</span></samp>&rsquo; type descriptor
-<li><a accesskey="9" href="Protections.html#Protections">Protections</a>
-<li><a href="Method-Modifiers.html#Method-Modifiers">Method Modifiers</a>
-<li><a href="Virtual-Methods.html#Virtual-Methods">Virtual Methods</a>
-<li><a href="Inheritance.html#Inheritance">Inheritance</a>
-<li><a href="Virtual-Base-Classes.html#Virtual-Base-Classes">Virtual Base Classes</a>
-<li><a href="Static-Members.html#Static-Members">Static Members</a>
-</ul>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Class-Names.html#Class-Names" accesskey="1">Class Names</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C++ class names are both tags and typedefs.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Nested-Symbols.html#Nested-Symbols" accesskey="2">Nested Symbols</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C++ symbol names can be within other types.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Basic-Cplusplus-Types.html#Basic-Cplusplus-Types" accesskey="3">Basic Cplusplus Types</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Simple-Classes.html#Simple-Classes" accesskey="4">Simple Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Class-Instance.html#Class-Instance" accesskey="5">Class Instance</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Methods.html#Methods" accesskey="6">Methods</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Method definition
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Method-Type-Descriptor.html#Method-Type-Descriptor" accesskey="7">Method Type Descriptor</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The &lsquo;<samp>#</samp>&rsquo; type descriptor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Member-Type-Descriptor.html#Member-Type-Descriptor" accesskey="8">Member Type Descriptor</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The &lsquo;<samp>@</samp>&rsquo; type descriptor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Protections.html#Protections" accesskey="9">Protections</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Method-Modifiers.html#Method-Modifiers">Method Modifiers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Virtual-Methods.html#Virtual-Methods">Virtual Methods</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Inheritance.html#Inheritance">Inheritance</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Virtual-Base-Classes.html#Virtual-Base-Classes">Virtual Base Classes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Static-Members.html#Static-Members">Static Members</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
 
-</body></html>
 
+
+
+</body>
+</html>

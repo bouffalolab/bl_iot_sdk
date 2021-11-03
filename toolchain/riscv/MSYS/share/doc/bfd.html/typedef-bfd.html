@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -138,14 +138,8 @@ struct bfd
   /* A unique identifier of the BFD  */
   unsigned int id;
 
-  /* The format which belongs to the BFD. (object, core, etc.)  */
-  ENUM_BITFIELD (bfd_format) format : 3;
-
-  /* The direction with which the BFD was opened.  */
-  ENUM_BITFIELD (bfd_direction) direction : 2;
-
   /* Format_specific flags.  */
-  flagword flags : 20;
+  flagword flags;
 
   /* Values that may appear in the flags field of a BFD.  These also
      appear in the object_flags field of the bfd_target structure, where
@@ -232,6 +226,9 @@ struct bfd
   /* Use the ELF STT_COMMON type in this BFD.  */
 #define BFD_USE_ELF_STT_COMMON  0x80000
 
+  /* Put pathnames into archives (non-POSIX).  */
+#define BFD_ARCHIVE_FULL_PATH  0x100000
+
   /* Flags bits to be saved in bfd_preserve_save.  */
 #define BFD_FLAGS_SAVED \
   (BFD_IN_MEMORY | BFD_COMPRESS | BFD_DECOMPRESS | BFD_LINKER_CREATED \
@@ -243,6 +240,12 @@ struct bfd
   (BFD_IN_MEMORY | BFD_COMPRESS | BFD_DECOMPRESS | BFD_LINKER_CREATED \
    | BFD_PLUGIN | BFD_TRADITIONAL_FORMAT | BFD_DETERMINISTIC_OUTPUT \
    | BFD_COMPRESS_GABI | BFD_CONVERT_ELF_COMMON | BFD_USE_ELF_STT_COMMON)
+
+  /* The format which belongs to the BFD. (object, core, etc.)  */
+  ENUM_BITFIELD (bfd_format) format : 3;
+
+  /* The direction with which the BFD was opened.  */
+  ENUM_BITFIELD (bfd_direction) direction : 2;
 
   /* Is the file descriptor being cached?  That is, can it be closed as
      needed, and re-opened when accessed later?  */
@@ -273,6 +276,9 @@ struct bfd
   /* Set if this is a thin archive.  */
   unsigned int is_thin_archive : 1;
 
+  /* Set if this archive should not cache element positions.  */
+  unsigned int no_element_cache : 1;
+
   /* Set if only required symbols should be added in the link hash table for
      this object.  Used by VMS linkers.  */
   unsigned int selective_search : 1;
@@ -289,13 +295,19 @@ struct bfd
   /* Set if this is a plugin output file.  */
   unsigned int lto_output : 1;
 
+  /* Set if this is a slim LTO object not loaded with a compiler plugin.  */
+  unsigned int lto_slim_object : 1;
+
+  /* Do not attempt to modify this file.  Set when detecting errors
+     that BFD is not prepared to handle for objcopy/strip.  */
+  unsigned int read_only : 1;
+
   /* Set to dummy BFD created when claimed by a compiler plug-in
      library.  */
   bfd *plugin_dummy_bfd;
 
-  /* Currently my_archive is tested before adding origin to
-     anything. I believe that this can become always an add of
-     origin, with origin set to 0 for non archive files.  */
+  /* The offset of this bfd in the file, typically 0 if it is not
+     contained in an archive.  */
   ufile_ptr origin;
 
   /* The origin in the archive of the proxy entry.  This will
@@ -327,7 +339,7 @@ struct bfd
 
   /* Symbol table for output BFD (with symcount entries).
      Also used by the linker to cache input BFD symbols.  */
-  struct bfd_symbol  **outsymbols;
+  struct bfd_symbol **outsymbols;
 
   /* Used for input and output.  */
   unsigned int symcount;
@@ -337,6 +349,11 @@ struct bfd
 
   /* Pointer to structure which contains architecture information.  */
   const struct bfd_arch_info *arch_info;
+
+  /* Cached length of file for bfd_get_size.  0 until bfd_get_size is
+     called, 1 if stat returns an error or the file size is too large to
+     return in ufile_ptr.  Both 0 and 1 should be treated as &quot;unknown&quot;.  */
+  ufile_ptr size;
 
   /* Stuff only useful for archives.  */
   void *arelt_data;
@@ -402,12 +419,226 @@ struct bfd
   const struct bfd_build_id *build_id;
 };
 
+static inline const char *
+bfd_get_filename (const bfd *abfd)
+{
+  return abfd-&gt;filename;
+}
+
+static inline bfd_boolean
+bfd_get_cacheable (const bfd *abfd)
+{
+  return abfd-&gt;cacheable;
+}
+
+static inline enum bfd_format
+bfd_get_format (const bfd *abfd)
+{
+  return abfd-&gt;format;
+}
+
+static inline flagword
+bfd_get_file_flags (const bfd *abfd)
+{
+  return abfd-&gt;flags;
+}
+
+static inline bfd_vma
+bfd_get_start_address (const bfd *abfd)
+{
+  return abfd-&gt;start_address;
+}
+
+static inline unsigned int
+bfd_get_symcount (const bfd *abfd)
+{
+  return abfd-&gt;symcount;
+}
+
+static inline unsigned int
+bfd_get_dynamic_symcount (const bfd *abfd)
+{
+  return abfd-&gt;dynsymcount;
+}
+
+static inline struct bfd_symbol **
+bfd_get_outsymbols (const bfd *abfd)
+{
+  return abfd-&gt;outsymbols;
+}
+
+static inline unsigned int
+bfd_count_sections (const bfd *abfd)
+{
+  return abfd-&gt;section_count;
+}
+
+static inline bfd_boolean
+bfd_has_map (const bfd *abfd)
+{
+  return abfd-&gt;has_armap;
+}
+
+static inline bfd_boolean
+bfd_is_thin_archive (const bfd *abfd)
+{
+  return abfd-&gt;is_thin_archive;
+}
+
+static inline void *
+bfd_usrdata (const bfd *abfd)
+{
+  return abfd-&gt;usrdata;
+}
+
 /* See note beside bfd_set_section_userdata.  */
 static inline bfd_boolean
 bfd_set_cacheable (bfd * abfd, bfd_boolean val)
 {
   abfd-&gt;cacheable = val;
   return TRUE;
+}
+
+static inline void
+bfd_set_thin_archive (bfd *abfd, bfd_boolean val)
+{
+  abfd-&gt;is_thin_archive = val;
+}
+
+static inline void
+bfd_set_usrdata (bfd *abfd, void *val)
+{
+  abfd-&gt;usrdata = val;
+}
+
+static inline asection *
+bfd_asymbol_section (const asymbol *sy)
+{
+  return sy-&gt;section;
+}
+
+static inline bfd_vma
+bfd_asymbol_value (const asymbol *sy)
+{
+  return sy-&gt;section-&gt;vma + sy-&gt;value;
+}
+
+static inline const char *
+bfd_asymbol_name (const asymbol *sy)
+{
+  return sy-&gt;name;
+}
+
+static inline struct bfd *
+bfd_asymbol_bfd (const asymbol *sy)
+{
+  return sy-&gt;the_bfd;
+}
+
+static inline void
+bfd_set_asymbol_name (asymbol *sy, const char *name)
+{
+  sy-&gt;name = name;
+}
+
+static inline bfd_size_type
+bfd_get_section_limit_octets (const bfd *abfd, const asection *sec)
+{
+  if (abfd-&gt;direction != write_direction &amp;&amp; sec-&gt;rawsize != 0)
+    return sec-&gt;rawsize;
+  return sec-&gt;size;
+}
+
+/* Find the address one past the end of SEC.  */
+static inline bfd_size_type
+bfd_get_section_limit (const bfd *abfd, const asection *sec)
+{
+  return (bfd_get_section_limit_octets (abfd, sec)
+          / bfd_octets_per_byte (abfd, sec));
+}
+
+/* Functions to handle insertion and deletion of a bfd's sections.  These
+   only handle the list pointers, ie. do not adjust section_count,
+   target_index etc.  */
+static inline void
+bfd_section_list_remove (bfd *abfd, asection *s)
+{
+  asection *next = s-&gt;next;
+  asection *prev = s-&gt;prev;
+  if (prev)
+    prev-&gt;next = next;
+  else
+    abfd-&gt;sections = next;
+  if (next)
+    next-&gt;prev = prev;
+  else
+    abfd-&gt;section_last = prev;
+}
+
+static inline void
+bfd_section_list_append (bfd *abfd, asection *s)
+{
+  s-&gt;next = 0;
+  if (abfd-&gt;section_last)
+    {
+      s-&gt;prev = abfd-&gt;section_last;
+      abfd-&gt;section_last-&gt;next = s;
+    }
+  else
+    {
+      s-&gt;prev = 0;
+      abfd-&gt;sections = s;
+    }
+  abfd-&gt;section_last = s;
+}
+
+static inline void
+bfd_section_list_prepend (bfd *abfd, asection *s)
+{
+  s-&gt;prev = 0;
+  if (abfd-&gt;sections)
+    {
+      s-&gt;next = abfd-&gt;sections;
+      abfd-&gt;sections-&gt;prev = s;
+    }
+  else
+    {
+      s-&gt;next = 0;
+      abfd-&gt;section_last = s;
+    }
+  abfd-&gt;sections = s;
+}
+
+static inline void
+bfd_section_list_insert_after (bfd *abfd, asection *a, asection *s)
+{
+  asection *next = a-&gt;next;
+  s-&gt;next = next;
+  s-&gt;prev = a;
+  a-&gt;next = s;
+  if (next)
+    next-&gt;prev = s;
+  else
+    abfd-&gt;section_last = s;
+}
+
+static inline void
+bfd_section_list_insert_before (bfd *abfd, asection *b, asection *s)
+{
+  asection *prev = b-&gt;prev;
+  s-&gt;prev = prev;
+  s-&gt;next = b;
+  b-&gt;prev = s;
+  if (prev)
+    prev-&gt;next = s;
+  else
+    abfd-&gt;sections = s;
+}
+
+static inline bfd_boolean
+bfd_section_removed_from_list (const bfd *abfd, const asection *s)
+{
+  return s-&gt;next ? s-&gt;next-&gt;prev != s : abfd-&gt;section_last != s;
 }
 
 </pre></div>

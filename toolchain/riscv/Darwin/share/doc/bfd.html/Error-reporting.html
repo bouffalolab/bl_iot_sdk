@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2019 Free Software Foundation, Inc.
+Copyright (C) 1991-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -21,7 +21,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Error reporting (Untitled Document)</title>
@@ -31,33 +31,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="BFD-Index.html#BFD-Index" rel="index" title="BFD Index">
+<link href="index.html" rel="start" title="Top">
+<link href="BFD-Index.html" rel="index" title="BFD Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="BFD-front-end.html#BFD-front-end" rel="up" title="BFD front end">
-<link href="Miscellaneous.html#Miscellaneous" rel="next" title="Miscellaneous">
-<link href="typedef-bfd.html#typedef-bfd" rel="prev" title="typedef bfd">
+<link href="BFD-front-end.html" rel="up" title="BFD front end">
+<link href="Miscellaneous.html" rel="next" title="Miscellaneous">
+<link href="typedef-bfd.html" rel="prev" title="typedef bfd">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -69,14 +60,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Error-reporting"></a>
-<div class="header">
+<span id="Error-reporting"></span><div class="header">
 <p>
-Next: <a href="Miscellaneous.html#Miscellaneous" accesskey="n" rel="next">Miscellaneous</a>, Previous: <a href="typedef-bfd.html#typedef-bfd" accesskey="p" rel="prev">typedef bfd</a>, Up: <a href="BFD-front-end.html#BFD-front-end" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous.html" accesskey="n" rel="next">Miscellaneous</a>, Previous: <a href="typedef-bfd.html" accesskey="p" rel="prev">typedef bfd</a>, Up: <a href="BFD-front-end.html" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Error-reporting-1"></a>
-<h3 class="section">2.2 Error reporting</h3>
+<span id="Error-reporting-1"></span><h3 class="section">2.2 Error reporting</h3>
 <p>Most BFD functions return nonzero on success (check their
 individual documentation for precise semantics).  On an error,
 they call <code>bfd_set_error</code> to set an error condition that callers
@@ -87,8 +76,7 @@ If that returns <code>bfd_error_system_call</code>, then check
 <p>The easiest way to report a BFD error to the user is to
 use <code>bfd_perror</code>.
 </p>
-<a name="Type-bfd_005ferror_005ftype"></a>
-<h4 class="subsection">2.2.1 Type <code>bfd_error_type</code></h4>
+<span id="Type-bfd_005ferror_005ftype"></span><h4 class="subsection">2.2.1 Type <code>bfd_error_type</code></h4>
 <p>The values returned by <code>bfd_get_error</code> are defined by the
 enumerated type <code>bfd_error_type</code>.
 </p>
@@ -118,15 +106,15 @@ typedef enum bfd_error
   bfd_error_bad_value,
   bfd_error_file_truncated,
   bfd_error_file_too_big,
+  bfd_error_sorry,
   bfd_error_on_input,
   bfd_error_invalid_error_code
 }
 bfd_error_type;
 
 </pre></div>
-<a name="index-bfd_005fget_005ferror"></a>
-<a name="bfd_005fget_005ferror"></a>
-<h4 class="subsubsection">2.2.1.1 <code>bfd_get_error</code></h4>
+<span id="index-bfd_005fget_005ferror"></span>
+<span id="bfd_005fget_005ferror"></span><h4 class="subsubsection">2.2.1.1 <code>bfd_get_error</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_error_type bfd_get_error (void);
@@ -134,9 +122,8 @@ bfd_error_type;
 <p><strong>Description</strong><br>
 Return the current BFD error condition.
 </p>
-<a name="index-bfd_005fset_005ferror"></a>
-<a name="bfd_005fset_005ferror"></a>
-<h4 class="subsubsection">2.2.1.2 <code>bfd_set_error</code></h4>
+<span id="index-bfd_005fset_005ferror"></span>
+<span id="bfd_005fset_005ferror"></span><h4 class="subsubsection">2.2.1.2 <code>bfd_set_error</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void bfd_set_error (bfd_error_type error_tag);
@@ -147,9 +134,8 @@ Set the BFD error condition to be <var>error_tag</var>.
 <p><var>error_tag</var> must not be bfd_error_on_input.  Use
 bfd_set_input_error for input errors instead.
 </p>
-<a name="index-bfd_005fset_005finput_005ferror"></a>
-<a name="bfd_005fset_005finput_005ferror"></a>
-<h4 class="subsubsection">2.2.1.3 <code>bfd_set_input_error</code></h4>
+<span id="index-bfd_005fset_005finput_005ferror"></span>
+<span id="bfd_005fset_005finput_005ferror"></span><h4 class="subsubsection">2.2.1.3 <code>bfd_set_input_error</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void bfd_set_input_error (bfd *input, bfd_error_type error_tag);
@@ -159,9 +145,8 @@ Set the BFD error condition to be bfd_error_on_input.
 <var>input</var> is the input bfd where the error occurred, and
 <var>error_tag</var> the bfd_error_type error.
 </p>
-<a name="index-bfd_005ferrmsg"></a>
-<a name="bfd_005ferrmsg"></a>
-<h4 class="subsubsection">2.2.1.4 <code>bfd_errmsg</code></h4>
+<span id="index-bfd_005ferrmsg"></span>
+<span id="bfd_005ferrmsg"></span><h4 class="subsubsection">2.2.1.4 <code>bfd_errmsg</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">const char *bfd_errmsg (bfd_error_type error_tag);
@@ -170,9 +155,8 @@ Set the BFD error condition to be bfd_error_on_input.
 Return a string describing the error <var>error_tag</var>, or
 the system error if <var>error_tag</var> is <code>bfd_error_system_call</code>.
 </p>
-<a name="index-bfd_005fperror"></a>
-<a name="bfd_005fperror"></a>
-<h4 class="subsubsection">2.2.1.5 <code>bfd_perror</code></h4>
+<span id="index-bfd_005fperror"></span>
+<span id="bfd_005fperror"></span><h4 class="subsubsection">2.2.1.5 <code>bfd_perror</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void bfd_perror (const char *message);
@@ -184,8 +168,7 @@ the last BFD error was a system call failure.  If <var>message</var>
 is non-NULL and non-empty, the error string printed is preceded
 by <var>message</var>, a colon, and a space.  It is followed by a newline.
 </p>
-<a name="BFD-error-handler"></a>
-<h4 class="subsection">2.2.2 BFD error handler</h4>
+<span id="BFD-error-handler"></span><h4 class="subsection">2.2.2 BFD error handler</h4>
 <p>Some BFD functions want to print messages describing the
 problem.  They call a BFD error handler function.  This
 function may be overridden by the program.
@@ -199,9 +182,8 @@ function may be overridden by the program.
 typedef void (*bfd_error_handler_type) (const char *, va_list);
 
 </pre></div>
-<a name="index-_005fbfd_005ferror_005fhandler"></a>
-<a name="g_t_005fbfd_005ferror_005fhandler"></a>
-<h4 class="subsubsection">2.2.2.1 <code>_bfd_error_handler</code></h4>
+<span id="index-_005fbfd_005ferror_005fhandler"></span>
+<span id="g_t_005fbfd_005ferror_005fhandler"></span><h4 class="subsubsection">2.2.2.1 <code>_bfd_error_handler</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void _bfd_error_handler (const char *fmt, ...) ATTRIBUTE_PRINTF_1;
@@ -218,9 +200,8 @@ archive too.
 </p>
 <p>Beware: Only supports a maximum of 9 format arguments.
 </p>
-<a name="index-bfd_005fset_005ferror_005fhandler"></a>
-<a name="bfd_005fset_005ferror_005fhandler"></a>
-<h4 class="subsubsection">2.2.2.2 <code>bfd_set_error_handler</code></h4>
+<span id="index-bfd_005fset_005ferror_005fhandler"></span>
+<span id="bfd_005fset_005ferror_005fhandler"></span><h4 class="subsubsection">2.2.2.2 <code>bfd_set_error_handler</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_error_handler_type bfd_set_error_handler (bfd_error_handler_type);
@@ -229,9 +210,8 @@ archive too.
 Set the BFD error handler function.  Returns the previous
 function.
 </p>
-<a name="index-bfd_005fset_005ferror_005fprogram_005fname"></a>
-<a name="bfd_005fset_005ferror_005fprogram_005fname"></a>
-<h4 class="subsubsection">2.2.2.3 <code>bfd_set_error_program_name</code></h4>
+<span id="index-bfd_005fset_005ferror_005fprogram_005fname"></span>
+<span id="bfd_005fset_005ferror_005fprogram_005fname"></span><h4 class="subsubsection">2.2.2.3 <code>bfd_set_error_program_name</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void bfd_set_error_program_name (const char *);
@@ -242,8 +222,7 @@ is printed before the error message followed by a colon and
 space.  The string must not be changed after it is passed to
 this function.
 </p>
-<a name="BFD-assert-handler"></a>
-<h4 class="subsection">2.2.3 BFD assert handler</h4>
+<span id="BFD-assert-handler"></span><h4 class="subsection">2.2.3 BFD assert handler</h4>
 <p>If BFD finds an internal inconsistency, the bfd assert
 handler is called with information on the BFD version, BFD
 source file and line.  If this happens, most programs linked
@@ -262,9 +241,8 @@ typedef void (*bfd_assert_handler_type) (const char *bfd_formatmsg,
                                          int bfd_line);
 
 </pre></div>
-<a name="index-bfd_005fset_005fassert_005fhandler"></a>
-<a name="bfd_005fset_005fassert_005fhandler"></a>
-<h4 class="subsubsection">2.2.3.1 <code>bfd_set_assert_handler</code></h4>
+<span id="index-bfd_005fset_005fassert_005fhandler"></span>
+<span id="bfd_005fset_005fassert_005fhandler"></span><h4 class="subsubsection">2.2.3.1 <code>bfd_set_assert_handler</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">bfd_assert_handler_type bfd_set_assert_handler (bfd_assert_handler_type);
@@ -276,7 +254,7 @@ function.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Miscellaneous.html#Miscellaneous" accesskey="n" rel="next">Miscellaneous</a>, Previous: <a href="typedef-bfd.html#typedef-bfd" accesskey="p" rel="prev">typedef bfd</a>, Up: <a href="BFD-front-end.html#BFD-front-end" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html#BFD-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Miscellaneous.html" accesskey="n" rel="next">Miscellaneous</a>, Previous: <a href="typedef-bfd.html" accesskey="p" rel="prev">typedef bfd</a>, Up: <a href="BFD-front-end.html" accesskey="u" rel="up">BFD front end</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="BFD-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

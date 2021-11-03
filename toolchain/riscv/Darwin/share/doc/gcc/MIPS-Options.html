@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MIPS Options (Using the GNU Compiler Collection (GCC))</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Submodel-Options.html#Submodel-Options" rel="up" title="Submodel Options">
-<link href="MMIX-Options.html#MMIX-Options" rel="next" title="MMIX Options">
-<link href="MicroBlaze-Options.html#MicroBlaze-Options" rel="prev" title="MicroBlaze Options">
+<link href="Submodel-Options.html" rel="up" title="Submodel Options">
+<link href="MMIX-Options.html" rel="next" title="MMIX Options">
+<link href="MicroBlaze-Options.html" rel="prev" title="MicroBlaze Options">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,30 +58,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="MIPS-Options"></a>
-<div class="header">
+<span id="MIPS-Options"></span><div class="header">
 <p>
-Next: <a href="MMIX-Options.html#MMIX-Options" accesskey="n" rel="next">MMIX Options</a>, Previous: <a href="MicroBlaze-Options.html#MicroBlaze-Options" accesskey="p" rel="prev">MicroBlaze Options</a>, Up: <a href="Submodel-Options.html#Submodel-Options" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="MMIX-Options.html" accesskey="n" rel="next">MMIX Options</a>, Previous: <a href="MicroBlaze-Options.html" accesskey="p" rel="prev">MicroBlaze Options</a>, Up: <a href="Submodel-Options.html" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="MIPS-Options-1"></a>
-<h4 class="subsection">3.18.26 MIPS Options</h4>
-<a name="index-MIPS-options"></a>
+<span id="MIPS-Options-1"></span><h4 class="subsection">3.19.29 MIPS Options</h4>
+<span id="index-MIPS-options"></span>
 
 <dl compact="compact">
 <dt><code>-EB</code></dt>
-<dd><a name="index-EB-1"></a>
+<dd><span id="index-EB-2"></span>
 <p>Generate big-endian code.
 </p>
 </dd>
 <dt><code>-EL</code></dt>
-<dd><a name="index-EL-1"></a>
+<dd><span id="index-EL-2"></span>
 <p>Generate little-endian code.  This is the default for &lsquo;<samp>mips*el-*-*</samp>&rsquo;
 configurations.
 </p>
 </dd>
 <dt><code>-march=<var>arch</var></code></dt>
-<dd><a name="index-march-7"></a>
+<dd><span id="index-march-8"></span>
 <p>Generate code that runs on <var>arch</var>, which can be the name of a
 generic MIPS ISA, or the name of a particular processor.
 The ISA names are:
@@ -108,17 +97,19 @@ The processor names are:
 &lsquo;<samp>34kc</samp>&rsquo;, &lsquo;<samp>34kf2_1</samp>&rsquo;, &lsquo;<samp>34kf1_1</samp>&rsquo;, &lsquo;<samp>34kn</samp>&rsquo;,
 &lsquo;<samp>74kc</samp>&rsquo;, &lsquo;<samp>74kf2_1</samp>&rsquo;, &lsquo;<samp>74kf1_1</samp>&rsquo;, &lsquo;<samp>74kf3_2</samp>&rsquo;,
 &lsquo;<samp>1004kc</samp>&rsquo;, &lsquo;<samp>1004kf2_1</samp>&rsquo;, &lsquo;<samp>1004kf1_1</samp>&rsquo;,
-&lsquo;<samp>i6400</samp>&rsquo;,
+&lsquo;<samp>i6400</samp>&rsquo;, &lsquo;<samp>i6500</samp>&rsquo;,
 &lsquo;<samp>interaptiv</samp>&rsquo;,
-&lsquo;<samp>loongson2e</samp>&rsquo;, &lsquo;<samp>loongson2f</samp>&rsquo;, &lsquo;<samp>loongson3a</samp>&rsquo;,
+&lsquo;<samp>loongson2e</samp>&rsquo;, &lsquo;<samp>loongson2f</samp>&rsquo;, &lsquo;<samp>loongson3a</samp>&rsquo;, &lsquo;<samp>gs464</samp>&rsquo;,
+&lsquo;<samp>gs464e</samp>&rsquo;, &lsquo;<samp>gs264e</samp>&rsquo;,
 &lsquo;<samp>m4k</samp>&rsquo;,
 &lsquo;<samp>m14k</samp>&rsquo;, &lsquo;<samp>m14kc</samp>&rsquo;, &lsquo;<samp>m14ke</samp>&rsquo;, &lsquo;<samp>m14kec</samp>&rsquo;,
 &lsquo;<samp>m5100</samp>&rsquo;, &lsquo;<samp>m5101</samp>&rsquo;,
 &lsquo;<samp>octeon</samp>&rsquo;, &lsquo;<samp>octeon+</samp>&rsquo;, &lsquo;<samp>octeon2</samp>&rsquo;, &lsquo;<samp>octeon3</samp>&rsquo;,
 &lsquo;<samp>orion</samp>&rsquo;,
-&lsquo;<samp>p5600</samp>&rsquo;,
+&lsquo;<samp>p5600</samp>&rsquo;, &lsquo;<samp>p6600</samp>&rsquo;,
 &lsquo;<samp>r2000</samp>&rsquo;, &lsquo;<samp>r3000</samp>&rsquo;, &lsquo;<samp>r3900</samp>&rsquo;, &lsquo;<samp>r4000</samp>&rsquo;, &lsquo;<samp>r4400</samp>&rsquo;,
-&lsquo;<samp>r4600</samp>&rsquo;, &lsquo;<samp>r4650</samp>&rsquo;, &lsquo;<samp>r4700</samp>&rsquo;, &lsquo;<samp>r6000</samp>&rsquo;, &lsquo;<samp>r8000</samp>&rsquo;,
+&lsquo;<samp>r4600</samp>&rsquo;, &lsquo;<samp>r4650</samp>&rsquo;, &lsquo;<samp>r4700</samp>&rsquo;, &lsquo;<samp>r5900</samp>&rsquo;,
+&lsquo;<samp>r6000</samp>&rsquo;, &lsquo;<samp>r8000</samp>&rsquo;,
 &lsquo;<samp>rm7000</samp>&rsquo;, &lsquo;<samp>rm9000</samp>&rsquo;,
 &lsquo;<samp>r10000</samp>&rsquo;, &lsquo;<samp>r12000</samp>&rsquo;, &lsquo;<samp>r14000</samp>&rsquo;, &lsquo;<samp>r16000</samp>&rsquo;,
 &lsquo;<samp>sb1</samp>&rsquo;,
@@ -164,7 +155,7 @@ the macro names the resolved architecture (either <code>&quot;mips1&quot;</code>
 </p>
 </dd>
 <dt><code>-mtune=<var>arch</var></code></dt>
-<dd><a name="index-mtune-8"></a>
+<dd><span id="index-mtune-9"></span>
 <p>Optimize for <var>arch</var>.  Among other things, this option controls
 the way instructions are scheduled, and the perceived cost of arithmetic
 operations.  The list of <var>arch</var> values is the same as for
@@ -182,84 +173,84 @@ particular member of that family.
 </p>
 </dd>
 <dt><code>-mips1</code></dt>
-<dd><a name="index-mips1"></a>
+<dd><span id="index-mips1"></span>
 <p>Equivalent to <samp>-march=mips1</samp>.
 </p>
 </dd>
 <dt><code>-mips2</code></dt>
-<dd><a name="index-mips2"></a>
+<dd><span id="index-mips2"></span>
 <p>Equivalent to <samp>-march=mips2</samp>.
 </p>
 </dd>
 <dt><code>-mips3</code></dt>
-<dd><a name="index-mips3"></a>
+<dd><span id="index-mips3"></span>
 <p>Equivalent to <samp>-march=mips3</samp>.
 </p>
 </dd>
 <dt><code>-mips4</code></dt>
-<dd><a name="index-mips4"></a>
+<dd><span id="index-mips4"></span>
 <p>Equivalent to <samp>-march=mips4</samp>.
 </p>
 </dd>
 <dt><code>-mips32</code></dt>
-<dd><a name="index-mips32"></a>
+<dd><span id="index-mips32"></span>
 <p>Equivalent to <samp>-march=mips32</samp>.
 </p>
 </dd>
 <dt><code>-mips32r3</code></dt>
-<dd><a name="index-mips32r3"></a>
+<dd><span id="index-mips32r3"></span>
 <p>Equivalent to <samp>-march=mips32r3</samp>.
 </p>
 </dd>
 <dt><code>-mips32r5</code></dt>
-<dd><a name="index-mips32r5"></a>
+<dd><span id="index-mips32r5"></span>
 <p>Equivalent to <samp>-march=mips32r5</samp>.
 </p>
 </dd>
 <dt><code>-mips32r6</code></dt>
-<dd><a name="index-mips32r6"></a>
+<dd><span id="index-mips32r6"></span>
 <p>Equivalent to <samp>-march=mips32r6</samp>.
 </p>
 </dd>
 <dt><code>-mips64</code></dt>
-<dd><a name="index-mips64"></a>
+<dd><span id="index-mips64"></span>
 <p>Equivalent to <samp>-march=mips64</samp>.
 </p>
 </dd>
 <dt><code>-mips64r2</code></dt>
-<dd><a name="index-mips64r2"></a>
+<dd><span id="index-mips64r2"></span>
 <p>Equivalent to <samp>-march=mips64r2</samp>.
 </p>
 </dd>
 <dt><code>-mips64r3</code></dt>
-<dd><a name="index-mips64r3"></a>
+<dd><span id="index-mips64r3"></span>
 <p>Equivalent to <samp>-march=mips64r3</samp>.
 </p>
 </dd>
 <dt><code>-mips64r5</code></dt>
-<dd><a name="index-mips64r5"></a>
+<dd><span id="index-mips64r5"></span>
 <p>Equivalent to <samp>-march=mips64r5</samp>.
 </p>
 </dd>
 <dt><code>-mips64r6</code></dt>
-<dd><a name="index-mips64r6"></a>
+<dd><span id="index-mips64r6"></span>
 <p>Equivalent to <samp>-march=mips64r6</samp>.
 </p>
 </dd>
 <dt><code>-mips16</code></dt>
 <dt><code>-mno-mips16</code></dt>
-<dd><a name="index-mips16"></a>
-<a name="index-mno_002dmips16"></a>
+<dd><span id="index-mips16"></span>
+<span id="index-mno_002dmips16"></span>
 <p>Generate (do not generate) MIPS16 code.  If GCC is targeting a
 MIPS32 or MIPS64 architecture, it makes use of the MIPS16e ASE.
 </p>
 <p>MIPS16 code generation can also be controlled on a per-function basis
 by means of <code>mips16</code> and <code>nomips16</code> attributes.
-See <a href="Function-Attributes.html#Function-Attributes">Function Attributes</a>, for more information.
+See <a href="Function-Attributes.html">Function Attributes</a>, for more information.
 </p>
 </dd>
 <dt><code>-mflip-mips16</code></dt>
-<dd><a name="index-mflip_002dmips16"></a>
+<dd><span id="index-mflip_002dmips16"></span>
 <p>Generate MIPS16 code on alternating functions.  This option is provided
 for regression testing of mixed MIPS16/non-MIPS16 code generation, and is
 not intended for ordinary use in compiling user code.
@@ -267,8 +258,8 @@ not intended for ordinary use in compiling user code.
 </dd>
 <dt><code>-minterlink-compressed</code></dt>
 <dt><code>-mno-interlink-compressed</code></dt>
-<dd><a name="index-minterlink_002dcompressed"></a>
-<a name="index-mno_002dinterlink_002dcompressed"></a>
+<dd><span id="index-minterlink_002dcompressed"></span>
+<span id="index-mno_002dinterlink_002dcompressed"></span>
 <p>Require (do not require) that code using the standard (uncompressed) MIPS ISA
 be link-compatible with MIPS16 and microMIPS code, and vice versa.
 </p>
@@ -280,8 +271,8 @@ knows that the target of the jump is not compressed.
 </dd>
 <dt><code>-minterlink-mips16</code></dt>
 <dt><code>-mno-interlink-mips16</code></dt>
-<dd><a name="index-minterlink_002dmips16"></a>
-<a name="index-mno_002dinterlink_002dmips16"></a>
+<dd><span id="index-minterlink_002dmips16"></span>
+<span id="index-mno_002dinterlink_002dmips16"></span>
 <p>Aliases of <samp>-minterlink-compressed</samp> and
 <samp>-mno-interlink-compressed</samp>.  These options predate the microMIPS ASE
 and are retained for backwards compatibility.
@@ -292,11 +283,11 @@ and are retained for backwards compatibility.
 <dt><code>-mabi=n32</code></dt>
 <dt><code>-mabi=64</code></dt>
 <dt><code>-mabi=eabi</code></dt>
-<dd><a name="index-mabi_003d32"></a>
-<a name="index-mabi_003do64"></a>
-<a name="index-mabi_003dn32"></a>
-<a name="index-mabi_003d64"></a>
-<a name="index-mabi_003deabi"></a>
+<dd><span id="index-mabi_003d32"></span>
+<span id="index-mabi_003do64"></span>
+<span id="index-mabi_003dn32"></span>
+<span id="index-mabi_003d64"></span>
+<span id="index-mabi_003deabi"></span>
 <p>Generate code for the given ABI.
 </p>
 <p>Note that the EABI has a 32-bit and a 64-bit variant.  GCC normally
@@ -335,8 +326,8 @@ run in the same process without changing FPU modes.
 </dd>
 <dt><code>-mabicalls</code></dt>
 <dt><code>-mno-abicalls</code></dt>
-<dd><a name="index-mabicalls"></a>
-<a name="index-mno_002dabicalls"></a>
+<dd><span id="index-mabicalls"></span>
+<span id="index-mno_002dabicalls"></span>
 <p>Generate (do not generate) code that is suitable for SVR4-style
 dynamic objects.  <samp>-mabicalls</samp> is the default for SVR4-based
 systems.
@@ -366,8 +357,8 @@ executables both smaller and quicker.
 </dd>
 <dt><code>-mplt</code></dt>
 <dt><code>-mno-plt</code></dt>
-<dd><a name="index-mplt"></a>
-<a name="index-mno_002dplt"></a>
+<dd><span id="index-mplt"></span>
+<span id="index-mno_002dplt"></span>
 <p>Assume (do not assume) that the static and dynamic linkers
 support PLTs and copy relocations.  This option only affects
 <samp>-mno-shared -mabicalls</samp>.  For the n64 ABI, this option
@@ -380,8 +371,8 @@ GCC with <samp>--with-mips-plt</samp>.  The default is
 </dd>
 <dt><code>-mxgot</code></dt>
 <dt><code>-mno-xgot</code></dt>
-<dd><a name="index-mxgot-1"></a>
-<a name="index-mno_002dxgot-1"></a>
+<dd><span id="index-mxgot-1"></span>
+<span id="index-mno_002dxgot-1"></span>
 <p>Lift (do not lift) the usual restrictions on the size of the global
 offset table.
 </p>
@@ -390,9 +381,9 @@ While this is relatively efficient, it only works if the GOT
 is smaller than about 64k.  Anything larger causes the linker
 to report an error such as:
 </p>
-<a name="index-relocation-truncated-to-fit-_0028MIPS_0029"></a>
-<div class="smallexample">
-<pre class="smallexample">relocation truncated to fit: R_MIPS_GOT16 foobar
+<span id="index-relocation-truncated-to-fit-_0028MIPS_0029"></span>
+<div class="example">
+<pre class="example">relocation truncated to fit: R_MIPS_GOT16 foobar
 </pre></div>
 
 <p>If this happens, you should recompile your code with <samp>-mxgot</samp>.
@@ -409,43 +400,43 @@ independent code.
 </p>
 </dd>
 <dt><code>-mgp32</code></dt>
-<dd><a name="index-mgp32"></a>
+<dd><span id="index-mgp32"></span>
 <p>Assume that general-purpose registers are 32 bits wide.
 </p>
 </dd>
 <dt><code>-mgp64</code></dt>
-<dd><a name="index-mgp64"></a>
+<dd><span id="index-mgp64"></span>
 <p>Assume that general-purpose registers are 64 bits wide.
 </p>
 </dd>
 <dt><code>-mfp32</code></dt>
-<dd><a name="index-mfp32"></a>
+<dd><span id="index-mfp32"></span>
 <p>Assume that floating-point registers are 32 bits wide.
 </p>
 </dd>
 <dt><code>-mfp64</code></dt>
-<dd><a name="index-mfp64"></a>
+<dd><span id="index-mfp64"></span>
 <p>Assume that floating-point registers are 64 bits wide.
 </p>
 </dd>
 <dt><code>-mfpxx</code></dt>
-<dd><a name="index-mfpxx"></a>
+<dd><span id="index-mfpxx"></span>
 <p>Do not assume the width of floating-point registers.
 </p>
 </dd>
 <dt><code>-mhard-float</code></dt>
-<dd><a name="index-mhard_002dfloat-3"></a>
+<dd><span id="index-mhard_002dfloat-4"></span>
 <p>Use floating-point coprocessor instructions.
 </p>
 </dd>
 <dt><code>-msoft-float</code></dt>
-<dd><a name="index-msoft_002dfloat-6"></a>
+<dd><span id="index-msoft_002dfloat-7"></span>
 <p>Do not use floating-point coprocessor instructions.  Implement
 floating-point calculations using library calls instead.
 </p>
 </dd>
 <dt><code>-mno-float</code></dt>
-<dd><a name="index-mno_002dfloat"></a>
+<dd><span id="index-mno_002dfloat"></span>
 <p>Equivalent to <samp>-msoft-float</samp>, but additionally asserts that the
 program being compiled does not perform any floating-point operations.
 This option is presently supported only by some bare-metal MIPS
@@ -458,21 +449,21 @@ or run-time failure.
 </p>
 </dd>
 <dt><code>-msingle-float</code></dt>
-<dd><a name="index-msingle_002dfloat"></a>
+<dd><span id="index-msingle_002dfloat"></span>
 <p>Assume that the floating-point coprocessor only supports single-precision
 operations.
 </p>
 </dd>
 <dt><code>-mdouble-float</code></dt>
-<dd><a name="index-mdouble_002dfloat"></a>
+<dd><span id="index-mdouble_002dfloat-1"></span>
 <p>Assume that the floating-point coprocessor supports double-precision
 operations.  This is the default.
 </p>
 </dd>
 <dt><code>-modd-spreg</code></dt>
 <dt><code>-mno-odd-spreg</code></dt>
-<dd><a name="index-modd_002dspreg"></a>
-<a name="index-mno_002dodd_002dspreg"></a>
+<dd><span id="index-modd_002dspreg"></span>
+<span id="index-mno_002dodd_002dspreg"></span>
 <p>Enable the use of odd-numbered single-precision floating-point registers
 for the o32 ABI.  This is the default for processors that are known to
 support these registers.  When using the o32 FPXX ABI, <samp>-mno-odd-spreg</samp>
@@ -481,8 +472,8 @@ is set by default.
 </dd>
 <dt><code>-mabs=2008</code></dt>
 <dt><code>-mabs=legacy</code></dt>
-<dd><a name="index-mabs_003d2008"></a>
-<a name="index-mabs_003dlegacy"></a>
+<dd><span id="index-mabs_003d2008"></span>
+<span id="index-mabs_003dlegacy"></span>
 <p>These options control the treatment of the special not-a-number (NaN)
 IEEE 754 floating-point data with the <code>abs.<i>fmt</i></code> and
 <code>neg.<i>fmt</i></code> machine instructions.
@@ -504,8 +495,8 @@ for the respective operations.
 </dd>
 <dt><code>-mnan=2008</code></dt>
 <dt><code>-mnan=legacy</code></dt>
-<dd><a name="index-mnan_003d2008"></a>
-<a name="index-mnan_003dlegacy"></a>
+<dd><span id="index-mnan_003d2008"></span>
+<span id="index-mnan_003dlegacy"></span>
 <p>These options control the encoding of the special not-a-number (NaN)
 IEEE 754 floating-point data.
 </p>
@@ -525,8 +516,8 @@ their trailing significand field being 0.
 </dd>
 <dt><code>-mllsc</code></dt>
 <dt><code>-mno-llsc</code></dt>
-<dd><a name="index-mllsc"></a>
-<a name="index-mno_002dllsc"></a>
+<dd><span id="index-mllsc"></span>
+<span id="index-mno_002dllsc"></span>
 <p>Use (do not use) &lsquo;<samp>ll</samp>&rsquo;, &lsquo;<samp>sc</samp>&rsquo;, and &lsquo;<samp>sync</samp>&rsquo; instructions to
 implement atomic memory built-in functions.  When neither option is
 specified, GCC uses the instructions if the target architecture
@@ -542,44 +533,44 @@ configurations; see the installation documentation for details.
 </dd>
 <dt><code>-mdsp</code></dt>
 <dt><code>-mno-dsp</code></dt>
-<dd><a name="index-mdsp"></a>
-<a name="index-mno_002ddsp"></a>
+<dd><span id="index-mdsp-1"></span>
+<span id="index-mno_002ddsp"></span>
 <p>Use (do not use) revision 1 of the MIPS DSP ASE.
-See <a href="MIPS-DSP-Built_002din-Functions.html#MIPS-DSP-Built_002din-Functions">MIPS DSP Built-in Functions</a>.  This option defines the
+See <a href="MIPS-DSP-Built_002din-Functions.html">MIPS DSP Built-in Functions</a>.  This option defines the
 preprocessor macro <code>__mips_dsp</code>.  It also defines
 <code>__mips_dsp_rev</code> to 1.
 </p>
 </dd>
 <dt><code>-mdspr2</code></dt>
 <dt><code>-mno-dspr2</code></dt>
-<dd><a name="index-mdspr2"></a>
-<a name="index-mno_002ddspr2"></a>
+<dd><span id="index-mdspr2"></span>
+<span id="index-mno_002ddspr2"></span>
 <p>Use (do not use) revision 2 of the MIPS DSP ASE.
-See <a href="MIPS-DSP-Built_002din-Functions.html#MIPS-DSP-Built_002din-Functions">MIPS DSP Built-in Functions</a>.  This option defines the
+See <a href="MIPS-DSP-Built_002din-Functions.html">MIPS DSP Built-in Functions</a>.  This option defines the
 preprocessor macros <code>__mips_dsp</code> and <code>__mips_dspr2</code>.
 It also defines <code>__mips_dsp_rev</code> to 2.
 </p>
 </dd>
 <dt><code>-msmartmips</code></dt>
 <dt><code>-mno-smartmips</code></dt>
-<dd><a name="index-msmartmips"></a>
-<a name="index-mno_002dsmartmips"></a>
+<dd><span id="index-msmartmips"></span>
+<span id="index-mno_002dsmartmips"></span>
 <p>Use (do not use) the MIPS SmartMIPS ASE.
 </p>
 </dd>
 <dt><code>-mpaired-single</code></dt>
 <dt><code>-mno-paired-single</code></dt>
-<dd><a name="index-mpaired_002dsingle"></a>
-<a name="index-mno_002dpaired_002dsingle"></a>
+<dd><span id="index-mpaired_002dsingle"></span>
+<span id="index-mno_002dpaired_002dsingle"></span>
 <p>Use (do not use) paired-single floating-point instructions.
-See <a href="MIPS-Paired_002dSingle-Support.html#MIPS-Paired_002dSingle-Support">MIPS Paired-Single Support</a>.  This option requires
+See <a href="MIPS-Paired_002dSingle-Support.html">MIPS Paired-Single Support</a>.  This option requires
 hardware floating-point support to be enabled.
 </p>
 </dd>
 <dt><code>-mdmx</code></dt>
 <dt><code>-mno-mdmx</code></dt>
-<dd><a name="index-mdmx"></a>
-<a name="index-mno_002dmdmx"></a>
+<dd><span id="index-mdmx"></span>
+<span id="index-mno_002dmdmx"></span>
 <p>Use (do not use) MIPS Digital Media Extension instructions.
 This option can only be used when generating 64-bit code and requires
 hardware floating-point support to be enabled.
@@ -587,67 +578,102 @@ hardware floating-point support to be enabled.
 </dd>
 <dt><code>-mips3d</code></dt>
 <dt><code>-mno-mips3d</code></dt>
-<dd><a name="index-mips3d"></a>
-<a name="index-mno_002dmips3d"></a>
-<p>Use (do not use) the MIPS-3D ASE.  See <a href="MIPS_002d3D-Built_002din-Functions.html#MIPS_002d3D-Built_002din-Functions">MIPS-3D Built-in Functions</a>.
+<dd><span id="index-mips3d"></span>
+<span id="index-mno_002dmips3d"></span>
+<p>Use (do not use) the MIPS-3D ASE.  See <a href="MIPS_002d3D-Built_002din-Functions.html">MIPS-3D Built-in Functions</a>.
 The option <samp>-mips3d</samp> implies <samp>-mpaired-single</samp>.
 </p>
 </dd>
 <dt><code>-mmicromips</code></dt>
 <dt><code>-mno-micromips</code></dt>
-<dd><a name="index-mmicromips"></a>
-<a name="index-mno_002dmmicromips"></a>
+<dd><span id="index-mmicromips"></span>
+<span id="index-mno_002dmmicromips"></span>
 <p>Generate (do not generate) microMIPS code.
 </p>
 <p>MicroMIPS code generation can also be controlled on a per-function basis
 by means of <code>micromips</code> and <code>nomicromips</code> attributes.
-See <a href="Function-Attributes.html#Function-Attributes">Function Attributes</a>, for more information.
+See <a href="Function-Attributes.html">Function Attributes</a>, for more information.
 </p>
 </dd>
 <dt><code>-mmt</code></dt>
 <dt><code>-mno-mt</code></dt>
-<dd><a name="index-mmt"></a>
-<a name="index-mno_002dmt"></a>
+<dd><span id="index-mmt"></span>
+<span id="index-mno_002dmt"></span>
 <p>Use (do not use) MT Multithreading instructions.
 </p>
 </dd>
 <dt><code>-mmcu</code></dt>
 <dt><code>-mno-mcu</code></dt>
-<dd><a name="index-mmcu-1"></a>
-<a name="index-mno_002dmcu"></a>
+<dd><span id="index-mmcu-1"></span>
+<span id="index-mno_002dmcu"></span>
 <p>Use (do not use) the MIPS MCU ASE instructions.
 </p>
 </dd>
 <dt><code>-meva</code></dt>
 <dt><code>-mno-eva</code></dt>
-<dd><a name="index-meva"></a>
-<a name="index-mno_002deva"></a>
+<dd><span id="index-meva"></span>
+<span id="index-mno_002deva"></span>
 <p>Use (do not use) the MIPS Enhanced Virtual Addressing instructions.
 </p>
 </dd>
 <dt><code>-mvirt</code></dt>
 <dt><code>-mno-virt</code></dt>
-<dd><a name="index-mvirt"></a>
-<a name="index-mno_002dvirt"></a>
+<dd><span id="index-mvirt"></span>
+<span id="index-mno_002dvirt"></span>
 <p>Use (do not use) the MIPS Virtualization (VZ) instructions.
 </p>
 </dd>
 <dt><code>-mxpa</code></dt>
 <dt><code>-mno-xpa</code></dt>
-<dd><a name="index-mxpa"></a>
-<a name="index-mno_002dxpa"></a>
+<dd><span id="index-mxpa"></span>
+<span id="index-mno_002dxpa"></span>
 <p>Use (do not use) the MIPS eXtended Physical Address (XPA) instructions.
 </p>
 </dd>
+<dt><code>-mcrc</code></dt>
+<dt><code>-mno-crc</code></dt>
+<dd><span id="index-mcrc"></span>
+<span id="index-mno_002dcrc"></span>
+<p>Use (do not use) the MIPS Cyclic Redundancy Check (CRC) instructions.
+</p>
+</dd>
+<dt><code>-mginv</code></dt>
+<dt><code>-mno-ginv</code></dt>
+<dd><span id="index-mginv"></span>
+<span id="index-mno_002dginv"></span>
+<p>Use (do not use) the MIPS Global INValidate (GINV) instructions.
+</p>
+</dd>
+<dt><code>-mloongson-mmi</code></dt>
+<dt><code>-mno-loongson-mmi</code></dt>
+<dd><span id="index-mloongson_002dmmi"></span>
+<span id="index-mno_002dloongson_002dmmi"></span>
+<p>Use (do not use) the MIPS Loongson MultiMedia extensions Instructions (MMI).
+</p>
+</dd>
+<dt><code>-mloongson-ext</code></dt>
+<dt><code>-mno-loongson-ext</code></dt>
+<dd><span id="index-mloongson_002dext"></span>
+<span id="index-mno_002dloongson_002dext"></span>
+<p>Use (do not use) the MIPS Loongson EXTensions (EXT) instructions.
+</p>
+</dd>
+<dt><code>-mloongson-ext2</code></dt>
+<dt><code>-mno-loongson-ext2</code></dt>
+<dd><span id="index-mloongson_002dext2"></span>
+<span id="index-mno_002dloongson_002dext2"></span>
+<p>Use (do not use) the MIPS Loongson EXTensions r2 (EXT2) instructions.
+</p>
+</dd>
 <dt><code>-mlong64</code></dt>
-<dd><a name="index-mlong64"></a>
+<dd><span id="index-mlong64"></span>
 <p>Force <code>long</code> types to be 64 bits wide.  See <samp>-mlong32</samp> for
 an explanation of the default and the way that the pointer size is
 determined.
 </p>
 </dd>
 <dt><code>-mlong32</code></dt>
-<dd><a name="index-mlong32"></a>
+<dd><span id="index-mlong32"></span>
 <p>Force <code>long</code>, <code>int</code>, and pointer types to be 32 bits wide.
 </p>
 <p>The default size of <code>int</code>s, <code>long</code>s and pointers depends on
@@ -659,8 +685,8 @@ or the same size as integer registers, whichever is smaller.
 </dd>
 <dt><code>-msym32</code></dt>
 <dt><code>-mno-sym32</code></dt>
-<dd><a name="index-msym32"></a>
-<a name="index-mno_002dsym32"></a>
+<dd><span id="index-msym32"></span>
+<span id="index-mno_002dsym32"></span>
 <p>Assume (do not assume) that all symbols have 32-bit values, regardless
 of the selected ABI.  This option is useful in combination with
 <samp>-mabi=64</samp> and <samp>-mno-abicalls</samp> because it allows GCC
@@ -668,7 +694,7 @@ to generate shorter and faster references to symbolic addresses.
 </p>
 </dd>
 <dt><code>-G <var>num</var></code></dt>
-<dd><a name="index-G-2"></a>
+<dd><span id="index-G-2"></span>
 <p>Put definitions of externally-visible data in a small data section
 if that data is no bigger than <var>num</var> bytes.  GCC can then generate
 more efficient accesses to the data; see <samp>-mgpopt</samp> for details.
@@ -678,8 +704,8 @@ more efficient accesses to the data; see <samp>-mgpopt</samp> for details.
 </dd>
 <dt><code>-mlocal-sdata</code></dt>
 <dt><code>-mno-local-sdata</code></dt>
-<dd><a name="index-mlocal_002dsdata"></a>
-<a name="index-mno_002dlocal_002dsdata"></a>
+<dd><span id="index-mlocal_002dsdata"></span>
+<span id="index-mno_002dlocal_002dsdata"></span>
 <p>Extend (do not extend) the <samp>-G</samp> behavior to local data too,
 such as to static variables in C.  <samp>-mlocal-sdata</samp> is the
 default for all configurations.
@@ -693,8 +719,8 @@ more room for the main program.
 </dd>
 <dt><code>-mextern-sdata</code></dt>
 <dt><code>-mno-extern-sdata</code></dt>
-<dd><a name="index-mextern_002dsdata"></a>
-<a name="index-mno_002dextern_002dsdata"></a>
+<dd><span id="index-mextern_002dsdata"></span>
+<span id="index-mno_002dextern_002dsdata"></span>
 <p>Assume (do not assume) that externally-defined data is in
 a small data section if the size of that data is within the <samp>-G</samp> limit.
 <samp>-mextern-sdata</samp> is the default for all configurations.
@@ -719,8 +745,8 @@ about externally-defined data.
 </dd>
 <dt><code>-mgpopt</code></dt>
 <dt><code>-mno-gpopt</code></dt>
-<dd><a name="index-mgpopt"></a>
-<a name="index-mno_002dgpopt"></a>
+<dd><span id="index-mgpopt"></span>
+<span id="index-mno_002dgpopt"></span>
 <p>Use (do not use) GP-relative accesses for symbols that are known to be
 in a small data section; see <samp>-G</samp>, <samp>-mlocal-sdata</samp> and
 <samp>-mextern-sdata</samp>.  <samp>-mgpopt</samp> is the default for all
@@ -739,8 +765,8 @@ with <samp>-G0</samp>.)
 </dd>
 <dt><code>-membedded-data</code></dt>
 <dt><code>-mno-embedded-data</code></dt>
-<dd><a name="index-membedded_002ddata"></a>
-<a name="index-mno_002dembedded_002ddata"></a>
+<dd><span id="index-membedded_002ddata"></span>
+<span id="index-mno_002dembedded_002ddata"></span>
 <p>Allocate variables to the read-only data section first if possible, then
 next in the small data section if possible, otherwise in data.  This gives
 slightly slower code than the default, but reduces the amount of RAM required
@@ -749,14 +775,14 @@ when executing, and thus may be preferred for some embedded systems.
 </dd>
 <dt><code>-muninit-const-in-rodata</code></dt>
 <dt><code>-mno-uninit-const-in-rodata</code></dt>
-<dd><a name="index-muninit_002dconst_002din_002drodata"></a>
-<a name="index-mno_002duninit_002dconst_002din_002drodata"></a>
+<dd><span id="index-muninit_002dconst_002din_002drodata"></span>
+<span id="index-mno_002duninit_002dconst_002din_002drodata"></span>
 <p>Put uninitialized <code>const</code> variables in the read-only data section.
 This option is only meaningful in conjunction with <samp>-membedded-data</samp>.
 </p>
 </dd>
 <dt><code>-mcode-readable=<var>setting</var></code></dt>
-<dd><a name="index-mcode_002dreadable"></a>
+<dd><span id="index-mcode_002dreadable"></span>
 <p>Specify whether GCC may generate code that reads from executable sections.
 There are three possible settings:
 </p>
@@ -786,8 +812,8 @@ PC-relative loads to the instruction RAM.
 </dd>
 <dt><code>-msplit-addresses</code></dt>
 <dt><code>-mno-split-addresses</code></dt>
-<dd><a name="index-msplit_002daddresses"></a>
-<a name="index-mno_002dsplit_002daddresses"></a>
+<dd><span id="index-msplit_002daddresses"></span>
+<span id="index-mno_002dsplit_002daddresses"></span>
 <p>Enable (disable) use of the <code>%hi()</code> and <code>%lo()</code> assembler
 relocation operators.  This option has been superseded by
 <samp>-mexplicit-relocs</samp> but is retained for backwards compatibility.
@@ -795,8 +821,8 @@ relocation operators.  This option has been superseded by
 </dd>
 <dt><code>-mexplicit-relocs</code></dt>
 <dt><code>-mno-explicit-relocs</code></dt>
-<dd><a name="index-mexplicit_002drelocs-1"></a>
-<a name="index-mno_002dexplicit_002drelocs-1"></a>
+<dd><span id="index-mexplicit_002drelocs-1"></span>
+<span id="index-mno_002dexplicit_002drelocs-1"></span>
 <p>Use (do not use) assembler relocation operators when dealing with symbolic
 addresses.  The alternative, selected by <samp>-mno-explicit-relocs</samp>,
 is to use assembler macros instead.
@@ -807,8 +833,8 @@ to use an assembler that supports relocation operators.
 </dd>
 <dt><code>-mcheck-zero-division</code></dt>
 <dt><code>-mno-check-zero-division</code></dt>
-<dd><a name="index-mcheck_002dzero_002ddivision"></a>
-<a name="index-mno_002dcheck_002dzero_002ddivision"></a>
+<dd><span id="index-mcheck_002dzero_002ddivision"></span>
+<span id="index-mno_002dcheck_002dzero_002ddivision"></span>
 <p>Trap (do not trap) on integer division by zero.
 </p>
 <p>The default is <samp>-mcheck-zero-division</samp>.
@@ -816,8 +842,8 @@ to use an assembler that supports relocation operators.
 </dd>
 <dt><code>-mdivide-traps</code></dt>
 <dt><code>-mdivide-breaks</code></dt>
-<dd><a name="index-mdivide_002dtraps"></a>
-<a name="index-mdivide_002dbreaks"></a>
+<dd><span id="index-mdivide_002dtraps"></span>
+<span id="index-mdivide_002dbreaks"></span>
 <p>MIPS systems check for division by zero by generating either a
 conditional trap or a break instruction.  Using traps results in
 smaller code, but is only supported on MIPS II and later.  Also, some
@@ -834,8 +860,8 @@ Divide-by-zero checks can be completely disabled using
 </dd>
 <dt><code>-mload-store-pairs</code></dt>
 <dt><code>-mno-load-store-pairs</code></dt>
-<dd><a name="index-mload_002dstore_002dpairs"></a>
-<a name="index-mno_002dload_002dstore_002dpairs"></a>
+<dd><span id="index-mload_002dstore_002dpairs"></span>
+<span id="index-mno_002dload_002dstore_002dpairs"></span>
 <p>Enable (disable) an optimization that pairs consecutive load or store
 instructions to enable load/store bonding.  This option is enabled by
 default but only takes effect when the selected architecture is known
@@ -844,8 +870,8 @@ to support bonding.
 </dd>
 <dt><code>-mmemcpy</code></dt>
 <dt><code>-mno-memcpy</code></dt>
-<dd><a name="index-mmemcpy-1"></a>
-<a name="index-mno_002dmemcpy"></a>
+<dd><span id="index-mmemcpy-1"></span>
+<span id="index-mno_002dmemcpy"></span>
 <p>Force (do not force) the use of <code>memcpy</code> for non-trivial block
 moves.  The default is <samp>-mno-memcpy</samp>, which allows GCC to inline
 most constant-sized copies.
@@ -853,8 +879,8 @@ most constant-sized copies.
 </dd>
 <dt><code>-mlong-calls</code></dt>
 <dt><code>-mno-long-calls</code></dt>
-<dd><a name="index-mlong_002dcalls-5"></a>
-<a name="index-mno_002dlong_002dcalls-3"></a>
+<dd><span id="index-mlong_002dcalls-6"></span>
+<span id="index-mno_002dlong_002dcalls-3"></span>
 <p>Disable (do not disable) use of the <code>jal</code> instruction.  Calling
 functions using <code>jal</code> is more efficient but requires the caller
 and callee to be in the same 256 megabyte segment.
@@ -865,16 +891,16 @@ and callee to be in the same 256 megabyte segment.
 </dd>
 <dt><code>-mmad</code></dt>
 <dt><code>-mno-mad</code></dt>
-<dd><a name="index-mmad"></a>
-<a name="index-mno_002dmad"></a>
+<dd><span id="index-mmad"></span>
+<span id="index-mno_002dmad"></span>
 <p>Enable (disable) use of the <code>mad</code>, <code>madu</code> and <code>mul</code>
 instructions, as provided by the R4650 ISA.
 </p>
 </dd>
 <dt><code>-mimadd</code></dt>
 <dt><code>-mno-imadd</code></dt>
-<dd><a name="index-mimadd"></a>
-<a name="index-mno_002dimadd"></a>
+<dd><span id="index-mimadd"></span>
+<span id="index-mno_002dimadd"></span>
 <p>Enable (disable) use of the <code>madd</code> and <code>msub</code> integer
 instructions.  The default is <samp>-mimadd</samp> on architectures
 that support <code>madd</code> and <code>msub</code> except for the 74k 
@@ -883,8 +909,8 @@ architecture where it was found to generate slower code.
 </dd>
 <dt><code>-mfused-madd</code></dt>
 <dt><code>-mno-fused-madd</code></dt>
-<dd><a name="index-mfused_002dmadd-1"></a>
-<a name="index-mno_002dfused_002dmadd-1"></a>
+<dd><span id="index-mfused_002dmadd-1"></span>
+<span id="index-mno_002dfused_002dmadd-1"></span>
 <p>Enable (disable) use of the floating-point multiply-accumulate
 instructions, when they are available.  The default is
 <samp>-mfused-madd</samp>.
@@ -898,23 +924,23 @@ separate multiply, add, subtract and negate instructions.
 </p>
 </dd>
 <dt><code>-nocpp</code></dt>
-<dd><a name="index-nocpp"></a>
+<dd><span id="index-nocpp"></span>
 <p>Tell the MIPS assembler to not run its preprocessor over user
 assembler files (with a &lsquo;<samp>.s</samp>&rsquo; suffix) when assembling them.
 </p>
 </dd>
 <dt><code>-mfix-24k</code></dt>
 <dt><code>-mno-fix-24k</code></dt>
-<dd><a name="index-mfix_002d24k"></a>
-<a name="index-mno_002dfix_002d24k"></a>
+<dd><span id="index-mfix_002d24k"></span>
+<span id="index-mno_002dfix_002d24k"></span>
 <p>Work around the 24K E48 (lost data on stores during refill) errata.
 The workarounds are implemented by the assembler rather than by GCC.
 </p>
 </dd>
 <dt><code>-mfix-r4000</code></dt>
 <dt><code>-mno-fix-r4000</code></dt>
-<dd><a name="index-mfix_002dr4000"></a>
-<a name="index-mno_002dfix_002dr4000"></a>
+<dd><span id="index-mfix_002dr4000"></span>
+<span id="index-mno_002dfix_002dr4000"></span>
 <p>Work around certain R4000 CPU errata:
 </p><ul class="no-bullet">
 <li>- A double-word or a variable shift may give an incorrect result if executed
@@ -928,8 +954,8 @@ of a taken branch or a jump.
 </dd>
 <dt><code>-mfix-r4400</code></dt>
 <dt><code>-mno-fix-r4400</code></dt>
-<dd><a name="index-mfix_002dr4400"></a>
-<a name="index-mno_002dfix_002dr4400"></a>
+<dd><span id="index-mfix_002dr4400"></span>
+<span id="index-mno_002dfix_002dr4400"></span>
 <p>Work around certain R4400 CPU errata:
 </p><ul class="no-bullet">
 <li>- A double-word or a variable shift may give an incorrect result if executed
@@ -939,8 +965,8 @@ immediately after starting an integer division.
 </dd>
 <dt><code>-mfix-r10000</code></dt>
 <dt><code>-mno-fix-r10000</code></dt>
-<dd><a name="index-mfix_002dr10000"></a>
-<a name="index-mno_002dfix_002dr10000"></a>
+<dd><span id="index-mfix_002dr10000"></span>
+<span id="index-mno_002dfix_002dr10000"></span>
 <p>Work around certain R10000 errata:
 </p><ul class="no-bullet">
 <li>- <code>ll</code>/<code>sc</code> sequences may not behave atomically on revisions
@@ -953,16 +979,27 @@ branch-likely instructions.  <samp>-mfix-r10000</samp> is the default when
 otherwise.
 </p>
 </dd>
+<dt><code>-mfix-r5900</code></dt>
+<dt><code>-mno-fix-r5900</code></dt>
+<dd><span id="index-mfix_002dr5900"></span>
+<p>Do not attempt to schedule the preceding instruction into the delay slot
+of a branch instruction placed at the end of a short loop of six
+instructions or fewer and always schedule a <code>nop</code> instruction there
+instead.  The short loop bug under certain conditions causes loops to
+execute only once or twice, due to a hardware bug in the R5900 chip.  The
+workaround is implemented by the assembler rather than by GCC.
+</p>
+</dd>
 <dt><code>-mfix-rm7000</code></dt>
 <dt><code>-mno-fix-rm7000</code></dt>
-<dd><a name="index-mfix_002drm7000"></a>
+<dd><span id="index-mfix_002drm7000"></span>
 <p>Work around the RM7000 <code>dmult</code>/<code>dmultu</code> errata.  The
 workarounds are implemented by the assembler rather than by GCC.
 </p>
 </dd>
 <dt><code>-mfix-vr4120</code></dt>
 <dt><code>-mno-fix-vr4120</code></dt>
-<dd><a name="index-mfix_002dvr4120"></a>
+<dd><span id="index-mfix_002dvr4120"></span>
 <p>Work around certain VR4120 errata:
 </p><ul class="no-bullet">
 <li>- <code>dmultu</code> does not always produce the correct result.
@@ -978,7 +1015,7 @@ instructions.  These errata are handled by the assembler, not by GCC itself.
 </p>
 </dd>
 <dt><code>-mfix-vr4130</code></dt>
-<dd><a name="index-mfix_002dvr4130"></a>
+<dd><span id="index-mfix_002dvr4130"></span>
 <p>Work around the VR4130 <code>mflo</code>/<code>mfhi</code> errata.  The
 workarounds are implemented by the assembler rather than by GCC,
 although GCC avoids using <code>mflo</code> and <code>mfhi</code> if the
@@ -988,14 +1025,14 @@ instructions are available instead.
 </dd>
 <dt><code>-mfix-sb1</code></dt>
 <dt><code>-mno-fix-sb1</code></dt>
-<dd><a name="index-mfix_002dsb1"></a>
+<dd><span id="index-mfix_002dsb1"></span>
 <p>Work around certain SB-1 CPU core errata.
 (This flag currently works around the SB-1 revision 2
 &ldquo;F1&rdquo; and &ldquo;F2&rdquo; floating-point errata.)
 </p>
 </dd>
 <dt><code>-mr10k-cache-barrier=<var>setting</var></code></dt>
-<dd><a name="index-mr10k_002dcache_002dbarrier"></a>
+<dd><span id="index-mr10k_002dcache_002dbarrier"></span>
 <p>Specify whether GCC should insert cache barriers to avoid the
 side effects of speculation on R10K processors.
 </p>
@@ -1033,8 +1070,8 @@ accesses to these regions are indeed safe.
 </p>
 <p>If the input program contains a function declaration such as:
 </p>
-<div class="smallexample">
-<pre class="smallexample">void foo (void);
+<div class="example">
+<pre class="example">void foo (void);
 </pre></div>
 
 <p>then the implementation of <code>foo</code> must allow <code>j foo</code> and
@@ -1064,7 +1101,7 @@ executed and that might have side effects even if aborted.
 </dd>
 <dt><code>-mflush-func=<var>func</var></code></dt>
 <dt><code>-mno-flush-func</code></dt>
-<dd><a name="index-mflush_002dfunc"></a>
+<dd><span id="index-mflush_002dfunc"></span>
 <p>Specifies the function to call to flush the I and D caches, or to not
 call any such function.  If called, the function must take the same
 arguments as the common <code>_flush_func</code>, that is, the address of the
@@ -1075,7 +1112,7 @@ depends on the target GCC was configured for, but commonly is either
 </p>
 </dd>
 <dt><code>mbranch-cost=<var>num</var></code></dt>
-<dd><a name="index-mbranch_002dcost-2"></a>
+<dd><span id="index-mbranch_002dcost-2"></span>
 <p>Set the cost of branches to roughly <var>num</var> &ldquo;simple&rdquo; instructions.
 This cost is only a heuristic and is not guaranteed to produce
 consistent results across releases.  A zero cost redundantly selects
@@ -1084,8 +1121,8 @@ the default, which is based on the <samp>-mtune</samp> setting.
 </dd>
 <dt><code>-mbranch-likely</code></dt>
 <dt><code>-mno-branch-likely</code></dt>
-<dd><a name="index-mbranch_002dlikely"></a>
-<a name="index-mno_002dbranch_002dlikely"></a>
+<dd><span id="index-mbranch_002dlikely"></span>
+<span id="index-mno_002dbranch_002dlikely"></span>
 <p>Enable or disable use of Branch Likely instructions, regardless of the
 default for the selected architecture.  By default, Branch Likely
 instructions may be generated if they are supported by the selected
@@ -1098,9 +1135,9 @@ and MIPS64 architectures specifically deprecate their use.
 <dt><code>-mcompact-branches=never</code></dt>
 <dt><code>-mcompact-branches=optimal</code></dt>
 <dt><code>-mcompact-branches=always</code></dt>
-<dd><a name="index-mcompact_002dbranches_003dnever"></a>
-<a name="index-mcompact_002dbranches_003doptimal"></a>
-<a name="index-mcompact_002dbranches_003dalways"></a>
+<dd><span id="index-mcompact_002dbranches_003dnever"></span>
+<span id="index-mcompact_002dbranches_003doptimal"></span>
+<span id="index-mcompact_002dbranches_003dalways"></span>
 <p>These options control which form of branches will be generated.  The
 default is <samp>-mcompact-branches=optimal</samp>.
 </p>
@@ -1122,7 +1159,7 @@ branch will be chosen if one is available.
 </dd>
 <dt><code>-mfp-exceptions</code></dt>
 <dt><code>-mno-fp-exceptions</code></dt>
-<dd><a name="index-mfp_002dexceptions"></a>
+<dd><span id="index-mfp_002dexceptions"></span>
 <p>Specifies whether FP exceptions are enabled.  This affects how
 FP instructions are scheduled for some processors.
 The default is that FP exceptions are
@@ -1135,7 +1172,7 @@ FP pipe.
 </dd>
 <dt><code>-mvr4130-align</code></dt>
 <dt><code>-mno-vr4130-align</code></dt>
-<dd><a name="index-mvr4130_002dalign"></a>
+<dd><span id="index-mvr4130_002dalign"></span>
 <p>The VR4130 pipeline is two-way superscalar, but can only issue two
 instructions together if the first one is 8-byte aligned.  When this
 option is enabled, GCC aligns pairs of instructions that it
@@ -1148,7 +1185,7 @@ It is enabled by default at optimization level <samp>-O3</samp>.
 </dd>
 <dt><code>-msynci</code></dt>
 <dt><code>-mno-synci</code></dt>
-<dd><a name="index-msynci"></a>
+<dd><span id="index-msynci"></span>
 <p>Enable (disable) generation of <code>synci</code> instructions on
 architectures that support it.  The <code>synci</code> instructions (if
 enabled) are generated when <code>__builtin___clear_cache</code> is
@@ -1165,7 +1202,7 @@ to undefined behavior.
 </dd>
 <dt><code>-mrelax-pic-calls</code></dt>
 <dt><code>-mno-relax-pic-calls</code></dt>
-<dd><a name="index-mrelax_002dpic_002dcalls"></a>
+<dd><span id="index-mrelax_002dpic_002dcalls"></span>
 <p>Try to turn PIC calls that are normally dispatched via register
 <code>$25</code> into direct calls.  This is only possible if the linker can
 resolve the destination at link time and if the destination is within
@@ -1180,8 +1217,8 @@ assembler and the linker alone without help from the compiler.
 </dd>
 <dt><code>-mmcount-ra-address</code></dt>
 <dt><code>-mno-mcount-ra-address</code></dt>
-<dd><a name="index-mmcount_002dra_002daddress"></a>
-<a name="index-mno_002dmcount_002dra_002daddress"></a>
+<dd><span id="index-mmcount_002dra_002daddress"></span>
+<span id="index-mno_002dmcount_002dra_002daddress"></span>
 <p>Emit (do not emit) code that allows <code>_mcount</code> to modify the
 calling function&rsquo;s return address.  When enabled, this option extends
 the usual <code>_mcount</code> interface with a new <var>ra-address</var>
@@ -1199,7 +1236,7 @@ if <var>ra-address</var> is nonnull.
 </dd>
 <dt><code>-mframe-header-opt</code></dt>
 <dt><code>-mno-frame-header-opt</code></dt>
-<dd><a name="index-mframe_002dheader_002dopt"></a>
+<dd><span id="index-mframe_002dheader_002dopt"></span>
 <p>Enable (disable) frame header optimization in the o32 ABI.  When using the
 o32 ABI, calling functions will allocate 16 bytes on the stack for the called
 function to write out register arguments.  When enabled, this optimization
@@ -1211,14 +1248,14 @@ it is unused.
 </dd>
 <dt><code>-mlxc1-sxc1</code></dt>
 <dt><code>-mno-lxc1-sxc1</code></dt>
-<dd><a name="index-mlxc1_002dsxc1"></a>
+<dd><span id="index-mlxc1_002dsxc1"></span>
 <p>When applicable, enable (disable) the generation of <code>lwxc1</code>,
 <code>swxc1</code>, <code>ldxc1</code>, <code>sdxc1</code> instructions.  Enabled by default.
 </p>
 </dd>
 <dt><code>-mmadd4</code></dt>
 <dt><code>-mno-madd4</code></dt>
-<dd><a name="index-mmadd4"></a>
+<dd><span id="index-mmadd4"></span>
 <p>When applicable, enable (disable) the generation of 4-operand <code>madd.s</code>,
 <code>madd.d</code> and related instructions.  Enabled by default.
 </p>
@@ -1228,7 +1265,7 @@ it is unused.
 <hr>
 <div class="header">
 <p>
-Next: <a href="MMIX-Options.html#MMIX-Options" accesskey="n" rel="next">MMIX Options</a>, Previous: <a href="MicroBlaze-Options.html#MicroBlaze-Options" accesskey="p" rel="prev">MicroBlaze Options</a>, Up: <a href="Submodel-Options.html#Submodel-Options" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="MMIX-Options.html" accesskey="n" rel="next">MMIX Options</a>, Previous: <a href="MicroBlaze-Options.html" accesskey="p" rel="prev">MicroBlaze Options</a>, Up: <a href="Submodel-Options.html" accesskey="u" rel="up">Submodel Options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

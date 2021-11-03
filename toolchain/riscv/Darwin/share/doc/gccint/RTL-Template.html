@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2018 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2020 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -19,7 +19,7 @@ A GNU Manual
 You have freedom to copy and modify this GNU Manual, like GNU
      software.  Copies published by the Free Software Foundation raise
      funds for GNU development. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>RTL Template (GNU Compiler Collection (GCC) Internals)</title>
@@ -29,33 +29,24 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Option-Index.html" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Machine-Desc.html#Machine-Desc" rel="up" title="Machine Desc">
-<link href="Output-Template.html#Output-Template" rel="next" title="Output Template">
-<link href="Example.html#Example" rel="prev" title="Example">
+<link href="Machine-Desc.html" rel="up" title="Machine Desc">
+<link href="Output-Template.html" rel="next" title="Output Template">
+<link href="Example.html" rel="prev" title="Example">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -67,19 +58,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="RTL-Template"></a>
-<div class="header">
+<span id="RTL-Template"></span><div class="header">
 <p>
-Next: <a href="Output-Template.html#Output-Template" accesskey="n" rel="next">Output Template</a>, Previous: <a href="Example.html#Example" accesskey="p" rel="prev">Example</a>, Up: <a href="Machine-Desc.html#Machine-Desc" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Template.html" accesskey="n" rel="next">Output Template</a>, Previous: <a href="Example.html" accesskey="p" rel="prev">Example</a>, Up: <a href="Machine-Desc.html" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="RTL-Template-1"></a>
-<h3 class="section">17.4 RTL Template</h3>
-<a name="index-RTL-insn-template"></a>
-<a name="index-generating-insns"></a>
-<a name="index-insns_002c-generating"></a>
-<a name="index-recognizing-insns"></a>
-<a name="index-insns_002c-recognizing"></a>
+<span id="RTL-Template-1"></span><h3 class="section">17.4 RTL Template</h3>
+<span id="index-RTL-insn-template"></span>
+<span id="index-generating-insns"></span>
+<span id="index-insns_002c-generating"></span>
+<span id="index-recognizing-insns"></span>
+<span id="index-insns_002c-recognizing"></span>
 
 <p>The RTL template is used to define which insns match the particular pattern
 and how to find their operands.  For named patterns, the RTL template also
@@ -92,7 +81,7 @@ controlled by special expression types that direct matching and
 substitution of the operands.
 </p>
 <dl compact="compact">
-<dd><a name="index-match_005foperand"></a>
+<dd><span id="index-match_005foperand"></span>
 </dd>
 <dt><code>(match_operand:<var>m</var> <var>n</var> <var>predicate</var> <var>constraint</var>)</code></dt>
 <dd><p>This expression is a placeholder for operand number <var>n</var> of
@@ -112,7 +101,7 @@ other operand numbers.
 </p>
 <p><var>predicate</var> is a string that is the name of a function that
 accepts two arguments, an expression and a machine mode.
-See <a href="Predicates.html#Predicates">Predicates</a>.  During matching, the function will be called with
+See <a href="Predicates.html">Predicates</a>.  During matching, the function will be called with
 the putative operand as the expression and <var>m</var> as the mode
 argument (if <var>m</var> is not specified, <code>VOIDmode</code> will be used,
 which normally causes <var>predicate</var> to accept any mode).  If it
@@ -128,7 +117,7 @@ Many predicates accept <code>const_int</code> nodes even though their mode is
 <code>VOIDmode</code>.
 </p>
 <p><var>constraint</var> controls reloading and the choice of the best register
-class to use for a value, as explained later (see <a href="Constraints.html#Constraints">Constraints</a>).
+class to use for a value, as explained later (see <a href="Constraints.html">Constraints</a>).
 If the constraint would be an empty string, it can be omitted.
 </p>
 <p>People are often unclear on the difference between the constraint and the
@@ -136,7 +125,7 @@ predicate.  The predicate helps decide whether a given insn matches the
 pattern.  The constraint plays no role in this decision; instead, it
 controls various decisions in the case of an insn which does match.
 </p>
-<a name="index-match_005fscratch"></a>
+<span id="index-match_005fscratch"></span>
 </dd>
 <dt><code>(match_scratch:<var>m</var> <var>n</var> <var>constraint</var>)</code></dt>
 <dd><p>This expression is also a placeholder for operand number <var>n</var>
@@ -145,8 +134,8 @@ expression.
 </p>
 <p>When matching patterns, this is equivalent to
 </p>
-<div class="smallexample">
-<pre class="smallexample">(match_operand:<var>m</var> <var>n</var> &quot;scratch_operand&quot; <var>constraint</var>)
+<div class="example">
+<pre class="example">(match_operand:<var>m</var> <var>n</var> &quot;scratch_operand&quot; <var>constraint</var>)
 </pre></div>
 
 <p>but, when generating RTL, it produces a (<code>scratch</code>:<var>m</var>)
@@ -155,9 +144,9 @@ expression.
 <p>If the last few expressions in a <code>parallel</code> are <code>clobber</code>
 expressions whose operands are either a hard register or
 <code>match_scratch</code>, the combiner can add or delete them when
-necessary.  See <a href="Side-Effects.html#Side-Effects">Side Effects</a>.
+necessary.  See <a href="Side-Effects.html">Side Effects</a>.
 </p>
-<a name="index-match_005fdup"></a>
+<span id="index-match_005fdup"></span>
 </dd>
 <dt><code>(match_dup <var>n</var>)</code></dt>
 <dd><p>This expression is also a placeholder for operand number <var>n</var>.
@@ -175,13 +164,13 @@ identical-looking expression.
 a particular register is being used for two operands (example:
 <code>add</code> that adds one register to another; the second register is
 both an input operand and the output operand).  Use a matching
-constraint (see <a href="Simple-Constraints.html#Simple-Constraints">Simple Constraints</a>) for those.  <code>match_dup</code> is for the cases where one
+constraint (see <a href="Simple-Constraints.html">Simple Constraints</a>) for those.  <code>match_dup</code> is for the cases where one
 operand is used in two places in the template, such as an instruction
 that computes both a quotient and a remainder, where the opcode takes
 two input operands but the RTL template has to refer to each of those
 twice; once for the quotient pattern and once for the remainder pattern.
 </p>
-<a name="index-match_005foperator"></a>
+<span id="index-match_005foperator"></span>
 </dd>
 <dt><code>(match_operator:<var>m</var> <var>n</var> <var>predicate</var> [<var>operands</var>&hellip;])</code></dt>
 <dd><p>This pattern is a kind of placeholder for a variable RTL expression
@@ -199,8 +188,8 @@ patterns <var>operands</var> match the operands of the expression.
 follows, to match any expression whose operator is one of the
 commutative arithmetic operators of RTL and whose mode is <var>mode</var>:
 </p>
-<div class="smallexample">
-<pre class="smallexample">int
+<div class="example">
+<pre class="example">int
 commutative_integer_operator (x, mode)
      rtx x;
      machine_mode mode;
@@ -216,8 +205,8 @@ commutative_integer_operator (x, mode)
 <p>Then the following pattern will match any RTL expression consisting
 of a commutative operator applied to two general operands:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(match_operator:SI 3 &quot;commutative_operator&quot;
+<div class="example">
+<pre class="example">(match_operator:SI 3 &quot;commutative_operator&quot;
   [(match_operand:SI 1 &quot;general_operand&quot; &quot;g&quot;)
    (match_operand:SI 2 &quot;general_operand&quot; &quot;g&quot;)])
 </pre></div>
@@ -256,7 +245,7 @@ However, if parts of its <var>operands</var> are matched by
 <code>match_operand</code> patterns, those parts may have constraints of
 their own.
 </p>
-<a name="index-match_005fop_005fdup"></a>
+<span id="index-match_005fop_005fdup"></span>
 </dd>
 <dt><code>(match_op_dup:<var>m</var> <var>n</var>[<var>operands</var>&hellip;])</code></dt>
 <dd><p>Like <code>match_dup</code>, except that it applies to operators instead of
@@ -267,7 +256,7 @@ determined by a <code>match_operator</code> appearing earlier in the
 recognition template, and it matches only an identical-looking
 expression.
 </p>
-<a name="index-match_005fparallel"></a>
+<span id="index-match_005fparallel"></span>
 </dd>
 <dt><code>(match_parallel <var>n</var> <var>predicate</var> [<var>subpat</var>&hellip;])</code></dt>
 <dd><p>This pattern is a placeholder for an insn that consists of a
@@ -288,8 +277,8 @@ those listed in the <code>match_parallel</code>.
 multiple expressions, which can contain a variable number of elements
 in a <code>parallel</code>.  For example,
 </p>
-<div class="smallexample">
-<pre class="smallexample">(define_insn &quot;&quot;
+<div class="example">
+<pre class="example">(define_insn &quot;&quot;
   [(match_parallel 0 &quot;load_multiple_operation&quot;
      [(set (match_operand:SI 1 &quot;gpc_reg_operand&quot; &quot;=r&quot;)
            (match_operand:SI 2 &quot;memory_operand&quot; &quot;m&quot;))
@@ -307,8 +296,8 @@ registers and memory locations.
 </p>
 <p>An insn that matches this pattern might look like:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(parallel
+<div class="example">
+<pre class="example">(parallel
  [(set (reg:SI 20) (mem:SI (reg:SI 100)))
   (use (reg:SI 179))
   (clobber (reg:SI 179))
@@ -320,7 +309,7 @@ registers and memory locations.
                         (const_int 8))))])
 </pre></div>
 
-<a name="index-match_005fpar_005fdup"></a>
+<span id="index-match_005fpar_005fdup"></span>
 </dd>
 <dt><code>(match_par_dup <var>n</var> [<var>subpat</var>&hellip;])</code></dt>
 <dd><p>Like <code>match_op_dup</code>, but for <code>match_parallel</code> instead of
@@ -332,7 +321,7 @@ registers and memory locations.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Output-Template.html#Output-Template" accesskey="n" rel="next">Output Template</a>, Previous: <a href="Example.html#Example" accesskey="p" rel="prev">Example</a>, Up: <a href="Machine-Desc.html#Machine-Desc" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Template.html" accesskey="n" rel="next">Output Template</a>, Previous: <a href="Example.html" accesskey="p" rel="prev">Example</a>, Up: <a href="Machine-Desc.html" accesskey="u" rel="up">Machine Desc</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
