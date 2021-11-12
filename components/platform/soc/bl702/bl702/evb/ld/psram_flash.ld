@@ -6,12 +6,10 @@ __EM_SIZE = DEFINED(ble_controller_init) ? 8K : 0K;
 
 MEMORY
 {
-  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = (2M)
-  ram_1    (wxa) : ORIGIN = 0x42014000, LENGTH = (48K + 32K)
-  ram_rsvd (wxa) : ORIGIN = 0x42028000, LENGTH = (1K)
-  ram_2    (wxa) : ORIGIN = 0x42028400, LENGTH = (31K - __EM_SIZE)
-  hbnram   (wxa) : ORIGIN = 0x40010000, LENGTH = (4K)
-  psram    (wxa) : ORIGIN = 0x26000000, LENGTH = (2M)
+  flash  (rxai!w) : ORIGIN = 0x23000000, LENGTH = (2M)
+  tcm_ocram (wxa) : ORIGIN = 0x42014000, LENGTH = (48K + 64K - __EM_SIZE)
+  hbnram    (wxa) : ORIGIN = 0x40010000, LENGTH = (4K)
+  psram     (wxa) : ORIGIN = 0x26000000, LENGTH = (2M)
 }
 
 SECTIONS
@@ -92,7 +90,16 @@ SECTIONS
   .bleromrw (NOLOAD) :
   {
     KEEP(*(.bleromrw))
-  } >ram_1
+  } >tcm_ocram
+
+  .rsvd (NOLOAD) :
+  {
+    *(.rsvd_data)
+    *(.ble_rsvd_mem)
+
+    /* PDS backup address */
+    PROVIDE ( __ld_pds_bak_addr = . );
+  } >hbnram
 
   .tcmcode : ALIGN(4)
   {
@@ -104,13 +111,22 @@ SECTIONS
     *(.tcm_const)
     *(.sclock_rlt_code)
     *(.sclock_rlt_const)
-  } >ram_1 AT > flash
+  } >tcm_ocram AT > flash
 
   .data : ALIGN(4)
   {
     PROVIDE( _data_load = LOADADDR(.data) );
     PROVIDE( _data_run = ADDR(.data) );
     PROVIDE( _data_run_end = ADDR(.data) + SIZEOF(.data));
+
+    /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
+    *libbl702_rf.a:bl702_rf_private.o(.sdata.*)
+    *libbl702_rf.a:bl702_rf_private.o(.srodata.*)
+    *libbl702_rf.a:bl702_rf_private.o(.sbss.*)
+    *libbl702_rf.a:bl702_rf_private.o(.bss.*)
+    *libbl702_rf.a:bl702_rf_private.o(COMMON)
+    PROVIDE ( _rf_data_end = . );
+    ASSERT ((_rf_data_end <= 0x42024000), "Error: _rf_data_end > 0x42024000");
 
     *(.pds_code)
     *(.data .data.*)
@@ -143,17 +159,7 @@ SECTIONS
     _bt_l2cap_fixed_chan_list_start = .;
     KEEP(*(SORT_BY_NAME("._bt_l2cap_fixed_chan.static.*")))
     _bt_l2cap_fixed_chan_list_end = .;
-  } >ram_1 AT > flash
-
-  .rsvd (NOLOAD) :
-  {
-    *(.rsvd_data)
-  } >ram_rsvd
-
-  .ble_rsvd (NOLOAD) :
-  {
-    *(.ble_rsvd_mem)
-  } >hbnram
+  } >tcm_ocram AT > flash
 
   .boot2 (NOLOAD) :
   {
@@ -164,7 +170,7 @@ SECTIONS
     PROVIDE ( __boot2_flashCfg_start = . );
     *(.bss.boot2_flashCfg)
     PROVIDE ( __boot2_flashCfg_end = . );
-  } >ram_1
+  } >tcm_ocram
 
   .bss (NOLOAD) :
   {
@@ -176,14 +182,14 @@ SECTIONS
     *(.bss .bss.*)
     *(.gnu.linkonce.b.*)
     *(COMMON)
-  } >ram_1
+  } >tcm_ocram
 
   . = ALIGN(8);
   PROVIDE( _heap_start = . );
-  PROVIDE( _heap_size = ORIGIN(ram_1) + LENGTH(ram_1) - _heap_start );
+  PROVIDE( _heap_size = ADDR(.stack) - _heap_start );
 
-  PROVIDE( _heap2_start = ORIGIN(ram_2) );
-  PROVIDE( _heap2_size = LENGTH(ram_2) );
+  PROVIDE( _heap2_start = 0 );
+  PROVIDE( _heap2_size = 0 );
 
   .psram   (NOLOAD) :
   {
@@ -195,13 +201,13 @@ SECTIONS
   PROVIDE( _heap3_start = .);
   PROVIDE( _heap3_size = ORIGIN(psram) + LENGTH(psram) - _heap3_start );
 
-  .stack ORIGIN(hbnram) + LENGTH(hbnram) - __stack_size (NOLOAD) :
+  .stack ORIGIN(tcm_ocram) + LENGTH(tcm_ocram) - __stack_size (NOLOAD) :
   {
     PROVIDE ( _sp_base = . );
     . = . + __stack_size;
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
-  } >hbnram
+  } >tcm_ocram
 
 
   /* camera driver */
@@ -223,10 +229,10 @@ SECTIONS
   /* ram information */
   PROVIDE( _ld_ram_size0 = LENGTH(flash) );
   PROVIDE( _ld_ram_addr0 = ORIGIN(flash) );
-  PROVIDE( _ld_ram_size1 = LENGTH(ram_1) );
-  PROVIDE( _ld_ram_addr1 = ORIGIN(ram_1) );
-  PROVIDE( _ld_ram_size2 = LENGTH(ram_2) );
-  PROVIDE( _ld_ram_addr2 = ORIGIN(ram_2) );
+  PROVIDE( _ld_ram_size1 = LENGTH(tcm_ocram) - SIZEOF(.stack) );
+  PROVIDE( _ld_ram_addr1 = ORIGIN(tcm_ocram) );
+  PROVIDE( _ld_ram_size2 = LENGTH(hbnram) );
+  PROVIDE( _ld_ram_addr2 = ORIGIN(hbnram) );
   PROVIDE( _ld_ram_size3 = SIZEOF(.stack) );
   PROVIDE( _ld_ram_addr3 = ADDR(.stack) );
 
@@ -235,7 +241,4 @@ SECTIONS
 
   /* EM size */
   PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
-
-  /* PDS backup address */
-  PROVIDE ( __ld_pds_bak_addr = 0x40010000 );
 }

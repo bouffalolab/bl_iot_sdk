@@ -105,6 +105,21 @@ SECTIONS
     KEEP(*(.bleromrw))
   } >ocram_1
 
+  .rsvd (NOLOAD) :
+  {
+    *libutils.a:utils_log.o(.bss.log_buf)
+    *libcli.a:cli.o(.bss.argvall.*)
+    *libbl702_usb_cdc.a:usbd_cdc_if.o(COMMON)
+    *libbl702_usb_cdc.a:bl702_hal_pcd.o(.bss.*_data_buff)
+    *libbl702.a:debug.o(.bss.string)
+
+    *(.rsvd_data)
+    *(.ble_rsvd_mem)
+
+    /* PDS backup address */
+    PROVIDE ( __ld_pds_bak_addr = . );
+  } >hbnram
+
   .tcmcode : ALIGN(4)
   {
     PROVIDE( _tcm_load = LOADADDR(.tcmcode) );
@@ -122,6 +137,15 @@ SECTIONS
     PROVIDE( _data_load = LOADADDR(.data) );
     PROVIDE( _data_run = ADDR(.data) );
     PROVIDE( _data_run_end = ADDR(.data) + SIZEOF(.data));
+
+    /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
+    *libbl702_rf.a:bl702_rf_private.o(.sdata.*)
+    *libbl702_rf.a:bl702_rf_private.o(.srodata.*)
+    *libbl702_rf.a:bl702_rf_private.o(.sbss.*)
+    *libbl702_rf.a:bl702_rf_private.o(.bss.*)
+    *libbl702_rf.a:bl702_rf_private.o(COMMON)
+    PROVIDE ( _rf_data_end = . );
+    ASSERT ((_rf_data_end <= 0x42024000), "Error: _rf_data_end > 0x42024000");
 
     *(.pds_code)
     *(.data .data.*)
@@ -148,8 +172,6 @@ SECTIONS
     *(._k_queue.static.*)
     *(._k_sem.static.*)
     *(._k_mutex.static.*)
-    _net_buf_pool_list = .;
-    KEEP(*(SORT_BY_NAME("._net_buf_pool.static.*")))
     _bt_gatt_service_static_list_start = .;
     KEEP(*(SORT_BY_NAME("._bt_gatt_service_static.static.*")))
     _bt_gatt_service_static_list_end = .;
@@ -157,19 +179,6 @@ SECTIONS
     KEEP(*(SORT_BY_NAME("._bt_l2cap_fixed_chan.static.*")))
     _bt_l2cap_fixed_chan_list_end = .;
   } >ocram_1 AT > flash
-
-  .rsvd (NOLOAD) :
-  {
-    /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
-    *libbl702_rf.a:bl702_rf_private.o(COMMON)
-    *libutils.a:utils_log.o(.bss.log_buf)
-    *libcli.a:cli.o(.bss.argvall.*)
-    *libbl702_usb_cdc.a:usbd_cdc_if.o(COMMON)
-    *libbl702_usb_cdc.a:bl702_hal_pcd.o(.bss.*_data_buff)
-    *libbl702.a:debug.o(.bss.string)
-
-    *(.rsvd_data)
-  } >ocram_2
 
   .boot2 (NOLOAD) :
   {
@@ -199,15 +208,15 @@ SECTIONS
   PROVIDE( _heap_size = ORIGIN(ocram_1) + LENGTH(ocram_1) - _heap_start );
 
   PROVIDE( _heap2_start = ORIGIN(ocram_3) );
-  PROVIDE( _heap2_size = LENGTH(ocram_3) );
+  PROVIDE( _heap2_size = LENGTH(ocram_3) - SIZEOF(.stack) );
 
-  .stack ORIGIN(hbnram) + LENGTH(hbnram) - __stack_size (NOLOAD) :
+  .stack ORIGIN(ocram_3) + LENGTH(ocram_3) - __stack_size (NOLOAD) :
   {
     PROVIDE ( _sp_base = . );
     . = . + __stack_size;
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
-  } >hbnram
+  } >ocram_3
 
 
   /* camera driver */
@@ -231,7 +240,7 @@ SECTIONS
   PROVIDE( _ld_ram_addr0 = ORIGIN(flash) );
   PROVIDE( _ld_ram_size1 = LENGTH(tcm) + LENGTH(ocram_1) );
   PROVIDE( _ld_ram_addr1 = ORIGIN(tcm) );
-  PROVIDE( _ld_ram_size2 = LENGTH(ocram_3) );
+  PROVIDE( _ld_ram_size2 = LENGTH(ocram_3) - SIZEOF(.stack) );
   PROVIDE( _ld_ram_addr2 = ORIGIN(ocram_3) );
   PROVIDE( _ld_ram_size3 = SIZEOF(.stack) );
   PROVIDE( _ld_ram_addr3 = ADDR(.stack) );
@@ -241,7 +250,4 @@ SECTIONS
 
   /* EM size */
   PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
-
-  /* PDS backup address */
-  PROVIDE ( __ld_pds_bak_addr = 0x40010000 );
 }

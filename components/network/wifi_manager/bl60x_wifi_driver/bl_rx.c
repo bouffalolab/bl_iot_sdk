@@ -90,7 +90,7 @@ static const struct reason_code sm_reason_list[] = {
 static const struct reason_code apm_reason_list[] = {
     {WLAN_FW_APM_SUCCESSFUL, "apm connect ind ok"},
     {WLAN_FW_APM_DELETESTA_BY_USER, "User delete STA"},
-    {WLAN_FW_APM_DEATUH_BY_STA, "STA send auth to AP"},
+    {WLAN_FW_APM_DEATUH_BY_STA, "STA send deauth to AP"},
     {WLAN_FW_APM_DISASSOCIATE_BY_STA, "STA send disassociate to AP"},
     {WLAN_FW_APM_DELETECONNECTION_TIMEOUT, "timeout and delete connection"},
     {WLAN_FW_APM_DELETESTA_FOR_NEW_CONNECTION, "Delete STA for new connection"},

@@ -156,6 +156,14 @@ void bl_irq_ctx_get(int irqnum, void **ctx)
     return;
 }
 
+void bl_irq_handler_get(int irqnum, void **handler)
+{
+    _irq_num_check(irqnum);
+    *handler = handler_list[0][irqnum];
+
+    return;
+}
+
 void bl_irq_register(int irqnum, void *handler)
 {
     bl_irq_register_with_ctx(irqnum, handler, NULL);
@@ -166,7 +174,7 @@ void bl_irq_unregister(int irqnum, void *handler)
     _irq_num_check(irqnum);
     if (handler_list[0][irqnum] != handler) {
     }
-    handler_list[0][irqnum] = handler;
+    handler_list[0][irqnum] = NULL;
 }
 
 void interrupt_entry(uint32_t mcause) 

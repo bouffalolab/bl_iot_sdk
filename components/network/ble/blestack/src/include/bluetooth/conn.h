@@ -106,6 +106,7 @@ struct bt_conn *bt_conn_lookup_addr_le(u8_t id, const bt_addr_le_t *peer);
 
 #if defined(BFLB_BLE)
 bool le_check_valid_conn(void);
+void notify_disconnected(struct bt_conn *conn);
 #if defined(BFLB_HOST_ASSISTANT)
 void bt_notify_disconnected(void);
 #endif

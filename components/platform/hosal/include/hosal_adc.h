@@ -95,7 +95,7 @@ typedef void (*hosal_adc_irq_t)(void *parg);
  * @brief Define ADC dev hosal handle
  */
 typedef struct {
-    uint8_t *port;                    /**< @brief adc port */
+    uint8_t port;                    /**< @brief adc port */
     hosal_adc_config_t config;        /**< @brief adc config */
     hosal_dma_chan_t dma_chan;        /**< @brief adc dma channel */ 
     hosal_adc_irq_t cb;               /**< @brief adc callback */

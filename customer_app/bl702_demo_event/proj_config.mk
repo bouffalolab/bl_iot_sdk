@@ -37,11 +37,6 @@ ifeq ($(CFG_BLE_PDS),1)
 CONFIG_USE_XTAL32K := 1
 endif
 
-ifeq ($(CONFIG_ZIGBEE_PDS),1)
-# use XTAL32K by default for pds31
-CONFIG_USE_XTAL32K := 1
-endif
-
 # if CONFIG_PDS_CPU_PWROFF is defined, CONFIG_LINK_CUSTOMER must be defined to avoid linking the default .ld file
 ifeq ($(CONFIG_PDS_CPU_PWROFF),1)
 CONFIG_LINK_CUSTOMER := 1

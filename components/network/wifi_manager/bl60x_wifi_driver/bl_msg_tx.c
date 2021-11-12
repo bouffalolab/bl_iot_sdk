@@ -149,21 +149,16 @@ static const struct ieee80211_channel *channels_default;
 
 static int cfg80211_get_channel_list(const char *code, int *channel_num, const struct ieee80211_channel **channels)
 {
-    int i, j;
+    int i;
 
     for (i = 0; i < sizeof(country_list)/sizeof(country_list[0]); i++) {
         if (0 == strcmp(country_list[i].code, code)) {
-            *channel_num = country_list[i].channel_num;
-            struct ieee80211_channel *channels_tmp = NULL;
-            channels_tmp = (struct ieee80211_channel *)os_malloc(*channel_num * sizeof(struct ieee80211_channel));
-            if (NULL == channels_tmp) {
-                os_printf("%s: channels_tmp allocation failed\n", __func__);
-                return -1;
+            if(channel_num){
+                *channel_num = country_list[i].channel_num;
             }
-            for(j = 0; j < *channel_num; j++){
-                channels_tmp[j] = country_list[i].channels[j];
+            if (channels) {
+                *channels = country_list[i].channels;
             }
-            *channels = channels_tmp;
             return 0;
         }
     }

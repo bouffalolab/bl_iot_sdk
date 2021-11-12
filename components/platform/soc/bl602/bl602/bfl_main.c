@@ -241,8 +241,9 @@ static void aos_loop_proc(void *pvParameters)
             app_stack,
             &app_task);
 
+#ifdef SYS_AOS_LOOP_ENABLE
     aos_loop_run();
-
+#endif
     puts("------------------------------------------\r\n");
     puts("+++++++++Critical Exit From AOS LOOP entry++++++++++\r\n");
     puts("******************************************\r\n");

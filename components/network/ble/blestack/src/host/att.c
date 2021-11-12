@@ -394,7 +394,9 @@ static u8_t att_handle_rsp(struct bt_att *att, void *pdu, u16_t len, u8_t err)
 	func = att->req->func;
 	att->req->func = NULL;
 
-	func(att->chan.chan.conn, err, pdu, len, att->req);
+	if (func) {
+		func(att->chan.chan.conn, err, pdu, len, att->req);
+	}
 
 	/* Don't destroy if callback had reused the request */
 	if (!att->req->func) {

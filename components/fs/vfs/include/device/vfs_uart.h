@@ -11,7 +11,6 @@ extern "C" {
 
 #include "vfs_inode.h"
 
-/*section for SPI IOCTRL*/
 #define IOCTL_UART_IOC_CLEAN_MODE                1 /* clean rx ringbuf */
 #define IOCTL_UART_IOC_FLUSH_MODE                2 /* flush */
 #define IOCTL_UART_IOC_BAUD_MODE                 3 /* baud */
@@ -19,7 +18,14 @@ extern "C" {
 #define IOCTL_UART_IOC_WAITRDFULL_MODE           5 /* waitread full */
 #define IOCTL_UART_IOC_READ_BLOCK                6 /* read block */
 #define IOCTL_UART_IOC_READ_NOBLOCK              7 /* read noblock */
-#define IOCTL_UART_IOC_CONFIG_MODE               8 /* config baud parity */
+#define IOCTL_UART_IOC_PARITY_SET                8 /* set parity */
+#define IOCTL_UART_IOC_PARITY_GET                9 /* get parity */
+#define IOCTL_UART_IOC_STOPBITS_SET              10 /* set stop bits */
+#define IOCTL_UART_IOC_STOPBITS_GET              11 /* get stop bits */
+#define IOCTL_UART_IOC_HWFC_SET                  12 /* set hwfc */
+#define IOCTL_UART_IOC_HWFC_GET                  13 /* get hwfc */
+#define IOCTL_UART_IOC_DATABITS_SET              14 /* set data bits */
+#define IOCTL_UART_IOC_DATABITS_GET              15 /* set data bits */
 
 #define UART_READ_CFG_BLOCK   1
 #define UART_READ_CFG_NOBLOCK 2
@@ -29,11 +35,6 @@ typedef enum {
     IO_UART_PARITY_ODD,
     IO_UART_PARITY_EVEN,
 } ioc_uart_parity_t;
-
-typedef struct _uart_ioctrl_config {
-    uint32_t baud;
-    ioc_uart_parity_t parity;
-} uart_ioc_config_t;
 
 typedef struct _uart_ioctrl_wait_read {
     char *buf;
@@ -69,7 +70,7 @@ int vfs_uart_close(file_t *fp);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return  The positive non-zero number of bytes read on success, 
+ * @return  The positive non-zero number of bytes read on success,
  * 0 on read nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_uart_read(file_t *fp, void *buf, size_t nbytes);
@@ -81,7 +82,7 @@ ssize_t vfs_uart_read(file_t *fp, void *buf, size_t nbytes);
  * @param[out]  buf     data buffer for data.
  * @param[in]   nbytes  the maximum size of the user-provided buffer.
  *
- * @return   The positive non-zero number of bytes write on success, 
+ * @return   The positive non-zero number of bytes write on success,
  * 0 on write nothing, or negative on failure with errno set appropriately.
  */
 ssize_t vfs_uart_write(file_t *fp, const void *buf, size_t nbytes);

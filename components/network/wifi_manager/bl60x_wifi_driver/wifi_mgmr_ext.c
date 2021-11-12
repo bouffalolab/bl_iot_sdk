@@ -366,8 +366,11 @@ int wifi_mgmr_sta_ps_enter(uint32_t ps_level)
 {
     int retval = 0;
 
-    bl_pm_capacity_set(ps_level);
-    retval = pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_START, NULL);
+    if (!bl_pm_capacity_set(ps_level)) {
+        retval = pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_START, NULL);
+    } else {
+        os_printf("----- Error PS Mode\r\n");
+    }
 
     return retval;
 }

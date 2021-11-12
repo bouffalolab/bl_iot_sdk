@@ -165,7 +165,7 @@ static void notify_connected(struct bt_conn *conn)
 	}
 }
 
-static void notify_disconnected(struct bt_conn *conn)
+void notify_disconnected(struct bt_conn *conn)
 {
 	struct bt_conn_cb *cb;
 
@@ -347,7 +347,9 @@ static void conn_update_timeout(struct k_work *work)
 
 	if (conn->state == BT_CONN_DISCONNECTED) {
 		bt_l2cap_disconnected(conn);
+	#if !defined(BFLB_BLE)
 		notify_disconnected(conn);
+        #endif
 
 		/* Release the reference we took for the very first
 		 * state transition.

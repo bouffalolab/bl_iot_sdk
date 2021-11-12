@@ -31,6 +31,8 @@
 #define __BL_IRQ_H__
 void bl_irq_enable(unsigned int source);
 void bl_irq_disable(unsigned int source);
+void bl_irq_pending_set(unsigned int source);
+void bl_irq_pending_clear(unsigned int source);
 typedef enum {
     BL_IRQ_EXCEPTION_TYPE_LOAD_MISALIGN,
     BL_IRQ_EXCEPTION_TYPE_STORE_MISALIGN,
@@ -51,6 +53,7 @@ void bl_irq_register_with_ctx(int irqnum, void *handler, void *ctx);
 void bl_irq_register(int irqnum, void *handler);
 void bl_irq_unregister(int irqnum, void *handler);
 void bl_irq_ctx_get(int irqnum, void **ctx);
+void bl_irq_handler_get(int irqnum, void **handler);
 
 int bl_irq_save(void);
 void bl_irq_restore(int flags);

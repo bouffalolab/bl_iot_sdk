@@ -105,144 +105,125 @@ static void blecli_hog_srv_notify(char *pcWriteBuffer, int xWriteBufferLen, int 
 #endif
 
 const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
-#if 0
+#if 1
     /*1.The cmd string to type, 2.Cmd description, 3.The function to run, 4.Number of parameters*/
 
-    {"ble_init", "\r\nble_init:[Initialize]\r\n Parameter[Null]\r\n", blecli_init},
-
-    {"ble_get_device_name", "\r\nble_get_device_name:[Read local device name]\r\n Parameter[Null]\r\n", blecli_get_device_name},
-
-    {"ble_set_device_name", "\r\nble_set_device_name:\r\n\[Lenth of name]\r\n\[name]\r\n", blecli_set_device_name},
+    {"ble_init", "ble Initialize\r\nParameter [Null]\r\n", blecli_init},
+    {"ble_get_device_name", "ble get device name\r\nParameter [Null]\r\n", blecli_get_device_name},
+    {"ble_set_device_name", "ble set device name\r\nParameter [Lenth of name] [name]\r\n", blecli_set_device_name},
 #if defined(CONFIG_BLE_TP_SERVER)
-
-    {"ble_tp_start", "\r\nble_tp_start:\r\n\
-    [TP test,1:enable, 0:disable]\r\n", blecli_tp_start},
+    {"ble_tp_start", "throughput start\r\nParameter [TP test,1:enable, 0:disable]\r\n", blecli_tp_start},
 #endif
-
+#if defined(BL702)
+    {"ble_set_default_phy", "ble set default phy\r\nParameter [defualt phys]\r\n", blecli_set_default_phy},
+    {"ble_set_2M_Phy", "ble set 2M Phy\r\nParameter [defualt phys]\r\n", blecli_set_2M_phy},
+    {"ble_set_coded_phy", "ble set coded phy\r\nParameter [all phys] [coded option]\r\n", blecli_set_coded_phy},
+#endif
+#if defined(BL702) || defined(BL602)
+    {"ble_scan_filter_size", "ble scan filter sizer\nParameter [filter table size]\r\n", blecli_scan_filter_size},
+#endif
+#if defined(BFLB_DISABLE_BT)
+    {"ble_disable", "ble disable\r\nParameter [Null]\r\n", blecli_disable},
+#endif
 #if defined(CONFIG_BT_OBSERVER)
-    {"ble_start_scan", "\r\nble_start_scan:\r\n\
-    [Scan type, 0:passive scan, 1:active scan]\r\n\
-    [Duplicate filtering, 0:Disable duplicate filtering, 1:Enable duplicate filtering]\r\n\
+    {"ble_start_scan", " ble start scan\r\n\
+    Parameter [Scan type, 0:passive scan, 1:active scan]\r\n\
+    [filtering, 0:Disable duplicate, 1:Enable duplicate]\r\n\
     [Scan interval, 0x0004-4000,e.g.0080]\r\n\
     [Scan window, 0x0004-4000,e.g.0050]\r\n", blecli_start_scan},
-
-    {"ble_stop_scan", "\r\nble_stop_scan:[Stop scan]\r\nParameter[Null]\r\n", blecli_stop_scan},
+    {"ble_stop_scan", "ble stop scan\r\nParameter [Null]\r\n", blecli_stop_scan},
 #endif
-
 #if defined(CONFIG_BT_PERIPHERAL)
-    {"ble_start_adv", "\r\nble_start_adv:\r\n\
-    [Adv type,0:adv_ind,1:adv_scan_ind,2:adv_nonconn_ind]\r\n\
+    {"ble_set_adv_channel", "ble set adv channel\r\nParameter [adv channel]\r\n", blecli_set_adv_channel},
+    {"ble_start_adv", "ble start adv\r\n\
+    Parameter [Adv type, 0:adv_ind, 1:adv_scan_ind, 2:adv_nonconn_ind]\r\n\
     [Mode, 0:discov, 1:non-discov]\r\n\
     [Adv Interval Min,0x0020-4000,e.g.0030]\r\n\
     [Adv Interval Max,0x0020-4000,e.g.0060]\r\n", blecli_start_advertise},
-     
-    {"ble_stop_adv", "\r\nble_stop_adv:[Stop advertising]\r\nParameter[Null]\r\n", blecli_stop_advertise},
-
-    {"ble_read_local_address", "\r\nble_read_local_address:[Read local address]\r\n", blecli_read_local_address},
+    {"ble_stop_adv", "ble stop adv\r\nParameter [Null]\r\n", blecli_stop_advertise},
+#if defined(CONFIG_BLE_MULTI_ADV)
+    {"ble_start_multi_adv", "ble start multi adv\r\nParameter [Null]\r\n", blecli_start_multi_advertise},
+    {"ble_stop_multi_adv", "ble stop multi adv\r\nParameter [instant id]\r\n", blecli_stop_multi_advertise},
 #endif
-
+    {"ble_read_local_address", "ble read local address\r\nParameter [Null]\r\n", blecli_read_local_address},
+#endif
 #if defined(CONFIG_BT_CONN)
 #if defined(CONFIG_BT_CENTRAL)
-    {"ble_connect", "\r\nble_connect:[Connect remote device]\r\n\
-     [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
+    {"ble_connect", "ble Connect remote device\r\n\
+     Parameter [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
      [Address value, e.g.112233AABBCC]\r\n", blecli_connect},
-#endif //CONFIG_BT_CENTRAL
-    
-    {"ble_disconnect", "\r\nble_disconnect:[Disconnect remote device]\r\n\
-    [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
+#endif
+    {"ble_disconnect", "Disconnect remote device\r\n\
+    Parameter [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
     [Address value,e.g.112233AABBCC]\r\n", blecli_disconnect},
-	
-    {"ble_select_conn", "\r\nble_select_conn:[Select a specific connection]\r\n\
-    [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
+    {"ble_select_conn", "Select a specific connection\r\n\
+    Parameter [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
     [Address value, e.g.112233AABBCC]\r\n", blecli_select_conn},
-     
-    {"ble_unpair", "\r\nble_unpair:[Unpair connection]\r\n\
-    [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
+    {"ble_unpair", "bleUnpair connection]\r\n\
+    Parameter [Address type, 0:ADDR_PUBLIC, 1:ADDR_RAND, 2:ADDR_RPA_OR_PUBLIC, 3:ADDR_RPA_OR_RAND]\r\n\
     [Address value, all 0: unpair all connection, otherwise:unpair specific connection]\r\n", blecli_unpair},
-
-    {"ble_conn_update", "\r\nble_conn_update:\r\n\
-    [Conn Interval Min,0x0006-0C80,e.g.0030]\r\n\
+    {"ble_conn_update", "ble conn update\r\n\
+    Parameter [Conn Interval Min,0x0006-0C80,e.g.0030]\r\n\
     [Conn Interval Max,0x0006-0C80,e.g.0030]\r\n\
     [Conn Latency,0x0000-01f3,e.g.0004]\r\n\
     [Supervision Timeout,0x000A-0C80,e.g.0010]\r\n", blecli_conn_update},
-#endif //CONFIG_BT_CONN
- 
-#if defined(CONFIG_BT_SMP)
-    {"ble_security", "\r\nble_security:[Start security]\r\n\
-    [Security level, Default value 4, 2:BT_SECURITY_MEDIUM, 3:BT_SECURITY_HIGH, 4:BT_SECURITY_FIPS]\r\n", blecli_security},
-
-    {"ble_auth", "\r\nble_auth:[Register auth callback]\r\n", blecli_auth},
-
-    {"ble_auth_cancel", "\r\nble_auth_cancel:[Register auth callback]\r\n", blecli_auth_cancel},
-
-    {"ble_auth_passkey_confirm", "\r\nble_auth_passkey_confirm:[Confirm passkey]\r\n", blecli_auth_passkey_confirm},
-
-    {"ble_auth_pairing_confirm", "\r\nble_auth_pairing_confirm:[Confirm pairing in secure connection]\r\n", blecli_auth_pairing_confirm},
-
-    {"ble_auth_passkey", "\r\nble_auth_passkey:[Input passkey]\r\n[Passkey, 00000000-000F423F]", blecli_auth_passkey},
-
-#endif //CONFIG_BT_SMP
-
+    {"ble_read_rssi", "ble read rssi\r\nParameter [Null]\r\n", blecli_read_rssi},
+#endif
+ #if defined(CONFIG_BT_SMP)
+    {"ble_security", "Start security\r\n\
+    Parameter [Security level, Default value 4, 2:BT_SECURITY_MEDIUM, 3:BT_SECURITY_HIGH, 4:BT_SECURITY_FIPS]\r\n", blecli_security},
+    {"ble_auth", "Register auth callback\r\nParameter [Null]\r\n", blecli_auth},
+    {"ble_auth_cancel", "Cancel register auth callback\r\nParameter [Null]]\r\n", blecli_auth_cancel},
+    {"ble_auth_passkey_confirm", "Confirm passkey]\r\nParameter [Null]]\r\n", blecli_auth_passkey_confirm},
+    {"ble_auth_pairing_confirm", "Confirm pairing in secure connection\r\nParameter [Null]\r\n", blecli_auth_pairing_confirm},
+    {"ble_auth_passkey", "Input passkey\r\nParameter [Passkey, 00000000-000F423F]\r\n", blecli_auth_passkey},
+#endif
 #if defined(CONFIG_BT_GATT_CLIENT)
-    {"ble_exchange_mtu", "\r\nble_exchange_mtu:[Exchange mtu]\r\n Parameter[Null]\r\n", blecli_exchange_mtu},
-
-    {"ble_discover", "\r\nble_discover:[Gatt discovery]\r\n\
-    [Discovery type, 0:Primary, 1:Secondary, 2:Include, 3:Characteristic, 4:Descriptor]\r\n\
+    {"ble_exchange_mtu", "Exchange mtu\r\nParameter [Null]\r\n", blecli_exchange_mtu},
+    {"ble_discover", "Gatt discovery\r\n\
+    Parameter [Discovery type, 0:Primary, 1:Secondary, 2:Include, 3:Characteristic, 4:Descriptor]\r\n\
     [Uuid value, 2 Octets, e.g.1800]\r\n\
     [Start handle, 2 Octets, e.g.0001]\r\n\
     [End handle, 2 Octets, e.g.ffff]\r\n", blecli_discover},
-
-    {"ble_read", "\r\nble_read:[Gatt Read]\r\n\
-    [Attribute handle, 2 Octets]\r\n\
+    {"ble_read", "Gatt Read\r\n\
+    Parameter [Attribute handle, 2 Octets]\r\n\
     [Value offset, 2 Octets]\r\n", blecli_read},
-
-    {"ble_write", "\r\nble_write:[Gatt write]\r\n\
-    [Attribute handle, 2 Octets]\r\n\
+    {"ble_write", "Gatt write\r\n\
+    Parameter [Attribute handle, 2 Octets]\r\n\
     [Value offset, 2 Octets]\r\n\
     [Value length, 2 Octets]\r\n\
     [Value data]\r\n", blecli_write},
-
-    {"ble_write_without_rsp", "\r\nble_write_without_rsp:[Gatt write without response]\r\n\
-    [Sign, 0: No need signed, 1:Signed write cmd if no smp]\r\n\
+    {"ble_write_without_rsp", "Gatt write without response\r\n\
+    Parameter [Sign, 0: No need signed, 1:Signed write cmd if no smp]\r\n\
     [Attribute handle, 2 Octets]\r\n\
     [Value length, 2 Octets]\r\n\
     [Value data]\r\n", blecli_write_without_rsp},
-
-    {"ble_subscribe", "\r\nble_subscribe:[Gatt subscribe]\r\n\
-    [CCC handle, 2 Octets]\r\n\
+    {"ble_subscribe", "Gatt subscribe\r\n\
+    Parameter [CCC handle, 2 Octets]\r\n\
     [Value handle, 2 Octets]\r\n\
     [Value, 1:notify, 2:indicate]\r\n", blecli_subscribe},
-
-    {"ble_unsubscribe", "\r\nble_unsubscribe:[Gatt unsubscribe]\r\n Parameter[Null]\r\n", blecli_unsubscribe},
-#endif /*CONFIG_BT_GATT_CLIENT*/
-
-    {"ble_set_data_len",
-    "\r\nble_set_data_len:[LE Set Data Length]\r\n\
-    [tx octets, 2 octets]\r\n\
-    [tx time, 2 octets]\r\n",
-    blecli_set_data_len},
-
-    {"ble_conn_info", "\r\nble_conn_info:[LE get all connection devices info]\r\n", blecli_get_all_conn_info},
-
+    {"ble_unsubscribe", "Gatt unsubscribe\r\nParameter [Null]\r\n", blecli_unsubscribe},
+#endif
+    {"ble_set_data_len","LE Set Data Length\r\n\
+    Parameter [tx octets, 2 octets] [tx time, 2 octets]\r\n", blecli_set_data_len},
+    {"ble_conn_info", "LE get all connection devices info\r\nParameter [Null]\r\n", blecli_get_all_conn_info},
 #if defined(CONFIG_SET_TX_PWR)
-    {"ble_set_tx_pwr",
-    "\r\nble_set_tx_pwr:[Set tx power mode]\r\n\
-    [mode, 1 octet, value:5,6,7]\r\n",
-    blecli_set_tx_pwr},
+    {"ble_set_tx_pwr","Set tx power mode\r\nParameter [mode, 1 octet, value:5,6,7]\r\n", blecli_set_tx_pwr},
+#endif
+#if defined(CONFIG_HOGP_SERVER)
+    {"ble_hog_srv_notify", "HOG srv notify\r\nParameter [hid usage] [press]\r\n", blecli_hog_srv_notify},
 #endif
 
 #else
     {"ble_init", "", blecli_init},
-        
 #if defined(CONFIG_BLE_TP_SERVER)
     {"ble_tp_start", "", blecli_tp_start},
 #endif
-
-    #if defined(BL702)
+#if defined(BL702)
     {"ble_set_2M_Phy", "", blecli_set_2M_phy},
     {"ble_set_coded_phy", "", blecli_set_coded_phy},
     {"ble_set_default_phy", "", blecli_set_default_phy},
-    #endif
+#endif
 #if defined(BFLB_DISABLE_BT)
     {"ble_disable", "", blecli_disable},
 #endif
@@ -253,7 +234,7 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_stop_scan", "", blecli_stop_scan},
 #if defined(BL702) || defined(BL602)
     {"ble_scan_filter_size", "", blecli_scan_filter_size},
-#endif /* BL702 || BL602*/
+#endif
 #endif
 #if defined(CONFIG_BT_PERIPHERAL)
     {"ble_set_adv_channel", "", blecli_set_adv_channel},
@@ -268,13 +249,13 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
 #if defined(CONFIG_BT_CONN)
 #if defined(CONFIG_BT_CENTRAL)
     {"ble_connect", "", blecli_connect},
-#endif //CONFIG_BT_CENTRAL
+#endif
     {"ble_disconnect", "", blecli_disconnect},
     {"ble_select_conn", "", blecli_select_conn},
     {"ble_unpair", "", blecli_unpair},
     {"ble_conn_update", "", blecli_conn_update},
     {"ble_read_rssi", "", blecli_read_rssi},
-#endif //CONFIG_BT_CONN
+#endif
 #if defined(CONFIG_BT_SMP)
     {"ble_security", "", blecli_security},
     {"ble_auth", "", blecli_auth},
@@ -282,7 +263,7 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_auth_passkey_confirm", "", blecli_auth_passkey_confirm},
     {"ble_auth_pairing_confirm", "", blecli_auth_pairing_confirm},
     {"ble_auth_passkey", "", blecli_auth_passkey},
-#endif //CONFIG_BT_SMP
+#endif
 #if defined(CONFIG_BT_GATT_CLIENT)
     {"ble_exchange_mtu", "", blecli_exchange_mtu},
     {"ble_discover", "", blecli_discover},
@@ -291,7 +272,7 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_write_without_rsp", "", blecli_write_without_rsp},
     {"ble_subscribe", "", blecli_subscribe},
     {"ble_unsubscribe", "", blecli_unsubscribe},
-#endif /*CONFIG_BT_GATT_CLIENT*/
+#endif
     {"ble_set_data_len", "", blecli_set_data_len},
     {"ble_conn_info", "", blecli_get_all_conn_info},
 #if defined(CONFIG_SET_TX_PWR)

@@ -391,6 +391,7 @@ int bl_pm_capacity_set(enum PM_LEVEL level)
     switch (level) {
         case PM_MODE_STA_NONE:
         {
+            return -1;
         }
         break;
 
@@ -437,7 +438,7 @@ int bl_pm_capacity_set(enum PM_LEVEL level)
 
         default:
         {
-
+            return -1;
         }
     } 
 

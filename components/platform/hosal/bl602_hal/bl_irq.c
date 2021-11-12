@@ -167,7 +167,7 @@ void bl_irq_unregister(int irqnum, void *handler)
     _irq_num_check(irqnum);
     if (handler_list[0][irqnum] != handler) {
     }
-    handler_list[0][irqnum] = handler;
+    handler_list[0][irqnum] = NULL;
 }
 
 void interrupt_entry(uint32_t mcause) 

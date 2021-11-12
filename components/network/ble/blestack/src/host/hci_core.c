@@ -45,6 +45,7 @@
 #include "settings.h"
 #if defined(BFLB_BLE)
 #include "bl_hci_wrapper.h"
+#include "ble_lib_api.h"
 #if defined(BL602)
 #include "bl602_hbn.h"
 #elif defined(BL702)
@@ -1127,24 +1128,28 @@ static void hci_disconn_complete(struct net_buf *buf)
 #endif
 
 #if defined(BFLB_RELEASE_CMD_SEM_IF_CONN_DISC)
-    hci_release_conn_related_cmd();
+	hci_release_conn_related_cmd();
+#endif
+
+#if defined(BFLB_BLE)
+	notify_disconnected(conn);
 #endif
 
 #if defined(CONFIG_BLE_RECONNECT_TEST)
-if (conn->role == BT_CONN_ROLE_MASTER) {
-    struct bt_le_conn_param param = {
-        .interval_min =  BT_GAP_INIT_CONN_INT_MIN,
-        .interval_max =  BT_GAP_INIT_CONN_INT_MAX,
-        .latency = 0,
-        .timeout = 400,
-    };
+	if (conn->role == BT_CONN_ROLE_MASTER) {
+		struct bt_le_conn_param param = {
+			.interval_min =  BT_GAP_INIT_CONN_INT_MIN,
+			.interval_max =  BT_GAP_INIT_CONN_INT_MAX,
+			.latency = 0,
+			.timeout = 400,
+		};
 
-    if(bt_conn_create_le(&conn->le.dst, &param)) {
-        printf("Reconnecting. \n");
-    } else {
-        printf("Reconnect fail. \n");
-    }
-}
+		if(bt_conn_create_le(&conn->le.dst, &param)) {
+			BT_DBG("Reconnecting. \n");
+		} else {
+			BT_DBG("Reconnect fail. \n");
+		}
+	}
 #endif
 
 advertise:
@@ -5815,11 +5820,6 @@ int bt_disable_action(void)
     #endif
     
     bt_gatt_deinit();
-  
-    //delete task
-    k_thread_delete(&tx_thread_data);
-    k_thread_delete(&recv_thread_data);
-    k_thread_delete(&work_q_thread);
 
     //delete queue, not delete hci_cmd_pool.free/hci_rx_pool.free/acl_tx_pool.free which store released buffers.
     bt_delete_queue(&recv_fifo);
@@ -5867,8 +5867,11 @@ int bt_disable_action(void)
 
     bl_onchiphci_interface_deinit();
 
-    extern void ble_controller_deinit(void);
+    //delete task
     ble_controller_deinit();
+    k_thread_delete(&tx_thread_data);
+    k_thread_delete(&work_q_thread);
+    k_thread_delete(&recv_thread_data);
 
     return 0;
 }

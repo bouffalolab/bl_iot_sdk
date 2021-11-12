@@ -735,7 +735,19 @@ static void wifi_denoise_disable_cmd(char *buf, int len, int argc, char **argv)
 
 static void wifi_power_saving_on_cmd(char *buf, int len, int argc, char **argv)
 {
-    wifi_mgmr_sta_ps_enter(WIFI_COEX_PM_STA_MESH);
+
+    uint8_t mode;
+    if (1 == argc) {
+        /*default mode:MESH*/
+        wifi_mgmr_sta_ps_enter(WIFI_COEX_PM_STA_MESH);
+    } else if(2 == argc) {
+        mode = atoi(argv[1]);
+        if (mode >= WIFI_COEX_PM_MAX) {
+            return;
+        }
+        blog_debug("set ps mode:%d\r\n", mode);
+        wifi_mgmr_sta_ps_enter(mode);
+    }
 }
 
 static void wifi_power_saving_off_cmd(char *buf, int len, int argc, char **argv)
@@ -977,6 +989,19 @@ static void cmd_wifi_coex_pta_force_off(char *buf, int len, int argc, char **arg
     coex_wifi_pta_forece_enable(0);
 }
 
+static void cmd_wifi_coex_pta_set(char *buf, int len, int argc, char **argv)
+{
+    uint32_t i = 0;
+    if (2 != argc) {
+        printf("[USAGE]: %s wifi_coex_pta_set \r\n", argv[0]);
+        return;
+    }
+
+    i = atoi(argv[1]);
+
+int coex_pta_force_autocontrol_set(void *arg);
+    coex_pta_force_autocontrol_set((void *)i);
+}
 static void cmd_wifi_state_get(char *buf, int len, int argc, char **argv)
 {
     int state = WIFI_STATE_UNKNOWN;
@@ -1082,6 +1107,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_coex_pti_force_off", "wifi coex PTI forece off", cmd_wifi_coex_pti_force_off},
         { "wifi_coex_pta_force_on", "wifi coex PTA forece on", cmd_wifi_coex_pta_force_on},
         { "wifi_coex_pta_force_off", "wifi coex PTA forece off", cmd_wifi_coex_pta_force_off},
+        { "wifi_coex_pta_set", "wifi coex PTA set", cmd_wifi_coex_pta_set},
         { "wifi_sta_list", "get sta list in AP mode", wifi_ap_sta_list_get_cmd},
         { "wifi_sta_del", "delete one sta in AP mode", wifi_ap_sta_delete_cmd},
         { "wifi_edca_dump", "dump EDCA data", wifi_edca_dump_cmd},

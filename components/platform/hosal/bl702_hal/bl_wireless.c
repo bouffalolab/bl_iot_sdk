@@ -88,7 +88,7 @@ int8_t bl_wireless_power_offset_ble_get(uint8_t ch)
     if(ch > 39){
         return wireless_env.power_offset_ble[39];
     }else{
-        return wireless_env.power_offset_zigbee[ch];
+        return wireless_env.power_offset_ble[ch];
     }
 }
 

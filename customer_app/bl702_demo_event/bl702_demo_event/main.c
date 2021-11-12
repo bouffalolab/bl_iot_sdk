@@ -628,89 +628,38 @@ void vApplicationSleep( TickType_t xExpectedIdleTime)
 
 static void bl702_low_power_config(void)
 {
-    uint8_t i;
-    
+#if !defined(CFG_USB_CDC_ENABLE)
     // Power off DLL
     GLB_Power_Off_DLL();
+#endif
     
     // Disable secure engine
     Sec_Eng_Trng_Disable();
     SEC_Eng_Turn_Off_Sec_Ring();
-
-    #if !defined(CFG_ZIGBEE_ENABLE)
+    
+#if !defined(CFG_BLE_ENABLE)
+    // if ble is not enabled, Disable BLE clock
+    GLB_Set_BLE_CLK(0);
+#endif
+#if !defined(CFG_ZIGBEE_ENABLE)
     // if zigbee is not enabled, Disable Zigbee clock
     GLB_Set_MAC154_ZIGBEE_CLK(0);
-    #endif
-    
-    // Set all gpio pads to High-Z state
-    for(i=0; i<=22; i++){
-        // jtag pins
-        if((i == 0) || (i == 1) || (i == 2) || (i == 9)){
-           //continue;
-        }
-        
-        // uart pins
-        if((i == 14) || (i == 15)){
-            continue;
-        }
-        
-        GLB_GPIO_Set_HZ(i);
-    }
-    
-    // Set all psram pads to High-Z state
-    GLB_Set_Psram_Pad_HZ();
+#endif
     
     // Gate peripheral clock
-    for(i=0; i<=31; i++){
-        if(i == BL_AHB_SLAVE1_GLB){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_MIX){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_EFUSE){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_L1C){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_SFC){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_PDS_HBN_AON_HBNRAM){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_UART0){
-            continue;
-        }
-        
-        if(i == BL_AHB_SLAVE1_TMR){
-            continue;
-        }
-        
-        GLB_AHB_Slave1_Clock_Gate(1, i);
-    }
+    BL_WR_REG(GLB_BASE, GLB_CGEN_CFG1, 0x00214BC3);
 }
 
 void bl_pds_restore(void)
 {
-    bl_uart_init(0, 14, 15, 255, 255, 2 * 1000 * 1000);
-    bl_uart_int_enable(0);
-#ifndef CFG_USB_CDC_ENABLE
-	//power off Dll
-    GLB_Power_Off_DLL();
-#endif
+    bl702_low_power_config();
+    hosal_uart_init(&uart_stdio);
+
 #if defined(CFG_USB_CDC_ENABLE)
     extern void usb_cdc_restore(void);
     usb_cdc_restore();
 #endif
-    
+
 #if defined(CFG_BLE_PDS)
     ble_controller_sleep_restore();
    // bl_sec_init();
@@ -810,9 +759,21 @@ void vApplicationSleep( TickType_t xExpectedIdleTime )
     uint32_t sleepCycles;
     
 #define PDS_TOLERANCE_TIME_MS    5
+//in driver, it takes (sleep_cycles-PDS_WARMUP_LATENCY_CNT) as sleep cycles. Make sure pds sleep for at least 1 ms(about 31cycles).
+#define PDS_MIN_TIME_MS    (PDS_WARMUP_LATENCY_CNT + 30 + 31)/31 
     
     if(pds_start == 0){
         return;
+    }
+
+    eSleepStatus = eTaskConfirmSleepModeStatus();
+    if(eSleepStatus == eAbortSleep){
+        printf("eSleepStatus == eAbortSleep\r\n");
+        return;
+    }else if(eSleepStatus == eStandardSleep){
+        if(xExpectedIdleTime <= PDS_TOLERANCE_TIME_MS + PDS_MIN_TIME_MS){
+            return;
+        }
     }
     
 #if defined(CFG_ZIGBEE_PDS)
@@ -820,20 +781,15 @@ void vApplicationSleep( TickType_t xExpectedIdleTime )
     {
         return;
     }
+
     xActualIdleTime = zb_zedGetIdleDuration() / 1000;
 #endif
-    
-    if(xActualIdleTime <= PDS_TOLERANCE_TIME_MS){
+    if(xActualIdleTime <= PDS_TOLERANCE_TIME_MS + PDS_MIN_TIME_MS){
         return;
     }
     
-    eSleepStatus = eTaskConfirmSleepModeStatus();
-    if(eSleepStatus == eAbortSleep){
-        return;
-    }else if(eSleepStatus == eStandardSleep){
-        if(xExpectedIdleTime <= PDS_TOLERANCE_TIME_MS){
-            return;
-        }else if(xExpectedIdleTime < xActualIdleTime){
+   if(eSleepStatus == eStandardSleep){
+        if(xExpectedIdleTime < xActualIdleTime){
             sleepTime = xExpectedIdleTime - PDS_TOLERANCE_TIME_MS;
         }else{
             sleepTime = xActualIdleTime - PDS_TOLERANCE_TIME_MS;
@@ -841,25 +797,26 @@ void vApplicationSleep( TickType_t xExpectedIdleTime )
     }else{
         sleepTime = xActualIdleTime - PDS_TOLERANCE_TIME_MS;
     }
-    
+
+    bl_irq_disable(M154_IRQn);
     printf("[%lu] will sleep: %lu ms\r\n", (uint32_t)bl_rtc_get_timestamp_ms(), sleepTime);
     
 #if defined(CFG_ZIGBEE_PDS)
     zb_zedStoreRegs();
     zb_zedStoreTime();
 #endif
-    
     sleepCycles = (uint64_t)32768 * sleepTime / 1000;
     sleepTime = hal_pds_enter_with_time_compensation(31, sleepCycles);
     bl_pds_restore();
-    
-#if defined(CFG_ZIGBEE_PDS)
-    zb_zedRestoreTime(sleepTime * 1000);
+   
+#if defined(CFG_ZIGBEE_PDS)   
     zb_zedRestoreRegs();
+    zb_zedRestoreTime(sleepTime * 1000);
 #endif
     
     printf("[%lu] actually sleep: %lu ms\r\n", (uint32_t)bl_rtc_get_timestamp_ms(), sleepTime);
 }
+
 #else
 void vApplicationSleep( TickType_t xExpectedIdleTime )
 {

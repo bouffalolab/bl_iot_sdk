@@ -19,6 +19,10 @@ bl702_start:
 .option pop
 	la sp, _sp_main
 
+	/*set em_sel to 0 before using sp*/
+	li a0, 0x4000007C
+	sw x0, (a0)
+
 	/*disable IRQ*/
 	li t0, MSTATUS_MIE
 	csrc mstatus, t0
