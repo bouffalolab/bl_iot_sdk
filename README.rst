@@ -1,7 +1,7 @@
 README
 =========
 
-Bouffalolab bl_iot_sdk. Support BL602 Wi-Fi/BLE Combo RISC-V based Chip.
+Bouffalolab bl_iot_sdk. Support BL602 Wi-Fi/BLE Combo RISC-V based Chip and BL70X Zigbee/BLE RISC-V based Chip.
 
 Check [Online IoT SDK Doc] for more detail.
 
