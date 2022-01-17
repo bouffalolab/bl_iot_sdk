@@ -265,3 +265,19 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
     
     return 0;
 }
+
+int hosal_ota_read(uint32_t offset, uint8_t *buf, uint32_t buf_len)
+{
+    if (ota_parm == NULL) {
+        printf("please start ota first\r\n");
+        return -1;
+    }
+
+    if ((NULL == buf) || ((offset + buf_len) > ota_parm->file_size) || (buf_len == 0)) {
+        printf("parm is error!\r\n");
+        return -1;
+    }
+
+    return bl_mtd_read(ota_parm->mtd_handle, offset, buf_len, buf);
+}
+

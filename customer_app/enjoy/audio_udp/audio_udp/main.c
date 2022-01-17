@@ -553,14 +553,11 @@ static void system_thread_init()
 
 void main()
 {
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_main_stack[1024];
-
     bl_sys_init();
 
     system_thread_init();
     puts("[OS] proc_main_entry task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
 
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);

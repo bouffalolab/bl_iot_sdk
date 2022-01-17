@@ -33,8 +33,8 @@
 
 #include "include/wifi_mgmr_ext.h"
 #include "stateMachine.h"
-#include "os_hal.h"
 #include "lmac_mac.h"
+#include "bl_os_private.h"
 
 #define WIFI_MGMR_SCAN_ITEMS_MAX (50)
 #define WIFI_MGMR_PROFILES_MAX (1)
@@ -278,10 +278,10 @@ typedef struct wifi_mgmr {
     int profile_active_index;
 
     wifi_mgmr_scan_item_t scan_items[WIFI_MGMR_SCAN_ITEMS_MAX];
-    os_messagequeue_t mq;
+    BL_MessageQueue_t mq;
     uint8_t mq_pool[WIFI_MGMR_MQ_MSG_SIZE*WIFI_MGMR_MQ_MSG_COUNT];
     struct stateMachine m;
-    os_timer_t timer;
+    BL_Timer_t timer;
     wifi_mgmr_connect_ind_stat_info_t wifi_mgmr_stat_info;
     uint8_t ready;//TODO mgmr init process
     char country_code[3];
@@ -333,6 +333,6 @@ int wifi_mgmr_api_fw_tsen_reload(void);
 
 static inline int wifi_mgmr_scan_item_is_timeout(wifi_mgmr_t *mgmr, wifi_mgmr_scan_item_t *item)
 {
-    return ((unsigned int)os_tick_get() - (unsigned int)item->timestamp_lastseen) >= mgmr->scan_item_timeout ? 1 : 0;
+    return ((unsigned int)bl_os_get_time_ms() - (unsigned int)item->timestamp_lastseen) >= mgmr->scan_item_timeout ? 1 : 0;
 }
 #endif

@@ -58,7 +58,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         cmd = ("wifi_sta_connect", bssid, pwd)
         cmd_wifi_connect = ' '.join(cmd)
         dut.write(cmd_wifi_connect)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case3:connect wifi test successed')
         
         print('To reboot BL602')
@@ -70,7 +70,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_AES 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case4:connect LEDE_WPA_WPA2_AES successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -82,7 +82,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_TKIP 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case5:connect LEDE_WPA_WPA2_TKIP successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -94,7 +94,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_MIX 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case6:connect LEDE_WPA_WPA2_MIX successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -106,7 +106,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_MIX_MFPFORCE 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case7:connect LEDE_WPA_WPA2_MIX_MFPFORCE successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -129,7 +129,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_AES_MFPFORCE 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case9:connect LEDE_WPA_WPA2_AES_MFPFORCE successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -141,7 +141,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_AES_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case10:connect LEDE_WPA_WPA2_AES_MFPOPT successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -153,7 +153,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_TKIP_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case11:connect LEDE_WPA_WPA2_TKIP_MFPOPT successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -165,7 +165,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_WPA2_MIX_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case12:connect LEDE_WPA_WPA2_MIX_MFPOPT successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -177,7 +177,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_OPEN')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case13:connect LEDE_OPEN successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -189,7 +189,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WEP_OPEN 12345')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case14:connect LEDE_WEP_OPEN successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -201,7 +201,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WEP_SHARED 12345')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case15:connect LEDE_WEP_SHARED successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -213,7 +213,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_TKIP 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case16:connect LEDE_WPA_TKIP successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -225,7 +225,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_AES 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case17:connect LEDE_WPA_AES successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -237,7 +237,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA_MIX 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case18:connect LEDE_WPA_MIX successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -249,7 +249,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_TKIP 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case19:connect LEDE_WPA2_TKIP successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -261,7 +261,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_AES 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case20:connect LEDE_WPA2_AES successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -273,7 +273,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_MIX 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case21:connect LEDE_WPA2_MIX successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -296,7 +296,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_AES_MFPFORCE 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case23:connect LEDE_WPA2_AES_MFPFORCE successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -308,7 +308,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_MIX_MFPFORCE 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case24:connect LEDE_WPA2_MIX_MFPFORCE successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -320,7 +320,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_TKIP_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case26:connect LEDE_WPA2_TKIP_MFPOPT successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -332,7 +332,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_AES_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         print('case26:connect LEDE_WPA2_AES_MFPOPT successed, IP is %s' %ip)
         
         print('To reboot BL602')
@@ -344,7 +344,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
         time.sleep(0.5)
         dut.write('wifi_sta_connect LEDE_WPA2_MIX_MFPOPT 12345678')
         ip = dut.expect(re.compile(r"IP: (\S+)"), timeout=30)
-        dut.expect("Entering wifiConnected_IPOK state", timeout=20)
+        dut.expect("wifiConnected_IPOK", timeout=20)
         dut.write('wifi_sta_disconnect')
         time.sleep(2)
         dut.write('wifi_sta_connect LEDE_WPA2_MIX_MFPOPT 12345678')
@@ -361,16 +361,7 @@ def bl602_demo_wifi_manager_tc(env, extra_data):
 
     except Exception:
         dut.write('p 0')
-        print_out = ""
-        while True:
-            line_bytes = dut.readline()
-            if line_bytes:	
-                str_line = str(line_bytes, encoding="unicode_escape")
-                print (str_line)
-                print_out += str_line
-            else:
-                break
-        print(print_out)
+        dut.expect("sky", timeout=10)
         print('ENV_TEST_FAILURE: BL602 wifi manager test failed')
         raise
 

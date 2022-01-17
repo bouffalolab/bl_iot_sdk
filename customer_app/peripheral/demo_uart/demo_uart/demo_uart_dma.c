@@ -14,6 +14,19 @@ static uint8_t g_tx_buf[] = "Please input 16 bytes\r\n";
 static uint8_t g_rx_buf[16];
 
 /**
+ *  Define a UART device,
+ *  TX pin : 16/14
+ *  RX pin : 7/15
+ *  baud : 2000000
+ */
+     
+#ifdef CONF_USER_BL702
+HOSAL_UART_DEV_DECL(uart_dev_dma, 0, 14, 15, 2000000);
+#elif CONF_USER_BL602
+HOSAL_UART_DEV_DECL(uart_dev_dma, 0, 16, 7, 2000000);
+#endif
+
+/**
  * hal uart DMA RX interrupt callback
  */
 static int __uart_rx_dma_callback(void *p_arg)
@@ -48,34 +61,23 @@ void demo_hosal_uart_dma(int uart_id)
         .dma_buf = g_rx_buf,
         .dma_buf_size = sizeof(g_rx_buf),
     };
-
-    /**
-     *  Define a UART device,
-     *  TX pin : 16/14
-     *  RX pin : 7/15
-     *  baud : 2000000
-     */
-     
-#ifdef CONF_USER_BL702
-HOSAL_UART_DEV_DECL(uart_dev, uart_id, 14, 15, 2000000);
-#elif CONF_USER_BL602
-HOSAL_UART_DEV_DECL(uart_dev, uart_id, 16, 7, 2000000);
-#endif
+    
+    uart_dev_dma.config.uart_id = uart_id;
 
     /* uart init device */
-    hosal_uart_init(&uart_dev);
+    hosal_uart_init(&uart_dev_dma);
 
     /* Set DMA TX RX transmission complete interrupt callback */
-    hosal_uart_callback_set(&uart_dev, HOSAL_UART_TX_DMA_CALLBACK,
-                          __uart_tx_dma_callback, &uart_dev);
-    hosal_uart_callback_set(&uart_dev, HOSAL_UART_RX_DMA_CALLBACK,
-                          __uart_rx_dma_callback, &uart_dev);
+    hosal_uart_callback_set(&uart_dev_dma, HOSAL_UART_TX_DMA_CALLBACK,
+                          __uart_tx_dma_callback, &uart_dev_dma);
+    hosal_uart_callback_set(&uart_dev_dma, HOSAL_UART_RX_DMA_CALLBACK,
+                          __uart_rx_dma_callback, &uart_dev_dma);
 
     /* Start a UART TX DMA transfer */
-    hosal_uart_ioctl(&uart_dev, HOSAL_UART_DMA_TX_START, &txdam_cfg);
+    hosal_uart_ioctl(&uart_dev_dma, HOSAL_UART_DMA_TX_START, &txdam_cfg);
 
     /* Start a UART RX DMA transfer */
-    hosal_uart_ioctl(&uart_dev, HOSAL_UART_DMA_RX_START, &rxdam_cfg);
+    hosal_uart_ioctl(&uart_dev_dma, HOSAL_UART_DMA_RX_START, &rxdam_cfg);
 
     while (1) {
         /* Do not let the test return */

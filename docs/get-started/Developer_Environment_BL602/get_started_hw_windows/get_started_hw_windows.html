@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>快速入门 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档</title>
+  <title>快速入门 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.32-104-g52434dce6
+                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
               </div>
             
           
@@ -203,6 +203,12 @@ CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此�
 <p>请根据下方详细步骤，完成安装过程。</p>
 <div class="section" id="id6">
 <h3>编译环境的建立及代码的获取<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>安装驱动jtag转usb驱动（驱动安装前先将设备连接电脑可以自动识别到相关设备），驱动下载网站：<a class="reference external" href="https://zadig.akeo.ie/">https://zadig.akeo.ie/</a></li>
+</ul>
+<div class="figure">
+<img alt="" src="../../../_images/驱动安装2.png" />
+</div>
 <ul>
 <li><p class="first">安装串口工具，网上搜索串口工具 <code class="docutils literal notranslate"><span class="pre">sscom5.13.1</span></code>下载使用</p>
 </li>
@@ -280,6 +286,11 @@ CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此�
 <div class="figure">
 <img alt="" src="../../../_images/image-175.png" />
 </div>
+<div class="admonition note">
+<p class="first admonition-title">注解</p>
+<p class="last">如果编译失败，需要将编译工具链加入环境变量，如msys安装在C:msys64目录下，用户名是：admin，SDK在/d/bl_iot_sdk目录下，那么修改环境变量，在C：msys64homeadmin.bashrc中添加
+<code class="docutils literal notranslate"><span class="pre">PATH=/d/bl_iot_sdk/toolchain/riscv/MSYS/bin:$PATH</span></code> 并重启电脑。</p>
+</div>
 </div>
 <div class="section" id="id9">
 <h2>下载编译好的程序到板卡<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
@@ -341,7 +352,7 @@ CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此�
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.32-104-g52434dce6',
+            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -51,7 +51,7 @@ int bl_adc_tsen_init(void)
         .chopMode=ADC_CHOP_MOD_AZ_PGA_ON,               /*!< ADC chop mode select */
         .biasSel=ADC_BIAS_SEL_MAIN_BANDGAP,             /*!< ADC current form main bandgap or aon bandgap */
         .vcm=ADC_PGA_VCM_1V,                            /*!< ADC VCM value */
-        .vref=ADC_VREF_2V,                              /*!< ADC voltage reference */
+        .vref=ADC_VREF_2P0V,                            /*!< ADC voltage reference */
         .inputMode=ADC_INPUT_SINGLE_END,                /*!< ADC input signal type */
         .resWidth=ADC_DATA_WIDTH_16_WITH_256_AVERAGE,   /*!< ADC resolution and oversample rate */
         .offsetCalibEn=0,                               /*!< Offset calibration enable */
@@ -196,7 +196,7 @@ static void tsen_adc_init(void)
         .chopMode=ADC_CHOP_MOD_AZ_PGA_ON,               /*!< ADC chop mode select */
         .biasSel=ADC_BIAS_SEL_MAIN_BANDGAP,             /*!< ADC current form main bandgap or aon bandgap */
         .vcm=ADC_PGA_VCM_1V,                            /*!< ADC VCM value */
-        .vref=ADC_VREF_2V,                              /*!< ADC voltage reference */
+        .vref=ADC_VREF_2P0V,                            /*!< ADC voltage reference */
         .inputMode=ADC_INPUT_SINGLE_END,                /*!< ADC input signal type */
         .resWidth=ADC_DATA_WIDTH_16_WITH_256_AVERAGE,   /*!< ADC resolution and oversample rate */
         .offsetCalibEn=0,                               /*!< Offset calibration enable */

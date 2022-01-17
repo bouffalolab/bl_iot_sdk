@@ -12,9 +12,9 @@
 #include <bflb_ecdsa.h>
 #include <bl602_sec_eng.h>
 
-#include "mbedtls/entropy.h"
-#include "mbedtls/ctr_drbg.h"
-#include "mbedtls/ecdh.h"
+#include <mbedtls/entropy.h>
+#include <mbedtls/ctr_drbg.h>
+#include <mbedtls/ecdh.h>
 
 #define mbedtls_printf          printf
 
@@ -522,11 +522,8 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 
 void main(void)
 {
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_main_stack[1024];
-
     system_thread_init();
 
     puts("[OS] proc_main_entry task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
 }

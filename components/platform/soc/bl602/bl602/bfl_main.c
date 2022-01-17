@@ -53,6 +53,9 @@
 #include <libfdt.h>
 #include <device/vfs_uart.h>
 #include <blog.h>
+#ifdef EASYFLASH_ENABLE
+#include <easyflash.h>
+#endif
 #ifdef SYS_LOOPRT_ENABLE
 #include <looprt.h>
 #include <loopset.h>
@@ -186,9 +189,6 @@ static void app_main_entry(void *pvParameters)
 
 static void aos_loop_proc(void *pvParameters)
 {
-    static StackType_t app_stack[SYS_APP_TASK_STACK_SIZE];
-    static StaticTask_t app_task;
-    
 #ifdef SYS_LOOPRT_ENABLE
     static StackType_t proc_stack_looprt[512];
     static StaticTask_t proc_task_looprt;
@@ -196,6 +196,9 @@ static void aos_loop_proc(void *pvParameters)
     /*Init bloop stuff*/
     looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
     loopset_led_hook_on_looprt();
+#endif
+#ifdef EASYFLASH_ENABLE
+    easyflash_init();
 #endif
 
 #ifdef SYS_VFS_ENABLE
@@ -233,13 +236,12 @@ static void aos_loop_proc(void *pvParameters)
     }
 #endif
 
-    xTaskCreateStatic(app_main_entry,
+    xTaskCreate(app_main_entry,
             (char*)"main",
-            SYS_APP_TASK_STACK_SIZE,
+            SYS_APP_TASK_STACK_SIZE / sizeof(StackType_t),
             NULL,
             SYS_APP_TASK_PRIORITY,
-            app_stack,
-            &app_task);
+            NULL);
 
 #ifdef SYS_AOS_LOOP_ENABLE
     aos_loop_run();

@@ -159,7 +159,7 @@ struct bl_patternbuf {
 };
 
 struct bl_dbginfo {
-    os_mutex_t mutex;
+    BL_Mutex_t mutex;
     struct dbg_debug_dump_tag *buf;
     u32 dma_addr;
     int bufsz;

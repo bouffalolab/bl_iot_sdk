@@ -29,6 +29,10 @@
  */
 #ifndef __BL_IRQ_H__
 #define __BL_IRQ_H__
+
+#include "clic.h"
+#include "riscv_encoding.h"
+
 void bl_irq_enable(unsigned int source);
 void bl_irq_disable(unsigned int source);
 void bl_irq_pending_set(unsigned int source);

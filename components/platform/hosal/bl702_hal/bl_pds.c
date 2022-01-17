@@ -46,9 +46,14 @@ typedef __PACKED_STRUCT
 
 
 #define CLK_CFG_OFFSET             (8+(4+sizeof(SPI_Flash_Cfg_Type)+4)+4)
+#define CGEN_CFG0                  (~(uint8_t)((1<<1)|(1<<2)|(1<<4)))  // do not gate DMA[3], which affects M154_AES
+#define CGEN_CFG1                  (~(uint32_t)((1<<2)|(1<<3)|(1<<4)|(1<<5)|(1<<7)|(1<<12)|(1<<13)|(0x7FDE<<16)))  // do not gate sf_ctrl[11], uart0[16], timer[21]
+
+#define FAST_BOOT_TEST             0
+#define TEST_GPIO                  22
 
 
-#if !(defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
+#if !defined(CFG_PDS_OPTIMIZE)
 /* PDS0 Configuration */
 static const PDS_DEFAULT_LV_CFG_Type pdsCfgLevel0 = {
     .pdsCtl = {
@@ -854,14 +859,14 @@ static const PDS_DEFAULT_LV_CFG_Type pdsCfgLevel31 = {
 /* Cache Way Disable, will get from l1c register */
 static uint8_t cacheWayDisable;
 
-/* PSRAM IO Configuration, will get from glb register */
-static uint32_t psramIoCfg;
-
 /* EM Select, will get from glb register */
 static uint32_t emSel;
 
 /* Device Information, will get from efuse */
 static Efuse_Device_Info_Type devInfo;
+
+/* PSRAM IO Configuration, will get according to device information */
+static uint32_t psramIoCfg;
 
 /* Clock Configuration, will get from bootheader */
 static sys_clk_cfg_t clkCfg;
@@ -905,21 +910,36 @@ static void bl_pds_set_sf_ctrl(SPI_Flash_Cfg_Type *pFlashCfg)
     sfCtrlCfg.oeDelay = delay[index];
 }
 
+static void bl_pds_xtal_cfg(void)
+{
+    uint32_t tmpVal;
+    
+    // reduce xtal ready time
+    tmpVal = BL_RD_REG(AON_BASE, AON_XTAL_CFG);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_SEL_AON, 0);
+    BL_WR_REG(AON_BASE, AON_XTAL_CFG, tmpVal);
+    
+    // reduce peak current when wakeup
+    tmpVal = BL_RD_REG(AON_BASE, AON_TSEN);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_INT_SEL_AON, 0);
+    BL_WR_REG(AON_BASE, AON_TSEN, tmpVal);
+}
+
 
 void bl_pds_init(void)
 {
     // Get cache way disable setting
-    cacheWayDisable = (*(volatile uint32_t *)(L1C_BASE + 0x00) >> 8) & 0x0F;
+    cacheWayDisable = BL_GET_REG_BITS_VAL(BL_RD_REG(L1C_BASE, L1C_CONFIG), L1C_WAY_DIS);
     
-    // Get psram io configuration
-    psramIoCfg = *(volatile uint32_t *)(GLB_BASE + 0x88);
-    
-    // Get em select
-    emSel = *(volatile uint32_t *)(GLB_BASE + 0x7C);
+    // Get EM select
+    emSel = BL_RD_REG(GLB_BASE, GLB_SEAM_MISC);
     
     // Get device information from efuse
     EF_Ctrl_Read_Device_Info(&devInfo);
     devInfo.flash_cfg &= 0x03;
+    
+    // Get psram io configuration
+    psramIoCfg = ((devInfo.flash_cfg == 1 || devInfo.flash_cfg == 2) && devInfo.psram_cfg != 1) ? 0x3F : 0x00;
     
     // Get clock configuration from bootheader
     bl_flash_read_need_lock(CLK_CFG_OFFSET, (uint8_t *)(&clkCfg), sizeof(sys_clk_cfg_t));
@@ -933,14 +953,19 @@ void bl_pds_init(void)
     // Set SF control configuration
     bl_pds_set_sf_ctrl(flashCfgPtr);
     
-    // Select XTAL32K (XTAL32K is default on)
+    // Optimize xtal configuration
+    bl_pds_xtal_cfg();
+    
+    // Select 32K (RC32K and XTAL32K are both default on)
 #ifdef CFG_USE_XTAL32K
     HBN_32K_Sel(HBN_32K_XTAL);
+    HBN_Power_Off_RC32K();
 #else
     HBN_32K_Sel(HBN_32K_RC);
+    HBN_Power_Off_Xtal_32K();
 #endif
     
-    // Disable GPIO9 pull up/down to reduce PDS current, 0x4000F014[16]=0
+    // Disable GPIO9 pull up/down to reduce PDS/HBN current, 0x4000F014[16]=0
     HBN_Hw_Pu_Pd_Cfg(DISABLE);
     
     // Disable GPIO9 - GPIO13 IE/SMT, 0x4000F014[12:8]=5'b00000
@@ -1011,23 +1036,62 @@ static void ATTR_PDS_SECTION bl_pds_restore_flash(SPI_Flash_Cfg_Type *pFlashCfg)
     
     RomDriver_SF_Ctrl_Set_Flash_Image_Offset(flashImageOffset);
     RomDriver_SFlash_Cache_Read_Enable(pFlashCfg, pFlashCfg->ioMode&0xf, pFlashCfg->cReadSupport, cacheWayDisable);
+    
+    // Patch: restore psram io configuration
+    BL_WR_REG(GLB_BASE, GLB_GPIO_USE_PSRAM__IO, psramIoCfg);
 }
 
 // can be placed in flash, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_restore_tcm(void)
 {
+#if !defined(CFG_PDS_OPTIMIZE)
     extern uint8_t _tcm_load;
     extern uint8_t _tcm_run;
     extern uint8_t _tcm_run_end;
     uint32_t src = (uint32_t)&_tcm_load;
     uint32_t dst = (uint32_t)&_tcm_run;
     uint32_t end = (uint32_t)&_tcm_run_end;
+#else
+    extern uint8_t _tcm_load;
+    extern uint8_t _tcm_run;
+    extern uint8_t _pds_restore_tcm_run_end;
+    uint32_t src = (uint32_t)&_tcm_load;
+    uint32_t dst = (uint32_t)&_tcm_run;
+    uint32_t end = (uint32_t)&_pds_restore_tcm_run_end;
+#endif
     
     while(dst < end){
         *(uint32_t *)dst = *(uint32_t *)src;
         src += 4;
         dst += 4;
     }
+}
+
+// can be placed in flash, here placed in pds section to reduce fast boot time
+static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_set_gpio_high_z(void)
+{
+    uint32_t pin;
+    
+    // Set all gpio pads in High-Z state (GPIO0 - GPIO22)
+    for(pin=0; pin<=22; pin++){
+#if !defined(CFG_PDS_OPTIMIZE)
+        if(pin == 0 || pin == 1 || pin == 2 || pin == 9){
+            continue;
+        }
+        if(pin == 14 || pin == 15){
+            continue;
+        }
+#endif
+#if FAST_BOOT_TEST == 2
+        if(pin == TEST_GPIO){
+            continue;
+        }
+#endif
+        GLB_GPIO_Set_HZ(pin);
+    }
+    
+    // Set all psram pads in High-Z state
+    GLB_Set_Psram_Pad_HZ();
 }
 
 // can be placed in flash, here placed in pds section to reduce fast boot time
@@ -1070,15 +1134,12 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_restore_cpu_reg(void)
     );
 }
 
-#define FAST_BOOT_TEST        0
-#define FAST_RESTORE          0
-
 // must be placed in pds section
 static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
 {
 #if FAST_BOOT_TEST == 1 || FAST_BOOT_TEST == 2
     GLB_GPIO_Cfg_Type gpioCfg;
-    GLB_GPIO_Type gpioPin=31;
+    GLB_GPIO_Type gpioPin=TEST_GPIO;
     uint32_t *pOut=(uint32_t *)(GLB_BASE+GLB_GPIO_OUTPUT_OFFSET+((gpioPin>>5)<<2));
     uint32_t pos=gpioPin%32;
     
@@ -1100,30 +1161,51 @@ static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
     }
 #endif
     
-    __asm__ __volatile__(
-            "la gp, __global_pointer$\n\t"
-    );
-    
 #if FAST_BOOT_TEST == 2
     *pOut |= (1<<pos);
     RomDriver_BL702_Delay_US(1);
     *pOut &= ~(1<<pos);
 #endif
     
+    __asm__ __volatile__(
+            ".option push\n\t"
+            ".option norelax\n\t"
+            "la gp, __global_pointer$\n\t"
+            ".option pop\n\t"
+    );
+    
+#if !defined(CFG_PDS_OPTIMIZE)
     // Configure clock (must use rom driver, since tcm code is lost and flash is power down)
-#if FAST_RESTORE == 1
-    RomDriver_GLB_Set_System_CLK(GLB_DLL_XTAL_32M, GLB_SYS_CLK_DLL144M);
-    RomDriver_GLB_Set_SF_CLK(1, GLB_SFLASH_CLK_96M, 0);
-#else
     RomDriver_GLB_Set_System_CLK(clkCfg.xtal_type, clkCfg.pll_clk);
     RomDriver_GLB_Set_System_CLK_Div(clkCfg.hclk_div, clkCfg.bclk_div);
     RomDriver_GLB_Set_SF_CLK(1, clkCfg.flash_clk_type, clkCfg.flash_clk_div);
-#endif
     
 #if FAST_BOOT_TEST == 2
     *pOut |= (1<<pos);
     RomDriver_BL702_Delay_US(1);
     *pOut &= ~(1<<pos);
+#endif
+#else
+    // Power on XTAL32M, later will check whether it is ready for use
+    *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) |= (0x3 << 4);
+    
+    // Turn off RF
+    *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) &= ~(uint32_t)((1<<0)|(1<<1)|(1<<2));
+    
+    // Disable peripheral clock
+    *(volatile uint32_t *)(GLB_BASE + GLB_CLK_CFG1_OFFSET) &= ~(uint32_t)((1<<8)|(1<<13)|(1<<24)|(1<<25)|(1<<28));
+    *(volatile uint32_t *)(GLB_BASE + GLB_CLK_CFG2_OFFSET) &= ~(uint32_t)((1<<4)|(1<<23)|(0xFF<<24));
+    *(volatile uint32_t *)(GLB_BASE + GLB_CLK_CFG3_OFFSET) &= ~(uint32_t)((1<<8)|(1<<24));
+    
+    // Switch pka clock
+    *(volatile uint32_t *)(GLB_BASE + GLB_SWRST_CFG2_OFFSET) |= (0x1 << 24);
+    
+    // Gate peripheral clock
+    BL_WR_REG(GLB_BASE, GLB_CGEN_CFG0, CGEN_CFG0);
+    BL_WR_REG(GLB_BASE, GLB_CGEN_CFG1, CGEN_CFG1);
+    
+    // Select XCLK as flash clock, XCLK is RC32M at this moment
+    RomDriver_GLB_Set_SF_CLK(1, GLB_SFLASH_CLK_XCLK, 0);
 #endif
     
     // Configure flash (must use rom driver, since tcm code is lost and flash is power down)
@@ -1144,11 +1226,18 @@ static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
     *pOut &= ~(1<<pos);
 #endif
     
-#if FAST_RESTORE == 1
-    // Restore clock
-    RomDriver_GLB_Set_System_CLK(clkCfg.xtal_type, clkCfg.pll_clk);
-    RomDriver_GLB_Set_System_CLK_Div(clkCfg.hclk_div, clkCfg.bclk_div);
-    RomDriver_GLB_Set_SF_CLK(1, clkCfg.flash_clk_type, clkCfg.flash_clk_div);
+#if defined(CFG_PDS_OPTIMIZE)
+    // Set all gpio pads in High-Z state
+    bl_pds_set_gpio_high_z();
+    
+    // Wait until XTAL32M is ready for use
+    while(!BL_IS_REG_BIT_SET(BL_RD_REG(AON_BASE, AON_TSEN), AON_XTAL_RDY));
+    
+    // Select XTAL32M as root clock
+    RomDriver_HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_XTAL);
+    
+    // Turn on RF
+    *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) |= ((1<<0)|(1<<1)|(1<<2));
     
 #if FAST_BOOT_TEST == 2
     *pOut |= (1<<pos);
@@ -1161,11 +1250,8 @@ static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
     ((void (*)(void))0x23000000)();
 #endif
     
-    // Patch: restore psram io configuration
-    *(volatile uint32_t *)(GLB_BASE + 0x88) = psramIoCfg;
-    
-    // Restore em select
-    *(volatile uint32_t *)(GLB_BASE + 0x7C) = emSel;
+    // Restore EM select
+    BL_WR_REG(GLB_BASE, GLB_SEAM_MISC, emSel);
     
     // Restore cpu registers
     bl_pds_restore_cpu_reg();
@@ -1177,31 +1263,11 @@ static void bl_pds_IRQHandler(void)
 }
 
 // can be placed in flash, here placed in pds section to reduce fast boot time
-static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_set_gpio_high_z(void)
-{
-    uint32_t pin;
-    
-    // Set all gpio pads in High-Z state (GPIO0 - GPIO22, jtag & uart pads excluded)
-    for(pin=0; pin<=22; pin++){
-        if(pin == 0 || pin == 1 || pin == 2 || pin == 9){
-            continue;
-        }
-        if(pin == 14 || pin == 15){
-            continue;
-        }
-        GLB_GPIO_Set_HZ(pin);
-    }
-    
-    // Set all psram pads in High-Z state
-    GLB_Set_Psram_Pad_HZ();
-}
-
-// can be placed in flash, here placed in pds section to reduce fast boot time
 static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel, PDS_DEFAULT_LV_CFG_Type *pdsCfg, uint32_t *pdFlash, uint32_t *store)
 {
     if(pdsLevel == 31){
         ARCH_MemCpy_Fast(pdsCfg, &pdsCfgLevel31, sizeof(PDS_DEFAULT_LV_CFG_Type));
-#if !(defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
+#if !defined(CFG_PDS_OPTIMIZE)
     }else if(pdsLevel == 0){
         ARCH_MemCpy_Fast(pdsCfg, &pdsCfgLevel0, sizeof(PDS_DEFAULT_LV_CFG_Type));
     }else if(pdsLevel == 1){
@@ -1223,11 +1289,20 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
         return -1;
     }
     
+    __disable_irq();
+    
+#if defined(CFG_PDS_OPTIMIZE)
+    // Turn off RF
+    *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) &= ~(uint32_t)((1<<0)|(1<<1)|(1<<2));
+#endif
+    
+#if !defined(CFG_PDS_OPTIMIZE)
     if(pdsLevel == 31){
         HBN_Set_Ldo11rt_Drive_Strength(HBN_LDO11RT_DRIVE_STRENGTH_10_100UA);
     }else{
         HBN_Set_Ldo11rt_Drive_Strength(HBN_LDO11RT_DRIVE_STRENGTH_25_250UA);
     }
+#endif
     
     if(devInfo.flash_cfg == 1 || devInfo.flash_cfg == 2){
         pdsCfg->pdsCtl.puFlash = 1;
@@ -1260,21 +1335,7 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
         bl_irq_enable(PDS_WAKEUP_IRQn);
     }
     
-    // Disable global interrupt
-    __disable_irq();
-    
-#if 0
-    // Disable GPIO9 pull up/down to reduce PDS current, 0x4000F014[16]=0
-    HBN_Hw_Pu_Pd_Cfg(DISABLE);
-    
-    // Disable GPIO9 - GPIO13 IE/SMT, 0x4000F014[12:8]=5'b00000
-    HBN_Aon_Pad_IeSmt_Cfg(0);
-    
-    // Disable GPIO9 - GPIO13 wakeup, 0x4000F014[7:3]=5'b11111
-    HBN_Pin_WakeUp_Mask(0x1F);
-#endif
-    
-#if !(defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
+#if !defined(CFG_PDS_OPTIMIZE)
     bl_pds_set_gpio_high_z();
 #endif
     
@@ -1284,12 +1345,14 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
 // can be placed in tcm section, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_2(uint32_t pdFlash)
 {
+#if 0
     // Power down flash
     if(pdFlash){
-        SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
-        SFlash_Reset_Continue_Read(flashCfgPtr);
-        SFlash_Powerdown();
+        RomDriver_SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
+        RomDriver_SFlash_Reset_Continue_Read(flashCfgPtr);
+        RomDriver_SFlash_Powerdown();
     }
+#endif
     
     // Pull up flash pads
     if(devInfo.flash_cfg == 0){
@@ -1309,9 +1372,9 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_2(uint32_t pdFlash
     }
     
     // Select RC32M
-    HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_RC32M);
-    GLB_Power_Off_DLL();
-    AON_Power_Off_XTAL();
+    RomDriver_HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_RC32M);
+    RomDriver_GLB_Power_Off_DLL();
+    RomDriver_AON_Power_Off_XTAL();
 }
 
 // can be placed in tcm section, here placed in pds section to reduce fast boot time
@@ -1333,7 +1396,7 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_enter_do(PDS_DEFAULT_LV_CFG_Ty
 // can be placed in tcm section, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLevel, uint32_t pdFlash)
 {
-#if !(defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
+#if !defined(CFG_PDS_OPTIMIZE)
     // For pdsLevel >=4, clock and flash will be configured in fast boot entry
     if(pdsLevel < 4){
         // Select DLL or XTAL32M
@@ -1361,22 +1424,6 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLev
 // can be placed in flash, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_2(void)
 {
-#if (defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
-    bl_pds_set_gpio_high_z();
-#endif
-    
-#if 0
-    // Enable GPIO9 pull up/down, 0x4000F014[16]=1
-    HBN_Hw_Pu_Pd_Cfg(ENABLE);
-    
-    // Enable GPIO9 - GPIO13 IE/SMT, 0x4000F014[12:8]=5'b11111
-    HBN_Aon_Pad_IeSmt_Cfg(0x1F);
-    
-    // Enable GPIO9 - GPIO13 wakeup, 0x4000F014[7:3]=5'b00000
-    HBN_Pin_WakeUp_Mask(0);
-#endif
-    
-    // Enable global interrupt
     __enable_irq();
 }
 

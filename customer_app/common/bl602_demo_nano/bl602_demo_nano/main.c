@@ -471,13 +471,10 @@ static void system_thread_init()
 
 void main()
 {
-    static StackType_t proc_main_stack[1024];
-    static StaticTask_t proc_mian_task;
-
     bl_sys_init();
 
     system_thread_init();
 
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_mian_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
     tcpip_init(NULL, NULL);
 }

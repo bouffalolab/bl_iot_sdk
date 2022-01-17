@@ -147,6 +147,8 @@ void *pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
 void *pvPortCalloc(size_t numElements, size_t sizeOfElement); PRIVILEGED_FUNCTION;
 void *pvPortRealloc(void *pv, size_t xSize) PRIVILEGED_FUNCTION;
 void *pvPortMallocPsram( size_t xSize ) PRIVILEGED_FUNCTION;
+void* pvPortCallocPsram(size_t numElements, size_t sizeOfElement) PRIVILEGED_FUNCTION;
+void *pvPortReallocPsram(void *pv, size_t xWantedSize) PRIVILEGED_FUNCTION;
 void vPortFree( void *pv ) PRIVILEGED_FUNCTION;
 void vPortFreePsram( void *pv ) PRIVILEGED_FUNCTION;
 void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;

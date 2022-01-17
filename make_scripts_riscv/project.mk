@@ -122,9 +122,8 @@ COMPONENTS_RAL_PATH :=  $(dir $(foreach cd,$(COMPONENT_DIRS),                   
 COMPONENTS := $(sort $(foreach comp,$(COMPONENTS_RAL_PATH),$(lastword $(subst /, ,$(comp)))))
 COMPONENTS_REAL_PATH := $(patsubst %/,%,$(COMPONENTS_RAL_PATH))
 else
-PROJECT_BUILD_PATH := $(shell pwd)
-COMPONENTS := $(notdir $(PROJECT_BUILD_PATH))
-COMPONENTS_REAL_PATH := $(PROJECT_BUILD_PATH)/$(notdir $(PROJECT_BUILD_PATH))
+COMPONENTS := $(notdir $(PROJECT_PATH))
+COMPONENTS_REAL_PATH := $(PROJECT_PATH)/$(notdir $(PROJECT_PATH))
 include $(BL60X_SDK_PATH)/components.mk
 $(info use existing components.mk file)
 endif

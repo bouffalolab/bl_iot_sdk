@@ -43,15 +43,13 @@
 #include "wifi_mgmr_event.h"
 #include "wifi_netif.h"
 #include "include/wifi_mgmr_ext.h"
-#include "os_hal.h"
 #include "hal_sys.h"
-#include "hosal_adc.h"
-#include <bl_adc.h>
+
+#include "wifi_hosal.h"
+
 #include <bl_defs.h>
 
-#include <blog.h>
-BLOG_DECLARE(tcal_power)
-BLOG_DECLARE(scan)
+#include <bl_os_private.h>
 #define USER_UNUSED(a) ((void)(a))
 
 #define DEBUG_HEADER "[WF][SM] "
@@ -60,7 +58,7 @@ BLOG_DECLARE(scan)
 
 wifi_mgmr_t wifiMgmr;
 const static struct state
-    stateGlobal, 
+    stateGlobal,
     stateIdle,
     stateConnecting,
     stateConnectedIPNo, stateConnectedIPYes,
@@ -71,21 +69,21 @@ const static struct state
 
 static void printErrMsg( void *stateData, struct event *event )
 {
-   os_printf( "ENTERED ERROR STATE!" );
+   bl_os_printf( "ENTERED ERROR STATE!" );
 }
 
 static void _pending_task_set_safely(uint32_t bit)
 {
-    taskENTER_CRITICAL();
+    bl_os_enter_critical();
     wifiMgmr.pending_task.val |= bit;
-    taskEXIT_CRITICAL();
+    bl_os_exit_critical();
 }
 
 static void _pending_task_clr_safely(uint32_t bit)
 {
-    taskENTER_CRITICAL();
+    bl_os_enter_critical();
     wifiMgmr.pending_task.val &= (~bit);
-    taskEXIT_CRITICAL();
+    bl_os_exit_critical();
 }
 
 static int _pending_task_is_set(uint32_t bit)
@@ -146,7 +144,7 @@ char *wifi_mgmr_auth_to_str(uint8_t auth)
             return "Unknown";
         }
         break;
-        default: 
+        default:
         {
             return "Unknown";
         }
@@ -187,7 +185,7 @@ static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
         return false;
     }
 #ifdef DEBUG_SCAN_BEACON
-    os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, auth %s, cipher:%s \t, SSID %s\r\n",
+    bl_os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, auth %s, cipher:%s \t, SSID %s\r\n",
             scan->channel,
             scan->bssid[0],
             scan->bssid[1],
@@ -211,7 +209,7 @@ static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
     }
 
     /*update scan_items, we just store the newly found item, or update exsiting one*/
-    counter = os_tick_get();
+    counter = bl_os_get_time_ms();
     for (i = 0; i < sizeof(wifiMgmr.scan_items)/sizeof(wifiMgmr.scan_items[0]); i++) {
         if(wifiMgmr.scan_items[i].channel > wifiMgmr.channel_nums){
             memset(&wifiMgmr.scan_items[i], 0, sizeof(wifi_mgmr_scan_item_t));
@@ -233,9 +231,9 @@ static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
 
                 /*exactly the same scan item found*/
                 if ((scan->rssi < wifiMgmr.scan_items[i].rssi) &&
-                    ((int32_t)os_tick_get() - (int32_t)wifiMgmr.scan_items[i].timestamp_lastseen < SCAN_UPDATE_LIMIT_TIME_MS)) {
+                    ((int32_t)bl_os_get_time_ms() - (int32_t)wifiMgmr.scan_items[i].timestamp_lastseen < SCAN_UPDATE_LIMIT_TIME_MS)) {
 
-                    blog_debug_user(scan, "skip update %s with rssi %d\r\n", scan->ssid, scan->rssi);
+                    bl_os_log_debug("skip update %s with rssi %d\r\n", scan->ssid, scan->rssi);
 
                 } else {
 
@@ -287,13 +285,13 @@ static bool stateGlobalGuard_disable_autoreconnect( void *ch, struct event *even
     }
 
     if (&stateDisconnect == wifiMgmr.m.currentState) {
-        os_printf("Disable Autoreconnect in Disconnec State\r\n");
-        os_printf(DEBUG_HEADER "Removing STA interface...\r\n");
+        bl_os_printf("Disable Autoreconnect in Disconnec State\r\n");
+        bl_os_printf(DEBUG_HEADER "Removing STA interface...\r\n");
         bl_main_if_remove(wifiMgmr.wlan_sta.vif_index);
         return true;
     }
     /*we need set disable now for future use*/
-    os_printf("Disable Auto Reconnect\r\n");
+    bl_os_printf("Disable Auto Reconnect\r\n");
     wifi_mgmr_profile_autoreconnect_disable(&wifiMgmr, -1);
 
     /*we always return false, since we only store the info from beacon frame*/
@@ -310,7 +308,7 @@ static bool stateGlobalGuard_enable_autoreconnect( void *ch, struct event *event
     }
 
     /*we need set enable now for future use*/
-    os_printf("Enable Auto Reconnect\r\n");
+    bl_os_printf("Enable Auto Reconnect\r\n");
     wifi_mgmr_profile_autoreconnect_enable(&wifiMgmr, -1);
 
     /*we always return false, since we only store the info from beacon frame*/
@@ -323,7 +321,7 @@ static bool stateGlobalGuard_fw_disconnect(void *ch, struct event *event)
 
     msg = event->data;
     if (WIFI_MGMR_EVENT_FW_DISCONNECT == msg->ev) {
-        os_printf("Disconnect CMD\r\n");
+        bl_os_printf("Disconnect CMD\r\n");
         bl_main_disconnect();
     }
 
@@ -336,7 +334,7 @@ static bool stateGlobalGuard_fw_powersaving(void *ch, struct event *event)
 
     msg = event->data;
     if (WIFI_MGMR_EVENT_FW_POWERSAVING == msg->ev) {
-        os_printf("------>>>>>> Powersaving CMD, mode: %u\r\n", (unsigned int)msg->data1);
+        bl_os_printf("------>>>>>> Powersaving CMD, mode: %u\r\n", (unsigned int)msg->data1);
 //TODO mode check?
         bl_main_powersaving((int)msg->data1);
     }
@@ -362,7 +360,7 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     if (&stateConnecting == wifiMgmr.m.currentState ||
             &stateConnectedIPNo == wifiMgmr.m.currentState ||
             &stateDisconnect == wifiMgmr.m.currentState) {
-            os_printf("------>>>>>> Scan CMD Pending\r\n");
+            bl_os_printf("------>>>>>> Scan CMD Pending\r\n");
             //FIXME TODO we should keep scan channel list for PENDING scan
             _pending_task_set_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
             return false;
@@ -373,11 +371,11 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     ssid = &(ch_req->ssid);
 #if 0
     if (channel_num) {
-        printf("%s len:%d \r\n",__func__, channel_num);
+        bl_os_printf("%s len:%d \r\n",__func__, channel_num);
         for(uint8_t i = 0; i < channel_num ; i ++) {
-            printf("%d  ", ch_req->channels[i]);
+            bl_os_printf("%d  ", ch_req->channels[i]);
         }
-        printf("\r\n");
+        bl_os_printf("\r\n");
     }
 #endif
 
@@ -386,17 +384,17 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     if (&stateIdle != wifiMgmr.m.currentState &&
             &stateConnectedIPYes != wifiMgmr.m.currentState &&
             &stateSniffer != wifiMgmr.m.currentState) {
-            os_printf("------>>>>>> FW busy\r\n");
+            bl_os_printf("------>>>>>> FW busy\r\n");
             aos_post_event(EV_WIFI, CODE_WIFI_ON_SCAN_DONE, WIFI_SCAN_DONE_EVENT_BUSY);
             return false;
     }
 
     if (channel_num) {
-        os_printf("------>>>>>> Scan CMD fixed channels_num:%u\r\n", channel_num);
+        bl_os_printf("------>>>>>> Scan CMD fixed channels_num:%u\r\n", channel_num);
         bl_main_scan(&wifiMgmr.wlan_sta.netif, ch_req->channels, channel_num, ssid);
     } else {
         /*normal scan command*/
-        os_printf("------>>>>>> Scan CMD\r\n");
+        bl_os_printf("------>>>>>> Scan CMD\r\n");
         bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, ssid);
     }
 
@@ -406,7 +404,7 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
 static void stateGlobalAction( void *oldStateData, struct event *event,
       void *newStateData )
 {
-    os_printf(DEBUG_HEADER "Global Action\r\n");
+    bl_os_printf(DEBUG_HEADER "Global Action\r\n");
 }
 
 static bool stateGuard( void *ch, struct event *event )
@@ -423,7 +421,7 @@ static bool stateGuard( void *ch, struct event *event )
 static void stateAction( void *oldStateData, struct event *event,
       void *newStateData )
 {
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
@@ -459,7 +457,7 @@ static bool stateSnifferGuard_raw_send(void *ch, struct event *event)
     if (WIFI_MGMR_EVENT_FW_DATA_RAW_SEND == msg->ev) {
         pkt = msg->data1;
         len = (int)msg->data2;
-        blog_info("------>>>>>> RAW Send CMD, pkt %p, len %d\r\n", pkt, len);
+        bl_os_log_info("------>>>>>> RAW Send CMD, pkt %p, len %d\r\n", pkt, len);
         bl_main_raw_send(pkt, len);
     }
 
@@ -482,7 +480,7 @@ static bool stateGlobal_cfg_req(void *ch, struct event *event)
 
 static void stateConnectingEnter( void *stateData, struct event *event )
 {
-   os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
+   bl_os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
    aos_post_event(EV_WIFI, CODE_WIFI_ON_CONNECTING, 0);
 }
 
@@ -492,7 +490,7 @@ static bool stateGlobalGuard_AP(void *ev, struct event *event )
     wifi_mgmr_ap_msg_t *ap;
 
     if (wifiMgmr.inf_ap_enabled) {
-        os_printf(DEBUG_HEADER "%s: AP iface has started!\r\n", __func__);
+        bl_os_printf(DEBUG_HEADER "%s: AP iface has started!\r\n", __func__);
         return false;
     }
 
@@ -502,7 +500,7 @@ static bool stateGlobalGuard_AP(void *ev, struct event *event )
     }
 
     if (bl_main_if_add(0, &(wifiMgmr.wlan_ap.netif), &(wifiMgmr.wlan_ap.vif_index))) {
-        os_printf(DEBUG_HEADER "%s: add AP iface failed\r\n", __func__);
+        bl_os_printf(DEBUG_HEADER "%s: add AP iface failed\r\n", __func__);
         return false;
     }
     netifapi_netif_set_link_up(&(wifiMgmr.wlan_ap.netif));
@@ -510,9 +508,9 @@ void dhcpd_start(struct netif *netif);
     netifapi_netif_common(&(wifiMgmr.wlan_ap.netif), dhcpd_start, NULL);
 
     ap = (wifi_mgmr_ap_msg_t*)msg->data;
-    os_printf(DEBUG_HEADER "start AP with ssid %s;\r\n", ap->ssid);
-    os_printf(DEBUG_HEADER "              pwd  %s;\r\n", ap->psk);
-    os_printf(DEBUG_HEADER "              channel  %ld;\r\n", ap->channel);
+    bl_os_printf(DEBUG_HEADER "start AP with ssid %s;\r\n", ap->ssid);
+    bl_os_printf(DEBUG_HEADER "              pwd  %s;\r\n", ap->psk);
+    bl_os_printf(DEBUG_HEADER "              channel  %ld;\r\n", ap->channel);
     bl_main_apm_start(ap->ssid, ap->psk, ap->channel, wifiMgmr.wlan_ap.vif_index, ap->hidden_ssid, wifiMgmr.ap_bcn_int);
     wifiMgmr.inf_ap_enabled = 1;
     wifiMgmr.dns_server = dns_server_init();
@@ -533,16 +531,16 @@ static bool stateGlobalGuard_stop(void *ev, struct event *event )
     dns_server_deinit(wifiMgmr.dns_server);
     wifiMgmr.dns_server = NULL;
 
-    os_printf(DEBUG_HEADER "Stoping AP interface...\r\n");
-    bl_main_apm_stop(wifiMgmr.wlan_ap.vif_index);
-    os_printf(DEBUG_HEADER "Removing and deauth all sta client...\r\n");
+    bl_os_printf(DEBUG_HEADER "Removing and deauth all sta client...\r\n");
     bl_main_apm_remove_all_sta();
-    os_printf(DEBUG_HEADER "Removing AP interface...\r\n");
+    bl_os_printf(DEBUG_HEADER "Stoping AP interface...\r\n");
+    bl_main_apm_stop(wifiMgmr.wlan_ap.vif_index);
+    bl_os_printf(DEBUG_HEADER "Removing AP interface...\r\n");
     bl_main_if_remove(wifiMgmr.wlan_ap.vif_index);
-    os_printf(DEBUG_HEADER "Stopping DHCP on AP interface...\r\n");
+    bl_os_printf(DEBUG_HEADER "Stopping DHCP on AP interface...\r\n");
 err_t dhcp_server_stop(struct netif *netif);
     netifapi_netif_common(&(wifiMgmr.wlan_ap.netif), NULL, dhcp_server_stop);
-    os_printf(DEBUG_HEADER "Removing ETH interface ...\r\n");
+    bl_os_printf(DEBUG_HEADER "Removing ETH interface ...\r\n");
     netifapi_netif_remove(&(wifiMgmr.wlan_ap.netif));
     wifiMgmr.inf_ap_enabled = 0;
     aos_post_event(EV_WIFI, CODE_WIFI_ON_AP_STOPPED, 0);
@@ -559,7 +557,7 @@ static bool stateGlobalGuard_conf_max_sta(void *ev, struct event *event )
         return false;
     }
 
-    os_printf(DEBUG_HEADER "Conf max sta supported %lu...\r\n", (uint32_t)msg->data1);
+    bl_os_printf(DEBUG_HEADER "Conf max sta supported %lu...\r\n", (uint32_t)msg->data1);
     bl_main_conf_max_sta((uint32_t)msg->data1);
 
     return false;
@@ -569,7 +567,7 @@ static bool stateGlobalGuard_conf_max_sta(void *ev, struct event *event )
 static int auto_repeat = 0;
 static void trigger_auto_denoise(void* arg)
 {
-    //Continuously check the microwave and try to denoise 
+    //Continuously check the microwave and try to denoise
     if (auto_repeat) {
 int wifi_mgmr_api_denoise_enable(void);
         wifi_mgmr_api_denoise_enable();
@@ -612,12 +610,12 @@ static bool stateGlobalGuard_denoise(void *ev, struct event *event )
 
 static void stateExit( void *stateData, struct event *event )
 {
-   os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateData);
+   bl_os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateData);
 }
 
 static void stateEnter( void *stateData, struct event *event )
 {
-   os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
+   bl_os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
 }
 
 const static struct state stateGlobal = {
@@ -683,7 +681,7 @@ static bool stateIdleGuard_connect(void *ev, struct event *event )
         return false;
     }
     if (bl_main_if_add(1, &wifiMgmr.wlan_sta.netif, &wifiMgmr.wlan_sta.vif_index)) {
-        os_printf(DEBUG_HEADER "%s: add STA iface failed\r\n", __func__);
+        bl_os_printf(DEBUG_HEADER "%s: add STA iface failed\r\n", __func__);
         return false;
     }
     return true;
@@ -712,16 +710,16 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event,
     profile_msg = (wifi_mgmr_profile_msg_t*)msg->data;
     profile_msg->ssid_tail[0] = '\0';
     profile_msg->psk_tail[0] = '\0';
-    os_printf(DEBUG_HEADER "Action Connect\r\n");
-    os_printf("           ssid %s\r\n", profile_msg->ssid);
-    os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
-    os_printf("           passphr %s\r\n", profile_msg->passphr);
-    os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
-    os_printf("           psk %s\r\n", profile_msg->psk);
-    os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
-    os_printf("           band %d\r\n", (uint8_t)profile_msg->band);
-    os_printf("           freq %d\r\n", (uint16_t)profile_msg->freq);
-    os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+    bl_os_printf(DEBUG_HEADER "Action Connect\r\n");
+    bl_os_printf("           ssid %s\r\n", profile_msg->ssid);
+    bl_os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
+    bl_os_printf("           passphr %s\r\n", profile_msg->passphr);
+    bl_os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
+    bl_os_printf("           psk %s\r\n", profile_msg->psk);
+    bl_os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
+    bl_os_printf("           band %d\r\n", (uint8_t)profile_msg->band);
+    bl_os_printf("           freq %d\r\n", (uint16_t)profile_msg->freq);
+    bl_os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
             profile_msg->bssid[0],
             profile_msg->bssid[1],
             profile_msg->bssid[2],
@@ -729,10 +727,10 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event,
             profile_msg->bssid[4],
             profile_msg->bssid[5]
     );
-    os_printf("           dhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
+    bl_os_printf("           dhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
     wifi_mgmr_profile_add(&wifiMgmr, profile_msg, -1);
 
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
@@ -773,7 +771,7 @@ static bool stateIfaceDownGuard_phyup(void *ev, struct event *event )
 
     msg = event->data;
     if (ev != (void*)msg->ev) {
-        os_printf(DEBUG_HEADER "state mismatch\r\n");
+        bl_os_printf(DEBUG_HEADER "state mismatch\r\n");
         return false;
     }
 
@@ -802,7 +800,7 @@ const static struct state stateIfaceDown = {
 /********************section for connected but still no IP address*************************/
 typedef struct connectedIPNoData {
     char name[32];//all the state data must start with name field
-    os_timer_t timer;//used for timeout detect on obtain IP address
+    BL_Timer_t timer;//used for timeout detect on obtain IP address
 } connectedIPNoData_t;
 static connectedIPNoData_t stateConnectedIPNo_data = {
     .name = "wifiConnected_ipObtaining",
@@ -810,7 +808,7 @@ static connectedIPNoData_t stateConnectedIPNo_data = {
 
 typedef struct tsen_reload_data {
     char name[32];//all the state data must start with name field
-    os_timer_t timer;//used for timeout detect on obtain IP address
+    BL_Timer_t timer;//used for timeout detect on obtain IP address
 } tsen_reload_data_t;
 static tsen_reload_data_t state_tsen_reload_data = {
     .name = "wifi tsen reload",
@@ -834,26 +832,25 @@ static bool stateConnectedIPNoGuard_disconnect(void *ch, struct event *event )
 static void stateConnectedIPNoAction_ipgot(void *oldStateData, struct event *event,
       void *newStateData )
 {
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
 }
 
-static void ip_obtaining_timeout(timer_cb_arg_t data)
+static void ip_obtaining_timeout(void *data)
 {
-    connectedIPNoData_t *stateData = os_timer_data(data);
+    connectedIPNoData_t *stateData = (connectedIPNoData_t *)data;
 
     (void)stateData;
-    //os_timer_delete_nodelay(&(stateData->timer));//detach no stop
 
-    os_printf(DEBUG_HEADER "IP obtaining timeout\r\n");
+    bl_os_printf(DEBUG_HEADER "IP obtaining timeout\r\n");
     wifi_mgmr_api_fw_disconnect();
 }
 
-static void __reload_tsen(timer_cb_arg_t data)
+static void __reload_tsen(void *data)
 {
-    uint32_t *stateData = os_timer_data(data);
+    uint32_t *stateData = (uint32_t *)data;
 
     (void)stateData;
 
@@ -871,25 +868,26 @@ typedef volatile struct{
 extern tcal_param_struct* tcal_param;
 static void __run_reload_tsen(void)
 {
+#ifdef CFG_CHIP_BL602
     static int call_tcal_once = 0;
     int16_t temp = 0;
     extern void phy_tcal_callback(int16_t temperature);
 
-    if (&stateConnecting == wifiMgmr.m.currentState || &stateDisconnect == wifiMgmr.m.currentState || &stateConnectedIPYes == wifiMgmr.m.currentState || 
+    if (&stateConnecting == wifiMgmr.m.currentState || &stateDisconnect == wifiMgmr.m.currentState || &stateConnectedIPYes == wifiMgmr.m.currentState ||
             &stateSniffer == wifiMgmr.m.currentState || &stateConnectedIPNo == wifiMgmr.m.currentState) {
 
         if (tcal_param->en_tcal) {
 
 #ifdef CONF_ADC_ENABLE_TSEN
             hosal_adc_dev_t *adc;
-            adc = hosal_adc_device_get();
+            adc = wifi_hosal_adc_device_get();
             if (NULL == adc) {
-                blog_warn("please init tsen\r\n");
+                bl_os_log_warn("please init tsen\r\n");
                 return;
             }
-            temp = hosal_adc_tsen_value_get(adc);
+            temp = wifi_hosal_adc_tsen_value_get(adc);
 #endif
-            blog_debug_user(tcal_power, "temp is %u\r\n", temp);
+            bl_os_log_debug("temp is %u\r\n", temp);
             phy_tcal_callback(temp);
         } else {
             if (0 == call_tcal_once) {
@@ -899,13 +897,13 @@ static void __run_reload_tsen(void)
         }
         return ;
     }
-
+#endif
     return;
 
 }
 
 
-static void __sta_setup_ip(void)
+static void __sta_setup_ip(bool use_dhcp)
 {
     uint32_t ip, mask, gw, dns1, dns2;
     ip4_addr_t addr_ipaddr;
@@ -913,17 +911,17 @@ static void __sta_setup_ip(void)
     ip4_addr_t addr_gw;
     ip_addr_t addr_val;
 
-    taskENTER_CRITICAL();
+    bl_os_enter_critical();
     ip = wifiMgmr.wlan_sta.ipv4.ip;
     mask = wifiMgmr.wlan_sta.ipv4.mask;
     gw = wifiMgmr.wlan_sta.ipv4.gw;
     dns1 = wifiMgmr.wlan_sta.ipv4.dns1;
     dns2 = wifiMgmr.wlan_sta.ipv4.dns2;
-    taskEXIT_CRITICAL();
+    bl_os_exit_critical();
 
     if (ip) {
         /*use static IP address*/
-        os_printf(DEBUG_HEADER "Static IP Starting...%p\r\n", &(wifiMgmr.wlan_sta.netif));
+        bl_os_printf(DEBUG_HEADER "Static IP Starting...%p\r\n", &(wifiMgmr.wlan_sta.netif));
 
         ip4_addr_set_u32(&addr_ipaddr, dns1);
         ip_addr_copy_from_ip4(addr_val, addr_ipaddr);
@@ -939,26 +937,34 @@ static void __sta_setup_ip(void)
         netifapi_netif_set_addr(&(wifiMgmr.wlan_sta.netif), &addr_ipaddr, &addr_netmask, &addr_gw);
     } else {
         /*use DHCP*/
-        os_printf(DEBUG_HEADER "DHCP Starting...%p\r\n", &(wifiMgmr.wlan_sta.netif));
-        wifi_netif_dhcp_start(&(wifiMgmr.wlan_sta.netif));
+        if (use_dhcp) {
+            bl_os_printf(DEBUG_HEADER "DHCP Starting...%p\r\n", &(wifiMgmr.wlan_sta.netif));
+            wifi_netif_dhcp_start(&(wifiMgmr.wlan_sta.netif));
+        }
     }
 }
 
 static void stateConnectedIPNoEnter(void *stateData, struct event *event )
 {
     connectedIPNoData_t *stateConnectedIPNo_data;
+    wifi_mgmr_profile_msg_t profile = {};
+    uint8_t use_dhcp = 1;
+    if (0 == wifi_mgmr_profile_get(&wifiMgmr, &profile)) {
+        use_dhcp = profile.dhcp_use;
+    }
 
     stateConnectedIPNo_data = stateData;
-    os_printf(DEBUG_HEADER "Entering %s state\r\n", stateConnectedIPNo_data->name);
-    os_timer_init(&(stateConnectedIPNo_data->timer),
-        "wifi IP obtaining",
-        ip_obtaining_timeout,
-        stateConnectedIPNo_data,
-        15000,//timeout 15 seconds for ip obtaining
-        OS_TIMER_TYPE_ONESHOT
-    );
-    os_timer_start(&(stateConnectedIPNo_data->timer));
-    __sta_setup_ip();
+    bl_os_printf(DEBUG_HEADER "Entering %s state\r\n", stateConnectedIPNo_data->name);
+
+    /* timeout 15 seconds for ip obtaining */
+    if (use_dhcp) {
+        stateConnectedIPNo_data->timer = bl_os_timer_create(ip_obtaining_timeout, stateConnectedIPNo_data);
+        bl_os_timer_start_once(stateConnectedIPNo_data->timer, 15, 0);
+    } else {
+        stateConnectedIPNo_data->timer = NULL;
+    }
+
+    __sta_setup_ip(use_dhcp);
     aos_post_event(EV_WIFI, CODE_WIFI_ON_CONNECTED, 0);
 }
 
@@ -967,15 +973,14 @@ static void periodic_tsen_reload(void *stateData, struct event *event )
     tsen_reload_data_t *state_tsen_data;
 
     state_tsen_data = stateData;
-    os_printf(DEBUG_HEADER "reload tsen \r\n");
-    os_timer_init(&(state_tsen_data->timer),
-        "wifi reload tsen",
-        __reload_tsen,
-        state_tsen_data,
-        TSEN_RELOAD_MS,
-        OS_TIMER_TYPE_REPEATED
-    );
-    os_timer_start(&(state_tsen_data->timer));
+    bl_os_printf(DEBUG_HEADER "reload tsen \r\n");
+ 
+    state_tsen_data->timer = bl_os_timer_create(__reload_tsen,
+                                                          state_tsen_data);
+    /* timeout 15 seconds for ip obtaining */
+    bl_os_timer_start_periodic(state_tsen_data->timer,
+                                         (TSEN_RELOAD_MS / 1000),
+                                         ((TSEN_RELOAD_MS % 1000) * 1e6));
 }
 
 
@@ -984,8 +989,11 @@ static void stateConnectedIPNoExit(void *stateData, struct event *event )
     connectedIPNoData_t *stateConnectedIPNo_data;
 
     stateConnectedIPNo_data = stateData;
-    os_printf(DEBUG_HEADER "Exiting %s state\r\n", stateConnectedIPNo_data->name);
-    os_timer_delete_nodelay(&(stateConnectedIPNo_data->timer));//detach no stop
+    bl_os_printf(DEBUG_HEADER "Exiting %s state\r\n", stateConnectedIPNo_data->name);
+    if (stateConnectedIPNo_data->timer) {
+        bl_os_timer_delete(stateConnectedIPNo_data->timer, BL_OS_NO_WAITING);
+        stateConnectedIPNo_data->timer = NULL;
+    }
 }
 
 const static struct state stateConnectedIPNo = {
@@ -1043,7 +1051,7 @@ static bool stateConnectedIPYesGuard_rcconfig( void *ch, struct event *event )
         return false;
     }
 
-    os_printf(DEBUG_HEADER "rate config, use sta_idx 0, rate_config %04X\r\n", (unsigned int)(msg->data1));
+    bl_os_printf(DEBUG_HEADER "rate config, use sta_idx 0, rate_config %04X\r\n", (unsigned int)(msg->data1));
     bl_main_rate_config(0, (uint32_t)msg->data1);
     /*will never trigger state change, since we just want to trigger the guard*/
     return false;
@@ -1055,7 +1063,7 @@ static void stateConnectedIPYes_action( void *oldStateData, struct event *event,
     ip4_addr_t addr_ipaddr;
 
     ip4_addr_set_any(&addr_ipaddr);
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
@@ -1065,10 +1073,10 @@ static void stateConnectedIPYes_action( void *oldStateData, struct event *event,
 
 static void stateConnectedIPYes_enter( void *stateData, struct event *event )
 {
-    os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
+    bl_os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
     aos_post_event(EV_WIFI, CODE_WIFI_ON_GOT_IP, 0);
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
-        os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
+        bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
         bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, NULL);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
@@ -1076,7 +1084,7 @@ static void stateConnectedIPYes_enter( void *stateData, struct event *event )
 
 static void stateConnectedIPYes_exit( void *stateData, struct event *event )
 {
-    os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateData);
+    bl_os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateData);
 
 
     //FIXME TODO ugly hack
@@ -1106,7 +1114,7 @@ const static struct state stateConnectedIPYes = {
 /********************section for disconnect *************************/
 typedef struct disconnectData {
     char name[32];//all the state data must start with name field
-    os_timer_t timer;
+    void *timer;
     uint8_t timer_started;
     wifi_mgmr_profile_msg_t profile_msg;
 } disconnectData_t;
@@ -1126,7 +1134,7 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
 
     stateDisconnect_data = (disconnectData_t*)oldStateData;
     profile_msg = &(stateDisconnect_data->profile_msg);
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
@@ -1155,16 +1163,16 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
       bssid = profile_msg->bssid;
     }
 
-    os_printf(DEBUG_HEADER " Action Connect\r\n");
-    os_printf("           ssid %s\r\n", profile_msg->ssid);
-    os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
-    os_printf("           passphr %s\r\n", profile_msg->passphr);
-    os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
-    os_printf("           psk %s\r\n", profile_msg->psk);
-    os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
-    os_printf("           band %d\r\n", (uint8_t)band);
-    os_printf("           freq %d\r\n", (uint16_t)freq);
-    os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+    bl_os_printf(DEBUG_HEADER " Action Connect\r\n");
+    bl_os_printf("           ssid %s\r\n", profile_msg->ssid);
+    bl_os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
+    bl_os_printf("           passphr %s\r\n", profile_msg->passphr);
+    bl_os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
+    bl_os_printf("           psk %s\r\n", profile_msg->psk);
+    bl_os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
+    bl_os_printf("           band %d\r\n", (uint8_t)band);
+    bl_os_printf("           freq %d\r\n", (uint16_t)freq);
+    bl_os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
             bssid ? bssid[0] : 0,
             bssid ? bssid[1] : 0,
             bssid ? bssid[2] : 0,
@@ -1173,7 +1181,7 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
             bssid ? bssid[5] : 0
     );
 
-    
+
 
     //TODO Other security support
     bl_main_connect((const uint8_t *)profile_msg->ssid, profile_msg->ssid_len,
@@ -1189,25 +1197,24 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
 static void stateDisconnect_action_idle( void *oldStateData, struct event *event,
       void *newStateData )
 {
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+    bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
             (char*)oldStateData,
             (char*)newStateData
     );
-    os_printf(DEBUG_HEADER "Removing STA interface...\r\n");
+    bl_os_printf(DEBUG_HEADER "Removing STA interface...\r\n");
     bl_main_if_remove(wifiMgmr.wlan_sta.vif_index);
 }
 
-static void disconnect_retry(timer_cb_arg_t data)
+static void disconnect_retry(void *data)
 {
-    disconnectData_t *stateData = os_timer_data(data);
-    //os_timer_delete_nodelay(&(stateData->timer));
+    disconnectData_t *stateData = (disconnectData_t *)data;
 
     /*XXX may in the handler mode*/
     /*TODO use EVENT to copy profile*/
     if (wifi_mgmr_profile_get(&wifiMgmr, &(stateData->profile_msg))) {
-        os_printf(DEBUG_HEADER "Retry Again --->>> retry Abort, since profile copy failed\r\n");
+        bl_os_printf(DEBUG_HEADER "Retry Again --->>> retry Abort, since profile copy failed\r\n");
     } else {
-        os_printf(DEBUG_HEADER "Retry Again --->>> retry connect\r\n");
+        bl_os_printf(DEBUG_HEADER "Retry Again --->>> retry connect\r\n");
         wifi_mgmr_api_reconnect();
     }
 }
@@ -1218,32 +1225,29 @@ static void stateDisconnect_enter(void *stateData, struct event *event)
     disconnectData_t *stateDisconnect_data;
 
     stateDisconnect_data = stateData;
-    os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
+    bl_os_printf(DEBUG_HEADER "Entering %s state\r\n", (char *)stateData);
 
     if (wifi_mgmr_profile_autoreconnect_is_enabled(&wifiMgmr, -1)) {
-        os_timer_init(&(stateDisconnect_data->timer),
-            "wifi disconnect",
-            disconnect_retry,
-            stateDisconnect_data,
-            2000,//timeout 6 seconds for reconnect
-            OS_TIMER_TYPE_ONESHOT
-        );
-        os_printf(DEBUG_HEADER "Will retry in 2000 ticks\r\n");
-        os_timer_start(&(stateDisconnect_data->timer));
+        stateDisconnect_data->timer = bl_os_timer_create(disconnect_retry,
+                                                                   stateDisconnect_data);
+        bl_os_timer_start_once(stateDisconnect_data->timer, 2, 0);
         stateDisconnect_data->timer_started = 1;
     } else {
-        os_printf(DEBUG_HEADER "Will NOT retry connect\r\n");
+        bl_os_printf(DEBUG_HEADER "Will NOT retry connect\r\n");
     }
     aos_post_event(EV_WIFI, CODE_WIFI_ON_DISCONNECT, wifiMgmr.wifi_mgmr_stat_info.status_code);
+
+#ifdef CFG_CHIP_BL602
     if (0 == bl60x_check_mac_status(&is_ok) && 0 == is_ok) {
         aos_post_event(EV_WIFI, CODE_WIFI_ON_EMERGENCY_MAC, 0);
         //TODO Fix ugly header file hack
 void helper_record_dump();
             helper_record_dump();
     }
+#endif
 
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
-        os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
+        bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
         bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, NULL);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
@@ -1253,13 +1257,13 @@ static void stateDisconnect_exit(void *stateData, struct event *event)
 {
     disconnectData_t *stateDisconnect_data = stateData;
 
-    os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateDisconnect_data);
+    bl_os_printf(DEBUG_HEADER "Exiting %s state\r\n", (char *)stateDisconnect_data);
     if (stateDisconnect_data->timer_started) {
-        os_printf("Delete Timer.\r\n");
-        os_timer_delete_nodelay(&(stateDisconnect_data->timer));
+        bl_os_printf("Delete Timer.\r\n");
+        bl_os_timer_delete(stateDisconnect_data->timer, BL_OS_NO_WAITING);
         stateDisconnect_data->timer_started = 0;
     } else {
-        os_printf("Delete Timer Skipped\r\n");
+        bl_os_printf("Delete Timer Skipped\r\n");
     }
 }
 
@@ -1294,12 +1298,13 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg, int use_block)
     int ret;
 
     while (0 == wifiMgmr.ready) {
-        os_printf("Wait Wi-Fi Mgmr Start up...\r\n");
-        os_thread_delay(20);
+        bl_os_printf("Wait Wi-Fi Mgmr Start up...\r\n");
+        bl_os_msleep(20);
     }
-    ret = use_block ? os_mq_send(&(wifiMgmr.mq), msg, msg->len) : os_mq_send_nowait(&(wifiMgmr.mq), msg, msg->len);
+    ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, msg->len, BL_OS_WAITING_FOREVER, 0) :
+                      bl_os_queue_send(wifiMgmr.mq, msg, msg->len);
     if (ret) {
-        os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
+        bl_os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
         return -1;
     }
     return 0;
@@ -1364,7 +1369,7 @@ void wifi_mgmr_start(void)
 
     /*TODO: use another way based on event sys?*/
     hal_sys_capcode_update(255, 255);
-    
+
     /*periodic reload tsen */
     periodic_tsen_reload(&state_tsen_reload_data, NULL);
 
@@ -1374,10 +1379,10 @@ void wifi_mgmr_start(void)
 
     /*Run the event handler loop*/
     while (1) {
-        if (0 == os_mq_recv(&(wifiMgmr.mq), msg, WIFI_MGMR_MQ_MSG_SIZE)) {
+        if (0 == bl_os_queue_recv(wifiMgmr.mq, msg, WIFI_MGMR_MQ_MSG_SIZE, BL_OS_WAITING_FOREVER)) {
 
 handle_msg:
-            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP : 
+            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
                 (msg->ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
             if (msg->ev == WIFI_MGMR_EVENT_APP_RELOAD_TSEN) {
                 __run_reload_tsen();
@@ -1400,25 +1405,16 @@ static void _wifi_mgmr_entry(void *pvParameters)
 void wifi_mgmr_start_background(wifi_conf_t *conf)
 {
     wifi_mgmr_drv_init(conf);
-    os_thread_create("wifi_mgmr",
-            _wifi_mgmr_entry,
-            mgmr_TASK_PRIORITY,
-            1024 * 3,
-            NULL
-    );
+    bl_os_task_create("wifi_mgmr", _wifi_mgmr_entry, 1024 * 3, NULL, mgmr_TASK_PRIORITY, NULL);
 }
 
 int wifi_mgmr_init(void)
 {
     int ret;
 
-    ret = os_mq_init(
-            &(wifiMgmr.mq),
-            "wifiMgmr",
-            wifiMgmr.mq_pool,
-            WIFI_MGMR_MQ_MSG_SIZE,
-            sizeof(wifiMgmr.mq_pool)
-    );
+    wifiMgmr.mq = bl_os_queue_create(sizeof(wifiMgmr.mq_pool) / WIFI_MGMR_MQ_MSG_SIZE, WIFI_MGMR_MQ_MSG_SIZE);
+    assert((ret = (NULL != wifiMgmr.mq)));
+
     wifiMgmr.ready = 1;//TODO check ret
     wifiMgmr.ap_bcn_int = 100;
     wifiMgmr.ap_info_ttl_curr = -1;
@@ -1521,7 +1517,7 @@ void wifi_mgmr_set_connect_stat_info(struct wifi_event_sm_connect_ind *ind, uint
             } else if (ind->center_freq >= 2412 && ind->center_freq <= 2472) {
                 wifiMgmr.channel = (ind->center_freq - 2412)/5 + 1;
             } else {
-                blog_info("err: chan is invalid\r\n");
+                bl_os_log_info("err: chan is invalid\r\n");
                 wifiMgmr.channel = 0;
             }
             break;
@@ -1529,13 +1525,13 @@ void wifi_mgmr_set_connect_stat_info(struct wifi_event_sm_connect_ind *ind, uint
         case PHY_BAND_5G:
             break;
         default:
-            blog_info("err: chan is invalid\r\n");
+            bl_os_log_info("err: chan is invalid\r\n");
     }
 
-    blog_info("[RX] wifi_mgmr_set_connect_stat_info, wifiMgmr.wifi_mgmr_stat_info:\r\n");
-    blog_info("[RX]   status_code %u\r\n", wifiMgmr.wifi_mgmr_stat_info.status_code);
-    blog_info("[RX]   reason_code %u\r\n", wifiMgmr.wifi_mgmr_stat_info.reason_code);
-    blog_info("[RX]   MAC %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+    bl_os_log_info("[RX] wifi_mgmr_set_connect_stat_info, wifiMgmr.wifi_mgmr_stat_info:\r\n");
+    bl_os_log_info("[RX]   status_code %u\r\n", wifiMgmr.wifi_mgmr_stat_info.status_code);
+    bl_os_log_info("[RX]   reason_code %u\r\n", wifiMgmr.wifi_mgmr_stat_info.reason_code);
+    bl_os_log_info("[RX]   MAC %02X:%02X:%02X:%02X:%02X:%02X\r\n",
              wifiMgmr.wifi_mgmr_stat_info.bssid[0],
              wifiMgmr.wifi_mgmr_stat_info.bssid[1],
              wifiMgmr.wifi_mgmr_stat_info.bssid[2],
@@ -1543,9 +1539,9 @@ void wifi_mgmr_set_connect_stat_info(struct wifi_event_sm_connect_ind *ind, uint
              wifiMgmr.wifi_mgmr_stat_info.bssid[4],
              wifiMgmr.wifi_mgmr_stat_info.bssid[5]
     );
-    blog_info("[RX]   band %u\r\n", wifiMgmr.wifi_mgmr_stat_info.chan_band);
-    blog_info("[RX]   center_freq %u\r\n", wifiMgmr.wifi_mgmr_stat_info.chan_freq);
-    blog_info("[RX]   type_ind %u\r\n", wifiMgmr.wifi_mgmr_stat_info.type_ind);
+    bl_os_log_info("[RX]   band %u\r\n", wifiMgmr.wifi_mgmr_stat_info.chan_band);
+    bl_os_log_info("[RX]   center_freq %u\r\n", wifiMgmr.wifi_mgmr_stat_info.chan_freq);
+    bl_os_log_info("[RX]   type_ind %u\r\n", wifiMgmr.wifi_mgmr_stat_info.type_ind);
 }
 
 int wifi_mgmr_set_country_code_internal(char *country_code)
@@ -1554,7 +1550,7 @@ int wifi_mgmr_set_country_code_internal(char *country_code)
     strncpy(wifiMgmr.country_code, country_code, sizeof(wifiMgmr.country_code));
     wifiMgmr.country_code[2] = '\0';
     wifiMgmr.channel_nums = bl_main_get_channel_nums();
-    blog_info("country code:%s, support channel nums:%d\r\n", wifiMgmr.country_code, wifiMgmr.channel_nums);
+    bl_os_log_info("country code:%s, support channel nums:%d\r\n", wifiMgmr.country_code, wifiMgmr.channel_nums);
 
     return 0;
 }

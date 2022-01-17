@@ -119,8 +119,10 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_set_2M_Phy", "ble set 2M Phy\r\nParameter [defualt phys]\r\n", blecli_set_2M_phy},
     {"ble_set_coded_phy", "ble set coded phy\r\nParameter [all phys] [coded option]\r\n", blecli_set_coded_phy},
 #endif
+#if defined(CONFIG_BT_OBSERVER)
 #if defined(BL702) || defined(BL602)
     {"ble_scan_filter_size", "ble scan filter sizer\nParameter [filter table size]\r\n", blecli_scan_filter_size},
+#endif
 #endif
 #if defined(BFLB_DISABLE_BT)
     {"ble_disable", "ble disable\r\nParameter [Null]\r\n", blecli_disable},

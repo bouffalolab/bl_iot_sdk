@@ -24,17 +24,17 @@ CONFIG_BUILD_ROM_CODE := 1
 #CONFIG_DBG_RUN_ON_FPGA := 1
 #CONFIG_LINK_CUSTOMER := 1
 
-# set easyflash env psm size, only support 4K、8K options
-CONFIG_ENABLE_PSM_EF_SIZE:=4K
-
+CONFIG_EASYFLASH_ENABLE:=1
 CONFIG_USE_PSRAM := 0
 
 # use internal RC32K by default; may set to 1 for better accuracy if there is XTAL32K on the board
 CONFIG_USE_XTAL32K := 0
 
-ifeq ($(CFG_BLE_PDS),1)
-# use XTAL32K by default for pds31
+ifeq ($(CONFIG_PDS_ENABLE),1)
+ifeq ($(CONFIG_BT),1)
+# use XTAL32K for ble pds31
 CONFIG_USE_XTAL32K := 1
+endif
 endif
 
 # if CONFIG_PDS_CPU_PWROFF is defined, CONFIG_LINK_CUSTOMER must be defined to avoid linking the default .ld file

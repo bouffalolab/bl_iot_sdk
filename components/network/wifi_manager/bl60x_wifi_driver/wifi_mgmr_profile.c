@@ -50,7 +50,7 @@ int wifi_mgmr_profile_add(wifi_mgmr_t *mgmr, wifi_mgmr_profile_msg_t *profile_ms
                 profile = &(mgmr->profiles[i]);
                 
                 mgmr->profile_active_index = i;
-                os_printf("[WF][PF] Using free profile, idx is @%d\r\n", i);
+                bl_os_printf("[WF][PF] Using free profile, idx is @%d\r\n", i);
                 break;
             }
         }
@@ -91,7 +91,7 @@ int wifi_mgmr_profile_del(wifi_mgmr_t *mgmr, char *ssid, int len)
             if (i == mgmr->profile_active_index) {
                 mgmr->profile_active_index = -1;
             }
-            os_printf("[WF][PF] Free profile, idx is @%d\r\n", i);
+            bl_os_printf("[WF][PF] Free profile, idx is @%d\r\n", i);
             break;
         }
     }
@@ -112,7 +112,7 @@ int wifi_mgmr_profile_get(wifi_mgmr_t *mgmr, wifi_mgmr_profile_msg_t *profile_ms
     for (i = 0; i < sizeof(mgmr->profiles)/sizeof(mgmr->profiles[0]); i++) {
         if (1 == mgmr->profiles[i].isUsed) {
             profile = &(mgmr->profiles[i]);
-            os_printf("[WF][PF] Using profile, idx is @%d\r\n", i);
+            bl_os_printf("[WF][PF] Using profile, idx is @%d\r\n", i);
             break;
         }
     }

@@ -30,34 +30,38 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <blog.h>
+#include <bl_os_private.h>
 #include "bl_cmds.h"
 #include "bl_utils.h"
 #include "bl_strs.h"
-#include "os_hal.h"
+
+#undef bl_os_log_printf
+#define bl_os_log_printf(...) \
+    do {                      \
+    } while (0)
 
 static void cmd_dump(const struct bl_cmd *cmd)
 {
-    blog_debug("tkn[%d]  flags:%04x  result:%3d  cmd:%4d-%-24s - reqcfm(%4d-%-s)\n",
+    bl_os_log_debug("tkn[%d]  flags:%04x  result:%3d  cmd:%4d-%-24s - reqcfm(%4d-%-s)\n",
            cmd->tkn, cmd->flags, cmd->result, cmd->id, RWNX_ID2STR(cmd->id),
            cmd->reqid, cmd->reqid != (lmac_msg_id_t)-1 ? RWNX_ID2STR(cmd->reqid) : "none");
 }
 
 static void cmd_complete(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
 {
-    blog_debug("[CMDS] CMD complete: %p\r\n", cmd);
+    bl_os_log_debug("[CMDS] CMD complete: %p\r\n", cmd);
 
     cmd_mgr->queue_sz--;
     list_del(&cmd->list);
     cmd->flags |= RWNX_CMD_FLAG_DONE;
     if (cmd->flags & RWNX_CMD_FLAG_NONBLOCK) {
-        blog_debug("[CMDS] NONBLOCK CMD, free now %p\r\n", cmd);
-        os_free(cmd);
+        bl_os_log_debug("[CMDS] NONBLOCK CMD, free now %p\r\n", cmd);
+        bl_os_free(cmd);
     } else {
         if (RWNX_CMD_WAIT_COMPLETE(cmd->flags)) {
-            blog_debug("[CMDS] BLOCK EVENT is ready, complete now %p\r\n", cmd);
+            bl_os_log_debug("[CMDS] BLOCK EVENT is ready, complete now %p\r\n", cmd);
             cmd->result = 0;
-            os_event_send(&(cmd->complete), 0x1);
+            bl_os_event_group_send(cmd->complete, 0x1);
         }
     }
 }
@@ -71,23 +75,23 @@ static int cmd_mgr_queue(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
 
     RWNX_DBG(RWNX_FN_ENTRY_STR);
 
-    os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+    bl_os_mutex_lock(cmd_mgr->lock);
 
     if (cmd_mgr->state == RWNX_CMD_MGR_STATE_CRASHED) {
-        blog_debug("cmd queue crashed\r\n");
+        bl_os_log_debug("cmd queue crashed\r\n");
         cmd->result = EPIPE;
         RWNX_DBG(RWNX_FN_LEAVE_STR);
-        os_mutex_give(cmd_mgr->lock);
+        bl_os_mutex_unlock(cmd_mgr->lock);
         return -EPIPE;
     }
 
     if (!list_empty(&cmd_mgr->cmds)) {
         if (cmd_mgr->queue_sz == cmd_mgr->max_queue_sz) {
-            blog_debug("Too many cmds (%d) already queued\r\n",
+            bl_os_log_debug("Too many cmds (%d) already queued\r\n",
                    cmd_mgr->max_queue_sz);
             cmd->result = ENOMEM;
             RWNX_DBG(RWNX_FN_LEAVE_STR);
-            os_mutex_give(cmd_mgr->lock);
+            bl_os_mutex_unlock(cmd_mgr->lock);
             return -ENOMEM;
         }
         last = list_entry(cmd_mgr->cmds.prev, struct bl_cmd, list);
@@ -117,39 +121,43 @@ static int cmd_mgr_queue(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
     cmd->result = EINTR;
 
     if (!(cmd->flags & RWNX_CMD_FLAG_NONBLOCK)) {
-        os_event_init(&(cmd->complete));
+        cmd->complete = bl_os_event_group_create();
     }
 
 
     list_add_tail(&cmd->list, &cmd_mgr->cmds);
     cmd_mgr->queue_sz++;
-    os_mutex_give(cmd_mgr->lock);
+    bl_os_mutex_unlock(cmd_mgr->lock);
 
     if (!defer_push) {
-        blog_debug("pushing CMD, param_len is %d...\r\n", cmd->a2e_msg->param_len);
+        bl_os_log_debug("pushing CMD, param_len is %d...\r\n", cmd->a2e_msg->param_len);
         ipc_host_msg_push(bl_hw->ipc_env, cmd, sizeof(struct lmac_msg) + cmd->a2e_msg->param_len);
-        os_free(cmd->a2e_msg);
+        bl_os_free(cmd->a2e_msg);
     }
 
     if (!(cmd->flags & RWNX_CMD_FLAG_NONBLOCK)) {
-        blog_debug("Waiting ACK...\r\n");
-        os_event_recv(&(cmd->complete), ((1 << 0)), OS_WAITING_FOREVER, e);
+        bl_os_log_debug("Waiting ACK...\r\n");
+        e = bl_os_event_group_wait(cmd->complete,
+                                             (1 << 0),
+                                             BL_OS_TRUE,
+                                             BL_OS_FALSE,
+                                             BL_OS_WAITING_FOREVER);
         if (e & (1 << 0)) {
-            blog_debug("cmd OK\r\n");
+            bl_os_log_debug("cmd OK\r\n");
         } else {
-            blog_debug("cmd timed-out\r\n");
+            bl_os_log_debug("cmd timed-out\r\n");
             cmd_dump(cmd);
-            os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+            bl_os_mutex_lock(cmd_mgr->lock);
             cmd_mgr->state = RWNX_CMD_MGR_STATE_CRASHED;
             if (!(cmd->flags & RWNX_CMD_FLAG_DONE)) {
                 cmd->result = ETIMEDOUT;
                 cmd_complete(cmd_mgr, cmd);
             }
-            os_mutex_give(cmd_mgr->lock);
+            bl_os_mutex_unlock(cmd_mgr->lock);
         }
-        os_event_delete((EventGroupHandle_t)&(cmd->complete));//detach after block read
+        bl_os_event_group_delete(cmd->complete);//detach after block read
     } else {
-        blog_debug("No need to wait for CMD\r\n");
+        bl_os_log_debug("No need to wait for CMD\r\n");
         cmd->result = 0;
     }
     RWNX_DBG(RWNX_FN_LEAVE_STR);
@@ -160,7 +168,7 @@ static void cmd_mgr_print(struct bl_cmd_mgr *cmd_mgr)
 {
     struct bl_cmd *cur;
 
-    os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+    bl_os_mutex_lock(cmd_mgr->lock);
     RWNX_DBG("q_sz/max: %2d / %2d - next tkn: %d\r\n",
              cmd_mgr->queue_sz, cmd_mgr->max_queue_sz,
              cmd_mgr->next_tkn);
@@ -168,7 +176,7 @@ static void cmd_mgr_print(struct bl_cmd_mgr *cmd_mgr)
         cmd_dump(cur);
     }
 
-    os_mutex_give(cmd_mgr->lock);
+    bl_os_mutex_unlock(cmd_mgr->lock);
 }
 
 static void cmd_mgr_drain(struct bl_cmd_mgr *cmd_mgr)
@@ -177,15 +185,15 @@ static void cmd_mgr_drain(struct bl_cmd_mgr *cmd_mgr)
 
     RWNX_DBG(RWNX_FN_ENTRY_STR);
 
-    os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+    bl_os_mutex_lock(cmd_mgr->lock);
     list_for_each_entry_safe(cur, nxt, &cmd_mgr->cmds, list) {
         list_del(&cur->list);
         cmd_mgr->queue_sz--;
         if (!(cur->flags & RWNX_CMD_FLAG_NONBLOCK)) {
-            os_event_send(&(cur->complete), 0x1);
+            bl_os_event_group_send(cur->complete, 0x1);
         }
     }
-    os_mutex_give(cmd_mgr->lock);
+    bl_os_mutex_unlock(cmd_mgr->lock);
 }
 
 static int cmd_mgr_llind(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
@@ -194,13 +202,13 @@ static int cmd_mgr_llind(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
 
     RWNX_DBG(RWNX_FN_ENTRY_STR);
 
-    os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+    bl_os_mutex_lock(cmd_mgr->lock);
     list_for_each_entry(cur, &cmd_mgr->cmds, list) {
-        blog_debug("Search cmds list cmd %p vs cur %p...\r\n", cmd, cur);
+        bl_os_log_debug("Search cmds list cmd %p vs cur %p...\r\n", cmd, cur);
         if (!acked) {
-            blog_debug("Finding acked...\r\n");
+            bl_os_log_debug("Finding acked...\r\n");
             if (cur->tkn == cmd->tkn) {
-                blog_debug("Found acked\r\n");
+                bl_os_log_debug("Found acked\r\n");
                 if (WARN_ON_ONCE(cur != cmd)) {
                     cmd_dump(cmd);
                 }
@@ -209,31 +217,31 @@ static int cmd_mgr_llind(struct bl_cmd_mgr *cmd_mgr, struct bl_cmd *cmd)
             }
         }
         if (cur->flags & RWNX_CMD_FLAG_WAIT_PUSH) {
-                blog_debug("Found WAIT_PUSH\r\n");
+                bl_os_log_debug("Found WAIT_PUSH\r\n");
                 next = cur;
                 break;
         }
     }
     if (!acked) {
-        blog_debug("Error: acked cmd not found\r\n");
+        bl_os_log_debug("Error: acked cmd not found\r\n");
     } else {
         cmd->flags &= ~RWNX_CMD_FLAG_WAIT_ACK;
         if (RWNX_CMD_WAIT_COMPLETE(cmd->flags)) {
-            blog_debug("[BUG] should cmd complete allowed here?\r\n");//FIXME attention
+            bl_os_log_debug("[BUG] should cmd complete allowed here?\r\n");//FIXME attention
             cmd_complete(cmd_mgr, cmd);// XXX potential buggy
         } else {
-            blog_debug("[IPC] Wait Until ACKED for cmd %p, flags %08X\r\n", cmd, cmd->flags);
+            bl_os_log_debug("[IPC] Wait Until ACKED for cmd %p, flags %08X\r\n", cmd, cmd->flags);
         }
     }
     if (next) {
         struct bl_hw *bl_hw = container_of(cmd_mgr, struct bl_hw, cmd_mgr);
         next->flags &= ~RWNX_CMD_FLAG_WAIT_PUSH;
-        blog_debug("Pushing new CMD in llind...\r\n");
+        bl_os_log_debug("Pushing new CMD in llind...\r\n");
         ipc_host_msg_push(bl_hw->ipc_env, next,
                           sizeof(struct lmac_msg) + next->a2e_msg->param_len);
-        os_free(next->a2e_msg);
+        bl_os_free(next->a2e_msg);
     }
-    os_mutex_give(cmd_mgr->lock);
+    bl_os_mutex_unlock(cmd_mgr->lock);
 
     return 0;
 }
@@ -244,18 +252,18 @@ static int cmd_mgr_msgind(struct bl_cmd_mgr *cmd_mgr, struct ipc_e2a_msg *msg, m
     struct bl_cmd *cmd;
     bool found = false;
 
-    os_mutex_take(cmd_mgr->lock, OS_WAITING_FOREVER);
+    bl_os_mutex_lock(cmd_mgr->lock);
     list_for_each_entry(cmd, &cmd_mgr->cmds, list) {
         if (cmd->reqid == msg->id &&
             (cmd->flags & RWNX_CMD_FLAG_WAIT_CFM)) {
-            blog_debug("[IPC] Found cb %p for cmd %p , msg id %08X\r\n", cb, cmd, msg->id);
+            bl_os_log_debug("[IPC] Found cb %p for cmd %p , msg id %08X\r\n", cb, cmd, msg->id);
             if (!cb || (cb && !cb(bl_hw, cmd, msg))) {
-                blog_debug("[IPC] NOT handed by static handler, cb %p\r\n", cb);
+                bl_os_log_debug("[IPC] NOT handed by static handler, cb %p\r\n", cb);
                 found = true;
                 cmd->flags &= ~RWNX_CMD_FLAG_WAIT_CFM;
 
                 if (cmd->e2a_msg && msg->param_len) {
-                    blog_debug("[IPC] copy back RSP to cmd %p, e2a_msg %p, len %d\r\n",
+                    bl_os_log_debug("[IPC] copy back RSP to cmd %p, e2a_msg %p, len %d\r\n",
                             cmd, cmd->e2a_msg, msg->param_len);
                     memcpy(cmd->e2a_msg, &msg->param, msg->param_len);
                 }
@@ -266,11 +274,11 @@ static int cmd_mgr_msgind(struct bl_cmd_mgr *cmd_mgr, struct ipc_e2a_msg *msg, m
 
                 break;
             } else {
-                blog_debug("[IPC] MSG is handled by static handler\r\n");
+                bl_os_log_debug("[IPC] MSG is handled by static handler\r\n");
             }
         }
     }
-    os_mutex_give(cmd_mgr->lock);
+    bl_os_mutex_unlock(cmd_mgr->lock);
 
     if (!found && cb)
         cb(bl_hw, NULL, msg);
@@ -281,7 +289,7 @@ static int cmd_mgr_msgind(struct bl_cmd_mgr *cmd_mgr, struct ipc_e2a_msg *msg, m
 void bl_cmd_mgr_init(struct bl_cmd_mgr *cmd_mgr)
 {
     INIT_LIST_HEAD(&cmd_mgr->cmds);
-    cmd_mgr->lock = os_mutex_create("wifi_cmd_lock");
+    cmd_mgr->lock = bl_os_mutex_create();
     ASSERT_ERR(NULL != cmd_mgr->lock);
 
     cmd_mgr->max_queue_sz = RWNX_CMD_MAX_QUEUED;

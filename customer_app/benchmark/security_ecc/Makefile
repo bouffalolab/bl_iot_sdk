@@ -21,7 +21,7 @@ endif
 COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
 COMPONENTS_VFS     := romfs
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc hosal vfs yloop lwip utils cli blog blog_testc mbedtls216
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc hosal vfs yloop lwip utils cli blog blog_testc mbedtls_lts
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
 INCLUDE_COMPONENTS += $(PROJECT_NAME)

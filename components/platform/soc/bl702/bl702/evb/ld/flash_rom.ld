@@ -95,13 +95,32 @@ SECTIONS
     . = . + 0x4A0;
   } >tcm_ocram
 
+  .hbn : ALIGN(4)
+  {
+    PROVIDE( _hbn_load = LOADADDR(.hbn) );
+    PROVIDE( _hbn_run = ADDR(.hbn) );
+    PROVIDE( _hbn_run_end = ADDR(.hbn) + SIZEOF(.hbn));
+
+    *(.hbn_code.*)
+    *(.hbn_data)
+    *(.retention)
+  } >hbnram AT > flash
+
+  .hbn_noinit (NOLOAD) :
+  {
+    *(.hbn_noinit)
+    *(.retention_noinit)
+
+    /* PDS backup address */
+    . = ALIGN(4);
+    PROVIDE ( __ld_pds_bak_addr = . );
+    . = . + 256;
+  } >hbnram
+
   .rsvd (NOLOAD) :
   {
     *(.rsvd_data)
     *(.ble_rsvd_mem)
-
-    /* PDS backup address */
-    PROVIDE ( __ld_pds_bak_addr = . );
   } >hbnram
 
   .tcmcode : ALIGN(4)
@@ -110,10 +129,10 @@ SECTIONS
     PROVIDE( _tcm_run = ADDR(.tcmcode) );
     PROVIDE( _tcm_run_end = ADDR(.tcmcode) + SIZEOF(.tcmcode));
 
-    *(.tcm_code)
-    *(.tcm_const)
-    *(.sclock_rlt_code)
-    *(.sclock_rlt_const)
+    *(.tcm_code.*)
+    *(.tcm_const.*)
+    *(.sclock_rlt_code.*)
+    *(.sclock_rlt_const.*)
   } >tcm_ocram AT > flash
 
   .data : ALIGN(4)
@@ -123,15 +142,12 @@ SECTIONS
     PROVIDE( _data_run_end = ADDR(.data) + SIZEOF(.data));
 
     /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
-    *libbl702_rf.a:bl702_rf_private.o(.sdata.*)
-    *libbl702_rf.a:bl702_rf_private.o(.srodata.*)
-    *libbl702_rf.a:bl702_rf_private.o(.sbss.*)
-    *libbl702_rf.a:bl702_rf_private.o(.bss.*)
-    *libbl702_rf.a:bl702_rf_private.o(COMMON)
+    *libbl702_rf.a:bl702_rf_private.o(.retention .retention_noinit)
+    *libbl702_rf.a:bl702_rf_private.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
     PROVIDE ( _rf_data_end = . );
     ASSERT ((_rf_data_end <= 0x42024000), "Error: _rf_data_end > 0x42024000");
 
-    *(.pds_code)
+    *(.pds_code.*)
     *(.data .data.*)
     *(.gnu.linkonce.d.*)
 

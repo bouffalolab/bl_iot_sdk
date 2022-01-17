@@ -44,11 +44,16 @@ void bl_rtc_init(void)
 
 uint64_t bl_rtc_get_counter(void)
 {
-    uint32_t valLow, valHigh;
+    uint32_t valLow1, valHigh1;
+    uint32_t valLow2, valHigh2;
     
-    HBN_Get_RTC_Timer_Val(&valLow, &valHigh);
+    // fix issue: read rtc counter twice, the second one may be smaller than the first one
+    do{
+        HBN_Get_RTC_Timer_Val(&valLow1, &valHigh1);
+        HBN_Get_RTC_Timer_Val(&valLow2, &valHigh2);
+    }while(valLow2 < valLow1 || valHigh2 != valHigh1);
     
-    return ((uint64_t)valHigh << 32) | valLow;
+    return ((uint64_t)valHigh2 << 32) | valLow2;
 }
 
 uint64_t bl_rtc_get_timestamp_ms(void)

@@ -408,7 +408,7 @@ BL_Err_Type EF_Ctrl_Read_Ldo11VoutSel_Opt(uint8_t *Ldo11VoutSelValue)
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower)
+BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower,uint8_t *slot)
 {
     uint32_t tmp;
     Efuse_TxPower_Info_Type *trim=(Efuse_TxPower_Info_Type *)&tmp; 
@@ -421,8 +421,10 @@ BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower)
 
     tmp=(BL_RD_REG(EF_DATA_BASE,EF_DATA_0_EF_WIFI_MAC_HIGH))>>23;
     if(tmp & 0x01){
+        *slot = 3;
         tmp=(BL_RD_REG(EF_DATA_BASE,EF_DATA_0_EF_KEY_SLOT_3_W3))>>0;
     }else{
+        *slot = 4;
         tmp=(BL_RD_REG(EF_DATA_BASE,EF_DATA_0_EF_KEY_SLOT_4_W3))>>0;
     }
     //if(trim->en){

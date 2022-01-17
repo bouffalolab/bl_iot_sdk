@@ -43,8 +43,9 @@
 #include <bl_sys_ota.h>
 #include <bl_romfs.h>
 #include <fdt.h>
-
+#ifdef EASYFLASH_ENABLE
 #include <easyflash.h>
+#endif
 #include <bl60x_fw_api.h>
 #include <wifi_mgmr_ext.h>
 #include <utils_log.h>
@@ -549,7 +550,6 @@ static void app_delayed_action_ble(void *arg)
 
 static void proc_main_entry(void *pvParameters)
 {
-    easyflash_init();
     _cli_init();
     aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
 
@@ -562,13 +562,10 @@ static void proc_main_entry(void *pvParameters)
 
 void main()
 {
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_main_stack[1024];
-
     bl_sys_init();
 
     puts("[OS] proc_main_entry task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);
 

@@ -74,6 +74,9 @@
 
 #include <string.h>
 
+#include <blcrypto_suite/blcrypto_suite_top_config.h>
+#include <bl_sec.h>
+
 #if defined(BLCRYPTO_SUITE_PLATFORM_C)
 #include "blcrypto_suite/blcrypto_suite_platform.h"
 #else
@@ -267,6 +270,36 @@ void blcrypto_suite_mpi_swap( blcrypto_suite_mpi *X, blcrypto_suite_mpi *Y )
     memcpy(  Y, &T, sizeof( blcrypto_suite_mpi ) );
 }
 
+/**
+ * Select between two sign values in constant-time.
+ *
+ * This is functionally equivalent to second ? a : b but uses only bit
+ * operations in order to avoid branches.
+ *
+ * \param[in] a         The first sign; must be either +1 or -1.
+ * \param[in] b         The second sign; must be either +1 or -1.
+ * \param[in] second    Must be either 1 (return b) or 0 (return a).
+ *
+ * \return The selected sign value.
+ */
+static int mpi_safe_cond_select_sign( int a, int b, unsigned char second )
+{
+    /* In order to avoid questions about what we can reasonnably assume about
+     * the representations of signed integers, move everything to unsigned
+     * by taking advantage of the fact that a and b are either +1 or -1. */
+    unsigned ua = a + 1;
+    unsigned ub = b + 1;
+
+    /* second was 0 or 1, mask is 0 or 2 as are ua and ub */
+    const unsigned mask = second << 1;
+
+    /* select ua or ub */
+    unsigned ur = ( ua & ~mask ) | ( ub & mask );
+
+    /* ur is now 0 or 2, convert back to -1 or +1 */
+    return( (int) ur - 1 );
+}
+
 /*
  * Conditionally assign dest = src, without leaking information
  * about whether the assignment was made or not.
@@ -279,8 +312,23 @@ static void mpi_safe_cond_assign( size_t n,
                                   unsigned char assign )
 {
     size_t i;
+
+    /* MSVC has a warning about unary minus on unsigned integer types,
+     * but this is well-defined and precisely what we want to do here. */
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4146 )
+#endif
+
+    /* all-bits 1 if assign is 1, all-bits 0 if assign is 0 */
+    const blcrypto_suite_mpi_uint mask = -assign;
+
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
+
     for( i = 0; i < n; i++ )
-        dest[i] = dest[i] * ( 1 - assign ) + src[i] * assign;
+        dest[i] = ( src[i] & mask ) | ( dest[i] & ~mask );
 }
 
 /*
@@ -292,20 +340,34 @@ int blcrypto_suite_mpi_safe_cond_assign( blcrypto_suite_mpi *X, const blcrypto_s
 {
     int ret = 0;
     size_t i;
+    blcrypto_suite_mpi_uint limb_mask;
     MPI_VALIDATE_RET( X != NULL );
     MPI_VALIDATE_RET( Y != NULL );
 
+    /* MSVC has a warning about unary minus on unsigned integer types,
+     * but this is well-defined and precisely what we want to do here. */
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4146 )
+#endif
+
     /* make sure assign is 0 or 1 in a time-constant manner */
-    assign = (assign | (unsigned char)-assign) >> 7;
+    assign = (assign | (unsigned char)-assign) >> (sizeof( assign ) * 8 - 1);
+    /* all-bits 1 if assign is 1, all-bits 0 if assign is 0 */
+    limb_mask = -assign;
+
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
 
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( X, Y->n ) );
 
-    X->s = X->s * ( 1 - assign ) + Y->s * assign;
+    X->s = mpi_safe_cond_select_sign( X->s, Y->s, assign );
 
     mpi_safe_cond_assign( Y->n, X->p, Y->p, assign );
 
     for( i = Y->n; i < X->n; i++ )
-        X->p[i] *= ( 1 - assign );
+        X->p[i] &= ~limb_mask;
 
 cleanup:
     return( ret );
@@ -321,6 +383,7 @@ int blcrypto_suite_mpi_safe_cond_swap( blcrypto_suite_mpi *X, blcrypto_suite_mpi
 {
     int ret, s;
     size_t i;
+    blcrypto_suite_mpi_uint limb_mask;
     blcrypto_suite_mpi_uint tmp;
     MPI_VALIDATE_RET( X != NULL );
     MPI_VALIDATE_RET( Y != NULL );
@@ -328,22 +391,35 @@ int blcrypto_suite_mpi_safe_cond_swap( blcrypto_suite_mpi *X, blcrypto_suite_mpi
     if( X == Y )
         return( 0 );
 
+    /* MSVC has a warning about unary minus on unsigned integer types,
+     * but this is well-defined and precisely what we want to do here. */
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4146 )
+#endif
+
     /* make sure swap is 0 or 1 in a time-constant manner */
-    swap = (swap | (unsigned char)-swap) >> 7;
+    swap = (swap | (unsigned char)-swap) >> (sizeof( swap ) * 8 - 1);
+    /* all-bits 1 if swap is 1, all-bits 0 if swap is 0 */
+    limb_mask = -swap;
+
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
 
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( X, Y->n ) );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( Y, X->n ) );
 
     s = X->s;
-    X->s = X->s * ( 1 - swap ) + Y->s * swap;
-    Y->s = Y->s * ( 1 - swap ) +    s * swap;
+    X->s = mpi_safe_cond_select_sign( X->s, Y->s, swap );
+    Y->s = mpi_safe_cond_select_sign( Y->s, s, swap );
 
 
     for( i = 0; i < X->n; i++ )
     {
         tmp = X->p[i];
-        X->p[i] = X->p[i] * ( 1 - swap ) + Y->p[i] * swap;
-        Y->p[i] = Y->p[i] * ( 1 - swap ) +     tmp * swap;
+        X->p[i] = ( X->p[i] & ~limb_mask ) | ( Y->p[i] & limb_mask );
+        Y->p[i] = ( Y->p[i] & ~limb_mask ) | (     tmp & limb_mask );
     }
 
 cleanup:
@@ -500,6 +576,7 @@ int blcrypto_suite_mpi_read_string( blcrypto_suite_mpi *X, int radix, const char
 {
     int ret;
     size_t i, j, slen, n;
+    int sign = 1;
     blcrypto_suite_mpi_uint d;
     blcrypto_suite_mpi T;
     MPI_VALIDATE_RET( X != NULL );
@@ -509,6 +586,12 @@ int blcrypto_suite_mpi_read_string( blcrypto_suite_mpi *X, int radix, const char
         return( BLCRYPTO_SUITE_ERR_MPI_BAD_INPUT_DATA );
 
     blcrypto_suite_mpi_init( &T );
+
+    if( s[0] == '-' )
+    {
+        ++s;
+        sign = -1;
+    }
 
     slen = strlen( s );
 
@@ -524,12 +607,6 @@ int blcrypto_suite_mpi_read_string( blcrypto_suite_mpi *X, int radix, const char
 
         for( i = slen, j = 0; i > 0; i--, j++ )
         {
-            if( i == 1 && s[i - 1] == '-' )
-            {
-                X->s = -1;
-                break;
-            }
-
             BLCRYPTO_SUITE_MPI_CHK( mpi_get_digit( &d, radix, s[i - 1] ) );
             X->p[j / ( 2 * ciL )] |= d << ( ( j % ( 2 * ciL ) ) << 2 );
         }
@@ -540,25 +617,14 @@ int blcrypto_suite_mpi_read_string( blcrypto_suite_mpi *X, int radix, const char
 
         for( i = 0; i < slen; i++ )
         {
-            if( i == 0 && s[i] == '-' )
-            {
-                X->s = -1;
-                continue;
-            }
-
             BLCRYPTO_SUITE_MPI_CHK( mpi_get_digit( &d, radix, s[i] ) );
             BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_mul_int( &T, X, radix ) );
-
-            if( X->s == 1 )
-            {
-                BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_add_int( X, &T, d ) );
-            }
-            else
-            {
-                BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_sub_int( X, &T, d ) );
-            }
+            BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_add_int( X, &T, d ) );
         }
     }
+
+    if( sign < 0 && blcrypto_suite_mpi_bitlen( X ) != 0 )
+        X->s = -1;
 
 cleanup:
 
@@ -1354,6 +1420,12 @@ int blcrypto_suite_mpi_sub_abs( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
     for( n = B->n; n > 0; n-- )
         if( B->p[n - 1] != 0 )
             break;
+    if( n > A->n )
+    {
+        /* B >= (2^ciL)^n > A */
+        ret = BLCRYPTO_SUITE_ERR_MPI_NEGATIVE_VALUE;
+        goto cleanup;
+    }
 
     carry = mpi_sub_hlp( n, X->p, B->p );
     if( carry != 0 )
@@ -1564,6 +1636,7 @@ int blcrypto_suite_mpi_mul_mpi( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
     int ret;
     size_t i, j;
     blcrypto_suite_mpi TA, TB;
+    int result_is_zero = 0;
     MPI_VALIDATE_RET( X != NULL );
     MPI_VALIDATE_RET( A != NULL );
     MPI_VALIDATE_RET( B != NULL );
@@ -1576,10 +1649,14 @@ int blcrypto_suite_mpi_mul_mpi( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
     for( i = A->n; i > 0; i-- )
         if( A->p[i - 1] != 0 )
             break;
+    if( i == 0 )
+        result_is_zero = 1;
 
     for( j = B->n; j > 0; j-- )
         if( B->p[j - 1] != 0 )
             break;
+    if( j == 0 )
+        result_is_zero = 1;
 
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( X, i + j ) );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_lset( X, 0 ) );
@@ -1587,7 +1664,14 @@ int blcrypto_suite_mpi_mul_mpi( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
     for( ; j > 0; j-- )
         mpi_mul_hlp( i, A->p, X->p + j - 1, B->p[j - 1] );
 
-    X->s = A->s * B->s;
+    /* If the result is 0, we don't shortcut the operation, which reduces
+     * but does not eliminate side channels leaking the zero-ness. We do
+     * need to take care to set the sign bit properly since the library does
+     * not fully support an MPI object with a value of 0 and s == -1. */
+    if( result_is_zero )
+        X->s = 1;
+    else
+        X->s = A->s * B->s;
 
 cleanup:
 
@@ -2036,18 +2120,90 @@ static void mpi_montred( blcrypto_suite_mpi *A, const blcrypto_suite_mpi *N,
 }
 
 /*
+ * Constant-flow boolean "equal" comparison:
+ * return x == y
+ *
+ * This function can be used to write constant-time code by replacing branches
+ * with bit operations - it can be used in conjunction with
+ * blcrypto_suite_ssl_cf_mask_from_bit().
+ *
+ * This function is implemented without using comparison operators, as those
+ * might be translated to branches by some compilers on some platforms.
+ */
+static size_t blcrypto_suite_mpi_cf_bool_eq( size_t x, size_t y )
+{
+    /* diff = 0 if x == y, non-zero otherwise */
+    const size_t diff = x ^ y;
+
+    /* MSVC has a warning about unary minus on unsigned integer types,
+     * but this is well-defined and precisely what we want to do here. */
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4146 )
+#endif
+
+    /* diff_msb's most significant bit is equal to x != y */
+    const size_t diff_msb = ( diff | (size_t) -diff );
+
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
+
+    /* diff1 = (x != y) ? 1 : 0 */
+    const size_t diff1 = diff_msb >> ( sizeof( diff_msb ) * 8 - 1 );
+
+    return( 1 ^ diff1 );
+}
+
+/**
+ * Select an MPI from a table without leaking the index.
+ *
+ * This is functionally equivalent to blcrypto_suite_mpi_copy(R, T[idx]) except it
+ * reads the entire table in order to avoid leaking the value of idx to an
+ * attacker able to observe memory access patterns.
+ *
+ * \param[out] R        Where to write the selected MPI.
+ * \param[in] T         The table to read from.
+ * \param[in] T_size    The number of elements in the table.
+ * \param[in] idx       The index of the element to select;
+ *                      this must satisfy 0 <= idx < T_size.
+ *
+ * \return \c 0 on success, or a negative error code.
+ */
+static int mpi_select( blcrypto_suite_mpi *R, const blcrypto_suite_mpi *T, size_t T_size, size_t idx )
+{
+    int ret = BLCRYPTO_SUITE_ERR_MPI_BAD_INPUT_DATA;
+    size_t i;
+
+    for( i = 0; i < T_size; i++ )
+    {
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_safe_cond_assign( R, &T[i],
+                        (unsigned char) blcrypto_suite_mpi_cf_bool_eq( i, idx ) ) );
+    }
+
+cleanup:
+    return( ret );
+}
+
+/*
  * Sliding-window exponentiation: X = A^E mod N  (HAC 14.85)
  */
 int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi *A,
                          const blcrypto_suite_mpi *E, const blcrypto_suite_mpi *N,
                          blcrypto_suite_mpi *_RR )
 {
+#if USE_HWCRYPTO
+    (void)mpi_montg_init;
+    (void)mpi_montred;
+    (void)mpi_select;
+    return bl_sec_mpi_exp_mod((mbedtls_mpi *)X, (const mbedtls_mpi *)A, (const mbedtls_mpi *)E, (const mbedtls_mpi *)N, (mbedtls_mpi *)_RR);
+#else
     int ret;
     size_t wbits, wsize, one = 1;
     size_t i, j, nblimbs;
     size_t bufsize, nbits;
     blcrypto_suite_mpi_uint ei, mm, state;
-    blcrypto_suite_mpi RR, T, W[ 1 << BLCRYPTO_SUITE_MPI_WINDOW_SIZE ], Apos;
+    blcrypto_suite_mpi RR, T, W[ 1 << BLCRYPTO_SUITE_MPI_WINDOW_SIZE ], WW, Apos;
     int neg;
 
     MPI_VALIDATE_RET( X != NULL );
@@ -2071,6 +2227,7 @@ int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
     mpi_montg_init( &mm, N );
     blcrypto_suite_mpi_init( &RR ); blcrypto_suite_mpi_init( &T );
     blcrypto_suite_mpi_init( &Apos );
+    blcrypto_suite_mpi_init( &WW );
     memset( W, 0, sizeof( W ) );
 
     i = blcrypto_suite_mpi_bitlen( E );
@@ -2084,6 +2241,11 @@ int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
 #endif
 
     j = N->n + 1;
+    /* All W[i] and X must have at least N->n limbs for the mpi_montmul()
+     * and mpi_montred() calls later. Here we ensure that W[1] and X are
+     * large enough, and later we'll grow other W[i] to the same length.
+     * They must not be shrunk midway through this function!
+     */
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( X, j ) );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( &W[1],  j ) );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( &T, j * 2 ) );
@@ -2121,6 +2283,10 @@ int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
         BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_mod_mpi( &W[1], A, N ) );
     else
         BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_copy( &W[1], A ) );
+    /* Re-grow W[1] if necessary. This should be only necessary in one corner
+     * case: when A == 0 represented with A.n == 0, blcrypto_suite_mpi_copy shrinks
+     * W[1] to 0 limbs. */
+    BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( &W[1], N->n +1 ) );
 
     mpi_montmul( &W[1], &RR, N, mm, &T );
 
@@ -2211,7 +2377,8 @@ int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
             /*
              * X = X * W[wbits] R^-1 mod N
              */
-            mpi_montmul( X, &W[wbits], N, mm, &T );
+            BLCRYPTO_SUITE_MPI_CHK( mpi_select( &WW, W, (size_t) 1 << wsize, wbits ) );
+            mpi_montmul( X, &WW, N, mm, &T );
 
             state--;
             nbits = 0;
@@ -2249,11 +2416,13 @@ cleanup:
         blcrypto_suite_mpi_free( &W[i] );
 
     blcrypto_suite_mpi_free( &W[1] ); blcrypto_suite_mpi_free( &T ); blcrypto_suite_mpi_free( &Apos );
+    blcrypto_suite_mpi_free( &WW );
 
     if( _RR == NULL || _RR->p == NULL )
         blcrypto_suite_mpi_free( &RR );
 
     return( ret );
+#endif
 }
 
 /*
@@ -2277,6 +2446,16 @@ int blcrypto_suite_mpi_gcd( blcrypto_suite_mpi *G, const blcrypto_suite_mpi *A, 
     lz = blcrypto_suite_mpi_lsb( &TA );
     lzt = blcrypto_suite_mpi_lsb( &TB );
 
+    /* The loop below gives the correct result when A==0 but not when B==0.
+     * So have a special case for B==0. Leverage the fact that we just
+     * calculated the lsb and lsb(B)==0 iff B is odd or 0 to make the test
+     * slightly more efficient than cmp_int(). */
+    if( lzt == 0 && blcrypto_suite_mpi_get_bit( &TB, 0 ) == 0 )
+    {
+        ret = blcrypto_suite_mpi_copy( G, A );
+        goto cleanup;
+    }
+
     if( lzt < lz )
         lz = lzt;
 
@@ -2285,11 +2464,52 @@ int blcrypto_suite_mpi_gcd( blcrypto_suite_mpi *G, const blcrypto_suite_mpi *A, 
 
     TA.s = TB.s = 1;
 
+    /* We mostly follow the procedure described in HAC 14.54, but with some
+     * minor differences:
+     * - Sequences of multiplications or divisions by 2 are grouped into a
+     *   single shift operation.
+     * - The procedure in HAC assumes that 0 < TB <= TA.
+     *     - The condition TB <= TA is not actually necessary for correctness.
+     *       TA and TB have symmetric roles except for the loop termination
+     *       condition, and the shifts at the beginning of the loop body
+     *       remove any significance from the ordering of TA vs TB before
+     *       the shifts.
+     *     - If TA = 0, the loop goes through 0 iterations and the result is
+     *       correctly TB.
+     *     - The case TB = 0 was short-circuited above.
+     *
+     * For the correctness proof below, decompose the original values of
+     * A and B as
+     *   A = sa * 2^a * A' with A'=0 or A' odd, and sa = +-1
+     *   B = sb * 2^b * B' with B'=0 or B' odd, and sb = +-1
+     * Then gcd(A, B) = 2^{min(a,b)} * gcd(A',B'),
+     * and gcd(A',B') is odd or 0.
+     *
+     * At the beginning, we have TA = |A|/2^a and TB = |B|/2^b.
+     * The code maintains the following invariant:
+     *     gcd(A,B) = 2^k * gcd(TA,TB) for some k   (I)
+     */
+
+    /* Proof that the loop terminates:
+     * At each iteration, either the right-shift by 1 is made on a nonzero
+     * value and the nonnegative integer bitlen(TA) + bitlen(TB) decreases
+     * by at least 1, or the right-shift by 1 is made on zero and then
+     * TA becomes 0 which ends the loop (TB cannot be 0 if it is right-shifted
+     * since in that case TB is calculated from TB-TA with the condition TB>TA).
+     */
     while( blcrypto_suite_mpi_cmp_int( &TA, 0 ) != 0 )
     {
+        /* Divisions by 2 preserve the invariant (I). */
         BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &TA, blcrypto_suite_mpi_lsb( &TA ) ) );
         BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &TB, blcrypto_suite_mpi_lsb( &TB ) ) );
 
+        /* Set either TA or TB to |TA-TB|/2. Since TA and TB are both odd,
+         * TA-TB is even so the division by 2 has an integer result.
+         * Invariant (I) is preserved since any odd divisor of both TA and TB
+         * also divides |TA-TB|/2, and any odd divisor of both TA and |TA-TB|/2
+         * also divides TB, and any odd divisior of both TB and |TA-TB|/2 also
+         * divides TA.
+         */
         if( blcrypto_suite_mpi_cmp_mpi( &TA, &TB ) >= 0 )
         {
             BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_sub_abs( &TA, &TA, &TB ) );
@@ -2300,7 +2520,17 @@ int blcrypto_suite_mpi_gcd( blcrypto_suite_mpi *G, const blcrypto_suite_mpi *A, 
             BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_sub_abs( &TB, &TB, &TA ) );
             BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &TB, 1 ) );
         }
+        /* Note that one of TA or TB is still odd. */
     }
+
+    /* By invariant (I), gcd(A,B) = 2^k * gcd(TA,TB) for some k.
+     * At the loop exit, TA = 0, so gcd(TA,TB) = TB.
+     * - If there was at least one loop iteration, then one of TA or TB is odd,
+     *   and TA = 0, so TB is odd and gcd(TA,TB) = gcd(A',B'). In this case,
+     *   lz = min(a,b) so gcd(A,B) = 2^lz * TB.
+     * - If there was no loop iteration, then A was 0, and gcd(A,B) = B.
+     *   In this case, lz = 0 and B = TB so gcd(A,B) = B = 2^lz * TB as well.
+     */
 
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_l( &TB, lz ) );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_copy( G, &TB ) );

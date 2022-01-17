@@ -106,6 +106,7 @@
 #include "blcrypto_suite/blcrypto_suite_ecp.h"
 #include "blcrypto_suite/blcrypto_suite_threading.h"
 #include "blcrypto_suite/blcrypto_suite_platform_util.h"
+#include "blcrypto_suite/blcrypto_suite_bn_mul.h"
 
 #include <string.h>
 
@@ -131,13 +132,13 @@
 
 #if !defined(BLCRYPTO_SUITE_ECP_NO_INTERNAL_RNG)
 #if defined(BLCRYPTO_SUITE_HMAC_DRBG_C)
-#include "mbedtls/hmac_drbg.h"
+#include "blcrypto_suite/blcrypto_suite_hmac_drbg.h"
 #elif defined(BLCRYPTO_SUITE_CTR_DRBG_C)
-#include "mbedtls/ctr_drbg.h"
+#include "blcrypto_suite/blcrypto_suite_ctr_drbg.h"
 #elif defined(BLCRYPTO_SUITE_SHA512_C)
-#include "mbedtls/sha512.h"
+#include "blcrypto_suite/blcrypto_suite_sha512.h"
 #elif defined(BLCRYPTO_SUITE_SHA256_C)
-#include "mbedtls/sha256.h"
+#include "blcrypto_suite/blcrypto_suite_sha256.h"
 #else
 #error "Invalid configuration detected. Include check_config.h to ensure that the configuration is valid."
 #endif
@@ -1738,18 +1739,17 @@ static int ecp_randomize_jac( const blcrypto_suite_ecp_group *grp, blcrypto_suit
     /* Generate l such that 1 < l < p */
     do
     {
-        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_fill_random( &l, p_size, f_rng, p_rng ) );
-
-        while( blcrypto_suite_mpi_cmp_mpi( &l, &grp->P ) >= 0 )
-            BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &l, 1 ) );
-
-        if( count++ > 10 )
+        if( count++ > 30 )
         {
             ret = BLCRYPTO_SUITE_ERR_ECP_RANDOM_FAILED;
             goto cleanup;
         }
+
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_fill_random( &l, p_size, f_rng, p_rng ) );
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &l, ( p_size * 8 ) - grp->pbits ) );
     }
-    while( blcrypto_suite_mpi_cmp_int( &l, 1 ) <= 0 );
+    while( ( blcrypto_suite_mpi_cmp_int( &l, 1 ) <= 0 ) ||
+           ( blcrypto_suite_mpi_cmp_mpi( &l, &grp->P ) >= 0 ) );
 
     /* Z = l * Z */
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_mul_mpi( &pt->Z,   &pt->Z,     &l  ) ); MOD_MUL( pt->Z );
@@ -2505,7 +2505,7 @@ static int ecp_randomize_mxz( const blcrypto_suite_ecp_group *grp, blcrypto_suit
 
 #if defined(BLCRYPTO_SUITE_ECP_RANDOMIZE_MXZ_ALT)
     if( blcrypto_suite_internal_ecp_grp_capable( grp ) )
-        return( blcrypto_suite_internal_ecp_randomize_mxz( grp, P, f_rng, p_rng );
+        return( blcrypto_suite_internal_ecp_randomize_mxz( grp, P, f_rng, p_rng ) );
 #endif /* BLCRYPTO_SUITE_ECP_RANDOMIZE_MXZ_ALT */
 
     p_size = ( grp->pbits + 7 ) / 8;
@@ -2514,18 +2514,17 @@ static int ecp_randomize_mxz( const blcrypto_suite_ecp_group *grp, blcrypto_suit
     /* Generate l such that 1 < l < p */
     do
     {
-        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_fill_random( &l, p_size, f_rng, p_rng ) );
-
-        while( blcrypto_suite_mpi_cmp_mpi( &l, &grp->P ) >= 0 )
-            BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &l, 1 ) );
-
-        if( count++ > 10 )
+        if( count++ > 30 )
         {
             ret = BLCRYPTO_SUITE_ERR_ECP_RANDOM_FAILED;
             goto cleanup;
         }
+
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_fill_random( &l, p_size, f_rng, p_rng ) );
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_shift_r( &l, ( p_size * 8 ) - grp->pbits ) );
     }
-    while( blcrypto_suite_mpi_cmp_int( &l, 1 ) <= 0 );
+    while( ( blcrypto_suite_mpi_cmp_int( &l, 1 ) <= 0 ) ||
+           ( blcrypto_suite_mpi_cmp_mpi( &l, &grp->P ) >= 0 ) );
 
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_mul_mpi( &P->X, &P->X, &l ) ); MOD_MUL( P->X );
     BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_mul_mpi( &P->Z, &P->Z, &l ) ); MOD_MUL( P->Z );
@@ -2970,6 +2969,97 @@ int blcrypto_suite_ecp_muladd( blcrypto_suite_ecp_group *grp, blcrypto_suite_ecp
 }
 
 #if defined(ECP_MONTGOMERY)
+#if defined(BLCRYPTO_SUITE_ECP_DP_CURVE25519_ENABLED)
+#define ECP_MPI_INIT(s, n, p) {s, (n), (blcrypto_suite_mpi_uint *)(p)}
+#define ECP_MPI_INIT_ARRAY(x)   \
+    ECP_MPI_INIT(1, sizeof(x) / sizeof(blcrypto_suite_mpi_uint), x)
+/*
+ * Constants for the two points other than 0, 1, -1 (mod p) in
+ * https://cr.yp.to/ecdh.html#validate
+ * See ecp_check_pubkey_x25519().
+ */
+static const blcrypto_suite_mpi_uint x25519_bad_point_1[] = {
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0x16, 0x56, 0xe3, 0xfa, 0xf1, 0x9f, 0xc4, 0x6a ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32, 0xb1, 0xfd ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x00 ),
+};
+static const blcrypto_suite_mpi_uint x25519_bad_point_2[] = {
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0x5f, 0x9c, 0x95, 0xbc, 0xa3, 0x50, 0x8c, 0x24 ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0xb1, 0xd0, 0xb1, 0x55, 0x9c, 0x83, 0xef, 0x5b ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0x04, 0x44, 0x5c, 0xc4, 0x58, 0x1c, 0x8e, 0x86 ),
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( 0xd8, 0x22, 0x4e, 0xdd, 0xd0, 0x9f, 0x11, 0x57 ),
+};
+static const blcrypto_suite_mpi ecp_x25519_bad_point_1 = ECP_MPI_INIT_ARRAY(
+        x25519_bad_point_1 );
+static const blcrypto_suite_mpi ecp_x25519_bad_point_2 = ECP_MPI_INIT_ARRAY(
+        x25519_bad_point_2 );
+#endif /* BLCRYPTO_SUITE_ECP_DP_CURVE25519_ENABLED */
+
+/*
+ * Check that the input point is not one of the low-order points.
+ * This is recommended by the "May the Fourth" paper:
+ * https://eprint.iacr.org/2017/806.pdf
+ * Those points are never sent by an honest peer.
+ */
+static int ecp_check_bad_points_mx( const blcrypto_suite_mpi *X, const blcrypto_suite_mpi *P,
+                                    const blcrypto_suite_ecp_group_id grp_id )
+{
+    int ret;
+    blcrypto_suite_mpi XmP;
+
+    blcrypto_suite_mpi_init( &XmP );
+
+    /* Reduce X mod P so that we only need to check values less than P.
+     * We know X < 2^256 so we can proceed by subtraction. */
+    BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_copy( &XmP, X ) );
+    while( blcrypto_suite_mpi_cmp_mpi( &XmP, P ) >= 0 )
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_sub_mpi( &XmP, &XmP, P ) );
+
+    /* Check against the known bad values that are less than P. For Curve448
+     * these are 0, 1 and -1. For Curve25519 we check the values less than P
+     * from the following list: https://cr.yp.to/ecdh.html#validate */
+    if( blcrypto_suite_mpi_cmp_int( &XmP, 1 ) <= 0 ) /* takes care of 0 and 1 */
+    {
+        ret = BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY;
+        goto cleanup;
+    }
+
+#if defined(BLCRYPTO_SUITE_ECP_DP_CURVE25519_ENABLED)
+    if( grp_id == BLCRYPTO_SUITE_ECP_DP_CURVE25519 )
+    {
+        if( blcrypto_suite_mpi_cmp_mpi( &XmP, &ecp_x25519_bad_point_1 ) == 0 )
+        {
+            ret = BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY;
+            goto cleanup;
+        }
+
+        if( blcrypto_suite_mpi_cmp_mpi( &XmP, &ecp_x25519_bad_point_2 ) == 0 )
+        {
+            ret = BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY;
+            goto cleanup;
+        }
+    }
+#else
+    (void) grp_id;
+#endif
+
+    /* Final check: check if XmP + 1 is P (final because it changes XmP!) */
+    BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_add_int( &XmP, &XmP, 1 ) );
+    if( blcrypto_suite_mpi_cmp_mpi( &XmP, P ) == 0 )
+    {
+        ret = BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY;
+        goto cleanup;
+    }
+
+    ret = 0;
+
+cleanup:
+    blcrypto_suite_mpi_free( &XmP );
+
+    return( ret );
+}
+
 /*
  * Check validity of a public key for Montgomery curves with x-only schemes
  */
@@ -2981,7 +3071,13 @@ static int ecp_check_pubkey_mx( const blcrypto_suite_ecp_group *grp, const blcry
     if( blcrypto_suite_mpi_size( &pt->X ) > ( grp->nbits + 7 ) / 8 )
         return( BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY );
 
-    return( 0 );
+    /* Implicit in all standards (as they don't consider negative numbers):
+     * X must be non-negative. This is normally ensured by the way it's
+     * encoded for transmission, but let's be extra sure. */
+    if( blcrypto_suite_mpi_cmp_int( &pt->X, 0 ) < 0 )
+        return( BLCRYPTO_SUITE_ERR_ECP_INVALID_KEY );
+
+    return( ecp_check_bad_points_mx( &pt->X, &grp->P, grp->id ) );
 }
 #endif /* ECP_MONTGOMERY */
 
@@ -3059,6 +3155,11 @@ int blcrypto_suite_ecp_gen_privkey( const blcrypto_suite_ecp_group *grp,
 {
     int ret = BLCRYPTO_SUITE_ERR_ECP_BAD_INPUT_DATA;
     size_t n_size;
+#if defined(ECP_SHORTWEIERSTRASS)
+    blcrypto_suite_mpi one;
+
+    blcrypto_suite_mpi_init( &one );
+#endif
 
     ECP_VALIDATE_RET( grp   != NULL );
     ECP_VALIDATE_RET( d     != NULL );
@@ -3099,7 +3200,10 @@ int blcrypto_suite_ecp_gen_privkey( const blcrypto_suite_ecp_group *grp,
     {
         /* SEC1 3.2.1: Generate d such that 1 <= n < N */
         int count = 0;
-        unsigned cmp = 0;
+        unsigned lt_lower = 1, lt_upper = 0;
+
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_grow( &one, grp->N.n ) );
+        BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_lset( &one, 1 ) );
 
         /*
          * Match the procedure given in RFC 6979 (deterministic ECDSA):
@@ -3123,19 +3227,22 @@ int blcrypto_suite_ecp_gen_privkey( const blcrypto_suite_ecp_group *grp,
              * such as secp224k1 are actually very close to the worst case.
              */
             if( ++count > 30 )
-                return( BLCRYPTO_SUITE_ERR_ECP_RANDOM_FAILED );
-
-            ret = blcrypto_suite_mpi_lt_mpi_ct( d, &grp->N, &cmp );
-            if( ret != 0 )
             {
+                ret = BLCRYPTO_SUITE_ERR_ECP_RANDOM_FAILED;
                 goto cleanup;
             }
+
+            BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_lt_mpi_ct( d, &grp->N, &lt_upper ) );
+            BLCRYPTO_SUITE_MPI_CHK( blcrypto_suite_mpi_lt_mpi_ct( d, &one, &lt_lower ) );
         }
-        while( blcrypto_suite_mpi_cmp_int( d, 1 ) < 0 || cmp != 1 );
+        while( lt_lower != 0 || lt_upper == 0 );
     }
 #endif /* ECP_SHORTWEIERSTRASS */
 
 cleanup:
+#if defined(ECP_SHORTWEIERSTRASS)
+    blcrypto_suite_mpi_free( &one );
+#endif
     return( ret );
 }
 

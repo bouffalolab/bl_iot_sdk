@@ -1,5 +1,63 @@
+= Release 1.6.6 =
+Released: 2022-01-05
+
+== Features ==
+windows版本增加cklink烧写接口
+
+== Changes ==
+修改flash erase逻辑，防止erase过程中消耗过多时间
+ubuntu版本主文件大小压缩到100MB以内
+更新602/702的boot2和eflash loader bin
+更新602/702支持的flash类型列表
+更新602的mfg文件
+
+== Bug Fixes ==
+修复iap升级时设备枚举一直报错的问题
+修复ubuntu下切换芯片时界面崩溃的问题
+修复ubuntu下usb烧写出错的问题
+
+
+= Release 1.6.5 =
+Released: 2021-11-10
+
+== Changes ==
+更新BL702 MFG界面和固件
+已经烧写过一次后在芯片没有复位还在运行eflash loader时，工具可在芯片不做任何动作的情况下继续烧写
+
+== Bug Fixes ==
+修复没有串口时无法生成image的bug
+修复波特率填写非数字时烧写报错的bug
+修复single和iap download的bug
+修复jlink和openocd烧写出错的bug
+修复BL602/702在使用加密功能时，efuse create会将key slot3同时读写保护的bug
+
+
+= Release 1.6.4 =
+Released: 2021-10-13
+
+== Features ==
+增加固件是否适配分区大小的检查
+
+== Changes ==
+BL602的MFG固件修改为2.43，支持efuse power offset ate的位置修改
+修改702的eflash loader，支持根据flash efuse bit去烧录flash而不是自动scan，解决烧录过程中某些引脚高电平问题，同时支持指定引脚烧录
+
+== Bug Fixes ==
+修改FW_OTA.bin.hash生成的错误
+
+
+= Release 1.6.3 =
+Released: 2021-09-27
+
+== Features ==
+增加usb iap download功能
+
+
 = Release 1.6.2 =
 Released: 2021-09-03
+
+== Bug Fixes ==
+修复路径带空格的单文件烧写报错的bug
 
 
 = Release 1.6.1 =

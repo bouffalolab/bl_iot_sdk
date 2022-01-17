@@ -29,7 +29,25 @@
  */
 #ifndef __BL_HBN_H__
 #define __BL_HBN_H__
-#include <stdint.h>
+
+
+#include "bl702_glb.h"
+#include "bl702_sec_eng.h"
+#include "bl702_sf_cfg.h"
+#include "bl702_sflash.h"
+#include "bl702_romdriver.h"
+
+
+#define ATTR_NOINLINE              __attribute__((noinline))
+#define ATTR_HBN_CODE_SECTION      __attribute__((section(".hbn_code." ATTR_UNI_SYMBOL)))
+#define ATTR_HBN_DATA_SECTION      __attribute__((section(".hbn_data")))
+#define ATTR_HBN_NOINIT_SECTION    __attribute__((section(".hbn_noinit")))
+
+
+void bl_hbn_fastboot_init(void);
+void bl_hbn_enter_with_fastboot(uint32_t hbnSleepCycles);
+void bl_hbn_fastboot_done_callback(void);
+
 
 typedef struct _hbn_type {
     uint8_t buflen;

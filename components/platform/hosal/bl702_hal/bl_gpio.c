@@ -31,6 +31,7 @@
 
 #include <bl702_glb.h>
 #include <bl702_gpio.h>
+#include <bl702_romdriver.h>
 #include <bl702.h>
 #include "bl_gpio.h"
 #include "bl_irq.h"
@@ -53,7 +54,11 @@ int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown)
     if (pulldown) {
         cfg.pullType = GPIO_PULL_DOWN;
     }
+#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+    RomDriver_GLB_GPIO_Init(&cfg);
+#else
     GLB_GPIO_Init(&cfg);
+#endif
 
     return 0;
 }
@@ -74,7 +79,11 @@ int bl_gpio_enable_input(uint8_t pin, uint8_t pullup, uint8_t pulldown)
     if (pulldown) {
         cfg.pullType = GPIO_PULL_DOWN;
     }
+#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+    RomDriver_GLB_GPIO_Init(&cfg);
+#else
     GLB_GPIO_Init(&cfg);
+#endif
 
     return 0;
 }

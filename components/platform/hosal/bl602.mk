@@ -28,6 +28,7 @@ COMPONENT_SRCS := bl602_hal/bl_uart.c \
                   bl602_hal/bl_pwm.c \
                   bl602_hal/bl_sec_aes.c \
                   bl602_hal/bl_sec_sha.c \
+                  bl602_hal/bl_sec_pka.c \
                   bl602_hal/bl_wifi.c \
                   bl602_hal/bl_wdt.c \
                   bl602_hal/bl_wdt_cli.c \

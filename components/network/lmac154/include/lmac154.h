@@ -307,6 +307,15 @@ int lmac154_getRSSI(void);
 *******************************************************************************/
 int lmac154_getLQI(void);
 
+/****************************************************************************//**
+ * @brief  Get SFD correlation
+ *
+ * @param  None
+ *
+ * @return SFD correlation
+ *
+*******************************************************************************/
+uint8_t lmac154_getSFDCorrelation(void);
 
 /****************************************************************************//**
  * @brief  Get the frequency offset in Hz
@@ -317,7 +326,6 @@ int lmac154_getLQI(void);
  *
 *******************************************************************************/
 int lmac154_getFrequencyOffset(void);
-
 
 /****************************************************************************//**
  * @brief  Set tx power (no default value)
@@ -402,7 +410,7 @@ void lmac154_setCCAMode(lmac154_cca_mode_t mode);
 /****************************************************************************//**
  * @brief  Set CCA ED threshold (default -71dBm)
  *
- * @param  threshold: ED threshold ranging from -122 to -71 in dBm
+ * @param  threshold: ED threshold ranging from -122 to 5 in dBm
  *
  * @return None
  *
@@ -952,6 +960,16 @@ void lmac154_rxDoneEvent(uint8_t *rx_buf, uint8_t rx_len, uint8_t crc_fail);
 *******************************************************************************/
 void lmac154_rxStartEvent(void);
 
+/****************************************************************************//**
+ * @brief  Hardware auto tx ack done event
+ *        
+ *
+ * @param  None
+ *
+ * @return None
+ *
+*******************************************************************************/
+void lmac154_hwAutoTxAckDoneEvent(void);
 
 /****************************************************************************//**
  * @brief  Enable second stack for dual stack

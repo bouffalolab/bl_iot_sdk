@@ -36,6 +36,8 @@
 #include <ef_cfg.h>
 
 static bl_mtd_handle_t handle;
+uint32_t ENV_AREA_SIZE;
+uint32_t SECTOR_NUM;
 
 /* default environment variables set for user */
 static const ef_env default_env_set[] = {
@@ -70,17 +72,24 @@ EfErrCode ef_port_init(ef_env const **default_env, size_t *default_env_size) {
             info.offset,
             info.size
     );
-    if (info.size < ENV_AREA_SIZE) {
-        printf("[EASYFLASH] error: psm size is smaller than the value you set, note taht CONFIG_ENABLE_PSM_EF_SIZE should be set no more than half of psm size ");
+    if (info.size < 8 * 1024) {
+        printf("[ERROR]psm partition is less than 8k,easyflash can not work!");
         while(1);
     }
+    ENV_AREA_SIZE = (info.size / EF_ERASE_MIN_SIZE) * EF_ERASE_MIN_SIZE;
+    SECTOR_NUM = ENV_AREA_SIZE / EF_ERASE_MIN_SIZE;
+    printf("ENV AREA SIZE %ld, SECTOR NUM %ld\r\n", ENV_AREA_SIZE, SECTOR_NUM);
 
     *default_env = default_env_set;
     *default_env_size = sizeof(default_env_set) / sizeof(default_env_set[0]);
 
     printf("*default_env_size = 0x%08x\r\n", *default_env_size);
 
+#if configUSE_RECURSIVE_MUTEXES
+    env_cache_lock = xSemaphoreCreateRecursiveMutex();
+#else
     env_cache_lock = xSemaphoreCreateMutex();
+#endif
     
     return EF_NO_ERR;
 }
@@ -160,9 +169,15 @@ EfErrCode ef_port_write(uint32_t addr, const uint32_t *buf, size_t size) {
  */
 void ef_port_env_lock(void) {
     
+#if configUSE_RECURSIVE_MUTEXES
+    xSemaphoreTakeRecursive(env_cache_lock,
+                 portMAX_DELAY);
+#else
     /* You can add your code under here. */
     xSemaphoreTake( env_cache_lock,
                  portMAX_DELAY );
+#endif
+
 }
 
 /**
@@ -170,8 +185,12 @@ void ef_port_env_lock(void) {
  */
 void ef_port_env_unlock(void) {
     
+#if configUSE_RECURSIVE_MUTEXES
+    xSemaphoreGiveRecursive(env_cache_lock);
+#else
     /* You can add your code under here. */
     xSemaphoreGive( env_cache_lock );
+#endif
 }
 
 extern void vprint(const char *fmt, va_list argp);

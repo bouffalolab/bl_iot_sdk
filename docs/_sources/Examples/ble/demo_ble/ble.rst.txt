@@ -11,7 +11,7 @@ BLE
 使用步骤
 -----------
 
-- 编译 ``customer_app/bl602_demo_event`` 或 ``customer_app/bl702_demo_event`` 工程并下载工程；
+- 进入 ``customer_app/bl602_demo_event`` 或 ``customer_app/bl702_demo_event`` 工程中，BL602用脚本 ``genromap`` 编译，BL702用脚本 ``genblestd`` 编译，完成后下载Bin文件；
 - BL602使用 ``stack_ble`` 命令初始化ble，打印的部分log如下，BL702不需要输入该命令。
 
     .. figure:: imgs/image1.png
@@ -51,9 +51,9 @@ BLE
 	.. figure:: imgs/image8.png
 	   :alt:
 	   
-   - 在串口打印出 ``Confirm passkey for xx:xx:xx:xx:xx:xx (public)`` ,输入 ``ble_auth_pairing_confirm`` 命令进行配对回复，打印的部分log如下。
+   - 在串口打印出 ``Confirm passkey for xx:xx:xx:xx:xx:xx (public)：xxxxxx`` ,输入 ``ble_auth_passkey_confirm`` 命令进行配对回复，打印的部分log如下。
 	
-	 .. figure:: imgs/image23.png
+	 .. figure:: imgs/image37.png
 	    :alt:
 	   
    - 在串口打印出 ``Bonded with xx:xx:xx:xx:xx:xx (public)`` ,表明SMP配对成功。
@@ -74,8 +74,101 @@ BLE
    - 在串口打印出 ``Bonded with xx:xx:xx:xx:xx:xx (public)`` ,表明SMP配对成功。
 	
 	.. figure:: imgs/image38.png
-	   :alt:	   
+	   :alt:	
 	   
+OTA使用流程
+--------------- 
+
+ - **第一步：安装APP**
+
+	- 下载 `Bouffalo Lab BLE general apk <https://dev.bouffalolab.com/download>`_ (目前仅支持安卓系统)并安装；
+	
+ - **第二步：下载使能OAD服务的固件**
+ 
+	- 以工程bl702_demo_event为例，编译脚本为 ``genblestd`` ，使能OAD服务 ``CONFIG_BT_OAD_SERVER=1`` ，使能后的编译参数为 ``make CONFIG_BT=1 CONFIG_BLECONTROLLER_LIB=std 
+	  CONFIG_BT_OAD_SERVER=1 -j`` ；通过该参数编译生成带有OAD服务的Bin文件；并将该文件下载至BL702板子上；
+	  
+	- 通过串口，输入以下命令发ADV；
+	
+	  ``ble_init``
+	  
+	  ``ble_start_adv 0 0 0xa0 0xa0``
+   
+ - **第三步：生成OTA文件**
+
+	- 同样以工程bl702_demo_event为例，在cli.c文件中的version_cmd函数添加打印信息，用来测试OTA升级成功；编译参数同样为 ``make CONFIG_BT=1 CONFIG_BLECONTROLLER_LIB=std 
+	  CONFIG_BT_OAD_SERVER=1 -j`` ，编译生成Bin文件；
+
+		.. figure:: imgs/image41.png
+			:alt:
+
+	- 打开Dev Cube下载工具，选择相应的参数，其中Firmware Bin选择为需要OTA升级的文件；本例选择上一步添加打印信息的Bin文件，Partition Table选择1M flash对应的文件 ``partition_cfg_1M.toml`` ，Factory Params选择 ``bl_factory_params_IoTKitA_32M.dts``,
+	  然后点击 ``Creat & Download`` 选项，（该步骤目的是create OTA镜像，不做实际download，不需要连接硬件板子，download失败提示可忽略）；查看log中有提示 ``FW OTA bin is Done`` 与 ``FW OTA xz is Done`` ,则生成对应的OTA文件成功；
+
+		.. figure:: imgs/image40.png
+			:alt:
+
+	- 在Dev cube的文件目录下找到生成的OTA文件；其中 ``FW_OTA.bin.hash`` 为不带压缩文件；``FW_OTA.bin.xz.hash`` 为带压缩文件；本例以 ``FW_OTA.bin.xz.hash`` 进行OTA升级，将其拷贝至手机中；
+
+		.. figure:: imgs/image39.png
+			:alt:		
+ 
+ - **第四步：OTA升级**
+
+	- 打开 APP 进行设置选择相应的服务，并 scan 设备（默认开启自动 scan）；
+	
+		.. figure:: imgs/image42.png
+			:alt:
+			
+		.. figure:: imgs/image43.png
+			:alt:
+			
+		.. figure:: imgs/image44.png
+			:alt:
+			
+		.. figure:: imgs/image45.png
+			:alt:
+
+	- 选择 scan 到的设备并连接，设备名为 ``BL702-BLE-DEV``；
+
+		.. figure:: imgs/image46.png
+			:alt:
+	
+	- 在 APP 中选择	``设备升级`` 选项；
+	
+		.. figure:: imgs/image47.png
+			:alt:
+	
+	- 在文件目录里面选择需要升级的文件 ``FW_OTA.bin.xz.hash``；
+	
+		.. figure:: imgs/image48.png
+			:alt:
+		
+		.. figure:: imgs/image49.png
+			:alt:
+			
+	- 在APP中点击 ``SEND VER REQ``	选项发送版本请求，用来获取当前Bin文件的相关信息；
+	
+		.. figure:: imgs/image50.png
+			:alt:
+			
+		.. figure:: imgs/image51.png
+			:alt:
+			
+	- 在APP中点击 ``START OTA``	选项进行升级；
+	
+		.. figure:: imgs/image52.png
+			:alt:
+		
+		.. figure:: imgs/image53.png
+			:alt:
+
+	- BL702设备进行复位，然后在串口中输入命令 ``sysver`` ,并且在串口log中查找到添加的打印信息，说明OTA升级成功；
+	
+		.. figure:: imgs/image54.png
+			:alt:
+	
+	
 Cli命令介绍
 -----------	 
 

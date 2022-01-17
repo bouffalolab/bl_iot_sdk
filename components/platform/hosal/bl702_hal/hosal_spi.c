@@ -551,7 +551,7 @@ static void hosal_spi_gpio_init(hosal_spi_dev_t *arg)
     gpiopins[1] = arg->config.pin_clk;
     gpiopins[2] = arg->config.pin_mosi;
     gpiopins[3] = arg->config.pin_miso;
-    GLB_GPIO_Func_Init(GPIO_FUN_SPI0,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
+    GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 
     if (arg->config.mode == 0) {
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_MASTER);

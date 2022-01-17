@@ -1,5 +1,14 @@
+#include <blcrypto_suite/blcrypto_suite_top_config.h>
 #include <blcrypto_suite/blcrypto_suite_hacc.h>
+
+#if USE_HWCRYPTO
+#ifdef CFG_CHIP_BL602
 #include <bl602_sec_eng.h>
+#endif
+
+#ifdef CFG_CHIP_BL808
+#include <bl606p_sec_eng.h>
+#endif
 
 #define ECP_SECP256R1_REG_TYPE                      SEC_ENG_PKA_REG_SIZE_32
 #define ECP_SECP256R1_N_REG_INDEX                   0
@@ -550,3 +559,4 @@ int blcrypto_suite_hacc_secp256r1_exp_mod(uint32_t *result, uint32_t *A, uint32_
     Sec_Eng_PKA_Read_Data(nregType,7,(uint32_t *)result,dataSize);
     return 0;
 }
+#endif

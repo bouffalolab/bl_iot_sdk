@@ -50,10 +50,10 @@
 #include "bl602_hbn.h"
 #elif defined(BL702)
 #include "bl702_hbn.h"
-#elif defined(BL606p) || defined(BL616)
+#elif defined(BL606P) || defined(BL616)
 #include "bl606p_hbn.h"
-#elif defined(BL808)
-#include "bl808_hbn.h"
+#elif defined(BL808)//no bl808_hbn.h currently, comment it out temporarily
+//#include "bl808_hbn.h"
 #endif
 #include "work_q.h"
 #endif
@@ -189,7 +189,7 @@ struct acl_data {
 extern struct k_sem g_poll_sem;
 #endif
 
-static struct cmd_data cmd_data[CONFIG_BT_HCI_CMD_COUNT];
+__attribute__((section(".tcm_data"))) static struct cmd_data cmd_data[CONFIG_BT_HCI_CMD_COUNT];
 
 #define cmd(buf) (&cmd_data[net_buf_id(buf)])
 #define acl(buf) ((struct acl_data *)net_buf_user_data(buf))
@@ -683,16 +683,34 @@ static int le_set_non_resolv_private_addr(u8_t id)
 	bt_addr_t nrpa;
 	int err;
 
+	if (atomic_test_bit(bt_dev.flags, BT_DEV_SETTED_NON_RESOLV_ADDR)) {
+		return 0;
+	}
+
 	err = bt_rand(nrpa.val, sizeof(nrpa.val));
 	if (err) {
 		return err;
 	}
 
 	nrpa.val[5] &= 0x3f;
-    atomic_clear_bit(bt_dev.flags, BT_DEV_RPA_VALID);
+	atomic_clear_bit(bt_dev.flags, BT_DEV_RPA_VALID);
 	return set_random_address(&nrpa);
 }
 
+int le_set_non_resolv_private_addr_ext(u8_t id, bt_addr_t *addr)
+{
+	bt_addr_t *nrpa = addr;
+	int err;
+
+	err = bt_rand(nrpa->val, sizeof(nrpa->val));
+	if (err) {
+		return err;
+	}
+
+	nrpa->val[5] &= 0x3f;
+	atomic_clear_bit(bt_dev.flags, BT_DEV_RPA_VALID);
+	return set_random_address(nrpa);
+}
 #endif
 
 #else
@@ -1537,7 +1555,6 @@ static void enh_conn_complete(struct bt_hci_evt_le_enh_conn_complete *evt)
 		}
 		#endif
 	}
-	
 
 	bt_conn_set_state(conn, BT_CONN_CONNECTED);
 
@@ -5659,16 +5676,33 @@ int bt_enable(bt_ready_cb_t cb)
 
 #if defined(BFLB_BLE)
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
+        #if (BFLB_STATIC_ALLOC_MEM)
+        net_buf_init(HCI_CMD,&hci_cmd_pool, CONFIG_BT_HCI_CMD_COUNT, CMD_BUF_SIZE, NULL);
+        net_buf_init(HCI_RX,&hci_rx_pool, CONFIG_BT_RX_BUF_COUNT, BT_BUF_RX_SIZE, NULL);
+        #else
         net_buf_init(&hci_cmd_pool, CONFIG_BT_HCI_CMD_COUNT, CMD_BUF_SIZE, NULL);
         net_buf_init(&hci_rx_pool, CONFIG_BT_RX_BUF_COUNT, BT_BUF_RX_SIZE, NULL);
+        #endif
         #if defined(CONFIG_BT_CONN)
+        #if (BFLB_STATIC_ALLOC_MEM)
+        net_buf_init(NUM_COMPLETE,&num_complete_pool, 1, BT_BUF_RX_SIZE, NULL);
+        #else
         net_buf_init(&num_complete_pool, 1, BT_BUF_RX_SIZE, NULL);
+        #endif
         #if defined(CONFIG_BT_HCI_ACL_FLOW_CONTROL)
+        #if (BFLB_STATIC_ALLOC_MEM)
+        net_buf_init(ACL_IN,&acl_in_pool, CONFIG_BT_ACL_RX_COUNT, ACL_IN_SIZE, report_completed_packet);
+        #else
         net_buf_init(&acl_in_pool, CONFIG_BT_ACL_RX_COUNT, ACL_IN_SIZE, report_completed_packet);
+        #endif
         #endif//CONFIG_BT_HCI_ACL_FLOW_CONTROL
         #endif//CONFIG_BT_CONN
         #if defined(CONFIG_BT_DISCARDABLE_BUF_COUNT)
+        #if (BFLB_STATIC_ALLOC_MEM)
+        net_buf_init(DISCARDABLE,&discardable_pool, CONFIG_BT_DISCARDABLE_BUF_COUNT, BT_BUF_RX_SIZE, NULL);
+        #else
         net_buf_init(&discardable_pool, CONFIG_BT_DISCARDABLE_BUF_COUNT, BT_BUF_RX_SIZE, NULL);
+        #endif
         #endif
 #endif
 
@@ -5967,7 +6001,9 @@ int bt_set_name(const char *name)
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 #if defined(BFLB_BLE)
         #if defined(CFG_SLEEP)
+        #if !defined(BL808)//no bl808_hbn.h currently, comment it out temporarily
         if(HBN_Get_Status_Flag() == 0)
+        #endif
         #endif
         bt_settings_save_name();
 #else
@@ -6445,26 +6481,21 @@ int bt_le_adv_start_internal(const struct bt_le_adv_param *param,
 	if (param->options & BT_LE_ADV_OPT_CONNECTABLE) {
 		if (IS_ENABLED(CONFIG_BT_PRIVACY) &&
 		    !(param->options & BT_LE_ADV_OPT_USE_IDENTITY)) {
-		    #if defined(CONFIG_BT_STACK_PTS)
-            if(param->addr_type == BT_ADDR_TYPE_RPA)
+		    #if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_AUTO_PTS)
+            if(param->addr_type == BT_ADDR_LE_RANDOM_ID)
                 err = le_set_private_addr(param->id);
-            else if(param->addr_type == BT_ADDR_TYPE_NON_RPA)
+            else if(param->addr_type == BT_ADDR_LE_RANDOM)
                 err = le_set_non_resolv_private_addr(param->id);
             #else 
-			err = le_set_private_addr(param->id);
+                err = le_set_private_addr(param->id);
             #endif
 			if (err) {
 				return err;
 			}
 
 			if (BT_FEAT_LE_PRIVACY(bt_dev.le.features)) {
-                #if defined(CONFIG_BT_STACK_PTS)
-				if(param->addr_type == BT_ADDR_LE_PUBLIC)
-					set_param.own_addr_type = BT_ADDR_LE_PUBLIC;
-                if(param->addr_type == BT_ADDR_TYPE_RPA)
-                    set_param.own_addr_type = BT_HCI_OWN_ADDR_RPA_OR_RANDOM;
-                else if(param->addr_type == BT_ADDR_TYPE_NON_RPA)
-                    set_param.own_addr_type = BT_ADDR_LE_RANDOM;
+                #if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_AUTO_PTS)
+                set_param.own_addr_type = param->addr_type;
                 #else
 				set_param.own_addr_type =
 					BT_HCI_OWN_ADDR_RPA_OR_RANDOM;
@@ -6520,25 +6551,24 @@ int bt_le_adv_start_internal(const struct bt_le_adv_param *param,
 			set_param.own_addr_type = id_addr->type;
 		} else {
 		    #if defined(BFLB_BLE) && !defined(CONFIG_BT_MESH)
-            #if defined(CONFIG_BT_STACK_PTS)
-            if(param->addr_type == BT_ADDR_TYPE_RPA)
+            #if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_AUTO_PTS)
+            if(param->addr_type == BT_ADDR_LE_RANDOM_ID)
                 err = le_set_private_addr(param->id);
-            else if(param->addr_type == BT_ADDR_TYPE_NON_RPA)
+            else if(param->addr_type == BT_ADDR_LE_RANDOM)
                 err = le_set_non_resolv_private_addr(param->id);
             #else
 			//#if !defined(CONFIG_BT_ADV_WITH_PUBLIC_ADDR)
 			//err = le_set_private_addr(param->id);
 			//#endif
             #endif//CONFIG_BT_STACK_PTS
-            #if defined(CONFIG_BT_STACK_PTS)
-			if(param->addr_type == BT_ADDR_LE_PUBLIC)
-				set_param.own_addr_type = BT_ADDR_LE_PUBLIC;
-			else
-			#endif
+            #if defined(CONFIG_BT_STACK_PTS) || defined(CONFIG_AUTO_PTS)
+            set_param.own_addr_type = param->addr_type;
+			#else
 			    //set_param.own_addr_type = BT_ADDR_LE_RANDOM;
 				//#if defined(CONFIG_BT_ADV_WITH_PUBLIC_ADDR)
-				set_param.own_addr_type = BT_ADDR_LE_PUBLIC;
+			set_param.own_addr_type = BT_ADDR_LE_PUBLIC;
 				//#endif
+				#endif
             #endif
 		}
 

@@ -15,3 +15,7 @@ genblemesh:       build Wi-Fi and BLE mesh. mesh application without mesh model 
 genblemeshmodel:  build Wi-Fi and BLE mesh. mesh application with mesh model code.
 genromap:         build Wi-Fi and BLE. BLE support all roles, 2 BLE connection is supported, and enable tp service.
 
+# 1M Flash支持
+
+bouffalolab_release_bl_iot_sdk_1.6.34-122-ga1803cbd5 SDK support 1M and 2M Flash. Support 2M flash by default, and you 
+can use macro ``CONFIG_BL602_USE_1M_FLASH:=1`` control enable 1M Flash. Such as, we can modify the macro in the file ``customer_app/bl602_demo_event/proj_config.mk`` .

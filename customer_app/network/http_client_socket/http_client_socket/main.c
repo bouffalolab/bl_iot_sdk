@@ -9,7 +9,9 @@
 #include <lwip/tcpip.h>
 #include <hal_wifi.h>
 #include <wifi_mgmr_ext.h>
+#ifdef EASYFLASH_ENABLE
 #include <easyflash.h>
+#endif
 #include "demo.h"
 
 #define WIFI_AP_PSM_INFO_SSID           "conf_ap_ssid"
@@ -347,14 +349,15 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 static void _cli_init()
 {
     /*Put CLI which needs to be init here*/
+#ifdef EASYFLASH_ENABLE
     easyflash_cli_init();
+#endif
     wifi_mgmr_cli_init();
     http_client_cli_init();
 }
 
 static void proc_main_entry(void *pvParameters)
 {
-    easyflash_init();
     _cli_init();
     aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
     vTaskDelete(NULL);
@@ -367,13 +370,10 @@ static void system_thread_init()
 
 void main()
 {
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_main_stack[1024];
-
     system_thread_init();
 
     puts("[OS] proc_main_entry task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
     
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);

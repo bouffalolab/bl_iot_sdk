@@ -24,7 +24,7 @@ COMPONENTS_VFS     := romfs
 SOC_DRV = $(shell echo $(CONFIG_CHIP_NAME) | tr A-Z a-z)
 
 INCLUDE_COMPONENTS += $(SOC_DRV) $(SOC_DRV)_std
-INCLUDE_COMPONENTS += freertos_riscv_ram hosal cli vfs yloop utils blog blog_testc newlibc coredump
+INCLUDE_COMPONENTS += freertos_riscv_ram hosal mbedtls_lts lwip cli vfs yloop utils blog blog_testc newlibc coredump
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)

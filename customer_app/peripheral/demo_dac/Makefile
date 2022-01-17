@@ -30,7 +30,7 @@ else ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
 INCLUDE_COMPONENTS += freertos_riscv_ram
 endif
 INCLUDE_COMPONENTS += $(SOC_DRV) $(SOC_DRV)_std
-INCLUDE_COMPONENTS += hosal cli vfs yloop utils blog blog_testc newlibc
+INCLUDE_COMPONENTS += hosal mbedtls_lts lwip cli vfs yloop utils blog blog_testc newlibc
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)

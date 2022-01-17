@@ -14,7 +14,11 @@ COMPONENT_SRCS += mbedtls/library/aria.c
 COMPONENT_SRCS += mbedtls/library/asn1parse.c
 COMPONENT_SRCS += mbedtls/library/asn1write.c
 COMPONENT_SRCS += mbedtls/library/base64.c
+ifeq ($(CONFIG_MBEDTLS_BIGNUM_USE_HW),1)
+COMPONENT_SRCS += port/bignum.c
+else
 COMPONENT_SRCS += mbedtls/library/bignum.c
+endif
 COMPONENT_SRCS += mbedtls/library/blowfish.c
 COMPONENT_SRCS += mbedtls/library/camellia.c
 COMPONENT_SRCS += mbedtls/library/ccm.c
@@ -53,7 +57,6 @@ COMPONENT_SRCS += mbedtls/library/pk.c
 COMPONENT_SRCS += mbedtls/library/pkcs11.c
 COMPONENT_SRCS += mbedtls/library/pkcs12.c
 COMPONENT_SRCS += mbedtls/library/pkcs5.c
-COMPONENT_SRCS += mbedtls/library/pkparse.c
 COMPONENT_SRCS += mbedtls/library/pk_wrap.c
 COMPONENT_SRCS += mbedtls/library/pkwrite.c
 COMPONENT_SRCS += mbedtls/library/platform.c
@@ -85,14 +88,13 @@ COMPONENT_SRCS += mbedtls/library/x509write_crt.c
 COMPONENT_SRCS += mbedtls/library/x509write_csr.c
 COMPONENT_SRCS += mbedtls/library/xtea.c
 
+COMPONENT_SRCS += port/pkparse.c
 COMPONENT_SRCS += port/mbedtls_port_mem.c
 COMPONENT_SRCS += port/net_sockets.c
 COMPONENT_SRCS += port/entropy_poll.c
-COMPONENT_SRCS += port/mbedtls_port_key_file.c
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
 COMPONENT_SRCDIRS := mbedtls/library port
 
 ##
-CPPFLAGS += -D MBEDTLS_CONFIG_FILE=\"mbedtls_sample_config.h\"

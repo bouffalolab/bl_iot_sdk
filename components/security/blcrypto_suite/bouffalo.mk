@@ -16,7 +16,7 @@ COMPONENT_SRCS := src/blcrypto_suite_bignum.c             \
                   src/blcrypto_suite_aes.c                \
                   src/blcrypto_suite_hacc_glue.c          \
                   src/blcrypto_suite_hacc_secp256r1_mul.c \
-                  src/blcrypto_suite_fw_api.c             \
+                  src/blcrypto_suite_supplicant_api.c     \
                   src/blcrypto_suite_export_fw.c          \
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
@@ -25,3 +25,10 @@ COMPONENT_SRCDIRS := src
 
 ##
 #CPPFLAGS +=
+ifeq ($(CONFIG_CHIP_NAME),BL808)
+CPPFLAGS += -DCFG_CHIP_BL808
+endif
+
+ifeq ($(CONFIG_CHIP_NAME),BL602)
+CPPFLAGS += -DCFG_CHIP_BL602
+endif

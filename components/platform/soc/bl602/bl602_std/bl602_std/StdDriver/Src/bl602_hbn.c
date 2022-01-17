@@ -1267,6 +1267,33 @@ BL_Err_Type HBN_Set_RTC_Timer(HBN_RTC_INT_Delay_Type delay,uint32_t compValLow,u
 }
 
 /****************************************************************************//**
+ * @brief  HBN get RTC async timer count value
+ *
+ * @param  valLow: RTC count value pointer for low 32 bits
+ * @param  valHigh: RTC count value pointer for high 8 bits
+ *
+ * @return SUCCESS or ERROR
+ *
+*******************************************************************************/
+static BL_Err_Type HBN_Get_RTC_Timer_Async_Val(uint32_t *valLow, uint32_t *valHigh)
+{
+    uint32_t tmpVal;
+
+    /* Tigger RTC val read */
+    tmpVal = BL_RD_REG(HBN_BASE, HBN_RTC_TIME_H);
+    tmpVal = BL_SET_REG_BIT(tmpVal, HBN_RTC_TIME_LATCH);
+    BL_WR_REG(HBN_BASE, HBN_RTC_TIME_H, tmpVal);
+    tmpVal = BL_CLR_REG_BIT(tmpVal, HBN_RTC_TIME_LATCH);
+    BL_WR_REG(HBN_BASE, HBN_RTC_TIME_H, tmpVal);
+
+    /* Read RTC val */
+    *valLow = BL_RD_REG(HBN_BASE, HBN_RTC_TIME_L);
+    *valHigh = (BL_RD_REG(HBN_BASE, HBN_RTC_TIME_H) & 0xff);
+
+    return SUCCESS;
+}
+
+/****************************************************************************//**
  * @brief  HBN get RTC timer count value
  *
  * @param  valLow: RTC count value pointer for low 32 bits
@@ -1275,20 +1302,20 @@ BL_Err_Type HBN_Set_RTC_Timer(HBN_RTC_INT_Delay_Type delay,uint32_t compValLow,u
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-BL_Err_Type HBN_Get_RTC_Timer_Val(uint32_t *valLow,uint32_t *valHigh)
+BL_Err_Type HBN_Get_RTC_Timer_Val(uint32_t *valLow, uint32_t *valHigh)
 {
-    uint32_t tmpVal;
+    uint32_t tmpValLow, tmpValHigh, tmpValLow1, tmpValHigh1;
+    uint64_t val, val1;
 
-    /* Tigger RTC val read */
-    tmpVal=BL_RD_REG(HBN_BASE,HBN_RTC_TIME_H);
-    tmpVal=BL_SET_REG_BIT(tmpVal,HBN_RTC_TIME_LATCH);
-    BL_WR_REG(HBN_BASE,HBN_RTC_TIME_H,tmpVal);
-    tmpVal=BL_CLR_REG_BIT(tmpVal,HBN_RTC_TIME_LATCH);
-    BL_WR_REG(HBN_BASE,HBN_RTC_TIME_H,tmpVal);
+    do {
+        HBN_Get_RTC_Timer_Async_Val(&tmpValLow, &tmpValHigh);
+        val = ((uint64_t)tmpValHigh << 32) | ((uint64_t)tmpValLow);
+        HBN_Get_RTC_Timer_Async_Val(&tmpValLow1, &tmpValHigh1);
+        val1 = ((uint64_t)tmpValHigh1 << 32) | ((uint64_t)tmpValLow1);
+    } while (val1 < val);
 
-    /* Read RTC val */
-    *valLow=BL_RD_REG(HBN_BASE,HBN_RTC_TIME_L);
-    *valHigh=(BL_RD_REG(HBN_BASE,HBN_RTC_TIME_H)&0xff);
+    *valLow = tmpValLow1;
+    *valHigh = tmpValHigh1;
 
     return SUCCESS;
 }

@@ -572,6 +572,11 @@
 #define BFLB_DISABLE_BT
 #define BFLB_FIXED_IRK 0
 #define BFLB_DYNAMIC_ALLOC_MEM
+#if defined(CFG_BLE_PDS) && defined(BL702) && defined(BFLB_BLE) && defined(BFLB_DYNAMIC_ALLOC_MEM)
+#define BFLB_STATIC_ALLOC_MEM   1
+#else
+#define BFLB_STATIC_ALLOC_MEM   0
+#endif
 #define CONFIG_BT_SCAN_WITH_IDENTITY 1
 
 #if defined(CONFIG_AUTO_PTS)
@@ -597,8 +602,10 @@ happens, which cause memory leak issue.*/
 #define BFLB_BLE_PATCH_AVOID_DUPLI_PUBKEY_CB
 /*The flag @conn_ref is not clean up after disconnect*/
 #define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF 
+#if !defined(CONFIG_AUTO_PTS)
 /*To avoid sevice changed indication sent at the very beginning, without any new service added.*/
 #define BFLB_BLE_PATCH_SET_SCRANGE_CHAGD_ONLY_IN_CONNECTED_STATE
+#endif
 #ifdef CONFIG_BT_SETTINGS
 /*Semaphore is used during flash operation. Make sure that freertos has already run up when it
   intends to write information to flash.*/
@@ -626,8 +633,5 @@ BT_SMP_DIST_ENC_KEY bit is not cleared while remote ENC_KEY is received.*/
 #define BFLB_BLE_DISCOVER_ONGOING
 #endif
 
-#if defined(__cplusplus)
-}
-#endif
 
 #endif /* BLE_CONFIG_H */

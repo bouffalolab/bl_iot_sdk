@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UART &mdash; BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档</title>
+  <title>UART &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档" href="../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../index.html"/>
         <link rel="up" title="外设 API" href="index.html"/>
         <link rel="next" title="timer" href="timer.html"/>
         <link rel="prev" title="SPI" href="spi.html"/> 
@@ -74,7 +74,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.32-104-g52434dce6
+                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
               </div>
             
           
@@ -223,6 +223,27 @@
 </div>
 <div class="section" id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="永久链接至标题">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv418hosal_uart_abr_getP16hosal_uart_dev_t7uint8_t">
+<span id="_CPPv318hosal_uart_abr_getP16hosal_uart_dev_t7uint8_t"></span><span id="_CPPv218hosal_uart_abr_getP16hosal_uart_dev_t7uint8_t"></span><span id="hosal_uart_abr_get__hosal_uart_dev_tP.uint8_t"></span><span class="target" id="group__hosal__uart_1ga6c3cc01eec07036a76798423db529d2a"></span>int <code class="descname">hosal_uart_abr_get</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416hosal_uart_dev_t" title="hosal_uart_dev_t">hosal_uart_dev_t</a> *<em>uart</em>, uint8_t <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418hosal_uart_abr_getP16hosal_uart_dev_t7uint8_t" title="永久链接至目标">¶</a><br /></dt>
+<dd><p>Get auto baudrate on a UART interface. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd><ul class="simple">
+<li>= 0 on success</li>
+<li>EIO if an error occurred with any step </li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">uart</span></code>: the UART interface </li>
+<li><code class="docutils literal notranslate"><span class="pre">mode</span></code>: auto baudrate detection mode(codeword 0x55 or start bit)</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="_CPPv415hosal_uart_initP16hosal_uart_dev_t">
 <span id="_CPPv315hosal_uart_initP16hosal_uart_dev_t"></span><span id="_CPPv215hosal_uart_initP16hosal_uart_dev_t"></span><span id="hosal_uart_init__hosal_uart_dev_tP"></span><span class="target" id="group__hosal__uart_1ga96699adcd663e93fe7ddea0688083832"></span>int <code class="descname">hosal_uart_init</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416hosal_uart_dev_t" title="hosal_uart_dev_t">hosal_uart_dev_t</a> *<em>uart</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415hosal_uart_initP16hosal_uart_dev_t" title="永久链接至目标">¶</a><br /></dt>
@@ -569,6 +590,18 @@
 </div>
 <div class="section" id="macros">
 <h3>Macros<a class="headerlink" href="#macros" title="永久链接至标题">¶</a></h3>
+<dl class="macro">
+<dt id="c.HOSAL_UART_AUTOBAUD_0X55">
+<span class="target" id="group__hosal__uart_1gaeed3cb352218113e5d8aba5caca951bd"></span><code class="descname">HOSAL_UART_AUTOBAUD_0X55</code><a class="headerlink" href="#c.HOSAL_UART_AUTOBAUD_0X55" title="永久链接至目标">¶</a></dt>
+<dd><p>UART auto baudrate detection using codeword 0x55. </p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.HOSAL_UART_AUTOBAUD_STARTBIT">
+<span class="target" id="group__hosal__uart_1gad934286777c640f447f9c3c645281979"></span><code class="descname">HOSAL_UART_AUTOBAUD_STARTBIT</code><a class="headerlink" href="#c.HOSAL_UART_AUTOBAUD_STARTBIT" title="永久链接至目标">¶</a></dt>
+<dd><p>UART auto baudrate detection using start bit. </p>
+</dd></dl>
+
 <dl class="macro">
 <dt id="c.HOSAL_UART_TX_CALLBACK">
 <span class="target" id="group__hosal__uart_1ga7ed7870678a814e48aae3125a04584d8"></span><code class="descname">HOSAL_UART_TX_CALLBACK</code><a class="headerlink" href="#c.HOSAL_UART_TX_CALLBACK" title="永久链接至目标">¶</a></dt>
@@ -943,7 +976,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.32-104-g52434dce6',
+            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

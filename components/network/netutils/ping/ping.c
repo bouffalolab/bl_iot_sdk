@@ -77,7 +77,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <utils_getopt.h>
-#include <bl_sec.h>
 #include <cli.h>
 #include <ping.h>
 #include <utils_memp.h>

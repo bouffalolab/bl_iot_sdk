@@ -7,7 +7,7 @@ import csv
 from tiny_test_fw import DUT, App, TinyFW
 from ttfw_bl import BL602App, BL602DUT
 
-REBOOT_TIMES = 800
+REBOOT_TIMES = 30
 
 @TinyFW.test_method(app=BL602App.BL602App, dut=BL602DUT.BL602TyMbDUT, test_suite_name='sdk_app_easyflash_boottimes_tc')
 def sdk_app_easyflash_boottimes_tc(env, extra_data):

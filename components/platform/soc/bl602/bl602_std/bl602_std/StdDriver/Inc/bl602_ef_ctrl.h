@@ -335,7 +335,7 @@ BL_Err_Type EF_Ctrl_Read_PowerOffset_Opt(uint8_t slot,int8_t pwrOffset[3],uint8_
 void EF_Ctrl_Write_R0(uint32_t index, uint32_t *data, uint32_t len);
 void EF_Ctrl_Read_R0(uint32_t index, uint32_t *data, uint32_t len);
 BL_Err_Type EF_Ctrl_Read_Ldo11VoutSel_Opt(uint8_t *Ldo11VoutSelValue);
-BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower);
+BL_Err_Type EF_Ctrl_Read_TxPower_ATE(int8_t *TxPower,uint8_t *slot);
 
 
 /*@} end of group EF_CTRL_Public_Functions */

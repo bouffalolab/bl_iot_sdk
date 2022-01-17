@@ -71,6 +71,46 @@
 
 #include "blcrypto_suite/blcrypto_suite_bignum.h"
 
+
+/*
+ * Conversion macros for embedded constants:
+ * build lists of blcrypto_suite_mpi_uint's from lists of unsigned char's grouped by 8, 4 or 2
+ */
+#if defined(BLCRYPTO_SUITE_HAVE_INT32)
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_4( a, b, c, d )               \
+    ( (blcrypto_suite_mpi_uint) (a) <<  0 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (b) <<  8 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (c) << 16 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (d) << 24 )
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_2( a, b )                   \
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_4( a, b, 0, 0 )
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( a, b, c, d, e, f, g, h ) \
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_4( a, b, c, d ),                \
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_4( e, f, g, h )
+
+#else /* 64-bits */
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( a, b, c, d, e, f, g, h )   \
+    ( (blcrypto_suite_mpi_uint) (a) <<  0 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (b) <<  8 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (c) << 16 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (d) << 24 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (e) << 32 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (f) << 40 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (g) << 48 ) |                        \
+    ( (blcrypto_suite_mpi_uint) (h) << 56 )
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_4( a, b, c, d )             \
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( a, b, c, d, 0, 0, 0, 0 )
+
+#define BLCRYPTO_SUITE_BYTES_TO_T_UINT_2( a, b )                   \
+    BLCRYPTO_SUITE_BYTES_TO_T_UINT_8( a, b, 0, 0, 0, 0, 0, 0 )
+
+#endif /* bits in blcrypto_suite_mpi_uint */
+
 #if defined(BLCRYPTO_SUITE_HAVE_ASM)
 
 #ifndef asm

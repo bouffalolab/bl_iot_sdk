@@ -32,6 +32,7 @@
 
 //#include <bl_ro_params_mgt.h>
 #include <stdint.h>
+#include "bl_os_private.h"
 
 /// Tasks types.
 typedef enum wifi_fw_task_id
@@ -64,6 +65,34 @@ typedef enum wifi_fw_task_id
     TASK_API,
     TASK_MAX,
 } ke_task_id_t;
+
+/// For MAC HW States.
+typedef enum hw_state_tag
+{
+    /// MAC HW IDLE State.
+    HW_IDLE = 0,
+    /// MAC HW RESERVED State.
+    HW_RESERVED,
+    /// MAC HW DOZE State.
+    HW_DOZE,
+    /// MAC HW ACTIVE State.
+    HW_ACTIVE
+} hw_state_tag_t;
+
+/// Possible States of the MM STA Task.
+typedef enum mm_state_tag
+{
+    /// MAC IDLE State.
+    MM_IDLE,
+    /// MAC ACTIVE State.
+    MM_ACTIVE,
+    /// MAC is going to IDLE
+    MM_GOING_TO_IDLE,
+    /// IDLE state internally controlled
+    MM_HOST_BYPASSED,
+    /// MAC Max Number of states.
+    MM_STATE_MAX
+} mm_state_tag_t;
 
 /**
  ****************************************************************************************
@@ -422,6 +451,7 @@ typedef enum wifi_fw_event_id
 #define WLAN_FW_APM_DISASSOCIATE_BY_STA                               3
 #define WLAN_FW_APM_DELETECONNECTION_TIMEOUT                          4
 #define WLAN_FW_APM_DELETESTA_FOR_NEW_CONNECTION                      5
+#define WLAN_FW_APM_DEAUTH_BY_AUTHENTICATOR                           6
 
 void bl60x_fw_xtal_capcode_set(uint8_t cap_in, uint8_t cap_out, uint8_t enable, uint8_t cap_in_max, uint8_t cap_out_max);
 void bl60x_fw_xtal_capcode_update(uint8_t cap_in, uint8_t cap_out);

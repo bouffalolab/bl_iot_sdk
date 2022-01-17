@@ -33,10 +33,10 @@
 #ifndef _IPC_H_
 #define _IPC_H_
 
-#include <stdio.h>
+#include "bl_os_private.h"
 
 #if 1
-#define __WARN()        printf("%s:%d\r\n", __func__, __LINE__)
+#define __WARN()        bl_os_printf("%s:%d\r\n", __func__, __LINE__)
 #else
 #define __WARN()        
 #endif
@@ -63,12 +63,7 @@
 #define round_down(x, y) ((x) & ~__round_mask(x, y))
 
 #if 1
-#define ASSERT_ERR(condition)                                                           \
-    do {                                                                                \
-        if (!(condition)) {                                                   \
-            os_printf("%d:ASSERT_ERR(" #condition ")\n", __LINE__); \
-        }                                                                               \
-    } while(0)
+#define ASSERT_ERR(condition)   assert(condition)
 #else
 #define ASSERT_ERR(condition) RT_ASSERT(condition)
 #endif

@@ -36,9 +36,18 @@
 #include "lmac_types.h"
 #include "ipc_compat.h"
 #include "reg_access.h"
-#include "os_hal.h"
+#include "bl_os_private.h"
 
+#ifdef CFG_CHIP_BL602
 #define REG_WIFI_REG_BASE         0x44000000
+#endif
+#ifdef CFG_CHIP_BL808
+#define REG_WIFI_REG_BASE         0x24000000
+#endif
+#ifdef CFG_CHIP_BL606P
+#define REG_WIFI_REG_BASE         0x24000000
+#endif
+
 #define REG_IPC_APP_DECODING_MASK 0x0000007F
 
 /**

@@ -31,6 +31,9 @@
 #include <libfdt.h>
 #include <utils_log.h>
 #include <blog.h>
+#ifdef EASYFLASH_ENABLE
+#include <easyflash.h>
+#endif
 #ifdef SYS_USER_VFS_ROMFS_ENABLE
 #include <bl_romfs.h>
 #endif
@@ -177,9 +180,6 @@ static void app_main_entry(void *pvParameters)
 
 static void aos_loop_proc(void *pvParameters)
 {
-    static StackType_t app_stack[SYS_APP_TASK_STACK_SIZE];
-    static StaticTask_t app_task;
-    
 #ifdef SYS_LOOPRT_ENABLE
     static StackType_t proc_stack_looprt[512];
     static StaticTask_t proc_task_looprt;
@@ -187,6 +187,9 @@ static void aos_loop_proc(void *pvParameters)
     /*Init bloop stuff*/
     looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
     loopset_led_hook_on_looprt();
+#endif
+#ifdef EASYFLASH_ENABLE
+    easyflash_init();
 #endif
 
 #ifdef SYS_VFS_ENABLE
@@ -224,13 +227,12 @@ static void aos_loop_proc(void *pvParameters)
     }
 #endif
 
-    xTaskCreateStatic(app_main_entry,
+    xTaskCreate(app_main_entry,
             (char*)"main",
-            SYS_APP_TASK_STACK_SIZE,
+            SYS_APP_TASK_STACK_SIZE / sizeof(StackType_t),
             NULL,
             SYS_APP_TASK_PRIORITY,
-            app_stack,
-            &app_task);
+            NULL);
 
     aos_loop_run();
 
@@ -323,7 +325,7 @@ void bl702_main()
     puts("Starting bl602 now....\r\n");
 
     _dump_boot_info();
-
+    
     system_early_init();
 
     puts("[OS] Starting aos_loop_proc task...\r\n");

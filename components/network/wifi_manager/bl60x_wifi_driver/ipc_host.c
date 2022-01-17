@@ -30,12 +30,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <utils_list.h>
+#include <lwip/pbuf.h>
 
 #include "ipc_host.h"
 #include "reg_ipc_app.h"
 #include "bl_cmds.h"
 #include "bl_utils.h"
-#include "os_hal.h"
+#include "bl_tx.h"
+#include "bl_os_private.h"
 
 #define REG_SW_SET_PROFILING(env, value)   do{  }while(0)
 #define REG_SW_CLEAR_PROFILING(env, value)   do{  }while(0)
@@ -79,7 +81,7 @@ void ipc_host_init(struct ipc_host_env_tag *env,
 
 extern int internel_cal_size_tx_desc;
 extern int internel_cal_size_tx_hdr;
-    printf("[IPC] [TX] Low level size %d, driver size %d, total size %d\r\n",
+    bl_os_printf("[IPC] [TX] Low level size %d, driver size %d, total size %d\r\n",
             internel_cal_size_tx_desc,
             internel_cal_size_tx_hdr,
             internel_cal_size_tx_desc + internel_cal_size_tx_hdr
@@ -210,17 +212,31 @@ static void ipc_host_msgack_handler(struct ipc_host_env_tag *env)
 
 static void ipc_host_tx_cfm_handler(struct ipc_host_env_tag *env, const int queue_idx, const int user_pos)
 {
+    int ret;
+    bl_custom_tx_callback_t custom_tx_callback;
+    void *custom_tx_callback_arg;
     // TX confirmation descriptors have been received
     REG_SW_SET_PROFILING(env->pthis, SW_PROF_IRQ_E2A_TXCFM);
     while (1) {
         uint32_t used_idx = env->txdesc_used_idx;
         void *host_id = env->tx_host_id[used_idx & nx_txdesc_cnt_msk[queue_idx]];
+        struct pbuf *p = (struct pbuf*)host_id;
+        struct bl_txhdr *txhdr;
 
+        // bl_os_log_info("[IRQ-BH] CFM handler host id: %p\r\n", host_id);
         if (host_id == 0) {
+            // bl_os_log_info("[IRQ-BH] ipc_host_tx_cfm_handler break\r\n");
             break;
         }
 
-        if (env->cb.send_data_cfm(env->pthis, host_id) != 0) {
+        // bl_os_log_info("[IRQ-BH] send_data_cfm cb\r\n");
+
+        txhdr = (struct bl_txhdr*)(((uint32_t)p->payload) + RWNX_HWTXHDR_ALIGN_PADS((uint32_t)p->payload));
+        custom_tx_callback = txhdr->custom_cfm.cb;
+        custom_tx_callback_arg = txhdr->custom_cfm.cb_arg;
+
+        ret = env->cb.send_data_cfm(env->pthis, host_id);
+        if (ret < 0) {
             break;
         }
         // Reset the host id in the array
@@ -229,9 +245,9 @@ static void ipc_host_tx_cfm_handler(struct ipc_host_env_tag *env, const int queu
         env->txdesc_used_idx++;
 
         /*Notify tx status*/
-        //FIXME reorg head file
-void bl_tx_notify();
-        bl_tx_notify();
+        if (custom_tx_callback) {
+            custom_tx_callback(custom_tx_callback_arg, ret > 0);
+        }
 
         REG_SW_SET_PROFILING_CHAN(env->pthis, SW_PROF_CHAN_CTXT_CFM_HDL_BIT);
         REG_SW_CLEAR_PROFILING_CHAN(env->pthis, SW_PROF_CHAN_CTXT_CFM_HDL_BIT);
@@ -361,7 +377,7 @@ void ipc_host_irq(struct ipc_host_env_tag *env, uint32_t status)
             uint32_t q_bit = CO_BIT(i + IPC_IRQ_E2A_TXCFM_POS);
             if (status & q_bit) {
                 // handle the confirmation
-                os_printf("[IRQ-BH] CFM handler");
+                os_printf("[IRQ-BH] CFM handler\r\n");
                 ipc_host_tx_cfm_handler(env, i, 0);
             }
         }

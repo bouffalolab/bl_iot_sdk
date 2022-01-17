@@ -55,10 +55,14 @@
 #include <hal_boot2.h>
 #include <hal_board.h>
 #include <hosal_uart.h>
+#include <hosal_gpio.h>
 #include <hal_gpio.h>
+#include <hal_button.h>
 #include <hal_hwtimer.h>
 #include <hal_pds.h>
 #include <hal_tcal.h>
+#include <FreeRTOS.h>
+#include <timers.h>
 
 #ifdef CFG_ETHERNET_ENABLE
 #include <lwip/netif.h>
@@ -85,6 +89,10 @@
 #include <libfdt.h>
 #include <utils_log.h>
 #include <blog.h>
+
+#ifdef EASYFLASH_ENABLE
+#include <easyflash.h>
+#endif
 #include <utils_string.h>
 #if defined(CONFIG_AUTO_PTS)
 #include "bttester.h"
@@ -110,7 +118,7 @@
 #include "zb_common.h"
 #include "zb_stack_cli.h"
 #include "zigbee_app.h"
-#include "zb_bdb.h"
+//#include "zb_bdb.h"
 #endif
 #if defined(CONFIG_ZIGBEE_PROV)
 #include "blsync_ble_app.h"
@@ -120,6 +128,9 @@
 #endif /* CFG_USE_PSRAM */
 
 #include "bl_flash.h"
+#if defined(CFG_ZIGBEE_HBN)
+#include "bl_hbn.h"
+#endif
 
 #ifdef CFG_ETHERNET_ENABLE
 //extern err_t ethernetif_init(struct netif *netif);
@@ -180,16 +191,21 @@ static HeapRegion_t xHeapRegionsPsram[] =
 };
 #endif /* CFG_USE_PSRAM */
 
-
-
-#define TIME_5MS_IN_32768CYCLE  (164) // (5000/(1000000/32768))
 bool pds_start = false;
+bool wfi_disable = false;
 static void bl702_low_power_config(void);
 static void cmd_start_pds(char *buf, int len, int argc, char **argv)
 {
     pds_start = true;
-	bl702_low_power_config();
 }
+
+#if defined(CFG_ZIGBEE_HBN)
+bool hbn_start = false;
+static void cmd_start_hbn(char *buf, int len, int argc, char **argv)
+{
+    hbn_start = true;
+}
+#endif
 
 static void cmd_lowpower_config(char *buf, int len, int argc, char **argv)
 {
@@ -406,159 +422,20 @@ static void cmd_wdt_set(char *buf, int len, int argc, char **argv)
     }
 }
 
-#if defined(CFG_ZIGBEE_ENABLE)
-void zbcli_bdb_local_default_report_cfg(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    uint8_t para_cnt = PRE_CLI_PARAM_NUM;
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM + 1;
-    uint8_t ep;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        
-        printf("zb_bdb_local_default_report_cfg  <local ep>\r\n"
-                       "ep - <uint8_t>\r\n");
-        return;
-    }
-    else
-    {   
-        get_uint8_from_string(&argv[para_cnt++], &ep);
-        zb_bdb_localDefaultReportCfg(ep);   
-    }
-}
-
-void zbcli_bdb_set_channel_set(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    uint32_t ret;
-    uint8_t para_cnt = PRE_CLI_PARAM_NUM;
-    uint32_t primaryChannelSet;
-    uint32_t secondaryChannelSet;
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM + 2;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        printf("zb_bdb_set_channel_set <srcEp>\r\n"
-                "primaryChannelSet - <uint32_t>\r\n"
-                "secondaryChannelSet - <uint32_t>\r\n");
-        return;
-    }
-    else
-    {   
-        get_uint32_from_string(&argv[para_cnt++], &primaryChannelSet);
-        get_uint32_from_string(&argv[para_cnt++], &secondaryChannelSet);
-        ret = zb_bdb_setChannelSet(primaryChannelSet, secondaryChannelSet);
-        if(ret)
-        {
-            printf("%s fails to set bdbChannelSet with error code(0x%lx)\r\n", __func__, ret);
-        }
-    }
-}
-
-void  zb_bdb_appCb(struct _zbBdbCbMsg *cbMsg)
-{
-    printf("%s: msgType 0x%x, status 0x%x, bindCnt %d\r\n", __func__, cbMsg->msgType, cbMsg->status, cbMsg->bindCnt);    
-}
-
-void zbcli_bdb_start_Fb_Initiator(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    uint8_t para_cnt = PRE_CLI_PARAM_NUM;
-    uint8_t srcEp;
-    uint8_t commissionMode;
-    uint16_t groupId;
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM + 2;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        printf("zb_bdb_start_Fb_Initiator <srcEp,groupId>\r\n"
-                "srcEp - <uint8_t>\r\n"
-                "groupId - <uint16_t>group id \r\n");
-        return;
-    }
-    else
-    {   
-        get_uint8_from_string(&argv[para_cnt++], &srcEp);
-        get_uint16_from_string(&argv[para_cnt++], &groupId);
-        zb_bdb_startFindBindInitiator(srcEp, groupId, zb_bdb_appCb);
-    }
-}
-
-void zbcli_bdb_fb_start_target(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    uint8_t para_cnt = PRE_CLI_PARAM_NUM;
-    uint8_t ep;
-    uint16_t identifyTimeInSec;
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM + 2;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        printf("zb_bdb_fb_target <srcEp, identifyTimeInSec>\r\n"
-                "srcEp - <uint8_t>\r\n"
-                "identifyTimeInSec - <uint16_t>\r\n");
-        return;
-    }
-    else
-    {   
-        get_uint8_from_string(&argv[para_cnt++], &ep);
-        get_uint16_from_string(&argv[para_cnt++], &identifyTimeInSec);
-        zb_bdb_startFindBindTarget(ep, identifyTimeInSec, zb_bdb_appCb);
-    }
-}
-
-void zbcli_bdb_nwk_form(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        printf("zb_bdb_nwk_form <void>\r\n");
-        return;
-    }
-    else
-    {   
-        zb_bdb_nwkForm(zb_bdb_appCb);
-    }
-}
-
-void zbcli_bdb_nwk_steer(char* pcWriteBuffer, int xWriteBufferLen, int argc, char** argv)
-{
-    const uint8_t EXPECTED_PARA_CNT = PRE_CLI_PARAM_NUM;
-
-    if(argc != EXPECTED_PARA_CNT)
-    {
-        printf("Wrong number of args\r\n");
-        printf("zb_bdb_nwk_steer <void>\r\n");
-        return;
-    }
-    else
-    {   
-        zb_bdb_nwkSteer(zb_bdb_appCb);
-    }
-}
-
-#endif
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = { 
-        {"pds_start", "enable or disable pds", cmd_start_pds},
+        #if defined(CFG_ZIGBEE_PDS) || (CFG_BLE_PDS)
+        {"pds_start", "enable pds", cmd_start_pds},
+        #endif
         {"lw_cfg", "lowpower configuration for active current test", cmd_lowpower_config},
+        #if defined(CFG_ZIGBEE_HBN)
+        {"hbn_start", "enable hbn", cmd_start_hbn},
+        #endif
         {"aligntc", "align case test", cmd_align},
         #if defined(CONFIG_ZIGBEE_PROV)
         { "blsync_blezb_start", "start zigbee provisioning via ble", cmd_blsync_blezb_start},
         #endif
         { "wdt_set", "enable or disable pds", cmd_wdt_set},
-        #if defined(CFG_ZIGBEE_ENABLE)
-        //bdb
-        { "zb_bdb_local_default_report_cfg",  "bdb local default report ", zbcli_bdb_local_default_report_cfg},
-        { "zb_bdb_set_channel_set",  "bdb set channel set", zbcli_bdb_set_channel_set},
-        { "zb_bdb_start_fb_initiator",  "bdb start fb initiator", zbcli_bdb_start_Fb_Initiator},
-        { "zb_bdb_start_fb_target",  "bdb start fb target", zbcli_bdb_fb_start_target},
-        { "zb_bdb_nwk_form",  "bdb nwk formation", zbcli_bdb_nwk_form},
-        { "zb_bdb_nwk_steer",  "bdb nwk steering", zbcli_bdb_nwk_steer},
-        #endif
 };
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName )
@@ -591,8 +468,13 @@ void vApplicationMallocFailedHook(void)
 void vApplicationIdleHook(void)
 {
     bl_wdt_feed();
-
-    if(!pds_start){
+    bool bWFI_disable =  false;
+    #if defined (CFG_BLE_PDS)
+    bWFI_disable = wfi_disable;
+    #else
+    bWFI_disable = pds_start;
+    #endif
+    if(!bWFI_disable){
         __asm volatile(
                 "   wfi     "
         );
@@ -600,30 +482,13 @@ void vApplicationIdleHook(void)
     }
 }
 
-#if 0
-void vApplicationSleep( TickType_t xExpectedIdleTime)
+#if ( configUSE_TICKLESS_IDLE != 0 )
+#if !defined(CFG_BLE_PDS) && !defined(CFG_ZIGBEE_PDS)&& !defined(CFG_ZIGBEE_HBN)
+void vApplicationSleep( TickType_t xExpectedIdleTime )
 {
-    static uint32_t ticks = 0;
-    uint32_t cnt = xTaskGetTickCount();
     
-    if( (cnt - ticks > 1000) && (xExpectedIdleTime > 20) ){
-      ticks = cnt;
-      printf("Idle Time: %u\r\n", (unsigned int)xExpectedIdleTime);
-      BL702_Delay_MS(1);
-      /* Enter pds level 1 for 10ms */
-    #if 0
-      hal_pds_enter_without_time_compensation(31, 32768/100);
-      uint32_t sync = 0;//bl_sys_time_sync();
-    #else
-    /*Disable mtimer interrrupt*/
-    *(volatile uint8_t*)configCLIC_TIMER_ENABLE_ADDRESS = 0;
-    uint32_t sync = hal_pds_enter_with_time_compensation(31, 32768*10);
-    *(volatile uint8_t*)configCLIC_TIMER_ENABLE_ADDRESS = 1;
-    bl_uart_init(0, 14, 15, 255, 255, 2 * 1000 * 1000);
-    #endif
-    printf("%u ticks compensated\r\n", (unsigned int)sync);
-    }
 }
+#endif
 #endif
 
 static void bl702_low_power_config(void)
@@ -649,181 +514,6 @@ static void bl702_low_power_config(void)
     // Gate peripheral clock
     BL_WR_REG(GLB_BASE, GLB_CGEN_CFG1, 0x00214BC3);
 }
-
-void bl_pds_restore(void)
-{
-    bl702_low_power_config();
-    hosal_uart_init(&uart_stdio);
-
-#if defined(CFG_USB_CDC_ENABLE)
-    extern void usb_cdc_restore(void);
-    usb_cdc_restore();
-#endif
-
-#if defined(CFG_BLE_PDS)
-    ble_controller_sleep_restore();
-   // bl_sec_init();
-#endif
-}
-
-//For test
-extern int32_t rwip_get_sleep_stat_cnt(void);
-//end
-#if ( configUSE_TICKLESS_IDLE != 0 )
-#if defined(CFG_BLE_PDS)
-extern bool le_check_valid_scan(void);
-extern bool le_check_valid_conn(void);
-//Allocate retention memory
-void *bl_alloc_retmem(size_t xWantedSize )
-{
-    return pvPortMalloc(xWantedSize);    
-}
-
-void vApplicationSleep( TickType_t xExpectedIdleTime_ms)
-{
-    int32_t bleSleepDuration_32768cycles = 0;
-    int32_t expectedIdleTime_32768cycles = 0;
-    eSleepModeStatus eSleepStatus;
-    bool freertos_max_idle = false;
-    #if (LE_PDS_FLASH)
-    uint8_t ioMode;
-    uint8_t contRead; 
-    #endif
-
-    if (pds_start == 0 || le_check_valid_scan())
-        return;
-
-    if(xExpectedIdleTime_ms + xTaskGetTickCount() == portMAX_DELAY){
-        freertos_max_idle = true;
-    }else{   
-        xExpectedIdleTime_ms -= 1;
-        expectedIdleTime_32768cycles = 32768 * xExpectedIdleTime_ms / 1000;
-    }
-
-    if((!freertos_max_idle)&&(expectedIdleTime_32768cycles < TIME_5MS_IN_32768CYCLE)){
-        return;
-    }
-        
-    eSleepStatus = eTaskConfirmSleepModeStatus();
-    if(eSleepStatus == eAbortSleep || ble_controller_sleep_is_ongoing())
-    {
-        return;
-    }
-
-    bleSleepDuration_32768cycles = ble_controller_sleep();
-
-    if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
-    {
-        return;
-    }
-    else
-    { 
-        printf("Sleep_cycles=%ld,state_cnt=%d\r\n", bleSleepDuration_32768cycles, rwip_get_sleep_stat_cnt());
-        uint8_t reduceSleepTime;
-        SPI_Flash_Cfg_Type *flashCfg = bl_flash_get_flashCfg();
-        uint8_t ioMode =  flashCfg->ioMode & 0xF;
-        uint8_t contRead = flashCfg->cReadSupport;
-        uint8_t cpuClk = GLB_Get_Root_CLK_Sel();
-        if(ioMode == 4 && contRead == 1 && cpuClk == GLB_ROOT_CLK_XTAL)
-        {
-           reduceSleepTime = 100;
-        }
-        else if(ioMode == 1 && contRead == 0 && cpuClk == GLB_ROOT_CLK_XTAL)
-        {
-           reduceSleepTime = 130;
-        }
-        else
-        {
-           reduceSleepTime = 130;
-        }
-        printf("reduceSleepTime=%d\r\n",reduceSleepTime);
-        if(eSleepStatus == eStandardSleep && ((!freertos_max_idle) && (expectedIdleTime_32768cycles < bleSleepDuration_32768cycles)))
-        {
-           hal_pds_enter_with_time_compensation(31, expectedIdleTime_32768cycles - reduceSleepTime);
-        }
-        else
-        {
-           hal_pds_enter_with_time_compensation(31, bleSleepDuration_32768cycles - reduceSleepTime);
-        }
-        
-        bl_timer_init();
-        bl_pds_restore();
-    }
-}
-#elif defined(CFG_ZIGBEE_PDS)
-void vApplicationSleep( TickType_t xExpectedIdleTime )
-{
-    uint32_t xActualIdleTime = 0;
-    eSleepModeStatus eSleepStatus;
-    uint32_t sleepTime;
-    uint32_t sleepCycles;
-    
-#define PDS_TOLERANCE_TIME_MS    5
-//in driver, it takes (sleep_cycles-PDS_WARMUP_LATENCY_CNT) as sleep cycles. Make sure pds sleep for at least 1 ms(about 31cycles).
-#define PDS_MIN_TIME_MS    (PDS_WARMUP_LATENCY_CNT + 30 + 31)/31 
-    
-    if(pds_start == 0){
-        return;
-    }
-
-    eSleepStatus = eTaskConfirmSleepModeStatus();
-    if(eSleepStatus == eAbortSleep){
-        printf("eSleepStatus == eAbortSleep\r\n");
-        return;
-    }else if(eSleepStatus == eStandardSleep){
-        if(xExpectedIdleTime <= PDS_TOLERANCE_TIME_MS + PDS_MIN_TIME_MS){
-            return;
-        }
-    }
-    
-#if defined(CFG_ZIGBEE_PDS)
-    if(!zb_stackIdle())
-    {
-        return;
-    }
-
-    xActualIdleTime = zb_zedGetIdleDuration() / 1000;
-#endif
-    if(xActualIdleTime <= PDS_TOLERANCE_TIME_MS + PDS_MIN_TIME_MS){
-        return;
-    }
-    
-   if(eSleepStatus == eStandardSleep){
-        if(xExpectedIdleTime < xActualIdleTime){
-            sleepTime = xExpectedIdleTime - PDS_TOLERANCE_TIME_MS;
-        }else{
-            sleepTime = xActualIdleTime - PDS_TOLERANCE_TIME_MS;
-        }
-    }else{
-        sleepTime = xActualIdleTime - PDS_TOLERANCE_TIME_MS;
-    }
-
-    bl_irq_disable(M154_IRQn);
-    printf("[%lu] will sleep: %lu ms\r\n", (uint32_t)bl_rtc_get_timestamp_ms(), sleepTime);
-    
-#if defined(CFG_ZIGBEE_PDS)
-    zb_zedStoreRegs();
-    zb_zedStoreTime();
-#endif
-    sleepCycles = (uint64_t)32768 * sleepTime / 1000;
-    sleepTime = hal_pds_enter_with_time_compensation(31, sleepCycles);
-    bl_pds_restore();
-   
-#if defined(CFG_ZIGBEE_PDS)   
-    zb_zedRestoreRegs();
-    zb_zedRestoreTime(sleepTime * 1000);
-#endif
-    
-    printf("[%lu] actually sleep: %lu ms\r\n", (uint32_t)bl_rtc_get_timestamp_ms(), sleepTime);
-}
-
-#else
-void vApplicationSleep( TickType_t xExpectedIdleTime )
-{
-    
-}
-#endif
-#endif
 
 #if ( configUSE_TICK_HOOK != 0 )
 void vApplicationTickHook( void )
@@ -890,7 +580,7 @@ void user_vAssertCalled(void) __attribute__ ((weak, alias ("vAssertCalled")));
 void vAssertCalled(void)
 {
     taskDISABLE_INTERRUPTS();
-
+    printf("vAssertCalled\r\n");
     abort();
 }
 
@@ -966,14 +656,47 @@ void zigbee_init(void)
     
     zb_app_startup();
 
-    zb_bdb_init();
+    //zb_bdb_init();
 }
 #endif
+
+void event_cb_key_event(input_event_t *event, void *private_data)
+{
+    switch (event->code) {
+        case KEY_1:
+        {
+            printf("[KEY_1] [EVT] INIT DONE %lld\r\n", aos_now_ms());
+            printf("short press \r\n");
+        }
+        break;
+        case KEY_2:
+        {
+            printf("[KEY_2] [EVT] INIT DONE %lld\r\n", aos_now_ms());
+            printf("long press \r\n");
+        }
+        break;
+        case KEY_3:
+        {
+            printf("[KEY_3] [EVT] INIT DONE %lld\r\n", aos_now_ms());
+            printf("longlong press \r\n");
+        }
+        break;
+        default:
+        {
+            printf("[KEY] [EVT] Unknown code %u, %lld\r\n", event->code, aos_now_ms());
+            /*nothing*/
+        }
+    }
+}
 
 static void aos_loop_proc(void *pvParameters)
 {
     int fd_console;
     uint32_t fdt = 0, offset = 0;
+
+#ifdef EASYFLASH_ENABLE
+    easyflash_init();
+#endif
 
     vfs_init();
     vfs_device_init();
@@ -992,7 +715,9 @@ static void aos_loop_proc(void *pvParameters)
     /* gpio */
     if (0 == get_dts_addr("gpio", &fdt, &offset)) {
         hal_gpio_init_from_dts(fdt, offset);
+        fdt_button_module_init((const void *)fdt, (int)offset);
     }
+
 #endif /* CFG_ETHERNET_ENABLE */
 
     aos_loop_init();
@@ -1031,6 +756,8 @@ static void aos_loop_proc(void *pvParameters)
 #if defined(CFG_ZIGBEE_ENABLE)
     zigbee_init();
 #endif
+
+    aos_register_event_filter(EV_KEY, event_cb_key_event, NULL);
 
     aos_loop_run();
 
@@ -1115,6 +842,11 @@ static void system_init(void)
 {
     blog_init();
     bl_irq_init();
+    #if defined(CONFIG_HW_SEC_ENG_DISABLE)
+    //if sec engine is disabled, use software rand in bl_rand
+    int seed = bl_timer_get_current_time();
+    srand(seed);
+    #endif
 #if defined(CFG_ETHERNET_ENABLE) || defined(CFG_BLE_ENABLE) || defined(CFG_ZIGBEE_ENABLE)
 	bl_sec_init();
 #endif /*CFG_ETHERNET_ENABLE*/
@@ -1127,6 +859,14 @@ static void system_init(void)
     hal_tcal_init();
 
     //bl_wdt_init(4000);
+
+#if defined(CFG_ZIGBEE_HBN)
+    if(bl_sys_rstinfo_get() == BL_RST_POR){
+        bl_hbn_fastboot_init();
+        extern struct _zbRxPacket rxPktStoredInHbnRam;
+        memset(&rxPktStoredInHbnRam, 0, sizeof(struct _zbRxPacket));
+    }
+#endif
 
 #if defined(CFG_USE_PSRAM)
     bl_psram_init();
@@ -1141,7 +881,9 @@ static void system_thread_init()
 
 void rf_reset_done_callback(void)
 {
+#if !defined(CFG_ZIGBEE_HBN)
     hal_tcal_restart();
+#endif
 }
 
 void setup_heap()
@@ -1160,7 +902,7 @@ void bl702_main()
     //static StaticTask_t proc_hellow_task;
 
     bl_sys_early_init();
-    
+
     /*Init UART In the first place*/
     hosal_uart_init(&uart_stdio);
     puts("Starting bl702 now....\r\n");

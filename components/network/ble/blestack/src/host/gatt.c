@@ -942,18 +942,16 @@ int service_change_test(struct bt_gatt_indicate_params *params,const struct bt_c
 		#else
 		params->attr = &_1_gatt_svc.attrs[2];
 		#endif
-	}	
+	}
 	sc_range[0] = 0x000e;
 	sc_range[1] = 0x001e;
 	
 	params->data = &sc_range[0];
 	params->len = sizeof(sc_range);
-		
-	if (bt_gatt_indicate(con, params)) {
-		/* No connections to indicate */
-		return;
-	}
+
+	return bt_gatt_indicate(con, params);
 }
+
 #endif
 
 #if defined(CONFIG_BT_SETTINGS_CCC_STORE_ON_WRITE)

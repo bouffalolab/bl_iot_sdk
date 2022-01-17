@@ -33,7 +33,6 @@
 #include <bl_wireless.h>
 #include <hal_boot2.h>
 #include <hal_sys.h>
-
 #include <libfdt.h>
 
 #include <blog.h>
@@ -540,6 +539,9 @@ static int hal_board_load_fdt_info(const void *dtb)
         blog_info("set pwr = %ld in dts\r\n", pwr);
 #if defined(CFG_BLE_ENABLE) || defined(CONFIG_BLE_MFG)
         ble_controller_set_tx_pwr(pwr);
+#else
+        extern bool bz_phy_set_tx_power(int power_dbm);
+        bz_phy_set_tx_power(pwr);
 #endif
     }
 

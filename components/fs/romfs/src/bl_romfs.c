@@ -34,7 +34,11 @@
 #include <vfs_register.h>
 #include <fs/vfs_romfs.h>
 #include <aos/kernel.h>
+
+#ifdef ROMFS_STATIC_ROOTADDR
+#else
 #include <bl_mtd.h>
+#endif
 #include <bl_romfs.h>
 
 #include <utils_log.h>
@@ -68,7 +72,10 @@ typedef struct _rom_dir_t
 } romfs_dir_t;
 
 static char *romfs_root = NULL;         /* The mount point of the physical addr */
+#ifdef ROMFS_STATIC_ROOTADDR
+#else
 static bl_mtd_handle_t handle_romfs;
+#endif
 
 static int is_path_ch(char ch)
 {
@@ -127,6 +134,9 @@ static int filter_format(const char *path, uint32_t size)
 
 static int romfs_mount(void)
 {
+#ifdef ROMFS_STATIC_ROOTADDR
+    romfs_root = (char *)ROMFS_STATIC_ROOTADDR;
+#else
     int ret;
     bl_mtd_info_t info;
 
@@ -150,6 +160,7 @@ static int romfs_mount(void)
     romfs_root = (char *)info.xip_addr;
     ROMFS_DUBUG("xip addr = %p\r\n", romfs_root);
     log_buf(romfs_root, 64);
+#endif
 
     return 0;
 }

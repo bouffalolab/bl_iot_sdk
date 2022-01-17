@@ -1,10 +1,10 @@
-#include "bflb_platform.h"
+//#include "bflb_platform.h"
 #include "emac_reg.h"
 #include "bl_irq.h"
 #include "bl702_common.h"
 #include "bl702_glb.h"
 #include "bl_emac.h"
-#include "bflb_platform.h"
+//#include "bflb_platform.h"
 #include <lwip/netifapi.h>
 #include "lwip/mem.h"
 #include "netif/etharp.h"
@@ -21,6 +21,7 @@
 #include <aos/yloop.h>
 
 #define printf(...)  do {}while(0)
+#define MSG(...)     do {}while(0)
 
 #define USER_EMAC_OUTSIDE_CLK  (1)
 
@@ -638,8 +639,8 @@ void borad_eth_init(void)
     MSG("emac_init sucess\r\n");
     EMAC_BD_Init();
     emac_enable();
-    bflb_platform_init_time();
-    bflb_platform_start_time();
+    //bflb_platform_init_time();
+    //bflb_platform_start_time();
 }
 
 /**

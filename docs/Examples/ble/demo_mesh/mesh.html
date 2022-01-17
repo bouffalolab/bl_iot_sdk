@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Mesh &mdash; BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档</title>
+  <title>Mesh &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.32-104-g52434dce6 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../../index.html"/>
         <link rel="up" title="Bluetooth" href="../index.html"/>
         <link rel="next" title="(BL702)" href="../../network/index.html"/>
         <link rel="prev" title="BLE" href="../demo_ble/ble.html"/> 
@@ -74,7 +74,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.32-104-g52434dce6
+                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
               </div>
             
           
@@ -200,15 +200,29 @@
 <div class="section" id="node">
 <h2>Node 使用步骤<a class="headerlink" href="#node" title="永久链接至标题">¶</a></h2>
 <ul>
-<li><p class="first">准备 手机安装APP <code class="docutils literal notranslate"><span class="pre">bl_mesh_app.apk</span></code></p>
+<li><p class="first">下载 <a class="reference external" href="https://dev.bouffalolab.com/download">Bouffalo Lab BLE mesh apk</a> (目前仅支持安卓系统)并安装；</p>
 </li>
-<li><p class="first">编译 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_event</span></code> 工程并下载工程；</p>
+<li><p class="first">进入 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_event</span></code> 工程或者 <code class="docutils literal notranslate"><span class="pre">customer_app/bl702_demo_event</span></code> 工程；通过命令 <code class="docutils literal notranslate"><span class="pre">genblemeshmodel</span></code> 编译，成功后下载BIN文件；</p>
 </li>
 <li><p class="first">在串口中运行Mesh相关命令:</p>
 <blockquote>
-<div><p>#stack_ble</p>
+<div><ul>
+<li><dl class="first docutils">
+<dt>BL602：</dt>
+<dd><p class="first">#stack_ble</p>
 <p>#blemesh_init</p>
-<p>#blemesh_pb 2 1</p>
+<p class="last">#blemesh_pb 2 1</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>BL702：</dt>
+<dd><p class="first">#blemesh_init</p>
+<p class="last">#blemesh_pb 2 1</p>
+</dd>
+</dl>
+</li>
+</ul>
 </div></blockquote>
 </li>
 </ul>
@@ -291,7 +305,7 @@
 <li>在串口中看到有如下信息表明控制LED成功</li>
 </ul>
 <div class="figure align-center">
-<img alt="../../../_images/image41.png" src="../../../_images/image41.png" />
+<img alt="../../../_images/image411.png" src="../../../_images/image411.png" />
 </div>
 <ul class="simple">
 <li>在界面中点击SUBSCRIBE选项，</li>
@@ -318,7 +332,7 @@
 <img alt="../../../_images/image381.png" src="../../../_images/image381.png" />
 </div>
 <div class="figure align-center">
-<img alt="../../../_images/image41.png" src="../../../_images/image41.png" />
+<img alt="../../../_images/image411.png" src="../../../_images/image411.png" />
 </div>
 </div>
 <div class="section" id="provisioner">
@@ -518,7 +532,7 @@ blemesh_mod_sub_add 0x0000 0x0003 0x0003 0xc000 0x1000</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.32-104-g52434dce6',
+            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

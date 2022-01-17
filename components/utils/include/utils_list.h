@@ -478,6 +478,18 @@ static inline void utils_slist_add_tail(utils_slist_t *node, utils_slist_t *head
     utils_slist_add(node, head);
 }
 
+static inline void utils_slist_append(utils_slist_t *l, utils_slist_t *n)
+{
+    utils_slist_t *node;
+
+    node = l;
+    while (node->next) node = node->next;
+
+    /* append the node to the tail */
+    node->next = n;
+    n->next = NULL;
+}
+
 static inline void utils_slist_del(utils_slist_t *node, utils_slist_t *head)
 {
     while (head->next) {
@@ -498,6 +510,23 @@ static inline int utils_slist_empty(const utils_slist_t *head)
 static inline void utils_slist_init(utils_slist_t *head)
 {
     head->next = 0;
+}
+
+static inline utils_slist_t* utils_slist_first(utils_slist_t *l)
+{
+    return l->next;
+}
+
+static inline utils_slist_t* utils_slist_tail(utils_slist_t *l)
+{
+    while (l->next) l = l->next;
+
+    return l;
+}
+
+static inline utils_slist_t* utils_slist_next(utils_slist_t *l)
+{
+    return l->next;
 }
 
 /*
@@ -561,7 +590,19 @@ static inline void utils_slist_init(utils_slist_t *head)
 * @param[in]   member  the name of the utils_slist_t within the struct.
 */
 #define utils_slist_first_entry(ptr, type, member) \
-    utils_slist_entry((ptr)->next, type, member)
+    utils_slist_entry(utils_slist_next(ptr), type, member)
+
+
+/*
+* Get the last element from a list.
+*
+* @param[in]   ptr     the list head to take the element from.
+* @param[in]   type    the type of the struct this is embedded in.
+* @param[in]   member  the name of the utils_slist_t within the struct.
+*/
+#define utils_slist_tail_entry(ptr, type, member) \
+    utils_slist_entry(utils_slist_tail(ptr), type, member)
+
 
 /*
  * Get the list length.

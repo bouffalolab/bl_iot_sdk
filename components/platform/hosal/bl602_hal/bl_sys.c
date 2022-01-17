@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "bl_sys.h"
-
+#include <bl_flash.h>
 #define MFG_CONFIG_REG    (0x4000F100)
 #define MFG_CONFIG_VAL    ("0mfg")
 
@@ -188,6 +188,16 @@ int bl_sys_early_init(void)
 #else
     // default 80Mhz
 #endif
+    /* read flash config*/
+    bl_flash_init();
+
+    /* we ensure that the vdd core voltage is normal(1.2V) and the chip will work normally */
+    uint8_t Ldo11VoutSelValue;
+    extern BL_Err_Type EF_Ctrl_Read_Ldo11VoutSel_Opt(uint8_t *Ldo11VoutSelValue);
+    
+    if(0 == EF_Ctrl_Read_Ldo11VoutSel_Opt(&Ldo11VoutSelValue)){
+        HBN_Set_Ldo11_Soc_Vout((HBN_LDO_LEVEL_Type)Ldo11VoutSelValue);
+    }
 
     extern BL_Err_Type HBN_Aon_Pad_IeSmt_Cfg(uint8_t padCfg);
     HBN_Aon_Pad_IeSmt_Cfg(1);

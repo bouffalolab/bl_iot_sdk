@@ -25,6 +25,8 @@ NOTES
 #include "ble_tp_svc.h"
 #include "log.h"
 
+#define TP_PRIO configMAX_PRIORITIES - 5
+
 static void ble_tp_connected(struct bt_conn *conn, u8_t err);
 static void ble_tp_disconnected(struct bt_conn *conn, u8_t reason);
 
@@ -226,7 +228,7 @@ static void ble_tp_not_ccc_changed(const struct bt_gatt_attr *attr, u16_t value)
     {
         if(value == BT_GATT_CCC_NOTIFY)
         {
-            if(xTaskCreate(ble_tp_notify_task, (char*)"bletp", 256, NULL, 15, &ble_tp_task_h) == pdPASS)
+            if(xTaskCreate(ble_tp_notify_task, (char*)"bletp", 256, NULL, TP_PRIO, &ble_tp_task_h) == pdPASS)
             {
                 created_tp_task = 1;
                 BT_WARN("Create throughput tx task success.");

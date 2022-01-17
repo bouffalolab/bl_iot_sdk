@@ -46,6 +46,13 @@
  ****************************************************************************************
  */
 
+typedef void (*bl_custom_tx_callback_t)(void *cb_arg, bool tx_ok);
+
+struct bl_custom_tx_cfm {
+    bl_custom_tx_callback_t cb;
+    void *cb_arg;
+};
+
 /**
  * struct bl_txhdr - Stucture to control transimission of packet
  * (Added in skb headroom)
@@ -67,10 +74,12 @@ struct bl_txhdr {
     union bl_hw_txstatus status;
     uint32_t *p;
     struct hostdesc host;
+    struct bl_custom_tx_cfm custom_cfm;
 };
-err_t bl_output(struct bl_hw *bl_hw, struct netif *netif, struct pbuf *p, int is_sta);
+
+err_t bl_output(struct bl_hw *bl_hw, struct netif *netif, struct pbuf *p, int is_sta, struct bl_custom_tx_cfm *custom_cfm);
+int bl_wifi_eth_tx(struct pbuf *p, bool is_sta, struct bl_custom_tx_cfm *custom_cfm);
 int bl_txdatacfm(void *pthis, void *host_id);
-void bl_tx_notify();
 void bl_tx_try_flush();
 void bl_irq_handler();
 #endif

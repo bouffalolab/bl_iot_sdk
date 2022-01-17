@@ -46,18 +46,6 @@
 /*
  ****************************************************************************************
  */
-/// For MAC HW States copied from "hal_machw.h"
-enum
-{
-    /// MAC HW IDLE State.
-    HW_IDLE = 0,
-    /// MAC HW RESERVED State.
-    HW_RESERVED,
-    /// MAC HW DOZE State.
-    HW_DOZE,
-    /// MAC HW ACTIVE State.
-    HW_ACTIVE
-};
 
 /// Power Save mode setting
 enum mm_ps_mode_state
@@ -823,43 +811,6 @@ struct scanu_start_cfm
     u8_l status;
 };
 
-typedef struct
-{
-    uint8_t  wep;
-    uint8_t  wpa;
-    uint8_t  wpa2;
-} Security_mode_t;
-
-typedef struct
-{
-    uint8_t   wep40      : 1;
-    uint8_t   wep104     : 1;
-    uint8_t   tkip       : 1;
-    uint8_t   ccmp       : 1;
-    uint8_t   rsvd       : 4;
-} Cipher_t;
-
-typedef enum
-{
-    AKM_NONE        = 0,
-
-    AKM_1X          = 1,
-    AKM_PSK         = 2,
-    AKM_FT_1X       = 3,
-    AKM_FT_PSK      = 4,
-    AKM_SHA256_1X   = 5,
-    AKM_SHA256_PSK  = 6,
-    AKM_TDLS        = 7,
-
-    AKM_CCKM        = 99,
-
-    AKM_WPA_MAX   = 2,
-    AKM_RSN_MAX   = 6,
-
-    AKM_SUITE_MAX = 5
-
-} AkmType_e;
-
 /// Parameters of the @SCANU_RESULT_IND message
 struct scanu_result_ind
 {
@@ -1091,8 +1042,10 @@ struct sm_connect_req
     u32_l flags;
     /// Control port Ethertype
     u16_l ctrl_port_ethertype;
+#if 0
     /// Length of the association request IEs
     u16_l ie_len;
+#endif
     /// Listen interval to be used for this connection
     u16_l listen_interval;
     /// Flag indicating if the we have to wait for the BC/MC traffic after beacon or not
@@ -1105,9 +1058,11 @@ struct sm_connect_req
     u8_l vif_idx;
     /// retry counter for auth/aossoc
     u8_l counter_retry_auth_assoc;
+#if 0
     /// Buffer containing the additional information elements to be put in the
     /// association request
     u32_l ie_buf[64];
+#endif
     /// Enable embedded supplicant
     bool is_supplicant_enabled;
     //// Passphrase

@@ -34,6 +34,7 @@
 
 #include <FreeRTOS.h>
 #include <semphr.h>
+#include <mbedtls/bignum.h>
 
 /* copied SEC_Eng_SHA256_Ctx from stddrv */
 typedef struct {
@@ -81,4 +82,10 @@ int bl_sec_ccm_auth_decrypt(const uint8_t *key, unsigned int key_bytelen, size_t
 							 size_t add_len, const unsigned char *input, unsigned char *output, const unsigned char *tag, size_t tag_len);
 int bl_sec_aes_ecb_encrypt(const uint8_t *key, unsigned int key_bytelen, size_t length, const unsigned char *input, unsigned char *output);
 int bl_sec_aes_ecb_decrypt(const uint8_t *key, unsigned int key_bytelen, size_t length, const unsigned char *input, unsigned char *output);
+
+// Define BL_SEC_MPI_LARGE_NUM_SOFTWARE_MPI to allow operate on very big bignums
+/* #define BL_SEC_MPI_LARGE_NUM_SOFTWARE_MPI */
+int bl_sec_pka_init(void);
+int bl_sec_mpi_exp_mod_wo_lock(mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *E, const mbedtls_mpi *N, mbedtls_mpi *_RN);
+int bl_sec_mpi_exp_mod(mbedtls_mpi *X, const mbedtls_mpi *A, const mbedtls_mpi *E, const mbedtls_mpi *N, mbedtls_mpi *_RN);
 #endif

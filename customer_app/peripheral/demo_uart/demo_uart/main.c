@@ -40,10 +40,20 @@ static void cmd_hosal_uart_echo(char *buf, int len, int argc, char **argv)
     demo_hosal_uart_echo(0);
 }
 
+static void cmd_hosal_uart_abr(char *buf, int len, int argc, char **argv)
+{
+    extern void demo_hosal_uart_abr(int uart_id);
+
+    blog_warn("UART0 cli will not work properly\r\n");
+    vTaskDelay(50);
+    demo_hosal_uart_abr(1);
+}
+
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "demo_hosal_uart_echo", "demo UART echo test", cmd_hosal_uart_echo},
     { "demo_hosal_uart_int", "demo UART int test", cmd_hosal_uart_int},
     { "demo_hosal_uart_dma", "demo UART DMA test", cmd_hosal_uart_dma},
+    { "demo_hosal_uart_abr", "demo UART abr test", cmd_hosal_uart_abr},
 };
 
 /**

@@ -1,6 +1,14 @@
+#include <blcrypto_suite/blcrypto_suite_top_config.h>
 #include <blcrypto_suite/blcrypto_suite_hacc.h>
 
+#if USE_HWCRYPTO
+#ifdef CFG_CHIP_BL602
 #include <bl602_sec_eng.h>
+#endif
+
+#ifdef CFG_CHIP_BL808
+#include <bl606p_sec_eng.h>
+#endif
 
 int blcrypto_suite_hacc_reset()
 {
@@ -26,3 +34,4 @@ int blcrypto_suite_hacc_gf2mont_256_bin(uint32_t *result, uint32_t *src, uint32_
 
     return 0;
 }
+#endif

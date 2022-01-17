@@ -32,7 +32,7 @@
 #include "bl_defs.h"
 #include "bl_irqs.h"
 #include "ipc_host.h"
-#include "os_hal.h"
+#include "bl_os_private.h"
 
 #define REG_SW_SET_PROFILING(env, value)   do{  }while(0)
 #define REG_SW_CLEAR_PROFILING(env, value)   do{  }while(0)
@@ -47,7 +47,7 @@ static struct bl_hw *wifi_hw;
 #ifdef RWNX_IRQS_DEBUG_ENABLE
 #define RWNX_IRQS_DEBUG(...) \
 { \
-    os_printf(__VA_ARGS__); \
+    bl_os_printf(__VA_ARGS__); \
 }
 #else
 #define RWNX_IRQS_DEBUG(...) do {} while(0)
@@ -74,7 +74,7 @@ void bl_irq_bottomhalf(struct bl_hw *bl_hw)
 {
     u32 status, statuses = 0;
 #ifdef CFG_BL_STATISTIC
-    unsigned long now = os_tick_get();
+    unsigned long now = bl_os_get_time_ms();
 #endif
 
     REG_SW_SET_PROFILING(bl_hw, SW_PROF_RWNX_IPC_IRQ_HDLR);
@@ -88,9 +88,9 @@ redo:
         ipc_host_irq(bl_hw->ipc_env, status);
         status = ipc_host_get_rawstatus(bl_hw->ipc_env);
     }
-    RWNX_IRQS_DEBUG("[BH] Handle Event %08X\r\n", statuses);
+    // bl_os_log_warn("[BH] Handle Event %08X\r\n", statuses);
 #ifdef CFG_BL_STATISTIC
-    now = os_tick_get();
+    now = bl_os_get_time_ms();
     if (statuses & IPC_IRQ_E2A_RXDESC) {
         bl_hw->stats.last_rx = now;
     }

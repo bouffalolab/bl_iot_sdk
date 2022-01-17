@@ -91,15 +91,15 @@ static int pm_env_init(void)
     assert(gp_pm_env);
 
     memset(gp_pm_env, 0, sizeof(struct pm_env));
-    gp_pm_env->pm_list = pvPortMalloc(sizeof(utils_dlist_t) * WLAN_PM_EVENT_MAX);
+    gp_pm_env->pm_list = pvPortMalloc(sizeof(utils_dlist_t) * PM_EVENT_MAX);
     assert(gp_pm_env->pm_list);
 
-    memset(gp_pm_env->pm_list, 0, sizeof(bl_pm_cb_t) * WLAN_PM_EVENT_MAX);
+    memset(gp_pm_env->pm_list, 0, sizeof(bl_pm_cb_t) * PM_EVENT_MAX);
 
     gp_pm_env->pm_mux = xSemaphoreCreateMutex();
     assert(gp_pm_env->pm_mux);
 
-    for (i = 0; i < WLAN_PM_EVENT_MAX; i++) {
+    for (i = 0; i < PM_EVENT_MAX; i++) {
         INIT_UTILS_DLIST_HEAD(&(gp_pm_env->pm_list)[i]);
     }
 
@@ -130,7 +130,7 @@ static int pm_deinit(void)
 
     assert(gp_pm_env);
 
-    for (i = 0; i < WLAN_PM_EVENT_MAX; i++) {
+    for (i = 0; i < PM_EVENT_MAX; i++) {
         pm_node_delete(&(gp_pm_env->pm_list)[i]);
     }
 
@@ -201,7 +201,20 @@ static int pm_node_ops_exec(struct pm_node *node)
     return node->ops(node->ctx);
 }
 
-static int pm_pmlist_traverse(utils_dlist_t *queue, uint32_t code, uint32_t *retval)
+static int pm_state_exec_func_check(enum PM_EVEMT event, uint32_t code)
+{
+    int ret;
+
+    if ((WLAN_PM_EVENT_CONTROL == event) || (PM_STATE_RUNNING == gp_pm_env->state)) {
+        ret = 0;
+    } else {
+        ret = 1;
+    }
+
+    return ret;
+}
+
+static int pm_pmlist_traverse(enum PM_EVEMT event, utils_dlist_t *queue, uint32_t code, uint32_t *retval)
 {
     struct pm_node *node = NULL;
     int ret = 0;
@@ -214,6 +227,11 @@ static int pm_pmlist_traverse(utils_dlist_t *queue, uint32_t code, uint32_t *ret
     utils_dlist_for_each_entry_safe(queue, tmp, node, struct pm_node, dlist_item) {
         if ((node->enable) && (code == node->code) && (gp_pm_env->wlan_capacity.cap & node->cap_bit) && 
                 (gp_pm_env->bt_capacity.cap & node->cap_bit)) {
+
+            if (pm_state_exec_func_check(event, code)) {
+                return -1;
+            }
+
             ret = pm_node_ops_exec(node);
             if (ret && retval) {
                 *retval |= 1;
@@ -232,7 +250,7 @@ static int pm_internal_process_event(enum PM_EVEMT event, uint32_t code)
         case WLAN_PM_EVENT_CONTROL:
         {
             switch (code) {
-                case CODE_PM_NOTIFY_START:
+                case WLAN_CODE_PM_NOTIFY_START:
                 {
                     if ((PM_STATE_INITED != pm_get_state()) && (PM_STATE_STOPPED != pm_get_state())) {
                         blog_error("pm not init or is running.\r\n");
@@ -240,12 +258,11 @@ static int pm_internal_process_event(enum PM_EVEMT event, uint32_t code)
 
                         return ret;
                     }
-                    
                     pm_set_state(PM_STATE_START);
                 }
                 break;
 
-                case CODE_PM_NOTIFY_STOP:
+                case WLAN_CODE_PM_NOTIFY_STOP:
                 {
                     if (PM_STATE_RUNNING != pm_get_state()) {
                         blog_error("pm is not running.\r\n");
@@ -280,7 +297,7 @@ int pm_post_event(enum PM_EVEMT event, uint32_t code, uint32_t *retval)
         return -1;
     }
     
-    pm_pmlist_traverse(&(gp_pm_env->pm_list)[event], code, retval);
+    pm_pmlist_traverse(event, &(gp_pm_env->pm_list)[event], code, retval);
     pm_internal_process_event(event, code);
 
     return 0;
@@ -352,7 +369,7 @@ int bl_pm_state_run(void)
         case PM_STATE_START:
         {
             pm_set_state(PM_STATE_RUNNING);
-            pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_START, NULL);;
+            pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_START, NULL);;
             ret = 0;
         }
         break;
@@ -360,7 +377,7 @@ int bl_pm_state_run(void)
         case PM_STATE_STOP:
         {
             pm_set_state(PM_STATE_STOPPED);
-            pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_STOP, NULL);
+            pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_STOP, NULL);
         }
         break;
 
@@ -417,6 +434,17 @@ int bl_pm_capacity_set(enum PM_LEVEL level)
             capacity |= NODE_CAP_BIT_MAC_IDLE;
             capacity |= NODE_CAP_BIT_MAC_DOZE;
             capacity |= NODE_CAP_BIT_RF_ONOFF;
+            capacity |= NODE_CAP_BIT_FORCE_SLEEP;
+        }
+        break;
+
+        case PM_MODE_STA_COEX:
+        {
+            capacity |= NODE_CAP_BIT_UAPSD_MODE;
+            capacity |= NODE_CAP_BIT_MAC_IDLE;
+            capacity |= NODE_CAP_BIT_MAC_DOZE;
+            capacity |= NODE_CAP_BIT_RF_ONOFF;
+            capacity |= NODE_CAP_BIT_WLAN_BLE_ABORT;
             capacity |= NODE_CAP_BIT_FORCE_SLEEP;
         }
         break;

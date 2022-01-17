@@ -149,14 +149,8 @@ endif
 
 ble_audio_srcs   := src/host/iso.c
 
-bredr_stack_srcs := src/host/a2dp.c \
-					src/host/at.c \
-					src/host/avdtp.c \
-					src/host/hfp_hf.c \
-					src/host/keys_br.c \
-					src/host/l2cap_br.c \
-					src/host/rfcomm.c \
-					src/host/sdp.c \
+bredr_stack_srcs := src/host/keys_br.c \
+                    src/host/l2cap_br.c \
 
 sbc_codec_srcs := 	src/sbc/dec/alloc.c \
 					src/sbc/dec/bitalloc.c \

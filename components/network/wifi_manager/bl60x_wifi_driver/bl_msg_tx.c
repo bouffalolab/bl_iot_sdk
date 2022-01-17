@@ -28,7 +28,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <string.h>
-#include <utils_log.h>
+#include <bl_os_private.h>
 #include <utils_tlv_bl.h>
 #include <bl60x_fw_api.h>
 
@@ -172,9 +172,9 @@ void bl_msg_update_channel_cfg(const char *code)
         /*get channel list failed, so we set the default one*/
         channel_num_default = sizeof(bl_channels_24_General)/sizeof(bl_channels_24_General[0]);
         channels_default = bl_channels_24_General;
-        printf("[WF] %s NOT found, using General instead, num of channel %d\r\n", code, channel_num_default);
+        bl_os_printf("[WF] %s NOT found, using General instead, num of channel %d\r\n", code, channel_num_default);
     } else {
-        printf("[WF] country code %s used, num of channel %d\r\n", code, channel_num_default);
+        bl_os_printf("[WF] country code %s used, num of channel %d\r\n", code, channel_num_default);
     }
 
 }
@@ -253,9 +253,9 @@ static inline void *bl_msg_zalloc(ke_msg_id_t const id,
 {
     struct lmac_msg *msg;
 
-    msg = (struct lmac_msg *)os_malloc(sizeof(struct lmac_msg) + param_len);
+    msg = (struct lmac_msg *)bl_os_malloc(sizeof(struct lmac_msg) + param_len);
     if (msg == NULL) {
-        os_printf("%s: msg allocation failed\n", __func__);
+        bl_os_printf("%s: msg allocation failed\n", __func__);
         return NULL;
     }
     memset(msg, 0, sizeof(struct lmac_msg) + param_len);
@@ -298,18 +298,18 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
     msg = container_of((void *)msg_params, struct lmac_msg, param);
 
     if (!bl_hw->ipc_env) {
-        os_printf("%s: bypassing (restart must have failed)\r\n", __func__);
-        os_free(msg);
+        bl_os_printf("%s: bypassing (restart must have failed)\r\n", __func__);
+        bl_os_free(msg);
         RWNX_DBG(RWNX_FN_LEAVE_STR);
         return -EBUSY;
     }
 
     nonblock = is_non_blocking_msg(msg->id);
 
-    cmd = os_malloc(sizeof(struct bl_cmd));
+    cmd = bl_os_malloc(sizeof(struct bl_cmd));
     if (NULL == cmd) {
-        os_free(msg);
-        os_printf("%s: failed to allocate mem for cmd, size is %d\r\n", __func__, sizeof(struct bl_cmd));
+        bl_os_free(msg);
+        bl_os_printf("%s: failed to allocate mem for cmd, size is %d\r\n", __func__, sizeof(struct bl_cmd));
         return -ENOMEM;
     }
     memset(cmd, 0, sizeof(struct bl_cmd));
@@ -325,7 +325,7 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
     ret = bl_hw->cmd_mgr.queue(&bl_hw->cmd_mgr, cmd);
 
     if (!nonblock) {
-        os_free(cmd);
+        bl_os_free(cmd);
     } else {
         ret = cmd->result;
     }
@@ -430,7 +430,7 @@ int bl_send_me_config_req(struct bl_hw *bl_hw)
     }
 
     /* Set parameters for the ME_CONFIG_REQ message */
-    os_printf("[ME] HT supp %d, VHT supp %d\r\n", 1, 0);
+    bl_os_printf("[ME] HT supp %d, VHT supp %d\r\n", 1, 0);
 
     req->ht_supp = 1;
     req->vht_supp = 0;
@@ -713,6 +713,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
     if (!req)
         return -ENOMEM;
 
+#if 0 // useless
     /* Set parameters for the SM_CONNECT_REQ message */
     if (sme->crypto.n_ciphers_pairwise &&
         ((sme->crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_WEP40) ||
@@ -736,6 +737,8 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
         req->ctrl_port_ethertype = sme->crypto.control_port_ethertype;
     else
         req->ctrl_port_ethertype = ETH_P_PAE;
+#endif
+    req->ctrl_port_ethertype = ETH_P_PAE;
 
     if (sme->bssid && !MAC_ADDR_CMP(sme->bssid, mac_addr_bcst.array) && !MAC_ADDR_CMP(sme->bssid, mac_addr_zero.array)) {
         for (i=0;i<ETH_ALEN;i++)
@@ -755,11 +758,13 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
         req->ssid.array[i] = sme->ssid[i];
     req->ssid.length = sme->ssid_len;
     req->flags = flags;
+#if 0 // useless
     if (WARN_ON(sme->ie_len > sizeof(req->ie_buf)))
         return -EINVAL;
     if (sme->ie_len)
         memcpy(req->ie_buf, sme->ie, sme->ie_len);
     req->ie_len = sme->ie_len;
+#endif
     req->listen_interval = bl_mod_params.listen_itv;
     req->dont_wait_bcmc = !bl_mod_params.listen_bcmc;
 
@@ -1015,7 +1020,7 @@ int bl_send_cfg_task_req(struct bl_hw *bl_hw, uint32_t ops, uint32_t task, uint3
         default:
         {
             /*empty here*/
-            BL_ASSERT(0);
+            assert(0);
         }
     }
 

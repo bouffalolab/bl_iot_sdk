@@ -148,3 +148,25 @@ void utils_parse_number_adv(const char *str, char sep, uint8_t *buf, int buflen,
   }
   *count = (i + 1);
 }
+
+
+unsigned long long convert_arrayToU64(uint8_t* inputArray)
+{
+    unsigned long long result = 0;
+    for(uint8_t i = 0; i < 8; i++)
+    {
+        result <<= 8;
+        result |= (unsigned long long)inputArray[7-i];
+    }
+
+    return result;
+}
+
+void convert_u64ToArray(unsigned long long inputU64, uint8_t result[8])
+{
+    for(int i = 0; i < 8; i++)
+    {
+        result[i] = inputU64>>(i*8);
+    }
+}
+

@@ -36,7 +36,7 @@
 #include "wifi_mgmr.h"
 #include "wifi_mgmr_api.h"
 #include "wifi_mgmr_event.h"
-#include <bl_pm.h>
+#include <wifi_hosal.h>
 
 static void cb_connect_ind(void *env, struct wifi_event_sm_connect_ind *ind)
 {
@@ -50,13 +50,13 @@ static void cb_connect_ind(void *env, struct wifi_event_sm_connect_ind *ind)
 
 static void cb_disconnect_ind(void *env, struct wifi_event_sm_disconnect_ind *ind)
 {
-    printf("sending disconnect\r\n");
+    bl_os_printf("sending disconnect\r\n");
     wifiMgmr.wifi_mgmr_stat_info.type_ind = WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_DISCONNECTION;
     wifiMgmr.wifi_mgmr_stat_info.status_code = ind->status_code;
     wifiMgmr.wifi_mgmr_stat_info.reason_code = ind->reason_code;
     wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_IND_DISCONNECT, (void*)0x1, (void*)0x2);
 
-    pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_STOP, NULL);
+    wifi_hosal_pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_STOP, NULL);
 }
 
 static void cb_beacon_ind(void *env, struct wifi_event_beacon_ind *ind)
@@ -66,7 +66,7 @@ static void cb_beacon_ind(void *env, struct wifi_event_beacon_ind *ind)
 
 static void cb_probe_resp_ind(void *env, long long timestamp)
 {
-    printf("timestamp = 0x%llx\r\n", timestamp);
+    bl_os_printf("timestamp = 0x%llx\r\n", timestamp);
 }
 
 static void cb_rssi_ind(void *env, int8_t rssi)
@@ -84,7 +84,7 @@ static void cb_event_ind(void *env, struct wifi_event *event)
             ind = (struct wifi_event_data_ind_channel_switch*)event->data;
             wifiMgmr.channel = ind->channel;
             //TODO it seems channel is strange got from fw. Fixit
-            printf("[WIFI] [IND] Channel is %d\r\n", wifiMgmr.channel);
+            bl_os_printf("[WIFI] [IND] Channel is %d\r\n", wifiMgmr.channel);
         }
         break;
         case WIFI_EVENT_ID_IND_SCAN_DONE:
@@ -93,7 +93,7 @@ static void cb_event_ind(void *env, struct wifi_event *event)
 
             ind = (struct wifi_event_data_ind_scan_done*)event->data;
             (void) ind;
-            puts("[WIFI] [IND] SCAN Done\r\n");
+            bl_os_puts("[WIFI] [IND] SCAN Done\r\n");
             wifi_mgmr_scan_complete_notify();
             aos_post_event(EV_WIFI, CODE_WIFI_ON_SCAN_DONE, WIFI_SCAN_DONE_EVENT_OK);
         }
@@ -105,7 +105,7 @@ static void cb_event_ind(void *env, struct wifi_event *event)
         break;
         default:
         {
-            printf("----------------UNKNOWN WIFI EVENT %d-------------------\r\n", (int)event->id);
+            bl_os_printf("----------------UNKNOWN WIFI EVENT %d-------------------\r\n", (int)event->id);
         }
     }
 }

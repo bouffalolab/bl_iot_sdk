@@ -39,7 +39,7 @@
 
 
 #define ATTR_NOINLINE                   __attribute__((noinline))
-#define ATTR_PDS_SECTION                __attribute__((section(".pds_code")))
+#define ATTR_PDS_SECTION                __attribute__((section(".pds_code." ATTR_UNI_SYMBOL)))
 
 
 void bl_pds_init(void);

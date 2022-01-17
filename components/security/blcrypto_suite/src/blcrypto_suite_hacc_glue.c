@@ -1,5 +1,7 @@
+#include <blcrypto_suite/blcrypto_suite_top_config.h>
 #include <blcrypto_suite/blcrypto_suite_hacc_glue.h>
 
+#if USE_HWCRYPTO
 /*
  * Multiplication R = m * P
  */
@@ -76,3 +78,4 @@ int blcrypto_suite_hacc_mpi_exp_mod_secp256r1(blcrypto_suite_mpi *X, const blcry
 
     return 0;
 }
+#endif

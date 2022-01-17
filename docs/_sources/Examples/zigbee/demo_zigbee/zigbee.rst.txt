@@ -11,20 +11,20 @@ Zigbee
 使用步骤
 -----------
 
-- 编译 ``customer_app/bl702_demo_event`` 工程并下载工程；
+- 进入 ``customer_app/bl702_demo_event`` 工程并通过 ``genzb`` 脚本命令编译，完成后下载Bin文件；
 - 1. Device1 使用 ``zb_register_dev 1 0x0104 0x0007 0x00 0x07 0x0000 0x0003 0x0004 0x0005 0x0006 0x0008 0x0300`` 命令注册 endpoint 1, profile id 为0x0104, device id为0x0007, input cluster 0个, output cluster 7个
 
     .. figure:: imgs/ZC-RegisterEP.png
        :alt: 
  
-- 2. Device1 使用 ``zb_set_role 0`` 命令设置设备类型ZC; 使用``zb_form 15 0xaaaa``创建信道15，PANID 0xaaaa的ZHA网络 ,打印的部分log如下。
+- 2. Device1 使用 ``zb_set_role 0`` 命令设置设备类型ZC; 使用 ``zb_form 15 0xaaaa`` 创建信道15，PANID 0xaaaa的ZHA网络 ,打印的部分log如下。
 
     .. figure:: imgs/ZC-Startup.png
        :alt: 
  
-- 3. Device1 使用 ``zb_permit 120`` 开放网络120秒；
+- 3. Device1 使用 ``zb_nwk_permit_join 120`` 开放网络120秒；
 
-    .. figure:: imgs/ZC-Permit.png
+    .. figure:: imgs/zb_nwk_permit_join.png
        :alt: 
 
 - 4. Device2 使用 ``zb_register_dev 1 0x0104 0x0102 0x07 0x0000 0x0003 0x0004 0x0005 0x0006 0x0008 0x0300 0x00`` 命令注册 endpoint 1, profile id 为0x0104, device id为0x0102, input cluster 7个, output cluster 0个; 如果Device2要做touchlink target，input cluster中需要注册touchlink cluster, touchlink cluster id 为0x1000，例如zb_register_dev 1 0x0104 0x0102 0x08 0x0000 0x0003 0x0004 0x0005 0x0006 0x0008 0x0300 0x1000 0x00。
@@ -32,12 +32,12 @@ Zigbee
     .. figure:: imgs/ZR-RegisterEP.png
        :alt: 
  
-- 5. Device2 使用 ``zb_set_role 1`` 命令设置设备类型ZR， 使用``zb_start`` 自动搜索zigbee网络，找到网络后打印的部分log如下。
+- 5. Device2 使用 ``zb_set_role 1`` 命令设置设备类型ZR， 使用 ``zb_start`` 自动搜索zigbee网络，找到网络后打印的部分log如下。
 
     .. figure:: imgs/ZR-Startup.png
        :alt: 
 
-- 6. Device1 使用 ``zb_zcl_onoff 2 0x79b4 1 2 2`` 命令向Device2 ep2 发送zcl:toggle 命令,地址模式为短地址
+- 6. Device1 使用 ``zb_zcl_onoff 2 0x6d4e 1 1 2`` 命令向Device2 ep1 发送zcl:toggle 命令,地址模式为短地址
 
     .. figure:: imgs/ZC-SendOnOff.png
        :alt: 
@@ -83,7 +83,7 @@ Cli命令介绍
 -----------	
  - 功能：设置设备类型为协调器，路由器或是终端设备
  - 参数：
-  - 参数1：<uint8_t>类型，设备类型标识，0(ZC)|1(ZR)|2(ZED)
+  - 参数1：<uint8_t>类型，设备类型标识，0(ZC)|1(ZR)|2(ZNSED none sleepy end device)
  - 示例：``"zb_set_role <nDeviceRole>\r\n"``
  
     .. figure:: imgs/zb_set_role.png
@@ -94,11 +94,13 @@ Cli命令介绍
 -----------		
 ``zb_change_role`` 
 -----------	
- - 功能：更改已在网设备的设备类型, 主要用于ZR和ZAED设备之间的转换
+ - 功能：更改已在网设备的设备类型, 主要用于ZR和ZNSED设备之间的转换
  - 参数：
-  - 参数1：<uint8_t>类型，设备类型标识，1(ZR)|2(ZAED)
+  - 参数1：<uint8_t>类型，设备类型标识，1(ZR)|2(ZNSED)
  - 示例：``"zb_change_role <nDeviceRole>\r\n"``
-
+ 
+    .. figure:: imgs/zb_change_role.png
+       :alt:
 
 
 -----------		
@@ -129,14 +131,14 @@ Cli命令介绍
 
 
 -----------		
-``zb_permit`` 
+``zb_nwk_permit_join`` 
 -----------	
  - 功能：开放网络(允许设备加入网络)
  - 参数：
   - 参数1：<uint8_t>类型，开放网络的时间长度。0：关闭网络，255：永远开放网络，1-254：开放网络的秒数
- - 示例：``"zb_permit <duration>\r\n"``
+ - 示例：``"zb_nwk_permit_join <duration>\r\n"``
  
-    .. figure:: imgs/zb_permit.png
+    .. figure:: imgs/zb_nwk_permit_join.png
        :alt:
 
 
@@ -184,7 +186,7 @@ Cli命令介绍
 -----------		
 ``zb_get_mac`` 
 -----------	
- - 功能：获取设备的MAC地址
+ - 功能：获取设备的MAC地址, 地址显示小端模式，例如图中MAC地址为 0xb4e8420008640000
  - 参数：无
  - 示例：``"zb_get_mac\r\n"``
  
@@ -199,7 +201,7 @@ Cli命令介绍
 -----------	
  - 功能：设置设备的发射功率
  - 参数：
-  - 参数1：<uint8_t>类型，可选值为 0|10|14
+  - 参数1：<uint8_t>类型，可选值为 0-14
  - 示例：``"zb_set_tx_power <power>\r\n"``
  
     .. figure:: imgs/zb_set_tx_power.png
@@ -228,7 +230,7 @@ Cli命令介绍
 -----------	
  - 功能：请求远端设备的网络地址
  - 参数：
-  - 参数1：< uint8_t*>类型，低字节在前。远端设备的IEEE地址
+  - 参数1：< uint8_t*>类型，低字节在前。远端设备的IEEE地址, 显示为小端模式，例如图中地址为 0xb4e8420008640000
  - 示例：``"zb_zdp_nwk_addr_req <ieeeAddr>\r\n"``
  
     .. figure:: imgs/zb_zdp_nwk_addr_req.png
@@ -244,7 +246,7 @@ Cli命令介绍
  - 参数：
   - 参数1：<uint16_t>类型，远端设备的短地址
   - 参数2：<uint16_t>类型，IEEE匹配的网络地址
- - 示例：``"zb_zdp_node_desc_req <dst_addr> <nwk_addr>\r\n"``
+ - 示例：``"zb_zdp_ieee_addr_req <dst_addr> <nwk_addr>\r\n"``
  
     .. figure:: imgs/zb_zdp_ieee_addr_req.png
        :alt:
@@ -307,9 +309,9 @@ Cli命令介绍
   - 参数1：<uint16_t>类型，远端设备的短地址
   - 参数2：<uint16_t>类型，与目标设备绑定的源设备上的 clusterID
   - 参数3：<uint8_t>类型，待绑定的源endpoint
-  - 参数4：<uint8_t*>类型，待绑定的源设备的MAC地址（64-bit IEEE address）
+  - 参数4：<uint8_t*>类型，待绑定的源设备的MAC地址（64-bit IEEE address, 0000ac080042e8b4 即 0xb4e8420008ac0000）
   - 参数5：<uint8_t>类型，待绑定的目标endpoint
-  - 参数6：<uint8_t*>类型，待绑定的目标设备的MAC地址（64-bit IEEE address）
+  - 参数6：<uint8_t*>类型，待绑定的目标设备的MAC地址（64-bit IEEE address, 000064080042e8b4 即 0xb4e8420008640000）
  - 示例：``"zb_zdp_bind <dst_addr> <clusterID> <src_ep> <src_mac> <dst_ep> <dst_mac>\r\n"``
  
     .. figure:: imgs/zb_zdp_bind.png
@@ -326,9 +328,9 @@ Cli命令介绍
   - 参数1：<uint16_t>类型，远端设备的短地址
   - 参数2：<uint16_t>类型，与目标设备解除绑定的源设备上的 clusterID
   - 参数3：<uint8_t>类型，待删除的endpoint
-  - 参数4：<uint8_t*>类型，待删除的源设备的MAC地址（64-bit IEEE address）
+  - 参数4：<uint8_t*>类型，待删除的源设备的MAC地址（64-bit IEEE address, 0000ac080042e8b4 即 0xb4e8420008ac0000）
   - 参数5：<uint8_t>类型，待删除的目标endpoint
-  - 参数6：<uint8_t*>类型，待删除的目标设备的MAC地址（64-bit IEEE address）
+  - 参数6：<uint8_t*>类型，待删除的目标设备的MAC地址（64-bit IEEE address, 000064080042e8b4 即 0xb4e8420008640000）
  - 示例：``"zb_zdp_unbind <dst_addr> <clusterID> <src_ep> <src_mac> <dst_ep> <dst_mac>\r\n"``
  
     .. figure:: imgs/zb_zdp_unbind.png
@@ -354,6 +356,9 @@ Cli命令介绍
   - 参数3：<uint16_t>类型，当前设备的clusterID
   - 参数4：<uint16_t>类型，标识要读取的属性标识符
  - 示例：``"zb_get_local_attr <ep> <dir> <clusterId> <attrId>"``
+ 
+    .. figure:: imgs/zb_get_local_attr.png
+       :alt:
 
 
 -----------		
@@ -370,6 +375,10 @@ Cli命令介绍
  - 示例：
   - ``"zb_set_local_attr <ep> <dir> <clusterId> <attrId> <type> <octstr>"``
   - ``"例如，设置identify time为15s: # zb_set_local_attr 1 0 0x0003 0x0000 0x21 0f00"``
+ 
+    .. figure:: imgs/zb_set_local_attr.png
+       :alt:
+
 
 -----------		
 ``zb_zcl_read`` 
@@ -598,16 +607,17 @@ Cli命令介绍
 
 
 -----------		
-``zb_leave`` 
+``zb_zdp_leave_req`` 
 -----------	
  - 功能：请求远端设备离开当前网络
  - 参数：
   - 参数1：<uint16_t>类型，目标设备短地址
-  - 参数2：< bool >类型，删除子设备
-  - 参数3：< bool >类型，离开后执行Rejoin
- - 示例：``"zb_leave <dst_addr> <removeChildren> <rejoin>\r\n"``
+  - 参数2：<uint8_t*>类型，目标设备的MAC地址, 例如下图 00007c040042e8b4 代表 0xb4e84200047c0000
+  - 参数3：< bool >类型，删除子设备
+  - 参数4：< bool >类型，离开后执行Rejoin
+ - 示例：``"zb_zdp_leave_req <dst_addr> <uint8_t array[8]> <removeChildren> <rejoin>\r\n"``
  
-    .. figure:: imgs/zb_leave.png
+    .. figure:: imgs/zb_zdp_leave_req.png
        :alt:
 
 

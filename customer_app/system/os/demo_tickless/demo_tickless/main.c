@@ -18,7 +18,9 @@
 #include <lwip/err.h>
 #include <http_client.h>
 #include <netutils/netutils.h>
-
+#ifdef EASYFLASH_ENABLE
+#include <easyflash.h>
+#endif
 #include <bl602_glb.h>
 #include <bl602_hbn.h>
 
@@ -47,7 +49,6 @@
 #include <bl_romfs.h>
 #include <fdt.h>
 
-#include <easyflash.h>
 #include <bl60x_fw_api.h>
 #include <wifi_mgmr_ext.h>
 #include <utils_log.h>
@@ -723,7 +724,6 @@ static void pds_check_process(xTimerHandle pxTimer)
 
 static void proc_main_entry(void *pvParameters)
 {
-    easyflash_init();
     
     TimerHandle_t timer_handler;
     timer_handler = xTimerCreate("pds_check_timer", pdMS_TO_TICKS(PDS_WAKEUP_MS), pdTRUE, NULL, pds_check_process);

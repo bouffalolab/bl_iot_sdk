@@ -33,12 +33,12 @@
 #include <lwip/netifapi.h>
 #include <lwip/dns.h>
 #include <ethernetif.h>
-#include <bl_efuse.h>
 #include <bl_wifi.h>
 #include <utils_hex.h>
-#include <semphr.h>
-#include <aos/kernel.h>
+// #include <semphr.h>
+// #include <aos/kernel.h>
 
+#include <bl_os_private.h>
 #include "bl_main.h"
 #include "bl_rx.h"
 #include "wifi_mgmr.h"
@@ -46,15 +46,19 @@
 #include "wifi_mgmr_api.h"
 #include "wifi_mgmr_profile.h"
 #include "bl_mod_params.h"
-#include "bl_pm.h"
-#include "bl_pds.h"
+
+#include "wifi_hosal.h"
+#include <wifi_hosal.h>
+
+#include <supplicant_api.h>
+#include <bl_wpa.h>
 
 /*just limit packet len with a reasonable value*/
 #define LEN_PKT_RAW_80211   (480)
 
 #define WIFI_SCAN_MAX_AP      (WIFI_MGMR_SCAN_ITEMS_MAX)
 
-SemaphoreHandle_t scan_sig;
+BL_Sem_t scan_sig = NULL;
 
 extern int bl606a0_wifi_init(wifi_conf_t *conf);
 err_t bl606a0_wifi_netif_init(struct netif *netif);
@@ -65,10 +69,10 @@ static void cb_scan_complete(void *data, void *param)
 {
     wifi_mgmr_ap_item_t *ap_ary_ptr = (wifi_mgmr_ap_item_t *)data;
     int status = *((int *)param);
-    printf("scan complete status: %d, ssid_len = %lu\r\n", status, ap_ary_ptr->ssid_len);
+    bl_os_printf("scan complete status: %d, ssid_len = %lu\r\n", status, ap_ary_ptr->ssid_len);
 
     if (scan_sig != NULL){
-        xSemaphoreGive(scan_sig);
+        bl_os_sem_give(scan_sig);
     }
 }
 
@@ -180,7 +184,7 @@ int wifi_mgmr_psk_cal(char *password, char *ssid, int ssid_len, char *output)
     int ret;
     char psk[32];
 
-    ret = bl60x_fw_password_hash(password, ssid, ssid_len, psk);
+    ret = pbkdf2_sha1(password, ssid, ssid_len, 4096, (uint8_t *)psk, sizeof(psk));
     if (0 == ret) {
         utils_bin2hex(output, psk, 32);
     }
@@ -208,12 +212,12 @@ wifi_interface_t wifi_mgmr_sta_enable(void)
     static int done = 0;
 
     if (1 == done) {
-        os_printf("----- BUG FIXME? NOT do STA enable again\r\n");
+        bl_os_printf("----- BUG FIXME? NOT do STA enable again\r\n");
         return &(wifiMgmr.wlan_sta);
     }
     done = 1;
 
-    os_printf("---------STA enable\r\n");
+    bl_os_printf("---------STA enable\r\n");
     wifiMgmr.wlan_sta.mode = 0;//sta mode
     //TODO check wifiMgmr.wlan_sta status
     wifi_eth_sta_enable(&(wifiMgmr.wlan_sta.netif), wifiMgmr.wlan_sta.mac);
@@ -229,6 +233,11 @@ int wifi_mgmr_sta_disable(wifi_interface_t *interface)
 struct netif *wifi_mgmr_sta_netif_get(void)
 {
     return &wifiMgmr.wlan_sta.netif;
+}
+
+struct netif *wifi_mgmr_ap_netif_get(void)
+{
+    return &wifiMgmr.wlan_ap.netif;
 }
 
 int wifi_mgmr_sta_mac_set(uint8_t mac[6])
@@ -288,7 +297,7 @@ int wifi_mgmr_sta_dns_get(uint32_t *dns1, uint32_t *dns2)
 
 int wifi_mgmr_sta_ip_set(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1, uint32_t dns2)
 {
-    taskENTER_CRITICAL();
+    bl_os_enter_critical();
 
     wifiMgmr.wlan_sta.ipv4.ip = ip;
     wifiMgmr.wlan_sta.ipv4.mask = mask;
@@ -296,7 +305,7 @@ int wifi_mgmr_sta_ip_set(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1,
     wifiMgmr.wlan_sta.ipv4.dns1 = dns1;
     wifiMgmr.wlan_sta.ipv4.dns2 = dns2;
 
-    taskEXIT_CRITICAL();
+    bl_os_exit_critical();
 
     wifi_mgmr_api_ip_update();
 
@@ -326,6 +335,7 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
     ext_param.ap_info.bssid = mac;
     ext_param.ap_info.band = 0;
     ext_param.ap_info.freq = freq;
+    ext_param.ap_info.use_dhcp = 1;
     return wifi_mgmr_sta_connect_ext(wifi_interface, ssid, psk, &ext_param);
 }
 
@@ -347,17 +357,17 @@ int wifi_mgmr_sta_pm_ops(void *arg)
 
 int wifi_mgmr_pm_ops_register(void)
 {
-    bl_pm_event_register(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_START, NODE_CAP_BIT_UAPSD_MODE, 8, wifi_mgmr_sta_pm_ops, (void *)PS_MODE_ON_DYN, PM_ENABLE);
-    bl_pm_event_register(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_STOP, NODE_CAP_BIT_UAPSD_MODE, 6, wifi_mgmr_sta_pm_ops, (void *)PS_MODE_OFF, PM_ENABLE);
+    wifi_hosal_pm_event_register(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_START, NODE_CAP_BIT_UAPSD_MODE, 8, wifi_mgmr_sta_pm_ops, (void *)PS_MODE_ON_DYN, PM_ENABLE);
+    wifi_hosal_pm_event_register(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_STOP, NODE_CAP_BIT_UAPSD_MODE, 6, wifi_mgmr_sta_pm_ops, (void *)PS_MODE_OFF, PM_ENABLE);
 
     return 0;
 }
 
 int wifi_mgmr_fw_affair_ops(void)
 {
-    bl_pm_event_switch(WLAN_PM_EVENT_BEACON_LOSS, CODE_BEACON_LOSS, PM_ENABLE);
-    bl_pm_event_switch(WLAN_PM_EVENT_SEND_NULLDATA, CODE_PM_NULLDATA_NOACK, PM_ENABLE);
-    bl_pm_event_switch(WLAN_PM_EVENT_EXIT_SLEEP, CODE_PM_ENTER_SLEEP_PRE_FAILED, PM_ENABLE);
+    wifi_hosal_pm_event_switch(WLAN_PM_EVENT_BEACON_LOSS, WLAN_CODE_BEACON_LOSS, PM_ENABLE);
+    wifi_hosal_pm_event_switch(WLAN_PM_EVENT_SEND_NULLDATA, WLAN_CODE_PM_NULLDATA_NOACK, PM_ENABLE);
+    wifi_hosal_pm_event_switch(WLAN_PM_EVENT_EXIT_SLEEP, WLAN_CODE_PM_ENTER_SLEEP_PRE_FAILED, PM_ENABLE);
 
     return 0;
 }
@@ -366,10 +376,10 @@ int wifi_mgmr_sta_ps_enter(uint32_t ps_level)
 {
     int retval = 0;
 
-    if (!bl_pm_capacity_set(ps_level)) {
-        retval = pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_START, NULL);
+    if (!wifi_hosal_pm_capacity_set(ps_level)) {
+        retval = wifi_hosal_pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_START, NULL);
     } else {
-        os_printf("----- Error PS Mode\r\n");
+        bl_os_printf("----- Error PS Mode\r\n");
     }
 
     return retval;
@@ -377,7 +387,7 @@ int wifi_mgmr_sta_ps_enter(uint32_t ps_level)
 
 int wifi_mgmr_sta_ps_exit(void)
 {
-    pm_post_event(WLAN_PM_EVENT_CONTROL, CODE_PM_NOTIFY_STOP, NULL); 
+    wifi_hosal_pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_STOP, NULL); 
 
     return 0;
 }
@@ -415,14 +425,14 @@ void wifi_mgmr_sta_connect_ind_stat_get(wifi_mgmr_sta_connect_ind_stat_info_t *w
     wifi_mgmr_ind_stat->chan_freq = wifiMgmr.wifi_mgmr_stat_info.chan_freq;
     wifi_mgmr_ind_stat->type_ind = wifiMgmr.wifi_mgmr_stat_info.type_ind;
 
-    printf("wifi mgmr ind status code = %d\r\n",  wifi_mgmr_ind_stat->status_code);
-    printf("ssid: %s, passphr: %s, band: %d, freq: %d, type_ind: %d\r\n",
+    bl_os_printf("wifi mgmr ind status code = %d\r\n",  wifi_mgmr_ind_stat->status_code);
+    bl_os_printf("ssid: %s, passphr: %s, band: %d, freq: %d, type_ind: %d\r\n",
             wifi_mgmr_ind_stat->ssid,
             wifi_mgmr_ind_stat->passphr,
             wifi_mgmr_ind_stat->chan_band,
             wifi_mgmr_ind_stat->chan_freq,
             wifi_mgmr_ind_stat->type_ind);
-    printf("bssid: %02x%02x%02x%02x%02x%02x\r\n",
+    bl_os_printf("bssid: %02x%02x%02x%02x%02x%02x\r\n",
                 wifi_mgmr_ind_stat->bssid[0],
                 wifi_mgmr_ind_stat->bssid[1],
                 wifi_mgmr_ind_stat->bssid[2],
@@ -502,7 +512,7 @@ static void wifi_eth_ap_enable(struct netif *netif, uint8_t mac[6])
 
 wifi_interface_t wifi_mgmr_ap_enable()
 {
-    //printf("wifiMgmr.wlan_ap.mode = %d \r\n", wifiMgmr.wlan_ap.mode);
+    //bl_os_printf("wifiMgmr.wlan_ap.mode = %d \r\n", wifiMgmr.wlan_ap.mode);
     //TODO should add lock to avoid being called at the same time
     if (wifiMgmr.inf_ap_enabled) {
         /*nothing here*/
@@ -524,7 +534,7 @@ int wifi_mgmr_ap_mac_get(uint8_t mac[6])
     /*should we set default mac address/get efuse address here?*/
     //TODO use unified mac address init
     mac_is_unvalid(wifiMgmr.wlan_ap.mac);
-    bl_efuse_read_mac(wifiMgmr.wlan_ap.mac);
+    wifi_hosal_efuse_read_mac(wifiMgmr.wlan_ap.mac);
     if (mac_is_unvalid(wifiMgmr.wlan_ap.mac)) {
         /*Make sure we have a default valid MAC address*/
         //TODO generate a random mac address
@@ -654,7 +664,7 @@ int wifi_mgmr_channel_set(int channel, int use_40Mhz)
 {
     wifiMgmr.channel = channel;
     wifi_mgmr_api_channel_set(channel, use_40Mhz);
-    printf("set channel %d, 40Mhz %d\r\n", channel, use_40Mhz);
+    bl_os_printf("set channel %d, 40Mhz %d\r\n", channel, use_40Mhz);
     return 0;
 }
 
@@ -678,21 +688,21 @@ int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num)
         return -1;
     }
 
-    ap_ary_p = (wifi_mgmr_ap_item_t *)pvPortMalloc(sizeof(wifi_mgmr_ap_item_t) * WIFI_SCAN_MAX_AP);
+    ap_ary_p = (wifi_mgmr_ap_item_t *)bl_os_malloc(sizeof(wifi_mgmr_ap_item_t) * WIFI_SCAN_MAX_AP);
     if(NULL == ap_ary_p) {
         return -1;
     }
     memset(ap_ary_p, 0, sizeof(wifi_mgmr_ap_item_t) * WIFI_SCAN_MAX_AP);
 
-    if(NULL == (scan_sig = xSemaphoreCreateBinary())){
-        vPortFree(ap_ary_p);
+    if(NULL == (scan_sig = bl_os_sem_create(0))){
+        bl_os_free(ap_ary_p);
         return -1;
     }
 
     wifi_mgmr_scan(ap_ary_p, cb_scan_complete);//trigger the scan
 
-    if ((pdTRUE == xSemaphoreTake(scan_sig, portMAX_DELAY))) {
-        printf("wifi scan Done\r\n");
+    if ((0 == bl_os_sem_take(scan_sig, BL_OS_WAITING_FOREVER))) {
+        bl_os_printf("wifi scan Done\r\n");
     }
 
     wifi_mgmr_cli_scanlist();
@@ -702,7 +712,7 @@ int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num)
     *num = counter;
     *ap_ary = ap_ary_p;
 
-    vSemaphoreDelete(scan_sig);
+    bl_os_sem_delete(scan_sig);
 
     return 0;
 }
@@ -743,13 +753,13 @@ int wifi_mgmr_beacon_interval_set(uint16_t beacon_int)
 
 int wifi_mgmr_scan_filter_hidden_ssid(int filter)
 {
-    taskENTER_CRITICAL();
+    bl_os_enter_critical();
     if (filter) {
         wifiMgmr.features &= (~WIFI_MGMR_FEATURES_SCAN_SAVE_HIDDEN_SSID);
     } else {
         wifiMgmr.features |= WIFI_MGMR_FEATURES_SCAN_SAVE_HIDDEN_SSID;
     }
-    taskEXIT_CRITICAL();
+    bl_os_exit_critical();
     return 0;
 }
 
@@ -757,7 +767,7 @@ int wifi_mgmr_scan_complete_callback()
 {
     int status = 0;
 
-    printf("%s: scan complete\r\n", __func__);
+    bl_os_printf("%s: scan complete\r\n", __func__);
     if (scan_cb != NULL){
         status = 1;
         scan_cb(scan_data, &status);
@@ -826,7 +836,7 @@ int wifi_mgmr_scan_ap_all(wifi_mgmr_ap_item_t *env, uint32_t *param1, scan_item_
 
 int wifi_mgmr_set_country_code(char *country_code)
 {
-    printf("%s:code = %s\r\n", __func__, country_code);
+    bl_os_printf("%s:code = %s\r\n", __func__, country_code);
     wifi_mgmr_api_set_country_code(country_code);
 
     return 0;

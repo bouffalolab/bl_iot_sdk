@@ -56,18 +56,17 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     uint64_t rtcRefCnt;
     uint32_t actualSleepDuration_ms;
     uint32_t mtimerClkCfg;
+    uint32_t mtimerClkCycles;
     uint32_t ulCurrentTimeHigh, ulCurrentTimeLow;
     volatile uint32_t * const pulTimeHigh = ( volatile uint32_t * const ) ( configCLINT_BASE_ADDRESS + 0xBFFC );
     volatile uint32_t * const pulTimeLow = ( volatile uint32_t * const ) ( configCLINT_BASE_ADDRESS + 0xBFF8 );
     
     extern volatile uint64_t * const pullMachineTimerCompareRegister;
-    extern const size_t uxTimerIncrementsForOneTick;
     extern void vPortSetupTimerInterrupt(void);
     
     mtimerClkCfg = *(volatile uint32_t *)0x40000090;  // store mtimer clock
     
-    *pullMachineTimerCompareRegister -= (uxTimerIncrementsForOneTick + 1); // avoid mtimer interrupt pending
-    *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 0;
+    *pullMachineTimerCompareRegister = -1;  // avoid mtimer interrupt pending
     
     do
     {
@@ -81,10 +80,17 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     
     actualSleepDuration_ms = (uint32_t)bl_rtc_get_delta_time_ms(rtcRefCnt);
     
-    *(volatile uint32_t *)0x40000090 = mtimerClkCfg;
+    mtimerClkCycles = actualSleepDuration_ms * 4000;  // 4 clock cycles per us
+    ulCurrentTimeLow += mtimerClkCycles;
+    if(ulCurrentTimeLow < mtimerClkCycles){
+        ulCurrentTimeHigh++;
+    }
     
+    *pullMachineTimerCompareRegister = -1;
     *pulTimeHigh = ulCurrentTimeHigh;
     *pulTimeLow = ulCurrentTimeLow;
+    
+    *(volatile uint32_t *)0x40000090 = mtimerClkCfg;
     
     vPortSetupTimerInterrupt();
     *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 1;

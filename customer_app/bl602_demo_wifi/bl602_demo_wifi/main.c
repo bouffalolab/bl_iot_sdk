@@ -54,6 +54,7 @@
 #include <utils_log.h>
 #include <libfdt.h>
 #include <blog.h>
+#include <bl_wps.h>
 
 #define mainHELLO_TASK_PRIORITY     ( 20 )
 #define UART_ID_2 (2)
@@ -678,6 +679,59 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
 
 }
 
+#define wps_dbg(fmt, ...) printf("[WPS] " fmt "\r\n", ##__VA_ARGS__)
+#define WPS_PBC_CMD "wps-pbc"
+#define WPS_PIN_CMD "wps-pin"
+static void wps_event_callback_(bl_wps_event_t event, void *payload, void *cb_arg)
+{
+    bl_wps_ap_credential_t *ap_cred;
+    bl_wps_pin_t *pin;
+    wifi_interface_t wifi_interface;
+
+    switch (event) {
+    case BL_WPS_EVENT_PIN:
+        pin = (bl_wps_pin_t *)payload;
+        wps_dbg("PIN %s", pin->pin);
+        vPortFree(pin);
+        break;
+    case BL_WPS_EVENT_COMPLETE:
+        wps_dbg("completed");
+        ap_cred = (bl_wps_ap_credential_t *)payload;
+        // ap_cred should always be valid
+        wps_dbg("AP SSID %s", ap_cred->ssid);
+        wps_dbg("AP passphrase %s", ap_cred->passphrase);
+        wps_dbg("connecting...");
+        wifi_interface = wifi_mgmr_sta_enable();
+        wifi_mgmr_sta_connect(wifi_interface, (char *)ap_cred->ssid, ap_cred->passphrase, NULL,  NULL, 0, 0);
+        vPortFree(ap_cred);
+        break;
+    case BL_WPS_EVENT_TIMEOUT:
+        wps_dbg("timed out");
+        break;
+    default:
+        wps_dbg("error occured, event: %d", event);
+    }
+}
+
+static void cmd_wps_pbc_(char *buf, int len, int argc, char **argv)
+{
+    wps_type_t type;
+    if (!strcmp(argv[0], WPS_PBC_CMD)) {
+        type = WPS_TYPE_PBC;
+    } else {
+        type = WPS_TYPE_PIN;
+    }
+    const struct bl_wps_config config = {
+        .type = type,
+        .event_cb = wps_event_callback_,
+    };
+
+    bl_wps_err_t ret = bl_wifi_wps_start(&config);
+    if (ret != BL_WPS_ERR_OK) {
+        wps_dbg("bl_wifi_wps_start failed with code %d", (int)ret);
+    }
+}
+
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "aws", "aws iot demo", cmd_aws},
         { "pka", "pka iot demo", cmd_pka},
@@ -696,6 +750,8 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         /*TCP/IP network test*/
         {"http", "http client download test based on socket", http_test_cmd},
         {"httpc", "http client download test based on RAW TCP", cmd_httpc_test},
+        {WPS_PBC_CMD, "WPS Push Button demo", cmd_wps_pbc_},
+        {WPS_PIN_CMD, "WPS Device PIN demo", cmd_wps_pbc_},
 };
 
 static void _cli_init()
@@ -758,11 +814,6 @@ static void adc_tsen_init()
 
 void main()
 {
-    static StackType_t proc_main_stack[1024];
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_hellow_stack[512];
-    static StaticTask_t proc_hellow_task;
-
     bl_sys_init();
 
     system_thread_init();
@@ -772,9 +823,9 @@ void main()
 #endif
 
     puts("[OS] Starting proc_hellow_entry task...\r\n");
-    xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
+    // xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
     puts("[OS] Starting proc_mian_entry task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);
 }

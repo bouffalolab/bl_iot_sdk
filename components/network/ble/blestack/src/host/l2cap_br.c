@@ -30,6 +30,8 @@
 #include "a2dp_internal.h"
 #include "rfcomm_internal.h"
 #include "hfp_hf.h"
+#include "avctp.h"
+#include "avrcp.h"
 
 #define BR_CHAN(_ch) CONTAINER_OF(_ch, struct bt_l2cap_br_chan, chan)
 #define BR_CHAN_RTX(_w) CONTAINER_OF(_w, struct bt_l2cap_br_chan, chan.rtx_work)
@@ -1544,26 +1546,27 @@ BT_L2CAP_BR_CHANNEL_DEFINE(br_fixed_chan, BT_L2CAP_CID_BR_SIG, l2cap_br_accept);
 void bt_l2cap_br_init(void)
 {
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
-    net_buf_init(&br_sig_pool, CONFIG_BT_MAX_CONN, BT_L2CAP_BUF_SIZE(L2CAP_BR_MIN_MTU), NULL);
+	net_buf_init(&br_sig_pool, CONFIG_BT_MAX_CONN, BT_L2CAP_BUF_SIZE(L2CAP_BR_MIN_MTU), NULL);
 #endif
 	sys_slist_init(&br_servers);
 
 	bt_sdp_init();
 
-	if (IS_ENABLED(CONFIG_BT_RFCOMM)) {
-		bt_rfcomm_init();
-	}
-
 	if (IS_ENABLED(CONFIG_BT_HFP)) {
+		bt_rfcomm_init();
 		bt_hfp_hf_init();
 	}
 
-	if (IS_ENABLED(CONFIG_BT_AVDTP)) {
-		bt_avdtp_init();
-	}
-
 	if (IS_ENABLED(CONFIG_BT_A2DP)) {
+		bt_avdtp_init();
 		bt_a2dp_init();
 	}
 
+	if (IS_ENABLED(CONFIG_BT_AVRCP)) {
+		bt_avctp_init();
+		bt_avrcp_init();
+	}
+
 }
+
+

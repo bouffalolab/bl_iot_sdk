@@ -70,6 +70,7 @@
 /** @defgroup  XIP_SFLASH_EXT_Public_Functions
  *  @{
  */
+BL_Err_Type XIP_SFlash_State_Save_Ext(SPI_Flash_Cfg_Type *pFlashCfg,uint32_t *offset);
 BL_Err_Type XIP_SFlash_State_Restore_Ext(SPI_Flash_Cfg_Type *pFlashCfg,uint32_t offset);
 BL_Err_Type XIP_SFlash_Erase_Need_Lock_Ext(SPI_Flash_Cfg_Type *pFlashCfg,uint32_t startaddr,
                                            uint32_t endaddr);

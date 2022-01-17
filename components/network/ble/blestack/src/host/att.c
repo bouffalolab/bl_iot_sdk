@@ -2348,7 +2348,11 @@ void bt_att_init(void)
 
     #if CONFIG_BT_ATT_PREPARE_COUNT > 0
     #if defined(BFLB_DYNAMIC_ALLOC_MEM)
+    #if (BFLB_STATIC_ALLOC_MEM)
+    net_buf_init(PREP,&prep_pool, CONFIG_BT_ATT_PREPARE_COUNT, BT_ATT_MTU, NULL);
+    #else
     net_buf_init(&prep_pool, CONFIG_BT_ATT_PREPARE_COUNT, BT_ATT_MTU, NULL);
+    #endif
     #endif
     #endif
 

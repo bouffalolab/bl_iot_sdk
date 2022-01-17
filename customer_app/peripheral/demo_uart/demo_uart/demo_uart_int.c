@@ -11,6 +11,18 @@
 #include <blog.h>
 
 /**
+ *  Define a UART device,
+ *  TX pin : 16/14
+ *  RX pin : 7/15
+ *  baud : 2000000
+ */
+#ifdef CONF_USER_BL702
+HOSAL_UART_DEV_DECL(uart_dev_int, 0, 14, 15, 2000000);
+#elif CONF_USER_BL602
+HOSAL_UART_DEV_DECL(uart_dev_int, 0, 16, 7, 2000000);
+#endif
+
+/**
  * hal uart TX interrupt callback
  */
 static int __uart_tx_callback(void *p_arg)
@@ -48,32 +60,22 @@ static int __uart_rx_callback(void *p_arg)
  */
 void demo_hosal_uart_int(int uart_id)
 {
-    /**
-     *  Define a UART device,
-     *  TX pin : 16/14
-     *  RX pin : 7/15
-     *  baud : 2000000
-     */
-#ifdef CONF_USER_BL702
-HOSAL_UART_DEV_DECL(uart_dev, uart_id, 14, 15, 2000000);
-#elif CONF_USER_BL602
-HOSAL_UART_DEV_DECL(uart_dev, uart_id, 16, 7, 2000000);
-#endif
+    uart_dev_int.config.uart_id = uart_id;
 
     /* Uart init device */
-    hosal_uart_init(&uart_dev);
+    hosal_uart_init(&uart_dev_int);
 
     /* Configure UART to interrupt mode */
-    hosal_uart_ioctl(&uart_dev, HOSAL_UART_MODE_SET, (void *)HOSAL_UART_MODE_INT);
+    hosal_uart_ioctl(&uart_dev_int, HOSAL_UART_MODE_SET, (void *)HOSAL_UART_MODE_INT);
 
     /* Set TX RX interrupt callback */
-    hosal_uart_callback_set(&uart_dev, HOSAL_UART_RX_CALLBACK,
-                          __uart_rx_callback, &uart_dev);
-    hosal_uart_callback_set(&uart_dev, HOSAL_UART_TX_CALLBACK,
-                          __uart_tx_callback, &uart_dev);
+    hosal_uart_callback_set(&uart_dev_int, HOSAL_UART_RX_CALLBACK,
+                          __uart_rx_callback, &uart_dev_int);
+    hosal_uart_callback_set(&uart_dev_int, HOSAL_UART_TX_CALLBACK,
+                          __uart_tx_callback, &uart_dev_int);
 
     /* UART TX interrupt start */
-    hosal_uart_ioctl(&uart_dev, HOSAL_UART_TX_TRIGGER_ON, NULL);
+    hosal_uart_ioctl(&uart_dev_int, HOSAL_UART_TX_TRIGGER_ON, NULL);
 
     while (1) {
         /* Do not let the test return */

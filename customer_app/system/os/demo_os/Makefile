@@ -18,7 +18,7 @@ $(info ****** Please SET BL60X_SDK_PATH ******)
 $(info ****** Trying SDK PATH [$(BL60X_SDK_PATH)])
 endif
 
-ifeq ("$(CONFIG_CHIP_NAME)", "BL606p")
+ifeq ("$(CONFIG_CHIP_NAME)", "BL606P")
 COMPONENTS_BLSYS   := 
 COMPONENTS_VFS     := 
 
@@ -30,14 +30,14 @@ ifeq ("$(CONFIG_CHIP_NAME)", "BL616")
 COMPONENTS_BLSYS   := 
 COMPONENTS_VFS     := 
 
-INCLUDE_COMPONENTS += bl616_e907_freertos_ram bl616_std bl616 hosal vfs utils yloop cli blog blfdt hosal
+INCLUDE_COMPONENTS += bl616_e907_freertos_ram bl616_std bl616 hosal vfs utils yloop cli blog blfdt
 endif
 
 ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
 COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
 COMPONENTS_VFS     := romfs
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc hosal vfs yloop utils cli blog blog_testc
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc hosal mbedtls_lts lwip vfs yloop utils cli blog blog_testc
 INCLUDE_COMPONENTS += easyflash4 coredump
 endif
 

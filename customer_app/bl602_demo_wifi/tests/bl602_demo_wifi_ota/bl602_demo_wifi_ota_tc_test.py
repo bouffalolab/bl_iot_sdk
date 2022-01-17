@@ -24,7 +24,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
     try:
         nc = False
         cat = False
-        dut.expect("Booting BL602 Chip...", timeout=0.5)
+        dut.expect("Booting BL602 Chip...", timeout=5)
         print('BL602 booted')
         #dut.expect('Init CLI with event Driven', timeout=0.5)
         #print('BL602 CLI init done')
@@ -78,7 +78,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
 
 def ota_update(dut, ip, cmd_wifi_connect, ota_path):
     dut.write('stack_wifi')
-    time.sleep(0.5)
+    time.sleep(1)
     dut.write(cmd_wifi_connect)
     dut.expect("Entering wifiConnected_IPOK state", timeout=30)
     print ("connect wifi success")
@@ -90,8 +90,7 @@ def ota_update(dut, ip, cmd_wifi_connect, ota_path):
     time.sleep(0.5)
     print ("start update")
     dut.expect("Update PARTITION", timeout=100)
-    time.sleep(10)
-    dut.expect("Booting BL602 Chip...", timeout=0.5)
+    dut.expect("Booting BL602 Chip...", timeout=20)
     list_all = dut.expect(re.compile(r'======= PtTable_Config([\s\S]*?)======= FlashCfg magiccode'), timeout=4)
     time.sleep(2)
     rst_str = 'FW  (.*)  (.*)  (.*)  (.*)  (.*)'

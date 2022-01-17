@@ -309,6 +309,7 @@ int8_t mfg_efuse_read_poweroffset_ate(int8_t *pwrOffset)
 {
     int8_t pwrOffsetTmp = 0;
     int8_t ret = 0;
+    uint8_t slot = 0;
 
     uint8_t hdiv=0,bdiv=0;
     GLB_ROOT_CLK_Type rtClk=GLB_Get_Root_CLK_Sel();
@@ -318,10 +319,11 @@ int8_t mfg_efuse_read_poweroffset_ate(int8_t *pwrOffset)
 
     HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_XTAL);
     
-    if(SUCCESS != EF_Ctrl_Read_TxPower_ATE(&pwrOffsetTmp)){
+    if(SUCCESS != EF_Ctrl_Read_TxPower_ATE(&pwrOffsetTmp,&slot)){
+        mfg_print("power ate read err\r\n");
         ret = -1;
     }
-    
+    mfg_print("power ate slot %d\r\n",slot);
     *pwrOffset = pwrOffsetTmp;
     GLB_Set_System_CLK_Div(hdiv,bdiv);
     HBN_Set_ROOT_CLK_Sel((HBN_ROOT_CLK_Type)rtClk);

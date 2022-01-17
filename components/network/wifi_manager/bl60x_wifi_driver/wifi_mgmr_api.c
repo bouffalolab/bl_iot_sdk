@@ -116,7 +116,7 @@ int wifi_mgmr_api_connect(char *ssid, char *passphr, const ap_connect_adv_t *ext
           //define the freq
           profile->band = ext_param->ap_info.band;
           profile->freq = ext_param->ap_info.freq;
-          printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
+          bl_os_printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
       }
 
       if (ext_param->ap_info.type == AP_INFO_TYPE_PRESIST) {
@@ -125,11 +125,11 @@ int wifi_mgmr_api_connect(char *ssid, char *passphr, const ap_connect_adv_t *ext
         profile->ap_info_ttl = ext_param->ap_info.time_to_live;
       } else {
         profile->ap_info_ttl = -1;
-        printf("invalid ap info type or time_to_live value!\r\n");
+        bl_os_printf("invalid ap info type or time_to_live value!\r\n");
       }
     }
 
-    profile->dhcp_use = 1;//force use DHCP currently
+    profile->dhcp_use = ext_param->ap_info.use_dhcp;
 
     return wifi_mgmr_api_common(
         msg,

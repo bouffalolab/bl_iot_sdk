@@ -39,17 +39,6 @@ SECTIONS
     *(.sdata2.*)
     *(.gcc_except_table.*)
 
-    /* usb cdc rodata */
-    *libbl702_usb_cdc.a:usbd_cdc.o(.data.USBD_CDC)
-    /*
-    *libbl702_usb_cdc.a:usbd_cdc.o(.data.USBD_CDC_CfgFSDesc)
-    *libbl702_usb_cdc.a:usbd_cdc.o(.data.USBD_CDC_CfgHSDesc)
-    *libbl702_usb_cdc.a:usbd_cdc.o(.data.USBD_CDC_OtherSpeedCfgDesc)
-    */
-    *libbl702_usb_cdc.a:usbd_cdc.o(.data.USBD_CDC_DeviceQualifierDesc)
-    *libbl702_usb_cdc.a:usbd_cdc_if.o(.data.USBD_Interface_fops_FS)
-    *libbl702_usb_cdc.a:usbd_desc.o(.data.FS_Desc)
-
     /* camera driver */
     . = ALIGN(4);
     _bl_driver_camera_start = .;
@@ -105,20 +94,39 @@ SECTIONS
     KEEP(*(.bleromrw))
   } >ocram_1
 
+  .hbn : ALIGN(4)
+  {
+    PROVIDE( _hbn_load = LOADADDR(.hbn) );
+    PROVIDE( _hbn_run = ADDR(.hbn) );
+    PROVIDE( _hbn_run_end = ADDR(.hbn) + SIZEOF(.hbn));
+
+    *(.hbn_code.*)
+    *(.hbn_data)
+    *(.retention)
+  } >hbnram AT > flash
+
+  .hbn_noinit (NOLOAD) :
+  {
+    *(.hbn_noinit)
+    *(.retention_noinit)
+
+    /* PDS backup address */
+    . = ALIGN(4);
+    PROVIDE ( __ld_pds_bak_addr = . );
+    . = . + 256;
+  } >hbnram
+
   .rsvd (NOLOAD) :
   {
     *libutils.a:utils_log.o(.bss.log_buf)
     *libcli.a:cli.o(.bss.argvall.*)
-    *libbl702_usb_cdc.a:usbd_cdc_if.o(COMMON)
-    *libbl702_usb_cdc.a:bl702_hal_pcd.o(.bss.*_data_buff)
     *libbl702.a:debug.o(.bss.string)
+    *(.bss.aos_loop_proc_stack.*)
+    *(.bss.aos_loop_proc_task.*)
 
     *(.rsvd_data)
     *(.ble_rsvd_mem)
-
-    /* PDS backup address */
-    PROVIDE ( __ld_pds_bak_addr = . );
-  } >hbnram
+  } >ocram_2
 
   .tcmcode : ALIGN(4)
   {
@@ -126,10 +134,23 @@ SECTIONS
     PROVIDE( _tcm_run = ADDR(.tcmcode) );
     PROVIDE( _tcm_run_end = ADDR(.tcmcode) + SIZEOF(.tcmcode));
 
-    *(.tcm_code)
-    *(.tcm_const)
-    *(.sclock_rlt_code)
-    *(.sclock_rlt_const)
+    /* tcm code that should be retored after hbn wakeup */
+    *libbl702_std.a:bl702_romapi.o(.tcm_code.* .sclock_rlt_code.*)
+    *libbl702_std.a:bl702_glb.o(.tcm_code.* .sclock_rlt_code.*)
+    PROVIDE ( _hbn_restore_tcm_run_end = . );
+
+    /* tcm code that should be retored after pds wakeup */
+    *libbl702_std.a:bl702_pds.o(.tcm_code.* .sclock_rlt_code.*)
+    *libblecontroller_702_m0s1p.a:rwip.o(.tcm_code.* .sclock_rlt_code.*)
+    PROVIDE ( _pds_restore_tcm_run_end = . );
+
+    *(.tcm_code.*)
+    *(.tcm_const.*)
+    *(.sclock_rlt_code.*)
+    *(.sclock_rlt_const.*)
+    *(.tcm_data)
+    *(.data.uart_stdio)
+    *libblestack.a:ble_cli_cmds.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
   } >tcm AT > flash
 
   .data : ALIGN(4)
@@ -139,15 +160,23 @@ SECTIONS
     PROVIDE( _data_run_end = ADDR(.data) + SIZEOF(.data));
 
     /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
-    *libbl702_rf.a:bl702_rf_private.o(.sdata.*)
-    *libbl702_rf.a:bl702_rf_private.o(.srodata.*)
-    *libbl702_rf.a:bl702_rf_private.o(.sbss.*)
-    *libbl702_rf.a:bl702_rf_private.o(.bss.*)
-    *libbl702_rf.a:bl702_rf_private.o(COMMON)
+    *libbl702_rf.a:bl702_rf_private.o(.retention .retention_noinit)
+    *libbl702_rf.a:bl702_rf_private.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
     PROVIDE ( _rf_data_end = . );
     ASSERT ((_rf_data_end <= 0x42024000), "Error: _rf_data_end > 0x42024000");
 
-    *(.pds_code)
+    /* data that should be retored after hbn wakeup */
+    *liblmac154.a:*(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libbl702_std.a:*(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_adc.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_gpio.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_sys.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_timer.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:hosal_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    PROVIDE ( _hbn_restore_data_run_end = . );
+
+    *(.pds_code.*)
     *(.data .data.*)
     *(.gnu.linkonce.d.*)
 

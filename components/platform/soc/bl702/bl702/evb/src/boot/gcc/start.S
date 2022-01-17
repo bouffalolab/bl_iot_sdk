@@ -85,6 +85,19 @@ bl702_start:
 2:
 #endif
 
+	/* Load hbn section */
+	la a0, _hbn_load
+	la a1, _hbn_run
+	la a2, _hbn_run_end
+	bgeu a1, a2, 2f
+1:
+	lw t0, (a0)
+	sw t0, (a1)
+	addi a0, a0, 4
+	addi a1, a1, 4
+	bltu a1, a2, 1b
+2:
+
 	/* Fill system stack with 0x5a */
 	la a0, __stack_size
 	beq a0, x0, 2f
@@ -143,7 +156,7 @@ bl702_start:
 
 	call setup_heap
 
-#if defined(CFG_ZIGBEE_ENABLE)
+#if defined(CFG_ZIGBEE_ENABLE) || CFG_CPP_ENABLE
     la s1, __init_array_start
     la s2, __init_array_end
     li s3, 4

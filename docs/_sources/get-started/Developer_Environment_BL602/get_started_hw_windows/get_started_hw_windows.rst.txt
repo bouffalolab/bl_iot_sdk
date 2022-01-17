@@ -43,6 +43,10 @@ CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此�
 
 编译环境的建立及代码的获取
 --------------------------
+-  安装驱动jtag转usb驱动（驱动安装前先将设备连接电脑可以自动识别到相关设备），驱动下载网站：https://zadig.akeo.ie/
+
+.. figure:: ./image/驱动安装.png
+   :alt: 
 
 -  安装串口工具，网上搜索串口工具 ``sscom5.13.1``\ 下载使用
 
@@ -126,6 +130,11 @@ CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此�
 
 .. figure:: ./image/image-17.png
    :alt: 
+
+.. note::
+
+    如果编译失败，需要将编译工具链加入环境变量，如msys安装在C:\msys64目录下，用户名是：admin，SDK在/d/bl_iot_sdk目录下，那么修改环境变量，在C：\msys64\home\admin\.bashrc中添加
+    ``PATH=/d/bl_iot_sdk/toolchain/riscv/MSYS/bin:$PATH`` 并重启电脑。
 
 下载编译好的程序到板卡
 ======================

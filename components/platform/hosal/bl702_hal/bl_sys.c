@@ -261,7 +261,9 @@ int bl_sys_early_init(void)
     PDS_Trim_RC32M();
     HBN_Trim_RC32K();
 
-#if !(defined(CFG_BLE_PDS) || defined(CFG_ZIGBEE_PDS))
+#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+    HBN_Set_Ldo11_All_Vout(HBN_LDO_LEVEL_1P00V);
+#else
     GLB_Set_System_CLK(GLB_DLL_XTAL_32M, GLB_SYS_CLK_DLL144M);
     HBN_Set_XCLK_CLK_Sel(HBN_XCLK_CLK_XTAL);
 #endif

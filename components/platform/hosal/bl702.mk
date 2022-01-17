@@ -51,6 +51,7 @@ COMPONENT_SRCS := bl702_hal/bl_uart.c \
                   bl702_hal/bl_rtc.c \
                   bl702_hal/hal_hwtimer.c \
                   bl702_hal/hal_tcal.c \
+                  bl702_hal/hal_button.c \
 
 ifeq ($(CONFIG_USE_CAMERA),1)
 COMPONENT_SRCS += bl702_hal/bl_cam.c
@@ -72,7 +73,7 @@ CPPFLAGS += -DBFLB_USE_HAL_DRIVER
 endif
 
 ifeq ($(CONFIG_BT),1)
-include $(BL60X_SDK_PATH)/components/network/ble/ble_common.mk
+CPPFLAGS += -DCFG_BLE_ENABLE
 endif
 
 ifeq ($(CONFIG_BLE_MFG),1)
@@ -80,7 +81,18 @@ CPPFLAGS += -DCONFIG_BLE_MFG
 endif
 
 ifeq ($(CONFIG_ZIGBEE),1)
-include $(BL60X_SDK_PATH)/components/network/zigbee/zigbee_common.mk
+CPPFLAGS += -DCFG_ZIGBEE_ENABLE
+endif
+
+ifeq ($(CONFIG_PDS_ENABLE),1)
+CPPFLAGS += -DCFG_PDS_ENABLE
+CPPFLAGS += -DCFG_PDS_OPTIMIZE
+CPPFLAGS += -DCONFIG_HW_SEC_ENG_DISABLE
+endif
+
+ifeq ($(CONFIG_HBN_ENABLE),1)
+CPPFLAGS += -DCFG_HBN_ENABLE
+CPPFLAGS += -DCFG_HBN_OPTIMIZE
 endif
 
 ifeq ($(CONFIG_USE_PSRAM),1)

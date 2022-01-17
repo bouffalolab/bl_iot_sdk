@@ -30,7 +30,7 @@
 
 #include <bl702_uart.h>
 #include <bl702_glb.h>
-
+#include <bl702_romdriver.h>
 #include "bl_uart.h"
 #include "bl_irq.h"
 #include "hosal_uart.h"
@@ -51,12 +51,20 @@ static void gpio_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pi
     cfg.gpioPin = rx_pin;
     cfg.gpioMode = GPIO_MODE_AF;
     cfg.pullType = GPIO_PULL_UP;
+#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+    RomDriver_GLB_GPIO_Init(&cfg);
+#else
     GLB_GPIO_Init(&cfg);
+#endif
 
     cfg.gpioPin = tx_pin;
     cfg.gpioMode = GPIO_MODE_AF;
     cfg.pullType = GPIO_PULL_UP;
+#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+    RomDriver_GLB_GPIO_Init(&cfg);
+#else
     GLB_GPIO_Init(&cfg);
+#endif
 
     /* select uart gpio function */
     if (id == 0) {
@@ -291,6 +299,67 @@ static void __uart_config_set(hosal_uart_dev_t *uart, const hosal_uart_config_t 
 
     /* Enable uart */
     UART_Enable(id, UART_TXRX);
+}
+
+int hosal_uart_abr_get(hosal_uart_dev_t *uart, uint8_t mode)
+{
+    uint32_t uart_clk = 0;
+    uint32_t baud_start_bit = 0;
+    uint32_t baud_0x55 = 0;
+    uint32_t baud = 0;
+    uint8_t id;
+    uint8_t uart_div = 0;
+    
+    hosal_uart_config_t *cfg = &uart->config;
+
+    if (uart == NULL) {
+        blog_error("param is error !\r\n");
+        return -1;
+    }
+
+    id = cfg->uart_id;
+    
+    GLB_Set_UART_CLK(1, HBN_UART_CLK_FCLK, uart_div);
+    uart_clk = SystemCoreClockGet() / (uart_div + 1);
+    
+    /* Enable tx free run mode */
+    UART_TxFreeRun(id, ENABLE);
+    
+    /*disable abr first*/
+    UART_AutoBaudDetection(id, DISABLE);
+    UART_Disable(id, UART_TXRX);
+    
+    gpio_init(id, cfg->tx_pin, cfg->rx_pin, cfg->cts_pin, cfg->rts_pin);
+    
+    UART_IntClear(id, UART_INT_RX_END);
+    UART_AutoBaudDetection(id, ENABLE);
+    UART_Enable(id, UART_TXRX);
+    
+    /* Wait to receive data */
+    while (UART_GetIntStatus(id, UART_INT_RX_END) != SET) {}
+    
+    if (mode == HOSAL_UART_AUTOBAUD_STARTBIT) {
+        baud_start_bit = uart_clk / (UART_GetAutoBaudCount(id, UART_AUTOBAUD_STARTBIT) + 1);
+        baud = baud_start_bit;
+    } else if (mode == HOSAL_UART_AUTOBAUD_0X55) {
+        baud_0x55 = uart_clk / (UART_GetAutoBaudCount(id, UART_AUTOBAUD_0X55) + 1);
+        baud = baud_0x55;
+    } else{}
+
+    UART_AutoBaudDetection(id, DISABLE);
+
+    /* There will be error at high baud rate, so force baud rate to 1500000/2000000 */
+    if(1250000 < baud && baud <= 1750000) {
+        cfg->baud_rate = 1500000;
+    }else if(1750000 < baud && baud <= 2250000) {
+        cfg->baud_rate = 2000000;
+    }else{
+        cfg->baud_rate = baud;
+    }
+    
+    //blog_info("Detected baudrate by mode:%d , baudrate is %d.\r\n", mode, baud);
+
+    return 0;
 }
 
 int hosal_uart_init(hosal_uart_dev_t *uart)

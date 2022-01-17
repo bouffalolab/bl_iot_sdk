@@ -92,6 +92,43 @@ static uint8_t aesEnable;
  */
 
 /****************************************************************************//**
+ * @brief  Save flash controller state
+ *
+ * @param  pFlashCfg: Flash config pointer
+ * @param  offset: CPU XIP flash offset pointer
+ *
+ * @return SUCCESS or ERROR
+ *
+*******************************************************************************/
+__WEAK
+BL_Err_Type ATTR_TCM_SECTION XIP_SFlash_State_Save_Ext(SPI_Flash_Cfg_Type *pFlashCfg,uint32_t *offset)
+{
+    /* XIP_SFlash_Delay */
+    volatile uint32_t i=32*2;
+    while(i--);
+    
+    SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
+    /* Exit form continous read for accepting command */
+    SFlash_Reset_Continue_Read(pFlashCfg);
+    /* Send software reset command(80bv has no this command)to deburst wrap for ISSI like */
+    SFlash_Software_Reset(pFlashCfg);
+    /* For disable command that is setting register instaed of send command, we need write enable */
+    SFlash_DisableBurstWrap(pFlashCfg);
+    if ((pFlashCfg->ioMode & 0x0f) == SF_CTRL_QO_MODE || (pFlashCfg->ioMode & 0x0f) == SF_CTRL_QIO_MODE) {
+        /* Enable QE again in case reset command make it reset */
+        SFlash_Qspi_Enable(pFlashCfg);
+    }
+    /* Deburst again to make sure */
+    SFlash_DisableBurstWrap(pFlashCfg);
+
+    /* Clear offset setting*/
+    *offset=SF_Ctrl_Get_Flash_Image_Offset();
+    SF_Ctrl_Set_Flash_Image_Offset(0);
+
+    return SUCCESS;
+}
+
+/****************************************************************************//**
  * @brief  Restore flash controller state
  *
  * @param  pFlashCfg: Flash config pointer

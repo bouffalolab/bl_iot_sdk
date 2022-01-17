@@ -7,6 +7,9 @@ COMPONENT_PRIV_INCLUDEDIRS :=
 
 ## This component's src 
 COMPONENT_SRCS := Src/usb_device.c \
+                  Src/usbd_core.c \
+                  Src/usbd_ctlreq.c \
+                  Src/usbd_ioreq.c \
                   Src/usbd_cdc.c \
                   Src/usbd_cdc_if.c \
                   Src/usbd_conf.c \

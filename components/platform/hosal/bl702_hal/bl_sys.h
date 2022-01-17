@@ -31,6 +31,8 @@
 #define __BL_SYS_H__
 
 #include <stdint.h>
+#include "clic.h"
+#include "riscv_encoding.h"
 
 typedef enum {
     BL_RST_POR = 0,

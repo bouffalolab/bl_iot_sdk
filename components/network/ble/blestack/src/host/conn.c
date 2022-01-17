@@ -2660,9 +2660,17 @@ int bt_conn_init(void)
 
 #if defined(BFLB_BLE)
 #if defined(BFLB_DYNAMIC_ALLOC_MEM)
+    #if (BFLB_STATIC_ALLOC_MEM)
+    net_buf_init(ACL_TX,&acl_tx_pool, CONFIG_BT_L2CAP_TX_BUF_COUNT, BT_L2CAP_BUF_SIZE(CONFIG_BT_L2CAP_TX_MTU), NULL);
+    #else
     net_buf_init(&acl_tx_pool, CONFIG_BT_L2CAP_TX_BUF_COUNT, BT_L2CAP_BUF_SIZE(CONFIG_BT_L2CAP_TX_MTU), NULL);
+    #endif
 #if CONFIG_BT_L2CAP_TX_FRAG_COUNT > 0
+    #if (BFLB_STATIC_ALLOC_MEM)
+    net_buf_init(FRAG,&frag_pool, CONFIG_BT_L2CAP_TX_FRAG_COUNT, FRAG_SIZE, NULL);
+    #else
     net_buf_init(&frag_pool, CONFIG_BT_L2CAP_TX_FRAG_COUNT, FRAG_SIZE, NULL);
+    #endif
 #endif
 #else //BFLB_DYNAMIC_ALLOC_MEM
     struct net_buf_pool num_complete_pool;

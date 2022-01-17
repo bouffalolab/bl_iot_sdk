@@ -37,8 +37,7 @@ def bl602_demo_wifi_tc(env, extra_data):
         dut.halt()
     except DUT.ExpectTimeout:
         dut.write('p 0')
-        result_text = dut.read()
-        print(result_text)
+        dut.expect("sky", timeout=10)
         print('ENV_TEST_FAILURE: BL602 wifi test failed')
         raise
 

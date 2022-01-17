@@ -35,7 +35,7 @@
 #include "lmac_types.h"
 #include "lmac_msg.h"
 #include "ipc_shared.h"
-#include "os_hal.h"
+#include "bl_os_private.h"
 
 #define BIT(n) (0x1U << (n))
 
@@ -73,7 +73,7 @@ struct bl_cmd {
     u32 tkn;
     u16 flags;
 
-    os_event_t complete;
+    BL_EventGroup_t complete;
     u32 result;
 };
 
@@ -90,7 +90,7 @@ struct bl_cmd_mgr {
     u32 max_queue_sz;
 
     struct list_head cmds;
-    os_mutex_t lock;
+    BL_Mutex_t lock;
 
     int  (*queue)(struct bl_cmd_mgr *, struct bl_cmd *);
     int  (*llind)(struct bl_cmd_mgr *, struct bl_cmd *);

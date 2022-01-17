@@ -9,7 +9,7 @@
 extern int bl_uart_data_send(uint8_t id, uint8_t data);
 extern int usb_cdc_is_port_open(void);
 extern int usb_cdc_data_send(const uint8_t *data, uint32_t len);
-extern void bflb_platform_usart_dbg_send(uint8_t *data,uint32_t len);
+extern int UART_SendData(uint8_t uartId, uint8_t *data, uint32_t len);
 
 enum flag {
 	FL_ZERO		= 0x01,	/* Zero modifier */
@@ -825,7 +825,7 @@ void vprint(const char *fmt, va_list argp)
 #endif
 
 #if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
-        bflb_platform_usart_dbg_send((uint8_t *)str, strlen(str));
+        UART_SendData(0, (uint8_t *)str, strlen(str));
         return;
 #endif
 
@@ -849,7 +849,7 @@ int bl_putchar(int c)
 
 #if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
     uint8_t data = c;
-    bflb_platform_usart_dbg_send(&data, 1);
+    UART_SendData(0, &data, 1);
     return 0;
 #endif
 
@@ -872,7 +872,7 @@ int putchar(int c)
 
 #if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
     uint8_t data = c;
-    bflb_platform_usart_dbg_send(&data, 1);
+    UART_SendData(0, &data, 1);
     return 0;
 #endif
 
@@ -898,7 +898,7 @@ int puts(const char *s)
 
 #if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
     counter = strlen(s);
-    bflb_platform_usart_dbg_send((uint8_t *)s, counter);
+    UART_SendData(0, (uint8_t *)s, counter);
     return counter;
 #endif
 

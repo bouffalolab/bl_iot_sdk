@@ -11,12 +11,12 @@
 #include <hosal_spi.h>
 #include <blog.h>
 /* About Pin:
- * if pin % 4 is 0 ===> this pin can be used as spi miso function
- * if pin % 4 is 1 ===> this pin can be used as spi mosi function
+ * if pin % 4 is 0 ===> this pin can be used as spi mosi function
+ * if pin % 4 is 1 ===> this pin can be used as spi miso function
  * if pin % 4 is 2 ===> this pin can be used as spi cs   function
  * if pin % 4 is 3 ===> this pin can be used as spi sclk function
- * such as: GLB_GPIO_PIN_0 ===> miso
- *          GLB_GPIO_PIN_1 ===> mosi
+ * such as: GLB_GPIO_PIN_0 ===> mosi
+ *          GLB_GPIO_PIN_1 ===> miso
  *          GLB_GPIO_PIN_2 ===> cs
  *          GLB_GPIO_PIN_3 ===> sclk
  * about cs pin: for master device, user can use hardware cs pin like pin2,and can also use software to select any pin for cs , for slave device ,user can only use hardwrae cs
@@ -56,8 +56,8 @@ void demo_hosal_spi_master(void)
     spi.config.freq= 100000;
     spi.config.pin_clk = 3;
     /* hardware cs now is pin 2 */
-    spi.config.pin_mosi= 1;
-    spi.config.pin_miso= 0;
+    spi.config.pin_mosi= 0;
+    spi.config.pin_miso= 1;
     /* init spi device */
     hosal_spi_init(&spi);
 

@@ -23,14 +23,14 @@ def bl602_demo_event_ble_wifi_tc(env, extra_data):
         print('BL602 booted')
         dut.expect('Init CLI with event Driven', timeout=0.5)
         print('BL602 CLI init done')
-        time.sleep(0.1)
+        time.sleep(1)
 
         dut.write('stack_ble')
-        time.sleep(0.5)
+        time.sleep(1)
         dut.expect(re.compile("BD_ADDR:(.+)"), timeout=1)
 
         dut.write('stack_wifi')
-        time.sleep(0.5)
+        time.sleep(1)
         bssid = os.getenv('TEST_ROUTER_SSID')
         pwd = os.getenv('TEST_ROUTER_PASSWORD')
         cmd = ("wifi_sta_connect", bssid, pwd)
@@ -44,17 +44,17 @@ def bl602_demo_event_ble_wifi_tc(env, extra_data):
         dut.write('reboot')
         dut.expect("Booting BL602 Chip...", timeout=0.5)
         print('BL602 rebooted')
-        time.sleep(0.2)
+        time.sleep(1)
 
         dut.write('stack_wifi')
-        time.sleep(0.5)
+        time.sleep(2)
         dut.write(cmd_wifi_connect)
         #dut.write('wifi_sta_connect bl_test_013 tester12345678')
         #dut.write('wifi_sta_connect grand_2.4G grand86338156')
         dut.expect("Entering wifiConnected_IPOK state", timeout=20)
 
         dut.write('stack_ble')
-        time.sleep(0.5)
+        time.sleep(1)
         dut.expect(re.compile("BD_ADDR:(.+)"), timeout=1)
 
         dut.halt()

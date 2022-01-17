@@ -29,18 +29,6 @@
 #ifndef EF_CFG_H_
 #define EF_CFG_H_
 
-#ifdef CONFIG_PSM_EASYFLASH_SIZE
-#define PSM_USER_BUF_SIZE   (CONFIG_PSM_EASYFLASH_SIZE)
-#else
-#error "error, please set CONFIG_PSM_EASYFLASH_SIZE"
-#endif
-
-#if ((PSM_USER_BUF_SIZE != 4096) && (PSM_USER_BUF_SIZE != (4096 * 2)) &&\
-     (PSM_USER_BUF_SIZE != (4096 * 3)) && (PSM_USER_BUF_SIZE != (4096 * 4)))
-#error "cfg error, please set PSM_USER_BUF_SIZE 4096、4096*2、4096*3、4096*4."
-#endif
-
-
 /* using ENV function, default is NG (Next Generation) mode start from V4.0 */
 #define EF_USING_ENV
 
@@ -93,12 +81,17 @@
 #define EF_START_ADDR             (0) /* @note you must define it for a value */
 
 /* ENV area size. It's at least one empty sector for GC. So it's definition must more then or equal 2 flash sector size. */
-#define ENV_AREA_SIZE             (2 * PSM_USER_BUF_SIZE) /* @note you must define it for a value if you used ENV */
+extern uint32_t ENV_AREA_SIZE;
 
 /* saved log area size */
 #define LOG_AREA_SIZE             (0) /* @note you must define it for a value if you used log */
 
 /* print debug information of flash */
-#define PRINT_DEBUG
+#ifndef PRINT_DEBUG
+#define PRINT_DEBUG 1
+#else
+#undef PRINT_DEBUG
+#define PRINT_DEBUG 0
+#endif
 
 #endif /* EF_CFG_H_ */

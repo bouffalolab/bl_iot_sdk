@@ -427,6 +427,9 @@ static int get_cbc_mac_input(size_t length,
             cbc_adata_round++;
 
             use_len = len_left > 16 ? 16 : len_left;
+            if (use_len < 16) {
+                BL602_MemSet(b_input + cbc_adata_round * 16, 0, 16);
+            }
 
             BL602_MemCpy_Fast( b_input + cbc_adata_round * 16, src, use_len);
 
@@ -468,8 +471,6 @@ static int get_ctr_enc_input(size_t length, const unsigned char *input, unsigned
     const unsigned char *src;
 	unsigned int  ctr_pt_round = 0;
 
-    BL602_MemSet(b_input, 0, sizeof(b_input));
-
     len_left = length;
     src = input;
 
@@ -503,7 +504,7 @@ static int get_ctr_dec_input(size_t length, const unsigned char *input, const un
     src = input;
 
     // Copy tag in first block to calucate T
-    BL602_MemCpy_Fast(b_input, tag, 16);
+    BL602_MemCpy_Fast(b_input, tag, tag_len);
 
     ctr_ct_round = 1;
 
@@ -592,6 +593,7 @@ int bl_sec_ccm_encrypt_and_tag(const uint8_t *key, unsigned int key_bytelen, siz
 	unsigned char *b_output = NULL;
 	int ret = 0;
 
+    // TODO check input arguments
     cbc_length = get_cbc_mac_input_size(length, add_len);
 	//get the max size for b_input_size between cbc and ctr, max size is the value of cbc's input size
 	b_input_size = cbc_length;
@@ -605,7 +607,9 @@ int bl_sec_ccm_encrypt_and_tag(const uint8_t *key, unsigned int key_bytelen, siz
 	}
 
     //get the max size for b_output_size between cbc and ctr, max size is the value of ctr's output size
-	b_output_size = get_ctr_input_output_size(length);
+	/* b_output_size = get_ctr_input_output_size(length); */
+    // reserve enough space for CBC
+	b_output_size = cbc_length;
 	b_output = pvPortMalloc(b_output_size);
 
 	if(!b_output)
@@ -669,7 +673,7 @@ exit:
  int bl_sec_ccm_auth_decrypt(const uint8_t *key, unsigned int key_bytelen, size_t length,const unsigned char *iv, size_t iv_len, const unsigned char *add,
 							 size_t add_len, const unsigned char *input, unsigned char *output, const unsigned char *tag, size_t tag_len)
  {
-    static unsigned char cbc_mac[16] = {0};
+    unsigned char cbc_mac[16] = {0};
     unsigned char cbc_iv[16] = {0};
     unsigned char ctr_iv[16] = {0};
     unsigned int cbc_length = 0;
@@ -680,6 +684,7 @@ exit:
     unsigned char *b_output = NULL;
     int ret = 0;
 
+    // TODO check input arguments
     //get the max size for b_input_size between cbc and ctr,max size is the value of cbc's input size
     cbc_length = get_cbc_mac_input_size(length, add_len);
     b_input_size = cbc_length;
@@ -694,7 +699,8 @@ exit:
 
     ctr_length = get_ctr_input_output_size(length);
     //get the max size for b_output_size between cbc and ctr, max size is the value of ctr's output size
-    b_output_size = ctr_length;
+    // reserve enough space for CBC
+    b_output_size = cbc_length;
 	b_output = pvPortMalloc(b_output_size);
 
 	if(!b_output)

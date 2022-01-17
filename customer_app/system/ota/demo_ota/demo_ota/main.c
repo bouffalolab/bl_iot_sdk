@@ -51,7 +51,6 @@
 #include <fdt.h>
 #include <device/vfs_uart.h>
 
-//#include <easyflash.h>
 #include <bl60x_fw_api.h>
 #include <wifi_mgmr_ext.h>
 #include <utils_log.h>
@@ -904,19 +903,14 @@ static void system_thread_init()
 
 void main()
 {
-    static StackType_t proc_main_stack[1024];
-    static StaticTask_t proc_main_task;
-    static StackType_t proc_hellow_stack[512];
-    static StaticTask_t proc_hellow_task;
-
     bl_sys_init();
 
     system_thread_init();
 
     puts("[OS] Starting proc_hellow_entry task...\r\n");
-    xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, proc_hellow_stack, &proc_hellow_task);
+    xTaskCreate(proc_hellow_entry, (char*)"hellow", 512, NULL, 15, NULL);
     puts("[OS] Starting aos_loop_proc task...\r\n");
-    xTaskCreateStatic(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, proc_main_stack, &proc_main_task);
+    xTaskCreate(proc_main_entry, (char*)"main_entry", 1024, NULL, 15, NULL);
     puts("[OS] Starting TCP/IP Stack...\r\n");
     tcpip_init(NULL, NULL);
 

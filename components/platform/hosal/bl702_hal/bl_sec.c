@@ -125,6 +125,9 @@ void bl_rand_stream(uint8_t *buf, int len)
 int bl_rand()
 {
     unsigned int val;
+    #if defined(CONFIG_HW_SEC_ENG_DISABLE)
+    val = rand();
+    #else
     int counter = 0;
 
     do {
@@ -135,6 +138,8 @@ int bl_rand()
         }
     } while (0 == val);
     val >>= 1;//leave signe bit alone
+    #endif
+    
     return val;
 }
 

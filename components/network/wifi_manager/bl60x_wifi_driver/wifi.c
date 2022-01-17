@@ -31,13 +31,17 @@
 #include <ethernetif.h>
 #include <netif/etharp.h>
 #include <lwip/dns.h>
+
+#ifdef CFG_CHIP_BL602
 #include <bl_efuse.h>
+#endif
+
 #include <bl_wifi.h>
 
 #include "bl_defs.h"
 #include "bl_tx.h"
 #include "bl_msg_tx.h"
-#include "os_hal.h"
+#include "bl_os_private.h"
 #include "wifi_mgmr.h"
 #include "wifi_mgmr_api.h"
 
@@ -51,7 +55,7 @@
 #define MAX_ADDR_LEN    6
 
 #ifdef NET_TRACE
-#define NET_DEBUG         os_printf
+#define NET_DEBUG         bl_os_printf
 #else
 #define NET_DEBUG(...)
 #endif 
@@ -64,6 +68,7 @@
  ****************************************************************************************
  */
 
+static BL_TaskHandle_t taskHandle_output = NULL;
 
 extern int bl_main_rtthread_start(struct bl_hw **bl_hw);
 
@@ -74,12 +79,23 @@ struct net_device
 
 static struct net_device bl606a0_sta;
 
+static void bl_tx_notify(void *cb_arg, bool tx_ok)
+{
+    //TODO static alloc taskHandle_output, no if else anymore
+    if (taskHandle_output) {
+        bl_os_task_notify(taskHandle_output);
+    }
+
+    return;
+}
+
 #if 1
 /* ethernet device interface */
 /* Transmit packet. */
 static err_t wifi_tx(struct netif *netif, struct pbuf* p)
 {
     struct wlan_netif *wlan;
+    struct bl_custom_tx_cfm custom_cfm = { bl_tx_notify, NULL };
 #if 0
     struct net_device * bl606a0_sta = (struct net_device *)dev;
 #endif
@@ -93,9 +109,9 @@ static err_t wifi_tx(struct netif *netif, struct pbuf* p)
 #endif
 
     if (p->tot_len > WIFI_MTU_SIZE) {
-        if (os_tick_get() - ticks > WARNING_LIMIT_TICKS_TX_SIZE) {
-            os_printf("[TX] %s, TX size too big: %u bytes\r\n", __func__, p->tot_len);
-            ticks = os_tick_get();
+        if (bl_os_get_time_ms() - ticks > WARNING_LIMIT_TICKS_TX_SIZE) {
+            bl_os_printf("[TX] %s, TX size too big: %u bytes\r\n", __func__, p->tot_len);
+            ticks = bl_os_get_time_ms();
         }
         return ERR_IF;
     }
@@ -126,17 +142,38 @@ static err_t wifi_tx(struct netif *netif, struct pbuf* p)
 #ifdef ETH_RX_DUMP
     NET_DEBUG("\r\n");
 #endif
+
+    if (0 == taskHandle_output) {
+        taskHandle_output = bl_os_task_get_current_task();
+    }
     wlan = container_of(netif, struct wlan_netif, netif);
-    return bl_output(bl606a0_sta.bl_hw, netif, p, 0 == wlan->mode);
+    return bl_output(bl606a0_sta.bl_hw, netif, p, 0 == wlan->mode, &custom_cfm);
 }
 #endif
 
+int bl_wifi_eth_tx(struct pbuf *p, bool is_sta, struct bl_custom_tx_cfm *custom_cfm)
+{
+    err_t ret;
+    struct netif *iface;
+    if (is_sta) {
+        iface = wifi_mgmr_sta_netif_get();
+    } else {
+        iface = wifi_mgmr_ap_netif_get();
+    }
+    ret = bl_output(bl606a0_sta.bl_hw, iface, p, is_sta, custom_cfm);
+    if (ret != ERR_OK) {
+        pbuf_free(p);
+        return -1;
+    }
+    return 0;
+}
+
 static void netif_status_callback(struct netif *netif)
 {
-    os_printf("[lwip] netif status callback\r\n"
+    bl_os_printf("[lwip] netif status callback\r\n"
                 "  IP: %s\r\n", ip4addr_ntoa(netif_ip4_addr(netif)));
-    os_printf("  MK: %s\r\n", ip4addr_ntoa(netif_ip4_netmask(netif)));
-    os_printf("  GW: %s\r\n", ip4addr_ntoa(netif_ip4_gw(netif)));
+    bl_os_printf("  MK: %s\r\n", ip4addr_ntoa(netif_ip4_netmask(netif)));
+    bl_os_printf("  GW: %s\r\n", ip4addr_ntoa(netif_ip4_gw(netif)));
     if (ip4_addr_isany(netif_ip4_addr(netif))) {
         wifi_mgmr_api_ip_update();
     } else {
@@ -164,10 +201,10 @@ int bl606a0_wifi_init(wifi_conf_t *conf)
     uint8_t mac[6];
     int ret;
 
-    os_printf("\r\n\r\n[BL] Initi Wi-Fi");
+    bl_os_printf("\r\n\r\n[BL] Initi Wi-Fi");
     memset(mac, 0, sizeof(mac));
     bl_wifi_mac_addr_get(mac);
-    os_printf(" with MAC #### %02X:%02X:%02X:%02X:%02X:%02X ####\r\n", mac[0],
+    bl_os_printf(" with MAC #### %02X:%02X:%02X:%02X:%02X:%02X ####\r\n", mac[0],
             mac[1],
             mac[2],
             mac[3],
@@ -176,9 +213,9 @@ int bl606a0_wifi_init(wifi_conf_t *conf)
     );
     snprintf(wifiMgmr.hostname, MAX_HOSTNAME_LEN_CHECK, "Bouffalolab_%s-%02x%02x%02x", BL_CHIP_NAME, mac[3], mac[4], mac[5]);
     wifiMgmr.hostname[MAX_HOSTNAME_LEN_CHECK - 1] = '\0';
-    os_printf("     hostname: %s\r\n", wifiMgmr.hostname);
+    bl_os_printf("     hostname: %s\r\n", wifiMgmr.hostname);
     bl_msg_update_channel_cfg(conf->country_code);
-    os_printf("-----------------------------------------------------\r\n");
+    bl_os_printf("-----------------------------------------------------\r\n");
     bl_wifi_clock_enable();//Enable wifi clock
     memset(&bl606a0_sta, 0, sizeof(bl606a0_sta));
     ret = bl_main_rtthread_start(&(bl606a0_sta.bl_hw));

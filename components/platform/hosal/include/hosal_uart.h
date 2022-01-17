@@ -45,6 +45,9 @@ extern "C" {
 #include <stdint.h>
 #include "hosal_dma.h"
 
+#define HOSAL_UART_AUTOBAUD_0X55     1   /**< @brief UART auto baudrate detection using codeword 0x55 */
+#define HOSAL_UART_AUTOBAUD_STARTBIT 2   /**< @brief UART auto baudrate detection using start bit */
+
 #define HOSAL_UART_TX_CALLBACK       1   /**< @brief UART tx idle interrupt callback */
 #define HOSAL_UART_RX_CALLBACK       2   /**< @brief UART rx complete callback */
 #define HOSAL_UART_TX_DMA_CALLBACK   3   /**< @brief UART tx DMA trans complete callback */
@@ -227,6 +230,17 @@ typedef struct {
             .mode = HOSAL_UART_MODE_POLL,          \
         },                                         \
     };
+/**
+ * @brief Get auto baudrate on a UART interface
+ *
+ * @param[in]  uart    the UART interface
+ * @param[in]  mode    auto baudrate detection mode(codeword 0x55 or start bit)
+ *
+ * @return  
+ *	- = 0    on success
+ *	- EIO  if an error occurred with any step
+ */
+int hosal_uart_abr_get(hosal_uart_dev_t *uart, uint8_t mode);
 
 /**
  * @brief Initialises a UART interface

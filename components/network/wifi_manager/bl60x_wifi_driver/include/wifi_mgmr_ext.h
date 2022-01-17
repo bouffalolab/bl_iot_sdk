@@ -30,7 +30,7 @@
 #ifndef __WIFI_MGMR_EXT_H__
 #define __WIFI_MGMR_EXT_H__
 #include <lwip/netif.h>
-#include <bl_pm.h>
+#include <wifi_hosal.h>
 
 enum ap_info_type {
   /* The current AP information is advisory. When the AP fails to connect
@@ -63,6 +63,8 @@ struct ap_info {
 
   /* freq number, 0 is disable */
   uint16_t freq;
+
+  uint8_t use_dhcp;
 };
 
 /* Wifi Connecting advanced prameters */
@@ -160,6 +162,7 @@ enum WIFI_COEX_PM_LEVEL {
     WIFI_COEX_PM_STA_IDLE = PM_MODE_STA_IDLE,
     WIFI_COEX_PM_STA_MESH = PM_MODE_STA_MESH,
     WIFI_COEX_PM_STA_DOZE = PM_MODE_STA_DOZE,
+    WIFI_COEX_PM_STA_COEX = PM_MODE_STA_COEX,
     WIFI_COEX_PM_STA_DOWN = PM_MODE_STA_DOWN,
     WIFI_COEX_PM_AP_IDLE = PM_MODE_AP_IDLE,
     WIFI_COEX_PM_MAX = PM_MODE_MAX,
@@ -181,6 +184,7 @@ void wifi_mgmr_get_wifi_channel_conf(wifi_conf_t *wifi_chan_conf);
 wifi_interface_t wifi_mgmr_sta_enable(void);
 int wifi_mgmr_sta_disable(wifi_interface_t *interface);
 struct netif *wifi_mgmr_sta_netif_get(void);
+struct netif *wifi_mgmr_ap_netif_get(void);
 int wifi_mgmr_sta_mac_set(uint8_t mac[6]);
 int wifi_mgmr_sta_mac_get(uint8_t mac[6]);
 int wifi_mgmr_sta_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask);

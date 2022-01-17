@@ -154,6 +154,40 @@ typedef struct blcrypto_suite_ecp_point
 }
 blcrypto_suite_ecp_point;
 
+/* Determine the minimum safe value of blcrypto_suite_ECP_MAX_BITS. */
+#if !defined(blcrypto_suite_ECP_C)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 0
+/* Note: the curves must be listed in DECREASING size! */
+#elif defined(blcrypto_suite_ECP_DP_SECP521R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 521
+#elif defined(blcrypto_suite_ECP_DP_BP512R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 512
+#elif defined(blcrypto_suite_ECP_DP_CURVE448_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 448
+#elif defined(blcrypto_suite_ECP_DP_BP384R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 384
+#elif defined(blcrypto_suite_ECP_DP_SECP384R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 384
+#elif defined(blcrypto_suite_ECP_DP_BP256R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 256
+#elif defined(blcrypto_suite_ECP_DP_SECP256K1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 256
+#elif defined(blcrypto_suite_ECP_DP_SECP256R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 256
+#elif defined(blcrypto_suite_ECP_DP_CURVE25519_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 255
+#elif defined(blcrypto_suite_ECP_DP_SECP224K1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 225 // n is slightly above 2^224
+#elif defined(blcrypto_suite_ECP_DP_SECP224R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 224
+#elif defined(blcrypto_suite_ECP_DP_SECP192K1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 192
+#elif defined(blcrypto_suite_ECP_DP_SECP192R1_ENABLED)
+#define blcrypto_suite_ECP_MAX_BITS_MIN 192
+#else
+#error "blcrypto_suite_ECP_C enabled, but no curve?"
+#endif
+
 #if !defined(BLCRYPTO_SUITE_ECP_ALT)
 /*
  * default mbed TLS elliptic curve arithmetic implementation
@@ -228,7 +262,13 @@ blcrypto_suite_ecp_group;
  * \{
  */
 
-#if !defined(BLCRYPTO_SUITE_ECP_MAX_BITS)
+#if defined(BLCRYPTO_SUITE_ECP_MAX_BITS)
+
+#if BLCRYPTO_SUITE_ECP_MAX_BITS < BLCRYPTO_SUITE_ECP_MAX_BITS_MIN
+#error "BLCRYPTO_SUITE_ECP_MAX_BITS is smaller than the largest supported curve"
+#endif
+
+#else
 /**
  * The maximum size of the groups, that is, of \c N and \c P.
  */

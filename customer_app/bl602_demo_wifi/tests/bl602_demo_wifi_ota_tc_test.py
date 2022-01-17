@@ -24,7 +24,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
     try:
         nc = False
         cat = False
-        dut.expect("Booting BL602 Chip...", timeout=0.5)
+        dut.expect("Booting BL602 Chip...", timeout=5)
         print('BL602 booted')
         #dut.expect('Init CLI with event Driven', timeout=0.5)
         #print('BL602 CLI init done')
@@ -51,7 +51,7 @@ def bl602_demo_wifi_ota_tc(env, extra_data):
         file_path = ota_path + "/" + 'FW_OTA.bin.xz.ota'
         print(file_path)
 
-        for i in range (100):
+        for i in range (10):
             sequence = i + 1
             new_age = ota_update(dut, ip, cmd_wifi_connect, ota_path)
             if new_age != 2 * sequence:
