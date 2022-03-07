@@ -206,6 +206,7 @@ void bl_packet_to_host(uint8_t pkt_type, uint16_t src_id, uint8_t *param, uint8_
             memcpy(buf_data, param, param_len);
             break;
         }
+       #if defined(CONFIG_BT_CONN)
         case BT_HCI_ACL_DATA:
         {
             prio = false;
@@ -213,6 +214,7 @@ void bl_packet_to_host(uint8_t pkt_type, uint16_t src_id, uint8_t *param, uint8_
             tlt_len = bt_onchiphci_hanlde_rx_acl(param, buf_data);
             break;
         }
+        #endif
         default:
         {
             net_buf_unref(buf);

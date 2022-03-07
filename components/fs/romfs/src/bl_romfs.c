@@ -55,6 +55,8 @@
 #define ROMFH_REG       2
 #define ROMFH_UNKNOW    3
 
+#define HEAD_MAGIC_LEN  (16)    /*romfs header magic num size*/
+
 struct romfh {
     int32_t nextfh;
     int32_t spec;
@@ -214,7 +216,8 @@ static int file_info(char *path, char **p_addr_start_input, char **p_addr_end_in
     /* /romfs */
     ROMFS_DUBUG("addr_start = %p\r\n", addr_start);
     if (addr_start == romfs_root) {
-        addr_start = (char *)(romfs_root + ALIGNUP16(strlen(romfs_root + 16) + 1) + 16 + 64);
+        /* point first dot file*/
+        addr_start = (char *)(romfs_root + ALIGNUP16(strlen(romfs_root + HEAD_MAGIC_LEN) + 1) + HEAD_MAGIC_LEN);
     }
 
     ROMFS_DUBUG("addr_start = %p, addr_end = %p, path = %s\r\n", addr_start, addr_end, path);
@@ -548,7 +551,8 @@ static aos_dir_t *romfs_opendir(file_t *fp, const char *path)
     if (0 == res) {
         /* need add update dir_addr and current_addr */
         if (start_addr == romfs_root) {
-            dp->dir_start_addr = (char *)(romfs_root + ALIGNUP16(strlen(romfs_root + 16) + 1) + 16 + 64);
+            /* point first dot file*/
+            dp->dir_start_addr = (char *)(romfs_root + ALIGNUP16(strlen(romfs_root + HEAD_MAGIC_LEN) + 1) + HEAD_MAGIC_LEN);
         } else {
             if (0 == dirent_childaddr(start_addr)) {
                 return NULL;

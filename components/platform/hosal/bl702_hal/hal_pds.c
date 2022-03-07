@@ -67,6 +67,7 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     mtimerClkCfg = *(volatile uint32_t *)0x40000090;  // store mtimer clock
     
     *pullMachineTimerCompareRegister = -1;  // avoid mtimer interrupt pending
+    *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 0;
     
     do
     {

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PSM &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
+  <title>PSM &mdash; BL IoT SDK release_bl_iot_sdk_1.6.36 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.36 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
+                release_bl_iot_sdk_1.6.36
               </div>
             
           
@@ -79,7 +79,7 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="在文档中搜索" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -153,7 +153,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/Examples/storage/demo_storage_psm/psm.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Examples/storage/demo_storage_psm/psm.rst.txt" rel="nofollow"> 查看页面源码</a>
           
         
       </li>
@@ -167,34 +167,34 @@
            <div itemprop="articleBody">
             
   <div class="section" id="psm">
-<span id="psm-index"></span><h1>PSM<a class="headerlink" href="#psm" title="永久链接至标题">¶</a></h1>
+<span id="psm-index"></span><h1>PSM<a class="headerlink" href="#psm" title="永久链接至标题"></a></h1>
 <div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
 <p>本文档主要介绍PSM的使用，其主要是依赖Easyflash库来实现的，包括数据的存储、获取、dump和擦除功能。</p>
 </div>
 <div class="section" id="id2">
-<h2>使用步骤<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
 <ul>
 <li><p class="first">编译 <code class="docutils literal notranslate"><span class="pre">customer_app/sdk_app_psm</span></code> 工程并下载bin文件。</p>
 </li>
 <li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">psm_set</span> <span class="pre">&lt;key&gt;</span> <span class="pre">&lt;value&gt;</span></code> 命令向指定ENV_name中写入数据，如输入 <code class="docutils literal notranslate"><span class="pre">psm_set</span> <span class="pre">data_test</span> <span class="pre">12345678</span></code> 命令表示将ENV_name为 <code class="docutils literal notranslate"><span class="pre">data_test</span></code> 的值设为 <code class="docutils literal notranslate"><span class="pre">12345678</span></code> ；</p>
 <div class="figure">
-<img alt="" src="../../../_images/image132.png" />
+<img alt="" src="../../../_images/image133.png" />
 </div>
 </li>
 <li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">psm_get</span> <span class="pre">&lt;key&gt;</span></code>  命令读出指定ENV_name中存储的值，如读取上面写入的数据，输入命令：psm_get data_test；</p>
 <div class="figure">
-<img alt="" src="../../../_images/image227.png" />
+<img alt="" src="../../../_images/image228.png" />
 </div>
 </li>
 <li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">psm_unset</span> <span class="pre">&lt;key&gt;</span></code> 命令清除指定ENV_name中存储的值，如清除上面写入的数据，输入命令：psm_unset data_test；</p>
 <div class="figure">
-<img alt="" src="../../../_images/image320.png" />
+<img alt="" src="../../../_images/image322.png" />
 </div>
 </li>
 <li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">psm_dump</span></code> 命令可以将所有ENV_name存储的信息dunmp出来，如输入命令：psm_dump，可以看到mode。size等相关信息；</p>
 <div class="figure">
-<img alt="" src="../../../_images/image417.png" />
+<img alt="" src="../../../_images/image418.png" />
 </div>
 </li>
 <li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">psm_erase</span></code> 命令可以将所有ENV_name存储的信息清除。</p>
@@ -205,7 +205,7 @@
 </ul>
 </div>
 <div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
 <ul class="simple">
 <li>初始化</li>
 </ul>
@@ -282,7 +282,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
+            VERSION:'release_bl_iot_sdk_1.6.36',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

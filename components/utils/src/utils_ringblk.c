@@ -33,6 +33,7 @@
 #include <assert.h>
 
 #include "FreeRTOS.h"
+#include "utils_list.h"
 #include "utils_ringblk.h"
 
 /**
@@ -82,24 +83,24 @@ utils_rbb_t utils_rbb_create(uint32_t buf_size, uint32_t blk_max_num)
     uint8_t *buf;
     utils_rbb_blk_t blk_set;
 
-    rbb = (utils_rbb_t)malloc(sizeof(struct utils_rbb));
+    rbb = (utils_rbb_t)pvPortMalloc(sizeof(struct utils_rbb));
     if (!rbb)
     {
         return NULL;
     }
 
-    buf = (uint8_t *)malloc(buf_size);
+    buf = (uint8_t *)pvPortMalloc(buf_size);
     if (!buf)
     {
-        free(rbb);
+        vPortFree(rbb);
         return NULL;
     }
 
-    blk_set = (utils_rbb_blk_t)malloc(sizeof(struct utils_rbb_blk) * blk_max_num);
+    blk_set = (utils_rbb_blk_t)pvPortMalloc(sizeof(struct utils_rbb_blk) * blk_max_num);
     if (!blk_set)
     {
-        free(buf);
-        free(rbb);
+        vPortFree(buf);
+        vPortFree(rbb);
         return NULL;
     }
 
@@ -117,14 +118,30 @@ void utils_rbb_destroy(utils_rbb_t rbb)
 {
     assert(rbb);
 
-    free(rbb->buf);
-    free(rbb->blk_set);
-    free(rbb);
+    vPortFree(rbb->buf);
+    vPortFree(rbb->blk_set);
+    vPortFree(rbb);
 
 }
 
+utils_rbb_blk_t utils_rbb_find_used_blk(utils_rbb_t rbb)
+{
+    uint32_t i;
 
-static utils_rbb_blk_t find_empty_blk_in_set(utils_rbb_t rbb)
+    assert(rbb);
+
+    for (i = 0; i < rbb->blk_max_num; i ++)
+    {
+        if (rbb->blk_set[i].status != RBB_BLK_UNUSED)
+        {
+            return &rbb->blk_set[i];
+        }
+    }
+
+    return NULL;
+}
+
+utils_rbb_blk_t utils_rbb_find_empty_blk(utils_rbb_t rbb)
 {
     uint32_t i;
 
@@ -156,17 +173,20 @@ utils_rbb_blk_t utils_rbb_blk_alloc(utils_rbb_t rbb, uint32_t blk_size)
 {
     uint32_t empty1 = 0, empty2 = 0;
     utils_rbb_blk_t head, tail, new_rbb = NULL;
+    int list_num = 0;
 
     assert(rbb);
     assert(blk_size < (1L << 24));
 
     portENTER_CRITICAL();
 
-    new_rbb = find_empty_blk_in_set(rbb);
+    new_rbb = utils_rbb_find_empty_blk(rbb);
 
-    if (utils_slist_entry_number(&rbb->blk_list) < rbb->blk_max_num && new_rbb)
+    list_num = utils_slist_entry_number(&rbb->blk_list);
+
+    if (list_num < rbb->blk_max_num && new_rbb)
     {
-        if (utils_slist_entry_number(&rbb->blk_list) > 0)
+        if (list_num > 0)
         {
             head = utils_slist_first_entry(&rbb->blk_list, struct utils_rbb_blk, list);
             tail = utils_slist_tail_entry(&rbb->blk_list, struct utils_rbb_blk, list);

@@ -116,7 +116,9 @@
 
 #if defined(CFG_ZIGBEE_ENABLE)
 #include "zb_common.h"
+#if defined(CFG_ZIGBEE_CLI)
 #include "zb_stack_cli.h"
+#endif
 #include "zigbee_app.h"
 //#include "zb_bdb.h"
 #endif
@@ -131,6 +133,9 @@
 #if defined(CFG_ZIGBEE_HBN)
 #include "bl_hbn.h"
 #endif
+
+#define PDS_WAKEUP_GPIO 17
+#define HBN_WAKEUP_GPIO 9
 
 #ifdef CFG_ETHERNET_ENABLE
 //extern err_t ethernetif_init(struct netif *netif);
@@ -167,19 +172,6 @@ void lwip_init_netif(void)
 #endif /* ETH_USE_DHCP */
 #endif /* CFG_ETHERNET_ENABLE */
 
-HOSAL_UART_DEV_DECL(uart_stdio, 0, 14, 15, 2000000);
-
-extern uint8_t _heap_start;
-extern uint8_t _heap_size; // @suppress("Type cannot be resolved")
-extern uint8_t _heap2_start;
-extern uint8_t _heap2_size; // @suppress("Type cannot be resolved")
-static HeapRegion_t xHeapRegions[] =
-{
-    { &_heap_start,  (unsigned int) &_heap_size}, //set on runtime
-    { &_heap2_start, (unsigned int) &_heap2_size },            
-    { NULL, 0 }, /* Terminates the array. */
-    { NULL, 0 } /* Terminates the array. */
-};
 #if defined(CFG_USE_PSRAM)
 extern uint8_t _heap3_start;
 extern uint8_t _heap3_size; // @suppress("Type cannot be resolved")
@@ -193,7 +185,7 @@ static HeapRegion_t xHeapRegionsPsram[] =
 
 bool pds_start = false;
 bool wfi_disable = false;
-static void bl702_low_power_config(void);
+void bl702_low_power_config(void);
 static void cmd_start_pds(char *buf, int len, int argc, char **argv)
 {
     pds_start = true;
@@ -438,17 +430,6 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wdt_set", "enable or disable pds", cmd_wdt_set},
 };
 
-void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName )
-{
-    puts("Stack Overflow checked\r\n");
-	if(pcTaskName){
-		printf("Stack name %s\r\n", pcTaskName);
-	}
-    while (1) {
-        /*empty here*/
-    }
-}
-
 void vApplicationMallocFailedHook(void)
 {
     printf("Memory Allocate Failed. Current left size is %d bytes\r\n"
@@ -469,7 +450,7 @@ void vApplicationIdleHook(void)
 {
     bl_wdt_feed();
     bool bWFI_disable =  false;
-    #if defined (CFG_BLE_PDS)
+    #if defined (CFG_BLE_PDS) && !defined(CFG_ZIGBEE_PDS)
     bWFI_disable = wfi_disable;
     #else
     bWFI_disable = pds_start;
@@ -482,16 +463,7 @@ void vApplicationIdleHook(void)
     }
 }
 
-#if ( configUSE_TICKLESS_IDLE != 0 )
-#if !defined(CFG_BLE_PDS) && !defined(CFG_ZIGBEE_PDS)&& !defined(CFG_ZIGBEE_HBN)
-void vApplicationSleep( TickType_t xExpectedIdleTime )
-{
-    
-}
-#endif
-#endif
-
-static void bl702_low_power_config(void)
+void bl702_low_power_config(void)
 {
 #if !defined(CFG_USB_CDC_ENABLE)
     // Power off DLL
@@ -552,41 +524,13 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
     *pulIdleTaskStackSize = 256;//size 256 words is For ble pds mode, otherwise stack overflow of idle task will happen.
 }
 
-/* configSUPPORT_STATIC_ALLOCATION and configUSE_TIMERS are both set to 1, so the
-application must provide an implementation of vApplicationGetTimerTaskMemory()
-to provide the memory that is used by the Timer service task. */
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize)
+void _cli_init(int fd_console)
 {
-    /* If the buffers to be provided to the Timer task are declared inside this
-    function then they must be declared static - otherwise they will be allocated on
-    the stack and so not exists after this function exits. */
-    static StaticTask_t xTimerTaskTCB;
-    static StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
+#if defined(CFG_USB_CDC_ENABLE)
+    extern void usb_cdc_start(int fd_console);
+    usb_cdc_start(fd_console);
+#endif
 
-    /* Pass out a pointer to the StaticTask_t structure in which the Timer
-    task's state will be stored. */
-    *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-
-    /* Pass out the array that will be used as the Timer task's stack. */
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-
-    /* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
-    Note that, as the array is necessarily of type StackType_t,
-    configTIMER_TASK_STACK_DEPTH is specified in words, not bytes. */
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
-}
-
-void user_vAssertCalled(void) __attribute__ ((weak, alias ("vAssertCalled")));
-void vAssertCalled(void)
-{
-    taskDISABLE_INTERRUPTS();
-    printf("vAssertCalled\r\n");
-    abort();
-}
-
-
-static void _cli_init()
-{
     /*Put CLI which needs to be init here*/
 #if defined(CFG_EFLASH_LOADER_ENABLE)
     extern int helper_eflash_loader_cli_init(void);
@@ -605,33 +549,11 @@ static void _cli_init()
 #endif /* CFG_ETHERNET_ENABLE */
 }
 
-static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
-{
-    uint32_t addr = hal_board_get_factory_addr();
-    const void *fdt = (const void *)addr;
-    uint32_t offset;
-
-    if (!name || !start || !off) {
-        return -1;
-    }
-
-    offset = fdt_subnode_offset(fdt, 0, name);
-    if (offset <= 0) {
-       log_error("%s NULL.\r\n", name);
-       return -1;
-    }
-
-    *start = (uint32_t)fdt;
-    *off = offset;
-
-    return 0;
-}
-
 #if defined(CFG_BLE_ENABLE)
 void ble_init(void)
 {
-	extern void ble_stack_start(void);
-	ble_stack_start();
+    extern void ble_stack_start(void);
+    ble_stack_start();
 }
 #endif
 
@@ -649,9 +571,9 @@ void zigbee_init(void)
     {
         printf("BL Zbstack Init Success\r\n");
     }
-
+    #if defined(CFG_ZIGBEE_CLI)
     zb_cli_register();
-
+    #endif
     register_zb_cb();
     
     zb_app_startup();
@@ -689,53 +611,77 @@ void event_cb_key_event(input_event_t *event, void *private_data)
     }
 }
 
-static void aos_loop_proc(void *pvParameters)
+void _dump_lib_info(void)
 {
-    int fd_console;
-    uint32_t fdt = 0, offset = 0;
-
-#ifdef EASYFLASH_ENABLE
-    easyflash_init();
+#if defined(CFG_BLE_ENABLE)
+    puts("BLE Controller LIB Version: ");
+    puts(ble_controller_get_lib_ver());
+    puts("\r\n");
 #endif
 
-    vfs_init();
-    vfs_device_init();
+#if defined(CFG_ZIGBEE_ENABLE)
+    puts("Zigbee LIB Version: ");
+    puts(zb_getLibVer());
+    puts("\r\n");
+#endif
+}
 
-    /* uart */
-    const char *uart_node[] = {
-        "uart@4000A000",
-        "uart@4000A100",
-    };
+#if defined(CFG_ZIGBEE_HBN)
+extern uint32_t storedRtcTimeMs;
+#endif
+static void system_init(void)
+{
+    bl_rtc_init();
 
-    if (0 == get_dts_addr("uart", &fdt, &offset)) {
-        vfs_uart_init(fdt, offset, uart_node, 2);
-    }
+#if defined(CFG_ZIGBEE_ENABLE)
+#if defined(CFG_ZIGBEE_HBN)
+    extern void zb_hbn_init(void);
+    zb_hbn_init();
+#endif//CFG_ZIGBEE_HBN  
+#endif//CFG_ZIGBEE_ENABLE
 
+    //hal_pds_init();
+#if defined(CFG_ZIGBEE_PDS)
+    extern void zb_pds_init(void);
+    zb_pds_init();
+#endif
+
+#if defined(CFG_BLE_PDS)
+    extern void ble_pds_init(void);
+    ble_pds_init();
+#endif
+
+    //configure pds gpio wakeup after pds init and hbn init complete.
+    #if (CFG_PDS_LEVEL == 3)
+    bl_pds_gpio_wakeup_cfg_ex(1<<PDS_WAKEUP_GPIO);
+    #endif
+    hal_tcal_init();
+#if defined(CFG_ZIGBEE_HBN)
+    //configure hbn gpio wakeup after pds init and hbn init complete.
+    uint8_t pin_list[1];
+    pin_list[0] = HBN_WAKEUP_GPIO;
+    bl_hbn_gpio_wakeup_cfg(pin_list, 1);
+#endif
+
+#if defined(CFG_USE_PSRAM)
+    bl_psram_init();
+    vPortDefineHeapRegionsPsram(xHeapRegionsPsram);
+    printf("PSRAM Heap %u@%p\r\n",(unsigned int)&_heap3_size, &_heap3_start);
+#endif /*CFG_USE_PSRAM*/
+}
+
+static void system_thread_init()
+{
 #ifndef CFG_ETHERNET_ENABLE
-    /* gpio */
-    if (0 == get_dts_addr("gpio", &fdt, &offset)) {
+    uint32_t fdt = 0, offset = 0;
+
+    if (0 == hal_board_get_dts_addr("gpio", &fdt, &offset)) {
         hal_gpio_init_from_dts(fdt, offset);
         fdt_button_module_init((const void *)fdt, (int)offset);
     }
 
+    aos_register_event_filter(EV_KEY, event_cb_key_event, NULL);
 #endif /* CFG_ETHERNET_ENABLE */
-
-    aos_loop_init();
-
-    fd_console = aos_open("/dev/ttyS0", 0);
-    if (fd_console >= 0) {
-        printf("Init CLI with event Driven\r\n");
-        aos_cli_init(0);
-        aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
-        _cli_init();
-    }
-
-#if defined(CFG_USB_CDC_ENABLE)
-    extern void usb_cdc_start(int fd_console);
-    usb_cdc_start(fd_console);
-#endif
-
-    hal_hwtimer_init();
 
 #if defined(CFG_BLE_ENABLE)
     #if defined(CONFIG_AUTO_PTS)
@@ -755,128 +701,13 @@ static void aos_loop_proc(void *pvParameters)
 
 #if defined(CFG_ZIGBEE_ENABLE)
     zigbee_init();
-#endif
 
-    aos_register_event_filter(EV_KEY, event_cb_key_event, NULL);
-
-    aos_loop_run();
-
-    puts("------------------------------------------\r\n");
-    puts("+++++++++Critical Exit From Loop++++++++++\r\n");
-    puts("******************************************\r\n");
-    vTaskDelete(NULL);
-}
-
-#if 0
-static void proc_hellow_entry(void *pvParameters)
-{
-    vTaskDelay(500);
-
-    while (1) {
-        printf("%s: RISC-V rv32imafc\r\n", __func__);
-        vTaskDelay(10000);
-    }
-    vTaskDelete(NULL);
-}
-#endif
-
-static void _dump_boot_info(void)
-{
-    char chip_feature[40];
-    const char *banner;
-
-    puts("Booting BL702 Chip...\r\n");
-
-    /*Display Banner*/
-    if (0 == bl_chip_banner(&banner)) {
-//        puts(banner);
-    }
-    puts("\r\n");
-    /*Chip Feature list*/
-    puts("\r\n");
-    puts("------------------------------------------------------------\r\n");
-    puts("RISC-V Core Feature:");
-    bl_chip_info(chip_feature);
-    puts(chip_feature);
-    puts("\r\n");
-
-    puts("Build Version: ");
-    puts(BL_SDK_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("Std BSP Driver Version: ");
-    puts(BL_SDK_STDDRV_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("Std BSP Common Version: ");
-    puts(BL_SDK_STDCOM_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-    puts("RF Version: ");
-    puts(BL_SDK_RF_VER); // @suppress("Symbol is not resolved")
-    puts("\r\n");
-
-#if defined(CFG_BLE_ENABLE)
-    puts("BLE Controller LIB Version: ");
-    puts(ble_controller_get_lib_ver());
-    puts("\r\n");
-#endif
-
-#if defined(CFG_ZIGBEE_ENABLE)
-    puts("Zigbee LIB Version: ");
-    puts(zb_getLibVer());
-    puts("\r\n");
-#endif
-
-    puts("Build Date: ");
-    puts(__DATE__);
-    puts("\r\n");
-    puts("Build Time: ");
-    puts(__TIME__);
-    puts("\r\n");
-    puts("------------------------------------------------------------\r\n");
-
-}
-
-static void system_init(void)
-{
-    blog_init();
-    bl_irq_init();
     #if defined(CONFIG_HW_SEC_ENG_DISABLE)
     //if sec engine is disabled, use software rand in bl_rand
     int seed = bl_timer_get_current_time();
     srand(seed);
     #endif
-#if defined(CFG_ETHERNET_ENABLE) || defined(CFG_BLE_ENABLE) || defined(CFG_ZIGBEE_ENABLE)
-	bl_sec_init();
-#endif /*CFG_ETHERNET_ENABLE*/
-    bl_rtc_init();
-    hal_boot2_init();
-
-    /* board config is set after system is init*/
-    hal_board_cfg(0);
-    hal_pds_init();
-    hal_tcal_init();
-
-    //bl_wdt_init(4000);
-
-#if defined(CFG_ZIGBEE_HBN)
-    if(bl_sys_rstinfo_get() == BL_RST_POR){
-        bl_hbn_fastboot_init();
-        extern struct _zbRxPacket rxPktStoredInHbnRam;
-        memset(&rxPktStoredInHbnRam, 0, sizeof(struct _zbRxPacket));
-    }
 #endif
-
-#if defined(CFG_USE_PSRAM)
-    bl_psram_init();
-    vPortDefineHeapRegionsPsram(xHeapRegionsPsram);
-#endif /*CFG_USE_PSRAM*/
-}
-
-static void system_thread_init()
-{
-    /*nothing here*/
 }
 
 void rf_reset_done_callback(void)
@@ -886,59 +717,22 @@ void rf_reset_done_callback(void)
 #endif
 }
 
-void setup_heap()
+void main()
 {
-    bl_sys_em_config();
-
-    // Invoked during system boot via start.S
-    vPortDefineHeapRegions(xHeapRegions);
-}
-
-void bl702_main()
-{
-    static StackType_t aos_loop_proc_stack[1024];
-    static StaticTask_t aos_loop_proc_task;
-    //static StackType_t proc_hellow_stack[512];
-    //static StaticTask_t proc_hellow_task;
-
-    bl_sys_early_init();
-
-    /*Init UART In the first place*/
-    hosal_uart_init(&uart_stdio);
-    puts("Starting bl702 now....\r\n");
-
-    bl_sys_init();
-
-    _dump_boot_info();
-
-    printf("Heap %u@%p, %u@%p"
-#if defined(CFG_USE_PSRAM)
-            ", %u@%p"
-#endif /*CFG_USE_PSRAM*/
-            "\r\n",
-            (unsigned int)&_heap_size, &_heap_start,
-            (unsigned int)&_heap2_size, &_heap2_start
-#if defined(CFG_USE_PSRAM)
-            ,(unsigned int)&_heap3_size, &_heap3_start
-#endif /*CFG_USE_PSRAM*/
-    );
-
     system_init();
     system_thread_init();
-
-    //puts("[OS] Starting proc_hellow_entry task...\r\n");
-    //xTaskCreateStatic(proc_hellow_entry, (char*)"hellow", sizeof(proc_hellow_stack)/4, NULL, 15, proc_hellow_stack, &proc_hellow_task);
-    puts("[OS] Starting aos_loop_proc task...\r\n");
 
 #if defined(CONFIG_AUTO_PTS)
     tester_init();
 #endif
-    xTaskCreateStatic(aos_loop_proc, (char*)"event_loop", sizeof(aos_loop_proc_stack)/4, NULL, 15, aos_loop_proc_stack, &aos_loop_proc_task);
 
 #ifdef CFG_ETHERNET_ENABLE
     tcpip_init(NULL, NULL);
     lwip_init_netif();
 #endif /*CFG_ETHERNET_ENABLE*/
-    puts("[OS] Starting OS Scheduler...\r\n");
-    vTaskStartScheduler();
+
+#ifdef CFG_BLE_AUTO_TRIG_SCAN
+    extern void bl_ble_start_scan_pds(void);
+    bl_ble_start_scan_pds();
+#endif
 }

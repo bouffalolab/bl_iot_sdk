@@ -844,7 +844,8 @@ int wifi_mgmr_set_country_code(char *country_code)
 
 int wifi_mgmr_set_wifi_active_time(uint32_t ms)
 {
-    if (ms > 100) {
+    if (ms >= 100) {
+        bl_os_printf("wifi ps mode set: 1 ~ 99\r\n");
         return -1;
     }
 

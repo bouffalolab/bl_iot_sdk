@@ -340,9 +340,9 @@ BL_Err_Type UART_FifoConfig(UART_ID_Type uartId, UART_FifoCfg_Type *fifoCfg)
     /* Deal with uart fifo configure register */
     tmpVal = BL_RD_REG(UARTx, UART_FIFO_CONFIG_1);
     /* Configure dma tx fifo threshold */
-    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, UART_TX_FIFO_TH, fifoCfg->txFifoDmaThreshold - 1);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, UART_TX_FIFO_TH, fifoCfg->txFifoDmaThreshold);
     /* Configure dma rx fifo threshold */
-    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, UART_RX_FIFO_TH, fifoCfg->rxFifoDmaThreshold - 1);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, UART_RX_FIFO_TH, fifoCfg->rxFifoDmaThreshold);
     /* Write back */
     BL_WR_REG(UARTx, UART_FIFO_CONFIG_1, tmpVal);
 
@@ -601,7 +601,7 @@ BL_Err_Type UART_SetDeglitchCount(UART_ID_Type uartId, uint8_t deglitchCnt)
  * @return SUCCESS
  *
 *******************************************************************************/
-BL_Err_Type UART_SetBaudrate(UART_ID_Type uartId, UART_AutoBaudDetection_Type autoBaudDet)
+BL_Err_Type UART_ApplyAbrResult(UART_ID_Type uartId, UART_AutoBaudDetection_Type autoBaudDet)
 {
     uint32_t UARTx = uartAddr[uartId];
     uint16_t tmpVal;

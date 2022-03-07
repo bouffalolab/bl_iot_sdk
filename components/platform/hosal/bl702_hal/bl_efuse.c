@@ -32,8 +32,30 @@
 
 int bl_efuse_read_mac(uint8_t mac[8])
 {
-    EF_Ctrl_Read_MAC_Address(mac);
-    return 0;
+    uint8_t empty;
+
+    empty = EF_Ctrl_Is_MAC_Address_Slot_Empty(2, 0);
+    if(!empty){
+        if(EF_Ctrl_Read_MAC_Address_Opt(2, mac, 0) == 0){
+            return 0;
+        }
+    }
+
+    empty = EF_Ctrl_Is_MAC_Address_Slot_Empty(1, 0);
+    if(!empty){
+        if(EF_Ctrl_Read_MAC_Address_Opt(1, mac, 0) == 0){
+            return 0;
+        }
+    }
+
+    empty = EF_Ctrl_Is_MAC_Address_Slot_Empty(0, 0);
+    if(!empty){
+        if(EF_Ctrl_Read_MAC_Address_Opt(0, mac, 0) == 0){
+            return 0;
+        }
+    }
+
+    return -1;
 }
 
 int bl_efuse_read_mac_factory(uint8_t mac[8])

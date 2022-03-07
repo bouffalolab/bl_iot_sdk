@@ -70,6 +70,7 @@ static int _mtd_write_copy2ram(uint32_t addr, uint8_t *src, unsigned int len)
         }
 
         memcpy(buf_tmp, src, len_tmp);
+
         bl_flash_write(addr, buf_tmp, len_tmp);
 
         addr += len_tmp;
@@ -82,7 +83,9 @@ static int _mtd_write_copy2ram(uint32_t addr, uint8_t *src, unsigned int len)
 
 static int _mtd_write(uint32_t addr, uint8_t *src, unsigned int len)
 {
+
     bl_flash_write(addr, src, len);
+
     return 0;
 }
 
@@ -177,6 +180,7 @@ int bl_mtd_erase(bl_mtd_handle_t handle, unsigned int addr, unsigned int size)
             handle_prv->offset + addr,
             size
     );
+
     return 0;
 }
 

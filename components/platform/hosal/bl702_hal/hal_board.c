@@ -618,3 +618,24 @@ int hal_board_reload_power_offset(void)
 
     return 0;
 }
+
+int hal_board_get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
+{
+    const void *fdt = (const void *)factory_addr;
+    uint32_t offset;
+
+    if (!name || !start || !off) {
+        return -1;
+    }
+
+    offset = fdt_subnode_offset(fdt, 0, name);
+    if (offset <= 0) {
+       log_error("%s NULL.\r\n", name);
+       return -1;
+    }
+
+    *start = (uint32_t)fdt;
+    *off = offset;
+
+    return 0;
+}

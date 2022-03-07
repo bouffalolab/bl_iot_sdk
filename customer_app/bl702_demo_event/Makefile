@@ -9,9 +9,13 @@ PROJECT_BOARD := evb
 export PROJECT_PATH PROJECT_BOARD
 #CONFIG_TOOLPREFIX :=
 
-BLECONTROLLER_LIBS := std m0s1 m0s1s m0s1p m16s1
+BLECONTROLLER_LIBS := std m0s1 m0s1s m0s1p m16s1 m0s0sp
 BLECONTROLLER_LIB_DEFAULT := std
 BLECONTROLLER_LIB_PREFIX := blecontroller_702_
+
+ZBSTACK_ADDITION_LIBS := gpp
+ZBSTACK_LIB_DEFAULT := zbstack
+ZBSTACK_LIB_PREFIX := zbstack_
 
 -include ./proj_config.mk
 
@@ -32,7 +36,17 @@ INCLUDE_COMPONENTS += bl702_usb_cdc
 endif
 
 ifeq ($(CONFIG_ZIGBEE), 1)
-INCLUDE_COMPONENTS += zbstack zbcli
+ifeq ($(CONFIG_ZBSTACK_LIB),all)
+	INCLUDE_COMPONENTS += $(ZBSTACK_LIB_DEFAULT)
+	INCLUDE_COMPONENTS += $(addprefix $(ZBSTACK_LIB_PREFIX), $(ZBSTACK_ADDITION_LIBS))
+else
+	ifeq ($(findstring $(CONFIG_ZBSTACK_LIB), $(ZBSTACK_ADDITION_LIBS)),)
+		INCLUDE_COMPONENTS += $(ZBSTACK_LIB_DEFAULT)
+	else
+		INCLUDE_COMPONENTS += $(addprefix $(ZBSTACK_LIB_PREFIX), $(CONFIG_ZBSTACK_LIB))
+	endif
+endif
+INCLUDE_COMPONENTS += zbcli
 endif
 
 ifeq ($(CONFIG_BT),1)
@@ -98,4 +112,8 @@ endif
 
 ifeq ($(CONFIG_BLECONTROLLER_LIB),all)
 LDFLAGS := $(filter-out $(addprefix -l$(BLECONTROLLER_LIB_PREFIX), $(filter-out $(BLECONTROLLER_LIB_DEFAULT), $(BLECONTROLLER_LIBS))), $(LDFLAGS))
+endif
+
+ifeq ($(CONFIG_ZBSTACK_LIB),all)
+LDFLAGS := $(filter-out $(addprefix -l$(ZBSTACK_LIB_PREFIX), $(ZBSTACK_ADDITION_LIBS)), $(LDFLAGS))
 endif

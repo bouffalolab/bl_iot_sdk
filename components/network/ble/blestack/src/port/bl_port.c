@@ -59,7 +59,7 @@ int bl_rand()
 void k_queue_init(struct k_queue *queue, int size)
 {
     //int size = 20;
-    uint8_t blk_size = sizeof(void *) + 1;
+    uint8_t blk_size = sizeof(void *);
 
 
     queue->hdl = xQueueCreate(size, blk_size);

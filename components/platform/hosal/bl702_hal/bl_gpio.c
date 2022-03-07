@@ -54,7 +54,7 @@ int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown)
     if (pulldown) {
         cfg.pullType = GPIO_PULL_DOWN;
     }
-#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+#if defined(CFG_PDS_OPTIMIZE) || defined(CFG_HBN_OPTIMIZE)
     RomDriver_GLB_GPIO_Init(&cfg);
 #else
     GLB_GPIO_Init(&cfg);
@@ -79,7 +79,7 @@ int bl_gpio_enable_input(uint8_t pin, uint8_t pullup, uint8_t pulldown)
     if (pulldown) {
         cfg.pullType = GPIO_PULL_DOWN;
     }
-#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+#if defined(CFG_PDS_OPTIMIZE) || defined(CFG_HBN_OPTIMIZE)
     RomDriver_GLB_GPIO_Init(&cfg);
 #else
     GLB_GPIO_Init(&cfg);

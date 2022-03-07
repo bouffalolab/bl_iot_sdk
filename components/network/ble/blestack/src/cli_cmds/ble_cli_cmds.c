@@ -115,9 +115,11 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_tp_start", "throughput start\r\nParameter [TP test,1:enable, 0:disable]\r\n", blecli_tp_start},
 #endif
 #if defined(BL702)
+#if defined(CONFIG_BT_CONN)
     {"ble_set_default_phy", "ble set default phy\r\nParameter [defualt phys]\r\n", blecli_set_default_phy},
     {"ble_set_2M_Phy", "ble set 2M Phy\r\nParameter [defualt phys]\r\n", blecli_set_2M_phy},
     {"ble_set_coded_phy", "ble set coded phy\r\nParameter [all phys] [coded option]\r\n", blecli_set_coded_phy},
+#endif
 #endif
 #if defined(CONFIG_BT_OBSERVER)
 #if defined(BL702) || defined(BL602)
@@ -170,7 +172,6 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     [Conn Latency,0x0000-01f3,e.g.0004]\r\n\
     [Supervision Timeout,0x000A-0C80,e.g.0010]\r\n", blecli_conn_update},
     {"ble_read_rssi", "ble read rssi\r\nParameter [Null]\r\n", blecli_read_rssi},
-#endif
  #if defined(CONFIG_BT_SMP)
     {"ble_security", "Start security\r\n\
     Parameter [Security level, Default value 4, 2:BT_SECURITY_MEDIUM, 3:BT_SECURITY_HIGH, 4:BT_SECURITY_FIPS]\r\n", blecli_security},
@@ -209,6 +210,8 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ble_set_data_len","LE Set Data Length\r\n\
     Parameter [tx octets, 2 octets] [tx time, 2 octets]\r\n", blecli_set_data_len},
     {"ble_conn_info", "LE get all connection devices info\r\nParameter [Null]\r\n", blecli_get_all_conn_info},
+#endif//CONFIG_BT_CONN
+
 #if defined(CONFIG_SET_TX_PWR)
     {"ble_set_tx_pwr","Set tx power mode\r\nParameter [mode, 1 octet, value:5,6,7]\r\n", blecli_set_tx_pwr},
 #endif
@@ -424,7 +427,9 @@ static void blecli_init(char *pcWriteBuffer, int xWriteBufferLen, int argc, char
     ble_inited = true;
     vOutputString("Init successfully \r\n");
 }
+
 #if defined(BL702)
+#if defined(CONFIG_BT_CONN)
 static void blecli_set_2M_phy(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     int err = 0;
@@ -490,6 +495,8 @@ static void blecli_set_default_phy(char *pcWriteBuffer, int xWriteBufferLen, int
     }
 }
 #endif
+#endif
+
 static void blecli_get_device_name(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
 	const char *device_name = bt_get_name();
@@ -1189,6 +1196,7 @@ static void blecli_auth_passkey(char *pcWriteBuffer, int xWriteBufferLen, int ar
 
 #endif //#if defined(CONFIG_BT_SMP)
 
+#if defined(CONFIG_BT_CONN)
 #if defined(CONFIG_BT_GATT_CLIENT)
 static void exchange_func(struct bt_conn *conn, u8_t err,
 			  struct bt_gatt_exchange_params *params)
@@ -1632,6 +1640,7 @@ static void blecli_get_all_conn_info(char *pcWriteBuffer, int xWriteBufferLen, i
 	        vOutputString("[%d]: address %s\r\n", i, le_addr);
         }
 }
+#endif /* CONFIG_BT_CONN*/
 
 #if defined(CONFIG_SET_TX_PWR)
 static void blecli_set_tx_pwr(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)

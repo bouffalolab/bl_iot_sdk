@@ -1211,6 +1211,10 @@ void PCD_WritePMA(USB_TypeDef  *USBx, uint8_t *pbUsrBuf, uint16_t ep_id, uint16_
   */
 void PCD_ReadPMA(USB_TypeDef  *USBx, uint8_t *pbUsrBuf, uint16_t ep_id, uint16_t wNBytes)
 {
+    if(pbUsrBuf == NULL && wNBytes > 0){
+        //printf("##PCD_ReadPMA Error: %p##\r\n\r\n", (void *)__builtin_return_address(0));
+        return;
+    }
     USB_EPx_Read_Data_From_FIFO(ep_id,pbUsrBuf,wNBytes);
 }
 

@@ -116,6 +116,8 @@ utils_rbb_blk_t utils_rbb_blk_get(utils_rbb_t rbb);
 uint32_t utils_rbb_blk_size(utils_rbb_blk_t block);
 uint8_t *utils_rbb_blk_buf(utils_rbb_blk_t block);
 void utils_rbb_blk_free(utils_rbb_t rbb, utils_rbb_blk_t block);
+utils_rbb_blk_t utils_rbb_find_empty_blk(utils_rbb_t rbb);
+utils_rbb_blk_t utils_rbb_find_used_blk(utils_rbb_t rbb);
 
 /* rbb block queue API */
 uint32_t utils_rbb_blk_queue_get(utils_rbb_t rbb, uint32_t queue_data_len, utils_rbb_blk_queue_t blk_queue);

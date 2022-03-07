@@ -30,7 +30,7 @@
 #include "bl_timer.h"
 #include "bl_irq.h"
 #include <bl702_timer.h>
-
+#include <bl702_glb.h>
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -86,7 +86,6 @@ static void bl_timer_irq(void)
 {
     uint8_t ch;
     bl_timer_cb_t cb;
-    
     for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
         if(TIMER_GetMatchStatus(TIMER_CH1, (TIMER_Comp_ID_Type)ch)){
             TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, MASK);
@@ -193,16 +192,21 @@ void bl_timer_start(uint8_t ch, uint32_t target_time, bl_timer_cb_t cb)
     TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, UNMASK);
 }
 
-void bl_timer_stop(uint8_t ch)
+void* bl_timer_stop(uint8_t ch)
 {
-    if(ch >= BL_TIMER_CH_NUM){
-        return;
-    }
+    bl_timer_cb_t cb;
     
+    if(ch >= BL_TIMER_CH_NUM){
+        return NULL;
+    }
+
+    cb = bl_timer_callback[ch];
     bl_timer_callback[ch] = NULL;
     
     TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, MASK);
     TIMER_ClearIntStatus(TIMER_CH1, (TIMER_Comp_ID_Type)ch);
+
+    return cb;
 }
 
 void bl_timer_store(void)
@@ -222,6 +226,8 @@ void bl_timer_restore(uint32_t jump_time)
 {
     uint8_t ch;
     
+    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
+    
     bl_timer_cfg(bl_timer_cnt_val + jump_time);
     
     for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
@@ -231,3 +237,31 @@ void bl_timer_restore(uint32_t jump_time)
         }
     }
 }
+
+void bl_timer_restore_ext(uint32_t jump_time)
+{ 
+    uint8_t ch;
+    bl_timer_cb_t cb;
+    
+    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
+    
+    bl_timer_cfg(bl_timer_cnt_val + jump_time);
+    
+    for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
+        if(bl_timer_callback[ch]){
+            if(jump_time < bl_timer_cmp_val[ch]-bl_timer_cnt_val)
+            {
+                TIMER_SetCompValue(TIMER_CH1, (TIMER_Comp_ID_Type)ch, bl_timer_cmp_val[ch]);
+                TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, UNMASK);
+            }
+            else
+            {
+                cb = bl_timer_callback[ch];
+                bl_timer_callback[ch] = NULL;
+                if(cb)
+                    cb();
+            }
+        }
+    }
+}
+

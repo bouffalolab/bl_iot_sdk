@@ -56,8 +56,17 @@ typedef struct
     uint32_t entry_num_max;
 }malloc_table_info_t;
 
+typedef struct 
+{
+    void* caller;
+    uint32_t totalSize;
+    uint32_t mallocTimes;
+}mem_stats_t;
+
 malloc_entry_t malloc_entry[SYS_TRACE_MEM_ENTRY_NUM];
 malloc_table_info_t malloc_table_info;
+#define SYS_TRACE_MEM_STATS_ENTRY_NUM 100
+mem_stats_t mem_stats[SYS_TRACE_MEM_STATS_ENTRY_NUM];
 
 void trace_malloc(void *ptr, size_t size, void *caller)
 {
@@ -130,6 +139,58 @@ void trace_realloc(void *ptr_new, void *ptr_old, size_t size, void *caller)
             }
         }
     }
+}
+
+void mem_trace_stats()
+{
+    for(int i=0;i<SYS_TRACE_MEM_STATS_ENTRY_NUM;i++)
+    {
+        mem_stats[i].caller = NULL;
+        mem_stats[i].totalSize = 0;
+        mem_stats[i].mallocTimes = 0;
+    }
+    
+    for(int i=0; i<SYS_TRACE_MEM_ENTRY_NUM; i++)
+    {
+        if(malloc_entry[i].ptr == NULL)
+        {
+            continue;
+        }
+
+        uint8_t fExist = 0;
+        uint16_t firstEmpty = 0xFFFF;
+        for(int j=0; j<SYS_TRACE_MEM_STATS_ENTRY_NUM;j++)
+        {
+            if(malloc_entry[i].caller == mem_stats[j].caller)
+            {
+                fExist = 1;
+                mem_stats[j].mallocTimes++;
+                mem_stats[j].totalSize += malloc_entry[i].size;
+                break;
+            }
+
+            if(firstEmpty==0xFFFF && mem_stats[j].caller == NULL)
+            {
+                firstEmpty = j;
+            }
+        }
+
+        if(!fExist && firstEmpty != 0xFFFF)
+        {
+            mem_stats[firstEmpty].caller = malloc_entry[i].caller;
+            mem_stats[firstEmpty].totalSize = malloc_entry[i].size;
+            mem_stats[firstEmpty].mallocTimes = 1;
+        }
+    }
+    
+    for(int i=0;i<SYS_TRACE_MEM_STATS_ENTRY_NUM;i++)
+    {
+        if(mem_stats[i].caller)
+        {
+            printf("%d, caller:0x%08lx, totalSize:%lu, mallocTimes:%lu\r\n", i, (uint32_t)mem_stats[i].caller, mem_stats[i].totalSize, mem_stats[i].mallocTimes);
+        }
+    }
+    printf("Current left size is %d bytes\r\n", xPortGetFreeHeapSize());
 }
 #endif
 
@@ -350,6 +411,11 @@ int fsync(int fd)
 #endif
 }
 
+#if defined(CFG_USE_PSRAM)
+#define IS_PSARAM(addr) ((addr&0xFF000000) == 0x26000000 || \
+                        (addr&0xFF000000) == 0x24000000 )
+#endif
+
 void *_malloc_r(struct _reent *ptr, size_t size)
 {
     void* result;
@@ -359,7 +425,17 @@ void *_malloc_r(struct _reent *ptr, size_t size)
         return NULL;
     }
 
-    result = (void*)pvPortMalloc(size);
+#if defined(CFG_USE_PSRAM)
+    if (xPortGetFreeHeapSizePsram() > size) {
+        result = (void*)pvPortMallocPsram(size);
+    }
+    else {
+        result = (void*)pvPortMalloc(size);
+    }
+#else
+	result = (void*)pvPortMalloc(size);
+#endif
+
     if (result == NULL)
     {
         ptr->_errno = ENOMEM;
@@ -376,7 +452,17 @@ void *_realloc_r(struct _reent *ptr, void *old, size_t newlen)
 {
     void* result;
 
-    result = (void*)pvPortRealloc(old, newlen);
+#if defined(CFG_USE_PSRAM)
+    if (IS_PSARAM((uint32_t)old)) {
+        result = (void*)pvPortReallocPsram(old, newlen);
+    }
+    else {
+        result = (void*)pvPortRealloc(old, newlen);
+    }
+#else
+	result = (void*)pvPortRealloc(old, newlen);
+#endif
+
     if (result == NULL)
     {
         ptr->_errno = ENOMEM;
@@ -398,7 +484,17 @@ void *_calloc_r(struct _reent *ptr, size_t size, size_t len)
         return NULL;
     }
 
-    result = (void*)pvPortCalloc(size, len);
+#if defined(CFG_USE_PSRAM)
+    if (xPortGetFreeHeapSizePsram()) {
+        result = (void*)pvPortCallocPsram(size, len);
+    }
+    else {
+        result = (void*)pvPortCalloc(size, len);
+    }
+#else
+	result = (void*)pvPortCalloc(size, len);
+#endif
+
     if (result == NULL)
     {
         ptr->_errno = ENOMEM;
@@ -413,7 +509,16 @@ void *_calloc_r(struct _reent *ptr, size_t size, size_t len)
 
 void _free_r(struct _reent *ptr, void *addr)
 {
-    vPortFree(addr);
+#if defined(CFG_USE_PSRAM)	
+    if (IS_PSARAM((uint32_t)addr)) {
+        vPortFreePsram(addr);
+    }
+    else {
+        vPortFree(addr);
+    }
+#else
+	vPortFree(addr);
+#endif
 
 #ifdef SYS_TRACE_MEM_ENABLE
     trace_free(addr, (void *)__builtin_return_address(0));

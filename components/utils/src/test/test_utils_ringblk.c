@@ -35,6 +35,9 @@
 #include <assert.h>
 #include <inttypes.h>
 
+#include <FreeRTOS.h>
+#include <task.h>
+
 #include <cli.h>
 #include "utils_ringblk.h"
 
@@ -279,8 +282,93 @@ __exit :
 }
 
 
+static uint8_t put_finish = 0;
+
+static void put_thread(void *param)
+{
+  utils_rbb_t rbb = (utils_rbb_t)param;
+  utils_rbb_blk_t block;
+  uint32_t put_count = 0;
+
+  put_finish = 0;
+
+  while (put_count < 10000)
+  {
+    block = utils_rbb_blk_alloc(rbb, rand() % 10 + 4);
+    if (block)
+    {
+      memcpy(&block->buf[0], (void *)&put_count, 4);
+      utils_rbb_blk_put(block);
+      printf("put block size %d count %" PRId32 "\r\n", block->size, put_count++);
+    }
+    else
+    {
+      printf("block alloc failed\r\n");
+    }
+    vTaskDelay(rand() % 10);
+  }
+  printf("Put block data finish.\r\n");
+
+  put_finish = 1;
+
+  vTaskDelete(NULL);
+}
+
+static void get_thread(void *param)
+{
+  utils_rbb_t rbb = (utils_rbb_t)param;
+  utils_rbb_blk_t block;
+  uint32_t get_count = 0;
+
+  while (get_count < 10000)
+  {
+    block = utils_rbb_blk_get(rbb);
+
+    if (block)
+    {
+      if (memcmp(&block->buf[0], (void *)&get_count, 4) != 0)
+      {
+        printf("Error: get data (times %" PRId32 ") has an error!\r\n", get_count);
+        goto exit_;
+      }
+      utils_rbb_blk_free(rbb, block);
+      printf("free block size %d count %" PRId32 "\r\n", block->size, get_count++);
+    }
+    else if (put_finish)
+    {
+      break;
+    }
+    vTaskDelay(rand() % 10);
+  }
+  printf("Get block data finish.\r\n");
+
+  utils_rbb_blk_t new_rbb = utils_rbb_find_used_blk(rbb);
+  if (new_rbb != NULL)
+  {
+    printf("\n====================== rbb blk not free =====================\r\n");
+  }
+
+exit_:
+  printf("\n====================== rbb dynamic test finish =====================\r\n");
+
+  utils_rbb_destroy(rbb);
+
+  vTaskDelete(NULL);
+}
+
+static void cmd_ringblk_through_test(char *buf, int len, int argc, char **argv)
+{
+  utils_rbb_t rbb;
+
+  rbb = utils_rbb_create(100, 10);
+
+  xTaskCreate(put_thread, "rbb_put", 1024, rbb, 10, NULL);
+
+  xTaskCreate(get_thread, "rbb_get", 1024, rbb, 10, NULL);
+}
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
-  {"rbb_test", "ringblk test", cmd_ringblk_test},
+  {"rbb_static_test", "ringblk static test", cmd_ringblk_test},
+  {"rbb_through_test", "ringblk dynamic test", cmd_ringblk_through_test},
 };
 
 int utils_rbb_cli_init(void)

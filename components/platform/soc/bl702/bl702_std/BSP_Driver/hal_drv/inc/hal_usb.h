@@ -191,12 +191,12 @@ struct usb_dc_ep_cfg {
      *       OUT EP = 0x00 | \<endpoint number\>
      */
     uint8_t ep_addr;
-    /** Endpoint max packet size */
-    uint16_t ep_mps;
     /** Endpoint Transfer Type.
      * May be Bulk, Interrupt, Control or Isochronous
      */
     uint8_t ep_type;
+    /** Endpoint max packet size */
+    uint16_t ep_mps;
 };
 
 /*

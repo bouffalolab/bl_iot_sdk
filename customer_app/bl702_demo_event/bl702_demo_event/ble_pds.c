@@ -27,7 +27,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#if defined(CFG_BLE_PDS)
+#if defined(CFG_BLE_PDS) && !defined(CFG_ZIGBEE_PDS)
 #include <FreeRTOS.h>
 #include <task.h>
 #include <bl_irq.h>
@@ -45,6 +45,12 @@
 #endif
 extern bool pds_start;
 extern bool wfi_disable;
+
+void ble_pds_init(void)
+{
+    hal_pds_init();
+}
+
 static void bl_pds_restore(void)
 {
    #if (DEBUG_PRINT)

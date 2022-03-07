@@ -41,4 +41,5 @@ int bl_flash_config_update(void);
 void* bl_flash_get_flashCfg(void);
 
 int bl_flash_read_byxip(uint32_t addr, uint8_t *dst, int len);
+int bl_flash_init(void);
 #endif

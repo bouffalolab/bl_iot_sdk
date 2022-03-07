@@ -26,6 +26,7 @@
 #include "hal_clock.h"
 #include "hal_rtc.h"
 #include "hal_flash.h"
+#include "risc-v/Core/Include/clic.h"
 
 /* Cache Way Disable, will get from l1c register */
 uint8_t cacheWayDisable = 0;
@@ -971,7 +972,7 @@ ATTR_TCM_SECTION void pm_pds_mode_enter(enum pm_pds_sleep_level pds_level, uint3
 
     /* pds0-pds7 : ldo11rt_iload_sel=3 */
     /* pds31     : ldo11rt_iload_sel=1 */
-    if ((pds_level >= 0) && (pds_level <= 7)) {
+    if (pds_level <= PM_PDS_LEVEL_7) {
         HBN_Set_Ldo11rt_Drive_Strength(HBN_LDO11RT_DRIVE_STRENGTH_25_250UA);
     } else if (pds_level == PM_PDS_LEVEL_31) {
         HBN_Set_Ldo11rt_Drive_Strength(HBN_LDO11RT_DRIVE_STRENGTH_10_100UA);
@@ -1163,12 +1164,6 @@ ATTR_TCM_SECTION void pm_hbn_mode_enter(enum pm_hbn_sleep_level hbn_level, uint8
     /* To make it simple and safe*/
     cpu_global_irq_disable();
 
-    CPU_Interrupt_Pending_Clear(HBN_OUT0_IRQn);
-    CPU_Interrupt_Pending_Clear(HBN_OUT1_IRQn);
-
-    BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0xffffffff);
-    BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0);
-
     if (sleep_time && (hbn_level < PM_HBN_LEVEL_2))
         rtc_init(sleep_time); //sleep time,unit is second
 
@@ -1225,6 +1220,12 @@ ATTR_TCM_SECTION void pm_hbn_mode_enter(enum pm_hbn_sleep_level hbn_level, uint8
     /* Set power on option:0 for por reset twice for robust 1 for reset only once*/
     tmpVal = BL_CLR_REG_BIT(tmpVal, HBN_PWR_ON_OPTION);
     BL_WR_REG(HBN_BASE, HBN_CTL, tmpVal);
+
+    *(volatile uint8_t *)(CLIC_HART0_ADDR + CLIC_INTIP + HBN_OUT0_IRQn) = 0;
+    *(volatile uint8_t *)(CLIC_HART0_ADDR + CLIC_INTIP + HBN_OUT1_IRQn) = 0;
+
+    BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0xffffffff);
+    BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0);
 
     /* Enable HBN mode */
     tmpVal = BL_RD_REG(HBN_BASE, HBN_CTL);

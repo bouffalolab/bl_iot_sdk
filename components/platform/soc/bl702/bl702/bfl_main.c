@@ -14,25 +14,22 @@
 
 #include <bl_sys.h>
 #include <bl_chip.h>
-#include <bl_wireless.h>
 #include <bl_irq.h>
 #include <bl_sec.h>
-#include <bl_rtc.h>
-#include <bl_uart.h>
-#include <bl_gpio.h>
-#include <bl_flash.h>
-#include <bl_timer.h>
-#include <bl_wdt.h>
 #include <hal_boot2.h>
 #include <hal_board.h>
 #include <hosal_uart.h>
-#include <hal_gpio.h>
-#include <hal_hwtimer.h>
+#include <hosal_dma.h>
+
 #include <libfdt.h>
 #include <utils_log.h>
 #include <blog.h>
 #ifdef EASYFLASH_ENABLE
 #include <easyflash.h>
+#endif
+#ifdef SYS_LOOPRT_ENABLE
+#include <looprt.h>
+#include <loopset.h>
 #endif
 #ifdef SYS_USER_VFS_ROMFS_ENABLE
 #include <bl_romfs.h>
@@ -147,29 +144,10 @@ void __attribute__((weak)) vAssertCalled(void)
     abort();
 }
 
-#ifdef SYS_VFS_UART_ENABLE
-static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
+void __attribute__((weak)) _cli_init(int fd_console)
 {
-    uint32_t addr = hal_board_get_factory_addr();
-    const void *fdt = (const void *)addr;
-    uint32_t offset;
-
-    if (!name || !start || !off) {
-        return -1;
-    }
-
-    offset = fdt_subnode_offset(fdt, 0, name);
-    if (offset <= 0) {
-       log_error("%s NULL.\r\n", name);
-       return -1;
-    }
-
-    *start = (uint32_t)fdt;
-    *off = offset;
-
-    return 0;
+    /*empty*/
 }
-#endif
 
 static void app_main_entry(void *pvParameters)
 {
@@ -204,7 +182,7 @@ static void aos_loop_proc(void *pvParameters)
         "uart@4000A100",
     };
 
-    if (0 == get_dts_addr("uart", &fdt, &offset)) {
+    if (0 == hal_board_get_dts_addr("uart", &fdt, &offset)) {
         vfs_uart_init(fdt, offset, uart_node, 2);
     }
 #endif
@@ -224,6 +202,7 @@ static void aos_loop_proc(void *pvParameters)
         printf("Init CLI with event Driven\r\n");
         aos_cli_init(0);
         aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
+        _cli_init(fd_console);
     }
 #endif
 
@@ -234,17 +213,24 @@ static void aos_loop_proc(void *pvParameters)
             SYS_APP_TASK_PRIORITY,
             NULL);
 
+#ifdef SYS_AOS_LOOP_ENABLE
     aos_loop_run();
-
+#endif
     puts("------------------------------------------\r\n");
     puts("+++++++++Critical Exit From AOS LOOP entry++++++++++\r\n");
     puts("******************************************\r\n");
     vTaskDelete(NULL);
 }
 
+void __attribute__((weak)) _dump_lib_info(void)
+{
+    /*empty*/
+}
+
 static void _dump_boot_info(void)
 {
     char chip_feature[40];
+#if 0
     const char *banner;
 
     puts("Booting BL702 Chip...\r\n");
@@ -254,6 +240,7 @@ static void _dump_boot_info(void)
         puts(banner);
     }
     puts("\r\n");
+#endif
     /*Chip Feature list*/
     puts("\r\n");
     puts("------------------------------------------------------------\r\n");
@@ -277,6 +264,8 @@ static void _dump_boot_info(void)
     puts("RF Version: ");
     puts(BL_SDK_RF_VER); // @suppress("Symbol is not resolved")
     puts("\r\n");
+
+    _dump_lib_info();
 
     puts("Build Date: ");
     puts(__DATE__);
@@ -317,19 +306,26 @@ static void system_early_init(void)
 
 void bl702_main()
 {
-    TaskHandle_t aos_loop_proc_task;
+    static StackType_t aos_loop_proc_stack[1024];
+    static StaticTask_t aos_loop_proc_task;
 
     bl_sys_early_init();
+
     /*Init UART In the first place*/
     hosal_uart_init(&uart_stdio);
-    puts("Starting bl602 now....\r\n");
+    puts("Starting bl702 now....\r\n");
 
     _dump_boot_info();
-    
+
+    printf("Heap %u@%p, %u@%p\r\n",
+            (unsigned int)&_heap_size, &_heap_start,
+            (unsigned int)&_heap2_size, &_heap2_start
+    );
+
     system_early_init();
 
     puts("[OS] Starting aos_loop_proc task...\r\n");
-    xTaskCreate(aos_loop_proc, (char*)"event_loop", 1024, NULL, 15, &aos_loop_proc_task);
+    xTaskCreateStatic(aos_loop_proc, (char*)"event_loop", sizeof(aos_loop_proc_stack)/4, NULL, 15, aos_loop_proc_stack, &aos_loop_proc_task);
 
     puts("[OS] Starting OS Scheduler...\r\n");
     vTaskStartScheduler();
