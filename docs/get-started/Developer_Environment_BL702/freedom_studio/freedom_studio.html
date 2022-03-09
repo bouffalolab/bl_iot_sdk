@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Freedom Studio &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
+  <title>Freedom Studio &mdash; BL IoT SDK release_bl_iot_sdk_1.6.36 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.36 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
+                release_bl_iot_sdk_1.6.36
               </div>
             
           
@@ -79,7 +79,7 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="在文档中搜索" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -153,7 +153,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/get-started/Developer_Environment_BL702/freedom_studio/freedom_studio.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/get-started/Developer_Environment_BL702/freedom_studio/freedom_studio.rst.txt" rel="nofollow"> 查看页面源码</a>
           
         
       </li>
@@ -167,10 +167,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="freedom-studio">
-<h1>Freedom Studio<a class="headerlink" href="#freedom-studio" title="永久链接至标题">¶</a></h1>
+<h1>Freedom Studio<a class="headerlink" href="#freedom-studio" title="永久链接至标题"></a></h1>
 <p>本文档介绍Freedom Studio的使用。下载地址<code class="docutils literal notranslate"><span class="pre">https://github.com/sifive/freedom-studio/releases</span></code>，版本为 <code class="docutils literal notranslate"><span class="pre">FreedomStudio-2019-08-2</span></code> ；Freedom Studio使用需要先安装JDK环境。</p>
 <div class="section" id="jdk">
-<h2>安装JDK环境<a class="headerlink" href="#jdk" title="永久链接至标题">¶</a></h2>
+<h2>安装JDK环境<a class="headerlink" href="#jdk" title="永久链接至标题"></a></h2>
 <ul class="simple">
 <li>JDK下载地址<code class="docutils literal notranslate"><span class="pre">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</span></code>,JDK安装，如图所示；</li>
 </ul>
@@ -184,11 +184,11 @@
 <img alt="" src="../../../_images/image3110.png" />
 </div>
 <div class="figure">
-<img alt="" src="../../../_images/image328.png" />
+<img alt="" src="../../../_images/image329.png" />
 </div>
 </div>
 <div class="section" id="id1">
-<h2>导入工程<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>导入工程<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
 <ul class="simple">
 <li>首先启动 <code class="docutils literal notranslate"><span class="pre">Freedom</span> <span class="pre">Studio</span></code> ，打开工具栏上的<code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">import</span></code>，选择<code class="docutils literal notranslate"><span class="pre">General</span></code>菜单下的<code class="docutils literal notranslate"><span class="pre">Existing</span> <span class="pre">Projects</span> <span class="pre">into</span> <span class="pre">Workspace</span></code>选项导入工程。</li>
 </ul>
@@ -200,7 +200,7 @@
 </div>
 </div>
 <div class="section" id="launch">
-<h2>配置工程launch文件<a class="headerlink" href="#launch" title="永久链接至标题">¶</a></h2>
+<h2>配置工程launch文件<a class="headerlink" href="#launch" title="永久链接至标题"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>在工程中选择Debug Configurations，如果导入工程中有如下bl_iot_sdk_debug_freedom_studio_win_bl702等配置，那么该章节可以略过；</li>
@@ -251,7 +251,7 @@
 <li>Set breakpoint at:设备启动后，程序停在bl702_main函数；如图所示；</li>
 </ul>
 <div class="figure">
-<img alt="" src="../../../_images/image238.png" />
+<img alt="" src="../../../_images/image239.png" />
 </div>
 <ul class="simple">
 <li>Config选项中配置如下：Target Achitecture:选择riscv:rv32；如图所示；</li>
@@ -274,7 +274,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="debug">
-<h2>Debug<a class="headerlink" href="#debug" title="永久链接至标题">¶</a></h2>
+<h2>Debug<a class="headerlink" href="#debug" title="永久链接至标题"></a></h2>
 <ul class="simple">
 <li>需要将BL_PROG板子通过JTAG 连接上设备，BL_PROG板子与设备通过USB连上电脑，此时电脑能检测到2个USB端口，下载工具 <code class="docutils literal notranslate"><span class="pre">zadig</span></code> 其下载地址为 <code class="docutils literal notranslate"><span class="pre">https://zadig.akeo.ie/</span></code>通过工具将串口(较大的串口号)设置为WinUSB，如图所示：</li>
 </ul>
@@ -344,7 +344,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
+            VERSION:'release_bl_iot_sdk_1.6.36',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

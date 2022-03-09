@@ -237,7 +237,7 @@ int usb_open(struct device *dev, uint16_t oflag)
     usb_fs_device.in_ep[0].ep_cfg.ep_type = USBD_EP_TYPE_CTRL;
 
     /* USB interrupt enable config */
-    USB_IntEn(USB_INT_ALL, DISABLE);           //all
+    BL_WR_REG(USB_BASE, USB_INT_EN, 0);
     USB_IntEn(USB_INT_RESET, ENABLE);          //1
     USB_IntEn(USB_INT_EP0_SETUP_DONE, ENABLE); //5
     USB_IntEn(USB_INT_EP0_IN_DONE, ENABLE);    //7
@@ -245,7 +245,7 @@ int usb_open(struct device *dev, uint16_t oflag)
     USB_IntEn(USB_INT_RESET_END, ENABLE);      //27
 
     /* USB interrupt mask config */
-    USB_IntMask(USB_INT_ALL, MASK);              //all
+    BL_WR_REG(USB_BASE, USB_INT_MASK, 0xffffffff);
     USB_IntMask(USB_INT_RESET, UNMASK);          //1
     USB_IntMask(USB_INT_EP0_SETUP_DONE, UNMASK); //5
     USB_IntMask(USB_INT_EP0_IN_DONE, UNMASK);    //7
@@ -410,7 +410,7 @@ int usb_write(struct device *dev, uint32_t pos, const void *buffer, uint32_t siz
         usb_lli_list.cfg.bits.SI = 1;
         usb_lli_list.cfg.bits.SBSize = DMA_BURST_16BYTE;
         usb_lli_list.cfg.bits.DBSize = DMA_BURST_1BYTE;
-        device_control(usb_device->tx_dma, DMA_CHANNEL_UPDATE, (void *)((uint32_t)&usb_lli_list));
+        dma_channel_update(usb_device->tx_dma, (void *)((uint32_t)&usb_lli_list));
         dma_channel_start(usb_device->tx_dma);
         return 0;
     } else {
@@ -435,7 +435,7 @@ int usb_read(struct device *dev, uint32_t pos, void *buffer, uint32_t size)
         usb_lli_list.cfg.bits.SI = 0;
         usb_lli_list.cfg.bits.SBSize = DMA_BURST_1BYTE;
         usb_lli_list.cfg.bits.DBSize = DMA_BURST_16BYTE;
-        device_control(usb_device->rx_dma, DMA_CHANNEL_UPDATE, (void *)((uint32_t)&usb_lli_list));
+        dma_channel_update(usb_device->rx_dma, (void *)((uint32_t)&usb_lli_list));
         dma_channel_start(usb_device->rx_dma);
         return 0;
     } else {
@@ -527,45 +527,37 @@ int usb_dc_ep_open(struct device *dev, const struct usb_dc_ep_cfg *ep_cfg)
         usb_fs_device.in_ep[ep_idx].ep_cfg.ep_type = ep_cfg->ep_type;
     }
 
-    if (ep_idx) {
-        switch (ep_cfg->ep_type) {
-            case USBD_EP_TYPE_CTRL:
-                epCfg.type = USB_DC_EP_TYPE_CTRL;
-                break;
+    switch (ep_cfg->ep_type) {
+        case USBD_EP_TYPE_CTRL:
+            epCfg.type = USB_DC_EP_TYPE_CTRL;
+            break;
 
-            case USBD_EP_TYPE_ISOC:
-                epCfg.type = USB_DC_EP_TYPE_ISOC;
-                break;
+        case USBD_EP_TYPE_ISOC:
+            epCfg.type = USB_DC_EP_TYPE_ISOC;
+            break;
 
-            case USBD_EP_TYPE_BULK:
-                epCfg.type = USB_DC_EP_TYPE_BULK;
-                break;
+        case USBD_EP_TYPE_BULK:
+            epCfg.type = USB_DC_EP_TYPE_BULK;
+            break;
 
-            case USBD_EP_TYPE_INTR:
-                epCfg.type = USB_DC_EP_TYPE_INTR;
-                break;
+        case USBD_EP_TYPE_INTR:
+            epCfg.type = USB_DC_EP_TYPE_INTR;
+            break;
 
-            default:
-                return -1;
-        }
+        default:
+            return -1;
+    }
 
-        USB_Set_EPx_Config(ep_idx, &epCfg);
+    USB_Set_EPx_Config(ep_idx, &epCfg);
 
-        if (USB_EP_DIR_IS_OUT(ep)) {
-            /* Clear NAK and enable ep */
-            USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_ACK);
-            usb_fs_device.out_ep[ep_idx].ep_ena = 1U;
-        } else {
-            //USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_ACK);
-            USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_NACK);
-            usb_fs_device.in_ep[ep_idx].ep_ena = 1U;
-        }
+    if (USB_EP_DIR_IS_OUT(ep)) {
+        /* Clear NAK and enable ep */
+        USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_ACK);
+        usb_fs_device.out_ep[ep_idx].ep_ena = 1U;
     } else {
-        if (USB_EP_DIR_IS_OUT(ep)) {
-            usb_fs_device.out_ep[ep_idx].ep_ena = 1U;
-        } else {
-            usb_fs_device.in_ep[ep_idx].ep_ena = 1U;
-        }
+        //USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_ACK);
+        USB_Set_EPx_Status(USB_EP_GET_IDX(ep), USB_EP_STATUS_NACK);
+        usb_fs_device.in_ep[ep_idx].ep_ena = 1U;
     }
 
     return 0;
@@ -1032,12 +1024,6 @@ int usb_dc_send_from_ringbuffer(struct device *dev, Ring_Buffer_Type *rb, uint8_
         return -USB_DC_ZLP_ERR;
     }
 }
-
-/**
-  * @brief  This function handles PCD interrupt request.
-  * @param  hpcd PCD handle
-  * @retval HAL status
-  */
 
 /**
  * @brief

@@ -880,6 +880,17 @@ static uint32_t flashImageOffset;
 /* SF Control Configuration, will set based on flash configuration */
 static SF_Ctrl_Cfg_Type sfCtrlCfg;
 
+/* Wakeup Pin Configuration */
+static uint8_t hbnWakeupPin = 0;
+static int8_t pdsWakeupPin = -1;
+static uint32_t glbWakeupPin = 0;
+
+/* Wakeup Event, will get from pds register after wakeup */
+static uint8_t wakeupEvent = 0;
+
+/* Wakeup Pin, will get according to wakeup event */
+static uint32_t wakeupPin = 0;
+
 
 static void bl_pds_set_sf_ctrl(SPI_Flash_Cfg_Type *pFlashCfg)
 {
@@ -914,20 +925,33 @@ static void bl_pds_xtal_cfg(void)
 {
     uint32_t tmpVal;
     
-    // reduce xtal ready time
+    // optimize xtal ready time
+#if !defined(CFG_PDS_OPTIMIZE)
     tmpVal = BL_RD_REG(AON_BASE, AON_XTAL_CFG);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_SEL_AON, 0);
     BL_WR_REG(AON_BASE, AON_XTAL_CFG, tmpVal);
     
-    // reduce peak current when wakeup
+    tmpVal = BL_RD_REG(AON_BASE, AON_TSEN);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_INT_SEL_AON, 2);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_INN_CFG_EN_AON, 1);
+    BL_WR_REG(AON_BASE, AON_TSEN, tmpVal);
+#else
+    tmpVal = BL_RD_REG(AON_BASE, AON_XTAL_CFG);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_SEL_AON, 0);
+    BL_WR_REG(AON_BASE, AON_XTAL_CFG, tmpVal);
+    
     tmpVal = BL_RD_REG(AON_BASE, AON_TSEN);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_INT_SEL_AON, 0);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_INN_CFG_EN_AON, 1);
     BL_WR_REG(AON_BASE, AON_TSEN, tmpVal);
+#endif
 }
 
 
 void bl_pds_init(void)
 {
+    unsigned long mstatus_tmp;
+    
     // Get cache way disable setting
     cacheWayDisable = BL_GET_REG_BITS_VAL(BL_RD_REG(L1C_BASE, L1C_CONFIG), L1C_WAY_DIS);
     
@@ -942,7 +966,10 @@ void bl_pds_init(void)
     psramIoCfg = ((devInfo.flash_cfg == 1 || devInfo.flash_cfg == 2) && devInfo.psram_cfg != 1) ? 0x3F : 0x00;
     
     // Get clock configuration from bootheader
+    mstatus_tmp = read_csr(mstatus);
+    clear_csr(mstatus, MSTATUS_MIE);
     bl_flash_read_need_lock(CLK_CFG_OFFSET, (uint8_t *)(&clkCfg), sizeof(sys_clk_cfg_t));
+    write_csr(mstatus, mstatus_tmp);
     
     // Get flash configuration pointer
     flashCfgPtr = (SPI_Flash_Cfg_Type *)bl_flash_get_flashCfg();
@@ -955,6 +982,9 @@ void bl_pds_init(void)
     
     // Optimize xtal configuration
     bl_pds_xtal_cfg();
+    
+    // Overwrite default soft start delay (default 0, which may cause wakeup failure)
+    AON_Set_LDO11_SOC_Sstart_Delay(2);
     
     // Select 32K (RC32K and XTAL32K are both default on)
 #ifdef CFG_USE_XTAL32K
@@ -974,6 +1004,11 @@ void bl_pds_init(void)
     // Disable GPIO9 - GPIO13 wakeup, 0x4000F014[7:3]=5'b11111
     HBN_Pin_WakeUp_Mask(0x1F);
     
+    // Enable pds wakeup interrupt
+    PDS_IntMask(PDS_INT_WAKEUP, UNMASK);
+    PDS_IntMask(PDS_INT_RF_DONE, MASK);
+    PDS_IntMask(PDS_INT_PLL_DONE, MASK);
+    
     // Configure PDS_SLEEP_CNT as wakeup source
     PDS_IntEn(PDS_INT_PDS_SLEEP_CNT, ENABLE);
     PDS_IntEn(PDS_INT_HBN_IRQ_OUT0, DISABLE);
@@ -983,6 +1018,83 @@ void bl_pds_init(void)
     PDS_IntEn(PDS_INT_BLE_SLP_IRQ, DISABLE);
     PDS_IntEn(PDS_INT_USB_WKUP, DISABLE);
     PDS_IntEn(PDS_INT_KYS_QDEC, DISABLE);
+}
+
+void bl_pds_gpio_wakeup_cfg(uint8_t pin_list[], uint8_t pin_num)
+{
+    int i;
+    int pin;
+    
+    hbnWakeupPin = 0;
+    pdsWakeupPin = -1;
+    
+    for(i = 0; i < pin_num; i++){
+        pin = pin_list[i];
+        
+        if(pin >= 9 && pin <= 12){
+            GLB_GPIO_Set_HZ(pin);
+            hbnWakeupPin |= 1 << (pin - 9);
+        }
+        
+        if(pin >= 0 && pin <= 7){
+            pdsWakeupPin = pin;
+        }
+    }
+    
+    if(hbnWakeupPin == 0){
+        HBN_Aon_Pad_IeSmt_Cfg(0);
+        HBN_Pin_WakeUp_Mask(0x1F);
+        PDS_IntEn(PDS_INT_HBN_IRQ_OUT0, DISABLE);
+    }else{
+        HBN_Aon_Pad_IeSmt_Cfg(hbnWakeupPin);
+        HBN_Pin_WakeUp_Mask(~hbnWakeupPin & 0x1F);
+        HBN_GPIO_INT_Enable(HBN_GPIO_INT_TRIGGER_ASYNC_FALLING_EDGE);
+        PDS_IntEn(PDS_INT_HBN_IRQ_OUT0, ENABLE);
+    }
+    
+    if(pdsWakeupPin == -1){
+        PDS_Set_Vddcore_GPIO_IntMask(MASK);
+        PDS_IntEn(PDS_INT_GPIO_IRQ, DISABLE);
+    }else{
+        GLB_GPIO_Set_HZ(pdsWakeupPin);
+        GLB_GPIO_INPUT_Enable(pdsWakeupPin);
+        PDS_Set_Vddcore_GPIO_IntCfg(pdsWakeupPin, PDS_AON_GPIO_INT_TRIGGER_SYNC_FALLING_EDGE);
+        PDS_Set_Vddcore_GPIO_IntMask(UNMASK);
+        PDS_IntEn(PDS_INT_GPIO_IRQ, ENABLE);
+    }
+}
+
+void bl_pds_gpio_wakeup_cfg_ex(uint32_t bitmap)
+{
+    int pin;
+    GLB_GPIO_Cfg_Type gpioCfg;
+    
+    for(pin = 0; pin <= 31; pin++){
+        if(bitmap & (1 << pin)){
+            gpioCfg.gpioPin = pin;
+            gpioCfg.gpioFun = 11;
+            gpioCfg.gpioMode = GPIO_MODE_INPUT;
+            gpioCfg.pullType = GPIO_PULL_NONE;
+            gpioCfg.drive = 0;
+            gpioCfg.smtCtrl = 1;
+            GLB_GPIO_Init(&gpioCfg);
+            
+            GLB_Set_GPIO_IntMod(pin, GLB_GPIO_INT_CONTROL_ASYNC, GLB_GPIO_INT_TRIG_NEG_PULSE);
+            GLB_GPIO_IntMask(pin, UNMASK);
+        }else{
+            GLB_GPIO_IntMask(pin, MASK);
+        }
+    }
+    
+    HBN_Aon_Pad_IeSmt_Cfg((bitmap >> 9) & 0x1F);
+    
+    if(bitmap == 0){
+        PDS_IntEn(PDS_INT_GPIO_IRQ, DISABLE);
+    }else{
+        PDS_IntEn(PDS_INT_GPIO_IRQ, ENABLE);
+    }
+    
+    glbWakeupPin = bitmap;
 }
 
 void bl_pds_fastboot_cfg(uint32_t addr)
@@ -1070,10 +1182,11 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_restore_tcm(void)
 // can be placed in flash, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_set_gpio_high_z(void)
 {
-    uint32_t pin;
+    int pin;
+    uint32_t tmpVal;
     
-    // Set all gpio pads in High-Z state (GPIO0 - GPIO22)
-    for(pin=0; pin<=22; pin++){
+    // Set all gpio pads in High-Z state (GPIO0 - GPIO31)
+    for(pin = 0; pin <= 31; pin++){
 #if !defined(CFG_PDS_OPTIMIZE)
         if(pin == 0 || pin == 1 || pin == 2 || pin == 9){
             continue;
@@ -1082,16 +1195,35 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_set_gpio_high_z(void)
             continue;
         }
 #endif
+        if(pin >= 23 && pin <= 28){
+            continue;
+        }
+        if(pin == pdsWakeupPin){
+            continue;
+        }
+        if(glbWakeupPin & (1 << pin)){
+            continue;
+        }
 #if FAST_BOOT_TEST == 2
         if(pin == TEST_GPIO){
             continue;
         }
 #endif
+        
         GLB_GPIO_Set_HZ(pin);
     }
     
     // Set all psram pads in High-Z state
-    GLB_Set_Psram_Pad_HZ();
+    if(((glbWakeupPin >> 23) & 0x3F) == 0){
+        GLB_Set_Psram_Pad_HZ();
+    }
+    
+    // Will be overwritten by GLB_GPIO_Set_HZ()
+    if(hbnWakeupPin != 0){
+        tmpVal = BL_RD_REG(HBN_BASE, HBN_IRQ_MODE);
+        tmpVal = BL_SET_REG_BITS_VAL(tmpVal, HBN_REG_AON_PAD_IE_SMT, hbnWakeupPin);
+        BL_WR_REG(HBN_BASE, HBN_IRQ_MODE, tmpVal);
+    }
 }
 
 // can be placed in flash, here placed in pds section to reduce fast boot time
@@ -1257,9 +1389,22 @@ static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
     bl_pds_restore_cpu_reg();
 }
 
-static void bl_pds_IRQHandler(void)
+// can be placed in flash
+static void ATTR_NOINLINE bl_pds_gpio_status_clear(void)
 {
-    PDS_IntClear();
+    if(hbnWakeupPin != 0){
+        BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0x1F);
+    }
+    
+    if(pdsWakeupPin != -1){
+        PDS_Set_Vddcore_GPIO_IntClear();
+    }
+    
+    if(glbWakeupPin != 0){
+        BL_WR_REG(GLB_BASE, GLB_GPIO_INT_CLR1, glbWakeupPin);
+        while(BL_RD_REG(GLB_BASE, GLB_GPIO_INT_STAT1) & glbWakeupPin);
+        BL_WR_REG(GLB_BASE, GLB_GPIO_INT_CLR1, 0);
+    }
 }
 
 // can be placed in flash, here placed in pds section to reduce fast boot time
@@ -1296,6 +1441,8 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
     *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) &= ~(uint32_t)((1<<0)|(1<<1)|(1<<2));
 #endif
     
+    bl_pds_gpio_status_clear();
+    
 #if !defined(CFG_PDS_OPTIMIZE)
     if(pdsLevel == 31){
         HBN_Set_Ldo11rt_Drive_Strength(HBN_LDO11RT_DRIVE_STRENGTH_10_100UA);
@@ -1305,8 +1452,8 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
 #endif
     
     if(devInfo.flash_cfg == 1 || devInfo.flash_cfg == 2){
-        pdsCfg->pdsCtl.puFlash = 1;
-        pdsCfg->pdsCtl.swPuFlash = 1;
+        pdsCfg->pdsCtl.puFlash = 1;    // Power down internal flash in pds31
+        pdsCfg->pdsCtl.swPuFlash = 1;  // Don't power down internal flash in pds0 - pds7
         
         if(pdsLevel == 31){
             *pdFlash = 1;
@@ -1314,7 +1461,7 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
             *pdFlash = 0;
         }
     }else{
-        *pdFlash = 1;
+        *pdFlash = 0;
     }
     
     if(pdsLevel >= 4 && HBN_Get_Status_Flag() != HBN_STATUS_ENTER_FLAG){
@@ -1326,12 +1473,7 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
     }
     
     if(pdsCfg->pdsCtl.cpu0WfiMask == 0){
-        PDS_IntMask(PDS_INT_WAKEUP, UNMASK);
-        PDS_IntMask(PDS_INT_RF_DONE, MASK);
-        PDS_IntMask(PDS_INT_PLL_DONE, MASK);
         PDS_IntClear();
-        
-        bl_irq_register(PDS_WAKEUP_IRQn, bl_pds_IRQHandler);
         bl_irq_enable(PDS_WAKEUP_IRQn);
     }
     
@@ -1345,14 +1487,12 @@ static int ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_1(uint32_t pdsLevel
 // can be placed in tcm section, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_2(uint32_t pdFlash)
 {
-#if 0
     // Power down flash
-    if(pdFlash){
+    if(!pdFlash){
         RomDriver_SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
         RomDriver_SFlash_Reset_Continue_Read(flashCfgPtr);
         RomDriver_SFlash_Powerdown();
     }
-#endif
     
     // Pull up flash pads
     if(devInfo.flash_cfg == 0){
@@ -1367,9 +1507,7 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_pre_process_2(uint32_t pdFlash
     }
     
     // Set all flash pads in High-Z state
-    if(pdFlash){
-        GLB_Set_Flash_Pad_HZ();
-    }
+    GLB_Set_Flash_Pad_HZ();
     
     // Select RC32M
     RomDriver_HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_RC32M);
@@ -1401,6 +1539,7 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLev
     if(pdsLevel < 4){
         // Select DLL or XTAL32M
         AON_Power_On_XTAL();
+        //BL702_Delay_MS(1);  // actually xtal may be not ready when AON_XTAL_RDY becomes 1
         GLB_Power_On_DLL(GLB_DLL_XTAL_32M);
         if(clkCfg.pll_clk >= 2){
             HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_DLL);
@@ -1412,7 +1551,7 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLev
         *(volatile uint32_t *)0x4000E030 = 0;
         
         // Power up flash
-        if(pdFlash){
+        if(!pdFlash){
             SF_Cfg_Init_Flash_Gpio((devInfo.flash_cfg<<2)|devInfo.sf_swap_cfg, 1);
             SF_Ctrl_Set_Owner(SF_CTRL_OWNER_SAHB);
             SFlash_Restore_From_Powerdown(flashCfgPtr, flashCfgPtr->cReadSupport);
@@ -1424,6 +1563,38 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLev
 // can be placed in flash, here placed in pds section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_2(void)
 {
+#if !defined(CFG_PDS_OPTIMIZE)
+    uint32_t tmpVal;
+    uint32_t hbnGpioStatus;
+    uint32_t pdsGpioStatus;
+    uint32_t glbGpioStatus;
+    
+    tmpVal = BL_RD_REG(PDS_BASE, PDS_INT);
+    wakeupEvent = BL_GET_REG_BITS_VAL(tmpVal, PDS_RO_PDS_WAKEUP_EVENT);
+    tmpVal = BL_SET_REG_BIT(tmpVal, PDS_CR_PDS_INT_CLR);
+    BL_WR_REG(PDS_BASE, PDS_INT, tmpVal);
+    tmpVal = BL_RD_REG(PDS_BASE, PDS_INT);
+    tmpVal = BL_CLR_REG_BIT(tmpVal, PDS_CR_PDS_INT_CLR);
+    BL_WR_REG(PDS_BASE, PDS_INT, tmpVal);
+    
+    wakeupPin = 0;
+    
+    if(wakeupEvent & 0x02){
+        hbnGpioStatus = BL_RD_REG(HBN_BASE, HBN_IRQ_STAT) & 0x1F;
+        wakeupPin |= hbnGpioStatus << 9;
+    }
+    
+    if(wakeupEvent & 0x08){
+        pdsGpioStatus = BL_GET_REG_BITS_VAL(BL_RD_REG(PDS_BASE, PDS_GPIO_INT), PDS_GPIO_INT_STAT);
+        if(pdsGpioStatus != 0){
+            wakeupPin |= 1 << pdsWakeupPin;
+        }
+        
+        glbGpioStatus = BL_RD_REG(GLB_BASE, GLB_GPIO_INT_STAT1);
+        wakeupPin |= glbGpioStatus;
+    }
+#endif
+    
     __enable_irq();
 }
 
@@ -1484,4 +1655,20 @@ void ATTR_PDS_SECTION bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles)
     // Post-process
     bl_pds_post_process_1(pdsLevel, pdFlash);
     bl_pds_post_process_2();
+}
+
+int bl_pds_get_wakeup_source(void)
+{
+    if(wakeupEvent & 0x01){
+        return PDS_WAKEUP_BY_SLEEP_CNT;
+    }else if(wakeupEvent & 0x0A){
+        return PDS_WAKEUP_BY_GPIO;
+    }else{
+        return 0;
+    }
+}
+
+uint32_t bl_pds_get_wakeup_gpio(void)
+{
+    return wakeupPin;
 }

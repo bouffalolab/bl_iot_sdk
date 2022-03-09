@@ -1,0 +1,27 @@
+[pt_table]
+#partition table is 4K in size
+address0 = 0xE000
+address1 = 0xF000
+
+[[pt_entry]]
+type = 0
+name = "FW_CPU0"
+device = 0
+address0 = 0x60000
+size0 = 0x40000
+address1 = 0xA0000
+size1 = 0x20000
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 10
+name = "FW_CPU1"
+device = 0
+address0 = 0xC0000
+size0 = 0x20000
+address1 = 0xE0000
+size1 = 0x20000
+# compressed image must set len,normal image can left it to 0
+len = 0
+

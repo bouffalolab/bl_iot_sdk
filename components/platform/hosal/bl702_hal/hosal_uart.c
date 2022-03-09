@@ -51,7 +51,7 @@ static void gpio_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pi
     cfg.gpioPin = rx_pin;
     cfg.gpioMode = GPIO_MODE_AF;
     cfg.pullType = GPIO_PULL_UP;
-#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+#if defined(CFG_PDS_OPTIMIZE) || defined(CFG_HBN_OPTIMIZE)
     RomDriver_GLB_GPIO_Init(&cfg);
 #else
     GLB_GPIO_Init(&cfg);
@@ -60,7 +60,7 @@ static void gpio_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pi
     cfg.gpioPin = tx_pin;
     cfg.gpioMode = GPIO_MODE_AF;
     cfg.pullType = GPIO_PULL_UP;
-#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+#if defined(CFG_PDS_OPTIMIZE) || defined(CFG_HBN_OPTIMIZE)
     RomDriver_GLB_GPIO_Init(&cfg);
 #else
     GLB_GPIO_Init(&cfg);

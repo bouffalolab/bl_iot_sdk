@@ -247,6 +247,18 @@ void *_calloc_r(struct _reent *ptr, size_t size, size_t len)
     return result;
 }
 
+void *_memalign_r(struct _reent *ptr, size_t align, size_t size)
+{
+    void *result;
+
+    result = (void *)mmheap_align_alloc(&mmheap_root, align, size);
+    if (result == NULL) {
+        ptr->_errno = -ENOMEM;
+    }
+
+    return result;
+}
+
 void _free_r(struct _reent *ptr, void *addr)
 {
     mmheap_free(&mmheap_root, addr);

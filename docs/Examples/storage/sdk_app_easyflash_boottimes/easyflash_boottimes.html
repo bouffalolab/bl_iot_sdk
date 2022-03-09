@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Easyflash4 boot times &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
+  <title>Easyflash4 boot times &mdash; BL IoT SDK release_bl_iot_sdk_1.6.36 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.36 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
+                release_bl_iot_sdk_1.6.36
               </div>
             
           
@@ -79,7 +79,7 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="在文档中搜索" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -153,7 +153,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/Examples/storage/sdk_app_easyflash_boottimes/easyflash_boottimes.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Examples/storage/sdk_app_easyflash_boottimes/easyflash_boottimes.rst.txt" rel="nofollow"> 查看页面源码</a>
           
         
       </li>
@@ -167,20 +167,20 @@
            <div itemprop="articleBody">
             
   <div class="section" id="easyflash4-boot-times">
-<span id="easyflash-boottimes-index"></span><h1>Easyflash4 boot times<a class="headerlink" href="#easyflash4-boot-times" title="永久链接至标题">¶</a></h1>
+<span id="easyflash-boottimes-index"></span><h1>Easyflash4 boot times<a class="headerlink" href="#easyflash4-boot-times" title="永久链接至标题"></a></h1>
 <div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
 <p>本示例主要介绍Easyflash4 启动读写测试相关</p>
 </div>
 <div class="section" id="id2">
-<h2>算法实现<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>算法实现<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
 <div class="section" id="id3">
-<span id="id4"></span><h3>1.首次使用<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<span id="id4"></span><h3>1.首次使用<a class="headerlink" href="#id3" title="永久链接至标题"></a></h3>
 <ul>
 <li><p class="first">假定 ENV 分区里有 4 个扇区，以下将按照操作 ENV 的方式，逐一举例讲解不同操作下，对应的 Flash 状态及数据变化。</p>
 <blockquote>
 <div><div class="figure">
-<img alt="" src="../../../_images/image134.png" />
+<img alt="" src="../../../_images/image135.png" />
 </div>
 </div></blockquote>
 </li>
@@ -189,10 +189,10 @@
 </ul>
 </div>
 <div class="section" id="kv1kv2kv3">
-<span id="kv"></span><h3>2.添加 KV1、KV2、KV3<a class="headerlink" href="#kv1kv2kv3" title="永久链接至标题">¶</a></h3>
+<span id="kv"></span><h3>2.添加 KV1、KV2、KV3<a class="headerlink" href="#kv1kv2kv3" title="永久链接至标题"></a></h3>
 <blockquote>
 <div><div class="figure">
-<img alt="" src="../../../_images/image229.png" />
+<img alt="" src="../../../_images/image230.png" />
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -208,10 +208,10 @@
 </ul>
 </div>
 <div class="section" id="kv2-kv3-kv1-kv4">
-<span id="id5"></span><h3>3.修改 KV2 KV3，删除 KV1，添加 KV4<a class="headerlink" href="#kv2-kv3-kv1-kv4" title="永久链接至标题">¶</a></h3>
+<span id="id5"></span><h3>3.修改 KV2 KV3，删除 KV1，添加 KV4<a class="headerlink" href="#kv2-kv3-kv1-kv4" title="永久链接至标题"></a></h3>
 <blockquote>
 <div><div class="figure">
-<img alt="" src="../../../_images/image323.png" />
+<img alt="" src="../../../_images/image324.png" />
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -225,10 +225,10 @@
 </ol>
 </div>
 <div class="section" id="kv5-kv6-gc-garbage-clear">
-<span id="gc"></span><h3>4.添加 KV5 KV6，触发 GC （Garbage Clear）<a class="headerlink" href="#kv5-kv6-gc-garbage-clear" title="永久链接至标题">¶</a></h3>
+<span id="gc"></span><h3>4.添加 KV5 KV6，触发 GC （Garbage Clear）<a class="headerlink" href="#kv5-kv6-gc-garbage-clear" title="永久链接至标题"></a></h3>
 <blockquote>
 <div><div class="figure">
-<img alt="" src="../../../_images/image419.png" />
+<img alt="" src="../../../_images/image420.png" />
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -239,9 +239,9 @@
 </div>
 </div>
 <div class="section" id="boot-times">
-<h2>boot times测试<a class="headerlink" href="#boot-times" title="永久链接至标题">¶</a></h2>
+<h2>boot times测试<a class="headerlink" href="#boot-times" title="永久链接至标题"></a></h2>
 <div class="section" id="id6">
-<h3>1. 测试流程以及效果<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<h3>1. 测试流程以及效果<a class="headerlink" href="#id6" title="永久链接至标题"></a></h3>
 <p>测试流程为：easyflash初始化 → 读boottimes → boottimes++ → 写boottimes，反复复位重启800次。</p>
 <ol class="arabic simple">
 <li>easyflash初始化</li>
@@ -310,7 +310,7 @@
 <p>黄色线：读easyflash耗时</p>
 </div>
 <div class="section" id="id7">
-<h3>2. 测试分析<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<h3>2. 测试分析<a class="headerlink" href="#id7" title="永久链接至标题"></a></h3>
 <ol class="arabic simple">
 <li>easyflash_init过程包含读和其他操作,故初始化时间与读时间相关。图中第一次出现尖峰现象说明此时easyflash在检查并格式化扇区，详见： <a class="reference internal" href="#id3">首次使用</a>。</li>
 <li>读过程分析：由于easyflash4每write一次kv（写KV详细过程见： <a class="reference internal" href="#kv">添加KV</a>），都会在old_kv地址后新增一个kv,再将old_kv标记为“delete”,所以每读一次kv，都需要遍历一遍kv，write次数越多，读耗时越长。</li>
@@ -319,7 +319,7 @@
 </ol>
 </div>
 <div class="section" id="id8">
-<h3>3. 测试结果对比<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<h3>3. 测试结果对比<a class="headerlink" href="#id8" title="永久链接至标题"></a></h3>
 <ol class="arabic simple">
 <li>easyflash4初次使用时，init耗时相较于上一版本有所提升，缩短约120000（us）。</li>
 <li>读写过程分析：4版本的NG模式操作效率比以前的模式高，充分利用剩余空闲区域，擦除次数及操作时间显著降低。</li>
@@ -327,7 +327,7 @@
 </ol>
 </div>
 <div class="section" id="id9">
-<h3>4. 代码修改<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<h3>4. 代码修改<a class="headerlink" href="#id9" title="永久链接至标题"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/* default sector hdr gc_flag*/
     #define DEFAULT_GC_FLAG                          0xFFFFFFFF
 
@@ -407,7 +407,7 @@ uint32_t gc_flag;                            /**&lt; sector gc_flag 0xFFFFFFFF-N
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
+            VERSION:'release_bl_iot_sdk_1.6.36',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

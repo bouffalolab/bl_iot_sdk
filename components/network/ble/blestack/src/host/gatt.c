@@ -4739,3 +4739,24 @@ SETTINGS_STATIC_HANDLER_DEFINE(bt_hash, "bt/hash", NULL, db_hash_set,
 			       db_hash_commit, NULL);
 #endif /*CONFIG_BT_GATT_CACHING */
 #endif /* CONFIG_BT_SETTINGS */
+
+#if defined(CONFIG_BT_GATT_DYNAMIC_DB)
+uint16_t bt_gatt_get_last_handle(void)
+{
+    struct bt_gatt_service *last;
+    u16_t handle, last_handle;
+
+    if (sys_slist_is_empty(&db)) {
+        handle = last_static_handle;
+        last_handle = handle;
+	    goto last;
+    }
+
+    last = SYS_SLIST_PEEK_TAIL_CONTAINER(&db, last, node);
+    handle = last->attrs[last->attr_count - 1].handle;
+    last_handle = handle;
+last:
+    return last_handle;
+}
+#endif
+

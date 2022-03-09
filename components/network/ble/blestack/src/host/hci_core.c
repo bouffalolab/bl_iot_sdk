@@ -53,7 +53,7 @@
 #elif defined(BL606P) || defined(BL616)
 #include "bl606p_hbn.h"
 #elif defined(BL808)//no bl808_hbn.h currently, comment it out temporarily
-//#include "bl808_hbn.h"
+#include "bl808_hbn.h"
 #endif
 #include "work_q.h"
 #endif
@@ -1114,7 +1114,7 @@ static void hci_disconn_complete(struct net_buf *buf)
 	conn->handle = 0U;
 
 	if (conn->type != BT_CONN_TYPE_LE) {
-#if defined(CONFIG_BT_BREDR)
+	#if defined(CONFIG_BT_BREDR)
 		if (conn->type == BT_CONN_TYPE_SCO) {
 			bt_sco_cleanup(conn);
 			return;
@@ -1127,8 +1127,11 @@ static void hci_disconn_complete(struct net_buf *buf)
 		    atomic_test_and_clear_bit(conn->flags, BT_CONN_BR_NOBOND)) {
 			bt_keys_link_key_clear(conn->br.link_key);
 		}
-#endif
+	#endif
 		bt_conn_unref(conn);
+	#if defined(CONFIG_BT_BREDR)
+		notify_disconnected(conn);
+	#endif
 		return;
 	}
 
@@ -5852,23 +5855,25 @@ int bt_disable_action(void)
     #if defined(CONFIG_BT_PRIVACY)
     k_delayed_work_del_timer(&bt_dev.rpa_update);
     #endif
-    
+    #if defined(CONFIG_BT_CONN)
     bt_gatt_deinit();
-
+    #endif
     //delete queue, not delete hci_cmd_pool.free/hci_rx_pool.free/acl_tx_pool.free which store released buffers.
     bt_delete_queue(&recv_fifo);
     bt_delete_queue(&g_work_queue_main.fifo);
     bt_delete_queue(&bt_dev.cmd_tx_queue);
-    
+    #if defined(CONFIG_BT_CONN)
     k_queue_free((struct k_queue *)&free_tx);
-    
+    #endif
     //delete sem
     k_sem_delete(&bt_dev.ncmd_sem);
     k_sem_delete(&g_poll_sem);
     #if defined(CONFIG_BT_SMP)
     k_sem_delete(&sc_local_pkey_ready);
     #endif
+    #if defined(CONFIG_BT_CONN)
     k_sem_delete(&bt_dev.le.pkts);
+    #endif
 
     atomic_clear_bit(bt_dev.flags, BT_DEV_ENABLE);
     
@@ -5912,7 +5917,11 @@ int bt_disable_action(void)
 
 int bt_disable(void)
 {   
-    if(le_check_valid_conn() || atomic_test_bit(bt_dev.flags, BT_DEV_EXPLICIT_SCAN)
+    if(
+        #if defined(CONFIG_BT_CONN)
+        le_check_valid_conn() ||
+        #endif
+        atomic_test_bit(bt_dev.flags, BT_DEV_EXPLICIT_SCAN)
       || atomic_test_bit(bt_dev.flags, BT_DEV_ADVERTISING)){
         return -1;
     }
@@ -6001,9 +6010,7 @@ int bt_set_name(const char *name)
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 #if defined(BFLB_BLE)
         #if defined(CFG_SLEEP)
-        #if !defined(BL808)//no bl808_hbn.h currently, comment it out temporarily
         if(HBN_Get_Status_Flag() == 0)
-        #endif
         #endif
         bt_settings_save_name();
 #else

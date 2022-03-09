@@ -240,6 +240,7 @@ void hal_boot2_debug_usb_port_init(void);
 
 void hal_boot2_debug_uart_gpio_deinit(void);
 int32_t hal_boot_parse_bootheader(boot2_image_config *boot_img_cfg, uint8_t *data);
+void hal_boot2_clean_cache(void);
 
 #ifdef __cplusplus
 }

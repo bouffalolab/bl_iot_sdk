@@ -345,3 +345,9 @@ int32_t hal_boot_parse_bootheader(boot2_image_config *boot_img_cfg, uint8_t *dat
     return 0;
 }
 
+void hal_boot2_clean_cache(void)
+{
+    
+}
+
+

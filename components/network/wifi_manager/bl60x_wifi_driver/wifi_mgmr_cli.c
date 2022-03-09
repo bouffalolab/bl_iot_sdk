@@ -744,7 +744,7 @@ static void wifi_power_saving_on_cmd(char *buf, int len, int argc, char **argv)
         if (mode >= WIFI_COEX_PM_MAX) {
             return;
         }
-        bl_os_log_debug("set ps mode:%d\r\n", mode);
+        bl_os_printf("set ps mode:%d\r\n", mode);
         wifi_mgmr_sta_ps_enter(mode);
     }
 }
@@ -752,6 +752,22 @@ static void wifi_power_saving_on_cmd(char *buf, int len, int argc, char **argv)
 static void wifi_power_saving_off_cmd(char *buf, int len, int argc, char **argv)
 {
     wifi_mgmr_sta_ps_exit();
+}
+
+static void wifi_power_saving_set(char *buf, int len, int argc, char **argv)
+{
+    uint16_t  ms = 0;
+
+    if (2 != argc) {
+        return;
+    }
+
+    ms = atoi(argv[1]);
+    bl_os_printf("Setting wifi ps acitve to %d\r\n", ms);
+
+    if (ms > 0) {
+        wifi_mgmr_set_wifi_active_time(ms);
+    }
 }
 
 static void sniffer_cb(void *env, uint8_t *pkt, int len)
@@ -1090,6 +1106,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "rc_fix_dis", "wifi rate control fixed rate diable", wifi_rc_fixed_disable},
         { "wifi_sta_ps_on", "wifi power saving mode ON", wifi_power_saving_on_cmd},
         { "wifi_sta_ps_off", "wifi power saving mode OFF", wifi_power_saving_off_cmd},
+        { "wifi_sta_ps_set", "set wifi ps mode active time", wifi_power_saving_set},
         { "wifi_sta_denoise_enable", "wifi denoise", wifi_denoise_enable_cmd},
         { "wifi_sta_denoise_disable", "wifi denoise", wifi_denoise_disable_cmd},
         { "wifi_sniffer_on", "wifi sniffer mode on", wifi_sniffer_on_cmd},

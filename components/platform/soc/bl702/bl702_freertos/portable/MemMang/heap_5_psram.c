@@ -141,7 +141,11 @@ size_t xUserSize = xWantedSize;
 	prvPortMalloc(). */
 	configASSERT( pxEnd );
 #if defined(CFG_ZIGBEE_ENABLE)
-	vTaskEnterCritical();
+	if( !xPortIsInsideInterrupt() )
+	{
+		vTaskEnterCritical();
+	}
+
 #else
 	vTaskSuspendAll();
 #endif
@@ -257,7 +261,10 @@ size_t xUserSize = xWantedSize;
 		traceMALLOC( pvReturn, xWantedSize );
 	}
 #if defined(CFG_ZIGBEE_ENABLE)
-	vTaskExitCritical();
+	if( !xPortIsInsideInterrupt() )
+	{
+		vTaskExitCritical();
+	}
 #else
 	( void ) xTaskResumeAll();
 #endif
@@ -399,7 +406,11 @@ BlockLink_t *pxLink;
 				allocated. */
 				pxLink->xBlockSize &= ~xBlockAllocatedBit;
 			#if defined(CFG_ZIGBEE_ENABLE)
-				vTaskEnterCritical();
+				if( !xPortIsInsideInterrupt() )
+				{
+					vTaskEnterCritical();
+				}
+
 			#else
 				vTaskSuspendAll();
 			#endif
@@ -410,7 +421,10 @@ BlockLink_t *pxLink;
 					prvInsertBlockIntoFreeList( ( ( BlockLink_t * ) pxLink ) );
 				}
 			#if defined(CFG_ZIGBEE_ENABLE)
-				vTaskExitCritical();
+				if( !xPortIsInsideInterrupt() )
+				{
+					vTaskExitCritical();
+				}
 			#else
 				( void ) xTaskResumeAll();
 			#endif

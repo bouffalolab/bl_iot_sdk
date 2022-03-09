@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "bl_sys.h"
+#include "bl_flash.h"
 
 volatile bool sys_log_all_enable = true;
 
@@ -212,8 +213,8 @@ int bl_sys_default_active_config(void)
         jtag_group = 0;
     }
 
-    // Set all gpio pads in High-Z state (GPIO0 - GPIO22, jtag & cci pads excluded)
-    for(i=0; i<=22; i++){
+    // Set all gpio pads in High-Z state (GPIO0 - GPIO31, jtag & cci pads excluded)
+    for(i=0; i<=31; i++){
         // jtag pins
         if(jtag_group == 1){
             if(i == 3 || i == 4 || i == 5 || i == 6){
@@ -234,24 +235,26 @@ int bl_sys_default_active_config(void)
             continue;
         }
 
-#if defined(CFG_USE_PSRAM)
-        // psram cs pin
-        if(i == 17){
+        // flash or psram pins
+        if(i >= 23 && i <= 28){
             continue;
         }
-#endif
 
         GLB_GPIO_Set_HZ(i);
     }
 
     // Set all psram pads in High-Z state
+#if !defined(CFG_USE_PSRAM)
     GLB_Set_Psram_Pad_HZ();
+#endif
 
     return 0;
 }
 
 int bl_sys_early_init(void)
 {
+    bl_flash_init();
+
     extern BL_Err_Type HBN_Aon_Pad_IeSmt_Cfg(uint8_t padCfg);
     HBN_Aon_Pad_IeSmt_Cfg(0x1F);
 

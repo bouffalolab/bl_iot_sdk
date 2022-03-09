@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AOS VFS &mdash; BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档</title>
+  <title>AOS VFS &mdash; BL IoT SDK release_bl_iot_sdk_1.6.36 文档</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.34-122-ga1803cbd5 文档" href="../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.36 文档" href="../../index.html"/>
         <link rel="up" title="&lt;no title&gt;" href="index.html"/>
         <link rel="next" title="device tree" href="devicetree.html"/>
         <link rel="prev" title="yloop" href="yloop.html"/> 
@@ -74,7 +74,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.34-122-ga1803cbd5
+                release_bl_iot_sdk_1.6.36
               </div>
             
           
@@ -82,7 +82,7 @@
           
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="在文档中搜索" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -179,7 +179,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Components/Middleware/vfs.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Components/Middleware/vfs.rst.txt" rel="nofollow"> 查看页面源码</a>
           
         
       </li>
@@ -193,7 +193,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="aos-vfs">
-<h1>AOS VFS<a class="headerlink" href="#aos-vfs" title="永久链接至标题">¶</a></h1>
+<h1>AOS VFS<a class="headerlink" href="#aos-vfs" title="永久链接至标题"></a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="#id1">概要</a></li>
 <li><a class="reference internal" href="#vfs">VFS提供的标准接口</a></li>
@@ -204,11 +204,11 @@
 <li><a class="reference internal" href="#id5">总结</a></li>
 </ul>
 <div class="section" id="id1">
-<h2>概要<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<h2>概要<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
 <p>VFS存在的意义，屏蔽掉底层文件系统的差异，为应用层提供标准的系统调用接口。</p>
 </div>
 <div class="section" id="vfs">
-<h2>VFS提供的标准接口<a class="headerlink" href="#vfs" title="永久链接至标题">¶</a></h2>
+<h2>VFS提供的标准接口<a class="headerlink" href="#vfs" title="永久链接至标题"></a></h2>
 <p>基本通用的UNIX接口都已经实现了。之所以具有前缀<code class="docutils literal notranslate"><span class="pre">aos_</span></code>。是因为这些都是对外的接口，在AliOS
 Things的代码命名规则中规定：所有的对外接口都需要加上前缀<code class="docutils literal notranslate"><span class="pre">aos_</span></code></p>
 <p>aos_open</p>
@@ -229,7 +229,7 @@ Things的代码命名规则中规定：所有的对外接口都需要加上前�
 <p>aos_mkdir</p>
 </div>
 <div class="section" id="id2">
-<h2>VFS的数据结构<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2>VFS的数据结构<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">inode_t</span></code>数据结构</p>
 <div class="code c highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">this</span> <span class="n">structure</span> <span class="n">represents</span> <span class="n">inode</span> <span class="k">for</span> <span class="n">driver</span> <span class="ow">and</span> <span class="n">fs</span><span class="o">*/</span>
 <span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
@@ -298,7 +298,7 @@ Things的代码命名规则中规定：所有的对外接口都需要加上前�
 <p>上述的<code class="docutils literal notranslate"><span class="pre">file_t</span></code>数据结构用于描述一个被打开的文件，因为系统当中同一个系统当中，同一个文件可能被多个程序打开，但是打开的每一个文件都会唯一的执行特定的索引节点，即最终的物理文件只有一份。</p>
 </div>
 <div class="section" id="aos-open">
-<h2>以aos_open为例介绍其文件打开方式<a class="headerlink" href="#aos-open" title="永久链接至标题">¶</a></h2>
+<h2>以aos_open为例介绍其文件打开方式<a class="headerlink" href="#aos-open" title="永久链接至标题"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">aos_open</span></code>是对外的接口，外部函数可以直接使用该接口实现对于文件的打开操作，而不用去关心底层文件系统的实现细节。其代码如下所示：</p>
 <p>其输入参数为：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">;</span> <span class="n">即文件路径名</span>
@@ -440,7 +440,7 @@ got_file:
 <p>所有的系统调用函数（类似于aos_open）都位于vfs.c文件中。</p>
 </div>
 <div class="section" id="id3">
-<h2>将驱动文件或者文件系统加载到VFS当中<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2>将驱动文件或者文件系统加载到VFS当中<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
 <p>在vfs_register.c文件中定义的函数：</p>
 <div class="code c highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">aos_register_driver</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">file_ops_t</span> <span class="o">*</span><span class="n">ops</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
 <span class="nb">int</span> <span class="n">aos_register_fs</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">fs_ops_t</span> <span class="o">*</span><span class="n">ops</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
@@ -487,7 +487,7 @@ got_file:
 </div>
 </div>
 <div class="section" id="id4">
-<h2>示例代码<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2>示例代码<a class="headerlink" href="#id4" title="永久链接至标题"></a></h2>
 <p>vfs的操作类linux中操作，
 这里举例<code class="docutils literal notranslate"><span class="pre">aos_open</span></code>、<code class="docutils literal notranslate"><span class="pre">aos_close</span></code>、<code class="docutils literal notranslate"><span class="pre">aos_read</span></code>、<code class="docutils literal notranslate"><span class="pre">aos_write</span></code></p>
 <div class="code c highlight-default notranslate"><div class="highlight"><pre><span></span>void bl_test_uart0(void)
@@ -526,7 +526,7 @@ got_file:
 </div>
 </div>
 <div class="section" id="id5">
-<h2>总结<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<h2>总结<a class="headerlink" href="#id5" title="永久链接至标题"></a></h2>
 <ul class="simple">
 <li>VFS的一把重要的互斥锁 对VFS的相关操作都需要获取该互斥锁才能够进行。
 <code class="docutils literal notranslate"><span class="pre">kmutex_t</span> <span class="pre">g_vfs_mutex;</span></code></li>
@@ -551,10 +551,10 @@ got_file:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="devicetree.html" class="btn btn-neutral float-right" title="device tree" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="devicetree.html" class="btn btn-neutral float-right" title="device tree" accesskey="n">下一页 <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="yloop.html" class="btn btn-neutral" title="yloop" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="yloop.html" class="btn btn-neutral" title="yloop" accesskey="p"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
       
     </div>
   
@@ -585,7 +585,7 @@ got_file:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.34-122-ga1803cbd5',
+            VERSION:'release_bl_iot_sdk_1.6.36',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -79,6 +79,12 @@ ATTR_HBN_NOINIT_SECTION static uint32_t flashImageOffset;
 /* SF Control Configuration, will set based on flash configuration */
 ATTR_HBN_NOINIT_SECTION static SF_Ctrl_Cfg_Type sfCtrlCfg;
 
+/* HBN Wakeup Pin Configuration */
+ATTR_HBN_DATA_SECTION static uint8_t hbnWakeupPin = 0;
+
+/* HBN IRQ Status, will get from hbn register after wakeup */
+ATTR_HBN_DATA_SECTION static uint32_t hbnIrqStatus = 0;
+
 
 static void bl_hbn_set_sf_ctrl(SPI_Flash_Cfg_Type *pFlashCfg)
 {
@@ -113,20 +119,33 @@ static void bl_hbn_xtal_cfg(void)
 {
     uint32_t tmpVal;
     
-    // reduce xtal ready time
+    // optimize xtal ready time
+#if !defined(CFG_HBN_OPTIMIZE)
     tmpVal = BL_RD_REG(AON_BASE, AON_XTAL_CFG);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_SEL_AON, 0);
     BL_WR_REG(AON_BASE, AON_XTAL_CFG, tmpVal);
     
-    // reduce peak current when wakeup
+    tmpVal = BL_RD_REG(AON_BASE, AON_TSEN);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_INT_SEL_AON, 2);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_INN_CFG_EN_AON, 1);
+    BL_WR_REG(AON_BASE, AON_TSEN, tmpVal);
+#else
+    tmpVal = BL_RD_REG(AON_BASE, AON_XTAL_CFG);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_SEL_AON, 0);
+    BL_WR_REG(AON_BASE, AON_XTAL_CFG, tmpVal);
+    
     tmpVal = BL_RD_REG(AON_BASE, AON_TSEN);
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_RDY_INT_SEL_AON, 0);
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, AON_XTAL_INN_CFG_EN_AON, 1);
     BL_WR_REG(AON_BASE, AON_TSEN, tmpVal);
+#endif
 }
 
 
 void bl_hbn_fastboot_init(void)
 {
+    unsigned long mstatus_tmp;
+    
     // Get cache way disable setting
     cacheWayDisable = BL_GET_REG_BITS_VAL(BL_RD_REG(L1C_BASE, L1C_CONFIG), L1C_WAY_DIS);
     
@@ -141,7 +160,10 @@ void bl_hbn_fastboot_init(void)
     psramIoCfg = ((devInfo.flash_cfg == 1 || devInfo.flash_cfg == 2) && devInfo.psram_cfg != 1) ? 0x3F : 0x00;
     
     // Get clock configuration from bootheader
+    mstatus_tmp = read_csr(mstatus);
+    clear_csr(mstatus, MSTATUS_MIE);
     bl_flash_read_need_lock(CLK_CFG_OFFSET, (uint8_t *)(&clkCfg), sizeof(sys_clk_cfg_t));
+    write_csr(mstatus, mstatus_tmp);
     
     // Get flash configuration
     memcpy(&flashCfg, bl_flash_get_flashCfg(), sizeof(SPI_Flash_Cfg_Type));
@@ -154,6 +176,9 @@ void bl_hbn_fastboot_init(void)
     
     // Optimize xtal configuration
     bl_hbn_xtal_cfg();
+    
+    // Overwrite default soft start delay (default 0, which may cause wakeup failure)
+    AON_Set_LDO11_SOC_Sstart_Delay(2);
     
     // Select 32K (RC32K and XTAL32K are both default on)
 #ifdef CFG_USE_XTAL32K
@@ -172,6 +197,32 @@ void bl_hbn_fastboot_init(void)
     
     // Disable GPIO9 - GPIO13 wakeup, 0x4000F014[7:3]=5'b11111
     HBN_Pin_WakeUp_Mask(0x1F);
+}
+
+void bl_hbn_gpio_wakeup_cfg(uint8_t pin_list[], uint8_t pin_num)
+{
+    int i;
+    int pin;
+    
+    hbnWakeupPin = 0;
+    
+    for(i = 0; i < pin_num; i++){
+        pin = pin_list[i];
+        
+        if(pin >= 9 && pin <= 12){
+            GLB_GPIO_Set_HZ(pin);
+            hbnWakeupPin |= 1 << (pin - 9);
+        }
+    }
+    
+    if(hbnWakeupPin == 0){
+        HBN_Aon_Pad_IeSmt_Cfg(0);
+        HBN_Pin_WakeUp_Mask(0x1F);
+    }else{
+        HBN_Aon_Pad_IeSmt_Cfg(hbnWakeupPin);
+        HBN_Pin_WakeUp_Mask(~hbnWakeupPin & 0x1F);
+        HBN_GPIO_INT_Enable(HBN_GPIO_INT_TRIGGER_ASYNC_FALLING_EDGE);
+    }
 }
 
 
@@ -273,62 +324,41 @@ static void ATTR_NOINLINE ATTR_HBN_CODE_SECTION bl_hbn_restore_bss(void)
     }
 }
 #else
-// can be placed in flash, here placed in hbncode section to reduce fast boot time
-static void ATTR_NOINLINE ATTR_HBN_CODE_SECTION bl_hbn_restore_tcm(void)
-{
-    extern uint8_t _tcm_load;
-    extern uint8_t _tcm_run;
-    extern uint8_t _hbn_restore_tcm_run_end;
-    uint32_t src = (uint32_t)&_tcm_load;
-    uint32_t dst = (uint32_t)&_tcm_run;
-    uint32_t end = (uint32_t)&_hbn_restore_tcm_run_end;
-    
-    while(dst < end){
-        *(uint32_t *)dst = *(uint32_t *)src;
-        src += 4;
-        dst += 4;
-    }
-}
-
-// can be placed in flash, here placed in hbncode section to reduce fast boot time
-static void ATTR_NOINLINE ATTR_HBN_CODE_SECTION bl_hbn_restore_data(void)
-{
-    extern uint8_t _data_load;
-    extern uint8_t _data_run;
-    extern uint8_t _hbn_restore_data_run_end;
-    uint32_t src = (uint32_t)&_data_load;
-    uint32_t dst = (uint32_t)&_data_run;
-    uint32_t end = (uint32_t)&_hbn_restore_data_run_end;
-    
-    while(dst < end){
-        *(uint32_t *)dst = *(uint32_t *)src;
-        src += 4;
-        dst += 4;
-    }
-}
 
 // can be placed in flash, here placed in hbn section to reduce fast boot time
 static void ATTR_NOINLINE ATTR_HBN_CODE_SECTION bl_hbn_set_gpio_high_z(void)
 {
-    uint32_t pin;
+    int pin;
+    uint32_t tmpVal;
     
-    // Set all gpio pads in High-Z state (GPIO0 - GPIO22)
-    for(pin=0; pin<=22; pin++){
+    // Set all gpio pads in High-Z state (GPIO0 - GPIO31)
+    for(pin = 0; pin <= 31; pin++){
 #if 0
         if(pin == 0 || pin == 1 || pin == 2 || pin == 9){
             continue;
         }
 #endif
+        if(pin >= 23 && pin <= 28){
+            continue;
+        }
 #if FAST_BOOT_TEST == 2
         if(pin == TEST_GPIO){
             continue;
         }
 #endif
+        
         GLB_GPIO_Set_HZ(pin);
     }
     
     // Set all psram pads in High-Z state
     GLB_Set_Psram_Pad_HZ();
+    
+    // Will be overwritten by GLB_GPIO_Set_HZ()
+    if(hbnWakeupPin != 0){
+        tmpVal = BL_RD_REG(HBN_BASE, HBN_IRQ_MODE);
+        tmpVal = BL_SET_REG_BITS_VAL(tmpVal, HBN_REG_AON_PAD_IE_SMT, hbnWakeupPin);
+        BL_WR_REG(HBN_BASE, HBN_IRQ_MODE, tmpVal);
+    }
 }
 #endif
 
@@ -371,6 +401,8 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
             "la gp, __global_pointer$\n\t"
             ".option pop\n\t"
     );
+    
+    hbnIrqStatus = BL_RD_REG(HBN_BASE, HBN_IRQ_STAT);
     
 #if !defined(CFG_HBN_OPTIMIZE)
     // Configure clock (must use rom driver, since tcm code is lost and flash is power down)
@@ -423,6 +455,7 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
     // Restore EM select before using new stack pointer
     BL_WR_REG(GLB_BASE, GLB_SEAM_MISC, emSel);
     
+#if !defined(CFG_HBN_OPTIMIZE)  
     // Restore tcmcode section
     bl_hbn_restore_tcm();
     
@@ -441,7 +474,6 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
     GLB_GPIO_Write(TEST_GPIO, 0);
 #endif
     
-#if !defined(CFG_HBN_OPTIMIZE)
     // Restore bss section
     bl_hbn_restore_bss();
     
@@ -538,8 +570,9 @@ void bl_hbn_enter_with_fastboot(uint32_t hbnSleepCycles)
     *(volatile uint32_t *)(AON_BASE + AON_RF_TOP_AON_OFFSET) &= ~(uint32_t)((1<<0)|(1<<1)|(1<<2));
 #endif
     
+    BL_WR_REG(HBN_BASE, HBN_IRQ_CLR, 0x1F);
+    
     if(hbnSleepCycles != 0){
-        HBN_Clear_RTC_Counter();
         HBN_Get_RTC_Timer_Val(&valLow, &valHigh);
         
         valLow += hbnSleepCycles;
@@ -548,13 +581,27 @@ void bl_hbn_enter_with_fastboot(uint32_t hbnSleepCycles)
         }
         
         HBN_Set_RTC_Timer(HBN_RTC_INT_DELAY_0T, valLow, valHigh, HBN_RTC_COMP_BIT0_39);
-        HBN_Enable_RTC_Counter();
     }
     
     HBN_Set_Wakeup_Addr((uint32_t)bl_hbn_fastboot_entry);
     HBN_Set_Status_Flag(HBN_STATUS_ENTER_FLAG);
     
     bl_hbn_mode_enter();
+}
+
+int bl_hbn_get_wakeup_source(void)
+{
+    // irq_rtc is cleared in bootrom, so we assume wakeup by RTC if not wakeup by GPIO
+    if(hbnIrqStatus & 0x1F){
+        return HBN_WAKEUP_BY_GPIO;
+    }else{
+        return HBN_WAKEUP_BY_RTC;
+    }
+}
+
+uint32_t bl_hbn_get_wakeup_gpio(void)
+{
+    return (hbnIrqStatus & 0x1F) << 9;
 }
 
 __attribute__((weak)) void bl_hbn_fastboot_done_callback(void)
@@ -564,6 +611,7 @@ __attribute__((weak)) void bl_hbn_fastboot_done_callback(void)
     
     while(1){
         printf("HBN fast boot done!\r\n");
+        printf("HBN_IRQ_STAT: 0x%08lX\r\n", hbnIrqStatus);
         BL702_Delay_MS(1000);
     }
 }

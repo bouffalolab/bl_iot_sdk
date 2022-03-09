@@ -57,7 +57,11 @@
 #if defined(CONFIG_BT_MESH)
 #define CONFIG_BT_RX_STACK_SIZE  3072//2048//1536//1024
 #else
+#if !defined(CONFIG_BT_CONN)
+#define CONFIG_BT_RX_STACK_SIZE  1024
+#else
 #define CONFIG_BT_RX_STACK_SIZE  2048//1536//1024
+#endif
 #endif
 #endif
 
@@ -75,7 +79,11 @@
  */
 
 #ifndef CONFIG_BT_HCI_TX_STACK_SIZE
+#if !defined(CONFIG_BT_CONN)
+#define CONFIG_BT_HCI_TX_STACK_SIZE  1024
+#else
 #define CONFIG_BT_HCI_TX_STACK_SIZE 1536//1024//200
+#endif
 #endif
 
 /**
@@ -383,8 +391,12 @@
 #ifndef CONFIG_BT_MESH
 #define CONFIG_BT_WORK_QUEUE_STACK_SIZE 1536//1280//512
 #else
+#if !defined(CONFIG_BT_CONN)
+#define CONFIG_BT_WORK_QUEUE_STACK_SIZE 1024
+#else
 #define CONFIG_BT_WORK_QUEUE_STACK_SIZE 2048
 #endif /* CONFIG_BT_MESH */
+#endif
 #endif
 
 /**

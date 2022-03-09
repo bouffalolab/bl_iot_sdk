@@ -99,7 +99,7 @@ typedef enum {
 typedef enum {
     ADC_DATA_WIDTH_12B,                  /*!< ADC 12 bits */
     ADC_DATA_WIDTH_14B_WITH_16_AVERAGE,  /*!< ADC 14 bits,and the value is average of 16 converts */
-    ADC_DATA_WIDTH_16B_WITH_64_AVERAGE,  /*!< ADC 16 bits,and the value is average of 64 converts */
+    ADC_DATA_WIDTH_14B_WITH_64_AVERAGE,  /*!< ADC 14 bits,and the value is average of 64 converts */
     ADC_DATA_WIDTH_16B_WITH_128_AVERAGE, /*!< ADC 16 bits,and the value is average of 128 converts */
     ADC_DATA_WIDTH_16B_WITH_256_AVERAGE, /*!< ADC 16 bits,and the value is average of 256 converts */
 } adc_data_width_t;

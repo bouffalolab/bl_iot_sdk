@@ -43,10 +43,16 @@
 #define ATTR_HBN_DATA_SECTION      __attribute__((section(".hbn_data")))
 #define ATTR_HBN_NOINIT_SECTION    __attribute__((section(".hbn_noinit")))
 
+#define HBN_WAKEUP_BY_RTC          1
+#define HBN_WAKEUP_BY_GPIO         2
+
 
 void bl_hbn_fastboot_init(void);
+void bl_hbn_gpio_wakeup_cfg(uint8_t pin_list[], uint8_t pin_num);  // available gpio: 9 - 12
 void bl_hbn_enter_with_fastboot(uint32_t hbnSleepCycles);
 void bl_hbn_fastboot_done_callback(void);
+int bl_hbn_get_wakeup_source(void);
+uint32_t bl_hbn_get_wakeup_gpio(void);
 
 
 typedef struct _hbn_type {

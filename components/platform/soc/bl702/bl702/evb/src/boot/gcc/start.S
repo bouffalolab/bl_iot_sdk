@@ -45,6 +45,7 @@ bl702_start:
 	bltu a1, a2, 1b
 2:
 
+#if 0
 	/* Load boot2 flashCfg address */
 	jal hal_boot2_get_flash_addr
 	la a1, __boot2_flashCfg_start
@@ -57,6 +58,7 @@ bl702_start:
 	addi a1, a1, 4
 	bltu a1, a2, 1b
 2:
+#endif
 
 	/* Load tcm section */
 	la a0, _tcm_load

@@ -83,14 +83,17 @@ ble_stack_srcs  := src/port/bl_port.c \
 					src/common/tinycrypt/source/utils.c \
 					src/bl_hci_wrapper/bl_hci_wrapper.c \
 					src/hci_onchip/hci_driver.c \
-					src/host/att.c \
-					src/host/conn.c \
 					src/host/crypto.c \
-					src/host/gatt.c \
 					src/host/hci_core.c \
 					src/host/hci_ecc.c \
 					src/host/l2cap.c \
-					src/host/uuid.c \
+					src/host/uuid.c
+
+ifneq ($(CONFIG_BT_CONN), 0)
+ble_stack_srcs  += src/host/att.c \
+                   src/host/conn.c \
+		   src/host/gatt.c
+endif
 					
 ifneq ($(CONFIG_DISABLE_BT_SMP), 1)
 ble_stack_srcs  += src/host/smp.c \
