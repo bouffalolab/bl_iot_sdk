@@ -28,8 +28,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <aos/kernel.h>
 #include <hal_boot2.h>
 #include <hal_sys.h>
 #include <utils_sha256.h>
@@ -78,7 +78,7 @@ int hosal_ota_start(uint32_t file_size)
         return 0;
     }
     
-    ota_parm = (hosal_ota_parm_t *)aos_malloc(sizeof(hosal_ota_parm_t));
+    ota_parm = (hosal_ota_parm_t *)malloc(sizeof(hosal_ota_parm_t));
     if (NULL == ota_parm) {
         printf("have not enough memory\r\n");
         return -1;
@@ -89,7 +89,7 @@ int hosal_ota_start(uint32_t file_size)
 
     ret = bl_mtd_open(BL_MTD_PARTITION_NAME_FW_DEFAULT, &ota_parm->mtd_handle, BL_MTD_OPEN_FLAG_BACKUP);
     if (ret) {
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         printf("Open Default FW partition failed\r\n");
         return -1;
@@ -97,7 +97,7 @@ int hosal_ota_start(uint32_t file_size)
 
     if (hal_boot2_get_active_entries(BOOT2_PARTITION_TYPE_FW, &ptEntry)) {
         bl_mtd_close(ota_parm->mtd_handle);
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         
         printf("PtTable_Get_Active_Entries fail\r\n");
@@ -109,7 +109,7 @@ int hosal_ota_start(uint32_t file_size)
     if (file_size > bin_size) {
         printf("file size is more than partition size\r\n");
         bl_mtd_close(ota_parm->mtd_handle);
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         return -1;
     }
@@ -123,7 +123,7 @@ int hosal_ota_start(uint32_t file_size)
     ret = bl_mtd_erase_all(ota_parm->mtd_handle);
     if (ret) {
         bl_mtd_close(ota_parm->mtd_handle);
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         printf("erase flash error\r\n");
         return -1;
@@ -173,7 +173,7 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
    
     if (ota_parm->file_size <= 32) {
         bl_mtd_close(ota_parm->mtd_handle);
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         return -1;
     }
@@ -183,7 +183,7 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
     if (hal_boot2_get_active_entries(BOOT2_PARTITION_TYPE_FW, &ptEntry)) {
         printf("PtTable_Get_Active_Entries fail\r\n");
         bl_mtd_close(ota_parm->mtd_handle);
-        aos_free(ota_parm);
+        free(ota_parm);
         ota_parm = NULL;
         return -1;
     }
@@ -198,10 +198,10 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
         int i, offset = 0;
         uint8_t *r_buf;
 
-        r_buf = aos_malloc(CHECK_IMG_BUF_SIZE);
+        r_buf = malloc(CHECK_IMG_BUF_SIZE);
         if (r_buf == NULL) {
             bl_mtd_close(ota_parm->mtd_handle);
-            aos_free(ota_parm);
+            free(ota_parm);
             ota_parm = NULL;
             printf("malloc error\r\n");
             return -1;
@@ -218,9 +218,9 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
             if (bl_mtd_read(ota_parm->mtd_handle, offset, read_size, r_buf)) {
                 printf("mtd read failed\r\n");
                 bl_mtd_close(ota_parm->mtd_handle);
-                aos_free(ota_parm);
+                free(ota_parm);
                 ota_parm = NULL;
-                aos_free(r_buf);
+                free(r_buf);
                 return -1;
             }
             
@@ -229,7 +229,7 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
         }
 
         utils_sha256_finish(&sha256_ctx, sha_check);
-        aos_free(r_buf);
+        free(r_buf);
 
         bl_mtd_read(ota_parm->mtd_handle, offset, 32, dst_sha);
         for (i = 0; i < 32; i++) {
@@ -243,7 +243,7 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
         if (memcmp(sha_check, (const void *)dst_sha, 32) != 0) {
             printf("sha256 check error\r\n");
             bl_mtd_close(ota_parm->mtd_handle);
-            aos_free(ota_parm);
+            free(ota_parm);
             ota_parm = NULL;
             utils_sha256_free(&sha256_ctx);
             return -1;
@@ -256,7 +256,7 @@ int hosal_ota_finish(uint8_t check_hash, uint8_t auto_reset)
     printf("[OTA] Update PARTITION, partition len is %lu\r\n", ptEntry.len);
     hal_boot2_update_ptable(&ptEntry);
     bl_mtd_close(ota_parm->mtd_handle);
-    aos_free(ota_parm);
+    free(ota_parm);
     ota_parm = NULL;
     
     if (auto_reset) {
