@@ -2478,7 +2478,7 @@ struct net_buf *bt_conn_create_pdu_timeout(struct net_buf_pool *pool,
 	}
 
 	if (!buf) {
-		BT_WARN("Unable to allocate buffer: timeout %ld", timeout);
+		BT_WARN("Unable to allocate buffer: timeout %d", timeout);
 		return NULL;
 	}
 
