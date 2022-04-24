@@ -329,7 +329,7 @@ void *pvPortReallocPsram(void *pv, size_t xWantedSize)
                     {
                         /* Get the size of the current memory block */
                         block_size = (pxLink->xBlockSize & ~xBlockAllocatedBit) - xHeapStructSize;
-						pvReturn = pvPortCalloc(1, xWantedSize);
+						pvReturn = pvPortCallocPsram(1, xWantedSize);
 
 						if (pvReturn != NULL)
                         {
@@ -344,27 +344,27 @@ void *pvPortReallocPsram(void *pv, size_t xWantedSize)
 								block_size = (pxLink->xBlockSize & ~xBlockAllocatedBit) - xHeapStructSize;
                                 memcpy(pvReturn, pv, block_size);
                             }
-                            vPortFree(pv);
+                            vPortFreePsram(pv);
                         }
                     }
                     else
 					{
-						pvReturn = pvPortMalloc(xWantedSize);
+						pvReturn = pvPortMallocPsram(xWantedSize);
 					}
                 }
                 else
                 {
-                    pvReturn = pvPortMalloc(xWantedSize);
+                    pvReturn = pvPortMallocPsram(xWantedSize);
                 }
             }
             else
             {
-                pvReturn = pvPortMalloc(xWantedSize);
+                pvReturn = pvPortMallocPsram(xWantedSize);
             }
         }
         else
         {
-            vPortFree(pv);
+            vPortFreePsram(pv);
             pvReturn = NULL;
         }
     }

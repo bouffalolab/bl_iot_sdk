@@ -203,8 +203,12 @@ void ATTR_TCM_SECTION bl_psram_init(void)
     Psram_ReadId(&apMemory1604, psramId);
     SF_Ctrl_Select_Bank(SF_CTRL_SEL_FLASH);
 
-    Psram_Cache_Write_Set(&apMemory1604, SF_CTRL_QIO_MODE, ENABLE, DISABLE, ENABLE);
+    // enable wt mode only
+    Psram_Cache_Write_Set(&apMemory1604, SF_CTRL_QIO_MODE, ENABLE, DISABLE, DISABLE);
     //L1C_Cache_Enable_Set(L1C_WAY_DISABLE_NONE);
+
+    // set burst toggle to spi mode, fix psram random access issue
+    BL_WR_WORD(0x4000B084, 0x08000000);
 
     extern uint8_t psramId[8];
     //printf("PSRAM ID: %02X %02X %02X %02X %02X %02X %02X %02X.\r\n",
