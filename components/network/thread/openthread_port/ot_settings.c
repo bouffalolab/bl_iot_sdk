@@ -11,7 +11,7 @@
 #define OT_MAX_ENTRY_NUM            1024
 #define OT_MAX_ENTRY_BITMAP         ((OT_MAX_ENTRY_NUM + 31) / 32) 
 
-void otPlatSettingsInit(otInstance *aInstance) 
+void otPlatSettingsInit(otInstance *aInstance, const uint16_t *aSensitiveKeys, uint16_t aSensitiveKeysLength)
 {
     easyflash_init();
 }

@@ -387,13 +387,6 @@ void otPlatRadioSetPromiscuous(otInstance *aInstance, bool aEnable)
     }
 }
 
-void otPlatRadioSetMacKey(otInstance *    aInstance,
-                          uint8_t         aKeyIdMode,
-                          uint8_t         aKeyId,
-                          const otMacKey *aPrevKey,
-                          const otMacKey *aCurrKey,
-                          const otMacKey *aNextKey){}
-
 void otPlatRadioSetMacFrameCounter(otInstance *aInstance, uint32_t aMacFrameCounter) {}
 
 uint64_t otPlatRadioGetNow(otInstance *aInstance)
