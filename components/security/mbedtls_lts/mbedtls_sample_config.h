@@ -9,13 +9,7 @@
  */
 /*
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
- *
- *  This file is provided under the Apache License 2.0, or the
- *  GNU General Public License v2.0 or later.
- *
- *  **********
- *  Apache License 2.0:
+ *  SPDX-License-Identifier: Apache-2.0
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -28,27 +22,6 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
- *  **********
- *
- *  **********
- *  GNU General Public License v2.0 or later:
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- *  **********
  */
 
 #ifndef MBEDTLS_CONFIG_H
@@ -71,22 +44,23 @@
 
 #define MBEDTLS_ECDH_C
 #define MBEDTLS_ECDSA_C
-/* #define MBEDTLS_ECP_DP_SECP192R1_ENABLED */
-#define MBEDTLS_ECP_DP_SECP224R1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP192R1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP224R1_ENABLED
 #define MBEDTLS_ECP_DP_SECP256R1_ENABLED
-/* #define MBEDTLS_ECP_DP_SECP384R1_ENABLED */
-/* #define MBEDTLS_ECP_DP_SECP521R1_ENABLED */
-/* #define MBEDTLS_ECP_DP_SECP192K1_ENABLED */
-#define MBEDTLS_ECP_DP_SECP224K1_ENABLED
-#define MBEDTLS_ECP_DP_SECP256K1_ENABLED
-#define MBEDTLS_ECP_DP_BP256R1_ENABLED
-/* #define MBEDTLS_ECP_DP_BP384R1_ENABLED */
-/* #define MBEDTLS_ECP_DP_BP512R1_ENABLED */
-#define MBEDTLS_ECP_DP_CURVE25519_ENABLED
-/* #define MBEDTLS_ECP_DP_CURVE448_ENABLED */
+//#define MBEDTLS_ECP_DP_SECP384R1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP521R1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP192K1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP224K1_ENABLED
+//#define MBEDTLS_ECP_DP_SECP256K1_ENABLED
+//#define MBEDTLS_ECP_DP_BP256R1_ENABLED
+//#define MBEDTLS_ECP_DP_BP384R1_ENABLED
+//#define MBEDTLS_ECP_DP_BP512R1_ENABLED
+//#define MBEDTLS_ECP_DP_CURVE25519_ENABLED
+//#define MBEDTLS_ECP_DP_CURVE448_ENABLED
 
 #define MBEDTLS_ECP_NIST_OPTIM
 
+#define MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
 #define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
 #define MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
 #define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
@@ -110,6 +84,7 @@
 #define MBEDTLS_X509_CHECK_EXTENDED_KEY_USAGE
 
 #define MBEDTLS_AES_C
+#define MBEDTLS_AES_ROM_TABLES
 #define MBEDTLS_BASE64_C
 #define MBEDTLS_ASN1_PARSE_C
 #define MBEDTLS_ASN1_WRITE_C
@@ -146,7 +121,36 @@
 
 #define MBEDTLS_FS_IO
 
+#define MBEDTLS_NO_PLATFORM_ENTROPY
+#define MBEDTLS_ENTROPY_HARDWARE_ALT
+
 #define MBEDTLS_PLATFORM_STD_MEM_HDR "mbedtls_port_platform.h"
+
+// Define BL_MPI_LARGE_NUM_SOFTWARE_MPI to allow operate on very big bignums
+/* #define BL_MPI_LARGE_NUM_SOFTWARE_MPI */
+
+// Hash HW
+#if CONFIG_MBEDTLS_SHA1_USE_HW
+#define MBEDTLS_SHA1_ALT
+#endif
+
+#if CONFIG_MBEDTLS_SHA256_USE_HW
+#define MBEDTLS_SHA256_ALT
+#endif
+
+// AES HW
+#if CONFIG_MBEDTLS_AES_USE_HW
+#define MBEDTLS_AES_ALT
+#endif
+
+// ECC HW
+#if CONFIG_MBEDTLS_ECC_USE_HW
+#define MBEDTLS_ECP_ALT
+#endif
+
+#if CONFIG_MBEDTLS_ECC_USE_HW && defined(MBEDTLS_ECP_RESTARTABLE)
+#error "ECP Restartable is not implemented with ECP HW acceleration!"
+#endif
 
 /* Target and application specific configurations
  *
@@ -155,6 +159,10 @@
  */
 #if defined(MBEDTLS_USER_CONFIG_FILE)
 #include MBEDTLS_USER_CONFIG_FILE
+#endif
+
+#if defined(MBEDTLS_PSA_CRYPTO_CONFIG)
+#include "mbedtls/config_psa.h"
 #endif
 
 #include "mbedtls/check_config.h"

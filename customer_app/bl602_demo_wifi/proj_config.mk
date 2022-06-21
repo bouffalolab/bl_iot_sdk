@@ -58,7 +58,11 @@ CONFIG_BT_MESH_GATT_PROXY := 1
 endif
 
 #mbedtls
+CONFIG_MBEDTLS_AES_USE_HW:=1
 CONFIG_MBEDTLS_BIGNUM_USE_HW:=1
+CONFIG_MBEDTLS_ECC_USE_HW:=1
+CONFIG_MBEDTLS_SHA1_USE_HW:=1
+CONFIG_MBEDTLS_SHA256_USE_HW:=1
 
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hosal loopset looprt bloop

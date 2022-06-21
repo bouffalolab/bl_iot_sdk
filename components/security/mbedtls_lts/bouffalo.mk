@@ -1,100 +1,162 @@
 # Component Makefile
 #
+
+ifeq ($(CONFIG_CHIP_NAME),BL602)
+CFLAGS += -DBL602
+endif
+ifeq ($(CONFIG_CHIP_NAME),BL616)
+CFLAGS += -DBL616
+endif
+ifeq ($(CONFIG_CHIP_NAME),BL702)
+CFLAGS += -DBL702
+endif
+ifeq ($(CONFIG_CHIP_NAME),BL808)
+CFLAGS += -DBL808
+endif
+ifeq ($(CONFIG_CHIP_NAME),BL606P)
+CFLAGS += -DBL606P
+endif
+
 ## These include paths would be exported to project level
 COMPONENT_ADD_INCLUDEDIRS += mbedtls/include port
 
 ## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS :=
+COMPONENT_PRIV_INCLUDEDIRS := mbedtls/library
+
+LIBRARY_DIR := mbedtls/library
+LIBRARY_SRCS := \
+        xtea.c                \
+        aes.c \
+        aesni.c \
+        arc4.c \
+        aria.c \
+        asn1parse.c \
+        asn1write.c \
+        base64.c \
+        blowfish.c \
+        camellia.c \
+        ccm.c \
+        certs.c \
+        chacha20.c \
+        chachapoly.c \
+        cipher.c \
+        cipher_wrap.c \
+        cmac.c \
+        constant_time.c \
+        ctr_drbg.c \
+        debug.c \
+        des.c \
+        dhm.c \
+        ecdh.c \
+        ecdsa.c \
+        ecjpake.c \
+        ecp.c \
+        ecp_curves.c \
+        entropy.c \
+        entropy_poll.c \
+        error.c \
+        gcm.c \
+        havege.c \
+        hkdf.c \
+        hmac_drbg.c \
+        md2.c \
+        md4.c \
+        md5.c \
+        md.c \
+        memory_buffer_alloc.c \
+        mps_reader.c \
+        mps_trace.c \
+        nist_kw.c \
+        oid.c \
+        padlock.c \
+        pem.c \
+        pk.c \
+        pkcs11.c \
+        pkcs12.c \
+        pkcs5.c \
+        pk_wrap.c \
+        pkwrite.c \
+        platform.c \
+        platform_util.c \
+        poly1305.c \
+        ripemd160.c \
+        rsa.c \
+        rsa_internal.c \
+        sha1.c \
+        sha256.c \
+        sha512.c \
+        ssl_cache.c \
+        ssl_ciphersuites.c \
+        ssl_cli.c \
+        ssl_cookie.c \
+        ssl_msg.c \
+        ssl_srv.c \
+        ssl_ticket.c \
+        ssl_tls13_keys.c \
+        ssl_tls.c \
+        threading.c \
+        timing.c \
+        version.c \
+        version_features.c \
+        x509.c \
+        x509_create.c \
+        x509_crl.c \
+        x509_crt.c \
+        x509_csr.c \
+        x509write_crt.c \
+        x509write_csr.c \
+        xtea.c \
 
 ## This component's src
-COMPONENT_SRCS += mbedtls/library/aes.c
-COMPONENT_SRCS += mbedtls/library/aesni.c
-COMPONENT_SRCS += mbedtls/library/arc4.c
-COMPONENT_SRCS += mbedtls/library/aria.c
-COMPONENT_SRCS += mbedtls/library/asn1parse.c
-COMPONENT_SRCS += mbedtls/library/asn1write.c
-COMPONENT_SRCS += mbedtls/library/base64.c
-ifeq ($(CONFIG_MBEDTLS_BIGNUM_USE_HW),1)
-COMPONENT_SRCS += port/bignum.c
-else
-COMPONENT_SRCS += mbedtls/library/bignum.c
-endif
-COMPONENT_SRCS += mbedtls/library/blowfish.c
-COMPONENT_SRCS += mbedtls/library/camellia.c
-COMPONENT_SRCS += mbedtls/library/ccm.c
-COMPONENT_SRCS += mbedtls/library/certs.c
-COMPONENT_SRCS += mbedtls/library/chacha20.c
-COMPONENT_SRCS += mbedtls/library/chachapoly.c
-COMPONENT_SRCS += mbedtls/library/cipher.c
-COMPONENT_SRCS += mbedtls/library/cipher_wrap.c
-COMPONENT_SRCS += mbedtls/library/cmac.c
-COMPONENT_SRCS += mbedtls/library/ctr_drbg.c
-COMPONENT_SRCS += mbedtls/library/debug.c
-COMPONENT_SRCS += mbedtls/library/des.c
-COMPONENT_SRCS += mbedtls/library/dhm.c
-COMPONENT_SRCS += mbedtls/library/ecdh.c
-COMPONENT_SRCS += mbedtls/library/ecdsa.c
-COMPONENT_SRCS += mbedtls/library/ecjpake.c
-COMPONENT_SRCS += mbedtls/library/ecp.c
-COMPONENT_SRCS += mbedtls/library/ecp_curves.c
-COMPONENT_SRCS += mbedtls/library/entropy.c
-COMPONENT_SRCS += mbedtls/library/error.c
-COMPONENT_SRCS += mbedtls/library/gcm.c
-COMPONENT_SRCS += mbedtls/library/havege.c
-COMPONENT_SRCS += mbedtls/library/hkdf.c
-COMPONENT_SRCS += mbedtls/library/hmac_drbg.c
-COMPONENT_SRCS += mbedtls/library/md2.c
-COMPONENT_SRCS += mbedtls/library/md4.c
-COMPONENT_SRCS += mbedtls/library/md5.c
-COMPONENT_SRCS += mbedtls/library/md.c
-COMPONENT_SRCS += mbedtls/library/md_wrap.c
-COMPONENT_SRCS += mbedtls/library/memory_buffer_alloc.c
-COMPONENT_SRCS += mbedtls/library/nist_kw.c
-COMPONENT_SRCS += mbedtls/library/oid.c
-COMPONENT_SRCS += mbedtls/library/padlock.c
-COMPONENT_SRCS += mbedtls/library/pem.c
-COMPONENT_SRCS += mbedtls/library/pk.c
-COMPONENT_SRCS += mbedtls/library/pkcs11.c
-COMPONENT_SRCS += mbedtls/library/pkcs12.c
-COMPONENT_SRCS += mbedtls/library/pkcs5.c
-COMPONENT_SRCS += mbedtls/library/pk_wrap.c
-COMPONENT_SRCS += mbedtls/library/pkwrite.c
-COMPONENT_SRCS += mbedtls/library/platform.c
-COMPONENT_SRCS += mbedtls/library/platform_util.c
-COMPONENT_SRCS += mbedtls/library/poly1305.c
-COMPONENT_SRCS += mbedtls/library/ripemd160.c
-COMPONENT_SRCS += mbedtls/library/rsa.c
-COMPONENT_SRCS += mbedtls/library/rsa_internal.c
-COMPONENT_SRCS += mbedtls/library/sha1.c
-COMPONENT_SRCS += mbedtls/library/sha256.c
-COMPONENT_SRCS += mbedtls/library/sha512.c
-COMPONENT_SRCS += mbedtls/library/ssl_cache.c
-COMPONENT_SRCS += mbedtls/library/ssl_ciphersuites.c
-COMPONENT_SRCS += mbedtls/library/ssl_cli.c
-COMPONENT_SRCS += mbedtls/library/ssl_cookie.c
-COMPONENT_SRCS += mbedtls/library/ssl_srv.c
-COMPONENT_SRCS += mbedtls/library/ssl_ticket.c
-COMPONENT_SRCS += mbedtls/library/ssl_tls.c
-COMPONENT_SRCS += mbedtls/library/threading.c
-COMPONENT_SRCS += mbedtls/library/timing.c
-COMPONENT_SRCS += mbedtls/library/version.c
-COMPONENT_SRCS += mbedtls/library/version_features.c
-COMPONENT_SRCS += mbedtls/library/x509.c
-COMPONENT_SRCS += mbedtls/library/x509_create.c
-COMPONENT_SRCS += mbedtls/library/x509_crl.c
-COMPONENT_SRCS += mbedtls/library/x509_crt.c
-COMPONENT_SRCS += mbedtls/library/x509_csr.c
-COMPONENT_SRCS += mbedtls/library/x509write_crt.c
-COMPONENT_SRCS += mbedtls/library/x509write_csr.c
-COMPONENT_SRCS += mbedtls/library/xtea.c
+COMPONENT_SRCS := $(addprefix $(LIBRARY_DIR)/, $(LIBRARY_SRCS))
 
-COMPONENT_SRCS += port/pkparse.c
-COMPONENT_SRCS += port/mbedtls_port_mem.c
-COMPONENT_SRCS += port/net_sockets.c
-COMPONENT_SRCS += port/entropy_poll.c
+COMPONENT_SRCS += \
+        port/pkparse.c          \
+        port/mbedtls_port_mem.c \
+        port/net_sockets.c      \
+        port/hw_entropy_poll.c  \
+        port/bignum_ext.c       \
+
+MBEDTLS_USE_HW=0
+
+# bignum HW
+ifeq ($(CONFIG_MBEDTLS_BIGNUM_USE_HW),1)
+MBEDTLS_USE_HW=1
+COMPONENT_SRCS += port/bignum.c
+COMPONENT_SRCS += port/hw_acc/bignum_hw.c
+else
+COMPONENT_SRCS += $(addprefix $(LIBRARY_DIR)/, bignum.c)
+endif
+
+# Hash HW
+ifeq ($(CONFIG_MBEDTLS_SHA1_USE_HW),1)
+COMPONENT_SRCS += port/hw_acc/sha1_alt.c
+endif
+ifeq ($(CONFIG_MBEDTLS_SHA256_USE_HW),1)
+COMPONENT_SRCS += port/hw_acc/sha256_alt.c
+endif
+
+# AES HW
+ifeq ($(CONFIG_MBEDTLS_AES_USE_HW),1)
+COMPONENT_SRCS += port/hw_acc/aes_alt.c
+endif
+
+# ECC HW
+ifeq ($(CONFIG_MBEDTLS_ECC_USE_HW),1)
+MBEDTLS_USE_HW=1
+COMPONENT_SRCS += port/hw_acc/ecp_alt.c \
+                  port/hw_acc/ecp_curves_alt.c
+endif
+
+ifeq ($(MBEDTLS_USE_HW),1)
+COMPONENT_SRCS += port/hw_acc/hw_common.c
+endif
+
+# test cases
+COMPONENT_SRCS += port/test_case.c
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
-COMPONENT_SRCDIRS := mbedtls/library port
+COMPONENT_SRCDIRS := $(LIBRARY_DIR) port port/hw_acc
 
 ##

@@ -2,13 +2,7 @@
  *  UDP proxy: emulate an unreliable UDP connexion for DTLS testing
  *
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
- *
- *  This file is provided under the Apache License 2.0, or the
- *  GNU General Public License v2.0 or later.
- *
- *  **********
- *  Apache License 2.0:
+ *  SPDX-License-Identifier: Apache-2.0
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -21,27 +15,6 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
- *  **********
- *
- *  **********
- *  GNU General Public License v2.0 or later:
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- *  **********
  */
 
 /*
@@ -154,6 +127,9 @@ int main( void )
     "    mtu=%%d              default: 0 (unlimited)\n"                     \
     "                        drop packets larger than N bytes\n"            \
     "    bad_ad=0/1          default: 0 (don't add bad ApplicationData)\n"  \
+    "    bad_cid=%%d          default: 0 (don't corrupt Connection IDs)\n"   \
+    "                        duplicate 1:N packets containing a CID,\n" \
+    "                        modifying CID in first instance of the packet.\n" \
     "    protect_hvr=0/1     default: 0 (don't protect HelloVerifyRequest)\n" \
     "    protect_len=%%d      default: (don't protect packets of this size)\n" \
     "    inject_clihlo=0/1   default: 0 (don't inject fake ClientHello)\n"  \
@@ -187,6 +163,7 @@ static struct options
     int drop;                   /* drop 1 packet in N (none if 0)           */
     int mtu;                    /* drop packets larger than this            */
     int bad_ad;                 /* inject corrupted ApplicationData record  */
+    unsigned bad_cid;           /* inject corrupted CID record              */
     int protect_hvr;            /* never drop or delay HelloVerifyRequest   */
     int protect_len;            /* never drop/delay packet of the given size*/
     int inject_clihlo;          /* inject fake ClientHello after handshake  */
@@ -203,7 +180,7 @@ static void exit_usage( const char *name, const char *value )
         mbedtls_printf( " option %s: illegal value: %s\n", name, value );
 
     mbedtls_printf( USAGE );
-    exit( 1 );
+    mbedtls_exit( 1 );
 }
 
 static void get_options( int argc, char *argv[] )
@@ -320,6 +297,12 @@ static void get_options( int argc, char *argv[] )
             if( opt.bad_ad < 0 || opt.bad_ad > 1 )
                 exit_usage( p, q );
         }
+#if defined(MBEDTLS_SSL_DTLS_CONNECTION_ID)
+        else if( strcmp( p, "bad_cid" ) == 0 )
+        {
+            opt.bad_cid = (unsigned) atoi( q );
+        }
+#endif /* MBEDTLS_SSL_DTLS_CONNECTION_ID */
         else if( strcmp( p, "protect_hvr" ) == 0 )
         {
             opt.protect_hvr = atoi( q );
@@ -357,6 +340,7 @@ static const char *msg_type( unsigned char *msg, size_t len )
         case MBEDTLS_SSL_MSG_CHANGE_CIPHER_SPEC:    return( "ChangeCipherSpec" );
         case MBEDTLS_SSL_MSG_ALERT:                 return( "Alert" );
         case MBEDTLS_SSL_MSG_APPLICATION_DATA:      return( "ApplicationData" );
+        case MBEDTLS_SSL_MSG_CID:                   return( "CID" );
         case MBEDTLS_SSL_MSG_HANDSHAKE:             break; /* See below */
         default:                            return( "Unknown" );
     }
@@ -470,7 +454,10 @@ static int ctx_buffer_append( ctx_buffer *buf,
     if( sizeof( buf->data ) - buf->len < len )
     {
         if( ( ret = ctx_buffer_flush( buf ) ) <= 0 )
+        {
+            mbedtls_printf( "ctx_buffer_flush failed with -%#04x", (unsigned int) -ret );
             return( ret );
+        }
     }
 
     memcpy( buf->data + buf->len, data, len );
@@ -487,6 +474,7 @@ static int dispatch_data( mbedtls_net_context *ctx,
                           const unsigned char * data,
                           size_t len )
 {
+    int ret;
 #if defined(MBEDTLS_TIMING_C)
     ctx_buffer *buf = NULL;
     if( opt.pack > 0 )
@@ -503,7 +491,12 @@ static int dispatch_data( mbedtls_net_context *ctx,
     }
 #endif /* MBEDTLS_TIMING_C */
 
-    return( mbedtls_net_send( ctx, data, len ) );
+    ret = mbedtls_net_send( ctx, data, len );
+    if( ret < 0 )
+    {
+        mbedtls_printf( "net_send returned -%#04x\n", (unsigned int) -ret );
+    }
+    return( ret );
 }
 
 typedef struct
@@ -570,6 +563,25 @@ int send_packet( const packet *p, const char *why )
     {
         memcpy( &initial_clihlo, p, sizeof( packet ) );
         inject_clihlo_state = ICH_CACHED;
+    }
+
+    /* insert corrupted CID record? */
+    if( opt.bad_cid != 0 &&
+        strcmp( p->type, "CID" ) == 0 &&
+        ( rand() % opt.bad_cid ) == 0 )
+    {
+        unsigned char buf[MAX_MSG_SIZE];
+        memcpy( buf, p->buf, p->len );
+
+        /* The CID resides at offset 11 in the DTLS record header. */
+        buf[11] ^= 1;
+        print_packet( p, "modified CID" );
+
+        if( ( ret = dispatch_data( dst, buf, p->len ) ) <= 0 )
+        {
+            mbedtls_printf( "  ! dispatch returned %d\n", ret );
+            return( ret );
+        }
     }
 
     /* insert corrupted ApplicationData record? */
@@ -671,26 +683,21 @@ int send_delayed()
 }
 
 /*
- * Avoid dropping or delaying a packet that was already dropped twice: this
- * only results in uninteresting timeouts. We can't rely on type to identify
- * packets, since during renegotiation they're all encrypted.  So, rely on
- * size mod 2048 (which is usually just size).
- */
-static unsigned char dropped[2048] = { 0 };
-#define DROP_MAX 2
-
-/* We only drop packets at the level of entire datagrams, not at the level
+ * Avoid dropping or delaying a packet that was already dropped or delayed
+ * ("held") twice: this only results in uninteresting timeouts. We can't rely
+ * on type to identify packets, since during renegotiation they're all
+ * encrypted. So, rely on size mod 2048 (which is usually just size).
+ *
+ * We only hold packets at the level of entire datagrams, not at the level
  * of records. In particular, if the peer changes the way it packs multiple
  * records into a single datagram, we don't necessarily count the number of
- * times a record has been dropped correctly. However, the only known reason
+ * times a record has been held correctly. However, the only known reason
  * why a peer would change datagram packing is disabling the latter on
- * retransmission, in which case we'd drop involved records at most
- * DROP_MAX + 1 times. */
-void update_dropped( const packet *p )
-{
-    size_t id = p->len % sizeof( dropped );
-    ++dropped[id];
-}
+ * retransmission, in which case we'd hold involved records at most
+ * HOLD_MAX + 1 times.
+ */
+static unsigned char held[2048] = { 0 };
+#define HOLD_MAX 2
 
 int handle_message( const char *way,
                     mbedtls_net_context *dst,
@@ -717,7 +724,7 @@ int handle_message( const char *way,
     cur.dst  = dst;
     print_packet( &cur, NULL );
 
-    id = cur.len % sizeof( dropped );
+    id = cur.len % sizeof( held );
 
     if( strcmp( way, "S <- C" ) == 0 )
     {
@@ -754,25 +761,28 @@ int handle_message( const char *way,
     if( ( opt.mtu != 0 &&
           cur.len > (unsigned) opt.mtu ) ||
         ( opt.drop != 0 &&
+          strcmp( cur.type, "CID" ) != 0             &&
           strcmp( cur.type, "ApplicationData" ) != 0 &&
           ! ( opt.protect_hvr &&
               strcmp( cur.type, "HelloVerifyRequest" ) == 0 ) &&
           cur.len != (size_t) opt.protect_len &&
-          dropped[id] < DROP_MAX &&
+          held[id] < HOLD_MAX &&
           rand() % opt.drop == 0 ) )
     {
-        update_dropped( &cur );
+        ++held[id];
     }
     else if( ( opt.delay_ccs == 1 &&
                strcmp( cur.type, "ChangeCipherSpec" ) == 0 ) ||
              ( opt.delay != 0 &&
+               strcmp( cur.type, "CID" ) != 0             &&
                strcmp( cur.type, "ApplicationData" ) != 0 &&
                ! ( opt.protect_hvr &&
                    strcmp( cur.type, "HelloVerifyRequest" ) == 0 ) &&
                cur.len != (size_t) opt.protect_len &&
-               dropped[id] < DROP_MAX &&
+               held[id] < HOLD_MAX &&
                rand() % opt.delay == 0 ) )
     {
+        ++held[id];
         delay_packet( &cur );
     }
     else
@@ -883,7 +893,7 @@ accept:
      * 3. Forward packets forever (kill the process to terminate it)
      */
     clear_pending();
-    memset( dropped, 0, sizeof( dropped ) );
+    memset( held, 0, sizeof( held ) );
 
     nb_fds = client_fd.fd;
     if( nb_fds < server_fd.fd )
@@ -984,15 +994,15 @@ exit:
     {
         char error_buf[100];
         mbedtls_strerror( ret, error_buf, 100 );
-        mbedtls_printf( "Last error was: -0x%04X - %s\n\n", - ret, error_buf );
+        mbedtls_printf( "Last error was: -0x%04X - %s\n\n", (unsigned int) -ret, error_buf );
         fflush( stdout );
     }
 #endif
 
     for( delay_idx = 0; delay_idx < MAX_DELAYED_HS; delay_idx++ )
     {
-        mbedtls_free( opt.delay_cli + delay_idx );
-        mbedtls_free( opt.delay_srv + delay_idx );
+        mbedtls_free( opt.delay_cli[delay_idx] );
+        mbedtls_free( opt.delay_srv[delay_idx] );
     }
 
     mbedtls_net_free( &client_fd );

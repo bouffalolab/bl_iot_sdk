@@ -2192,12 +2192,6 @@ int blcrypto_suite_mpi_exp_mod( blcrypto_suite_mpi *X, const blcrypto_suite_mpi 
                          const blcrypto_suite_mpi *E, const blcrypto_suite_mpi *N,
                          blcrypto_suite_mpi *_RR )
 {
-#if USE_HWCRYPTO
-    (void)mpi_montg_init;
-    (void)mpi_montred;
-    (void)mpi_select;
-    return bl_sec_mpi_exp_mod((mbedtls_mpi *)X, (const mbedtls_mpi *)A, (const mbedtls_mpi *)E, (const mbedtls_mpi *)N, (mbedtls_mpi *)_RR);
-#else
     int ret;
     size_t wbits, wsize, one = 1;
     size_t i, j, nblimbs;
@@ -2422,7 +2416,6 @@ cleanup:
         blcrypto_suite_mpi_free( &RR );
 
     return( ret );
-#endif
 }
 
 /*
