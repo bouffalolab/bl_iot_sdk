@@ -282,6 +282,13 @@ void I2C_Init(I2C_ID_Type i2cNo, I2C_Direction_Type direct, I2C_Transfer_Cfg *cf
     /* Check the parameters */
     CHECK_PARAM(IS_I2C_ID_TYPE(i2cNo));
 
+    /* set i2c clk,default is 400000,max support clk is 400000 */
+    if (cfg->clk == 0 || cfg->clk > 400000){
+        I2C_ClockSet(i2cNo, 400000);
+    } else {
+        I2C_ClockSet(i2cNo, cfg->clk);
+    }
+
     /* Disable clock gate */
     GLB_AHB_Slave1_Clock_Gate(DISABLE, BL_AHB_SLAVE1_I2C);
 
@@ -302,6 +309,9 @@ void I2C_Init(I2C_ID_Type i2cNo, I2C_Direction_Type direct, I2C_Transfer_Cfg *cf
     } else {
         tmpVal = BL_CLR_REG_BIT(tmpVal, I2C_CR_I2C_SUB_ADDR_EN);
     }
+
+    /* align clock when 1 master */
+    tmpVal = BL_SET_REG_BITS_VAL(tmpVal, I2C_CR_I2C_SCL_SYNC_EN, DISABLE);
 
     tmpVal = BL_SET_REG_BITS_VAL(tmpVal, I2C_CR_I2C_PKT_LEN, cfg->dataSize - 1);
     BL_WR_REG(I2Cx, I2C_CONFIG, tmpVal);

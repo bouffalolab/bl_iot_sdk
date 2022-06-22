@@ -249,6 +249,14 @@ int spi_control(struct device *dev, int cmd, void *args)
         case DEVICE_CTRL_SPI_GET_BUS_BUSY_STATUS :
             return SPI_GetBusyStatus(spi_device->id);
 
+        case DEVICE_CTRL_SPI_SET_FRAME_SIZE:
+            SPI_ClrTxFifo(spi_device->id);
+            SPI_ClrRxFifo(spi_device->id);
+            uint32_t tmpVal = BL_RD_REG(SPI_BASE + spi_device->id * 0x100, SPI_CONFIG);
+            tmpVal = BL_SET_REG_BITS_VAL(tmpVal, SPI_CR_SPI_FRAME_SIZE, (uint32_t)args);
+            BL_WR_REG(SPI_BASE + spi_device->id * 0x100, SPI_CONFIG, tmpVal);
+            spi_device->datasize = (uint32_t)args;
+            break;
         default:
             break;
     }

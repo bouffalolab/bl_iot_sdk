@@ -1391,7 +1391,106 @@ void bt_gatt_register_notification_callback(bt_notification_all_cb_t cb);
  */
 void bt_gatt_ccc_load(void);
 #endif
+#if defined(BFLB_BLE_DYNAMIC_SERVICE)
+#if defined(CONFIG_BT_PERIPHERAL)
+struct simple_svc_info{
+    /*service index*/
+    uint16_t idx;
+    /*service state*/
+    uint8_t state;
+    /*service type*/
+    uint8_t type;
+    /*service uuid*/
+    char uuid[37];
+};
 
+struct char_info{
+    /*service index*/
+    uint16_t svc_idx;
+    /*characteristics index*/
+    uint16_t char_idx;
+    /*characteristics value's uuid*/
+    char uuid[37];
+    /*characteristics value's properties*/
+    uint8_t prop;
+};
+
+struct descrip_info{
+    /*service index*/
+    uint16_t svc_idx;
+    /*characteristics index*/
+    uint16_t char_idx;
+    /*descriptor index*/
+    uint16_t desp_idx;
+    /*descriptor's uuid*/
+    char uuid[37];
+};
+
+struct add_gatts_attr{
+    struct bt_gatt_attr *attr;
+    sys_snode_t node;
+};
+
+struct customer_svc_list{
+    struct bt_gatt_service *svc;
+    uint16_t svc_idx;
+    sys_snode_t node;
+};
+
+/** @brief Add service
+ *
+ *  @param service_uuid UUID of the service.
+ *  @param is_primary 1 indicates the primary service, 0 indicates other services.
+ *  @param number_attrs Number of attributes in the service.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_add_serv_attr(const struct bt_uuid *uuid, uint8_t is_primary,uint32_t number_attrs);
+/** @brief Add characteristics and characteristic value
+ *
+ *  @param char_attr characteristics attribution.
+ *  @param val_prop characteristic value .
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_add_char(const struct bt_gatt_attr *char_attr,uint32_t val_prop);
+/** @brief Add descriptor
+ *
+ *  @param desp_attr characteristics attribution.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_add_desc(const struct bt_gatt_attr *desp_attr);
+/** @brief Get simple service information.
+ *  @param svc_id ID of the service.
+ *  @param info Pointer to a simple service information structure.
+ *  @param info_num Number of Simple Service Information Structures.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_get_service_simple_info(uint16_t svc_id,struct simple_svc_info *info,uint16_t info_num);
+/** @brief Get service characteristics.
+ *  @param svc_id ID of the service.
+ *  @param info Pointer to service characteristics information structure.
+ *  @param info_num Number of service characteristics.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_get_service_char(uint16_t svc_id,struct char_info *info,uint16_t char_num);
+/** @brief Get service characteristics descriptor.
+ *  @param svc_id ID of the service.
+ *  @param info Pointer to service characteristics descriptor information structure.
+ *  @param info_num Number of service characteristics descriptor.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_get_service_desc(uint16_t svc_id,struct descrip_info *info,uint16_t desp_num);
+/** @brief Register service.
+ *  @return service id(>0) in case of success.
+ */
+uint16_t bt_gatts_add_service(void);
+/** @brief Add Unregister service.
+ *  @param svc_id ID of the service.
+ *  @param desp_attr characteristics attribution.
+ *  @return 0 in case of success or negative value in case of error.
+ */
+int bt_gatts_del_service(uint16_t svc_id);
+#endif
+#endif
 #ifdef __cplusplus
 }
 #endif

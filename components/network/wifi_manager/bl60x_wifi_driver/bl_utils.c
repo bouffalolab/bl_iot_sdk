@@ -36,6 +36,7 @@
 #include <lwip/pbuf.h>
 #include <lwip/netif.h>
 #include <wifi_mgmr_ext.h>
+#include <wifi_pkt_hooks.h>
 
 #include "ipc_shared.h"
 #include "ipc_host.h"
@@ -114,7 +115,7 @@ static inline struct bl_vif *bl_rx_get_vif(int vif_idx)
  *
  * Process the management frame and free the corresponding skb
  */
-static void bl_rx_mgmt(uint32_t *skb,  struct hw_rxhdr *hw_rxhdr, int len)
+static void bl_rx_mgmt(uint32_t *skb,  struct hw_rxhdr *hw_rxhdr, int len, bl_rx_info_t *info)
 {
     struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb;
     static uint32_t counter;
@@ -280,114 +281,179 @@ static void dump_pkt_infor(struct hw_rxhdr *hw_rxhdr)
     }
 }
 
-int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int msdu_offset, struct wifi_pkt *pkt)
+static inline struct pbuf *_handle_frame_from_stack_with_mempool(void *swdesc, unsigned int msdu_offset, struct wifi_pkt *pkt)
+{
+    struct pbuf *t, *h;
+    int i = 0;
+
+    h = pbuf_alloc(PBUF_RAW, pkt->len[0] - msdu_offset, PBUF_POOL);
+    if (NULL == h) {
+        printf("error mem1 ========================================== pbuf mem\r\n");
+        return NULL;
+    }
+    pbuf_take(h, (uint8_t*)(pkt->pkt[0]) + msdu_offset, pkt->len[0] - msdu_offset);
+
+    i = 1;//header is already set
+    while (i < sizeof(pkt->pkt)/sizeof(pkt->pkt[0])) {
+        if (0 == pkt->len[i]) {
+            break;
+        }
+        t = pbuf_alloc(PBUF_RAW, pkt->len[i], PBUF_POOL);
+        if (t) {
+            pbuf_take(t, (uintptr_t*)pkt->pkt[i], pkt->len[i]);
+            pbuf_cat(h, t);
+            i++;
+        } else {
+            printf("error mem2 ====================================== pbuf mem\r\n");
+            pbuf_free(h);
+            return NULL;
+        }
+    }
+    return h;
+}
+
+static inline struct pbuf *_handle_frame_from_stack_with_zerocopy(void *swdesc, unsigned int msdu_offset, struct wifi_pkt *pkt)
+{
+    struct pbuf *h, *t;
+    int i;
+    bl_custom_pbuf_t* my_pbuf;
+
+    my_pbuf = (bl_custom_pbuf_t*)pkt->pbuf[0];
+    memset(my_pbuf, 0, sizeof(bl_custom_pbuf_t));
+    my_pbuf->p.custom_free_function = my_pbuf_free_custom;
+    my_pbuf->swdesc = swdesc;
+    h = pbuf_alloced_custom(
+            PBUF_RAW,
+            pkt->len[0] - msdu_offset,
+            PBUF_REF,
+            &my_pbuf->p,
+            (uint8_t*)(pkt->pkt[0]) + msdu_offset,
+            pkt->len[0] - msdu_offset
+    );
+
+    i = 1;//header is already set
+    while (i < sizeof(pkt->pkt)/sizeof(pkt->pkt[0])) {
+        if (0 == pkt->len[i]) {
+            break;
+        }
+        my_pbuf = (bl_custom_pbuf_t*)pkt->pbuf[i];
+        memset(my_pbuf, 0, sizeof(bl_custom_pbuf_t));
+        my_pbuf->p.custom_free_function = my_pbuf_free_custom_fake;
+        t = pbuf_alloced_custom(
+                PBUF_RAW,
+                pkt->len[i],
+                PBUF_REF,
+                &my_pbuf->p,
+                (uint8_t*)(pkt->pkt[i]),
+                pkt->len[i]
+        );
+        pbuf_cat(h, t);
+        i++;
+    }
+    return h;
+}
+
+#define MAC_FMT "%02X%02X%02X%02X%02X%02X"
+#define MAC_LIST(arr) (arr)[0], (arr)[1], (arr)[2], (arr)[3], (arr)[4], (arr)[5]
+
+int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int msdu_offset, struct wifi_pkt *pkt, uint8_t extra_status)
 {
     struct hw_rxhdr *hw_rxhdr = (struct hw_rxhdr*)hwhdr;
 
     uint32_t *skb = (uint32_t*)(pkt->pkt[0]), *skb_payload;
     struct bl_vif *bl_vif;
+    bool sniffer = false;
+    bool free_by_lowlayer = true;
+    bool zerocopy;
+    struct pbuf *h;
+    bl_rx_info_t info;
 
     /* Check if we need to forward the buffer */
-    if (status & RX_STAT_FORWARD) {
-        bl_vif = bl_rx_get_vif(hw_rxhdr->flags_vif_idx);
-        skb_payload = (uint32_t*)((uint32_t)(skb) + msdu_offset);
+    if (!(status & RX_STAT_FORWARD)) {
+        goto end;
+    }
 
-        if (hw_rxhdr->flags_is_80211_mpdu) {
-            //TODO fix spilted buff
-            //dump_pkt_infor(hw_rxhdr);
-            bl_rx_pkt_cb((uint8_t*)skb_payload, hw_rxhdr->hwvect.len);
-            bl_rx_mgmt(skb_payload, hw_rxhdr, hw_rxhdr->hwvect.len);
-        } else {
-            struct ethhdr *hdr = (struct ethhdr *)(skb_payload);
-            (void)hdr;
+    bl_vif = bl_rx_get_vif(hw_rxhdr->flags_vif_idx);
+    skb_payload = (uint32_t*)((uint32_t)(skb) + msdu_offset);
 
-            if (hw_rxhdr->flags_sta_idx != 0xff) {
-                if (hw_rxhdr->flags_is_4addr) {
-                    bl_os_printf("[RX] Trigger 4addr unexpected frame\r\n");
-                }
-            }
-            os_printf("********************ETH Start******************************\r\n");
-            os_printf("  Eth Dst %02X%02X%02X%02X%02X%02X\r\n",
-                    hdr->h_dest[0],
-                    hdr->h_dest[1],
-                    hdr->h_dest[2],
-                    hdr->h_dest[3],
-                    hdr->h_dest[4],
-                    hdr->h_dest[5]
-            );
-            os_printf("  Eth Src %02X%02X%02X%02X%02X%02X\r\n",
-                    hdr->h_source[0],
-                    hdr->h_source[1],
-                    hdr->h_source[2],
-                    hdr->h_source[3],
-                    hdr->h_source[4],
-                    hdr->h_source[5]
-            );
-            os_printf("  Eth Proto %04X, %p:%p, len %u\r\n", hdr->h_proto, bl_vif, bl_vif ? bl_vif->dev : NULL, hw_rxhdr->hwvect.len);
-            os_printf("********************ETH End******************************\r\n");
-            if (wifi_mgmr_ext_dump_needed()) {
-                dump_pkt_infor(hw_rxhdr);
-            }
-            if (bl_vif) {
-                /* allocate buffer for memory piece*/
-                struct pbuf *h, *t;
-                int i;
-                bl_custom_pbuf_t* my_pbuf;
+    if (hw_rxhdr->flags_is_80211_mpdu) {
+        sniffer = true;
+    }
+    if (!sniffer) {
+        struct ethhdr *hdr = (struct ethhdr *)(skb_payload);
+        (void)hdr;
 
-                //FIXME performance for PSRAM?
-                my_pbuf = (bl_custom_pbuf_t*)pkt->pbuf[0];
-                memset(my_pbuf, 0, sizeof(bl_custom_pbuf_t));
-                my_pbuf->p.custom_free_function = my_pbuf_free_custom;
-                my_pbuf->swdesc = swdesc;
-                h = pbuf_alloced_custom(
-                        PBUF_RAW,
-                        pkt->len[0] - msdu_offset,
-                        PBUF_REF,
-                        &my_pbuf->p,
-                        (uint8_t*)(pkt->pkt[0]) + msdu_offset,
-                        pkt->len[0] - msdu_offset
-                );
-#if 0
-                bl_os_printf("Header %p, len %u\r\n", h, pkt->len[0]);
-#endif
-                i = 1;//header is already set
-                while (i < sizeof(pkt->pkt)/sizeof(pkt->pkt[0])) {
-                    if (0 == pkt->len[i]) {
-                        /*empty item. break now*/
-#if 0
-                        bl_os_printf("break @%d len %u\r\n", i, pkt->len[i]);
-#endif
-                        break;
-                    }
-                    my_pbuf = (bl_custom_pbuf_t*)pkt->pbuf[i];
-                    memset(my_pbuf, 0, sizeof(bl_custom_pbuf_t));
-                    my_pbuf->p.custom_free_function = my_pbuf_free_custom_fake;
-                    t = pbuf_alloced_custom(
-                            PBUF_RAW,
-                            pkt->len[i],
-                            PBUF_REF,
-                            &my_pbuf->p,
-                            (uint8_t*)(pkt->pkt[i]),
-                            pkt->len[i]
-                    );
-                    pbuf_cat(h, t);
-#if 0
-                    bl_os_printf("chaining... %p, len %u\r\n",
-                            t,
-                            pkt->len[i]
-                    );
-#endif
-                    i++;
-                }
-                if (bl_vif->dev && ERR_OK == bl_vif->dev->input(h, bl_vif->dev)) {
-                    return 0;
-                }
-            } else {
-                bl_os_printf("------ Frame received but no active vif (%d)\r\n", hw_rxhdr->flags_vif_idx);
+        if (hw_rxhdr->flags_sta_idx != 0xff) {
+            if (hw_rxhdr->flags_is_4addr) {
+                bl_os_printf("[RX] Trigger 4addr unexpected frame\r\n");
             }
         }
+        os_printf("********************ETH Start******************************\r\n");
+        os_printf("  Eth Dst " MAC_FMT "\r\n", MAC_LIST(hdr->h_dest));
+        os_printf("  Eth Src " MAC_FMT "\r\n", MAC_LIST(hdr->h_dest));
+        os_printf("  Eth Proto %04X, %p:%p, len %u\r\n", hdr->h_proto, bl_vif, bl_vif ? bl_vif->dev : NULL, hw_rxhdr->hwvect.len);
+        os_printf("********************ETH End******************************\r\n");
+        if (wifi_mgmr_ext_dump_needed()) {
+            dump_pkt_infor(hw_rxhdr);
+        }
     }
-    return -1;
+
+    if (!sniffer && !bl_vif) {
+        bl_os_printf("------ Frame received but no active vif (%d)\r\n", hw_rxhdr->flags_vif_idx);
+        goto end;
+    }
+
+#if defined(CFG_CHIP_BL808)
+    h = _handle_frame_from_stack_with_mempool(swdesc, msdu_offset, pkt);
+    zerocopy = false;
+#else
+    h = _handle_frame_from_stack_with_zerocopy(swdesc, msdu_offset, pkt);
+    zerocopy = true;
+#endif
+    if (!h) {
+        // wrapping in pbuf failed, free the packet
+        goto end;
+    }
+
+    if (extra_status & BL_RX_STATUS_AMSDU) {
+        h->flags |= PBUF_FLAG_AMSDU;
+    }
+    if (sniffer) {
+        info.rssi = hw_rxhdr->hwvect.rssi1;
+        //TODO fix splitted buff in zerocopy
+        bl_rx_pkt_cb((uint8_t*)skb_payload, hw_rxhdr->hwvect.len, (void *)h, &info);
+        bl_rx_mgmt(skb_payload, hw_rxhdr, hw_rxhdr->hwvect.len, &info);
+        pbuf_free(h);
+    } else {
+#ifdef PKT_INPUT_HOOK
+        if (bl_wifi_pkt_eth_input_hook) {
+            bool is_sta = bl_vif->dev == wifi_mgmr_sta_netif_get();
+            h = bl_wifi_pkt_eth_input_hook(is_sta, h, bl_wifi_pkt_eth_input_hook_arg);
+            if (h == NULL) {
+                // hook dropped the packet
+                goto free;
+            }
+        }
+#endif
+        if (bl_vif->dev && ERR_OK == bl_vif->dev->input(h, bl_vif->dev)) {
+            //TCP/IP stack will take care of pbuf h
+        } else {
+            //No none need pbuf h anymore, so free it now
+            pbuf_free(h);
+        }
+    }
+
+    goto free; // In case of error that label free is defined but not used when PKT_INPUT_HOOK is disabled
+free:
+    if (zerocopy) {
+        free_by_lowlayer = false;
+    }
+end:
+    if (free_by_lowlayer) {
+        return -1;
+    } else {
+        return 0;
+    }
 }
 
 u8 bl_radarind(void *pthis, void *hostid)

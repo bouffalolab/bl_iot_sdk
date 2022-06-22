@@ -168,6 +168,10 @@ struct txdesc_host
 {
     uint32_t ready;
 
+#if defined(CFG_CHIP_BL808)
+    uint32_t eth_packet[1600/4];
+#endif
+
     /// API of the embedded part
     struct hostdesc host;
 

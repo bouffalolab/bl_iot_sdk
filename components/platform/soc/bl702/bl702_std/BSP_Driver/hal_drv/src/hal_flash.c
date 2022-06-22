@@ -25,6 +25,7 @@
 #include "bl702_xip_sflash_ext.h"
 #include "bl702_sf_cfg.h"
 #include "bl702_sf_cfg_ext.h"
+#include "bl702_ef_ctrl.h"
 #include "hal_flash.h"
 
 static uint32_t g_jedec_id = 0;
@@ -90,6 +91,29 @@ static BL_Err_Type ATTR_TCM_SECTION flash_set_l1c_wrap(SPI_Flash_Cfg_Type *p_fla
 }
 
 /**
+ * @brief flash sf2 gpio init for dual bank mode
+ *
+ * @return BL_Err_Type
+ */
+static BL_Err_Type ATTR_TCM_SECTION flash_sf2_gpio_init(void)
+{
+    uint32_t tmpVal;
+    Efuse_Device_Info_Type devInfo;
+
+    EF_Ctrl_Read_Device_Info(&devInfo);
+    /* flash_cfg != BFLB_FLASH_CFG_SF1_EXT_17_22, flash pad use SF2 */
+    if (devInfo.flash_cfg != BFLB_FLASH_CFG_SF1_EXT_17_22) {
+        tmpVal = BL_RD_REG(GLB_BASE, GLB_GPIO_USE_PSRAM__IO);
+        /* GLB_CFG_GPIO_USE_PSRAM_IO == 0, need init SF2 flash gpio */
+        if (BL_GET_REG_BITS_VAL(tmpVal, GLB_CFG_GPIO_USE_PSRAM_IO) == 0x00) {
+            SF_Cfg_Init_Ext_Flash_Gpio(1);
+        }
+    }
+
+    return SUCCESS;
+}
+
+/**
  * @brief flash_config_init
  *
  * @return BL_Err_Type
@@ -103,6 +127,7 @@ static BL_Err_Type ATTR_TCM_SECTION flash_config_init(SPI_Flash_Cfg_Type *p_flas
     cpu_global_irq_disable();
     XIP_SFlash_Opt_Enter();
     XIP_SFlash_State_Save(p_flash_cfg, &offset);
+    flash_sf2_gpio_init();
     SFlash_GetJedecId(p_flash_cfg, (uint8_t *)&jid);
     arch_memcpy(jedec_id, (uint8_t *)&jid, 3);
     jid &= 0xFFFFFF;

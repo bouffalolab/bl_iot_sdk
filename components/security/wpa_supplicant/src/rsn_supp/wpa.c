@@ -67,7 +67,7 @@ void wpa_sm_set_pmk_from_pmksa(struct wpa_sm *sm);
 static bool wpa_supplicant_gtk_in_use(struct wpa_sm *sm, struct wpa_gtk_data *gd);
 static inline enum wpa_states wpa_sm_get_state(struct wpa_sm *sm)
 {
-    return sm->wpa_state;;
+    return sm->wpa_state;
 }
 
 static inline void wpa_sm_cancel_auth_timeout(struct wpa_sm *sm)
@@ -196,10 +196,15 @@ static void wpa_tx_cb_(void *cb_arg, bool tx_ok)
 int wpa_sm_ether_send(const u8 *own_addr, const u8 *dest, u16 proto,
         const u8 *data, size_t data_len)
 {
+    struct wpa_sm *sm = &gWpaSm;
     void *buffer = (void *)(data - sizeof(struct l2_ethhdr));
     struct l2_ethhdr *eth = (struct l2_ethhdr *)buffer;
     struct bl_custom_tx_cfm cfm = { wpa_tx_cb_, NULL };
 
+    // Skip TX CFM for M2
+    if (WPA_SM_STATE(sm) == WPA_FIRST_HALF_4WAY_HANDSHAKE) {
+        cfm.cb = NULL;
+    }
     memcpy(eth->h_dest, dest, ETH_ALEN);
     memcpy(eth->h_source, own_addr, ETH_ALEN);
     eth->h_proto = host_to_be16(proto);
@@ -1781,6 +1786,11 @@ int wpa_sm_rx_eapol(u8 *src_addr, u8 *buf, u32 len)
     u16 key_info, ver;
     u8 *tmp;
     int ret = -1;
+
+    if (WPA_SM_STATE(sm) == WPA_DISCONNECTED) {
+        // Not in correct state, drop the packet
+        return -1;
+    }
 
     if (len < sizeof(*hdr) + sizeof(*key)) {
 #ifdef DEBUG_PRINT

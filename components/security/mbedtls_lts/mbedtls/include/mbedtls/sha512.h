@@ -7,7 +7,13 @@
  */
 /*
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
+ *
+ *  This file is provided under the Apache License 2.0, or the
+ *  GNU General Public License v2.0 or later.
+ *
+ *  **********
+ *  Apache License 2.0:
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -20,12 +26,33 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ *
+ *  **********
+ *
+ *  **********
+ *  GNU General Public License v2.0 or later:
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  **********
  */
 #ifndef MBEDTLS_SHA512_H
 #define MBEDTLS_SHA512_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
@@ -34,10 +61,8 @@
 #include <stdint.h>
 
 /* MBEDTLS_ERR_SHA512_HW_ACCEL_FAILED is deprecated and should not be used. */
-/** SHA-512 hardware accelerator failed */
-#define MBEDTLS_ERR_SHA512_HW_ACCEL_FAILED                -0x0039
-/** SHA-512 input data was malformed. */
-#define MBEDTLS_ERR_SHA512_BAD_INPUT_DATA                 -0x0075
+#define MBEDTLS_ERR_SHA512_HW_ACCEL_FAILED                -0x0039  /**< SHA-512 hardware accelerator failed */
+#define MBEDTLS_ERR_SHA512_BAD_INPUT_DATA                 -0x0075  /**< SHA-512 input data was malformed. */
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,10 +84,8 @@ typedef struct mbedtls_sha512_context
     uint64_t total[2];          /*!< The number of Bytes processed. */
     uint64_t state[8];          /*!< The intermediate digest state. */
     unsigned char buffer[128];  /*!< The data block being processed. */
-#if !defined(MBEDTLS_SHA512_NO_SHA384)
     int is384;                  /*!< Determines which function to use:
                                      0: Use SHA-512, or 1: Use SHA-384. */
-#endif
 }
 mbedtls_sha512_context;
 
@@ -103,11 +126,7 @@ void mbedtls_sha512_clone( mbedtls_sha512_context *dst,
  *
  * \param ctx      The SHA-512 context to use. This must be initialized.
  * \param is384    Determines which function to use. This must be
- *                 either \c 0 for SHA-512, or \c 1 for SHA-384.
- *
- * \note           When \c MBEDTLS_SHA512_NO_SHA384 is defined, \p is384 must
- *                 be \c 0, or the function will return
- *                 #MBEDTLS_ERR_SHA512_BAD_INPUT_DATA.
+ *                 either \c for SHA-512, or \c 1 for SHA-384.
  *
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
@@ -175,9 +194,6 @@ int mbedtls_internal_sha512_process( mbedtls_sha512_context *ctx,
  * \param ctx      The SHA-512 context to use. This must be initialized.
  * \param is384    Determines which function to use. This must be either
  *                 \c 0 for SHA-512 or \c 1 for SHA-384.
- *
- * \note           When \c MBEDTLS_SHA512_NO_SHA384 is defined, \p is384 must
- *                 be \c 0, or the function will fail to work.
  */
 MBEDTLS_DEPRECATED void mbedtls_sha512_starts( mbedtls_sha512_context *ctx,
                                                int is384 );
@@ -248,10 +264,6 @@ MBEDTLS_DEPRECATED void mbedtls_sha512_process(
  * \param is384    Determines which function to use. This must be either
  *                 \c 0 for SHA-512, or \c 1 for SHA-384.
  *
- * \note           When \c MBEDTLS_SHA512_NO_SHA384 is defined, \p is384 must
- *                 be \c 0, or the function will return
- *                 #MBEDTLS_ERR_SHA512_BAD_INPUT_DATA.
- *
  * \return         \c 0 on success.
  * \return         A negative error code on failure.
  */
@@ -286,9 +298,6 @@ int mbedtls_sha512_ret( const unsigned char *input,
  *                 be a writable buffer of length \c 64 Bytes.
  * \param is384    Determines which function to use. This must be either
  *                 \c 0 for SHA-512, or \c 1 for SHA-384.
- *
- * \note           When \c MBEDTLS_SHA512_NO_SHA384 is defined, \p is384 must
- *                 be \c 0, or the function will fail to work.
  */
 MBEDTLS_DEPRECATED void mbedtls_sha512( const unsigned char *input,
                                         size_t ilen,

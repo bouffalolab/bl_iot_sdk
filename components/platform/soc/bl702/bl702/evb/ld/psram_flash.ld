@@ -3,11 +3,12 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( bl702_start )
 
 __EM_SIZE = DEFINED(ble_controller_init) ? 8K : 0K;
+__CACHE_SIZE = DEFINED(__CACHE_SIZE) ? __CACHE_SIZE : 16K;
 
 MEMORY
 {
   flash  (rxai!w) : ORIGIN = 0x23000000, LENGTH = (2M)
-  tcm_ocram (wxa) : ORIGIN = 0x42014000, LENGTH = (48K + 64K - __EM_SIZE)
+  tcm_ocram (wxa) : ORIGIN = 0x42010000 + __CACHE_SIZE, LENGTH = (64K - __CACHE_SIZE + 64K - __EM_SIZE)
   hbnram    (wxa) : ORIGIN = 0x40010000, LENGTH = (4K)
   psram     (wxa) : ORIGIN = 0x26000000, LENGTH = (2M)
 }
@@ -98,6 +99,26 @@ SECTIONS
     PROVIDE( _hbn_run = ADDR(.hbn) );
     PROVIDE( _hbn_run_end = ADDR(.hbn) + SIZEOF(.hbn));
 
+    /* put bl702_rf_private.o in hbnram to avoid ocram conflict during rf calibration */
+    *libbl702_rf.a:bl702_rf_private.o(.retention .retention_noinit)
+    *libbl702_rf.a:bl702_rf_private.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    PROVIDE ( _rf_data_end = . );
+
+    /* tcm code that should be retentive after hbn wakeup */
+    *libbl702_std.a:bl702_romapi.o(.tcm_code.* .sclock_rlt_code.*)
+    *libbl702_std.a:bl702_glb.o(.tcm_code.* .sclock_rlt_code.*)
+    PROVIDE ( _hbn_restore_tcm_run_end = . );
+
+    /* data that should be retentive after hbn wakeup */
+    *liblmac154.a:*(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libbl702_std.a:*(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_adc.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_gpio.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_sys.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_timer.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:bl_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    *libhosal.a:hosal_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
+    PROVIDE ( _hbn_restore_data_run_end = . );
     *(.hbn_code.*)
     *(.hbn_data)
     *(.retention)
@@ -137,12 +158,6 @@ SECTIONS
     PROVIDE( _data_load = LOADADDR(.data) );
     PROVIDE( _data_run = ADDR(.data) );
     PROVIDE( _data_run_end = ADDR(.data) + SIZEOF(.data));
-
-    /* put bl702_rf_private.o at the top to avoid ocram conflict during rf calibration */
-    *libbl702_rf.a:bl702_rf_private.o(.retention .retention_noinit)
-    *libbl702_rf.a:bl702_rf_private.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
-    PROVIDE ( _rf_data_end = . );
-    ASSERT ((_rf_data_end <= 0x42024000), "Error: _rf_data_end > 0x42024000");
 
     *(.pds_code.*)
     *(.data .data.*)

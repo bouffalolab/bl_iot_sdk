@@ -186,7 +186,7 @@ int bl_open(struct bl_hw *bl_hw)
 #endif
 }
 
-int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
+int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq, const uint32_t flags)
 {
     struct cfg80211_connect_params sme;
 
@@ -199,6 +199,7 @@ int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int p
     sme.key_len = psk_len;
     sme.pmk = pmk;
     sme.pmk_len = pmk_len;
+    sme.flags = flags;
 
     if (mac){
         sme.bssid = mac;
@@ -468,13 +469,13 @@ int bl_main_cfg_task_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t
     return bl_send_cfg_task_req(&wifi_hw, ops, task, element, type, arg1, arg2);
 }
 
-int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_ssid *ssid)
+int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid)
 {
     if (0 == channel_num) {
-        bl_send_scanu_req(&wifi_hw, NULL, 0, ssid, netif->hwaddr);
+        bl_send_scanu_req(&wifi_hw, NULL, 0, bssid, ssid, netif->hwaddr);
     } else {
         if (bl_get_fixed_channels_is_valid(fixed_channels, channel_num)) {
-            bl_send_scanu_req(&wifi_hw, fixed_channels, channel_num, ssid, netif->hwaddr);
+            bl_send_scanu_req(&wifi_hw, fixed_channels, channel_num, bssid, ssid, netif->hwaddr);
         } else {
             bl_os_printf("---->unvalid channel");
         }

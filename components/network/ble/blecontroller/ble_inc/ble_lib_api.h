@@ -35,7 +35,7 @@
 
 void ble_controller_init(uint8_t task_priority);
 void ble_controller_deinit(void);
-#if !defined(CFG_FREERTOS) && !defined(CFG_AOS)
+#if !defined(CFG_FREERTOS) && !defined(CFG_AOS) && !defined(CFG_NUTTX)
 void blecontroller_main(void);
 #endif
 #if defined(CFG_BT_RESET)
@@ -50,12 +50,12 @@ int8_t ble_controller_set_scan_filter_table_size(uint8_t size);
 // return sleep duration, in unit of 1/32768s
 // if 0, means not allow sleep
 // if -1, means allow sleep, but there is no end of sleep interrupt (ble core deep sleep is not enabled)
-int32_t ble_controller_sleep(void);
+int32_t ble_controller_sleep(int32_t max_sleep_cycles);
 void ble_controller_sleep_restore(void);
 bool ble_controller_sleep_is_ongoing(void);
-
 void ble_controller_set_tx_pwr(int ble_tx_power);
 void ble_rf_set_tx_channel(uint16_t tx_channel);
+void ble_controller_disable_adv_random_delay(bool disable);
 
 #if defined(CONFIG_BLE_MFG)
 enum

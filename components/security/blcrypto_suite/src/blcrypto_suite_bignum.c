@@ -75,7 +75,6 @@
 #include <string.h>
 
 #include <blcrypto_suite/blcrypto_suite_top_config.h>
-#include <bl_sec.h>
 
 #if defined(BLCRYPTO_SUITE_PLATFORM_C)
 #include "blcrypto_suite/blcrypto_suite_platform.h"

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "bugkiller_heap_dump.h"
 
 extern uint8_t _heap_start;
 extern char *heap_dump_string[];

@@ -1,7 +1,7 @@
 # Component Makefile
 #
 ## These include paths would be exported to project level
-COMPONENT_ADD_INCLUDEDIRS += bl602_hal platform_hal
+COMPONENT_ADD_INCLUDEDIRS += bl602_hal platform_hal sec_common
 
 ## not be exported to project level
 COMPONENT_PRIV_INCLUDEDIRS :=
@@ -27,6 +27,7 @@ COMPONENT_SRCS := bl602_hal/bl_uart.c \
                   bl602_hal/hal_button.c \
                   bl602_hal/bl_pwm.c \
                   bl602_hal/bl_sec_aes.c \
+                  bl602_hal/bl_sec_sha.c \
                   bl602_hal/bl_wifi.c \
                   bl602_hal/bl_wdt.c \
                   bl602_hal/bl_wdt_cli.c \
@@ -62,9 +63,7 @@ COMPONENT_SRCS := bl602_hal/bl_uart.c \
                   bl602_hal/hosal_ota.c \
                   bl602_hal/hosal_timer.c \
                   bl602_hal/hosal_efuse.c \
-                  sec_common/bl_sec_sha.c \
                   sec_common/bl_sec_pka.c \
-                  sec_common/bl_sec_aes.c \
 
 COMPONENT_SRCDIRS := bl602_hal platform_hal sec_common
 

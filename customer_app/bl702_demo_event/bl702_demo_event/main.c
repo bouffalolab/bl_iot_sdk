@@ -73,6 +73,8 @@
 #include <lwip/ip_addr.h>
 #include <lwip/tcpip.h>
 #include <lwip/dhcp.h>
+#include <lwip/inet.h>
+#include <lwip/sockets.h>
 #include <lwip/netifapi.h>
 
 #include <bl_sys_ota.h>
@@ -144,6 +146,71 @@ extern err_t eth_init(struct netif *netif);
 #define ETH_USE_DHCP 1
 
 #if ETH_USE_DHCP
+static void netif_status_callback(struct netif *netif)
+{
+    if (netif->flags & NETIF_FLAG_UP) {
+#if LWIP_IPV4
+        if(!ip4_addr_isany(netif_ip4_addr(netif))){
+            char addr[INET_ADDRSTRLEN];
+            const ip4_addr_t* ipv4addr = netif_ip4_addr(netif);
+            inet_ntop(AF_INET, ipv4addr, addr, sizeof(addr));
+            printf("IP: %s\r\n", addr);
+
+            const ip4_addr_t* ipv4mask = netif_ip4_netmask(netif);
+            inet_ntop(AF_INET, ipv4mask, addr, sizeof(addr));
+            printf("MASK: %s\r\n", addr);
+
+            const ip4_addr_t* ipv4gw = netif_ip4_gw(netif);
+            inet_ntop(AF_INET, ipv4gw, addr, sizeof(addr));
+            printf("Gateway: %s\r\n", addr);
+        }
+#endif
+
+#if LWIP_IPV6
+        for (uint32_t i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i ++ ) {
+          if (!ip6_addr_isany(netif_ip6_addr(netif, i))
+                && ip6_addr_ispreferred(netif_ip6_addr_state(netif, i))
+                ) {
+            const ip6_addr_t* ip6addr = netif_ip6_addr(netif, i);
+            char addr[INET6_ADDRSTRLEN];
+
+            if (ip6_addr_isany(ip6addr)) {
+                continue;
+            }
+            inet_ntop(AF_INET6, ip6addr, addr, sizeof(addr));
+            if(ip6_addr_islinklocal(netif_ip6_addr(netif, i))){
+                printf("LOCAL IP6 addr %s\r\n", addr);
+            }
+            else{
+                printf("GLOBAL IP6 addr %s\r\n", addr);
+            }
+          }
+        }
+#endif
+    }
+    else {
+        printf("interface is down status.\n");
+    }
+}
+static int app_eth_callback(eth_link_state val)
+{
+    switch(val){
+    case ETH_INIT_STEP_LINKUP:{
+
+    }break;
+    case ETH_INIT_STEP_READY:{
+        netif_set_default(&eth_mac);
+        netif_set_up(&eth_mac);
+        dhcp_start(&eth_mac);
+        printf("start dhcp....\r\n");
+    }break;
+    case ETH_INIT_STEP_LINKDOWN:{
+
+    }break;
+    }
+    return 0;
+}
+
 void lwip_init_netif(void)
 {
     ip_addr_t ipaddr, netmask, gw;
@@ -151,10 +218,10 @@ void lwip_init_netif(void)
     IP4_ADDR(&netmask, 0,0,0,0);
     IP4_ADDR(&gw, 0,0,0,0);
     netif_add(&eth_mac, &ipaddr, &netmask, &gw, NULL, eth_init, ethernet_input);
-    //netif_set_default(&eth_mac);
-    //netif_set_up(&eth_mac);
-    //printf("start dhcp....\r\n");
-    //dhcp_start(&eth_mac);
+
+    ethernet_init(app_eth_callback);
+    /* Set callback to be called when interface is brought up/down or address is changed while up */
+    netif_set_status_callback(&eth_mac, netif_status_callback);
 }
 #else
 void lwip_init_netif(void)
@@ -186,10 +253,12 @@ static HeapRegion_t xHeapRegionsPsram[] =
 bool pds_start = false;
 bool wfi_disable = false;
 void bl702_low_power_config(void);
+#if defined(CFG_ZIGBEE_PDS) || (CFG_BLE_PDS)
 static void cmd_start_pds(char *buf, int len, int argc, char **argv)
 {
     pds_start = true;
 }
+#endif
 
 #if defined(CFG_ZIGBEE_HBN)
 bool hbn_start = false;
@@ -414,6 +483,15 @@ static void cmd_wdt_set(char *buf, int len, int argc, char **argv)
     }
 }
 
+static void cmd_wdt_rst_cnt_get(char *buf, int len, int argc, char **argv)
+{
+    //extern int bl_sys_wdt_rst_count_get();
+    if(argc != 1){
+        log_info("Number of parameters error.\r\n");
+        return;
+    }
+    printf("wdt reset count %d\r\n", bl_sys_wdt_rst_count_get());
+}
 
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = { 
         #if defined(CFG_ZIGBEE_PDS) || (CFG_BLE_PDS)
@@ -427,7 +505,8 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         #if defined(CONFIG_ZIGBEE_PROV)
         { "blsync_blezb_start", "start zigbee provisioning via ble", cmd_blsync_blezb_start},
         #endif
-        { "wdt_set", "enable or disable pds", cmd_wdt_set},
+        { "wdt_set", "enable or disable wdt", cmd_wdt_set},
+        { "wdt_rst_cnt_get", "get wdt rest count", cmd_wdt_rst_cnt_get},
 };
 
 void vApplicationMallocFailedHook(void)
@@ -698,8 +777,10 @@ static void system_thread_init()
     ble_init();
     #endif
 #endif
-
 #if defined(CFG_ZIGBEE_ENABLE)
+#if defined(CFG_ZIGBEE_SLEEPY_END_DEVICE_STARTUP) && (CFG_PDS_LEVEL == 31)
+    zb_disableFlashCache();
+#endif
     zigbee_init();
 
     #if defined(CONFIG_HW_SEC_ENG_DISABLE)
@@ -730,9 +811,4 @@ void main()
     tcpip_init(NULL, NULL);
     lwip_init_netif();
 #endif /*CFG_ETHERNET_ENABLE*/
-
-#ifdef CFG_BLE_AUTO_TRIG_SCAN
-    extern void bl_ble_start_scan_pds(void);
-    bl_ble_start_scan_pds();
-#endif
 }

@@ -28,7 +28,8 @@ ble_stack_srcs_dirs+= src/cli_cmds
 endif
 
 ble_stack_srcs_include_dirs    += src/port/include \
-                                src/common \
+								src \
+								src/common \
 								src/common/include \
 								src/common/include/zephyr  \
 								src/common/include/misc  \
@@ -116,6 +117,11 @@ ble_stack_srcs   += src/services/oad/oad_main.c \
 					src/services/oad/oad_service.c
 endif
 
+ifeq ($(CONFIG_BT_SPP_SERVER),1)
+ble_stack_srcs   += src/services/spp.c
+endif
+
+
 ifeq ($(CONFIG_BT_STACK_CLI),1)
 ble_stack_srcs   += src/cli_cmds/ble_cli_cmds.c \
 					src/cli_cmds/bredr_cli_cmds.c \
@@ -134,9 +140,18 @@ ifeq ($(CONFIG_BT_DIS_SERVER),1)
 ble_stack_srcs   += src/services/dis.c
 endif
 
+ifeq ($(CONFIG_BT_IAS_SERVER),1)
+ble_stack_srcs   += src/services/ias.c
+endif
+
 ifeq ($(CONFIG_HOGP_SERVER),1)
 ble_stack_srcs   += src/services/hog.c
 endif
+
+ifeq ($(CONFIG_ATVV_SERVER),1)
+ble_stack_srcs   += src/services/atvv.c
+endif
+
 
 ifeq ($(CONFIG_BLE_TP_SERVER),1)
 ble_stack_srcs   += src/services/ble_tp_svc.c

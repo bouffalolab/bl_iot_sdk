@@ -542,12 +542,14 @@ __ALWAYS_INLINE ATTR_TCM_SECTION
     return RomDriver_XIP_SFlash_GetUniqueId_Need_Lock(pFlashCfg, ioMode, data, idLen);
 }
 
+#if 0
 __ALWAYS_INLINE ATTR_TCM_SECTION
     BL_Err_Type
     XIP_SFlash_Read_Via_Cache_Need_Lock(uint32_t addr, uint8_t *data, uint32_t len)
 {
     return RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock(addr, data, len);
 }
+#endif
 
 __ALWAYS_INLINE ATTR_TCM_SECTION int XIP_SFlash_Read_With_Lock(SPI_Flash_Cfg_Type *pFlashCfg, SF_Ctrl_IO_Type ioMode, uint32_t addr, uint8_t *dst, int len)
 {
@@ -977,10 +979,12 @@ __ALWAYS_INLINE ATTR_TCM_SECTION void SF_Cfg_Deinit_Ext_Flash_Gpio(uint8_t extFl
     RomDriver_SF_Cfg_Deinit_Ext_Flash_Gpio(extFlashPin);
 }
 
+#if 0
 __ALWAYS_INLINE ATTR_TCM_SECTION void SF_Cfg_Init_Ext_Flash_Gpio(uint8_t extFlashPin)
 {
     RomDriver_SF_Cfg_Init_Ext_Flash_Gpio(extFlashPin);
 }
+#endif
 
 __ALWAYS_INLINE ATTR_TCM_SECTION
     BL_Err_Type

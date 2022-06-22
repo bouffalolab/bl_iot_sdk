@@ -61,7 +61,7 @@ int wifi_mgmr_api_rate_config(uint16_t config);
 int wifi_mgmr_api_conf_max_sta(uint8_t max_sta_supported);
 int wifi_mgmr_api_ifaceup(void);
 int wifi_mgmr_api_sniffer_enable(void);
-int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid);
+int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, uint8_t use_dhcp_server);
 int wifi_mgmr_api_ap_stop(void);
 int wifi_mgmr_api_idle(void);
 int wifi_mgmr_api_channel_set(int channel, int use_40Mhz);
@@ -70,7 +70,7 @@ int wifi_mgmr_api_set_country_code(char *country_code);
 
 /*section for fw api*/
 int wifi_mgmr_api_fw_disconnect(void);
-int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const char *ssid);
+int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *scanssid);
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_OFF           (1)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_ON            (2)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_DYNAMIC_ON    (3)

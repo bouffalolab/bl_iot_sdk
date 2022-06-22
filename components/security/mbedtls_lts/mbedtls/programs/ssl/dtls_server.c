@@ -2,7 +2,13 @@
  *  Simple DTLS server demonstration program
  *
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
+ *
+ *  This file is provided under the Apache License 2.0, or the
+ *  GNU General Public License v2.0 or later.
+ *
+ *  **********
+ *  Apache License 2.0:
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -15,6 +21,27 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ *
+ *  **********
+ *
+ *  **********
+ *  GNU General Public License v2.0 or later:
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  **********
  */
 
 #if !defined(MBEDTLS_CONFIG_FILE)
@@ -87,7 +114,7 @@ int main( void )
 #include "mbedtls/ssl_cache.h"
 #endif
 
-#define READ_TIMEOUT_MS 10000   /* 10 seconds */
+#define READ_TIMEOUT_MS 10000   /* 5 seconds */
 #define DEBUG_LEVEL 0
 
 
@@ -223,7 +250,6 @@ int main( void )
 
     mbedtls_ssl_conf_rng( &conf, mbedtls_ctr_drbg_random, &ctr_drbg );
     mbedtls_ssl_conf_dbg( &conf, my_debug, stdout );
-    mbedtls_ssl_conf_read_timeout( &conf, READ_TIMEOUT_MS );
 
 #if defined(MBEDTLS_SSL_CACHE_C)
     mbedtls_ssl_conf_session_cache( &conf, &cache,
@@ -291,7 +317,7 @@ reset:
                     client_ip, cliip_len ) ) != 0 )
     {
         printf( " failed\n  ! "
-                "mbedtls_ssl_set_client_transport_id() returned -0x%x\n\n", (unsigned int) -ret );
+                "mbedtls_ssl_set_client_transport_id() returned -0x%x\n\n", -ret );
         goto exit;
     }
 
@@ -318,7 +344,7 @@ reset:
     }
     else if( ret != 0 )
     {
-        printf( " failed\n  ! mbedtls_ssl_handshake returned -0x%x\n\n", (unsigned int) -ret );
+        printf( " failed\n  ! mbedtls_ssl_handshake returned -0x%x\n\n", -ret );
         goto reset;
     }
 
@@ -351,7 +377,7 @@ reset:
                 goto close_notify;
 
             default:
-                printf( " mbedtls_ssl_read returned -0x%x\n\n", (unsigned int) -ret );
+                printf( " mbedtls_ssl_read returned -0x%x\n\n", -ret );
                 goto reset;
         }
     }

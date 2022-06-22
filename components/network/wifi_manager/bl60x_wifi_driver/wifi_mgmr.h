@@ -41,6 +41,8 @@
 #define WIFI_MGMR_MQ_MSG_SIZE (128 + 64 + 32)
 #define WIFI_MGMR_MQ_MSG_COUNT (1)
 
+#define MAC_ADDR_LIST(m) (m)[0], (m)[1], (m)[2], (m)[3], (m)[4], (m)[5]
+
 /**
  ****************************************************************************************
  *
@@ -144,6 +146,7 @@ typedef struct wifi_mgmr_profile_msg {
     int ap_info_ttl;
 
     uint8_t dhcp_use;
+    uint32_t flags;
 } wifi_mgmr_profile_msg_t;
 
 typedef struct wifi_mgmr_ipgot_msg {
@@ -162,6 +165,7 @@ typedef struct wifi_mgmr_ap_msg {
     uint32_t ssid_len;
     char psk[64];
     char psk_tail[1];
+    uint8_t use_dhcp_server;
     uint32_t psk_len;
 } wifi_mgmr_ap_msg_t;
 
@@ -182,6 +186,7 @@ typedef struct wifi_mgmr_profile {
     int ap_info_ttl;
 
     uint8_t dhcp_use;
+    uint32_t flags;
 
     /*reserved field for wifi manager*/
     uint8_t priority;
@@ -236,6 +241,7 @@ struct wlan_netif {
 
 #define MAX_FIXED_CHANNELS_LIMIT (14)
 typedef struct wifi_mgmr_scan_params {
+    uint8_t bssid[6];
     uint16_t channel_num;
     uint16_t channels[MAX_FIXED_CHANNELS_LIMIT];
     struct mac_ssid ssid;
@@ -277,6 +283,7 @@ typedef struct wifi_mgmr {
     wifi_mgmr_profile_t profiles[WIFI_MGMR_PROFILES_MAX];
     int profile_active_index;
 
+    BL_Mutex_t scan_items_lock;
     wifi_mgmr_scan_item_t scan_items[WIFI_MGMR_SCAN_ITEMS_MAX];
     BL_MessageQueue_t mq;
     uint8_t mq_pool[WIFI_MGMR_MQ_MSG_SIZE*WIFI_MGMR_MQ_MSG_COUNT];
@@ -316,8 +323,11 @@ typedef struct wifi_mgmr {
     void *dns_server;
 } wifi_mgmr_t;
 
+/// Constant value corresponding to the Broadcast MAC address
+extern const struct mac_addr mac_addr_bcst;
 int wifi_mgmr_pending_task_set(uint32_t bits);
 int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg, int use_block);
+int wifi_mgmr_detailed_state_get_internal(int *state, int *state_d);
 int wifi_mgmr_state_get_internal(int *state);
 int wifi_mgmr_status_code_clean_internal(void);
 int wifi_mgmr_status_code_get_internal(int *s_code);
@@ -330,6 +340,7 @@ extern wifi_mgmr_t wifiMgmr;
 char *wifi_mgmr_auth_to_str(uint8_t auth);
 char *wifi_mgmr_cipher_to_str(uint8_t cipher);
 int wifi_mgmr_api_fw_tsen_reload(void);
+int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan );
 
 static inline int wifi_mgmr_scan_item_is_timeout(wifi_mgmr_t *mgmr, wifi_mgmr_scan_item_t *item)
 {

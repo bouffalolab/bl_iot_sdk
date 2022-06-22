@@ -22,9 +22,9 @@
  */
 #include "hal_dac.h"
 #include "hal_dma.h"
-#include "hal_clock.h"
 #include "bl702_dac.h"
 #include "bl702_glb.h"
+#include "bl702_clock.h"
 
 static dac_device_t dacx_device[] = {
 #ifdef BSP_USING_DAC0
@@ -46,7 +46,7 @@ int dac_open(struct device *dev, uint16_t oflag)
     uint8_t dac_div = 0;
     uint32_t tmpVal;
 
-    uint32_t dac_clk = peripheral_clock_get(PERIPHERAL_CLOCK_DAC);
+    uint32_t dac_clk = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_GPDAC);
 
     if ((GLB_GPIO_Get_Fun(GLB_GPIO_PIN_11) == GPIO_FUN_ANALOG) && (dac_device->channels & DAC_CHANNEL_0)) {
         dac_channel_enable_check |= DAC_CHANNEL_0;

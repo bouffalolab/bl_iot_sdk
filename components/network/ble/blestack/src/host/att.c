@@ -2271,7 +2271,14 @@ static void bt_att_encrypt_change(struct bt_l2cap_chan *chan,
 		return;
 	}
 
-	k_sem_take(&att->tx_sem, K_FOREVER);
+    #if (BFLB_BT_CO_THREAD)
+     if (k_sem_take(&att->tx_sem, K_NO_WAIT) < 0) {
+        k_fifo_put(&att->tx_queue, att->req->buf);
+		return;
+	}
+    #else
+    k_sem_take(&att->tx_sem, K_FOREVER);
+    #endif
 	if (!att_is_connected(att)) {
 		BT_WARN("Disconnected");
 		k_sem_give(&att->tx_sem);

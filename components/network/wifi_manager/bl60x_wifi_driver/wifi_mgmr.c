@@ -57,6 +57,7 @@
 #define TSEN_RELOAD_MS         (10000)
 
 wifi_mgmr_t wifiMgmr;
+extern struct bl_hw wifi_hw;
 const static struct state
     stateGlobal,
     stateIdle,
@@ -168,31 +169,19 @@ char *wifi_mgmr_cipher_to_str(uint8_t cipher)
     }
 }
 
-static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
+int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
 {
 #define SCAN_UPDATE_LIMIT_TIME_MS (3000)
 
-    int i, empty = -1, oldest = -1;
+    int i, empty = -1, oldest = -1, ret = 0;
     uint32_t lastseen = 0xFFFFFFFF;
     uint32_t counter = 0;
     uint32_t lastseen_found = 0;
-    wifi_mgmr_msg_t *msg;
-    wifi_mgmr_scan_item_t *scan;
 
-    msg = event->data;
-    scan = (wifi_mgmr_scan_item_t*)msg->data;
-    if (ch != (void*)msg->ev) {
-        return false;
-    }
 #ifdef DEBUG_SCAN_BEACON
-    bl_os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, auth %s, cipher:%s \t, SSID %s\r\n",
+    bl_os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm %d:%d, auth %s, cipher:%s \t, SSID %s\r\n",
             scan->channel,
-            scan->bssid[0],
-            scan->bssid[1],
-            scan->bssid[2],
-            scan->bssid[3],
-            scan->bssid[4],
-            scan->bssid[5],
+            MAC_ADDR_LIST(scan->bssid),
             scan->rssi,
             scan->ppm_abs,
             scan->ppm_rel,
@@ -201,10 +190,14 @@ static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
             scan->ssid
     );
 #endif
+
+    bl_os_mutex_lock(wifiMgmr.scan_items_lock);
     if (scan->channel > wifiMgmr.channel_nums || !scan->channel){
+        ret = -1;
         goto __exit;
     }
     if (0 == scan->ssid[0] && (!_features_is_set(WIFI_MGMR_FEATURES_SCAN_SAVE_HIDDEN_SSID))) {
+        ret = -1;
         goto __exit;
     }
 
@@ -270,9 +263,9 @@ static bool stateGlobalGuard_scan_beacon( void *ch, struct event *event )
     }
 
 __exit:
+    bl_os_mutex_unlock(wifiMgmr.scan_items_lock);
 
-    /*we always return false, since we only store the info from beacon frame*/
-    return false;
+    return ret;
 }
 
 static bool stateGlobalGuard_disable_autoreconnect( void *ch, struct event *event )
@@ -348,6 +341,7 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     uint16_t channel_num = 0;
     wifi_mgmr_scan_params_t *ch_req;
     struct mac_ssid *ssid = NULL;
+    struct mac_addr bssid;
 
     msg = event->data;
 
@@ -369,6 +363,7 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     ch_req = (wifi_mgmr_scan_params_t *)msg->data;
     channel_num = ch_req->channel_num;
     ssid = &(ch_req->ssid);
+    memcpy((uint8_t *)&bssid, ch_req->bssid, ETH_ALEN);
 #if 0
     if (channel_num) {
         bl_os_printf("%s len:%d \r\n",__func__, channel_num);
@@ -391,11 +386,11 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
 
     if (channel_num) {
         bl_os_printf("------>>>>>> Scan CMD fixed channels_num:%u\r\n", channel_num);
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, ch_req->channels, channel_num, ssid);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, ch_req->channels, channel_num, &bssid, ssid);
     } else {
         /*normal scan command*/
         bl_os_printf("------>>>>>> Scan CMD\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, ssid);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, &bssid, ssid);
     }
 
     return false;
@@ -503,17 +498,22 @@ static bool stateGlobalGuard_AP(void *ev, struct event *event )
         bl_os_printf(DEBUG_HEADER "%s: add AP iface failed\r\n", __func__);
         return false;
     }
+    ap = (wifi_mgmr_ap_msg_t*)msg->data;
+
     netifapi_netif_set_link_up(&(wifiMgmr.wlan_ap.netif));
 void dhcpd_start(struct netif *netif);
-    netifapi_netif_common(&(wifiMgmr.wlan_ap.netif), dhcpd_start, NULL);
+    if (ap->use_dhcp_server) {
+        netifapi_netif_common(&(wifiMgmr.wlan_ap.netif), dhcpd_start, NULL);
+    }
 
-    ap = (wifi_mgmr_ap_msg_t*)msg->data;
     bl_os_printf(DEBUG_HEADER "start AP with ssid %s;\r\n", ap->ssid);
     bl_os_printf(DEBUG_HEADER "              pwd  %s;\r\n", ap->psk);
     bl_os_printf(DEBUG_HEADER "              channel  %ld;\r\n", ap->channel);
     bl_main_apm_start(ap->ssid, ap->psk, ap->channel, wifiMgmr.wlan_ap.vif_index, ap->hidden_ssid, wifiMgmr.ap_bcn_int);
     wifiMgmr.inf_ap_enabled = 1;
-    wifiMgmr.dns_server = dns_server_init();
+    if (ap->use_dhcp_server) {
+        wifiMgmr.dns_server = dns_server_init();
+    }
     aos_post_event(EV_WIFI, CODE_WIFI_ON_AP_STARTED, 0);
 
     return false;
@@ -623,7 +623,6 @@ const static struct state stateGlobal = {
    .entryState = NULL,
    .transitions = (struct transition[])
    {
-      {EVENT_TYPE_GLB, (void*)WIFI_MGMR_EVENT_GLB_SCAN_IND_BEACON, &stateGlobalGuard_scan_beacon, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_GLB, (void*)WIFI_MGMR_EVENT_GLB_DISABLE_AUTORECONNECT, &stateGlobalGuard_disable_autoreconnect, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_GLB, (void*)WIFI_MGMR_EVENT_GLB_ENABLE_AUTORECONNECT, &stateGlobalGuard_enable_autoreconnect, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_AP_START, &stateGlobalGuard_AP, &stateGlobalAction, &stateIdle},
@@ -636,7 +635,7 @@ const static struct state stateGlobal = {
       {EVENT_TYPE_FW,  (void*)WIFI_MGMR_EVENT_FW_DATA_RAW_SEND, &stateSnifferGuard_raw_send, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_FW,  (void*)WIFI_MGMR_EVENT_FW_CFG_REQ, &stateGlobal_cfg_req, &stateGlobalAction, &stateIdle},
    },
-   .numTransitions = 12,
+   .numTransitions = 11,
    .data = "group",
    .entryAction = &stateEnter,
    .exitAction = &stateExit,
@@ -700,6 +699,22 @@ static bool stateIdleGuard_sniffer(void *ev, struct event *event )
     return true;
 }
 
+static void dump_connect_param(const wifi_mgmr_profile_msg_t *profile_msg, int band, int freq, const uint8_t *bssid)
+{
+    bl_os_printf(DEBUG_HEADER "Action Connect\r\n");
+    bl_os_printf("\tssid %s\r\n", profile_msg->ssid);
+    bl_os_printf("\tssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
+    bl_os_printf("\tpassphr %s\r\n", profile_msg->passphr);
+    bl_os_printf("\tpassphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
+    bl_os_printf("\tpsk %s\r\n", profile_msg->psk);
+    bl_os_printf("\tpsk len %u\r\n", (unsigned int)profile_msg->psk_len);
+    bl_os_printf("\tband %d\r\n", band);
+    bl_os_printf("\tfreq %d\r\n", freq);
+    bl_os_printf("\tbssid %02X:%02X:%02X:%02X:%02X:%02X\r\n", MAC_ADDR_LIST(bssid));
+    bl_os_printf("\tdhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
+    bl_os_printf("\tflags: %u\r\n", (unsigned)profile_msg->flags);
+}
+
 static void stateIdleAction_connect( void *oldStateData, struct event *event,
       void *newStateData )
 {
@@ -710,24 +725,7 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event,
     profile_msg = (wifi_mgmr_profile_msg_t*)msg->data;
     profile_msg->ssid_tail[0] = '\0';
     profile_msg->psk_tail[0] = '\0';
-    bl_os_printf(DEBUG_HEADER "Action Connect\r\n");
-    bl_os_printf("           ssid %s\r\n", profile_msg->ssid);
-    bl_os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
-    bl_os_printf("           passphr %s\r\n", profile_msg->passphr);
-    bl_os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
-    bl_os_printf("           psk %s\r\n", profile_msg->psk);
-    bl_os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
-    bl_os_printf("           band %d\r\n", (uint8_t)profile_msg->band);
-    bl_os_printf("           freq %d\r\n", (uint16_t)profile_msg->freq);
-    bl_os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
-            profile_msg->bssid[0],
-            profile_msg->bssid[1],
-            profile_msg->bssid[2],
-            profile_msg->bssid[3],
-            profile_msg->bssid[4],
-            profile_msg->bssid[5]
-    );
-    bl_os_printf("           dhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
+    dump_connect_param(profile_msg, profile_msg->band, profile_msg->freq, profile_msg->bssid);
     wifi_mgmr_profile_add(&wifiMgmr, profile_msg, -1);
 
     bl_os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
@@ -743,7 +741,8 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event,
             (const uint8_t *)profile_msg->psk, profile_msg->psk_len,
             (const uint8_t *)profile_msg->bssid,
             (const uint8_t)profile_msg->band,
-            (const uint16_t)profile_msg->freq
+            (const uint16_t)profile_msg->freq,
+            (const uint32_t)profile_msg->flags
     );
 }
 
@@ -1052,7 +1051,7 @@ static bool stateConnectedIPYesGuard_rcconfig( void *ch, struct event *event )
     }
 
     bl_os_printf(DEBUG_HEADER "rate config, use sta_idx 0, rate_config %04X\r\n", (unsigned int)(msg->data1));
-    bl_main_rate_config(0, (uint32_t)msg->data1);
+    bl_main_rate_config(wifi_hw.sta_idx, (uint32_t)msg->data1);
     /*will never trigger state change, since we just want to trigger the guard*/
     return false;
 }
@@ -1077,7 +1076,7 @@ static void stateConnectedIPYes_enter( void *stateData, struct event *event )
     aos_post_event(EV_WIFI, CODE_WIFI_ON_GOT_IP, 0);
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
         bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, NULL);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
 }
@@ -1130,6 +1129,7 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
     uint8_t band = 0;
     uint16_t freq = 0;
     uint8_t *bssid = NULL;
+    uint8_t null_bssid[6] = {};
 
 
     stateDisconnect_data = (disconnectData_t*)oldStateData;
@@ -1163,23 +1163,7 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
       bssid = profile_msg->bssid;
     }
 
-    bl_os_printf(DEBUG_HEADER " Action Connect\r\n");
-    bl_os_printf("           ssid %s\r\n", profile_msg->ssid);
-    bl_os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
-    bl_os_printf("           passphr %s\r\n", profile_msg->passphr);
-    bl_os_printf("           passphr len %u\r\n", (unsigned int)profile_msg->passphr_len);
-    bl_os_printf("           psk %s\r\n", profile_msg->psk);
-    bl_os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
-    bl_os_printf("           band %d\r\n", (uint8_t)band);
-    bl_os_printf("           freq %d\r\n", (uint16_t)freq);
-    bl_os_printf("           bssid %02X:%02X:%02X:%02X:%02X:%02X\r\n",
-            bssid ? bssid[0] : 0,
-            bssid ? bssid[1] : 0,
-            bssid ? bssid[2] : 0,
-            bssid ? bssid[3] : 0,
-            bssid ? bssid[4] : 0,
-            bssid ? bssid[5] : 0
-    );
+    dump_connect_param(profile_msg, band, freq, bssid ? bssid : null_bssid);
 
 
 
@@ -1189,7 +1173,8 @@ static void stateDisconnect_action_reconnect( void *oldStateData, struct event *
             (const uint8_t *)profile_msg->psk, profile_msg->psk_len,
             (const uint8_t *)bssid,
             (const uint8_t)band,
-            (const uint16_t)freq
+            (const uint16_t)freq,
+            (const uint32_t)profile_msg->flags
     );
     aos_post_event(EV_WIFI, CODE_WIFI_CMD_RECONNECT, 0);
 }
@@ -1221,7 +1206,9 @@ static void disconnect_retry(void *data)
 
 static void stateDisconnect_enter(void *stateData, struct event *event)
 {
+#ifdef CFG_CHIP_BL602
     int is_ok = 0;
+#endif
     disconnectData_t *stateDisconnect_data;
 
     stateDisconnect_data = stateData;
@@ -1248,7 +1235,7 @@ void helper_record_dump();
 
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
         bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, NULL);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
 }
@@ -1359,6 +1346,7 @@ void wifi_mgmr_start(void)
     ev.data = msg;
     stateM_init(&(wifiMgmr.m), &stateIfaceDown, &stateError);
 
+    wifiMgmr.scan_items_lock = bl_os_mutex_create();
     /*register event cb for Wi-Fi Manager*/
     wifi_mgmr_event_init();
 
@@ -1434,7 +1422,7 @@ int wifi_mgmr_status_code_clean_internal()
     return 0;
 }
 
-int wifi_mgmr_state_get_internal(int *state)
+int wifi_mgmr_detailed_state_get_internal(int *state, int *state_detailed)
 {
     const struct state *m_state;
     int s_code = 0;
@@ -1448,9 +1436,9 @@ int wifi_mgmr_state_get_internal(int *state)
         } else {
             *state = WIFI_STATE_IDLE;
             if (s_code == WLAN_FW_4WAY_HANDSHAKE_ERROR_PSK_TIMEOUT_FAILURE){
-                *state = WIFI_STATE_PSK_ERROR;
+                *state_detailed = WIFI_STATE_PSK_ERROR;
             } else if (s_code == WLAN_FW_SCAN_NO_BSSID_AND_CHANNEL){
-                *state = WIFI_STATE_NO_AP_FOUND;
+                *state_detailed = WIFI_STATE_NO_AP_FOUND;
             }
         }
     } else if (m_state == &stateConnecting) {
@@ -1459,9 +1447,9 @@ int wifi_mgmr_state_get_internal(int *state)
         } else {
             *state = WIFI_STATE_CONNECTING;
             if (s_code == WLAN_FW_4WAY_HANDSHAKE_ERROR_PSK_TIMEOUT_FAILURE){
-                *state = WIFI_STATE_PSK_ERROR;
+                *state_detailed = WIFI_STATE_PSK_ERROR;
             } else if (s_code == WLAN_FW_SCAN_NO_BSSID_AND_CHANNEL){
-                *state = WIFI_STATE_NO_AP_FOUND;
+                *state_detailed = WIFI_STATE_NO_AP_FOUND;
             }
         }
     } else if (m_state == &stateConnectedIPNo) {
@@ -1482,9 +1470,9 @@ int wifi_mgmr_state_get_internal(int *state)
         } else {
             *state = WIFI_STATE_DISCONNECT;
             if (s_code == WLAN_FW_4WAY_HANDSHAKE_ERROR_PSK_TIMEOUT_FAILURE){
-                *state = WIFI_STATE_PSK_ERROR;
+                *state_detailed = WIFI_STATE_PSK_ERROR;
             } else if (s_code == WLAN_FW_SCAN_NO_BSSID_AND_CHANNEL){
-                *state = WIFI_STATE_NO_AP_FOUND;
+                *state_detailed = WIFI_STATE_NO_AP_FOUND;
             }
         }
     } else if (m_state == &stateIfaceDown) {
@@ -1496,6 +1484,11 @@ int wifi_mgmr_state_get_internal(int *state)
     }
 
     return 0;
+}
+
+int wifi_mgmr_state_get_internal(int *state)
+{
+    return wifi_mgmr_detailed_state_get_internal(state, state);
 }
 
 void wifi_mgmr_set_connect_stat_info(struct wifi_event_sm_connect_ind *ind, uint8_t type_ind)

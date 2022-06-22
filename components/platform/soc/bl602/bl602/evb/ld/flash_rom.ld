@@ -42,7 +42,7 @@ SECTIONS
   .bugkiller  :
   {
     KEEP (*(.bugkiller_code))
-    *bugkiller*.o(.rodata* .text* .data* .sdata* .sbss*)
+    KEEP (*bugkiller*.o(.rodata* .text* .data* .sdata* .sbss*))
   } > bugkill
 
   .text           :
@@ -165,8 +165,8 @@ SECTIONS
 
     *(.tcm_code*)
     *(.tcm_const*)
-    *(.sclock_rlt_code)
-    *(.sclock_rlt_const)
+    *(.sclock_rlt_code*)
+    *(.sclock_rlt_const*)
     *(.data .data.*)
     *(.gnu.linkonce.d.*)
 

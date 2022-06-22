@@ -104,24 +104,25 @@ static const struct mac_addr mac_addr_bcst = {{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xF
 static const struct mac_addr mac_addr_zero = {{0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
 
 static const struct ieee80211_channel bl_channels_24_General[] = {
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2412, .hw_value = 1, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2417, .hw_value = 2, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2422, .hw_value = 3, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2427, .hw_value = 4, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2432, .hw_value = 5, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2437, .hw_value = 6, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2442, .hw_value = 7, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2447, .hw_value = 8, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2452, .hw_value = 9, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2457, .hw_value = 10, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2462, .hw_value = 11, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2467, .hw_value = 12, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2472, .hw_value = 13, .max_power=16},
-    { .band = NL80211_BAND_2GHZ, .center_freq = 2484, .hw_value = 14, .max_power=16},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2412, .hw_value = 1, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2417, .hw_value = 2, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2422, .hw_value = 3, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2427, .hw_value = 4, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2432, .hw_value = 5, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2437, .hw_value = 6, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2442, .hw_value = 7, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2447, .hw_value = 8, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2452, .hw_value = 9, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2457, .hw_value = 10, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2462, .hw_value = 11, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2467, .hw_value = 12, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2472, .hw_value = 13, .max_power=20},
+    { .band = NL80211_BAND_2GHZ, .center_freq = 2484, .hw_value = 14, .max_power=20},
 };
 
 static const struct ieee80211_dot_d country_list[] = 
 {
+    /*First Country is the default country*/
     {
         .code   = "CN",
         .channel_num = 13,
@@ -146,8 +147,9 @@ static const struct ieee80211_dot_d country_list[] =
 
 static int channel_num_default;
 static const struct ieee80211_channel *channels_default;
+static const struct ieee80211_dot_d *country_default;
 
-static int cfg80211_get_channel_list(const char *code, int *channel_num, const struct ieee80211_channel **channels)
+static int cfg80211_get_channel_list(const char *code, int *channel_num, const struct ieee80211_channel **channels, const struct ieee80211_dot_d **country_default)
 {
     int i;
 
@@ -159,6 +161,9 @@ static int cfg80211_get_channel_list(const char *code, int *channel_num, const s
             if (channels) {
                 *channels = country_list[i].channels;
             }
+            if (country_default) {
+                *country_default = &country_list[i];
+            }
             return 0;
         }
     }
@@ -168,10 +173,11 @@ static int cfg80211_get_channel_list(const char *code, int *channel_num, const s
 
 void bl_msg_update_channel_cfg(const char *code)
 {
-    if (cfg80211_get_channel_list(code, &channel_num_default, &channels_default)) {
+    if (cfg80211_get_channel_list(code, &channel_num_default, &channels_default, &country_default)) {
         /*get channel list failed, so we set the default one*/
         channel_num_default = sizeof(bl_channels_24_General)/sizeof(bl_channels_24_General[0]);
         channels_default = bl_channels_24_General;
+        country_default = &country_list[0];
         bl_os_printf("[WF] %s NOT found, using General instead, num of channel %d\r\n", code, channel_num_default);
     } else {
         bl_os_printf("[WF] country code %s used, num of channel %d\r\n", code, channel_num_default);
@@ -203,7 +209,7 @@ int bl_get_fixed_channels_is_valid(uint16_t *channels, uint16_t channel_num)
     return 1;
 }
 
-static inline uint16_t phy_channel_to_freq(uint8_t band, int channel)
+inline uint16_t phy_channel_to_freq(uint8_t band, int channel)
 {
     uint16_t freq = 0xFFFF;
 
@@ -435,9 +441,15 @@ int bl_send_me_config_req(struct bl_hw *bl_hw)
     req->ht_supp = 1;
     req->vht_supp = 0;
     req->ht_cap.ht_capa_info = cpu_to_le16(bl_hw->ht_cap.cap);
-    req->ht_cap.a_mpdu_param = bl_hw->ht_cap.ampdu_factor |
-                                     (bl_hw->ht_cap.ampdu_density <<
-                                         IEEE80211_HT_AMPDU_PARM_DENSITY_SHIFT);
+
+    /*AMPDU MAX Length:  
+     * 0x0:8K
+     * 0x1:16K
+     * 0x2:32K
+     * 0x3:64K
+     */
+    req->ht_cap.a_mpdu_param = 0x3;
+
     for (i = 0; i < sizeof(bl_hw->ht_cap.mcs); i++) {
         req->ht_cap.mcs_rate[i] = ht_mcs[i];
     }
@@ -513,6 +525,7 @@ int bl_send_me_rate_config_req(struct bl_hw *bl_hw, uint8_t sta_idx, uint16_t fi
     }
     req->sta_idx = sta_idx;
     req->fixed_rate_cfg = fixed_rate_cfg;
+    req->power_table_req = 1;
 
     return bl_send_msg(bl_hw, req, 0, 0, NULL);
 }
@@ -603,7 +616,7 @@ int bl_send_remove_if(struct bl_hw *bl_hw, uint8_t inst_nbr)
     return bl_send_msg(bl_hw, remove_if_req_param, 1, MM_REMOVE_IF_CFM, NULL);
 }
 
-int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_num, struct mac_ssid *ssid, const uint8_t *mac)
+int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid, const uint8_t *mac)
 {
     struct scanu_start_req *req;
     int i, index;
@@ -628,18 +641,20 @@ int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_
         req->chan_cnt = channel_num;
     }
 
+    req->ssid_cnt = 1;
     if (ssid != NULL && ssid->length) {
-        req->ssid_cnt = 1;
         req->ssid[0].length = ssid->length;
         memcpy(req->ssid[0].array, ssid->array, req->ssid[0].length);
     } else {
-        req->ssid_cnt = 0;
+        req->ssid[0].length = 0;
     }
-    req->bssid = mac_addr_bcst;
+    memcpy((uint8_t *)&(req->bssid), (uint8_t *)bssid, ETH_ALEN);
     memcpy(&(req->mac), mac, ETH_ALEN);
     req->no_cck = true;//FIXME params? talk with firmware guys
 
-    if (req->ssid_cnt == 0) {
+
+    if (req->ssid_cnt == 0) 
+    {
         chan_flags |= SCAN_PASSIVE_BIT;
     }
 #if 0
@@ -703,7 +718,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 {
     struct sm_connect_req *req;
     int i;
-    u32_l flags = 0;
+    u32_l flags = sme->flags;
 
     RWNX_DBG(RWNX_FN_ENTRY_STR);
 
@@ -846,6 +861,41 @@ int bl_send_mm_denoise_req(struct bl_hw *bl_hw, int mode)
     return bl_send_msg(bl_hw, req, 1, MM_SET_PS_MODE_CFM, NULL);
 }
 
+/* Country IE definition
+MAC_COUNTRY_2G4_USA       {7,  6, 'U', 'S', 32,  1, 11, 20} // X'10' FCC
+MAC_COUNTRY_2G4_CANADA    {7,  6, 'C', 'A', 32,  1, 11, 20} // X'20' DOC/IC
+MAC_COUNTRY_2G4_EUROPE    {7,  6, 'E', 'U', 32,  1, 13, 20} // X'30' ETSI
+MAC_COUNTRY_2G4_SPAIN     {7,  6, 'S', 'P', 32, 10,  2, 20} // X'31'
+MAC_COUNTRY_2G4_FRANCE    {7,  6, 'F', 'R', 32, 10,  4, 20} // X'32'
+MAC_COUNTRY_2G4_JAPAN     {7,  6, 'J', 'P', 32, 14,  1, 20} // X'40'
+MAC_COUNTRY_2G4_CHINA     {7,  6, 'C', 'N', 32,  1, 13, 20} // X'50'
+*/
+
+static int _fill_country_code_ie(uint8_t *buf, uint8_t buf_len_max)
+{
+    if (NULL == country_default || NULL == channels_default) {
+        return 0;
+    }
+
+    // Tag: Country Informance
+    buf[0] = 7;
+    // Tag lenth
+    buf[1] = 6;
+    //Country Code
+    buf[2] = country_default->code[0];
+    buf[3] = country_default->code[1];
+    //Environment
+    buf[4] = 32;//Any
+    //First Channel
+    buf[5] = 1;
+    //Channel Num
+    buf[6] = buf[5] - 1 + country_default ->channel_num;
+    //Max power
+    buf[7] = channels_default->max_power;
+
+    return 8;
+}
+
 int bl_send_apm_start_req(struct bl_hw *bl_hw, struct apm_start_cfm *cfm, char *ssid, char *password, int channel, uint8_t vif_index, uint8_t hidden_ssid, uint16_t bcn_int)
 {
     struct apm_start_req *req;
@@ -911,6 +961,7 @@ int bl_send_apm_start_req(struct bl_hw *bl_hw, struct apm_start_cfm *cfm, char *
     req->beacon_period = 0x1; //force AP DTIM period
     req->qos_supported = 1;
 #endif
+    req->bcn_buf_len = _fill_country_code_ie(req->bcn_buf, sizeof(req->bcn_buf));
 
     /* Send the APM_START_REQ message to LMAC FW */
     return bl_send_msg(bl_hw, req, 1, APM_START_CFM, cfm);

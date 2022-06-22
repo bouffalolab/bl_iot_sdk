@@ -3281,10 +3281,19 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Enable(GLB_GPIO_Type gpioPin)
     uint32_t tmpVal;
     uint32_t pinOffset;
     uint32_t aonPadIeSmt;
+    uint8_t realPin;
 
-    pinOffset = (gpioPin >> 1) << 2;
+    realPin = gpioPin;
+    /* sf pad use exclusive ie/pd/pu/drive/smtctrl */
+    if (gpioPin >= 23 && gpioPin <= 28) {
+        if ((BL_RD_REG(GLB_BASE, GLB_GPIO_USE_PSRAM__IO) & (1 << (gpioPin - 23))) > 0) {
+            realPin += 9;
+        }
+    }
+
+    pinOffset = (realPin >> 1) << 2;
     tmpVal = *(uint32_t *)(GLB_BASE + GLB_GPIO_OFFSET + pinOffset);
-    if (gpioPin % 2 == 0) {
+    if (realPin % 2 == 0) {
         /* [0] is ie */
         tmpVal = BL_SET_REG_BIT(tmpVal, GLB_REG_GPIO_0_IE);
     } else {
@@ -3318,10 +3327,19 @@ BL_Err_Type ATTR_TCM_SECTION GLB_GPIO_INPUT_Disable(GLB_GPIO_Type gpioPin)
     uint32_t tmpVal;
     uint32_t pinOffset;
     uint32_t aonPadIeSmt;
+    uint8_t realPin;
 
-    pinOffset = (gpioPin >> 1) << 2;
+    realPin = gpioPin;
+    /* sf pad use exclusive ie/pd/pu/drive/smtctrl */
+    if (gpioPin >= 23 && gpioPin <= 28) {
+        if ((BL_RD_REG(GLB_BASE, GLB_GPIO_USE_PSRAM__IO) & (1 << (gpioPin - 23))) > 0) {
+            realPin += 9;
+        }
+    }
+
+    pinOffset = (realPin >> 1) << 2;
     tmpVal = *(uint32_t *)(GLB_BASE + GLB_GPIO_OFFSET + pinOffset);
-    if (gpioPin % 2 == 0) {
+    if (realPin % 2 == 0) {
         /* [0] is ie */
         tmpVal = BL_CLR_REG_BIT(tmpVal, GLB_REG_GPIO_0_IE);
     } else {

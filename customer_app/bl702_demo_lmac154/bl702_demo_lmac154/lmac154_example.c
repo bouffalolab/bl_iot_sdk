@@ -33,6 +33,7 @@
 #include "bl_irq.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 
 
 #define LMAC154_PRINT         1  // enable log print in this example
@@ -83,6 +84,12 @@ static uint8_t mac_pkt[LMAC154_PKT_SIZE] = {0x61, 0x88, 0x00, 0xFF, 0xFF, 0xFF, 
 static uint32_t tx_cnt = 0;
 static uint32_t ack_cnt = 0;
 static uint32_t rx_cnt = 0;
+#endif
+
+#if LMAC154_CASE == 2
+SemaphoreHandle_t sem = NULL;
+static uint8_t ack_ok = 0;
+static uint8_t app_retry = 0;
 #endif
 
 
@@ -157,8 +164,25 @@ void lmac154_example_task(void *pvParameters)
         }
     }
 #elif LMAC154_CASE == 2
+    lmac154_setTxRetry(3);
+    sem = xSemaphoreCreateCounting(1, 0);
+    
     while(1){
         lmac154_send_packet();
+        xSemaphoreTake(sem, portMAX_DELAY);
+        
+        if(!ack_ok){
+            app_retry++;
+        }
+        
+        if(ack_ok || app_retry > 5){
+            app_retry = 0;
+            SEQ_NUM += 1;
+            
+            tx_cnt++;
+            printf("tx_cnt: %lu\r\n", tx_cnt);
+            printf("ack_cnt: %lu\r\n\r\n", ack_cnt);
+        }
         
         vTaskDelay(100);
         
@@ -191,6 +215,8 @@ void lmac154_example_task(void *pvParameters)
         printf("packet count: %lu, payload size: %dbytes, throughput: %lukbps\r\n\r\n", rx_cnt_curr, LMAC154_PKT_SIZE - 9, throughput);
     }
 #elif LMAC154_CASE == 2
+    SEQ_NUM = 0xFF;
+    
     while(1){
         vTaskDelay(portMAX_DELAY);
     }
@@ -233,8 +259,8 @@ void lmac154_rxDoneEvent(uint8_t *rx_buf, uint8_t rx_len, uint8_t crc_fail)
 void lmac154_txDoneEvent(lmac154_tx_status_t tx_status)
 {
     if(tx_status == 0){
-        tx_cnt++;
-        printf("tx_cnt: %lu\r\n", tx_cnt);
+        //tx_cnt++;
+        //printf("tx_cnt: %lu\r\n", tx_cnt);
     }else{
         printf("tx failed, status: %d\r\n\r\n", tx_status);
     }
@@ -246,7 +272,13 @@ void lmac154_ackEvent(uint8_t ack_received, uint8_t frame_pending, uint8_t seq_n
         ack_cnt++;
     }
     
-    printf("ack_cnt: %lu\r\n\r\n", ack_cnt);
+    //printf("ack_cnt: %lu\r\n\r\n", ack_cnt);
+    
+    ack_ok = ack_received;
+    
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xSemaphoreGiveFromISR(sem, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 void lmac154_rxDoneEvent(uint8_t *rx_buf, uint8_t rx_len, uint8_t crc_fail)
@@ -257,7 +289,9 @@ void lmac154_rxDoneEvent(uint8_t *rx_buf, uint8_t rx_len, uint8_t crc_fail)
     static int rssi_min = 0;
     static int rssi_sum = 0;
     
-    if(rx_buf[2] == SEQ_NUM && rx_len == LMAC154_PKT_SIZE + 2){
+    if(rx_buf[2] != SEQ_NUM && rx_len == LMAC154_PKT_SIZE + 2){
+        SEQ_NUM = rx_buf[2];
+        
         rssi = lmac154_getRSSI();
         rx_cnt++;
         

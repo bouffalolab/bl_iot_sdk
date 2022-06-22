@@ -33,50 +33,82 @@
 #include <wifi_hosal.h>
 
 enum ap_info_type {
-  /* The current AP information is advisory. When the AP fails to connect
-   * through its specified parameters, the information is no longer used
-   * when reconnecting. If the time_to_live field is not 0, the information
-   * will not be used after time_to_live times. 
-   */
-  AP_INFO_TYPE_SUGGEST,
+    /* The current AP information is advisory. When the AP fails to connect
+    * through its specified parameters, the information is no longer used
+    * when reconnecting. If the time_to_live field is not 0, the information
+    * will not be used after time_to_live times.
+    */
+    AP_INFO_TYPE_SUGGEST,
 
-  /* The current AP information is mandatory. When the AP fails to connect
-   * through its specified parameters, the information is always used
-   * to reconnect. 
-   */
-  AP_INFO_TYPE_PRESIST,
+    /* The current AP information is mandatory. When the AP fails to connect
+    * through its specified parameters, the information is always used
+    * to reconnect.
+    */
+    AP_INFO_TYPE_PRESIST,
 };
 
 struct ap_info {
-  enum ap_info_type type;
+    enum ap_info_type type;
 
-  /* when type field is AP_INFO_TYPE_SUGGEST, this field indicates the number
-   *of effective times
-   */
-  int time_to_live; 
+    /* when type field is AP_INFO_TYPE_SUGGEST, this field indicates the number
+    *of effective times
+    */
+    int time_to_live;
 
-  /* bssid, NULL is disable */
-  uint8_t *bssid;
+    /* bssid, NULL is disable */
+    uint8_t *bssid;
 
-  /* default 0, reserved */
-  uint8_t band; 
+    /* default 0, reserved */
+    uint8_t band;
 
-  /* freq number, 0 is disable */
-  uint16_t freq;
+    /* freq number, 0 is disable */
+    uint16_t freq;
 
-  uint8_t use_dhcp;
+    uint8_t use_dhcp;
 };
 
 /* Wifi Connecting advanced prameters */
 struct ap_connect_adv {
-  /* Auth parameters */
-  char *psk;
+    /* Auth parameters */
+    char *psk;
 
-  /* AP extended information */
-  struct ap_info ap_info;
+    /* AP extended information */
+    struct ap_info ap_info;
+
+    /* MISC flags */
+    /* XXX following flag values and connection flags defined in mac.h should be identical */
+#define WIFI_CONNECT_STOP_SCAN_CURRENT_CHANNEL_IF_TARGET_AP_FOUND (1 << 8)
+    uint32_t flags;
 };
 
 typedef struct ap_connect_adv ap_connect_adv_t;
+
+struct bl_rx_info {
+    int8_t rssi;
+};
+typedef struct bl_rx_info bl_rx_info_t;
+
+typedef enum {
+    WM_WIFI_CIPHER_NONE = 0,
+    WM_WIFI_CIPHER_WEP,
+    WM_WIFI_CIPHER_AES,
+    WM_WIFI_CIPHER_TKIP,
+    WM_WIFI_CIPHER_TKIP_AES,
+    WM_WIFI_CIPHER_MAX,
+} wifi_mgmr_ap_cipher_t;
+
+typedef enum {
+    WM_WIFI_AUTH_UNKNOWN = 0,
+    WM_WIFI_AUTH_OPEN,
+    WM_WIFI_AUTH_WEP,
+    WM_WIFI_AUTH_WPA_PSK,
+    WM_WIFI_AUTH_WPA2_PSK,
+    WM_WIFI_AUTH_WPA_WPA2_PSK,
+    WM_WIFI_AUTH_WPA_ENTERPRISE,
+    WM_WIFI_AUTH_WPA3_SAE,
+    WM_WIFI_AUTH_WPA2_PSK_WPA3_SAE,
+    WM_WIFI_AUTH_MAX,
+} wifi_mgmr_ap_auth_mode_t;
 
 typedef struct wifi_mgmr_ap_item {
     char ssid[32];
@@ -85,6 +117,7 @@ typedef struct wifi_mgmr_ap_item {
     uint8_t bssid[6];
     uint8_t channel;
     uint8_t auth;
+    uint8_t cipher;
     int8_t rssi;
 } wifi_mgmr_ap_item_t;
 
@@ -118,7 +151,8 @@ typedef struct wifi_sta_ps_conf {
 }wifi_sta_ps_conf_t;
 
 typedef void *wifi_interface_t;
-typedef void (*sniffer_cb_t)(void *env, uint8_t *pkt, int len);
+typedef void (*sniffer_cb_t)(void *env, uint8_t *pkt, int len, bl_rx_info_t *info);
+typedef void (*sniffer_cb_adv_t)(void *env, void *pkt_wrap, bl_rx_info_t *info);
 typedef void (*scan_item_cb_t)(wifi_mgmr_ap_item_t *env, uint32_t *param1, wifi_mgmr_ap_item_t *item);
 typedef void (*scan_complete_cb_t)(void *data, void *param);
 
@@ -192,7 +226,8 @@ int wifi_mgmr_sta_ip_set(uint32_t ip, uint32_t mask, uint32_t gw, uint32_t dns1,
 int wifi_mgmr_sta_dns_get(uint32_t *dns1, uint32_t *dns2);
 int wifi_mgmr_sta_ip_unset(void);
 int wifi_mgmr_sta_connect_ext(wifi_interface_t *wifi_interface, char *ssid, char *passphr, const ap_connect_adv_t *conn_adv_param);
-int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq);
+int wifi_mgmr_sta_connect_mid(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint8_t chan_id, uint8_t use_dhcp, uint32_t flags);
+int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint8_t chan_id);
 int wifi_mgmr_sta_disconnect(void);
 int wifi_mgmr_sta_ps_enter(uint32_t ps_level);
 int wifi_mgmr_sta_ps_exit();
@@ -209,6 +244,7 @@ int wifi_mgmr_ap_mac_get(uint8_t mac[6]);
 int wifi_mgmr_ap_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask);
 int wifi_mgmr_ap_stop(wifi_interface_t *interface);
 int wifi_mgmr_ap_start(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel);
+int wifi_mgmr_ap_start_adv(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, uint8_t use_dhcp);
 int wifi_mgmr_ap_sta_cnt_get(uint8_t *sta_cnt);
 int wifi_mgmr_ap_sta_info_get(struct wifi_sta_basic_info *sta_info, uint8_t idx);
 int wifi_mgmr_ap_sta_delete(uint8_t sta_idx);
@@ -217,9 +253,14 @@ int wifi_mgmr_sniffer_enable(void);
 int wifi_mgmr_sniffer_disable(void);
 int wifi_mgmr_rate_config(uint16_t config);
 int wifi_mgmr_conf_max_sta(uint8_t max_sta_supported);
+/* Easy API gives pointer to data directly. */
 int wifi_mgmr_sniffer_register(void *env, sniffer_cb_t cb);
 int wifi_mgmr_sniffer_unregister(void *env);
+/* Advanced exposes low level representation of data(struct pbuf for most systems). */
+int wifi_mgmr_sniffer_register_adv(void *env, sniffer_cb_adv_t cb);
+int wifi_mgmr_sniffer_unregister_adv(void *env);
 int wifi_mgmr_state_get(int *state);
+int wifi_mgmr_detailed_state_get(int *state, int *state_detailed);
 int wifi_mgmr_status_code_get(int *s_code);
 int wifi_mgmr_rssi_get(int *rssi);
 int wifi_mgmr_channel_get(int *channel);
@@ -227,8 +268,7 @@ int wifi_mgmr_channel_set(int channel, int use_40Mhz);
 int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num);
 int wifi_mgmr_scan_filter_hidden_ssid(int filter);
 int wifi_mgmr_scan(void *data, scan_complete_cb_t cb);
-int wifi_mgmr_scan_fixed_channels(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num);
-int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const char *ssid);
+int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid);
 int wifi_mgmr_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, uint32_t length, uint32_t *buf);
 int wifi_mgmr_scan_complete_callback();
 int wifi_mgmr_cli_scanlist(void);
@@ -245,4 +285,6 @@ int wifi_mgmr_set_wifi_active_time(uint32_t ms);
 int wifi_mgmr_set_listen_interval(uint16_t itv);
 int wifi_mgmr_pm_ops_register(void);
 int wifi_mgmr_fw_affair_ops(void);
+int wifi_mgmr_bcnind_auth_to_ext(int auth);
+int wifi_mgmr_bcnind_cipher_to_ext(int cipher);
 #endif

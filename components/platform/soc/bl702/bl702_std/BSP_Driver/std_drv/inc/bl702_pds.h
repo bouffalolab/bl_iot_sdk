@@ -518,6 +518,7 @@ typedef enum {
     AUDIO_PLL_5644800_HZ,  /*!< PDS AUDIO PLL SET AS 2.822400HZ */
     AUDIO_PLL_24576000_HZ, /*!< PDS AUDIO PLL SET AS 24.576000MHZ */
     AUDIO_PLL_24000000_HZ, /*!< PDS AUDIO PLL SET AS 24.000000MHZ */
+    AUDIO_PLL_50000000_HZ, /*!< PDS AUDIO PLL SET AS 50.000000MHZ */
 } PDS_AUDIO_PLL_Type;
 
 /*@} end of group PDS_Public_Types */
@@ -708,7 +709,10 @@ typedef enum {
  */
 #define IS_PDS_AUDIO_PLL_TYPE(type) (((type) == AUDIO_PLL_12288000_HZ) || \
                                      ((type) == AUDIO_PLL_11289600_HZ) || \
-                                     ((type) == AUDIO_PLL_5644800_HZ))
+                                     ((type) == AUDIO_PLL_5644800_HZ)  || \
+                                     ((type) == AUDIO_PLL_24576000_HZ) || \
+                                     ((type) == AUDIO_PLL_24000000_HZ) || \
+                                     ((type) == AUDIO_PLL_50000000_HZ))
 
 /*@} end of group PDS_Public_Constants */
 

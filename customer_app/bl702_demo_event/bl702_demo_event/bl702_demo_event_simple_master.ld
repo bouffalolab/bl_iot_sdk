@@ -3,11 +3,12 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( bl702_start )
 
 __EM_SIZE = DEFINED(ble_controller_init) ? 16K : 0K;
+__CACHE_SIZE = DEFINED(__CACHE_SIZE) ? __CACHE_SIZE : 4K;
 
 MEMORY
 {
   flash  (rxai!w) : ORIGIN = 0x23000000, LENGTH = (2M)
-  tcm_ocram (wxa) : ORIGIN = 0x42014000, LENGTH = (48K + 64K - __EM_SIZE)
+  tcm_ocram (wxa) : ORIGIN = 0x42010000 + __CACHE_SIZE, LENGTH = (64K - __CACHE_SIZE + 64K - __EM_SIZE)
   hbnram    (wxa) : ORIGIN = 0x40010000, LENGTH = (4K)
 }
 

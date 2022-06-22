@@ -17,6 +17,7 @@
 #include "hog.h"
 #endif
 
+
 #define 		PASSKEY_MAX  		0xF423F
 #define 		NAME_LEN 			30
 #define 		CHAR_SIZE_MAX       512
@@ -102,6 +103,17 @@ static void blecli_set_tx_pwr(char *pcWriteBuffer, int xWriteBufferLen, int argc
 #endif
 #if defined(CONFIG_HOGP_SERVER)
 static void blecli_hog_srv_notify(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+#endif
+#if defined(BFLB_BLE_DYNAMIC_SERVICE)
+#if defined(CONFIG_BT_PERIPHERAL)
+#if defined(CONFIG_BT_SPP_SERVER)
+static void blecli_add_spp_service(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blecli_del_spp_service(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+#endif
+static void blecli_gatts_get_service_info(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blecli_gatts_get_char(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blecli_gatts_get_desp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+#endif
 #endif
 
 const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
@@ -218,7 +230,17 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
 #if defined(CONFIG_HOGP_SERVER)
     {"ble_hog_srv_notify", "HOG srv notify\r\nParameter [hid usage] [press]\r\n", blecli_hog_srv_notify},
 #endif
-
+#if defined(BFLB_BLE_DYNAMIC_SERVICE)
+#if defined(CONFIG_BT_PERIPHERAL)
+    #if defined(CONFIG_BT_SPP_SERVER)
+    {"ble_add_spp_svc", "", blecli_add_spp_service},
+    {"ble_del_spp_svc", "", blecli_del_spp_service},
+    #endif
+    {"ble_get_svc_info","",blecli_gatts_get_service_info},
+    {"ble_get_svc_char","",blecli_gatts_get_char},
+    {"ble_get_svc_desp","",blecli_gatts_get_desp},
+#endif
+#endif
 #else
     {"ble_init", "", blecli_init},
 #if defined(CONFIG_BLE_TP_SERVER)
@@ -352,6 +374,10 @@ static void disconnected(struct bt_conn *conn, u8_t reason)
 #endif
 
     if (default_conn == conn) {
+        #if defined(CONFIG_BT_CENTRAL)
+        if(conn->role == BT_HCI_ROLE_MASTER)
+            bt_conn_unref(conn);
+        #endif
         default_conn = NULL;
     }
 }
@@ -1714,7 +1740,85 @@ static void blecli_hog_srv_notify(char *pcWriteBuffer, int xWriteBufferLen, int 
     }
 }
 #endif
+#if defined(BFLB_BLE_DYNAMIC_SERVICE)
+#if defined(CONFIG_BT_PERIPHERAL)
 
+#if defined(CONFIG_BT_SPP_SERVER)
+static void blecli_add_spp_service(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    extern void bt_dyn_register_spp_srv(void);
+    bt_dyn_register_spp_srv();
+}
+
+static void blecli_del_spp_service(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    void bt_dyn_unregister_spp_srv(void);
+    bt_dyn_unregister_spp_srv();
+}
+#endif
+
+static void blecli_gatts_get_service_info(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    struct simple_svc_info svc_info[2];
+    uint16_t svc_id;
+
+    if(argc != 2){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+
+    memset(svc_info,0,sizeof(svc_info));
+    get_uint16_from_string(&argv[1],&svc_id);
+
+    bt_gatts_get_service_simple_info(svc_id,&svc_info[0],sizeof(svc_info)/sizeof(struct simple_svc_info));
+    for(int i=0;i<sizeof(svc_info)/sizeof(struct simple_svc_info);i++){
+        vOutputString("svc_info : i(%d),idx(%d),state(%d),uuid(%s),type(%d)\r\n",i,svc_info[i].idx,svc_info[i].state,
+                svc_info[i].uuid,svc_info[i].type);
+    }
+}
+
+static void blecli_gatts_get_char(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    struct char_info cinfo[3];
+    uint16_t svc_id;
+
+    if(argc != 2){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+
+    memset(cinfo,0,sizeof(cinfo));
+    get_uint16_from_string(&argv[1],&svc_id);
+
+    bt_gatts_get_service_char(svc_id,cinfo,sizeof(cinfo)/sizeof(struct char_info));
+    for(int i=0;i<sizeof(cinfo)/sizeof(struct char_info);i++){
+        vOutputString("svc_info : i(%d),idx(%d),char_idx(0x%x),uuid(%s),prop(%d)\r\n",i,cinfo[i].svc_idx,cinfo[i].char_idx,
+                cinfo[i].uuid,cinfo[i].prop);
+    }
+
+}
+
+static void blecli_gatts_get_desp(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    struct descrip_info dinfo[4];
+    uint16_t svc_id;
+
+    memset(dinfo,0,sizeof(dinfo));
+    if(argc != 2){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+
+    get_uint16_from_string(&argv[1],&svc_id);
+    bt_gatts_get_service_desc(svc_id,dinfo,sizeof(dinfo)/sizeof(struct descrip_info));
+
+    for(int i=0;i<sizeof(dinfo)/sizeof(struct descrip_info);i++){
+        vOutputString("svc_info : i(%d),idx(%d),char_idx(0x%x),uuid(%s),desp_idx(0x%x)\r\n",i,dinfo[i].svc_idx,dinfo[i].char_idx,
+            dinfo[i].uuid,dinfo[i].desp_idx);
+    }
+}
+#endif
+#endif
 int ble_cli_register(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.

@@ -7,7 +7,7 @@
 #define ZEPHYR_INCLUDE_BLUETOOTH_MESH_CDB_H_
 
 #include <types.h>
-#include <atomic.h>
+#include <common/include/atomic.h>
 
 #ifdef __cplusplus
 extern "C" {

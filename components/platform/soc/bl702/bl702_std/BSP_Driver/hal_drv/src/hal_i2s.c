@@ -21,10 +21,10 @@
  *
  */
 #include "hal_i2s.h"
-#include "hal_clock.h"
 #include "hal_dma.h"
 #include "bl702_i2s.h"
 #include "bl702_glb.h"
+#include "bl702_clock.h"
 #include "i2s_config.h"
 
 static i2s_device_t i2sx_device[I2S_MAX_INDEX] = {
@@ -39,7 +39,7 @@ int i2s_open(struct device *dev, uint16_t oflag)
     I2S_CFG_Type i2sCfg = { 0 };
     I2S_FifoCfg_Type fifoCfg = { 0 };
 
-    i2sCfg.audioFreqHz = system_clock_get(SYSTEM_CLOCK_AUPLL);
+    i2sCfg.audioFreqHz = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_I2S);
 
     i2sCfg.sampleFreqHz = i2s_device->sampl_freq_hz;
 
@@ -283,7 +283,7 @@ int i2s_control(struct device *dev, int cmd, void *args)
                     return ERROR;
                     break;
             }
-            i2sCfg.audioFreqHz = system_clock_get(SYSTEM_CLOCK_AUPLL);
+            i2sCfg.audioFreqHz = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_I2S);
             i2sCfg.sampleFreqHz = (uint32_t)args;
             I2S_SetBclkPeriod(&i2sCfg);
             break;

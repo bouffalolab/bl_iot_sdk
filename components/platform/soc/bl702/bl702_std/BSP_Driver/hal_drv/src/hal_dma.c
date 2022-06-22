@@ -280,11 +280,13 @@ int dma_allocate_register(const char *name)
  */
 int dma_reload(struct device *dev, uint32_t src_addr, uint32_t dst_addr, uint32_t transfer_size)
 {
+#ifdef BSP_USING_DMA
     uint32_t malloc_count;
     uint32_t remain_len;
     uint32_t actual_transfer_len = 0;
     uint32_t actual_transfer_offset = 0;
     dma_control_data_t dma_ctrl_cfg;
+    bool intr = false;
 
     dma_device_t *dma_device = (dma_device_t *)dev;
 
@@ -321,6 +323,7 @@ int dma_reload(struct device *dev, uint32_t src_addr, uint32_t dst_addr, uint32_
     }
 
     dma_ctrl_cfg = (dma_control_data_t)(BL_RD_REG(dma_channel_base[dma_device->id][dma_device->ch], DMA_CONTROL));
+    intr = dma_ctrl_cfg.bits.I;
 
     malloc_count = actual_transfer_len / 4095;
     remain_len = actual_transfer_len % 4095;
@@ -353,7 +356,7 @@ int dma_reload(struct device *dev, uint32_t src_addr, uint32_t dst_addr, uint32_
                 if (remain_len) {
                     dma_ctrl_cfg.bits.TransferSize = remain_len;
                 }
-                dma_ctrl_cfg.bits.I = 1;
+                dma_ctrl_cfg.bits.I = intr;
 
                 if (dma_device->transfer_mode == DMA_LLI_CYCLE_MODE) {
                     dma_device->lli_cfg[i].nextlli = (uint32_t)&dma_device->lli_cfg[0];
@@ -365,7 +368,6 @@ int dma_reload(struct device *dev, uint32_t src_addr, uint32_t dst_addr, uint32_
             }
 
             dma_device->lli_cfg[i].cfg = dma_ctrl_cfg;
-
         }
         BL_WR_REG(dma_channel_base[dma_device->id][dma_device->ch], DMA_SRCADDR, dma_device->lli_cfg[0].src_addr);
         BL_WR_REG(dma_channel_base[dma_device->id][dma_device->ch], DMA_DSTADDR, dma_device->lli_cfg[0].dst_addr);
@@ -374,7 +376,7 @@ int dma_reload(struct device *dev, uint32_t src_addr, uint32_t dst_addr, uint32_
     } else {
         return -2;
     }
-
+#endif
     return 0;
 }
 

@@ -553,6 +553,10 @@ nd6_input(struct pbuf *p, struct netif *inp)
   }
   case ICMP6_TYPE_RA: /* Router Advertisement. */
   {
+#ifdef LWIP_IPV6_FOR_BORDER_ROUTER
+    extern void ot_recv_icmp_6nd(struct netif *inp, ip6_addr_t* src, const uint8_t* data, uint16_t len);
+    ot_recv_icmp_6nd(inp,ip6_current_src_addr(),p->payload, p->len);
+#endif /* LWIP_IPV6_FOR_BORDER_ROUTER */
     struct ra_header *ra_hdr;
     u8_t *buffer; /* Used to copy options. */
     u16_t offset;
@@ -1388,6 +1392,42 @@ nd6_send_rs(struct netif *netif)
 
   return err;
 }
+#ifdef LWIP_IPV6_FOR_BORDER_ROUTER
+err_t
+nd6_send(struct netif *netif, const ip6_addr_t *dest,
+            const uint8_t *abuf, uint16_t alen)
+{
+  //printf("nd6_send\r\n");
+  struct rs_header *rs_hdr;
+  struct pbuf *p;
+  const ip6_addr_t *src_addr;
+  err_t err;
+  /* Link-local source address, or unspecified address? */
+  if (ip6_addr_isvalid(netif_ip6_addr_state(netif, 0))) {
+    src_addr = netif_ip6_addr(netif, 0);
+  } else {
+    src_addr = IP6_ADDR_ANY6;
+  }
+  p = pbuf_alloc(PBUF_IP, alen, PBUF_RAM);
+  if (p == NULL) {
+    ND6_STATS_INC(nd6.memerr);
+    return ERR_BUF;
+  }
+  SMEMCPY(p->payload, abuf, alen);
+  rs_hdr = (struct rs_header *)p->payload;
+#if CHECKSUM_GEN_ICMP6
+  IF__NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_ICMP6) {
+    rs_hdr->chksum = ip6_chksum_pseudo(p, IP6_NEXTH_ICMP6, p->len, src_addr,
+      dest);
+  }
+#endif /* CHECKSUM_GEN_ICMP6 */
+  ND6_STATS_INC(nd6.xmit);
+  err = ip6_output_if(p, (src_addr == IP6_ADDR_ANY6) ? NULL : src_addr, dest,
+      ND6_HOPLIM, 0, IP6_NEXTH_ICMP6, netif);
+  pbuf_free(p);
+  return err;
+}
+#endif /* LWIP_IPV6_FOR_BORDER_ROUTER */
 #endif /* LWIP_IPV6_SEND_ROUTER_SOLICIT */
 
 /**

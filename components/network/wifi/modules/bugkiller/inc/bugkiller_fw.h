@@ -32,10 +32,8 @@
 
 #include <stdint.h>
 
-void bugkiller_fw_queue_sent_dump(void);
-void bugkiller_fw_queue_saved_dump(void);
-void bugkiller_fw_queue_timer_dump(void);
+void bugkiller_fw_queue_init(void);
 
-void bugkiller_fw_task_dump(void);
+void bugkiller_fw_task_init(void);
 
 #endif

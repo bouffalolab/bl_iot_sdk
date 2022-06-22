@@ -50,9 +50,12 @@ int bl_sys_reset_por(void);
 void bl_sys_reset_system(void);
 int bl_sys_isxipaddr(uint32_t addr);
 int bl_sys_em_config(void);
+int bl_sys_cache_config(void);
 int bl_sys_pkg_config(void);
 int bl_sys_default_active_config(void);
 int bl_sys_early_init(void);
 int bl_sys_init(void);
+int bl_sys_wdt_rst_count_get();
+
 
 #endif

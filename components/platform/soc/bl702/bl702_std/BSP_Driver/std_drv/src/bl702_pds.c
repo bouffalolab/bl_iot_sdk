@@ -202,15 +202,14 @@ BL_Err_Type ATTR_TCM_SECTION PDS_Set_Pad_Config(PDS_PAD_PIN_Type pin, PDS_PAD_CF
 *******************************************************************************/
 BL_Err_Type ATTR_TCM_SECTION PDS_App_Enable(PDS_CTL_Type *cfg, PDS_CTL4_Type *cfg4, uint32_t pdsSleepCnt)
 {
-    /* PDS sleep time 0 <=> sleep forever */
     /* PDS sleep time 1~PDS_WARMUP_LATENCY_CNT <=> error */
     /* PDS sleep time >PDS_WARMUP_LATENCY_CNT <=> correct */
-    if (!pdsSleepCnt) {
-        cfg->sleepForever = 0;
-    } else if ((pdsSleepCnt) && (pdsSleepCnt <= PDS_WARMUP_LATENCY_CNT)) {
+    if ((pdsSleepCnt) && (pdsSleepCnt <= PDS_WARMUP_LATENCY_CNT)) {
         return ERROR;
-    } else {
+    } else if (pdsSleepCnt > PDS_WARMUP_LATENCY_CNT) {
         BL_WR_REG(PDS_BASE, PDS_TIME1, pdsSleepCnt - PDS_WARMUP_LATENCY_CNT);
+    } else {
+        /* PDS sleep time 0 ,means mask pds_timer wakeup  */
     }
 
     /* PDS_CTL4 config */
@@ -1041,7 +1040,7 @@ BL_Err_Type ATTR_CLOCK_SECTION PDS_Power_Off_PLL(void)
 __WEAK
 BL_Err_Type ATTR_CLOCK_SECTION PDS_Set_Audio_PLL_Freq(PDS_AUDIO_PLL_Type audioPLLFreq)
 {
-    uint32_t sdmin_table[] = { 0x374BC6, 0x32CCED, 0x32CCED, 0x6E978D, 0x6C0000 };
+    uint32_t sdmin_table[] = { 0x374BC6, 0x32CCED, 0x32CCED, 0x6E978D, 0x6C0000, 0x3E8000};
     uint32_t tmpVal = 0;
 
     CHECK_PARAM(IS_PDS_AUDIO_PLL_TYPE(audioPLLFreq));

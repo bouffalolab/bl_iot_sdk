@@ -42,7 +42,7 @@ else
 COMPONENTS_BLE     := $(COMPONENTS_BLECONTROLLER) blestack
 endif
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant hosal mbedtls_lts lwip lwip_dhcpd vfs yloop utils cli aws-iot httpc netutils blog blog_testc blsync_ble cjson blcrypto_suite bl602_os_adapter wifi_hosal
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant hosal mbedtls_lts lwip lwip_dhcpd vfs yloop utils cli aws-iot httpc netutils blog blog_testc blsync_ble cjson blcrypto_suite bl_os_adapter wifi_hosal
 INCLUDE_COMPONENTS += easyflash4 coredump
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)

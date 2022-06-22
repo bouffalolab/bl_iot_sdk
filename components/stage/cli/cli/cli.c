@@ -609,6 +609,11 @@ static int get_input(char *inbuf, unsigned int *bp, char *buffer_cb, int count)
     return 0;
 }
 
+__attribute__((weak)) void _extra_command(char *cmd_string)
+{
+
+}
+
 /* Print out a bad command string, including a hex
  * representation of non-printable characters.
  * Non-printable characters show as "\0xXX".
@@ -637,7 +642,7 @@ static void cli_main_input(char *buffer, int count)
             cli_history_input();
         }
 #endif
-
+        _extra_command(msg);
         ret = handle_input(msg);
         if (ret == 1) {
             print_bad_command(msg);
@@ -1028,7 +1033,7 @@ static void ls_cmd(char *buf, int len, int argc, char **argv)
     int env = 0;
 
     st = pvPortMalloc(sizeof(struct stat));
-    memset(stat, 0, sizeof(struct stat));
+    memset(st, 0, sizeof(struct stat));
     memset(path_name, 0, sizeof(path_name));
 
     if (argc == 2) {

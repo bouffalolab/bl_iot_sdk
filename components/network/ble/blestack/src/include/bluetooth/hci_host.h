@@ -546,7 +546,7 @@ struct bt_hci_cp_write_page_scan_type {
 
 #define BT_HCI_OP_WRITE_EXT_INQUIRY_RESP            BT_OP(BT_OGF_BASEBAND, 0x0052)
 struct bt_hci_cp_write_ext_inquiry_resp {
-       u8_t rec;
+       u8_t fec;
        u8_t eir[240];
 } __packed;
 
@@ -2640,6 +2640,10 @@ typedef bool bt_hci_vnd_evt_cb_t(struct net_buf_simple *buf);
   * @return 0 on success or negative error value on failure.
   */
 int bt_hci_register_vnd_evt_cb(bt_hci_vnd_evt_cb_t cb);
+
+#if (BFLB_BT_CO_THREAD)
+struct k_thread *bt_get_co_thread(void);
+#endif
 
 #ifdef __cplusplus
 }

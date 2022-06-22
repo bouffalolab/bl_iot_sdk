@@ -220,14 +220,6 @@ typedef struct usb_dc_device {
 
 int usb_dc_register(enum usb_index_type index, const char *name);
 
-int usb_dc_set_dev_address(const uint8_t addr);
-int usb_dc_ep_open(struct device *dev, const struct usb_dc_ep_cfg *ep_cfg);
-int usb_dc_ep_close(const uint8_t ep);
-int usb_dc_ep_set_stall(const uint8_t ep);
-int usb_dc_ep_clear_stall(const uint8_t ep);
-int usb_dc_ep_is_stalled(struct device *dev, const uint8_t ep, uint8_t *stalled);
-int usb_dc_ep_write(struct device *dev, const uint8_t ep, const uint8_t *data, uint32_t data_len, uint32_t *ret_bytes);
-int usb_dc_ep_read(struct device *dev, const uint8_t ep, uint8_t *data, uint32_t data_len, uint32_t *read_bytes);
 int usb_dc_receive_to_ringbuffer(struct device *dev, Ring_Buffer_Type *rb, uint8_t ep);
 int usb_dc_send_from_ringbuffer(struct device *dev, Ring_Buffer_Type *rb, uint8_t ep);
 #ifdef __cplusplus

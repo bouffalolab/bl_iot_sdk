@@ -124,6 +124,7 @@ typedef struct
     uint32_t subAddr;          /*!< I2C sub address */
     uint16_t dataSize;         /*!< Specifies the size of I2C data section */
     uint8_t *data;             /*!< Specifies the pointer of I2C R/W data */
+    uint32_t clk;              /*!< I2C clk:default is 400k */
 } I2C_Transfer_Cfg;
 
 /*@} end of group I2C_Public_Types */

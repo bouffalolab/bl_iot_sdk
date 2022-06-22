@@ -332,7 +332,12 @@ struct k_sem *bt_conn_get_pkts(struct bt_conn *conn);
 
 /* k_poll related helpers for the TX thread */
 int bt_conn_prepare_events(struct k_poll_event events[]);
+
+#if (BFLB_BT_CO_THREAD)
+void bt_conn_process_tx(struct bt_conn *conn, struct net_buf *tx_buf);
+#else
 void bt_conn_process_tx(struct bt_conn *conn);
+#endif
 
 #if defined(BFLB_BLE)
 /** @brief Get connection handle for a connection.

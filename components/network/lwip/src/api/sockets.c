@@ -4156,4 +4156,9 @@ lwip_socket_drop_registered_mld6_memberships(int s)
 }
 #endif /* LWIP_IPV6_MLD */
 
+#ifdef BUGKILLER
+#include <bugkiller/bugkiller_socket_dump.inc>
+#include <bugkiller/bugkiller_mbox_dump.inc>
+#endif
+
 #endif /* LWIP_SOCKET */

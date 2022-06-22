@@ -2,7 +2,13 @@
  *  Entropy accumulator implementation
  *
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
+ *
+ *  This file is provided under the Apache License 2.0, or the
+ *  GNU General Public License v2.0 or later.
+ *
+ *  **********
+ *  Apache License 2.0:
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -15,9 +21,34 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ *
+ *  **********
+ *
+ *  **********
+ *  GNU General Public License v2.0 or later:
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  **********
  */
 
-#include "common.h"
+#if !defined(MBEDTLS_CONFIG_FILE)
+#include "mbedtls/config.h"
+#else
+#include MBEDTLS_CONFIG_FILE
+#endif
 
 #if defined(MBEDTLS_ENTROPY_C)
 
@@ -30,7 +61,6 @@
 #include "mbedtls/entropy.h"
 #include "mbedtls/entropy_poll.h"
 #include "mbedtls/platform_util.h"
-#include "mbedtls/error.h"
 
 #include <string.h>
 
@@ -236,7 +266,7 @@ cleanup:
 int mbedtls_entropy_update_manual( mbedtls_entropy_context *ctx,
                            const unsigned char *data, size_t len )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
 
 #if defined(MBEDTLS_THREADING_C)
     if( ( ret = mbedtls_mutex_lock( &ctx->mutex ) ) != 0 )
@@ -258,9 +288,7 @@ int mbedtls_entropy_update_manual( mbedtls_entropy_context *ctx,
  */
 static int entropy_gather_internal( mbedtls_entropy_context *ctx )
 {
-    int ret = MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;
-    int i;
-    int have_one_strong = 0;
+    int ret, i, have_one_strong = 0;
     unsigned char buf[MBEDTLS_ENTROPY_MAX_GATHER];
     size_t olen;
 
@@ -308,7 +336,7 @@ cleanup:
  */
 int mbedtls_entropy_gather( mbedtls_entropy_context *ctx )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
 
 #if defined(MBEDTLS_THREADING_C)
     if( ( ret = mbedtls_mutex_lock( &ctx->mutex ) ) != 0 )
@@ -327,8 +355,7 @@ int mbedtls_entropy_gather( mbedtls_entropy_context *ctx )
 
 int mbedtls_entropy_func( void *data, unsigned char *output, size_t len )
 {
-    int ret, count = 0, i, thresholds_reached;
-    size_t strong_size;
+    int ret, count = 0, i, done;
     mbedtls_entropy_context *ctx = (mbedtls_entropy_context *) data;
     unsigned char buf[MBEDTLS_ENTROPY_BLOCK_SIZE];
 
@@ -366,17 +393,12 @@ int mbedtls_entropy_func( void *data, unsigned char *output, size_t len )
         if( ( ret = entropy_gather_internal( ctx ) ) != 0 )
             goto exit;
 
-        thresholds_reached = 1;
-        strong_size = 0;
+        done = 1;
         for( i = 0; i < ctx->source_count; i++ )
-        {
             if( ctx->source[i].size < ctx->source[i].threshold )
-                thresholds_reached = 0;
-            if( ctx->source[i].strong == MBEDTLS_ENTROPY_SOURCE_STRONG )
-                strong_size += ctx->source[i].size;
-        }
+                done = 0;
     }
-    while( ! thresholds_reached || strong_size < MBEDTLS_ENTROPY_BLOCK_SIZE );
+    while( ! done );
 
     memset( buf, 0, MBEDTLS_ENTROPY_BLOCK_SIZE );
 
@@ -471,21 +493,15 @@ int mbedtls_entropy_update_nv_seed( mbedtls_entropy_context *ctx )
 #if defined(MBEDTLS_FS_IO)
 int mbedtls_entropy_write_seed_file( mbedtls_entropy_context *ctx, const char *path )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
-    FILE *f = NULL;
+    int ret = MBEDTLS_ERR_ENTROPY_FILE_IO_ERROR;
+    FILE *f;
     unsigned char buf[MBEDTLS_ENTROPY_BLOCK_SIZE];
 
-    if( ( ret = mbedtls_entropy_func( ctx, buf, MBEDTLS_ENTROPY_BLOCK_SIZE ) ) != 0 )
-    {
-        ret = MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;
-        goto exit;
-    }
-
     if( ( f = fopen( path, "wb" ) ) == NULL )
-    {
-        ret = MBEDTLS_ERR_ENTROPY_FILE_IO_ERROR;
+        return( MBEDTLS_ERR_ENTROPY_FILE_IO_ERROR );
+
+    if( ( ret = mbedtls_entropy_func( ctx, buf, MBEDTLS_ENTROPY_BLOCK_SIZE ) ) != 0 )
         goto exit;
-    }
 
     if( fwrite( buf, 1, MBEDTLS_ENTROPY_BLOCK_SIZE, f ) != MBEDTLS_ENTROPY_BLOCK_SIZE )
     {
@@ -498,9 +514,7 @@ int mbedtls_entropy_write_seed_file( mbedtls_entropy_context *ctx, const char *p
 exit:
     mbedtls_platform_zeroize( buf, sizeof( buf ) );
 
-    if( f != NULL )
-        fclose( f );
-
+    fclose( f );
     return( ret );
 }
 

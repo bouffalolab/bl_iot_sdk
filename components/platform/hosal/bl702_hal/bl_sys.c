@@ -35,8 +35,10 @@
 #include <stdbool.h>
 #include "bl_sys.h"
 #include "bl_flash.h"
+#include "bl_hbn.h"
 
 volatile bool sys_log_all_enable = true;
+ATTR_HBN_NOINIT_SECTION static int wdt_triger_counter;
 
 BL_RST_REASON_E bl_sys_rstinfo_get(void)
 {
@@ -132,6 +134,48 @@ int bl_sys_em_config(void)
         case 16 * 1024:
         {
             GLB_Set_EM_Sel(GLB_EM_16KB);
+        }
+        break;
+        default:
+        {
+            /*nothing here*/
+        }
+    }
+
+    return 0;
+}
+
+int bl_sys_cache_config(void)
+{
+    extern uint8_t __CACHE_SIZE;
+    volatile uint32_t cache_size;
+
+    cache_size = (uint32_t)&__CACHE_SIZE;
+
+    switch (cache_size) {
+        case 0 * 1024:
+        {
+            RomDriver_L1C_Cache_Enable_Set(0x0F);
+        }
+        break;
+        case 4 * 1024:
+        {
+            RomDriver_L1C_Cache_Enable_Set(0x07);
+        }
+        break;
+        case 8 * 1024:
+        {
+            RomDriver_L1C_Cache_Enable_Set(0x03);
+        }
+        break;
+        case 12 * 1024:
+        {
+            RomDriver_L1C_Cache_Enable_Set(0x01);
+        }
+        break;
+        case 16 * 1024:
+        {
+            RomDriver_L1C_Cache_Enable_Set(0x00);
         }
         break;
         default:
@@ -253,6 +297,14 @@ int bl_sys_default_active_config(void)
 
 int bl_sys_early_init(void)
 {
+    if(BL_RST_WDT == bl_sys_rstinfo_get()){
+        wdt_triger_counter++;
+        bl_sys_rstinfo_clr();
+    }
+    else{
+        wdt_triger_counter = 0;
+    }
+
     bl_flash_init();
 
     extern BL_Err_Type HBN_Aon_Pad_IeSmt_Cfg(uint8_t padCfg);
@@ -264,11 +316,14 @@ int bl_sys_early_init(void)
     PDS_Trim_RC32M();
     HBN_Trim_RC32K();
 
-#if defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE)
+#if (defined(CFG_PDS_ENABLE) && CFG_PDS_LEVEL == 31) || defined(CFG_HBN_ENABLE)
     HBN_Set_Ldo11_All_Vout(HBN_LDO_LEVEL_1P00V);
-#else
+#endif
+
+#if !(defined(CFG_PDS_ENABLE) || defined(CFG_HBN_ENABLE))
     GLB_Set_System_CLK(GLB_DLL_XTAL_32M, GLB_SYS_CLK_DLL144M);
     HBN_Set_XCLK_CLK_Sel(HBN_XCLK_CLK_XTAL);
+    GLB_Set_SF_CLK(1, GLB_SFLASH_CLK_96M, 1);
 #endif
 
     GLB_Set_MTimer_CLK(1, GLB_MTIMER_CLK_BCLK, SystemCoreClockGet()/(GLB_Get_BCLK_Div()+1)/4000000 - 1);
@@ -302,3 +357,9 @@ int bl_sys_init(void)
 
     return 0;
 }
+
+int bl_sys_wdt_rst_count_get()
+{
+    return wdt_triger_counter;
+}
+

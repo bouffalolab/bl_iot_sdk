@@ -41,7 +41,11 @@
  * ATTENTION: this does not work when tcpip_input() is called from
  * interrupt context!
  */
+#if defined(CFG_CHIP_BL808)
+#define LWIP_TCPIP_CORE_LOCKING_INPUT   1
+#else
 #define LWIP_TCPIP_CORE_LOCKING_INPUT   0
+#endif
 
 /* ---------- Memory options ---------- */
 /* MEM_ALIGNMENT: should be set to the alignment of the CPU for which
@@ -51,7 +55,14 @@
 
 /* MEM_SIZE: the size of the heap memory. If the application will send
 a lot of data that needs to be copied, this should be set high. */
+#if defined(CFG_CHIP_BL808)
+#define MEM_SIZE                (60*1024)
+#elif defined(CFG_SDIOWIFI)
+#define MEM_SIZE                (24*1024)
+#else
 #define MEM_SIZE                (8*1024)
+#endif
+
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
@@ -68,7 +79,11 @@ a lot of data that needs to be copied, this should be set high. */
 #define MEMP_NUM_TCP_PCB_LISTEN 5
 /* MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP
    segments. */
+#if defined(CFG_CHIP_BL808)
+#define MEMP_NUM_TCP_SEG        100
+#else
 #define MEMP_NUM_TCP_SEG        32
+#endif
 
 /* NUM of sys_timeout pool*/
 #define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 8 + 3)
@@ -78,15 +93,19 @@ a lot of data that needs to be copied, this should be set high. */
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
 #if !defined PBUF_POOL_SIZE
+#if defined(CFG_CHIP_BL808)
+#define PBUF_POOL_SIZE          200
+#else
 #ifdef CFG_ETHERNET_ENABLE
 #define PBUF_POOL_SIZE          12
 #else
 #define PBUF_POOL_SIZE          0
+#endif
 #endif /*CFG_ETHERNET_ENABLE*/
 #endif
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
-#ifdef CFG_ETHERNET_ENABLE
+#if defined(CFG_CHIP_BL808)||defined(CFG_ETHERNET_ENABLE)
 #define PBUF_POOL_BUFSIZE       1600
 #else
 #define PBUF_POOL_BUFSIZE       760
@@ -106,11 +125,16 @@ a lot of data that needs to be copied, this should be set high. */
 //#define TCP_MSS                 (1500 - 80)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 //#define TCP_MSS                 (800 - 40 - 80 + 8)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 
+
+/* TCP sender buffer space (bytes). */
+#if defined(CFG_CHIP_BL808)
+#define TCP_SND_BUF             (12*TCP_MSS) 
+#else
 #ifdef CFG_ETHERNET_ENABLE
 #define TCP_SND_BUF             (11*TCP_MSS)
 #else
-/* TCP sender buffer space (bytes). */
 #define TCP_SND_BUF             (3*TCP_MSS)
+#endif
 #endif
 
 /*  TCP_SND_QUEUELEN: TCP sender buffer space (pbufs). This must be at least
@@ -128,17 +152,29 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_SNDQUEUELOWAT               ((TCP_SND_QUEUELEN)/2)
 
 /* TCP receive window. */
+#if defined(CFG_CHIP_BL808)
+#define TCP_WND                 (30*TCP_MSS)
+#else
 #ifdef CFG_ETHERNET_ENABLE
 #define TCP_WND                 (6*TCP_MSS)
 #else
 #define TCP_WND                 (3*TCP_MSS)
+#endif
+#endif
+
+#if defined(CFG_CHIP_BL808)
+#define LWIP_DECLARE_MEMORY_ALIGNED(variable_name, size) u8_t variable_name[LWIP_MEM_ALIGN_BUFFER(size)]
 #endif
 
 /**
  * TCP_WND_UPDATE_THRESHOLD: difference in window to trigger an
  * explicit window update
  */
+#if defined(CFG_CHIP_BL808)
+#define TCP_WND_UPDATE_THRESHOLD   LWIP_MIN((TCP_WND / 2), (TCP_MSS * 16))
+#else
 #define TCP_WND_UPDATE_THRESHOLD   LWIP_MIN((TCP_WND / 2), (TCP_MSS * 6))
+#endif
 
 /**
  * By default, TCP socket/netconn close waits 20 seconds max to send the FIN
@@ -268,6 +304,8 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCPIP_THREAD_NAME              "TCP/IP"
 #ifdef CFG_ETHERNET_ENABLE
 #define TCPIP_THREAD_STACKSIZE          1536
+#elif defined(CFG_SDIOWIFI)
+#define TCPIP_THREAD_STACKSIZE          512
 #else
 #define TCPIP_THREAD_STACKSIZE          4000
 #endif /* CFG_ETHERNET_ENABLE */
@@ -279,7 +317,11 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2) 
 
 #define LWIP_COMPAT_MUTEX               0
+#if defined(CFG_CHIP_BL808)
+#define LWIP_TCPIP_CORE_LOCKING         1
+#else
 #define LWIP_TCPIP_CORE_LOCKING         0
+#endif
 #define LWIP_SOCKET_SET_ERRNO           1
 #define SO_REUSE                        1
 #define LWIP_TCP_KEEPALIVE              1

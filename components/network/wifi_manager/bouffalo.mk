@@ -26,7 +26,8 @@ COMPONENT_SRCS := bl60x_wifi_driver/ipc_host.c \
 				  bl60x_wifi_driver/wifi_mgmr_ext.c \
 				  bl60x_wifi_driver/wifi_mgmr_profile.c \
 				  bl60x_wifi_driver/wifi_netif.c \
-				  bl60x_wifi_driver/wifi_mgmr_event.c
+				  bl60x_wifi_driver/wifi_mgmr_event.c \
+				  bl60x_wifi_driver/wifi_pkt_hooks.c
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
@@ -37,7 +38,7 @@ CPPFLAGS += -DCFG_TXDESC="2"
 endif
 
 ifeq ($(CONFIG_CHIP_NAME),BL808)
-CPPFLAGS += -DCFG_TXDESC="2"
+CPPFLAGS += -DCFG_TXDESC="4"
 endif
 
 ifeq ($(CONFIG_CHIP_NAME),BL606P)
@@ -65,5 +66,13 @@ endif
 ifeq ($(CONFIG_CHIP_NAME),BL602)
 CPPFLAGS += -DCFG_CHIP_BL602
 endif
+
+ifeq ($(CONFIG_WIFI_PKT_INPUT_HOOK),1)
+CPPFLAGS += -D PKT_INPUT_HOOK
+endif
+ifeq ($(CONFIG_WIFI_PKT_OUTPUT_HOOK),1)
+CPPFLAGS += -D PKT_OUTPUT_HOOK
+endif
+
 ##
 #CPPFLAGS +=

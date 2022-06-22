@@ -48,7 +48,7 @@ int bl_send_start(struct bl_hw *bl_hw);
 int bl_send_add_if(struct bl_hw *bl_hw, const unsigned char *mac,
                      enum nl80211_iftype iftype, bool p2p, struct mm_add_if_cfm *cfm);
 int bl_send_remove_if(struct bl_hw *bl_hw, uint8_t inst_nbr);
-int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_num, struct mac_ssid *ssid, const uint8_t *mac);
+int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid, const uint8_t *mac);
 int bl_send_scanu_raw_send(struct bl_hw *bl_hw, uint8_t *pkt, int len);
 int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm);
 int bl_send_sm_disconnect_req(struct bl_hw *bl_hw);
@@ -64,4 +64,5 @@ void bl_msg_update_channel_cfg(const char *code);
 int bl_msg_get_channel_nums();
 int bl_get_fixed_channels_is_valid(uint16_t *channels, uint16_t channel_num);
 int bl_send_beacon_interval_set(struct bl_hw *bl_hw, struct mm_set_beacon_int_cfm *cfm, uint16_t beacon_int);
+uint16_t phy_channel_to_freq(uint8_t band, int channel);
 #endif

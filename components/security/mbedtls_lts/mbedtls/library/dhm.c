@@ -2,7 +2,13 @@
  *  Diffie-Hellman-Merkle key exchange
  *
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
+ *
+ *  This file is provided under the Apache License 2.0, or the
+ *  GNU General Public License v2.0 or later.
+ *
+ *  **********
+ *  Apache License 2.0:
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -15,6 +21,27 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ *
+ *  **********
+ *
+ *  **********
+ *  GNU General Public License v2.0 or later:
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  **********
  */
 /*
  *  The following sources were referenced in the design of this implementation
@@ -25,13 +52,16 @@
  *
  */
 
-#include "common.h"
+#if !defined(MBEDTLS_CONFIG_FILE)
+#include "mbedtls/config.h"
+#else
+#include MBEDTLS_CONFIG_FILE
+#endif
 
 #if defined(MBEDTLS_DHM_C)
 
 #include "mbedtls/dhm.h"
 #include "mbedtls/platform_util.h"
-#include "mbedtls/error.h"
 
 #include <string.h>
 
@@ -79,7 +109,7 @@ static int dhm_read_bignum( mbedtls_mpi *X,
         return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
 
     if( ( ret = mbedtls_mpi_read_binary( X, *p, n ) ) != 0 )
-        return( MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_READ_PARAMS_FAILED, ret ) );
+        return( MBEDTLS_ERR_DHM_READ_PARAMS_FAILED + ret );
 
     (*p) += n;
 
@@ -100,21 +130,22 @@ static int dhm_read_bignum( mbedtls_mpi *X,
  */
 static int dhm_check_range( const mbedtls_mpi *param, const mbedtls_mpi *P )
 {
-    mbedtls_mpi U;
+    mbedtls_mpi L, U;
     int ret = 0;
 
-    mbedtls_mpi_init( &U );
+    mbedtls_mpi_init( &L ); mbedtls_mpi_init( &U );
 
+    MBEDTLS_MPI_CHK( mbedtls_mpi_lset( &L, 2 ) );
     MBEDTLS_MPI_CHK( mbedtls_mpi_sub_int( &U, P, 2 ) );
 
-    if( mbedtls_mpi_cmp_int( param, 2 ) < 0 ||
+    if( mbedtls_mpi_cmp_mpi( param, &L ) < 0 ||
         mbedtls_mpi_cmp_mpi( param, &U ) > 0 )
     {
         ret = MBEDTLS_ERR_DHM_BAD_INPUT_DATA;
     }
 
 cleanup:
-    mbedtls_mpi_free( &U );
+    mbedtls_mpi_free( &L ); mbedtls_mpi_free( &U );
     return( ret );
 }
 
@@ -131,7 +162,7 @@ int mbedtls_dhm_read_params( mbedtls_dhm_context *ctx,
                      unsigned char **p,
                      const unsigned char *end )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     DHM_VALIDATE_RET( ctx != NULL );
     DHM_VALIDATE_RET( p != NULL && *p != NULL );
     DHM_VALIDATE_RET( end != NULL );
@@ -150,44 +181,38 @@ int mbedtls_dhm_read_params( mbedtls_dhm_context *ctx,
 }
 
 /*
- * Pick a random R in the range [2, M-2] for blinding or key generation.
+ * Setup and write the ServerKeyExchange parameters
  */
-static int dhm_random_below( mbedtls_mpi *R, const mbedtls_mpi *M,
-                int (*f_rng)(void *, unsigned char *, size_t), void *p_rng )
+int mbedtls_dhm_make_params( mbedtls_dhm_context *ctx, int x_size,
+                     unsigned char *output, size_t *olen,
+                     int (*f_rng)(void *, unsigned char *, size_t),
+                     void *p_rng )
 {
-    int ret;
-
-    MBEDTLS_MPI_CHK( mbedtls_mpi_random( R, 3, M, f_rng, p_rng ) );
-    MBEDTLS_MPI_CHK( mbedtls_mpi_sub_int( R, R, 1 ) );
-
-cleanup:
-    return( ret );
-}
-
-static int dhm_make_common( mbedtls_dhm_context *ctx, int x_size,
-                            int (*f_rng)(void *, unsigned char *, size_t),
-                            void *p_rng )
-{
-    int ret = 0;
+    int ret, count = 0;
+    size_t n1, n2, n3;
+    unsigned char *p;
+    DHM_VALIDATE_RET( ctx != NULL );
+    DHM_VALIDATE_RET( output != NULL );
+    DHM_VALIDATE_RET( olen != NULL );
+    DHM_VALIDATE_RET( f_rng != NULL );
 
     if( mbedtls_mpi_cmp_int( &ctx->P, 0 ) == 0 )
         return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
-    if( x_size < 0 )
-        return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
 
-    if( (unsigned) x_size < mbedtls_mpi_size( &ctx->P ) )
+    /*
+     * Generate X as large as possible ( < P )
+     */
+    do
     {
         MBEDTLS_MPI_CHK( mbedtls_mpi_fill_random( &ctx->X, x_size, f_rng, p_rng ) );
-    }
-    else
-    {
-        /* Generate X as large as possible ( <= P - 2 ) */
-        ret = dhm_random_below( &ctx->X, &ctx->P, f_rng, p_rng );
-        if( ret == MBEDTLS_ERR_MPI_NOT_ACCEPTABLE )
+
+        while( mbedtls_mpi_cmp_mpi( &ctx->X, &ctx->P ) >= 0 )
+            MBEDTLS_MPI_CHK( mbedtls_mpi_shift_r( &ctx->X, 1 ) );
+
+        if( count++ > 10 )
             return( MBEDTLS_ERR_DHM_MAKE_PARAMS_FAILED );
-        if( ret != 0 )
-            return( ret );
     }
+    while( dhm_check_range( &ctx->X, &ctx->P ) != 0 );
 
     /*
      * Calculate GX = G^X mod P
@@ -198,41 +223,16 @@ static int dhm_make_common( mbedtls_dhm_context *ctx, int x_size,
     if( ( ret = dhm_check_range( &ctx->GX, &ctx->P ) ) != 0 )
         return( ret );
 
-cleanup:
-    return( ret );
-}
-
-/*
- * Setup and write the ServerKeyExchange parameters
- */
-int mbedtls_dhm_make_params( mbedtls_dhm_context *ctx, int x_size,
-                     unsigned char *output, size_t *olen,
-                     int (*f_rng)(void *, unsigned char *, size_t),
-                     void *p_rng )
-{
-    int ret;
-    size_t n1, n2, n3;
-    unsigned char *p;
-    DHM_VALIDATE_RET( ctx != NULL );
-    DHM_VALIDATE_RET( output != NULL );
-    DHM_VALIDATE_RET( olen != NULL );
-    DHM_VALIDATE_RET( f_rng != NULL );
-
-    ret = dhm_make_common( ctx, x_size, f_rng, p_rng );
-    if( ret != 0 )
-        goto cleanup;
-
     /*
-     * Export P, G, GX. RFC 5246 §4.4 states that "leading zero octets are
-     * not required". We omit leading zeros for compactness.
+     * export P, G, GX
      */
 #define DHM_MPI_EXPORT( X, n )                                          \
     do {                                                                \
         MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( ( X ),               \
                                                    p + 2,               \
                                                    ( n ) ) );           \
-        *p++ = MBEDTLS_BYTE_1( n );                                     \
-        *p++ = MBEDTLS_BYTE_0( n );                                     \
+        *p++ = (unsigned char)( ( n ) >> 8 );                           \
+        *p++ = (unsigned char)( ( n )      );                           \
         p += ( n );                                                     \
     } while( 0 )
 
@@ -250,9 +250,11 @@ int mbedtls_dhm_make_params( mbedtls_dhm_context *ctx, int x_size,
     ctx->len = n1;
 
 cleanup:
-    if( ret != 0 && ret > -128 )
-        ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_MAKE_PARAMS_FAILED, ret );
-    return( ret );
+
+    if( ret != 0 )
+        return( MBEDTLS_ERR_DHM_MAKE_PARAMS_FAILED + ret );
+
+    return( 0 );
 }
 
 /*
@@ -262,7 +264,7 @@ int mbedtls_dhm_set_group( mbedtls_dhm_context *ctx,
                            const mbedtls_mpi *P,
                            const mbedtls_mpi *G )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     DHM_VALIDATE_RET( ctx != NULL );
     DHM_VALIDATE_RET( P != NULL );
     DHM_VALIDATE_RET( G != NULL );
@@ -270,7 +272,7 @@ int mbedtls_dhm_set_group( mbedtls_dhm_context *ctx,
     if( ( ret = mbedtls_mpi_copy( &ctx->P, P ) ) != 0 ||
         ( ret = mbedtls_mpi_copy( &ctx->G, G ) ) != 0 )
     {
-        return( MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_SET_GROUP_FAILED, ret ) );
+        return( MBEDTLS_ERR_DHM_SET_GROUP_FAILED + ret );
     }
 
     ctx->len = mbedtls_mpi_size( &ctx->P );
@@ -283,7 +285,7 @@ int mbedtls_dhm_set_group( mbedtls_dhm_context *ctx,
 int mbedtls_dhm_read_public( mbedtls_dhm_context *ctx,
                      const unsigned char *input, size_t ilen )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     DHM_VALIDATE_RET( ctx != NULL );
     DHM_VALIDATE_RET( input != NULL );
 
@@ -291,7 +293,7 @@ int mbedtls_dhm_read_public( mbedtls_dhm_context *ctx,
         return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
 
     if( ( ret = mbedtls_mpi_read_binary( &ctx->GY, input, ilen ) ) != 0 )
-        return( MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_READ_PUBLIC_FAILED, ret ) );
+        return( MBEDTLS_ERR_DHM_READ_PUBLIC_FAILED + ret );
 
     return( 0 );
 }
@@ -304,7 +306,7 @@ int mbedtls_dhm_make_public( mbedtls_dhm_context *ctx, int x_size,
                      int (*f_rng)(void *, unsigned char *, size_t),
                      void *p_rng )
 {
-    int ret;
+    int ret, count = 0;
     DHM_VALIDATE_RET( ctx != NULL );
     DHM_VALIDATE_RET( output != NULL );
     DHM_VALIDATE_RET( f_rng != NULL );
@@ -312,17 +314,62 @@ int mbedtls_dhm_make_public( mbedtls_dhm_context *ctx, int x_size,
     if( olen < 1 || olen > ctx->len )
         return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
 
-    ret = dhm_make_common( ctx, x_size, f_rng, p_rng );
-    if( ret == MBEDTLS_ERR_DHM_MAKE_PARAMS_FAILED )
-        return( MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED );
-    if( ret != 0 )
-        goto cleanup;
+    if( mbedtls_mpi_cmp_int( &ctx->P, 0 ) == 0 )
+        return( MBEDTLS_ERR_DHM_BAD_INPUT_DATA );
+
+    /*
+     * generate X and calculate GX = G^X mod P
+     */
+    do
+    {
+        MBEDTLS_MPI_CHK( mbedtls_mpi_fill_random( &ctx->X, x_size, f_rng, p_rng ) );
+
+        while( mbedtls_mpi_cmp_mpi( &ctx->X, &ctx->P ) >= 0 )
+            MBEDTLS_MPI_CHK( mbedtls_mpi_shift_r( &ctx->X, 1 ) );
+
+        if( count++ > 10 )
+            return( MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED );
+    }
+    while( dhm_check_range( &ctx->X, &ctx->P ) != 0 );
+
+    MBEDTLS_MPI_CHK( mbedtls_mpi_exp_mod( &ctx->GX, &ctx->G, &ctx->X,
+                          &ctx->P , &ctx->RP ) );
+
+    if( ( ret = dhm_check_range( &ctx->GX, &ctx->P ) ) != 0 )
+        return( ret );
 
     MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( &ctx->GX, output, olen ) );
 
 cleanup:
-    if( ret != 0 && ret > -128 )
-        ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED, ret );
+
+    if( ret != 0 )
+        return( MBEDTLS_ERR_DHM_MAKE_PUBLIC_FAILED + ret );
+
+    return( 0 );
+}
+
+/*
+ * Pick a random R in the range [2, M) for blinding purposes
+ */
+static int dhm_random_below( mbedtls_mpi *R, const mbedtls_mpi *M,
+                int (*f_rng)(void *, unsigned char *, size_t), void *p_rng )
+{
+    int ret, count;
+
+    count = 0;
+    do
+    {
+        MBEDTLS_MPI_CHK( mbedtls_mpi_fill_random( R, mbedtls_mpi_size( M ), f_rng, p_rng ) );
+
+        while( mbedtls_mpi_cmp_mpi( R, M ) >= 0 )
+            MBEDTLS_MPI_CHK( mbedtls_mpi_shift_r( R, 1 ) );
+
+        if( count++ > 10 )
+            return( MBEDTLS_ERR_MPI_NOT_ACCEPTABLE );
+    }
+    while( mbedtls_mpi_cmp_int( R, 1 ) <= 0 );
+
+cleanup:
     return( ret );
 }
 
@@ -373,7 +420,7 @@ static int dhm_update_blinding( mbedtls_dhm_context *ctx,
      * We need to generate blinding values from scratch
      */
 
-    /* Vi = random( 2, P-2 ) */
+    /* Vi = random( 2, P-1 ) */
     MBEDTLS_MPI_CHK( dhm_random_below( &ctx->Vi, &ctx->P, f_rng, p_rng ) );
 
     /* Vf = Vi^-X mod P
@@ -402,7 +449,7 @@ int mbedtls_dhm_calc_secret( mbedtls_dhm_context *ctx,
                      int (*f_rng)(void *, unsigned char *, size_t),
                      void *p_rng )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     mbedtls_mpi GYb;
     DHM_VALIDATE_RET( ctx != NULL );
     DHM_VALIDATE_RET( output != NULL );
@@ -437,16 +484,15 @@ int mbedtls_dhm_calc_secret( mbedtls_dhm_context *ctx,
         MBEDTLS_MPI_CHK( mbedtls_mpi_mod_mpi( &ctx->K, &ctx->K, &ctx->P ) );
     }
 
-    /* Output the secret without any leading zero byte. This is mandatory
-     * for TLS per RFC 5246 §8.1.2. */
     *olen = mbedtls_mpi_size( &ctx->K );
+
     MBEDTLS_MPI_CHK( mbedtls_mpi_write_binary( &ctx->K, output, *olen ) );
 
 cleanup:
     mbedtls_mpi_free( &GYb );
 
     if( ret != 0 )
-        return( MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_CALC_SECRET_FAILED, ret ) );
+        return( MBEDTLS_ERR_DHM_CALC_SECRET_FAILED + ret );
 
     return( 0 );
 }
@@ -480,7 +526,7 @@ void mbedtls_dhm_free( mbedtls_dhm_context *ctx )
 int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
                    size_t dhminlen )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     size_t len;
     unsigned char *p, *end;
 #if defined(MBEDTLS_PEM_PARSE_C)
@@ -528,7 +574,7 @@ int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
     if( ( ret = mbedtls_asn1_get_tag( &p, end, &len,
             MBEDTLS_ASN1_CONSTRUCTED | MBEDTLS_ASN1_SEQUENCE ) ) != 0 )
     {
-        ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_INVALID_FORMAT, ret );
+        ret = MBEDTLS_ERR_DHM_INVALID_FORMAT + ret;
         goto exit;
     }
 
@@ -537,7 +583,7 @@ int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
     if( ( ret = mbedtls_asn1_get_mpi( &p, end, &dhm->P  ) ) != 0 ||
         ( ret = mbedtls_asn1_get_mpi( &p, end, &dhm->G ) ) != 0 )
     {
-        ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_INVALID_FORMAT, ret );
+        ret = MBEDTLS_ERR_DHM_INVALID_FORMAT + ret;
         goto exit;
     }
 
@@ -551,13 +597,13 @@ int mbedtls_dhm_parse_dhm( mbedtls_dhm_context *dhm, const unsigned char *dhmin,
         mbedtls_mpi_free( &rec );
         if ( ret != 0 )
         {
-            ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_INVALID_FORMAT, ret );
+            ret = MBEDTLS_ERR_DHM_INVALID_FORMAT + ret;
             goto exit;
         }
         if ( p != end )
         {
-            ret = MBEDTLS_ERROR_ADD( MBEDTLS_ERR_DHM_INVALID_FORMAT,
-                MBEDTLS_ERR_ASN1_LENGTH_MISMATCH );
+            ret = MBEDTLS_ERR_DHM_INVALID_FORMAT +
+                MBEDTLS_ERR_ASN1_LENGTH_MISMATCH;
             goto exit;
         }
     }
@@ -634,7 +680,7 @@ static int load_file( const char *path, unsigned char **buf, size_t *n )
  */
 int mbedtls_dhm_parse_dhmfile( mbedtls_dhm_context *dhm, const char *path )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     size_t n;
     unsigned char *buf;
     DHM_VALIDATE_RET( dhm != NULL );
@@ -686,7 +732,7 @@ static const size_t mbedtls_test_dhm_params_len = sizeof( mbedtls_test_dhm_param
  */
 int mbedtls_dhm_self_test( int verbose )
 {
-    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    int ret;
     mbedtls_dhm_context dhm;
 
     mbedtls_dhm_init( &dhm );

@@ -253,17 +253,26 @@ int k_thread_create(struct k_thread *new_thread, const char *name,
     return new_thread->task? 0 : -1;
 }
 
-void k_thread_delete(struct k_thread *new_thread)
+void k_thread_delete(struct k_thread *thread)
 {
-    if(NULL == new_thread || 0 == new_thread->task)
+    if(NULL == thread || 0 == thread->task)
     {
         BT_ERR("task is NULL\n");
         return;
     }
     
-    vTaskDelete((void *)(new_thread->task));
-    new_thread->task = 0;
+    vTaskDelete((void *)(thread->task));
+    thread->task = 0;
     return;
+}
+
+bool k_is_current_thread(struct k_thread *thread)
+{
+    eTaskState thread_state = eTaskGetState((void *)(thread->task));
+    if(thread_state == eRunning)
+        return true;
+    else
+        return false;
 }
 
 int k_yield(void)
@@ -381,10 +390,18 @@ void k_get_random_byte_array(uint8_t *buf, size_t len)
 
 void *k_malloc(size_t size)
 {
+#if defined(CFG_USE_PSRAM)
+    return pvPortMallocPsram(size);
+#else
     return pvPortMalloc(size);
+#endif /* CFG_USE_PSRAM */
 }
 
 void k_free(void *buf)
 {
+#if defined(CFG_USE_PSRAM)
+    return vPortFreePsram(buf);
+#else
     return vPortFree(buf);
+#endif
 }

@@ -69,7 +69,7 @@ static struct {
 	.dst = BT_MESH_ADDR_UNASSIGNED,
 };
 
-#if defined(BL602) || defined(BL702)
+#if defined(BL602) || defined(BL702) || defined(BL606P)
 #define vOutputString(...)  printf(__VA_ARGS__)
 #else
 #define vOutputString(...)  bl_print(SYSTEM_UART_ID, PRINT_MODULE_CLI, __VA_ARGS__)
@@ -479,7 +479,7 @@ static const struct bt_mesh_comp comp = {
 	.elem_count = ARRAY_SIZE(elements),
 };
 
-#if defined(BL602) || defined(BL702)
+#if defined(BL602) || defined(BL702) || defined(BL606P)
 const struct cli_command btMeshCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
 #else
 const struct cli_command btMeshCmdSet[] = {

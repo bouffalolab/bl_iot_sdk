@@ -30,7 +30,7 @@
 #if defined(CFG_BLE_ENABLE)
 #include <FreeRTOS.h>
 #include <task.h>
-
+#include <timers.h>
 #include "bluetooth.h"
 #include "ble_cli_cmds.h"
 #if defined(CONFIG_BT_MESH)
@@ -87,6 +87,11 @@
 #if defined(CONFIG_BT_DIS_SERVER)
 #include "dis.h"
 #endif
+
+#if defined(CFG_NO_BLE_IF_ZIGBEE_IN_NWK)
+#include "zigbee_app.h"
+#endif
+
 
 #if defined(CONFIG_BT_MESH)
 #if defined(CONFIG_BT_MESH_MODEL_GEN_SRV)
@@ -326,6 +331,122 @@ bool app_check_oad(u32_t cur_file_ver, u32_t new_file_ver)
 }
 #endif
 
+#ifdef CFG_BLE_AUTO_TRIG_ADV
+bool firstAdv = true;
+#define BL_ADV_START_TIMEOUT_MS 10000//3000
+static bool bl_adv_started = false;
+TimerHandle_t bl_adv_timer_hdl;
+void bl_start_adv_Timer(uint32_t timeout_ms);
+void bl_ble_start_adv(void);
+
+static void bl_adv_timer_handler(TimerHandle_t p_timerhdl)
+{
+    int ret = 0;
+    if(bl_adv_started)
+    {
+        printf("to stop adv\r\n");
+        ret = bt_le_adv_stop();
+        if(ret)
+        {
+            printf("Fail to stop adv\r\n");
+            xTimerDelete(p_timerhdl, 0);
+            bl_adv_timer_hdl = NULL;
+            return;
+        }
+        else
+        {
+            printf("Stop adv successfully\r\n");
+        }
+        bl_adv_started = false;
+        #if defined(CFG_NO_BLE_IF_ZIGBEE_IN_NWK)
+        if(!zb_isDevActiveInNwk() || !zb_isAuthenticated())
+            bl_start_adv_Timer(BL_ADV_START_TIMEOUT_MS);
+        else
+        {
+            xTimerDelete(p_timerhdl, 0);
+            bl_adv_timer_hdl = NULL;
+        }
+        #else
+            bl_start_adv_Timer(BL_ADV_START_TIMEOUT_MS);    
+        #endif
+    }
+    else
+    {  
+        bl_ble_start_adv();   
+    }
+}
+
+void bl_start_adv_Timer(uint32_t timeout_ms)
+{
+    int ret = 0;
+    if(!bl_adv_timer_hdl)
+        bl_adv_timer_hdl = xTimerCreate("Timer", pdMS_TO_TICKS(timeout_ms), 0, NULL,  bl_adv_timer_handler);
+    else
+    {
+        ret = xTimerChangePeriod(bl_adv_timer_hdl, pdMS_TO_TICKS(timeout_ms), 0);
+        if(ret == pdFAIL)
+        {
+            printf("%s Fail to change timer period\r\n", __func__);
+        }
+    }
+    
+    if(bl_adv_timer_hdl)
+        xTimerStart(bl_adv_timer_hdl, 0);
+}
+
+void bl_ble_start_adv(void)
+{
+    int err;
+    const char *dev_name = bt_get_name();
+    struct bt_data ad[2] = {
+        BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR | BT_LE_AD_GENERAL),
+        BT_DATA(BT_DATA_NAME_COMPLETE,dev_name,strlen(dev_name)),
+    };
+        
+    struct bt_le_adv_param param = {
+        .options = 0,
+        .id = 0,
+        .interval_min = 0x4,
+        .interval_max = 0x4,
+    };
+
+    #if defined(CFG_NO_BLE_IF_ZIGBEE_IN_NWK)
+    if(zb_isDevActiveInNwk() && zb_isAuthenticated())
+    {
+        if(bl_adv_timer_hdl)
+        {
+            xTimerDelete(bl_adv_timer_hdl, 0);
+            bl_adv_timer_hdl = NULL;
+        }
+        return;
+    }
+    #endif
+    if(firstAdv)
+    {
+        //set_adv_channel_map(2);
+        #if defined(CFG_BLE_DISABLE_ADV_DELAY)
+        ble_controller_disable_adv_random_delay(true);
+        #endif
+        err = bt_le_adv_start(&param, ad, ARRAY_SIZE(ad), NULL, 0);
+        if(err == 0)
+            firstAdv = false;
+    }
+    else
+    {
+        err = set_adv_enable(true);
+    }
+    
+    if(err){
+        printf("Failed to start adv. err(%d)",err);
+    }
+    else{
+        printf("start adv\r\n");
+        bl_adv_started = true;
+        bl_start_adv_Timer(3*(param.interval_max)*0.625);
+    }
+}
+#endif
+
 void bt_enable_cb(int err)
 {
     if (!err) {
@@ -384,11 +505,23 @@ void bt_enable_cb(int err)
         hog_init();
 #endif
 
+#if defined(CFG_BLE_PERIPHERAL_AUTORUN)
+        extern void BleStart(void);
+        BleStart();
+#endif
+#ifdef CFG_BLE_AUTO_TRIG_SCAN
+    extern void bl_ble_start_scan_pds(void);
+    bl_ble_start_scan_pds();
+#endif
+#ifdef CFG_BLE_AUTO_TRIG_ADV
+    bl_ble_start_adv();
+#endif
+
     }
 }
 
 void ble_stack_start(void)
-{
+{       
      // Initialize BLE controller
     ble_controller_init(configMAX_PRIORITIES - 1);
     // Initialize BLE Host stack

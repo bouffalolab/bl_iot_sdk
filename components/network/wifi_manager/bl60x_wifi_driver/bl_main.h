@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <lwip/netif.h>
 #include "lmac_mac.h"
+#include <wifi_mgmr_ext.h>
 
 struct wifi_apm_sta_info
 {
@@ -54,7 +55,7 @@ int bl_main_rate_config(uint8_t sta_idx, uint16_t fixed_rate_cfg);
 int bl_main_if_remove(uint8_t vif_index);
 int bl_main_if_add(int is_sta, struct netif *netif, uint8_t *vif_index);
 int bl_main_monitor(void);
-int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq);
+int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq, const uint32_t flags);
 int bl_main_apm_start(char *ssid, char *password, int channel, uint8_t vif_index, uint8_t hidden_ssid, uint16_t bcn_int);
 int bl_main_apm_stop(uint8_t vif_index);
 int bl_main_apm_sta_cnt_get(uint8_t *sta_cnt);
@@ -63,7 +64,7 @@ int bl_main_apm_sta_delete(uint8_t sta_idx);
 int bl_main_apm_remove_all_sta();
 int bl_main_conf_max_sta(uint8_t max_sta_supported);
 int bl_main_cfg_task_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, void *arg1, void *arg2);
-int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_ssid *ssid);
+int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid);
 int bl_main_raw_send(uint8_t *pkt , int len);
 int bl_main_set_country_code(char *country_code);
 int bl_main_get_channel_nums();
@@ -185,7 +186,8 @@ typedef void (*wifi_event_sm_connect_ind_cb_t)(void *env, struct wifi_event_sm_c
 typedef void (*wifi_event_sm_disconnect_ind_cb_t)(void *env, struct wifi_event_sm_disconnect_ind *ind);
 typedef void (*wifi_event_beacon_ind_cb_t)(void *env, struct wifi_event_beacon_ind *ind);
 typedef void (*wifi_event_probe_resp_ind_cb_t)(void *env, long long timestamp);
-typedef void (*wifi_event_pkt_cb_t)(void *env, uint8_t *ieee80211_pkt, int len);
+typedef void (*wifi_event_pkt_cb_t)(void *env, uint8_t *ieee80211_pkt, int len, bl_rx_info_t *info);
+typedef void (*wifi_event_pkt_cb_adv_t)(void *env, void *pkt_wrap, bl_rx_info_t *info);
 typedef void (*wifi_event_rssi_cb_t)(void *env, int8_t rssi);
 typedef void (*wifi_event_cb_t)(void *env, struct wifi_event *event);
 int bl_rx_sm_connect_ind_cb_register(void *env, wifi_event_sm_connect_ind_cb_t cb);
@@ -197,6 +199,8 @@ int bl_rx_probe_resp_ind_cb_register(void *env, wifi_event_probe_resp_ind_cb_t c
 int bl_rx_beacon_ind_cb_unregister(void *env, wifi_event_beacon_ind_cb_t cb);
 int bl_rx_pkt_cb_register(void *env, wifi_event_pkt_cb_t cb);
 int bl_rx_pkt_cb_unregister(void *env);
+int bl_rx_pkt_adv_cb_register(void *env, wifi_event_pkt_cb_adv_t cb);
+int bl_rx_pkt_adv_cb_unregister(void *env);
 int bl_rx_rssi_cb_register(void *env, wifi_event_rssi_cb_t cb);
 int bl_rx_rssi_cb_unregister(void *env, wifi_event_rssi_cb_t cb);
 int bl_rx_event_register(void *env, wifi_event_cb_t cb);

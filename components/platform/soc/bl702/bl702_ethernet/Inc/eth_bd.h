@@ -38,4 +38,14 @@ typedef struct {
     uint32_t done_tmr;
 }eth_context;
 
+typedef enum {
+    ETH_INIT_STEP_LINKUP,
+    ETH_INIT_STEP_READY,
+    ETH_INIT_STEP_LINKDOWN,
+}eth_link_state;
+
+
+typedef int (*eth_callback)(eth_link_state val);
+
+int ethernet_init(eth_callback cb);
 #endif

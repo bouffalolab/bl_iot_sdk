@@ -1,3 +1,4 @@
+
 DESTDIR=/usr/local
 PREFIX=mbedtls_
 
@@ -10,24 +11,19 @@ all: programs tests
 
 no_test: programs
 
-programs: lib mbedtls_test
+programs: lib
 	$(MAKE) -C programs
 
 lib:
 	$(MAKE) -C library
 
-tests: lib mbedtls_test
+tests: lib
 	$(MAKE) -C tests
-
-mbedtls_test:
-	$(MAKE) -C tests mbedtls_test
 
 ifndef WINDOWS
 install: no_test
 	mkdir -p $(DESTDIR)/include/mbedtls
 	cp -rp include/mbedtls $(DESTDIR)/include
-	mkdir -p $(DESTDIR)/include/psa
-	cp -rp include/psa $(DESTDIR)/include
 
 	mkdir -p $(DESTDIR)/lib
 	cp -RP library/libmbedtls.*    $(DESTDIR)/lib
@@ -45,7 +41,6 @@ install: no_test
 
 uninstall:
 	rm -rf $(DESTDIR)/include/mbedtls
-	rm -rf $(DESTDIR)/include/psa
 	rm -f $(DESTDIR)/lib/libmbedtls.*
 	rm -f $(DESTDIR)/lib/libmbedx509.*
 	rm -f $(DESTDIR)/lib/libmbedcrypto.*
@@ -78,11 +73,11 @@ post_build:
 ifndef WINDOWS
 
 	# If 128-bit keys are configured for CTR_DRBG, display an appropriate warning
-	-scripts/config.py get MBEDTLS_CTR_DRBG_USE_128_BIT_KEY && ([ $$? -eq 0 ]) && \
+	-scripts/config.pl get MBEDTLS_CTR_DRBG_USE_128_BIT_KEY && ([ $$? -eq 0 ]) && \
 	    echo '$(CTR_DRBG_128_BIT_KEY_WARNING)'
 
 	# If NULL Entropy is configured, display an appropriate warning
-	-scripts/config.py get MBEDTLS_TEST_NULL_ENTROPY && ([ $$? -eq 0 ]) && \
+	-scripts/config.pl get MBEDTLS_TEST_NULL_ENTROPY && ([ $$? -eq 0 ]) && \
 	    echo '$(NULL_ENTROPY_WARNING)'
 endif
 
@@ -127,22 +122,13 @@ apidoc_clean:
 endif
 
 ## Editor navigation files
-C_SOURCE_FILES = $(wildcard \
-	3rdparty/*/include/*/*.h 3rdparty/*/include/*/*/*.h 3rdparty/*/include/*/*/*/*.h \
-	3rdparty/*/*.c 3rdparty/*/*/*.c 3rdparty/*/*/*/*.c 3rdparty/*/*/*/*/*.c \
-	include/*/*.h \
-	library/*.[hc] \
-	programs/*/*.[hc] \
-	tests/include/*/*.h tests/include/*/*/*.h \
-	tests/src/*.c tests/src/*/*.c \
-	tests/suites/*.function \
-)
+C_SOURCE_FILES = $(wildcard include/*/*.h library/*.[hc] programs/*/*.[hc] tests/suites/*.function)
 # Exuberant-ctags invocation. Other ctags implementations may require different options.
-CTAGS = ctags --langmap=c:+.h.function --line-directives=no -o
+CTAGS = ctags --langmap=c:+.h.function -o
 tags: $(C_SOURCE_FILES)
 	$(CTAGS) $@ $(C_SOURCE_FILES)
 TAGS: $(C_SOURCE_FILES)
-	etags --no-line-directive -o $@ $(C_SOURCE_FILES)
+	etags -o $@ $(C_SOURCE_FILES)
 global: GPATH GRTAGS GSYMS GTAGS
 GPATH GRTAGS GSYMS GTAGS: $(C_SOURCE_FILES)
 	ls $(C_SOURCE_FILES) | gtags -f - --gtagsconf .globalrc

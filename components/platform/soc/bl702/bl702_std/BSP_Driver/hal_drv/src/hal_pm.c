@@ -27,6 +27,7 @@
 #include "hal_rtc.h"
 #include "hal_flash.h"
 #include "risc-v/Core/Include/clic.h"
+#include "bl702_romdriver.h"
 
 /* Cache Way Disable, will get from l1c register */
 uint8_t cacheWayDisable = 0;
@@ -44,7 +45,7 @@ SPI_Flash_Cfg_Type *flash_cfg;
 #define PM_PDS_PLL_POWER_OFF     1
 #define PM_PDS_RF_POWER_OFF      1
 #define PM_PDS_LDO_LEVEL_DEFAULT HBN_LDO_LEVEL_1P10V
-#define PM_HBN_LDO_LEVEL_DEFAULT HBN_LDO_LEVEL_0P90V
+#define PM_HBN_LDO_LEVEL_DEFAULT HBN_LDO_LEVEL_1P00V
 
 void HBN_OUT0_IRQ(void);
 void HBN_OUT1_IRQ(void);
@@ -983,10 +984,6 @@ ATTR_TCM_SECTION void pm_pds_mode_enter(enum pm_pds_sleep_level pds_level, uint3
     pPdsCfg->pdsCtl.pdsLdoVol = PM_PDS_LDO_LEVEL_DEFAULT;
     pPdsCfg->pdsCtl.pdsLdoVselEn = 1;
 
-    if (BL_GET_REG_BITS_VAL(BL_RD_REG(PDS_BASE, PDS_GPIO_INT), PDS_GPIO_INT_MASK)) {
-        pPdsCfg->pdsCtl.gpioIePuPd = 0;
-    }
-
 #if PM_PDS_RF_POWER_OFF == 0
     pPdsCfg->pdsCtl.pdsCtlRfSel = 0;
 #endif
@@ -1234,6 +1231,7 @@ ATTR_TCM_SECTION void pm_hbn_mode_enter(enum pm_hbn_sleep_level hbn_level, uint8
 
     while (1) {
         BL702_Delay_MS(1000);
+        RomDriver_GLB_SW_POR_Reset();
     }
 }
 

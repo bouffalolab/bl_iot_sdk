@@ -140,6 +140,12 @@ struct bt_hci_cp_vs_set_tx_pwr {
 }__packed;
 #endif
 
+#define BT_HCI_OP_VS_SET_BD_ADDR             BT_OP(BT_OGF_VS, 0x0062)
+struct bt_hci_cp_vs_set_bd_addr {
+    bt_addr_t bdaddr;
+}__packed;
+
+
 /* Events */
 
 struct bt_hci_evt_vs {

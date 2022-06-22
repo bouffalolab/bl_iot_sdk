@@ -22,9 +22,9 @@
  */
 #include "hal_uart.h"
 #include "hal_dma.h"
-#include "hal_clock.h"
 #include "bl702_uart.h"
 #include "bl702_glb.h"
+#include "bl702_clock.h"
 #include "uart_config.h"
 
 #ifdef BSP_USING_UART0
@@ -60,7 +60,7 @@ int uart_open(struct device *dev, uint16_t oflag)
     /* disable uart before config */
     UART_Disable(uart_device->id, UART_TXRX);
 
-    uint32_t uart_clk = peripheral_clock_get(PERIPHERAL_CLOCK_UART);
+    uint32_t uart_clk = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_UART0 + uart_device->id);
     uart_cfg.baudRate = uart_device->baudrate;
     uart_cfg.dataBits = uart_device->databits;
     uart_cfg.stopBits = uart_device->stopbits;
@@ -189,7 +189,7 @@ int uart_control(struct device *dev, int cmd, void *args)
             uart_param_cfg_t *cfg = (uart_param_cfg_t *)args;
             UART_CFG_Type uart_cfg;
 
-            uint32_t uart_clk = peripheral_clock_get(PERIPHERAL_CLOCK_UART);
+            uint32_t uart_clk = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_UART0 + uart_device->id);
 
             uart_cfg.uartClk = uart_clk;
             uart_cfg.baudRate = cfg->baudrate;

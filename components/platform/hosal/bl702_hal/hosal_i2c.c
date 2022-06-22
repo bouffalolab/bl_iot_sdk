@@ -61,7 +61,7 @@ static int i2c_master_send(I2C_ID_Type i2cNo, I2C_Transfer_Cfg *cfg, uint32_t ti
 
     I2C_Disable(i2cNo);
     I2C_Init(i2cNo, I2C_WRITE, cfg);
-    I2C_Enable(i2cNo);
+ //   I2C_Enable(i2cNo);
 
     time_start = bl_timer_now_us64() / 1000;
     /* Set I2C write data */
@@ -79,6 +79,9 @@ static int i2c_master_send(I2C_ID_Type i2cNo, I2C_Transfer_Cfg *cfg, uint32_t ti
                 }
             }
             BL_WR_REG(I2Cx, I2C_FIFO_WDATA, temp);
+            if(BL_GET_REG_BITS_VAL(BL_RD_REG(I2Cx, I2C_CONFIG), I2C_CR_I2C_M_EN) == 0){
+                I2C_Enable(i2cNo);
+            }
             temp = 0;
         }
     }
@@ -94,6 +97,10 @@ static int i2c_master_send(I2C_ID_Type i2cNo, I2C_Transfer_Cfg *cfg, uint32_t ti
             }
         }
         BL_WR_REG(I2Cx, I2C_FIFO_WDATA, temp);
+
+        if(BL_GET_REG_BITS_VAL(BL_RD_REG(I2Cx, I2C_CONFIG), I2C_CR_I2C_M_EN) == 0){
+            I2C_Enable(i2cNo);
+        }
     }
 
     while (I2C_IsBusy(i2cNo) || !I2C_TransferEndStatus(i2cNo)) {

@@ -73,6 +73,7 @@ int wifi_mgmr_profile_add(wifi_mgmr_t *mgmr, wifi_mgmr_profile_msg_t *profile_ms
     memcpy(profile->passphr, profile_msg->passphr, sizeof(profile->passphr));
     memcpy(profile->bssid, profile_msg->bssid, sizeof(profile->bssid));
     profile->dhcp_use = profile_msg->dhcp_use;
+    profile->flags = profile_msg->flags;
 
     return 0;
 }
@@ -128,6 +129,7 @@ int wifi_mgmr_profile_get(wifi_mgmr_t *mgmr, wifi_mgmr_profile_msg_t *profile_ms
     profile_msg->freq = profile->freq;
     profile_msg->ap_info_ttl = profile->ap_info_ttl;
     profile_msg->dhcp_use = profile->dhcp_use;
+    profile_msg->flags = profile->flags;
     memcpy(profile_msg->ssid, profile->ssid, sizeof(profile->ssid));
     memcpy(profile_msg->psk, profile->psk, sizeof(profile->psk));
     memcpy(profile_msg->passphr, profile->passphr, sizeof(profile->passphr));

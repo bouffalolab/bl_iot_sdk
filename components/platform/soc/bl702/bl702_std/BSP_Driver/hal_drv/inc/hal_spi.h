@@ -41,6 +41,7 @@ extern "C" {
 #define DEVICE_CTRL_SPI_CLEAR_RX_FIFO 0x14
 
 #define DEVICE_CTRL_SPI_GET_BUS_BUSY_STATUS 0x15
+#define DEVICE_CTRL_SPI_SET_FRAME_SIZE 0x16
 
 enum spi_index_type {
 #ifdef BSP_USING_SPI0

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "bugkiller_task_dump.h"
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
@@ -327,7 +326,7 @@ void __attribute__((section(".bugkiller_code"))) bugkiller_task_dump(void *res)
         write_name_to_buffer( pcWriteBuffer, pxTaskStatusArray[ x ].pcTaskName );
         printf(task_dump_string[1], pcWriteBuffer);
     
-        sprintf( pcWriteBuffer, "\t%c\t%u\t%u\t%u\t%p\r\n", cStatus, ( unsigned int ) pxTaskStatusArray[ x ].uxCurrentPriority, ( unsigned int ) pxTaskStatusArray[ x ].usStackHighWaterMark, ( unsigned int ) pxTaskStatusArray[ x ].xTaskNumber, pxTaskStatusArray[ x ].pxStackBase );
+        sprintf( pcWriteBuffer, task_dump_string[3], cStatus, ( unsigned int ) pxTaskStatusArray[ x ].uxCurrentPriority, ( unsigned int ) pxTaskStatusArray[ x ].usStackHighWaterMark, ( unsigned int ) pxTaskStatusArray[ x ].xTaskNumber, pxTaskStatusArray[ x ].pxStackBase );
         printf(task_dump_string[2], pcWriteBuffer);
     }
 }

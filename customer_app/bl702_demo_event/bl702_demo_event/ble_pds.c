@@ -108,7 +108,7 @@ void vApplicationSleep(TickType_t xExpectedIdleTime_ms)
         return;
     }
 
-    bleSleepDuration_32768cycles = ble_controller_sleep();
+    bleSleepDuration_32768cycles = ble_controller_sleep(0);
 
     if(bleSleepDuration_32768cycles < TIME_5MS_IN_32768CYCLE)
     {

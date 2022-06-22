@@ -508,6 +508,7 @@ int __attribute__((optimize("O1"))) vsnprintf(char *buffer, size_t n, const char
 	const char *p = format;
 	char ch;
 	char *q = buffer;
+	char *tmp;
 	size_t o = 0;		/* Number of characters output */
 	uintmax_t val = 0;
 	int rank = rank_int;	/* Default rank */
@@ -812,8 +813,10 @@ int __attribute__((optimize("O1"))) vsnprintf(char *buffer, size_t n, const char
 #ifndef DISABLE_PRINT_FLOAT
 				case 'f':
 					{
-						q = flt(q, va_arg(ap, double), width, prec, ch, SIGN);
-        		continue;
+					    tmp = q;
+					    q = flt(q, va_arg(ap, double), width, prec, ch, SIGN);
+					    o += q - tmp;
+					    continue;
 					}
 #endif
 				default:	/* Anything else, including % */

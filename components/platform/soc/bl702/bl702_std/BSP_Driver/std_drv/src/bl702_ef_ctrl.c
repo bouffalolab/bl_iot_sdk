@@ -1174,7 +1174,7 @@ BL_Err_Type EF_Ctrl_Get_Customer_PIDVID(uint16_t pid[1], uint16_t vid[1])
  * @return None
  *
 *******************************************************************************/
-void EF_Ctrl_Read_Device_Info(Efuse_Device_Info_Type *deviceInfo)
+void ATTR_TCM_SECTION EF_Ctrl_Read_Device_Info(Efuse_Device_Info_Type *deviceInfo)
 {
     uint32_t tmpVal;
     uint32_t *p = (uint32_t *)deviceInfo;

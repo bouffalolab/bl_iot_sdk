@@ -23,7 +23,7 @@ COMPONENTS_BLSYS   := bltime blfdt blmtd blota bloop loopadc looprt loopset
 COMPONENTS_BLE     := blecontroller_602_std blestack
 COMPONENTS_VFS     := romfs cjson
 
-INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant bl602_os_adapter wifi_hosal hosal mbedtls_lts lwip lwip_dhcpd vfs yloop utils cli blog blcrypto_suite
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant bl_os_adapter wifi_hosal hosal mbedtls_lts lwip lwip_dhcpd vfs yloop utils cli blog blcrypto_suite
 ifeq ($(CONFIG_BT_SETTINGS),1)
 INCLUDE_COMPONENTS += easyflash4
 endif

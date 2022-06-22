@@ -791,6 +791,8 @@ struct scanu_start_req
     u8_l ssid_cnt;
     /// no CCK - For P2P frames not being sent at CCK rate in 2GHz band.
     bool no_cck;
+    /// MISC flags
+    uint32_t flags;
 };
 
 struct scanu_raw_send_req
@@ -1026,6 +1028,8 @@ struct me_rc_set_rate_req
     u8_l sta_idx;
     /// Rate configuration to be set
     u16_l fixed_rate_cfg;
+    /// Force power table update
+    u16_l power_table_req;
 };
 
 
@@ -1249,6 +1253,9 @@ struct apm_start_req
     /// AP Passphrase
     uint8_t phrase[MAX_PSK_PASS_PHRASE_LEN];
     uint8_t phrase_tail[1];
+    // Buf for storing IE
+    uint8_t bcn_buf_len;
+    uint8_t bcn_buf[64];
 };
 
 /// Structure containing the parameters of the @ref APM_START_CFM message.

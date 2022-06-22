@@ -561,6 +561,7 @@ struct bt_conn *bt_conn_create_br(const bt_addr_t *peer,
 	bt_conn_set_state(conn, BT_CONN_CONNECT);
 	conn->role = BT_CONN_ROLE_MASTER;
 
+	bt_conn_unref(conn);
 	return conn;
 }
 
@@ -1384,10 +1385,21 @@ int bt_conn_send_cb(struct bt_conn *conn, struct net_buf *buf,
 		tx_data(buf)->tx = NULL;
 	}
 
+#if (BFLB_BT_CO_THREAD)
+    if(k_is_current_thread(bt_get_co_thread()))
+        bt_conn_process_tx(conn, buf);
+    else
+        net_buf_put(&conn->tx_queue, buf);
+#if defined(BFLB_BLE)
+        k_sem_give(&g_poll_sem);
+#endif    
+#else//BFLB_BT_CO_THREAD
+
 	net_buf_put(&conn->tx_queue, buf);
 #if defined(BFLB_BLE)
     k_sem_give(&g_poll_sem);
 #endif
+#endif //BFLB_BT_CO_THREAD
 	return 0;
 }
 
@@ -1613,7 +1625,11 @@ int bt_conn_prepare_events(struct k_poll_event events[])
 	return ev_count;
 }
 
+#if (BFLB_BT_CO_THREAD)
+void bt_conn_process_tx(struct bt_conn *conn, struct net_buf *tx_buf)
+#else
 void bt_conn_process_tx(struct bt_conn *conn)
+#endif
 {
 	struct net_buf *buf;
 
@@ -1625,9 +1641,15 @@ void bt_conn_process_tx(struct bt_conn *conn)
 		conn_cleanup(conn);
 		return;
 	}
-
+    #if (BFLB_BT_CO_THREAD)
+    if(tx_buf)
+        buf = tx_buf;
+    else
+        buf = net_buf_get(&conn->tx_queue, K_NO_WAIT);    
+    #else
 	/* Get next ACL packet for connection */
 	buf = net_buf_get(&conn->tx_queue, K_NO_WAIT);
+    #endif
 	BT_ASSERT(buf);
 	if (!send_buf(conn, buf)) {
 		net_buf_unref(buf);

@@ -1,3 +1,19 @@
+ifeq ($(CONFIG_CHIP_NAME),BL602)
+CFLAGS   += -DBL602
+endif
+
+ifeq ($(CONFIG_CHIP_NAME),BL808)
+CFLAGS   += -DBL808
+endif
+
+ifeq ($(CONFIG_CHIP_CODE),BL616)
+CFLAGS   += -DBL616
+endif
+
+ifeq ($(CONFIG_CHIP_CODE),WB03)
+CFLAGS   += -DWB03
+endif
+
 # Component Makefile
 #
 ## These include paths would be exported to project level

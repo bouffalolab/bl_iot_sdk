@@ -33,8 +33,8 @@
 #include <bl702_pwm.h>
 
 #define BL_PWM_XTAL_CLK 32000000
-#define BL_PWM_BUS_BCLK 32000000
-#define BL_PWM_CLK BL_PWM_XTAL_CLK
+#define BL_PWM_BUS_BCLK (SystemCoreClockGet()/(GLB_Get_BCLK_Div()+1))
+#define BL_PWM_CLK      BL_PWM_BUS_BCLK
 
 int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 int32_t bl_pwm_start(uint8_t id);

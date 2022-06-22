@@ -27,8 +27,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-// #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <cli.h>
 
@@ -343,7 +342,7 @@ static void wifi_bcnint_set(char *buf, int len, int argc, char **argv)
     }
 }
 
-static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXED_CHANNELS_LIMIT], const char *ssid)
+static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXED_CHANNELS_LIMIT], uint8_t bssid[6], const char *ssid)
 {
     int i;
     uint16_t channel_num = 0;
@@ -353,7 +352,7 @@ static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXE
         channels[i] = channel_input[i];
     }
     channel_num = channel_input_num;
-    wifi_mgmr_scan_adv(NULL, NULL, channels, channel_num, ssid);
+    wifi_mgmr_scan_adv(NULL, NULL, channels, channel_num, bssid, ssid);
 
 }
 
@@ -363,12 +362,14 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
     int  channel_input_num = 0;
     uint8_t channel_input[MAX_FIXED_CHANNELS_LIMIT];
     const char *ssid = NULL;
+    int bssid_set_flag = 0;
+    uint8_t mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
     getopt_env_t getopt_env;
 
 
     utils_getopt_init(&getopt_env, 0);
 
-    while ((opt = utils_getopt(&getopt_env, argc, argv, "s:c:")) != -1) {
+    while ((opt = utils_getopt(&getopt_env, argc, argv, "s:c:b:")) != -1) {
         switch (opt) {
             case 's':
             {
@@ -381,7 +382,14 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
                 utils_parse_number_adv(getopt_env.optarg, ',', channel_input, MAX_FIXED_CHANNELS_LIMIT, 10, &channel_input_num);
             }
             break;
-
+            case 'b':
+            {
+                  bssid_set_flag = 1;
+                  utils_parse_number(getopt_env.optarg, ':', mac, 6, 16);
+                  bl_os_printf("bssid: %s, mac:%02X:%02X:%02X:%02X:%02X:%02X\r\n", getopt_env.optarg,
+                         mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+            }
+            break;
             default:
             {
                 bl_os_printf("unknow option: %c\r\n", getopt_env.optopt);
@@ -389,9 +397,9 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
         }
     }
 
-    if (channel_input_num || ssid) {
+    if (channel_input_num || ssid || bssid_set_flag) {
         /*channel list specified scan*/
-        _scan_channels(channel_input_num, channel_input, ssid);
+        _scan_channels(channel_input_num, channel_input, mac, ssid);
         return;
     }
 
@@ -553,60 +561,69 @@ static void wifi_sta_ip_unset_cmd(char *buf, int len, int argc, char **argv)
 
 static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
 {
-  wifi_interface_t wifi_interface;
+    wifi_interface_t wifi_interface;
 
-  getopt_env_t getopt_env;
-  int opt, open_bss_flag;
+    getopt_env_t getopt_env;
+    int opt, open_bss_flag;
 
-  uint16_t freq = 0;
-  int bssid_set_flag = 0;
-  uint8_t mac[6] = {0};
-  open_bss_flag = 0;
+    uint8_t channel_index = 0;
+    int bssid_set_flag = 0;
+    uint8_t mac[6] = {0};
+    int quick_connect = 0;
+    uint32_t flags = 0;
+    open_bss_flag = 0;
 
-  if (2 > argc) {
-    goto _ERROUT;
-  }
-
-  utils_getopt_init(&getopt_env, 0);
-
-  while ((opt = utils_getopt(&getopt_env, argc, argv, "c:b:")) != -1) {
-    switch (opt) {
-    case 'c':
-      freq = atoi(getopt_env.optarg);
-      bl_os_printf("freq: %d\r\n", freq);
-      break;
-
-    case 'b':
-      bssid_set_flag = 1;
-      utils_parse_number(getopt_env.optarg, ':', mac, 6, 16);
-      bl_os_printf("bssid: %s, mac:%02X:%02X:%02X:%02X:%02X:%02X\r\n", getopt_env.optarg,
-             mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-      break;
-
-    case '?':
-      bl_os_printf("unknow option: %c\r\n", getopt_env.optopt);
-      goto _ERROUT;
+    if (2 > argc) {
+        goto _ERROUT;
     }
-  }
 
-  if (getopt_env.optind >= argc || argc - getopt_env.optind < 1) {
-		bl_os_printf("Expected ssid and password\r\n");
-		goto _ERROUT;
-  }
+    utils_getopt_init(&getopt_env, 0);
 
-  bl_os_printf("connect wifi ssid:%s, psk:%s, bssid:%d, freq:%d\r\n", argv[getopt_env.optind], argv[getopt_env.optind+1], bssid_set_flag, freq);
-  if (NULL == argv[getopt_env.optind + 1]) {
-      open_bss_flag = 1;
-  }
+    while ((opt = utils_getopt(&getopt_env, argc, argv, "c:b:q")) != -1) {
+        switch (opt) {
+        case 'c':
+            channel_index = atoi(getopt_env.optarg);
+            bl_os_printf("channel_index: %d\r\n", channel_index);
+            break;
 
-  wifi_interface = wifi_mgmr_sta_enable();
-  wifi_mgmr_sta_connect(wifi_interface, argv[getopt_env.optind], open_bss_flag ? NULL : argv[getopt_env.optind+1], NULL, bssid_set_flag ? mac : NULL, 0, freq);
+        case 'b':
+            bssid_set_flag = 1;
+            utils_parse_number(getopt_env.optarg, ':', mac, 6, 16);
+            bl_os_printf("bssid: %s, mac:%02X:%02X:%02X:%02X:%02X:%02X\r\n", getopt_env.optarg, MAC_ADDR_LIST(mac));
+            break;
 
-  return;
+        case 'q':
+            ++quick_connect;
+            break;
+
+        case '?':
+            bl_os_printf("unknow option: %c\r\n", getopt_env.optopt);
+            goto _ERROUT;
+        }
+    }
+
+    if (getopt_env.optind >= argc || argc - getopt_env.optind < 1) {
+        bl_os_printf("Expected ssid and password\r\n");
+        goto _ERROUT;
+    }
+
+    bl_os_printf("connect wifi ssid:%s, psk:%s, bssid:%d, ch:%d\r\n", argv[getopt_env.optind], argv[getopt_env.optind+1], bssid_set_flag, channel_index);
+    if (NULL == argv[getopt_env.optind + 1]) {
+        open_bss_flag = 1;
+    }
+
+    if (quick_connect > 0) {
+        flags |= WIFI_CONNECT_STOP_SCAN_CURRENT_CHANNEL_IF_TARGET_AP_FOUND;
+    }
+
+    wifi_interface = wifi_mgmr_sta_enable();
+    wifi_mgmr_sta_connect_mid(wifi_interface, argv[getopt_env.optind], open_bss_flag ? NULL : argv[getopt_env.optind+1], NULL, bssid_set_flag ? mac : NULL, 0, channel_index, 1, flags);
+
+    return;
 
 _ERROUT:
-  bl_os_printf("[USAGE]: %s [-c <freq>] [-b <bssid>] <ssid> [password]\r\n", argv[0]);
-  return;
+    bl_os_printf("[USAGE]: %s [-c <freq>] [-b <bssid>] [-q] <ssid> [password]\r\n", argv[0]);
+    return;
 }
 
 static void wifi_sta_get_state_cmd(char *buf, int len, int argc, char **argv)
@@ -770,7 +787,7 @@ static void wifi_power_saving_set(char *buf, int len, int argc, char **argv)
     }
 }
 
-static void sniffer_cb(void *env, uint8_t *pkt, int len)
+static void sniffer_cb(void *env, uint8_t *pkt, int len, struct bl_rx_info *info)
 {
     static unsigned int sniffer_counter, sniffer_last;
     static unsigned int last_tick;
@@ -993,17 +1010,6 @@ static void cmd_wifi_coex_pti_force_off(char *buf, int len, int argc, char **arg
     coex_wifi_pti_forece_enable(0);
 }
 
-void coex_wifi_pta_forece_enable(int enable);
-static void cmd_wifi_coex_pta_force_on(char *buf, int len, int argc, char **argv)
-{
-    coex_wifi_pta_forece_enable(1);
-}
-
-static void cmd_wifi_coex_pta_force_off(char *buf, int len, int argc, char **argv)
-{
-    coex_wifi_pta_forece_enable(0);
-}
-
 static void cmd_wifi_coex_pta_set(char *buf, int len, int argc, char **argv)
 {
     uint32_t i = 0;
@@ -1121,8 +1127,6 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_coex_rf_force_off", "wifi coex RF forece off", cmd_wifi_coex_rf_force_off},
         { "wifi_coex_pti_force_on", "wifi coex PTI forece on", cmd_wifi_coex_pti_force_on},
         { "wifi_coex_pti_force_off", "wifi coex PTI forece off", cmd_wifi_coex_pti_force_off},
-        { "wifi_coex_pta_force_on", "wifi coex PTA forece on", cmd_wifi_coex_pta_force_on},
-        { "wifi_coex_pta_force_off", "wifi coex PTA forece off", cmd_wifi_coex_pta_force_off},
         { "wifi_coex_pta_set", "wifi coex PTA set", cmd_wifi_coex_pta_set},
         { "wifi_sta_list", "get sta list in AP mode", wifi_ap_sta_list_get_cmd},
         { "wifi_sta_del", "delete one sta in AP mode", wifi_ap_sta_delete_cmd},

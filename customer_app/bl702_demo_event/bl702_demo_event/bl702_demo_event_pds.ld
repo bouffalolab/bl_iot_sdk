@@ -3,6 +3,7 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( bl702_start )
 
 __EM_SIZE = DEFINED(ble_controller_init) ? 8K : 0K;
+__CACHE_SIZE = 16K;
 
 MEMORY
 {
@@ -236,15 +237,15 @@ SECTIONS
   PROVIDE( _heap_size = ORIGIN(ocram_1) + LENGTH(ocram_1) - _heap_start );
 
   PROVIDE( _heap2_start = ORIGIN(ocram_3) );
-  PROVIDE( _heap2_size = LENGTH(ocram_3) - SIZEOF(.stack) );
+  PROVIDE( _heap2_size = LENGTH(ocram_3));
 
-  .stack ORIGIN(ocram_3) + LENGTH(ocram_3) - __stack_size (NOLOAD) :
+  .stack ORIGIN(ocram_2) + LENGTH(ocram_2) - __stack_size (NOLOAD) :
   {
     PROVIDE ( _sp_base = . );
     . = . + __stack_size;
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
-  } >ocram_3
+  } >ocram_2
 
 
   /* camera driver */

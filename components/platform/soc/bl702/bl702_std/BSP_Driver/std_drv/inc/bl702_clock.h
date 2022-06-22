@@ -56,6 +56,7 @@
  *  @brief System clock type definition
  */
 typedef enum {
+    BL_SYSTEM_CLOCK_ROOT, /*!< ROOT clock */
     BL_SYSTEM_CLOCK_FCLK, /*!< Fast clock/CPU clock */
     BL_SYSTEM_CLOCK_BCLK, /*!< BUS clock */
     BL_SYSTEM_CLOCK_F32K, /*!< F32K clock */
@@ -63,6 +64,25 @@ typedef enum {
     BL_SYSTEM_CLOCK_XTAL, /*!< XTAL clock */
     BL_SYSTEM_CLOCK_MAX,  /*!< MAX type of system clock */
 } BL_System_Clock_Type;
+
+typedef enum {
+    BL_PERIPHERAL_CLOCK_UART0,   /*!< UART0 clock */
+    BL_PERIPHERAL_CLOCK_UART1,   /*!< UART1 clock */
+    BL_PERIPHERAL_CLOCK_SPI0,    /*!< SPI0 clock */
+    BL_PERIPHERAL_CLOCK_I2C0,    /*!< I2C0 clock */
+    BL_PERIPHERAL_CLOCK_I2S,     /*!< I2S clock */
+    BL_PERIPHERAL_CLOCK_GPADC,   /*!< GPADC clock */
+    BL_PERIPHERAL_CLOCK_GPDAC,   /*!< GPDAC clock */
+    BL_PERIPHERAL_CLOCK_PWM,     /*!< PWM clock */
+    BL_PERIPHERAL_CLOCK_IR,      /*!< IR clock */
+    BL_PERIPHERAL_CLOCK_FLASH,   /*!< FLASH clock */
+    BL_PERIPHERAL_CLOCK_CAM,     /*!< CAM clock */
+    BL_PERIPHERAL_CLOCK_QDEC,    /*!< QDEC clock */
+    BL_PERIPHERAL_CLOCK_TIMER0,  /*!< TIMER0 clock */
+    BL_PERIPHERAL_CLOCK_TIMER1,  /*!< TIMER1 clock */
+    BL_PERIPHERAL_CLOCK_WDT,     /*!< WDT clock */
+    BL_PERIPHERAL_CLOCK_MAX,
+} BL_Peripheral_Type;
 
 /**
  *  @brief SOC clock config type
@@ -83,7 +103,8 @@ typedef struct
 /** @defgroup  BL_SYSTEM_CLOCK_TYPE
  *  @{
  */
-#define IS_BL_SYSTEM_CLOCK_TYPE(type) (((type) == BL_SYSTEM_CLOCK_FCLK) || \
+#define IS_BL_SYSTEM_CLOCK_TYPE(type) (((type) == BL_SYSTEM_CLOCK_ROOT) || \
+                                       ((type) == BL_SYSTEM_CLOCK_FCLK) || \
                                        ((type) == BL_SYSTEM_CLOCK_BCLK) || \
                                        ((type) == BL_SYSTEM_CLOCK_F32K) || \
                                        ((type) == BL_SYSTEM_CLOCK_XCLK) || \
@@ -101,10 +122,8 @@ typedef struct
 /** @defgroup  CLOCK_Public_Functions
  *  @{
  */
-void Clock_System_Clock_Set(BL_System_Clock_Type type, uint32_t clock);
-void Clock_Peripheral_Clock_Set(BL_AHB_Slave1_Type type, uint32_t clock);
 uint32_t Clock_System_Clock_Get(BL_System_Clock_Type type);
-uint32_t Clock_Peripheral_Clock_Get(BL_AHB_Slave1_Type type);
+uint32_t Clock_Peripheral_Clock_Get(BL_Peripheral_Type type);
 
 /*@} end of group CLOCK_Public_Functions */
 

@@ -46,6 +46,7 @@
 #include "wifi_mgmr_api.h"
 #include "wifi_mgmr_profile.h"
 #include "bl_mod_params.h"
+#include "bl_msg_tx.h"
 
 #include "wifi_hosal.h"
 #include <wifi_hosal.h>
@@ -98,6 +99,7 @@ static void cb_scan_item_parse(wifi_mgmr_ap_item_t *env, uint32_t *param1, wifi_
     ap_ary_ptr->ssid_tail[0] = '\0';
     ap_ary_ptr->ssid_len = strlen((char *)ap_ary_ptr->ssid);
     ap_ary_ptr->auth = item->auth;
+    ap_ary_ptr->cipher = item->cipher;
 
     /*store back counter*/
     (*param1) = counter;
@@ -325,7 +327,7 @@ int wifi_mgmr_sta_connect_ext(wifi_interface_t *wifi_interface, char *ssid, char
     return wifi_mgmr_api_connect(ssid, passphr, conn_adv_param);
 }
 
-int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
+int wifi_mgmr_sta_connect_mid(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint8_t chan_id, uint8_t use_dhcp, uint32_t flags)
 {
     struct ap_connect_adv ext_param;
 
@@ -334,9 +336,19 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
     ext_param.ap_info.time_to_live = 5;
     ext_param.ap_info.bssid = mac;
     ext_param.ap_info.band = 0;
-    ext_param.ap_info.freq = freq;
-    ext_param.ap_info.use_dhcp = 1;
+    if (0 == chan_id || (chan_id > bl_msg_get_channel_nums())) {
+        ext_param.ap_info.freq = 0;
+    } else {
+        ext_param.ap_info.freq = phy_channel_to_freq(ext_param.ap_info.band, chan_id);
+    }
+    ext_param.ap_info.use_dhcp = use_dhcp;
+    ext_param.flags = flags;
     return wifi_mgmr_sta_connect_ext(wifi_interface, ssid, psk, &ext_param);
+}
+
+int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint8_t chan_id)
+{
+    return wifi_mgmr_sta_connect_mid(wifi_interface, ssid, psk, pmk, mac, band, chan_id, 1, 0);
 }
 
 int wifi_mgmr_sta_disconnect(void)
@@ -561,7 +573,13 @@ int wifi_mgmr_ap_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask)
 //TODO this API is still NOT completed, more features need to be implemented
 int wifi_mgmr_ap_start(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel)
 {
-    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid);
+    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, 1);
+    return 0;
+}
+
+int wifi_mgmr_ap_start_adv(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, uint8_t use_dhcp)
+{
+    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, use_dhcp);
     return 0;
 }
 
@@ -616,6 +634,18 @@ int wifi_mgmr_sniffer_unregister(void *env)
     return 0;
 }
 
+int wifi_mgmr_sniffer_register_adv(void *env, sniffer_cb_adv_t cb)
+{
+    bl_rx_pkt_adv_cb_register(env, cb);
+    return 0;
+}
+
+int wifi_mgmr_sniffer_unregister_adv(void *env)
+{
+    bl_rx_pkt_adv_cb_unregister(env);
+    return 0;
+}
+
 int wifi_mgmr_sniffer_enable()
 {
     wifi_mgmr_api_sniffer_enable();
@@ -641,6 +671,11 @@ int wifi_mgmr_conf_max_sta(uint8_t max_sta_supported)
 int wifi_mgmr_state_get(int *state)
 {
     return wifi_mgmr_state_get_internal(state);
+}
+
+int wifi_mgmr_detailed_state_get(int *state, int *state_detailed)
+{
+    return wifi_mgmr_detailed_state_get_internal(state, state_detailed);
 }
 
 int wifi_mgmr_status_code_get(int *s_code)
@@ -722,12 +757,12 @@ int wifi_mgmr_scan(void *data, scan_complete_cb_t cb)
     scan_cb = cb;
     scan_data = data;
 
-    wifi_mgmr_api_fw_scan(NULL, 0, NULL);
+    wifi_mgmr_api_fw_scan(NULL, 0, (uint8_t *)&mac_addr_bcst, NULL);
 
     return 0;
 }
 
-int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const char *ssid)
+int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid)
 {
     scan_cb = cb;
     scan_data = data;
@@ -736,7 +771,7 @@ int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, ui
         return -1;
     }
 
-    wifi_mgmr_api_fw_scan(channels, channel_num, ssid);
+    wifi_mgmr_api_fw_scan(channels, channel_num, bssid, ssid);
     return 0;
 }
 
@@ -827,6 +862,7 @@ int wifi_mgmr_scan_ap_all(wifi_mgmr_ap_item_t *env, uint32_t *param1, scan_item_
             item.channel = scan->channel;
             item.rssi = scan->rssi;
             item.auth = scan->auth;
+            item.cipher = scan->cipher;
             cb(env, param1, &item);
         }
     }
@@ -878,4 +914,68 @@ void wifi_mgmr_conn_result_get(uint16_t *status_code, uint16_t *reason_code)
 	}
     (*status_code) = wifiMgmr.wifi_mgmr_stat_info.status_code;
     (*reason_code) = wifiMgmr.wifi_mgmr_stat_info.reason_code;
+}
+
+int wifi_mgmr_bcnind_auth_to_ext(int auth)
+{
+    int ret;
+    switch (auth) {
+    case WIFI_EVENT_BEACON_IND_AUTH_OPEN:
+        ret = WM_WIFI_AUTH_OPEN;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WEP:
+        ret = WM_WIFI_AUTH_WEP;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA_PSK:
+        ret = WM_WIFI_AUTH_WPA_PSK;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK:
+        ret = WM_WIFI_AUTH_WPA2_PSK;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA_WPA2_PSK:
+        ret = WM_WIFI_AUTH_WPA_WPA2_PSK;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA_ENT:
+        ret = WM_WIFI_AUTH_WPA_ENTERPRISE;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA3_SAE:
+        ret = WM_WIFI_AUTH_WPA3_SAE;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK_WPA3_SAE:
+        ret = WM_WIFI_AUTH_WPA2_PSK_WPA3_SAE;
+        break;
+    case WIFI_EVENT_BEACON_IND_AUTH_UNKNOWN:
+        ret = WM_WIFI_AUTH_UNKNOWN;
+        break;
+    default:
+        ret = WM_WIFI_AUTH_UNKNOWN;
+        break;
+    }
+    return ret;
+}
+
+int wifi_mgmr_bcnind_cipher_to_ext(int cipher)
+{
+    int ret;
+    switch (cipher) {
+    case WIFI_EVENT_BEACON_IND_CIPHER_NONE:
+        ret = WM_WIFI_CIPHER_NONE;
+        break;
+    case WIFI_EVENT_BEACON_IND_CIPHER_WEP:
+        ret = WM_WIFI_CIPHER_WEP;
+        break;
+    case WIFI_EVENT_BEACON_IND_CIPHER_AES:
+        ret = WM_WIFI_CIPHER_AES;
+        break;
+    case WIFI_EVENT_BEACON_IND_CIPHER_TKIP:
+        ret = WM_WIFI_CIPHER_TKIP;
+        break;
+    case WIFI_EVENT_BEACON_IND_CIPHER_TKIP_AES:
+        ret = WM_WIFI_CIPHER_TKIP_AES;
+        break;
+    default:
+        ret = WM_WIFI_CIPHER_NONE;
+        break;
+    }
+    return ret;
 }

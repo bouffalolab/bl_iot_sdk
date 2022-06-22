@@ -853,9 +853,14 @@ void bt_foreach_bond(u8_t id, void (*func)(const struct bt_bond_info *info, void
 		     void *user_data);
 
 /**
+  * write local name.
+  */
+int bt_br_write_local_name(char *name);
+
+/**
   * write extern inquiry response.
   */
-int bt_br_write_eir(u8_t rec, u8_t *data);
+int bt_br_write_eir(u8_t fec, u8_t *data);
 /**
  * @}
  */

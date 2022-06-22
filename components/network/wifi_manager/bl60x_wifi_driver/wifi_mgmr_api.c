@@ -99,37 +99,36 @@ int wifi_mgmr_api_connect(char *ssid, char *passphr, const ap_connect_adv_t *ext
     }
     profile->passphr_tail[0] = '\0';
 
-    if (ext_param != NULL) {
-      profile->psk_len = ext_param->psk ? strlen(ext_param->psk) : 0; //psk can be NULL
-      if (0 != profile->psk_len && sizeof(profile->psk) != profile->psk_len) {
-          return -1;
-      } else if (sizeof(profile->psk) == profile->psk_len) {
-          memcpy(profile->psk, ext_param->psk, profile->psk_len);
-      }
-      profile->psk_tail[0] = '\0';
+    profile->psk_len = ext_param->psk ? strlen(ext_param->psk) : 0; //psk can be NULL
+    if (0 != profile->psk_len && sizeof(profile->psk) != profile->psk_len) {
+        return -1;
+    } else if (sizeof(profile->psk) == profile->psk_len) {
+        memcpy(profile->psk, ext_param->psk, profile->psk_len);
+    }
+    profile->psk_tail[0] = '\0';
 
-      if (ext_param->ap_info.bssid) {
-          memcpy(profile->bssid, ext_param->ap_info.bssid, sizeof(profile->bssid));
-      }
+    if (ext_param->ap_info.bssid) {
+        memcpy(profile->bssid, ext_param->ap_info.bssid, sizeof(profile->bssid));
+    }
 
-      if (ext_param->ap_info.freq > 0) {
-          //define the freq
-          profile->band = ext_param->ap_info.band;
-          profile->freq = ext_param->ap_info.freq;
-          bl_os_printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
-      }
+    if (ext_param->ap_info.freq > 0) {
+        //define the freq
+        profile->band = ext_param->ap_info.band;
+        profile->freq = ext_param->ap_info.freq;
+        bl_os_printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
+    }
 
-      if (ext_param->ap_info.type == AP_INFO_TYPE_PRESIST) {
+    if (ext_param->ap_info.type == AP_INFO_TYPE_PRESIST) {
         profile->ap_info_ttl = -1;
-      } else if (ext_param->ap_info.time_to_live >= 0){
+    } else if (ext_param->ap_info.time_to_live >= 0){
         profile->ap_info_ttl = ext_param->ap_info.time_to_live;
-      } else {
+    } else {
         profile->ap_info_ttl = -1;
         bl_os_printf("invalid ap info type or time_to_live value!\r\n");
-      }
     }
 
     profile->dhcp_use = ext_param->ap_info.use_dhcp;
+    profile->flags = ext_param->flags;
 
     return wifi_mgmr_api_common(
         msg,
@@ -227,32 +226,21 @@ int wifi_mgmr_api_sniffer_enable(void)
 
 int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher)
 {
-    wifi_mgmr_msg_t *msg;
-    wifi_mgmr_scan_item_t *scan;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_item_t)];//XXX caution for stack overflow
+    wifi_mgmr_scan_item_t scan;
 
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
+    memset(&scan, 0, sizeof(scan));
+    memcpy(scan.ssid, ssid, len);
+    scan.ssid_tail[0] = '\0';
+    scan.ssid_len = len;
+    memcpy(scan.bssid, mac, sizeof(scan.bssid));
+    scan.channel = channel;
+    scan.rssi = rssi;
+    scan.auth = auth;
+    scan.cipher = cipher;
+    scan.ppm_abs = ppm_abs;
+    scan.ppm_rel = ppm_rel;
 
-    scan = (wifi_mgmr_scan_item_t*)msg->data;
-    memcpy(scan->ssid, ssid, len);
-    scan->ssid_tail[0] = '\0';
-    scan->ssid_len = len;
-    memcpy(scan->bssid, mac, sizeof(scan->bssid));
-    scan->channel = channel;
-    scan->rssi = rssi;
-    scan->auth = auth;
-    scan->cipher = cipher;
-    scan->ppm_abs = ppm_abs;
-    scan->ppm_rel = ppm_rel;
-
-    return wifi_mgmr_api_common(
-        msg,
-        WIFI_MGMR_EVENT_GLB_SCAN_IND_BEACON,
-        (void*)0x1,
-        (void*)0x2,
-        sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_item_t)
-    );
+    return wifi_mgmr_scan_beacon_save(&scan);
 }
 
 int wifi_mgmr_api_fw_disconnect(void)
@@ -265,7 +253,7 @@ int wifi_mgmr_api_fw_tsen_reload(void)
     return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_RELOAD_TSEN, (void*)0x1, (void*)0x2);
 }
 
-int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const char *scanssid)
+int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *scanssid)
 {
     wifi_mgmr_msg_t *msg;
     wifi_mgmr_scan_params_t *ch_req;
@@ -277,6 +265,7 @@ int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const char *
 
     ch_req = (wifi_mgmr_scan_params_t*)msg->data;
     ch_req->channel_num = channel_num;
+    memcpy(ch_req->bssid, bssid, ETH_ALEN);
     ssid = &(ch_req->ssid);
     if (channel_num) {
         memcpy(ch_req->channels, channels, sizeof(ch_req->channels[0]) * channel_num);
@@ -304,7 +293,7 @@ int wifi_mgmr_api_fw_powersaving(int mode)
     return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_POWERSAVING, (void*)mode, (void*)0x2);
 }
 
-int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid)
+int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, uint8_t use_dhcp_server)
 {
     wifi_mgmr_msg_t *msg;
     wifi_mgmr_ap_msg_t *ap;
@@ -332,6 +321,7 @@ int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden
     }
     ap->channel = channel;
     ap->hidden_ssid = hidden_ssid ? 1 : 0;
+    ap->use_dhcp_server = use_dhcp_server ? 1 : 0;
 
     return wifi_mgmr_api_common(
         msg,

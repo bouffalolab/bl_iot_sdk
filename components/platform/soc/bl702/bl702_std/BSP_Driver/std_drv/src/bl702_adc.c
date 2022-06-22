@@ -1029,11 +1029,11 @@ void GPADC_DMA_IRQHandler(void)
         }
     }
 
-    if (ADC_GetIntStatus(ADC_INT_FIFO_READY) == SET) {
-        ADC_IntClr(ADC_INT_FIFO_READY);
+    if (ADC_GetIntStatus(ADC_INT_ADC_READY) == SET) {
+        ADC_IntClr(ADC_INT_ADC_READY);
 
-        if (adcIntCbfArra[ADC_INT_FIFO_READY] != NULL) {
-            adcIntCbfArra[ADC_INT_FIFO_READY]();
+        if (adcIntCbfArra[ADC_INT_ADC_READY] != NULL) {
+            adcIntCbfArra[ADC_INT_ADC_READY]();
         }
     }
 

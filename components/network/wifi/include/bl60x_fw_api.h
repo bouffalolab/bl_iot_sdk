@@ -266,6 +266,8 @@ typedef enum wifi_fw_event_id
     MM_FORCE_IDLE_REQ,
     /// Message indicating that the switch to the scan channel is done
     MM_SCAN_CHANNEL_START_IND,
+    /// Message indicating that the scan can end early
+    MM_SCAN_CHANNEL_END_EARLY,
     /// Message indicating that the scan on the channel is finished
     MM_SCAN_CHANNEL_END_IND,
 

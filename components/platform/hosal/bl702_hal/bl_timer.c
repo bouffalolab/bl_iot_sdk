@@ -28,6 +28,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "bl_timer.h"
+#include "bl_wdt.h"
 #include "bl_irq.h"
 #include <bl702_timer.h>
 #include <bl702_glb.h>
@@ -86,6 +87,7 @@ static void bl_timer_irq(void)
 {
     uint8_t ch;
     bl_timer_cb_t cb;
+    
     for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
         if(TIMER_GetMatchStatus(TIMER_CH1, (TIMER_Comp_ID_Type)ch)){
             TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, MASK);
@@ -112,12 +114,12 @@ static void bl_timer_cfg(uint32_t init_time)
         TIMER_CH1,                           /* timer channel 1 */
         TIMER_CLKSRC_XTAL,                   /* timer clock source: XTAL32M clock */
         TIMER_PRELOAD_TRIG_NONE,             /* no preload source, just free run */
-        TIMER_COUNT_FREERUN,                 /* free run */
+        TIMER_COUNT_PRELOAD,                 /* preload */
         31,                                  /* timer clock division value */
         0xFFFFFFFF,                          /* match value 0 */
         0xFFFFFFFF,                          /* match value 1 */
         0xFFFFFFFF,                          /* match value 2 */
-        0,                                   /* preload value */
+        init_time,                           /* preload value */
     };
     
     // Timer reset here will reset all timer channels, which is not expected
@@ -127,7 +129,6 @@ static void bl_timer_cfg(uint32_t init_time)
     TIMER_IntMask(TIMER_CH1, TIMER_INT_ALL, MASK);
     TIMER_IntMask(TIMER_CH1, TIMER_INT_COMP_2, UNMASK);  // for overflow counting
     TIMER_Init(&timerCfg);
-    TIMER_SetPreloadValue(TIMER_CH1, init_time);
     TIMER_Enable(TIMER_CH1);
     
     bl_irq_register(TIMER_CH1_IRQn, bl_timer_irq);
@@ -167,8 +168,10 @@ uint32_t bl_timer_get_remaining_time(uint8_t ch)
         return 0;
     }
     
-    if(BL_RD_WORD(TIMER_BASE + TIMER_TIER2_OFFSET + TIMER_CH1 * 4) & (1U << ch)){
-        cnt = bl_timer_get_current_time();
+    // always get current time first to avoid the effects of interrupt
+    cnt = bl_timer_get_current_time();
+    
+    if(bl_timer_callback[ch]){
         cmp = TIMER_GetCompValue(TIMER_CH1, (TIMER_Comp_ID_Type)ch);
         delta = cmp - cnt;
         
@@ -199,21 +202,30 @@ void* bl_timer_stop(uint8_t ch)
     if(ch >= BL_TIMER_CH_NUM){
         return NULL;
     }
-
+    
     cb = bl_timer_callback[ch];
     bl_timer_callback[ch] = NULL;
     
     TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, MASK);
     TIMER_ClearIntStatus(TIMER_CH1, (TIMER_Comp_ID_Type)ch);
-
+    
     return cb;
 }
 
 void bl_timer_store(void)
 {
-    uint8_t ch;
-    
+    bl_timer_store_time();
+    bl_timer_store_events();
+}
+
+void bl_timer_store_time(void)
+{
     bl_timer_cnt_val = bl_timer_get_current_time();
+}
+
+void bl_timer_store_events(void)
+{
+    uint8_t ch;
     
     for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
         if(bl_timer_callback[ch]){
@@ -222,46 +234,44 @@ void bl_timer_store(void)
     }
 }
 
-void bl_timer_restore(uint32_t jump_time)
+void bl_timer_restore(uint32_t jump_time, uint8_t run_expired)
+{
+    bl_timer_restore_time(jump_time);
+    bl_timer_restore_events(run_expired);
+}
+
+void bl_timer_restore_time(uint32_t jump_time)
+{
+    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
+    bl_wdt_restore();
+    
+    bl_timer_cfg(bl_timer_cnt_val + jump_time);
+}
+
+void bl_timer_restore_events(uint8_t run_expired)
 {
     uint8_t ch;
-    
-    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
-    
-    bl_timer_cfg(bl_timer_cnt_val + jump_time);
+    bl_timer_cb_t expired_cb[BL_TIMER_CH_NUM];
+    uint32_t jump_time = bl_timer_get_current_time() - bl_timer_cnt_val;
     
     for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
+        expired_cb[ch] = NULL;
         if(bl_timer_callback[ch]){
-            TIMER_SetCompValue(TIMER_CH1, (TIMER_Comp_ID_Type)ch, bl_timer_cmp_val[ch]);
-            TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, UNMASK);
-        }
-    }
-}
-
-void bl_timer_restore_ext(uint32_t jump_time)
-{ 
-    uint8_t ch;
-    bl_timer_cb_t cb;
-    
-    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_TMR);
-    
-    bl_timer_cfg(bl_timer_cnt_val + jump_time);
-    
-    for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
-        if(bl_timer_callback[ch]){
-            if(jump_time < bl_timer_cmp_val[ch]-bl_timer_cnt_val)
-            {
+            if(jump_time < bl_timer_cmp_val[ch] - bl_timer_cnt_val){
                 TIMER_SetCompValue(TIMER_CH1, (TIMER_Comp_ID_Type)ch, bl_timer_cmp_val[ch]);
                 TIMER_IntMask(TIMER_CH1, (TIMER_INT_Type)ch, UNMASK);
-            }
-            else
-            {
-                cb = bl_timer_callback[ch];
+            }else{
+                expired_cb[ch] = bl_timer_callback[ch];
                 bl_timer_callback[ch] = NULL;
-                if(cb)
-                    cb();
+            }
+        }
+    }
+    
+    if(run_expired){
+        for(ch = 0; ch < BL_TIMER_CH_NUM; ch++){
+            if(expired_cb[ch]){
+                expired_cb[ch]();
             }
         }
     }
 }
-

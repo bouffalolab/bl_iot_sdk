@@ -20,6 +20,12 @@
 #include <aos/kernel.h>
 #include <aos/yloop.h>
 
+#if LWIP_IPV6
+#include <lwip/ethip6.h>
+#include <lwip/dhcp6.h>
+#endif /* LWIP_IPV6 */
+
+
 #define printf(...)  do {}while(0)
 #define MSG(...)     do {}while(0)
 
@@ -38,6 +44,8 @@ uint32_t rx_buf[ETH_RXNB][(64 + ETH_MAX_BUFFER_SIZE + 3)/4] = {0};/* Ethernet Tr
 uint8_t tx_buf[ETH_TXNB][ETH_MAX_BUFFER_SIZE] __attribute__ ((align(4))); /* Ethernet Transmit Buffers */
 uint8_t rx_buf[ETH_RXNB][ETH_MAX_BUFFER_SIZE + 64] __attribute__ ((align(4)))={0}; /* Ethernet Receive Buffers */
 #endif
+
+static eth_callback p_eth_callback = NULL;
 
 int EMAC_DMABDListInit(EMAC_Handle_Type *handle,uint8_t *txBuff, uint32_t txBuffCount,uint8_t *rxBuff, uint32_t rxBuffCount)
 {
@@ -530,7 +538,11 @@ static void _emac_phy_if_init(void)
                 aos_msleep(10);
 #endif
             }
-            emac_phyinit(&phyCfg);
+            err = emac_phyinit(&phyCfg);
+            if(err != SUCCESS)
+            {
+                log_info("emac_phyinit init err[%d].\r\n", err);
+            }
             internal_status++;
         }
         break;
@@ -538,6 +550,11 @@ static void _emac_phy_if_init(void)
         {
             log_info("EMAC_PHY_INIT_STEP_NEGOTIATION.\r\n");
             err = _emac_phy_autonegotiation(&phyCfg);
+            if(err != SUCCESS)
+            {
+                log_info("EMAC_PHY_INIT_STEP_NEGOTIATION err[%d].\r\n", err);
+                return;
+            }
             internal_status++;
         }
         break;
@@ -545,6 +562,9 @@ static void _emac_phy_if_init(void)
         {
             log_info("EMAC_PHY_INIT_STEP_CONFIG.\r\n");
             err = _emac_phy_setNegotiationConfig(&phyCfg);
+            if(err != SUCCESS){
+                log_info("EMAC_PHY_INIT_STEP_CONFIG err[%d].\r\n", err);
+            }
             internal_status++;
         }
         break;
@@ -572,15 +592,18 @@ static void _emac_phy_if_init(void)
                 MSG("EMAC_SPEED_50M\r\n");
             }
             MSG("PHY Init done\r\n");
+            if(p_eth_callback){
+                p_eth_callback(ETH_INIT_STEP_LINKUP);
+            }
             internal_status++;
         }
         break;
         case EMAC_PHY_INIT_STEP_SERCIVE_START:
         {
             log_info("EMAC_PHY_INIT_STEP_SERCIVE_START start dhcp...\r\n");
-            netifapi_netif_set_default(&eth_mac);
-            netifapi_netif_set_up(&eth_mac);
-            netifapi_dhcp_start(&eth_mac);
+            if(p_eth_callback){
+                p_eth_callback(ETH_INIT_STEP_READY);
+            }
             internal_status++;
         }
         break;
@@ -662,6 +685,11 @@ static void low_level_init(struct netif *netif)
     netif->hwaddr[4] = 0x12;
     netif->hwaddr[5] = 0x34;
     printf("low level init\r\n");
+
+#if LWIP_IPV6
+      netif->flags |= (NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6);
+      netif->output_ip6 = ethip6_output;
+#endif
 
     borad_eth_init();
 }
@@ -774,3 +802,10 @@ err_t eth_init(struct netif *netif)
 
   return ERR_OK;
 }
+
+int ethernet_init(eth_callback cb)
+{
+    p_eth_callback = cb;
+    return 0;
+}
+

@@ -22,7 +22,13 @@
 
 /*
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
+ *
+ *  This file is provided under the Apache License 2.0, or the
+ *  GNU General Public License v2.0 or later.
+ *
+ *  **********
+ *  Apache License 2.0:
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use this file except in compliance with the License.
@@ -35,17 +41,37 @@
  *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+ *
+ *  **********
+ *
+ *  **********
+ *  GNU General Public License v2.0 or later:
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  **********
  */
 
 #ifndef MBEDTLS_AES_H
 #define MBEDTLS_AES_H
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
-#include "mbedtls/platform_util.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -55,22 +81,17 @@
 #define MBEDTLS_AES_DECRYPT     0 /**< AES decryption. */
 
 /* Error codes in range 0x0020-0x0022 */
-/** Invalid key length. */
-#define MBEDTLS_ERR_AES_INVALID_KEY_LENGTH                -0x0020
-/** Invalid data input length. */
-#define MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH              -0x0022
+#define MBEDTLS_ERR_AES_INVALID_KEY_LENGTH                -0x0020  /**< Invalid key length. */
+#define MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH              -0x0022  /**< Invalid data input length. */
 
 /* Error codes in range 0x0021-0x0025 */
-/** Invalid input data. */
-#define MBEDTLS_ERR_AES_BAD_INPUT_DATA                    -0x0021
+#define MBEDTLS_ERR_AES_BAD_INPUT_DATA                    -0x0021  /**< Invalid input data. */
 
 /* MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE is deprecated and should not be used. */
-/** Feature not available. For example, an unsupported AES key size. */
-#define MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE               -0x0023
+#define MBEDTLS_ERR_AES_FEATURE_UNAVAILABLE               -0x0023  /**< Feature not available. For example, an unsupported AES key size. */
 
 /* MBEDTLS_ERR_AES_HW_ACCEL_FAILED is deprecated and should not be used. */
-/** AES hardware accelerator failed. */
-#define MBEDTLS_ERR_AES_HW_ACCEL_FAILED                   -0x0025
+#define MBEDTLS_ERR_AES_HW_ACCEL_FAILED                   -0x0025  /**< AES hardware accelerator failed. */
 
 #if ( defined(__ARMCC_VERSION) || defined(_MSC_VER) ) && \
     !defined(inline) && !defined(__cplusplus)
@@ -175,7 +196,6 @@ void mbedtls_aes_xts_free( mbedtls_aes_xts_context *ctx );
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
                     unsigned int keybits );
 
@@ -194,7 +214,6 @@ int mbedtls_aes_setkey_enc( mbedtls_aes_context *ctx, const unsigned char *key,
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_setkey_dec( mbedtls_aes_context *ctx, const unsigned char *key,
                     unsigned int keybits );
 
@@ -215,7 +234,6 @@ int mbedtls_aes_setkey_dec( mbedtls_aes_context *ctx, const unsigned char *key,
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_xts_setkey_enc( mbedtls_aes_xts_context *ctx,
                                 const unsigned char *key,
                                 unsigned int keybits );
@@ -236,7 +254,6 @@ int mbedtls_aes_xts_setkey_enc( mbedtls_aes_xts_context *ctx,
  * \return         \c 0 on success.
  * \return         #MBEDTLS_ERR_AES_INVALID_KEY_LENGTH on failure.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_xts_setkey_dec( mbedtls_aes_xts_context *ctx,
                                 const unsigned char *key,
                                 unsigned int keybits );
@@ -265,7 +282,6 @@ int mbedtls_aes_xts_setkey_dec( mbedtls_aes_xts_context *ctx,
 
  * \return         \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_ecb( mbedtls_aes_context *ctx,
                     int mode,
                     const unsigned char input[16],
@@ -313,7 +329,6 @@ int mbedtls_aes_crypt_ecb( mbedtls_aes_context *ctx,
  * \return         #MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH
  *                 on failure.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
                     int mode,
                     size_t length,
@@ -358,7 +373,6 @@ int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
  *                     smaller than an AES block in size (16 Bytes) or if \p
  *                     length is larger than 2^20 blocks (16 MiB).
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_xts( mbedtls_aes_xts_context *ctx,
                            int mode,
                            size_t length,
@@ -407,7 +421,6 @@ int mbedtls_aes_crypt_xts( mbedtls_aes_xts_context *ctx,
  *
  * \return         \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_cfb128( mbedtls_aes_context *ctx,
                        int mode,
                        size_t length,
@@ -452,7 +465,6 @@ int mbedtls_aes_crypt_cfb128( mbedtls_aes_context *ctx,
  *
  * \return         \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_cfb8( mbedtls_aes_context *ctx,
                     int mode,
                     size_t length,
@@ -507,7 +519,6 @@ int mbedtls_aes_crypt_cfb8( mbedtls_aes_context *ctx,
  *
  * \return         \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_ofb( mbedtls_aes_context *ctx,
                        size_t length,
                        size_t *iv_off,
@@ -521,6 +532,10 @@ int mbedtls_aes_crypt_ofb( mbedtls_aes_context *ctx,
 /**
  * \brief      This function performs an AES-CTR encryption or decryption
  *             operation.
+ *
+ *             This function performs the operation defined in the \p mode
+ *             parameter (encrypt/decrypt), on the input data buffer
+ *             defined in the \p input parameter.
  *
  *             Due to the nature of CTR, you must use the same key schedule
  *             for both encryption and decryption operations. Therefore, you
@@ -590,7 +605,6 @@ int mbedtls_aes_crypt_ofb( mbedtls_aes_context *ctx,
  *
  * \return                 \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_aes_crypt_ctr( mbedtls_aes_context *ctx,
                        size_t length,
                        size_t *nc_off,
@@ -611,7 +625,6 @@ int mbedtls_aes_crypt_ctr( mbedtls_aes_context *ctx,
  *
  * \return          \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
                                   const unsigned char input[16],
                                   unsigned char output[16] );
@@ -627,7 +640,6 @@ int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
  *
  * \return          \c 0 on success.
  */
-MBEDTLS_CHECK_RETURN_TYPICAL
 int mbedtls_internal_aes_decrypt( mbedtls_aes_context *ctx,
                                   const unsigned char input[16],
                                   unsigned char output[16] );
@@ -677,7 +689,6 @@ MBEDTLS_DEPRECATED void mbedtls_aes_decrypt( mbedtls_aes_context *ctx,
  * \return         \c 0 on success.
  * \return         \c 1 on failure.
  */
-MBEDTLS_CHECK_RETURN_CRITICAL
 int mbedtls_aes_self_test( int verbose );
 
 #endif /* MBEDTLS_SELF_TEST */

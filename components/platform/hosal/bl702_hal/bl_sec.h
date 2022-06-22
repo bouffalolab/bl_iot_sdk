@@ -35,6 +35,8 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 
+#include <bl_sec_pka.h>
+
 /* copied SEC_Eng_SHA256_Ctx from stddrv */
 typedef struct {
     uint32_t total[2];

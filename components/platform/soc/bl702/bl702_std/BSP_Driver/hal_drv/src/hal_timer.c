@@ -21,9 +21,9 @@
  *
  */
 #include "hal_timer.h"
-#include "hal_clock.h"
 #include "bl702_glb.h"
 #include "bl702_timer.h"
+#include "bl702_clock.h"
 
 #ifdef BSP_USING_TIMER0
 void TIMER0_IRQ(void);
@@ -79,13 +79,13 @@ int timer_open(struct device *dev, uint16_t oflag)
         BL_WR_WORD(TIMER_BASE + TIMER_TPLVR2_OFFSET + 4 * timer_device->id, timer_device->reload);
         reload_val = timer_device->reload;
     }
-
+#if defined(BSP_USING_TIMER0) || defined(BSP_USING_TIMER1)
     if (timer_device->id == TIMER_CH0) {
-        clkval = peripheral_clock_get(PERIPHERAL_CLOCK_TIMER0);
+        clkval = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_TIMER0) / (BSP_TIMER0_CLOCK_DIV + 1);
     } else {
-        clkval = peripheral_clock_get(PERIPHERAL_CLOCK_TIMER1);
+        clkval = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_TIMER1) / (BSP_TIMER0_CLOCK_DIV + 1);
     }
-
+#endif
     if (clkval % 1000000 == 0) {
         unit = 1000000; //1us
     } else if (clkval % 100000 == 0) {
@@ -123,8 +123,7 @@ int timer_open(struct device *dev, uint16_t oflag)
 
     if (oflag & DEVICE_OFLAG_STREAM_TX) {
         /* Enable timer match interrupt */
-        /* Note: if not enable match interrupt, TIMER_GetMatchStatus will not work
-      and status bit will not set */
+        /* Note: if not enable match interrupt, TIMER_GetMatchStatus will not work and status bit will not set */
         TIMER_IntMask(timer_device->id, TIMER_INT_COMP_0, UNMASK);
         TIMER_IntMask(timer_device->id, TIMER_INT_COMP_1, UNMASK);
         TIMER_IntMask(timer_device->id, TIMER_INT_COMP_2, UNMASK);
@@ -261,13 +260,13 @@ int timer_write(struct device *dev, uint32_t pos, const void *buffer, uint32_t s
     if (timer_device->cnt_mode == TIMER_CNT_PRELOAD) {
         reload_val = timer_device->reload;
     }
-
+#if defined(BSP_USING_TIMER0) || defined(BSP_USING_TIMER1)
     if (timer_device->id == TIMER_CH0) {
-        clkval = peripheral_clock_get(PERIPHERAL_CLOCK_TIMER0);
+        clkval = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_TIMER0) / (BSP_TIMER0_CLOCK_DIV + 1);
     } else {
-        clkval = peripheral_clock_get(PERIPHERAL_CLOCK_TIMER1);
+        clkval = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_TIMER1) / (BSP_TIMER1_CLOCK_DIV + 1);
     }
-
+#endif
     if (clkval % 1000000 == 0) {
         unit = 1000000; //1us
     } else if (clkval % 100000 == 0) {
@@ -348,7 +347,6 @@ void timer_isr(timer_device_t *handle)
     if (BL_IS_REG_BIT_SET(intId, TIMER_TMSR_0)) {
         BL_WR_WORD(tmpAddr, BL_SET_REG_BIT(tmpVal, TIMER_TCLR_0));
         handle->parent.callback(&handle->parent, NULL, 0, TIMER_EVENT_COMP0);
-
     }
 
     /* Comparator 1 match interrupt */

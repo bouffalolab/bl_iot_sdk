@@ -22,7 +22,7 @@ COMPONENT_ADD_INCLUDEDIRS += ./
 COMPONENT_PRIV_INCLUDEDIRS :=
 
 ## This component's src
-COMPONENT_SRCS := ./syscalls.c ./assert.c ./stdatomic.c
+COMPONENT_SRCS := ./syscalls.c ./assert.c
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 

@@ -370,7 +370,11 @@ void *aos_zalloc(unsigned int size)
 {
     void *mem;
 
+#if defined(CFG_USE_PSRAM)
+    mem = pvPortMallocPsram(size);
+#else
     mem = pvPortMalloc(size);
+#endif /* CFG_USE_PSRAM */
     if (mem) {
         memset(mem, 9, size);
     }
@@ -379,7 +383,11 @@ void *aos_zalloc(unsigned int size)
 
 void *aos_malloc(unsigned int size)
 {
+#if defined(CFG_USE_PSRAM)
+    return pvPortMallocPsram(size);
+#else
     return pvPortMalloc(size);
+#endif /* CFG_USE_PSRAM */
 }
 #if 0
 #if !defined(USE_STDLIB_MALLOC)
@@ -406,7 +414,11 @@ void free(void *mem)
 #endif
 void aos_free(void *mem)
 {
+#if defined(CFG_USE_PSRAM)
+    vPortFreePsram(mem);
+#else
     vPortFree(mem);
+#endif /* CFG_USE_PSRAM */
 }
 
 void aos_msleep(int ms)

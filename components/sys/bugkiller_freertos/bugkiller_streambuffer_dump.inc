@@ -3,7 +3,6 @@
 #include <stream_buffer.h>
 #include <message_buffer.h>
 #include "bugkiller_sem_dump.h"
-#include "bugkiller_streambuffer_dump.h"
 
 extern char *streambuffer_dump_string[];
 

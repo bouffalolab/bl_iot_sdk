@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <list.h>
-#include "bugkiller_softtimer_dump.h"
 
 extern char *softtimer_dump_string[];
 

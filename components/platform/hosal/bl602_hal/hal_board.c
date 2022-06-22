@@ -471,7 +471,7 @@ static void update_poweroffset_config_with_order(const void *fdt, int offset1, c
                 if (0 == update_poweroffset_config_get_mac_from_dtb(fdt, offset1, poweroffset_tmp)) {
                     set = 1;
                     blog_debug("get pwr offset from F(f) ready\r\n");
-                    if ('B' == order[i]) {
+                    if ('F' == order[i]) {
                         /*non-incremental mode*/
                         for (j = 0; j < sizeof(poweroffset); j++) {
                             poweroffset[j] = poweroffset_tmp[j];

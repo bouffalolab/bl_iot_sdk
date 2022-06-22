@@ -53,6 +53,20 @@
 #define CONFIG_BT_HCI_RX_STACK_SIZE  512
 #endif
 
+/**
+ * BL_BLE_CO_THREAD: combine tx rx thread
+ */
+#define BFLB_BT_CO_THREAD 1
+
+#if (BFLB_BT_CO_THREAD)
+#define CONFIG_BT_CO_TASK_PRIO (configMAX_PRIORITIES - 3)
+#if defined(CONFIG_BT_MESH)
+#define CONFIG_BT_CO_STACK_SIZE  3072//2048//1536//1024
+#else
+#define CONFIG_BT_CO_STACK_SIZE  2048//2048//1536//1024
+#endif
+#endif
+
 #ifndef CONFIG_BT_RX_STACK_SIZE
 #if defined(CONFIG_BT_MESH)
 #define CONFIG_BT_RX_STACK_SIZE  3072//2048//1536//1024
@@ -95,14 +109,6 @@
 
 #ifndef CONFIG_BT_CTLR_RX_PRIO
 #define CONFIG_BT_CTLR_RX_PRIO (configMAX_PRIORITIES - 4)
-#endif
-
-
-/**
- * BL_BLE_CO_THREAD: combine tx rx thread
- */
- #ifndef BFLB_BLE_CO_THREAD
- #define BFLB_BLE_CO_THREAD 0
 #endif
 
 /**
@@ -298,7 +304,11 @@
 * range 1 to 65535,seconds
 */
 #ifndef CONFIG_BT_RPA_TIMEOUT
+#if defined(CONFIG_AUTO_PTS)
+#define CONFIG_BT_RPA_TIMEOUT 60
+#else
 #define CONFIG_BT_RPA_TIMEOUT 900
+#endif
 #endif
 #endif
 
@@ -612,8 +622,9 @@ happens, which cause memory leak issue.*/
 #define BFLB_BLE_PATCH_FREE_ALLOCATED_BUFFER_IN_OS
 /*To avoid duplicated pubkey callback.*/
 #define BFLB_BLE_PATCH_AVOID_DUPLI_PUBKEY_CB
+#define BFLB_BLE_DYNAMIC_SERVICE
 /*The flag @conn_ref is not clean up after disconnect*/
-#define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF 
+//#define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF
 #if !defined(CONFIG_AUTO_PTS)
 /*To avoid sevice changed indication sent at the very beginning, without any new service added.*/
 #define BFLB_BLE_PATCH_SET_SCRANGE_CHAGD_ONLY_IN_CONNECTED_STATE

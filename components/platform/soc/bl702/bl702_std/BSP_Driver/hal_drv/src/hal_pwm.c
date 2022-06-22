@@ -21,9 +21,9 @@
  *
  */
 #include "hal_pwm.h"
-#include "hal_clock.h"
 #include "bl702_pwm.h"
 #include "bl702_glb.h"
+#include "bl702_clock.h"
 
 static pwm_device_t pwmx_device[PWM_MAX_INDEX] = {
 #ifdef BSP_USING_PWM_CH0
@@ -56,7 +56,7 @@ int pwm_open(struct device *dev, uint16_t oflag)
 
     PWM_Channel_Disable(pwm_device->ch);
 
-    uint32_t pwm_clk = peripheral_clock_get(PERIPHERAL_CLOCK_PWM);
+    uint32_t pwm_clk = Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_PWM);
     if (pwm_device->period > pwm_clk)
         return -1;
 
@@ -105,7 +105,7 @@ int pwm_control(struct device *dev, int cmd, void *args)
             break;
         case DEVICE_CTRL_PWM_FREQUENCE_CONFIG:
 
-            if ((uint32_t)args > peripheral_clock_get(PERIPHERAL_CLOCK_PWM))
+            if ((uint32_t)args > Clock_Peripheral_Clock_Get(BL_PERIPHERAL_CLOCK_PWM))
                 return -1;
             pwm_device->period = (uint32_t)args;
             BL_WR_REG(PWM_BASE + PWM_CHANNEL_OFFSET + (pwm_device->ch) * 0x20, PWM_PERIOD, (uint32_t)args);

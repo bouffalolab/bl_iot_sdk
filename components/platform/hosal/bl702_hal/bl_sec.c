@@ -89,6 +89,13 @@ static inline void wait_trng4feed()
     BL_WR_REG(TRNGx, SEC_ENG_SE_TRNG_CTRL_0, val);
 
     blog_info("Feed random number is %08lx\r\n", trng_buffer[0]);
+
+    val = BL_RD_REG(TRNGx, SEC_ENG_SE_TRNG_CTRL_0);
+    while (BL_IS_REG_BIT_SET(val, SEC_ENG_SE_TRNG_BUSY)) {
+        /*wait until trng is NOT busy*/
+        val = BL_RD_REG(TRNGx, SEC_ENG_SE_TRNG_CTRL_0);
+    }
+
     trng_buffer[0] = BL_RD_REG(TRNGx, SEC_ENG_SE_TRNG_DOUT_0);
     trng_buffer[1] = BL_RD_REG(TRNGx, SEC_ENG_SE_TRNG_DOUT_1);
     trng_buffer[2] = BL_RD_REG(TRNGx, SEC_ENG_SE_TRNG_DOUT_2);
@@ -171,6 +178,7 @@ void sec_trng_IRQHandler(void)
 int bl_sec_init(void)
 {
     g_bl_sec_sha_mutex = xSemaphoreCreateMutexStatic(&sha_mutex_buf);
+    bl_sec_pka_init();
     _trng_trigger();
     wait_trng4feed();
     /*Trigger again*/

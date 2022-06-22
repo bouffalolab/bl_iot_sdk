@@ -263,6 +263,12 @@ void Sec_Eng_AES_Link_Case_ECB_128(SEC_ENG_AES_ID_Type aesId)
     Sec_Eng_AES_Disable_Link(aesId);
 }
 
+int bl_sec_aes_init(void)
+{
+    Sec_Eng_AES_Enable_BE(SEC_ENG_AES_ID0);
+    return 0;
+}
+
 int bl_sec_aes_test(void)
 {
     bl_irq_register(SEC_AES_IRQn, bl_sec_aes_IRQHandler);

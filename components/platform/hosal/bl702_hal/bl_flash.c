@@ -455,6 +455,10 @@ int ATTR_TCM_SECTION bl_flash_init(void)
     uint32_t offset = 0;
     int ret = 0;
 
+    // patch for SF2 swap
+    *(volatile uint32_t *)0x40000130 |= (1U << 16);  // enable GPIO25 input
+    *(volatile uint32_t *)0x40000134 |= (1U << 16);  // enable GPIO27 input
+
     // get flash config from bootheader
     L1C_Cache_Flush_Ext();
     XIP_SFlash_Read_Via_Cache_Need_Lock(8 + BL702_FLASH_XIP_BASE, (uint8_t *)&boot2_flashCfg, 4 + sizeof(SPI_Flash_Cfg_Type));

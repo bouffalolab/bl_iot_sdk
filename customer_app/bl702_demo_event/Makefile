@@ -3,8 +3,8 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := bl702_demo_event
 PROJECT_PATH := $(abspath .)
+PROJECT_NAME :=  $(notdir $(PROJECT_PATH))
 PROJECT_BOARD := evb
 export PROJECT_PATH PROJECT_BOARD
 #CONFIG_TOOLPREFIX :=
@@ -108,6 +108,10 @@ COMPONENT_DIRS += $(addprefix $(BL60X_SDK_PATH)/components/network/, $(COMPONENT
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk
 ifeq ($(CONFIG_ZIGBEE), 1)
 include $(BL60X_SDK_PATH)/components/network/zigbee/zigbee_def.mk
+endif
+
+ifdef CONFIG_CACHE_SIZE
+EXTRA_LDFLAGS += -Wl,--defsym=__CACHE_SIZE=$(CONFIG_CACHE_SIZE)
 endif
 
 ifeq ($(CONFIG_BLECONTROLLER_LIB),all)

@@ -80,6 +80,7 @@
 #include <bl_romfs.h>
 #include <fdt.h>
 #include <device/vfs_uart.h>
+#include <wifi_bt_coex.h>
 
 //#include <easyflash.h>
 #include <bl60x_fw_api.h>
@@ -1150,6 +1151,7 @@ int codex_debug_cli_init(void);
     bl_wdt_cli_init();
     bl_gpio_cli_init();
     looprt_test_cli_init();
+    wifi_bt_coex_cli_init();
 }
 
 static void event_cb_key_event(input_event_t *event, void *private_data)

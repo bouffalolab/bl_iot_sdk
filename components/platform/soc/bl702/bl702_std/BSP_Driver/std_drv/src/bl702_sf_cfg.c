@@ -2081,7 +2081,6 @@ static const ATTR_TCM_CONST_SECTION Flash_Info_t flashInfos[] = {
  * @return None
  *
 *******************************************************************************/
-#ifndef BFLB_USE_ROM_DRIVER
 __WEAK
 /* static */ void ATTR_TCM_SECTION SF_Cfg_Init_Ext_Flash_Gpio(uint8_t extFlashPin)
 {
@@ -2120,19 +2119,11 @@ __WEAK
 
     for (i = 0; i < sizeof(gpiopins); i++) {
         cfg.gpioPin = gpiopins[i];
-
-        if (i == 0 || i == 1) {
-            /*flash clk and cs is output*/
-            cfg.gpioMode = GPIO_MODE_OUTPUT;
-        } else {
-            /*data are bidir*/
-            cfg.gpioMode = GPIO_MODE_AF;
-        }
+        cfg.gpioMode = GPIO_MODE_AF;
 
         GLB_GPIO_Init(&cfg);
     }
 }
-#endif
 
 /****************************************************************************/ /**
  * @brief  Deinit external flash GPIO according to flash GPIO config

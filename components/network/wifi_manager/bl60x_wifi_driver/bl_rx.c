@@ -57,6 +57,7 @@ static void* cb_beacon_ind_env;
 static wifi_event_probe_resp_ind_cb_t cb_probe_resp_ind;
 static void* cb_probe_resp_ind_env;
 static wifi_event_pkt_cb_t cb_pkt;
+static wifi_event_pkt_cb_adv_t cb_pkt_adv;
 static void* cb_pkt_env;
 static wifi_event_rssi_cb_t cb_rssi;
 static void* cb_rssi_env;
@@ -178,6 +179,22 @@ int bl_rx_pkt_cb_register(void *env, wifi_event_pkt_cb_t cb)
 int bl_rx_pkt_cb_unregister(void *env)
 {
     cb_pkt = NULL;
+    cb_pkt_env = NULL;
+
+    return 0;
+}
+
+int bl_rx_pkt_adv_cb_register(void *env, wifi_event_pkt_cb_adv_t cb)
+{
+    cb_pkt_adv = cb;
+    cb_pkt_env = env;
+
+    return 0;
+}
+
+int bl_rx_pkt_adv_cb_unregister(void *env)
+{
+    cb_pkt_adv = NULL;
     cb_pkt_env = NULL;
 
     return 0;
@@ -784,9 +801,12 @@ void bl_rx_e2a_handler(void *arg)
     wifi_hw.cmd_mgr.msgind(&wifi_hw.cmd_mgr, msg, msg_hdlrs[MSG_T(msg->id)][MSG_I(msg->id)]);
 }
 
-void bl_rx_pkt_cb(uint8_t *pkt, int len)
+void bl_rx_pkt_cb(uint8_t *pkt, int len, void *pkt_wrap, bl_rx_info_t *info)
 {
     if (cb_pkt) {
-        cb_pkt(cb_pkt_env, pkt, len);
+        cb_pkt(cb_pkt_env, pkt, len, info);
+    }
+    if (cb_pkt_adv) {
+        cb_pkt_adv(cb_pkt_env, pkt_wrap, info);
     }
 }

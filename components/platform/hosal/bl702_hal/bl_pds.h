@@ -50,6 +50,7 @@ void bl_pds_gpio_wakeup_cfg(uint8_t pin_list[], uint8_t pin_num);  // available 
 void bl_pds_gpio_wakeup_cfg_ex(uint32_t bitmap);  // one bit per gpio, only for pds0 - pds3
 void bl_pds_fastboot_cfg(uint32_t addr);
 void bl_pds_enter(uint32_t pdsLevel, uint32_t pdsSleepCycles);
+void bl_pds_fastboot_done_callback(void);
 int bl_pds_get_wakeup_source(void);
 uint32_t bl_pds_get_wakeup_gpio(void);
 

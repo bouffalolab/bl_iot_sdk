@@ -379,23 +379,23 @@ BL_Err_Type ATTR_TCM_SECTION XIP_SFlash_GetUniqueId_Need_Lock(SPI_Flash_Cfg_Type
  * @return SUCCESS or ERROR
  *
 *******************************************************************************/
-#ifndef BFLB_USE_ROM_DRIVER
-__WEAK
+//#ifndef BFLB_USE_ROM_DRIVER
+//__WEAK
 BL_Err_Type ATTR_TCM_SECTION XIP_SFlash_Read_Via_Cache_Need_Lock(uint32_t addr, uint8_t *data, uint32_t len)
 {
     uint32_t offset;
+    addr = addr & (BL702_FLASH_XIP_END-BL702_FLASH_XIP_BASE-1);
+    addr |= BL702_FLASH_XIP_BASE;
 
-    if (addr >= BL702_FLASH_XIP_BASE && addr < BL702_FLASH_XIP_END) {
-        offset = SF_Ctrl_Get_Flash_Image_Offset();
-        SF_Ctrl_Set_Flash_Image_Offset(0);
-        /* Flash read */
-        BL702_MemCpy_Fast(data, (void *)(addr - SF_Ctrl_Get_Flash_Image_Offset()), len);
-        SF_Ctrl_Set_Flash_Image_Offset(offset);
-    }
+    offset = SF_Ctrl_Get_Flash_Image_Offset();
+    SF_Ctrl_Set_Flash_Image_Offset(0);
+    /* Flash read */
+    BL702_MemCpy_Fast(data, (void *)(addr), len);
+    SF_Ctrl_Set_Flash_Image_Offset(offset);
 
     return SUCCESS;
 }
-#endif
+//#endif
 
 /*@} end of group XIP_SFLASH_Public_Functions */
 

@@ -66,20 +66,6 @@ int hosal_dac_init(hosal_dac_dev_t *dac)
         .dmaFmt = GPIP_DAC_DMA_FORMAT_0
     };
 
-    GLB_GPIP_DAC_ChanA_Cfg_Type chA_cfg = {
-        .chanCovtEn = ENABLE,
-        .outputEn = ENABLE,
-        .chanEn = DISABLE,
-        .src = GPIP_DAC_ChanA_SRC_REG
-    };
-
-    GLB_GPIP_DAC_ChanB_Cfg_Type chB_cfg = {
-        .chanCovtEn = ENABLE,
-        .outputEn = ENABLE,
-        .chanEn = DISABLE,
-        .src = GPIP_DAC_ChanB_SRC_REG
-    };
-
     if (NULL == dac || dac->port != 0) {
         blog_error("parameter is error!\r\n");
         return -1;
@@ -120,19 +106,25 @@ int hosal_dac_init(hosal_dac_dev_t *dac)
     GLB_GPIP_DAC_Init(&dac_cfg);
     GLB_Set_DAC_CLK(ENABLE, GLB_DAC_CLK_32M, 0x40);
 
-    if (GLB_GPIO_PIN_13 == dac_pin) {
-        GLB_GPIP_DAC_Set_ChanA_Config(&chA_cfg);
-    }
-
-    if (GLB_GPIO_PIN_14 == dac_pin) {
-        GLB_GPIP_DAC_Set_ChanB_Config(&chB_cfg);
-    }
-
     return 0;
 }
 
 int hosal_dac_start(hosal_dac_dev_t *dac)
 {
+    GLB_GPIP_DAC_ChanA_Cfg_Type chA_cfg = {
+        .chanCovtEn = ENABLE,
+        .outputEn = ENABLE,
+        .chanEn = ENABLE,
+        .src = GPIP_DAC_ChanA_SRC_REG
+    };
+
+    GLB_GPIP_DAC_ChanB_Cfg_Type chB_cfg = {
+        .chanCovtEn = ENABLE,
+        .outputEn = ENABLE,
+        .chanEn = ENABLE,
+        .src = GPIP_DAC_ChanB_SRC_REG
+    };
+
     if (NULL == dac || dac->port != 0) {
         blog_error("parameter is error!\r\n");
         return -1;
@@ -140,12 +132,13 @@ int hosal_dac_start(hosal_dac_dev_t *dac)
 
     if (GLB_GPIO_PIN_13 == dac->config.pin) {
         GPIP_Set_DAC_ChanA_SRC_SEL(GPIP_DAC_ChanA_SRC_REG);
-        GPIP_DAC_ChanA_Enable();
     } else if (GLB_GPIO_PIN_14 == dac->config.pin) {
         GPIP_Set_DAC_ChanB_SRC_SEL(GPIP_DAC_ChanB_SRC_REG);
-        GPIP_DAC_ChanB_Enable();
     } else
     {}
+
+    GLB_GPIP_DAC_Set_ChanA_Config(&chA_cfg);
+    GLB_GPIP_DAC_Set_ChanB_Config(&chB_cfg);
 
     return 0;
 }
@@ -208,13 +201,10 @@ int hosal_dac_stop(hosal_dac_dev_t *dac)
         blog_error("parameter is error!\r\n");
         return -1;
     }
-
-    if (GLB_GPIO_PIN_13 == dac->config.pin) {
-        GPIP_DAC_ChanA_Disable();
-    } else if (GLB_GPIO_PIN_14 == dac->config.pin) {
-        GPIP_DAC_ChanB_Disable();
-    } else{}
-
+ 
+    GPIP_DAC_ChanA_Disable();
+    GPIP_DAC_ChanB_Disable();
+   
     return 0;
 }
 
@@ -258,6 +248,20 @@ int hosal_dac_dma_start(hosal_dac_dev_t *dac, uint32_t *data, uint32_t size)
     uint32_t remainder;
     struct DMA_Control_Reg dmactrl;
     DMA_LLI_Ctrl_Type *plli_list;
+    
+    GLB_GPIP_DAC_ChanA_Cfg_Type chA_cfg = {
+        .chanCovtEn = ENABLE,
+        .outputEn = ENABLE,
+        .chanEn = ENABLE,
+        .src = GPIP_DAC_ChanA_SRC_DMA
+    };
+
+    GLB_GPIP_DAC_ChanB_Cfg_Type chB_cfg = {
+        .chanCovtEn = ENABLE,
+        .outputEn = ENABLE,
+        .chanEn = ENABLE,
+        .src = GPIP_DAC_ChanB_SRC_A
+    };
 
     DMA_LLI_Cfg_Type lli_cfg = {
         DMA_TRNS_M2P,
@@ -341,21 +345,20 @@ int hosal_dac_dma_start(hosal_dac_dev_t *dac, uint32_t *data, uint32_t size)
     DMA_LLI_Update(dac->dma_chan, (uint32_t)plli_list);
 
     if (GLB_GPIO_PIN_13 == dac->config.pin) {
-        GPIP_DAC_ChanA_Enable();
+        /* set src before set config */
         GPIP_Set_DAC_ChanA_SRC_SEL(GPIP_DAC_ChanA_SRC_DMA);
-        GPIP_Set_DAC_DMA_TX_FORMAT_SEL(GPIP_DAC_DMA_FORMAT_0);
-        GPIP_Set_DAC_DMA_TX_Enable();
-        
     } else if (GLB_GPIO_PIN_14 == dac->config.pin) {
-        GPIP_DAC_ChanB_Enable();
-        GPIP_Set_DAC_ChanB_SRC_SEL(GPIP_DAC_ChanB_SRC_DMA);
-        GPIP_Set_DAC_DMA_TX_FORMAT_SEL(GPIP_DAC_DMA_FORMAT_0);
-        GPIP_Set_DAC_DMA_TX_Enable();
-        
+        GPIP_Set_DAC_ChanB_SRC_SEL(GPIP_DAC_ChanB_SRC_A);
     } else{}
+    
+    GLB_GPIP_DAC_Set_ChanA_Config(&chA_cfg);
+    GLB_GPIP_DAC_Set_ChanB_Config(&chB_cfg);
+    GPIP_Set_DAC_DMA_TX_FORMAT_SEL(GPIP_DAC_DMA_FORMAT_0);
+    GPIP_Set_DAC_DMA_TX_Enable();
 
     return 0;
 }
+
 int hosal_dac_dma_stop(hosal_dac_dev_t *dac)
 {
     if (NULL == dac || dac->port != 0) {
@@ -363,12 +366,9 @@ int hosal_dac_dma_stop(hosal_dac_dev_t *dac)
         return -1;
     }
 
-    if (GLB_GPIO_PIN_13 == dac->config.pin) {
-        GPIP_DAC_ChanA_Disable();
-    } else if (GLB_GPIO_PIN_14 == dac->config.pin) {
-        GPIP_DAC_ChanB_Disable();
-    } else{}
-
+    GPIP_DAC_ChanA_Disable();
+    GPIP_DAC_ChanB_Disable();
+    
     if (dac->config.dma_enable) {
         GPIP_Set_DAC_DMA_TX_Disable();
         hosal_dma_chan_stop(dac->dma_chan);
@@ -383,13 +383,7 @@ int hosal_dac_finalize(hosal_dac_dev_t *dac)
         blog_error("parameter is error!\r\n");
         return -1;
     }
-
-    if (GLB_GPIO_PIN_13 == dac->config.pin) {
-        GPIP_DAC_ChanA_Disable();
-    } else if (GLB_GPIO_PIN_14 == dac->config.pin) {
-        GPIP_DAC_ChanB_Disable();
-    } else{}
-
+   
     if (NULL != dac->priv) {
         vPortFree(dac->priv);
         dac->priv = NULL;

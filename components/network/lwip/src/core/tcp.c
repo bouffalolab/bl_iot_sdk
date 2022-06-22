@@ -2701,4 +2701,8 @@ int tcp_get_pcbs(struct tcp_pcb **const**list)
 }
 #endif
 
+#ifdef BUGKILLER
+#include <bugkiller/bugkiller_tcp_dump.inc>
+#endif
+
 #endif /* LWIP_TCP */

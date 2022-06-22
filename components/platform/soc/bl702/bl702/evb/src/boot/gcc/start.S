@@ -32,6 +32,8 @@ bl702_start:
 #endif
 
 #ifndef RUN_IN_RAM
+	call bl_sys_cache_config
+
 	/* Load boot2 partition address */
 	la a0, __boot2_pt_addr_src
 	la a1, __boot2_pt_addr_start

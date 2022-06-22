@@ -45,6 +45,62 @@ int internel_cal_size_tx_hdr = sizeof(struct bl_txhdr);
 extern struct bl_hw wifi_hw;
 static struct bl_hw *bl_hw_static = &wifi_hw;
 
+#if defined(CFG_CHIP_BL808)
+void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
+{
+    volatile struct hostdesc *host;
+    uint32_t* p = txhdr->p;
+    uint32_t offset;
+
+    struct txdesc_host *txdesc_host;
+
+    //host = &(ipc_host_txdesc_get(bl_hw->ipc_env)->host);
+    txdesc_host = ipc_host_txdesc_get(bl_hw->ipc_env);
+    host = &(txdesc_host->host);
+    ASSERT_ERR(host);//TODO protect when host is NULL
+
+    {
+        u8 *src, *dst;
+        int i;
+        dst = (typeof(dst))host;
+        src = (typeof(src))&txhdr->host;
+        for (i = 0; i < sizeof(*host) / sizeof(*src); i++) {
+            *dst++ = *src++;
+        }
+    }
+
+    offset = 0;
+    if (host->pbuf_chained_len[0]) {
+        memcpy(((uint8_t *)&(txdesc_host->eth_packet[0])) + offset, \
+                host->pbuf_chained_ptr[0], host->pbuf_chained_len[0]);
+        offset += host->pbuf_chained_len[0];
+    }
+    if (host->pbuf_chained_len[1]) {
+        memcpy(((uint8_t *)&(txdesc_host->eth_packet[1])) + offset, \
+                host->pbuf_chained_ptr[1], host->pbuf_chained_len[1]);
+        offset += host->pbuf_chained_len[0];
+    }
+    if (host->pbuf_chained_len[2]) {
+        memcpy(((uint8_t *)&(txdesc_host->eth_packet[2])) + offset, \
+                host->pbuf_chained_ptr[2], host->pbuf_chained_len[2]);
+        offset += host->pbuf_chained_len[2];
+    }
+    if (host->pbuf_chained_len[3]) {
+        memcpy(((uint8_t *)&(txdesc_host->eth_packet[3])) + offset, \
+                host->pbuf_chained_ptr[3], host->pbuf_chained_len[3]);
+        offset += host->pbuf_chained_len[3];
+    }
+    host->pbuf_chained_ptr[0] = (uint32_t)(&(txdesc_host->eth_packet[0]));
+    host->pbuf_chained_len[0] = offset;
+    host->pbuf_chained_ptr[1] = 0;
+    host->pbuf_chained_len[1] = 0;
+
+    ipc_host_txdesc_push(bl_hw->ipc_env, p);
+#ifdef CFG_BL_STATISTIC
+    bl_hw->stats.cfm_balance++;
+#endif
+}
+#else
 void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
 {
     volatile struct hostdesc *host;
@@ -68,6 +124,7 @@ void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
     bl_hw->stats.cfm_balance++;
 #endif
 }
+#endif
 
 #define TXHDR_HODLER_LEN (8)
 #define TXHDR_HODLER_MSK (0x7)
@@ -145,6 +202,11 @@ int bl_txdatacfm(void *pthis, void *host_id)
     return 0;
 }
 
+#if 0
+uint32_t drop_ack_now = 0;
+uint32_t droped_ack;
+#endif
+
 err_t bl_output(struct bl_hw *bl_hw, struct netif *netif, struct pbuf *p, int is_sta, struct bl_custom_tx_cfm *custom_cfm)
 {
     struct bl_txhdr *txhdr;
@@ -165,6 +227,15 @@ err_t bl_output(struct bl_hw *bl_hw, struct netif *netif, struct pbuf *p, int is
         bl_os_printf("[TX] wifi is down, return now\r\n");
         return ERR_CONN;
     }
+#if 0
+    if (drop_ack_now) {
+        drop_ack_now++;
+        if (drop_ack_now & 0x02) {
+            droped_ack++;
+            return ERR_OK;
+        }
+    }
+#endif
 
     bl_hw_static = bl_hw;
     packet_len = p->tot_len;

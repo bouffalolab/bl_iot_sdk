@@ -134,7 +134,7 @@ static u8_t ping_recv(void *arg, struct raw_pcb *pcb, struct pbuf *p, const ip_a
             find_hdr = find_and_extract(&env->req_list, iecho->seqno);
 
             if (find_hdr) {
-                printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%lu ms\r\n ", p->tot_len, ipaddr_ntoa(&env->dest), ntohs(iecho->seqno), *((uint8_t *)p->payload + 8), (sys_now() - find_hdr->send_time));
+                printf("%" PRId16 " bytes from %s: icmp_seq=%d ttl=%d time=%" PRId32 " ms\r\n ", p->tot_len, ipaddr_ntoa(&env->dest), ntohs(iecho->seqno), *((uint8_t *)p->payload + 8), (sys_now() - find_hdr->send_time));
 
                 utils_memp_free(env->pool, find_hdr);
                 env->node_num--;
