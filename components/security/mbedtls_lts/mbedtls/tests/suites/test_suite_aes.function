@@ -67,7 +67,7 @@ void aes_encrypt_cbc( data_t * key_str, data_t * iv_str,
 
     mbedtls_aes_init( &ctx );
 
-    mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cbc( &ctx, MBEDTLS_AES_ENCRYPT, src_str->len, iv_str->x, src_str->x, output ) == cbc_result );
     if( cbc_result == 0 )
     {
@@ -92,7 +92,7 @@ void aes_decrypt_cbc( data_t * key_str, data_t * iv_str,
     memset(output, 0x00, 100);
     mbedtls_aes_init( &ctx );
 
-    mbedtls_aes_setkey_dec( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_dec( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cbc( &ctx, MBEDTLS_AES_DECRYPT, src_str->len, iv_str->x, src_str->x, output ) == cbc_result );
     if( cbc_result == 0)
     {
@@ -121,17 +121,18 @@ void aes_encrypt_xts( char *hex_key_string, char *hex_data_unit_string,
 
     mbedtls_aes_xts_init( &ctx );
 
-    data_unit = unhexify_alloc( hex_data_unit_string, &data_unit_len );
+    data_unit = mbedtls_test_unhexify_alloc( hex_data_unit_string,
+                                             &data_unit_len );
     TEST_ASSERT( data_unit_len == AES_BLOCK_SIZE );
 
-    key = unhexify_alloc( hex_key_string, &key_len );
+    key = mbedtls_test_unhexify_alloc( hex_key_string, &key_len );
     TEST_ASSERT( key_len % 2 == 0 );
 
-    src = unhexify_alloc( hex_src_string, &src_len );
-    dst = unhexify_alloc( hex_dst_string, &dst_len );
+    src = mbedtls_test_unhexify_alloc( hex_src_string, &src_len );
+    dst = mbedtls_test_unhexify_alloc( hex_dst_string, &dst_len );
     TEST_ASSERT( src_len == dst_len );
 
-    output = zero_alloc( dst_len );
+    output = mbedtls_test_zero_alloc( dst_len );
 
     TEST_ASSERT( mbedtls_aes_xts_setkey_enc( &ctx, key, key_len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_xts( &ctx, MBEDTLS_AES_ENCRYPT, src_len,
@@ -164,17 +165,18 @@ void aes_decrypt_xts( char *hex_key_string, char *hex_data_unit_string,
 
     mbedtls_aes_xts_init( &ctx );
 
-    data_unit = unhexify_alloc( hex_data_unit_string, &data_unit_len );
+    data_unit = mbedtls_test_unhexify_alloc( hex_data_unit_string,
+                                             &data_unit_len );
     TEST_ASSERT( data_unit_len == AES_BLOCK_SIZE );
 
-    key = unhexify_alloc( hex_key_string, &key_len );
+    key = mbedtls_test_unhexify_alloc( hex_key_string, &key_len );
     TEST_ASSERT( key_len % 2 == 0 );
 
-    src = unhexify_alloc( hex_src_string, &src_len );
-    dst = unhexify_alloc( hex_dst_string, &dst_len );
+    src = mbedtls_test_unhexify_alloc( hex_src_string, &src_len );
+    dst = mbedtls_test_unhexify_alloc( hex_dst_string, &dst_len );
     TEST_ASSERT( src_len == dst_len );
 
-    output = zero_alloc( dst_len );
+    output = mbedtls_test_zero_alloc( dst_len );
 
     TEST_ASSERT( mbedtls_aes_xts_setkey_dec( &ctx, key, key_len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_xts( &ctx, MBEDTLS_AES_DECRYPT, src_len,
@@ -208,6 +210,8 @@ void aes_crypt_xts_size( int size, int retval )
     /* Valid pointers are passed for builds with MBEDTLS_CHECK_PARAMS, as
      * otherwise we wouldn't get to the size check we're interested in. */
     TEST_ASSERT( mbedtls_aes_crypt_xts( &ctx, MBEDTLS_AES_ENCRYPT, length, data_unit, src, output ) == retval );
+exit:
+    mbedtls_aes_xts_free( &ctx );
 }
 /* END_CASE */
 
@@ -240,7 +244,7 @@ void aes_encrypt_cfb128( data_t * key_str, data_t * iv_str,
     mbedtls_aes_init( &ctx );
 
 
-    mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cfb128( &ctx, MBEDTLS_AES_ENCRYPT, 16, &iv_offset, iv_str->x, src_str->x, output ) == 0 );
 
     TEST_ASSERT( mbedtls_test_hexcmp( output, dst->x, 16, dst->len ) == 0 );
@@ -262,7 +266,7 @@ void aes_decrypt_cfb128( data_t * key_str, data_t * iv_str,
     mbedtls_aes_init( &ctx );
 
 
-    mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cfb128( &ctx, MBEDTLS_AES_DECRYPT, 16, &iv_offset, iv_str->x, src_str->x, output ) == 0 );
 
     TEST_ASSERT( mbedtls_test_hexcmp( output, dst->x, 16, dst->len ) == 0 );
@@ -283,7 +287,7 @@ void aes_encrypt_cfb8( data_t * key_str, data_t * iv_str,
     mbedtls_aes_init( &ctx );
 
 
-    mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cfb8( &ctx, MBEDTLS_AES_ENCRYPT, src_str->len, iv_str->x, src_str->x, output ) == 0 );
 
     TEST_ASSERT( mbedtls_test_hexcmp( output, dst->x,
@@ -305,7 +309,7 @@ void aes_decrypt_cfb8( data_t * key_str, data_t * iv_str,
     mbedtls_aes_init( &ctx );
 
 
-    mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 );
+    TEST_ASSERT( mbedtls_aes_setkey_enc( &ctx, key_str->x, key_str->len * 8 ) == 0 );
     TEST_ASSERT( mbedtls_aes_crypt_cfb8( &ctx, MBEDTLS_AES_DECRYPT, src_str->len, iv_str->x, src_str->x, output ) == 0 );
 
     TEST_ASSERT( mbedtls_test_hexcmp( output, dst->x,

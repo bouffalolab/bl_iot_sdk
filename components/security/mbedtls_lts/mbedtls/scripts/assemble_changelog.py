@@ -19,13 +19,7 @@ You must run this program from within a git working directory.
 """
 
 # Copyright The Mbed TLS Contributors
-# SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
-#
-# This file is provided under the Apache License 2.0, or the
-# GNU General Public License v2.0 or later.
-#
-# **********
-# Apache License 2.0:
+# SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License.
@@ -38,27 +32,6 @@ You must run this program from within a git working directory.
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# **********
-#
-# **********
-# GNU General Public License v2.0 or later:
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# **********
 
 import argparse
 from collections import OrderedDict, namedtuple
@@ -100,6 +73,9 @@ STANDARD_CATEGORIES = (
     b'Bugfix',
     b'Changes',
 )
+
+# The maximum line length for an entry
+MAX_LINE_LENGTH = 80
 
 CategoryContent = namedtuple('CategoryContent', [
     'name', 'title_line', # Title text and line number of the title
@@ -225,6 +201,8 @@ class ChangeLog:
     # a version that is not yet released. Something like "3.1a" is accepted.
     _version_number_re = re.compile(br'[0-9]+\.[0-9A-Za-z.]+')
     _incomplete_version_number_re = re.compile(br'.*\.[A-Za-z]')
+    _only_url_re = re.compile(br'^\s*\w+://\S+\s*$')
+    _has_url_re = re.compile(br'.*://.*')
 
     def add_categories_from_text(self, filename, line_offset,
                                  text, allow_unknown_category):
@@ -241,6 +219,21 @@ class ChangeLog:
                                        line_offset + category.title_line,
                                        'Unknown category: "{}"',
                                        category.name.decode('utf8'))
+
+            body_split = category.body.splitlines()
+
+            for line_number, line in enumerate(body_split, 1):
+                if not self._only_url_re.match(line) and \
+                   len(line) > MAX_LINE_LENGTH:
+                    long_url_msg = '. URL exceeding length limit must be alone in its line.' \
+                        if self._has_url_re.match(line) else ""
+                    raise InputFormatError(filename,
+                                           category.body_line + line_number,
+                                           'Line is longer than allowed: '
+                                           'Length {} (Max {}){}',
+                                           len(line), MAX_LINE_LENGTH,
+                                           long_url_msg)
+
             self.categories[category.name] += category.body
 
     def __init__(self, input_stream, changelog_format):
