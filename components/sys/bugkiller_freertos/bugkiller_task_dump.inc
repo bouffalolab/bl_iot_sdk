@@ -284,13 +284,14 @@ static UBaseType_t __attribute__((section(".bugkiller_code"))) task_getsystem_st
 
 extern char *task_dump_string[];
 
-void __attribute__((section(".bugkiller_code"))) bugkiller_task_dump(void *res)
-{ 
+void __attribute__((section(".bugkiller_code"))) bugkiller_task_dump()
+{
     char cStatus;
     char pcWriteBuffer[100];
     //const char *const pcHeader = "Task         State   Priority  Stack    #          Base\r\n********************************************************\r\n";
     TaskStatus_t pxTaskStatusArray[uxCurrentNumberOfTasks * sizeof( TaskStatus_t )];
     UBaseType_t uxArraySize, x;
+    TCB_t *pxTCB = NULL;
 
     printf(task_dump_string[0]);
     uxArraySize = uxCurrentNumberOfTasks;
@@ -325,8 +326,65 @@ void __attribute__((section(".bugkiller_code"))) bugkiller_task_dump(void *res)
         memset(pcWriteBuffer, 0, 100);
         write_name_to_buffer( pcWriteBuffer, pxTaskStatusArray[ x ].pcTaskName );
         printf(task_dump_string[1], pcWriteBuffer);
-    
-        sprintf( pcWriteBuffer, task_dump_string[3], cStatus, ( unsigned int ) pxTaskStatusArray[ x ].uxCurrentPriority, ( unsigned int ) pxTaskStatusArray[ x ].usStackHighWaterMark, ( unsigned int ) pxTaskStatusArray[ x ].xTaskNumber, pxTaskStatusArray[ x ].pxStackBase );
+
+#if ( INCLUDE_xTaskGetHandle == 1 )
+	char * pcNameToQuery = pxTaskStatusArray[ x ].pcTaskName;
+        UBaseType_t uxQueue = configMAX_PRIORITIES;
+
+        /* Task names will be truncated to configMAX_TASK_NAME_LEN - 1 bytes. */
+        configASSERT( strlen( pcNameToQuery ) < configMAX_TASK_NAME_LEN );
+
+        {
+            /* Search the ready lists. */
+            do
+            {
+                uxQueue--;
+                pxTCB = prvSearchForNameWithinSingleList( ( List_t * ) &( pxReadyTasksLists[ uxQueue ] ), pcNameToQuery );
+
+                if( pxTCB != NULL )
+                {
+                    /* Found the handle. */
+                    break;
+                }
+            } while( uxQueue > ( UBaseType_t ) tskIDLE_PRIORITY ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+
+            /* Search the delayed lists. */
+            if( pxTCB == NULL )
+            {
+                pxTCB = prvSearchForNameWithinSingleList( ( List_t * ) pxDelayedTaskList, pcNameToQuery );
+            }
+
+            if( pxTCB == NULL )
+            {
+                pxTCB = prvSearchForNameWithinSingleList( ( List_t * ) pxOverflowDelayedTaskList, pcNameToQuery );
+            }
+
+            #if ( INCLUDE_vTaskSuspend == 1 )
+                {
+                    if( pxTCB == NULL )
+                    {
+                        /* Search the suspended list. */
+                        pxTCB = prvSearchForNameWithinSingleList( &xSuspendedTaskList, pcNameToQuery );
+                    }
+                }
+            #endif
+
+            #if ( INCLUDE_vTaskDelete == 1 )
+                {
+                    if( pxTCB == NULL )
+                    {
+                        /* Search the deleted list. */
+                        pxTCB = prvSearchForNameWithinSingleList( &xTasksWaitingTermination, pcNameToQuery );
+                    }
+                }
+            #endif
+        }
+
+        sprintf( pcWriteBuffer, task_dump_string[3], cStatus, ( unsigned int ) pxTaskStatusArray[ x ].uxCurrentPriority, ( unsigned int ) pxTaskStatusArray[ x ].usStackHighWaterMark, ( unsigned int ) pxTaskStatusArray[ x ].xTaskNumber, pxTaskStatusArray[ x ].pxStackBase, pxTCB, pxTCB->pxTopOfStack, *( unsigned int * )pxTCB->pxTopOfStack );
+#else
+        sprintf( pcWriteBuffer, task_dump_string[3], cStatus, ( unsigned int ) pxTaskStatusArray[ x ].uxCurrentPriority, ( unsigned int ) pxTaskStatusArray[ x ].usStackHighWaterMark, ( unsigned int ) pxTaskStatusArray[ x ].xTaskNumber, pxTaskStatusArray[ x ].pxStackBase, 0, 0, 0);
+#endif /* INCLUDE_xTaskGetHandle */
+
         printf(task_dump_string[2], pcWriteBuffer);
     }
 }

@@ -29,6 +29,7 @@ COMPONENT_SRCS := src/utils_hex.c \
                   src/utils_tlv_bl.c \
                   src/utils_base64.c \
                   src/utils_bitmap_window.c \
+                  src/utils_sha256.c \
                   src/test/test_utils_base64.c \
                   src/test/test_utils_ringblk.c \
                   src/test/test_utils_bitmap_window.c \

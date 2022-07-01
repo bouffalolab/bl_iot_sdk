@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -261,12 +261,6 @@ void Sec_Eng_AES_Link_Case_ECB_128(SEC_ENG_AES_ID_Type aesId)
     Aes_Compare_Data(&(aesResult_entrypted_ecb_128[0]) + 48, (uint8_t*)linkCfg.aesDstAddr, 16);
 
     Sec_Eng_AES_Disable_Link(aesId);
-}
-
-int bl_sec_aes_init(void)
-{
-    Sec_Eng_AES_Enable_BE(SEC_ENG_AES_ID0);
-    return 0;
 }
 
 int bl_sec_aes_test(void)

@@ -255,6 +255,8 @@ endif
 # CPPFLAGS used by C preprocessor
 # If any flags are defined in application Makefile, add them at the end.
 CPPFLAGS ?=
+# Enable GNU extensions
+CPPFLAGS += -D _GNU_SOURCE
 ifeq ($(CONFIG_ENABLE_ACP),1)
 CPPFLAGS += -DCONF_USER_ENABLE_ACP
 endif
@@ -405,6 +407,7 @@ CXXFLAGS := $(strip \
 	-Wundef \
 	-fno-rtti -fno-exceptions \
 	-save-temps=obj \
+	-fno-use-cxa-atexit\
 	)
 
 endif
@@ -469,8 +472,10 @@ $(APP_ELF): $(foreach libcomp,$(COMPONENT_LIBRARIES),$(BUILD_DIR_BASE)/$(libcomp
 	$(summary) LD $(patsubst $(PWD)/%,%,$@)
 ifeq ($(CONFIG_ZIGBEE), 1)
 	$(CXX) -o $@ $(LDFLAGS) -Wl,-Map=$(APP_MAP)
+else ifeq ($(CONFIG_CPP_ENABLE), 1)
+	$(CXX) -o $@ $(LDFLAGS) -Wl,-Map=$(APP_MAP)
 else
-	$(CC) $(LDFLAGS) -o $@ -Wl,-Map=$(APP_MAP)
+	$(CC) $(LDFLAGS) -o $@ -Wl,-Map=$(APP_MAP) $(shell find build_out/ -name bugkiller_*.o)
 endif
 
 all_binaries: $(APP_BIN)
@@ -482,27 +487,27 @@ ifeq ("$(CONFIG_CHIP_NAME)", "VIRTEX7")
 	$(OBJCOPY) -O ihex $< $(@:.bin=.hex)
 else
 ifeq ($(CONFIG_ENABLE_ACP),1)
-	$(OBJCOPY) -S -O binary -R .rom.cpu1 -R .bugkiller $< $(@:.bin=.cpu0.bin)
+	$(OBJCOPY) -S -O binary -R .rom.cpu1 -R .bugkiller_command -R .bugkiller $< $(@:.bin=.cpu0.bin)
 	$(OBJCOPY) -S -O binary -j .rom.cpu1 $< $(@:.bin=.cpu1.bin)
 	cp $(@:.bin=.cpu0.bin) $(@:.bin=.acp.bin)
 	dd if=$(@:.bin=.cpu1.bin) of=$(@:.bin=.acp.bin) bs=512 seek=2 conv=notrunc
 	cp $(@:.bin=.acp.bin) $@
 else
 ifeq ($(CONFIG_LINK_ROM),1)
-	$(OBJCOPY) -S -O binary -R .romdata -R .rom -R .bugkiller $< $@
+	$(OBJCOPY) -S -O binary -R .romdata -R .rom -R .bugkiller_command -R .bugkiller $< $@
 	$(OBJCOPY) -S -O binary -j .rom $< $(@:.bin=.rom.bin)
 	$(OBJCOPY) -S -O binary -j .romdata $< $(@:.bin=.romdata.bin)
-	$(OBJCOPY) -S -O binary -R .romdata -R .rom -R .bugkiller $< $(@:.bin=.flash.bin)
+	$(OBJCOPY) -S -O binary -R .romdata -R .rom -R .bugkiller_command -R .bugkiller $< $(@:.bin=.flash.bin)
 else
 ifeq ($(CONFIG_GEN_ROM),1)
-	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw -R .bugkiller $< $@
+	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw -R .bugkiller_command -R .bugkiller $< $@
 	$(OBJCOPY) -S -O binary -j .bleromro $< $(@:.bin=.bleromro.bin)
 	$(OBJCOPY) -S -O binary -j .bleromrw $< $(@:.bin=.bleromrw.bin)
 	$(OBJCOPY) -S -O binary -j .rtosromro $< $(@:.bin=.rtosromro.bin)
 	$(OBJCOPY) -S -O binary -j .rtosromrw $< $(@:.bin=.rtosromrw.bin)
-	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw -R .bugkiller $< $(@:.bin=.flash.bin)
+	$(OBJCOPY) -S -O binary -R .bleromro -R .bleromrw -R .rtosromro -R .rtosromrw -R .bugkiller_command -R .bugkiller $< $(@:.bin=.flash.bin)
 else
-	$(OBJCOPY) -S -O binary -R .bugkiller $< $@
+	$(OBJCOPY) -S -O binary -R .bugkiller_command -R .bugkiller $< $@
 endif
 endif
 endif

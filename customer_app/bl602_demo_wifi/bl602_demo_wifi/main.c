@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include <FreeRTOS.h>
 #include <task.h>
 #include <timers.h>
@@ -732,6 +761,27 @@ static void cmd_wps_pbc_(char *buf, int len, int argc, char **argv)
     }
 }
 
+#include <utils_log.h>
+static void cmd_pmk(char *buf, int len, int argc, char **argv)
+{
+int utils_wifi_psk_cal_fast(char *password, char *ssid, int ssid_len, char *output);
+int pbkdf2_sha1(const char *passphrase, const char *ssid, size_t ssid_len,
+		int iterations, uint8_t *buf, size_t buflen);
+    const char *password = "12345678";
+    const char *ssid = "testme";
+    char output[65];
+
+#if 0
+    memset(output, 0, sizeof(output));
+    utils_wifi_psk_cal_fast(password, ssid, strlen(ssid), output);
+    printf("PMK: %s\r\n", output);
+#endif
+
+    memset(output, 0, sizeof(output));
+    pbkdf2_sha1(password, ssid, strlen(ssid), 4096, (void *)output, 32);
+    log_buf(output, 32);
+}
+
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "aws", "aws iot demo", cmd_aws},
         { "pka", "pka iot demo", cmd_pka},
@@ -750,6 +800,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         /*TCP/IP network test*/
         {"http", "http client download test based on socket", http_test_cmd},
         {"httpc", "http client download test based on RAW TCP", cmd_httpc_test},
+        {"pmk", "http client download test based on RAW TCP", cmd_pmk},
         {WPS_PBC_CMD, "WPS Push Button demo", cmd_wps_pbc_},
         {WPS_PIN_CMD, "WPS Device PIN demo", cmd_wps_pbc_},
 };

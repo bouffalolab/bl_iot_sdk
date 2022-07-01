@@ -45,5 +45,10 @@ CONFIG_BT_PERIPHERAL:=1
 CONFIG_BT_STACK_CLI:=1
 CONFIG_BT_WIFIPROV_SERVER:=1
 
+#mbedtls
+CONFIG_MBEDTLS_BIGNUM_USE_HW:=1
+CONFIG_MBEDTLS_ECC_USE_HW:=1
+
+
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hosal main security_ecc

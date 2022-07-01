@@ -309,6 +309,12 @@ static u8_t mod_bind(struct bt_mesh_model *model, u16_t key_idx)
 	return STATUS_INSUFF_RESOURCES;
 }
 
+/* Add by bouffalolab */
+u8_t local_mod_bind(struct bt_mesh_model *model, u16_t key_idx)
+{
+	return mod_bind(model, key_idx);
+}
+
 static u8_t mod_unbind(struct bt_mesh_model *model, u16_t key_idx, bool store)
 {
 	int i;

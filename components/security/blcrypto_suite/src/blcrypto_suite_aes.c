@@ -4,45 +4,23 @@
 #if USE_HWCRYPTO
 #include <string.h>
 #include <FreeRTOS.h>
-#ifdef CFG_CHIP_BL602
-#include <bl602_sec_eng.h>
-#endif
+#include <bl_sec_aes.h>
 
-
-#ifdef CFG_CHIP_BL602
-#include <bl602_sec_eng.h>
-#endif
-
-#ifdef CFG_CHIP_BL808
-#include <bl606p_sec_eng.h>
-#endif
-
-#include "bl_irq.h"
-
-struct blcrypto_suite_aes_internal {
-    int aes_id;
-    SEC_Eng_AES_Link_Config_Type link_cfg;
+struct blcrypto_suite_aes {
+    bl_sec_aes_t ctx;
 };
 
 struct blcrypto_suite_aes *blcrypto_suite_aes_init()
 {
-    struct blcrypto_suite_aes_internal *aes_internal;
+    struct blcrypto_suite_aes *aes;
 
-    aes_internal = pvPortMalloc(sizeof(struct blcrypto_suite_aes_internal));
-    if (aes_internal == NULL) {
+    aes = pvPortMalloc(sizeof(*aes));
+    if (aes == NULL) {
         return NULL;
     }
+    bl_aes_init((bl_sec_aes_t *)aes);
 
-    aes_internal->aes_id = 0;
-
-    Sec_Eng_AES_Enable_BE(SEC_ENG_AES_ID0);
-
-    memset(aes_internal, 0, sizeof(struct blcrypto_suite_aes_internal));
-    aes_internal->link_cfg.aesIntClr = 1;
-    aes_internal->link_cfg.aesIntSet = 0;
-
-    aes_internal->link_cfg.aesBlockMode = SEC_ENG_AES_ECB;
-    return (struct blcrypto_suite_aes *)aes_internal;
+    return aes;
 }
 
 void blcrypto_suite_aes_deinit(struct blcrypto_suite_aes **aes)
@@ -60,51 +38,26 @@ int blcrypto_suite_aes_set_key(struct blcrypto_suite_aes *aes, enum crypto_aes_m
     if (!aes) {
         return -1;
     }
-    struct blcrypto_suite_aes_internal *aes_internal = (struct blcrypto_suite_aes_internal *)aes;
-
     (void)mode;
-    aes_internal->link_cfg.aesDecKeySel = SEC_ENG_AES_USE_NEW;
+    bl_aes_set_key((bl_sec_aes_t *)aes, BL_AES_ENCRYPT, key, bits / 8);
 
-    switch (bits) {
-        case 128:
-            aes_internal->link_cfg.aesMode = SEC_ENG_AES_KEY_128BITS;
-            memcpy(&aes_internal->link_cfg.aesKey0, key, 16);
-            break;
-
-        case 192:
-            aes_internal->link_cfg.aesMode = SEC_ENG_AES_KEY_192BITS;
-            memcpy(&aes_internal->link_cfg.aesKey0, key, 24);
-            break;
-
-        case 256:
-            aes_internal->link_cfg.aesMode = SEC_ENG_AES_KEY_256BITS;
-            memcpy(&aes_internal->link_cfg.aesKey0, key, 32);
-            break;
-
-        default:
-            return -1;
-    }
     return 0;
 }
 
 int blcrypto_suite_aes_crypt(struct blcrypto_suite_aes *aes, enum crypto_aes_mode mode, const uint8_t *in, uint8_t *out)
 {
+    bl_sec_aes_op_t op;
     if (!aes) {
         return -1;
     }
-    struct blcrypto_suite_aes_internal *aes_internal = (struct blcrypto_suite_aes_internal *)aes;
-
-    const uint16_t n_blk = 1;
-    aes_internal->link_cfg.aesMsgLen = n_blk;
     if (mode == AES_ENC) {
-        aes_internal->link_cfg.aesDecEn = SEC_ENG_AES_ENCRYPTION;
+        op = BL_AES_ENCRYPT;
     } else {
-        aes_internal->link_cfg.aesDecEn = SEC_ENG_AES_DECRYPTION;
+        op = BL_AES_DECRYPT;
     }
-
-    Sec_Eng_AES_Enable_Link(aes_internal->aes_id);
-    Sec_Eng_AES_Link_Work(aes_internal->aes_id, (uint32_t)&aes_internal->link_cfg, in, n_blk << 4, out);
-    Sec_Eng_AES_Disable_Link(aes_internal->aes_id);
+    bl_aes_acquire_hw();
+    bl_aes_transform((bl_sec_aes_t *)aes, op, in, out);
+    bl_aes_release_hw();
 
     return 0;
 }

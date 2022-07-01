@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -27,9 +27,39 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef __BUGKILLER_H__
-#define __BUGKILLER_H__
-void bugkiller_freertos_uart_init(void);
-void bugkiller_freertos_clocktree_init(void);
+#include <stdio.h>
 
-#endif
+void bugkiller_switch_task(unsigned int *sp)
+{
+    printf("set $sp=%p+120\r\n", (void *)sp);
+    printf("set $pc=%p\r\n", (void *)*sp++);
+    printf("set $ra=%p\r\n", (void *)*sp++);
+    printf("set $t0=%p\r\n", (void *)*sp++);
+    printf("set $t1=%p\r\n", (void *)*sp++);
+    printf("set $t2=%p\r\n", (void *)*sp++);
+    printf("set $s0=%p\r\n", (void *)*sp++);
+    printf("set $s1=%p\r\n", (void *)*sp++);
+    printf("set $a0=%p\r\n", (void *)*sp++);
+    printf("set $a1=%p\r\n", (void *)*sp++);
+    printf("set $a2=%p\r\n", (void *)*sp++);
+    printf("set $a3=%p\r\n", (void *)*sp++);
+    printf("set $a4=%p\r\n", (void *)*sp++);
+    printf("set $a5=%p\r\n", (void *)*sp++);
+    printf("set $a6=%p\r\n", (void *)*sp++);
+    printf("set $a7=%p\r\n", (void *)*sp++);
+    printf("set $s2=%p\r\n", (void *)*sp++);
+    printf("set $s3=%p\r\n", (void *)*sp++);
+    printf("set $s4=%p\r\n", (void *)*sp++);
+    printf("set $s5=%p\r\n", (void *)*sp++);
+    printf("set $s6=%p\r\n", (void *)*sp++);
+    printf("set $s7=%p\r\n", (void *)*sp++);
+    printf("set $s8=%p\r\n", (void *)*sp++);
+    printf("set $s9=%p\r\n", (void *)*sp++);
+    printf("set $s10=%p\r\n", (void *)*sp++);
+    printf("set $s11=%p\r\n", (void *)*sp++);
+    printf("set $t3=%p\r\n", (void *)*sp++);
+    printf("set $t4=%p\r\n", (void *)*sp++);
+    printf("set $t5=%p\r\n", (void *)*sp++);
+    printf("set $t6=%p\r\n", (void *)*sp++);
+    printf("printf \"mstatus\"\r\np/x %p\r\n", (void *)*sp);
+}

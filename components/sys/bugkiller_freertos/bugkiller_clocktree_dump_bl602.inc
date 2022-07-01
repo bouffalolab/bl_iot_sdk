@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "bl602.h"
-#include "bugkiller_clocktree_dump.h"
 #include "bl602_glb.h"
 #include "hbn_reg.h"
 #include "glb_reg.h"

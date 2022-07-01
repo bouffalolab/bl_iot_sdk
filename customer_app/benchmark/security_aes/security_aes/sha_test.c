@@ -52,6 +52,10 @@ static int bl_sha_test(uint8_t *input, uint8_t *output, uint32_t length,
         return 0;
     }
 
+    // Link mode is not used in this test.
+    // Disable potentially enabled link mode
+    Sec_Eng_SHA_Disable_Link(SEC_ENG_SHA_ID0);
+
     time_irq_start = bl_timer_now_us();
     taskENTER_CRITICAL();
 

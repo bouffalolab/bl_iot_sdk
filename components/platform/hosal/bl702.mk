@@ -22,7 +22,6 @@ COMPONENT_SRCS := bl702_hal/bl_uart.c \
                   bl702_hal/bl_flash.c \
                   bl702_hal/bl_pwm.c \
                   bl702_hal/bl_sec_aes.c \
-                  bl702_hal/bl_sec_sha.c \
                   bl702_hal/bl_wireless.c \
                   bl702_hal/bl_wdt.c \
                   bl702_hal/bl_emac.c \

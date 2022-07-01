@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -29,6 +29,4 @@
  */
 #ifdef BL602
 #include "bugkiller_clocktree_dump_bl602.inc"
-#elif defined BL808
-#include "bugkiller_clocktree_dump_bl808.inc"
 #endif

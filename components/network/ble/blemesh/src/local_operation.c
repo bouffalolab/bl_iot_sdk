@@ -151,3 +151,38 @@ int bt_mesh_local_model_bind(u16_t net_idx, u16_t mod_app_idx)
 	}
 	return err;
 }
+
+extern u8_t local_mod_bind(struct bt_mesh_model *model, u16_t key_idx);
+int bt_mesh_local_model_bind_direct(u16_t net_idx, u16_t mod_app_idx)
+{
+	int i, j, err = 0;
+	const struct bt_mesh_comp* dev_comp = bt_mesh_comp_get();
+	u16_t addr = bt_mesh_primary_addr();
+	u8_t status;
+
+	for (i = 0; i < dev_comp->elem_count; i++) {
+		struct bt_mesh_elem *elem = &dev_comp->elem[i];
+
+		for (j = 0; j < elem->model_count; j++) {
+			struct bt_mesh_model *model = &elem->models[j];
+
+			if(model->id == BT_MESH_MODEL_ID_CFG_CLI
+				|| model->id == BT_MESH_MODEL_ID_CFG_SRV){
+				continue;
+			}
+			err = local_mod_bind(model, mod_app_idx);
+			if(err == STATUS_SUCCESS){
+				BT_WARN("model bind status[%d]", err);
+			}
+		}
+
+		for (j = 0; j < elem->vnd_model_count; j++) {
+			struct bt_mesh_model *model = &elem->vnd_models[j];
+			err = local_mod_bind(model, mod_app_idx);
+			if(err == STATUS_SUCCESS){
+				BT_WARN("vendor bind status[%d]", err);
+			}
+		}
+	}
+	return err;
+}

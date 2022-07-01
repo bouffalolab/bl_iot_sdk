@@ -46,7 +46,9 @@ CONFIG_USE_XTAL32K:=0
 CONFIG_ENABLE_STACK_OVERFLOW_CHECK:=0
 
 #mbedtls
+CONFIG_MBEDTLS_AES_USE_HW:=1
 CONFIG_MBEDTLS_BIGNUM_USE_HW:=1
+CONFIG_MBEDTLS_ECC_USE_HW:=1
 
 #blog enable components format :=blog_testc cli vfs helper
 LOG_ENABLED_COMPONENTS:=blog_testc hosal loopset looprt bloop blestack

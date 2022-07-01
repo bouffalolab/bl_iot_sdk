@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -31,28 +31,18 @@
 #include <semphr.h>
 
 #include <bl_sec.h>
-
-#define BL_SEC_PKA_PORTED
-
-#ifdef BL602
-#include <bl602_glb.h>
-#include <bl602_sec_eng.h>
-#elif defined BL702
-#include <bl702_glb.h>
-#include <bl702_sec_eng.h>
-#else
-#warn "Chip not ported"
-#undef BL_SEC_PKA_PORTED
-#endif
-
-#ifdef BL_SEC_PKA_PORTED
+#include "bl_sec_hw_common.h"
 
 static StaticSemaphore_t pka_mutex_buf;
 static SemaphoreHandle_t pka_mutex = NULL;
 
 int bl_sec_pka_init(void)
 {
+#if defined(BL616) || defined BL808
+    GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_MCU_MUXPLL_160M);
+#else
     GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_HCLK);
+#endif
 
     pka_mutex = xSemaphoreCreateMutexStatic(&pka_mutex_buf);
     if (pka_mutex) {
@@ -77,5 +67,3 @@ int bl_sec_pka_mutex_give(void)
     }
     return 0;
 }
-
-#endif // BL_SEC_PKA_PORTED

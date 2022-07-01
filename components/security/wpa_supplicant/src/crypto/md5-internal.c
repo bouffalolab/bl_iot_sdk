@@ -20,6 +20,7 @@
 #include "crypto.h"
 
 
+#ifndef USE_MBEDTLS_CRYPTO
 static void MD5Transform(u32 buf[4], u32 const in[16]);
 
 
@@ -296,3 +297,41 @@ MD5Transform(u32 buf[4], u32 const in[16])
     buf[3] += d;
 }
 /* ===== end - public domain MD5 implementation ===== */
+
+#else
+
+#include <mbedtls/md5.h>
+/**
+ * md5_vector - MD5 hash for data vector
+ * @num_elem: Number of elements in the data vector
+ * @addr: Pointers to the data areas
+ * @len: Lengths of the data blocks
+ * @mac: Buffer for the hash
+ * Returns: 0 on success, -1 of failure
+ */
+int
+md5_vector(size_t num_elem, const u8 *addr[], const size_t *len, u8 *mac)
+{
+    int ret = -1;
+    size_t i;
+    mbedtls_md5_context ctx;
+    mbedtls_md5_init(&ctx);
+    if (mbedtls_md5_starts_ret(&ctx)) {
+        goto cleanup;
+    }
+    for (i = 0; i < num_elem; i++) {
+        if (mbedtls_md5_update_ret(&ctx, addr[i], len[i])) {
+            goto cleanup;
+        }
+    }
+    if (mbedtls_md5_finish_ret(&ctx, mac)) {
+        goto cleanup;
+    }
+    ret = 0;
+
+cleanup:
+    mbedtls_md5_free(&ctx);
+    return ret;
+}
+
+#endif // USE_MBEDTLS_CRYPTO

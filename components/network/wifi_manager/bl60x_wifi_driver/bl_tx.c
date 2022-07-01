@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -45,55 +45,39 @@ int internel_cal_size_tx_hdr = sizeof(struct bl_txhdr);
 extern struct bl_hw wifi_hw;
 static struct bl_hw *bl_hw_static = &wifi_hw;
 
+#ifndef ARRAY_LEN
+#define ARRAY_LEN(a) (sizeof(a) / sizeof((a)[0]))
+#endif
+
 #if defined(CFG_CHIP_BL808)
 void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
 {
     volatile struct hostdesc *host;
     uint32_t* p = txhdr->p;
-    uint32_t offset;
+    uint32_t len;
 
-    struct txdesc_host *txdesc_host;
+    volatile struct txdesc_host *txdesc_host;
 
     //host = &(ipc_host_txdesc_get(bl_hw->ipc_env)->host);
     txdesc_host = ipc_host_txdesc_get(bl_hw->ipc_env);
+    ASSERT_ERR(txdesc_host);//TODO protect when host is NULL
     host = &(txdesc_host->host);
-    ASSERT_ERR(host);//TODO protect when host is NULL
 
-    {
-        u8 *src, *dst;
-        int i;
-        dst = (typeof(dst))host;
-        src = (typeof(src))&txhdr->host;
-        for (i = 0; i < sizeof(*host) / sizeof(*src); i++) {
-            *dst++ = *src++;
+    memcpy((void *)host, &txhdr->host, sizeof(*host));
+
+    len = 0;
+    for (size_t i = 0; i < ARRAY_LEN(host->pbuf_chained_len); ++i) {
+        if (host->pbuf_chained_len[i] == 0) {
+            break;
         }
-    }
+        memcpy((uint8_t *)txdesc_host->eth_packet + len, (void *)host->pbuf_chained_ptr[i], host->pbuf_chained_len[i]);
+        len += host->pbuf_chained_len[i];
 
-    offset = 0;
-    if (host->pbuf_chained_len[0]) {
-        memcpy(((uint8_t *)&(txdesc_host->eth_packet[0])) + offset, \
-                host->pbuf_chained_ptr[0], host->pbuf_chained_len[0]);
-        offset += host->pbuf_chained_len[0];
-    }
-    if (host->pbuf_chained_len[1]) {
-        memcpy(((uint8_t *)&(txdesc_host->eth_packet[1])) + offset, \
-                host->pbuf_chained_ptr[1], host->pbuf_chained_len[1]);
-        offset += host->pbuf_chained_len[0];
-    }
-    if (host->pbuf_chained_len[2]) {
-        memcpy(((uint8_t *)&(txdesc_host->eth_packet[2])) + offset, \
-                host->pbuf_chained_ptr[2], host->pbuf_chained_len[2]);
-        offset += host->pbuf_chained_len[2];
-    }
-    if (host->pbuf_chained_len[3]) {
-        memcpy(((uint8_t *)&(txdesc_host->eth_packet[3])) + offset, \
-                host->pbuf_chained_ptr[3], host->pbuf_chained_len[3]);
-        offset += host->pbuf_chained_len[3];
+        host->pbuf_chained_ptr[i] = 0;
+        host->pbuf_chained_len[i] = 0;
     }
     host->pbuf_chained_ptr[0] = (uint32_t)(&(txdesc_host->eth_packet[0]));
-    host->pbuf_chained_len[0] = offset;
-    host->pbuf_chained_ptr[1] = 0;
-    host->pbuf_chained_len[1] = 0;
+    host->pbuf_chained_len[0] = len;
 
     ipc_host_txdesc_push(bl_hw->ipc_env, p);
 #ifdef CFG_BL_STATISTIC
@@ -105,19 +89,13 @@ void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
 {
     volatile struct hostdesc *host;
     uint32_t* p = txhdr->p;
+    volatile struct txdesc_host *txdesc_host;
 
-    host = &(ipc_host_txdesc_get(bl_hw->ipc_env)->host);
-    ASSERT_ERR(host);//TODO protect when host is NULL
+    txdesc_host = ipc_host_txdesc_get(bl_hw->ipc_env);
+    ASSERT_ERR(txdesc_host);//TODO protect when host is NULL
+    host = &(txdesc_host->host);
 
-    {
-        u8 *src, *dst;
-        int i;
-        dst = (typeof(dst))host;
-        src = (typeof(src))&txhdr->host;
-        for (i = 0; i < sizeof(*host) / sizeof(*src); i++) {
-            *dst++ = *src++;
-        }
-    }
+    memcpy((void *)host, &txhdr->host, sizeof(*host));
 
     ipc_host_txdesc_push(bl_hw->ipc_env, p);
 #ifdef CFG_BL_STATISTIC

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -34,6 +34,8 @@
 #elif defined BL808
 #include "bl808.h"
 #include "bl808_common.h"
+#elif defined BL616
+#include "common.h"
 #endif
 
 #include "uart_reg.h"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Bouffalolab.
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -46,10 +46,10 @@ char *event_dump_string[] = {
 };
 
 char *task_dump_string[] = {
-    "Task         State   Priority  Stack    #          Base\r\n********************************************************\r\n",
+    "Task         State   Priority  Stack    #          Base            TCB              sp              pc\r\n**********************************************************************************************************\r\n",
     "%s",
     "%s",
-    "\t%c\t%u\t%u\t%u\t%p\r\n",
+    "\t%c\t%u\t%u\t%u\t%p\t%p\t%p\t%p\r\n",
 };
 
 char *heap_dump_string[] = {

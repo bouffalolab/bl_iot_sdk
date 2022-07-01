@@ -16,6 +16,8 @@
 #include <mbedtls/ctr_drbg.h>
 #include <mbedtls/ecdh.h>
 
+#include <hw_acc/hw_common.h>
+
 #define mbedtls_printf          printf
 
 static void _cli_init()
@@ -420,7 +422,7 @@ static void dump_pubkey( const char *title, mbedtls_ecdsa_context *key )
     dump_buf((char *)title, buf, len );
 }
 
-static void test_ecdsa_soft (char *p_buf, int len, int argc, char **argv)
+static void test_ecdsa_soft(char *p_buf, int len, int argc, char **argv)
 {
     int ret = 1;
     uint32_t time_irq_start, speed_time, total_time = 0;
@@ -513,11 +515,79 @@ exit:
     mbedtls_entropy_free( &entropy );
 }
 
+#define CHECK(r) \
+    do {         \
+        if ((ret = r)) { \
+            printf("%s: LN %d returned %d\r\n", __func__, __LINE__, ret); \
+            goto out; \
+        } \
+    } while (0)
+
+#define CRT_ENT taskENTER_CRITICAL()
+#define CRT_LEV taskEXIT_CRITICAL()
+#define DEF_TMR uint32_t tick_
+#define FED_TMR tick_ = bl_timer_now_us()
+#define PRN_ELP(tag) printf(tag " cost %lu us\r\n", bl_timer_now_us() - tick_)
+
+static void test_point_mul_task(void *p_)
+{
+    int ret;
+    mbedtls_ecp_group grp;
+    mbedtls_mpi scalar;
+    mbedtls_ecp_point point;
+    mbedtls_entropy_context entropy;
+    mbedtls_ctr_drbg_context ctr_drbg;
+
+    mbedtls_ecp_group_init(&grp);
+    mbedtls_mpi_init(&scalar);
+    mbedtls_ecp_point_init(&point);
+    mbedtls_entropy_init(&entropy);
+    mbedtls_ctr_drbg_init(&ctr_drbg);
+
+    CHECK(mbedtls_ctr_drbg_seed(&ctr_drbg, mbedtls_entropy_func, &entropy, NULL, 0));
+
+#define TEST_CNT_PER_CURVE 10
+    // XXX Enable all curves to do the test
+    for (int id = MBEDTLS_ECP_DP_NONE + 1; id <= MBEDTLS_ECP_DP_CURVE448; ++id) {
+        printf("====================== Testing ID  %d ======================\r\n", id);
+        CHECK(mbedtls_ecp_group_load(&grp, id));
+        for (int cnt = 0; cnt < TEST_CNT_PER_CURVE; ++cnt) {
+            printf("--- Testing id %d, %d/%d ---\r\n", id, cnt + 1, TEST_CNT_PER_CURVE);
+            CHECK( mbedtls_ecp_gen_privkey( &grp, &scalar, mbedtls_ctr_drbg_random, &ctr_drbg ) );
+
+            DEF_TMR;
+            CRT_ENT;
+            FED_TMR;
+            CHECK( mbedtls_ecp_mul( &grp, &point, &scalar, &grp.G, mbedtls_ctr_drbg_random, &ctr_drbg ) );
+            PRN_ELP("ecp_mul");
+            CRT_LEV;
+
+            mbedtls_ecp_point_free(&point);
+        }
+    }
+
+out:
+    mbedtls_ecp_group_free(&grp);
+    mbedtls_mpi_free(&scalar);
+    mbedtls_ecp_point_free(&point);
+    mbedtls_entropy_free(&entropy);
+    mbedtls_ctr_drbg_free(&ctr_drbg);
+
+    vTaskDelete(NULL);
+}
+
+static void test_point_mul(char *p_buf, int len, int argc, char **argv)
+{
+    xTaskCreate(test_point_mul_task, (char*)"ecp-mul", 2048, NULL, 15, NULL);
+}
+
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "test_ecdh_hw", "ecdh", test_ecdh},
     { "test_ecdsa_hw", "ecdsa", test_ecdsa},
+    // Though called "soft", these might actually be "hw".
     { "test_ecdh_soft", "ecdh", test_ecdh_soft},
     { "test_ecdsa_soft", "ecdh", test_ecdsa_soft},
+    { "test_point_mul", "test point mul", test_point_mul },
 };
 
 void main(void)
