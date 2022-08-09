@@ -52,6 +52,8 @@
 #define IPERF_PORT          5001
 #if defined(CFG_CHIP_BL808)
 #define IPERF_BUFSZ         (16 * 1300)
+#elif defined(CFG_CHIP_BL606P)
+#define IPERF_BUFSZ         (16 * 1300)
 #else
 #define IPERF_BUFSZ         (4 * 1300)
 #endif

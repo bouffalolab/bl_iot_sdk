@@ -6044,6 +6044,11 @@ bool le_check_valid_scan(void)
 {
     return atomic_test_bit(bt_dev.flags, BT_DEV_EXPLICIT_SCAN);
 }
+
+bool le_check_valid_adv(void)
+{
+     return atomic_test_bit(bt_dev.flags, BT_DEV_ADVERTISING);
+}
 #endif
 
 
@@ -6245,9 +6250,6 @@ int bt_set_name(const char *name)
 
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 #if defined(BFLB_BLE)
-        #if defined(CFG_SLEEP)
-        if(HBN_Get_Status_Flag() == 0)
-        #endif
         bt_settings_save_name();
 #else
         err = settings_save_one("bt/name", bt_dev.name, len);
@@ -6256,6 +6258,10 @@ int bt_set_name(const char *name)
 		}
 #endif
 	}
+
+	#if defined(CONFIG_BT_BREDR)
+	bt_br_write_local_name(name);
+	#endif
 
 	return 0;
 #else
@@ -7898,13 +7904,21 @@ int bt_br_set_connectable(bool enable)
 	if (enable) {
 		if (atomic_test_bit(bt_dev.flags, BT_DEV_PSCAN)) {
 			return -EALREADY;
-		} else {
+		}
+
+		if(atomic_test_bit(bt_dev.flags, BT_DEV_ISCAN)){
+			return write_scan_enable(BT_BREDR_SCAN_INQUIRY | BT_BREDR_SCAN_PAGE);
+		}else{
 			return write_scan_enable(BT_BREDR_SCAN_PAGE);
 		}
 	} else {
 		if (!atomic_test_bit(bt_dev.flags, BT_DEV_PSCAN)) {
 			return -EALREADY;
-		} else {
+		}
+
+		if(atomic_test_bit(bt_dev.flags, BT_DEV_ISCAN)){
+			return write_scan_enable(BT_BREDR_SCAN_INQUIRY);
+		}else{
 			return write_scan_enable(BT_BREDR_SCAN_DISABLED);
 		}
 	}
@@ -7918,17 +7932,22 @@ int bt_br_set_discoverable(bool enable)
 		}
 
 		if (!atomic_test_bit(bt_dev.flags, BT_DEV_PSCAN)) {
-			return -EPERM;
+			return write_scan_enable(BT_BREDR_SCAN_INQUIRY);
+		}else{
+			return write_scan_enable(BT_BREDR_SCAN_INQUIRY |
+					 BT_BREDR_SCAN_PAGE);
 		}
 
-		return write_scan_enable(BT_BREDR_SCAN_INQUIRY |
-					 BT_BREDR_SCAN_PAGE);
 	} else {
 		if (!atomic_test_bit(bt_dev.flags, BT_DEV_ISCAN)) {
 			return -EALREADY;
 		}
 
-		return write_scan_enable(BT_BREDR_SCAN_PAGE);
+		if (atomic_test_bit(bt_dev.flags, BT_DEV_PSCAN)) {
+			return write_scan_enable(BT_BREDR_SCAN_PAGE);
+		}else{
+			return write_scan_enable(BT_BREDR_SCAN_DISABLED);
+		}
 	}
 }
 

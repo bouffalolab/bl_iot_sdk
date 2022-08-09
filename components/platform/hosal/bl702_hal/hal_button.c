@@ -165,8 +165,8 @@ static void button_process(xTimerHandle pxTimer)
             else if (accu_time >= pstnode->short_press_start_ms && accu_time < pstnode->short_press_end_ms) {
                 ret = check_button_is_up(pstnode);
                 if (ret == 0) {
-                    blog_info("process short press \r\n");
-                    aos_post_event(EV_KEY, pstnode->short_kevent, 0);
+                    blog_info("process short press %ld\r\n", pstnode->gpioPin);
+                    aos_post_event(EV_KEY, pstnode->short_kevent, pstnode->gpioPin);
                     clear_button_states(pstnode);
                     button_int_umask(pstnode);
 
@@ -204,7 +204,7 @@ static void button_process(xTimerHandle pxTimer)
                 ret = check_button_is_up(pstnode);
                 if (ret == 0) {
                     blog_info("process long press \r\n");
-                    aos_post_event(EV_KEY, pstnode->long_kevent, 0);
+                    aos_post_event(EV_KEY, pstnode->long_kevent, pstnode->gpioPin);
                     clear_button_states(pstnode);
                     button_int_umask(pstnode);
                     return;
@@ -234,7 +234,7 @@ static void button_process(xTimerHandle pxTimer)
             accu_time = accumulate_time(pstnode);
             if (accu_time >= pstnode->longlong_press_ms && pstnode->dlong_entry_count == 0) {
                 blog_info("process longlong press \r\n");
-                aos_post_event(EV_KEY, pstnode->longlong_kevent, 0);
+                aos_post_event(EV_KEY, pstnode->longlong_kevent, pstnode->gpioPin);
                 pstnode->dlong_entry_count = 1;
 
                 return ;

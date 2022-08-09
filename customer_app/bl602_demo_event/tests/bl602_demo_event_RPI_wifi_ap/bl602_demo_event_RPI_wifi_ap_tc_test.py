@@ -60,13 +60,12 @@ def connect_device(ssid):
 
     iface.remove_all_network_profiles()
     tmp_profile = iface.add_network_profile(profile)
-    while counter < 10:
+    while counter < 20:
         counter = counter +1
         print ('counter:{}'.format(counter))
         iface.connect(tmp_profile)
         time.sleep(10)
         status = iface.status()
-
         if status == const.IFACE_SCANNING:
             print ('scan')
         elif status == const.IFACE_INACTIVE:
@@ -75,6 +74,7 @@ def connect_device(ssid):
             print ('connecting')
         elif status == const.IFACE_DISCONNECTED:
             print ('disconnect')
+            time.sleep(5)
         elif status == const.IFACE_CONNECTED:
             print ('connected')
             return True

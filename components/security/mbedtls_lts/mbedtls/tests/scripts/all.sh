@@ -259,7 +259,7 @@ General options:
      --no-force         Refuse to overwrite modified files (default).
      --no-keep-going    Stop at the first error (default).
      --no-memory        No additional memory tests (default).
-     --no-quiet         Print full ouput from components.
+     --no-quiet         Print full output from components.
      --out-of-source-dir=<path>  Directory used for CMake out-of-source build tests.
      --outcome-file=<path>  File where test outcomes are written (not done if
                             empty; default: \$MBEDTLS_TEST_OUTCOME_FILE).
@@ -846,7 +846,6 @@ component_test_default_out_of_box () {
     msg "build: make, default config (out-of-box)" # ~1min
     make
     # Disable fancy stuff
-    SAVE_MBEDTLS_TEST_OUTCOME_FILE="$MBEDTLS_TEST_OUTCOME_FILE"
     unset MBEDTLS_TEST_OUTCOME_FILE
 
     msg "test: main suites make, default config (out-of-box)" # ~10s
@@ -854,9 +853,6 @@ component_test_default_out_of_box () {
 
     msg "selftest: make, default config (out-of-box)" # ~10s
     programs/test/selftest
-
-    export MBEDTLS_TEST_OUTCOME_FILE="$SAVE_MBEDTLS_TEST_OUTCOME_FILE"
-    unset SAVE_MBEDTLS_TEST_OUTCOME_FILE
 }
 
 component_test_default_cmake_gcc_asan () {
@@ -1511,8 +1507,23 @@ component_build_crypto_full () {
 component_build_crypto_baremetal () {
   msg "build: make, crypto only, baremetal config"
   scripts/config.py crypto_baremetal
-  make CFLAGS='-O1 -Werror'
+  make CFLAGS="-O1 -Werror -I$PWD/tests/include/baremetal-override/"
   are_empty_libraries library/libmbedx509.* library/libmbedtls.*
+}
+support_build_crypto_baremetal () {
+    support_build_baremetal "$@"
+}
+
+component_build_baremetal () {
+  msg "build: make, baremetal config"
+  scripts/config.py baremetal
+  make CFLAGS="-O1 -Werror -I$PWD/tests/include/baremetal-override/"
+}
+support_build_baremetal () {
+    # Older Glibc versions include time.h from other headers such as stdlib.h,
+    # which makes the no-time.h-in-baremetal check fail. Ubuntu 16.04 has this
+    # problem, Ubuntu 18.04 is ok.
+    ! grep -q -F time.h /usr/include/x86_64-linux-gnu/sys/types.h
 }
 
 component_test_depends_curves () {
@@ -1598,6 +1609,10 @@ component_test_psa_crypto_config_accel_ecdsa () {
     # partial support for cipher operations in the driver test library.
     scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_STREAM_CIPHER
     scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_ECB_NO_PADDING
+    # Disable obsolete hashes (alternatively we could enable support for them
+    # in the driver test library).
+    scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_MD2
+    scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_MD4
 
     # SHA384 needed for some ECDSA signature tests.
     scripts/config.py -f tests/include/test/drivers/config_test_driver.h set MBEDTLS_SHA512_C
@@ -1619,10 +1634,7 @@ component_test_psa_crypto_config_accel_ecdsa () {
     loc_accel_flags="$loc_accel_flags $( echo "$loc_accel_list" | sed 's/[^ ]* */-DMBEDTLS_PSA_ACCEL_&/g' )"
     make CFLAGS="$ASAN_CFLAGS -O -Werror -I../tests/include -I../tests -DPSA_CRYPTO_DRIVER_TEST -DMBEDTLS_TEST_LIBTESTDRIVER1 $loc_accel_flags" LDFLAGS="-ltestdriver1 $ASAN_CFLAGS"
 
-    unset loc_accel_flags
-    unset loc_accel_list
-
-    if_build_succeeded not grep mbedtls_ecdsa_ library/ecdsa.o
+    not grep mbedtls_ecdsa_ library/ecdsa.o
 
     msg "test: MBEDTLS_PSA_CRYPTO_CONFIG with accelerated ECDSA"
     make test
@@ -1705,11 +1717,8 @@ component_test_psa_crypto_config_accel_rsa_signature () {
     loc_accel_flags="$loc_accel_flags $( echo "$loc_accel_list" | sed 's/[^ ]* */-DMBEDTLS_PSA_ACCEL_&/g' )"
     make CFLAGS="$ASAN_CFLAGS -Werror -I../tests/include -I../tests -DPSA_CRYPTO_DRIVER_TEST -DMBEDTLS_TEST_LIBTESTDRIVER1 $loc_accel_flags" LDFLAGS="-ltestdriver1 $ASAN_CFLAGS"
 
-    unset loc_accel_flags
-    unset loc_accel_list
-
-    if_build_succeeded not grep mbedtls_rsa_rsassa_pkcs1_v15_sign library/rsa.o
-    if_build_succeeded not grep mbedtls_rsa_rsassa_pss_sign_ext library/rsa.o
+    not grep mbedtls_rsa_rsassa_pkcs1_v15_sign library/rsa.o
+    not grep mbedtls_rsa_rsassa_pss_sign_ext library/rsa.o
 
     msg "test: MBEDTLS_PSA_CRYPTO_CONFIG with accelerated RSA signature"
     make test
@@ -1745,11 +1754,8 @@ component_test_psa_crypto_config_accel_hash () {
     loc_accel_flags="$loc_accel_flags $( echo "$loc_accel_list" | sed 's/[^ ]* */-DMBEDTLS_PSA_ACCEL_&/g' )"
     make CFLAGS="$ASAN_CFLAGS -Werror -I../tests/include -I../tests -DPSA_CRYPTO_DRIVER_TEST -DMBEDTLS_TEST_LIBTESTDRIVER1 $loc_accel_flags" LDFLAGS="-ltestdriver1 $ASAN_CFLAGS"
 
-    unset loc_accel_flags
-    unset loc_accel_list
-
-    if_build_succeeded not grep mbedtls_sha512_init library/sha512.o
-    if_build_succeeded not grep mbedtls_sha1_init library/sha1.o
+    not grep mbedtls_sha512_init library/sha512.o
+    not grep mbedtls_sha1_init library/sha1.o
 
     msg "test: MBEDTLS_PSA_CRYPTO_CONFIG with accelerated hash"
     make test
@@ -1757,6 +1763,10 @@ component_test_psa_crypto_config_accel_hash () {
 
 component_test_psa_crypto_config_accel_cipher () {
     msg "test: MBEDTLS_PSA_CRYPTO_CONFIG with accelerated cipher"
+
+    # This test case focuses on cipher+AEAD. We don't yet support all
+    # combinations of configurations, so deactivate block-cipher-based MACs.
+    scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_CMAC
 
     loc_accel_list="ALG_CBC_NO_PADDING ALG_CBC_PKCS7 ALG_CTR ALG_CFB ALG_OFB ALG_XTS KEY_TYPE_DES"
     loc_accel_flags=$( echo "$loc_accel_list" | sed 's/[^ ]* */-DLIBTESTDRIVER1_MBEDTLS_PSA_ACCEL_&/g' )
@@ -1772,7 +1782,6 @@ component_test_psa_crypto_config_accel_cipher () {
     # PSA configuration options.
     scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_STREAM_CIPHER
     scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_ECB_NO_PADDING
-    scripts/config.py -f include/psa/crypto_config.h unset PSA_WANT_ALG_CMAC
 
     scripts/config.py unset MBEDTLS_CIPHER_MODE_CBC
     scripts/config.py unset MBEDTLS_CIPHER_PADDING_PKCS7
@@ -1785,10 +1794,7 @@ component_test_psa_crypto_config_accel_cipher () {
     loc_accel_flags="$loc_accel_flags $( echo "$loc_accel_list" | sed 's/[^ ]* */-DMBEDTLS_PSA_ACCEL_&/g' )"
     make CFLAGS="$ASAN_CFLAGS -Werror -I../tests/include -I../tests -DPSA_CRYPTO_DRIVER_TEST -DMBEDTLS_TEST_LIBTESTDRIVER1 $loc_accel_flags" LDFLAGS="-ltestdriver1 $ASAN_CFLAGS"
 
-    unset loc_accel_flags
-    unset loc_accel_list
-
-    if_build_succeeded not grep mbedtls_des* library/des.o
+    not grep mbedtls_des* library/des.o
 
     msg "test: MBEDTLS_PSA_CRYPTO_CONFIG with accelerated hash"
     make test
@@ -2576,7 +2582,6 @@ component_test_psa_crypto_drivers () {
     loc_cflags="${loc_cflags} -I../tests/include -O2"
 
     make CC=gcc CFLAGS="${loc_cflags}" LDFLAGS="$ASAN_CFLAGS"
-    unset loc_cflags
 
     msg "test: full + MBEDTLS_PSA_CRYPTO_DRIVERS"
     make test
@@ -2624,13 +2629,42 @@ component_test_gcc_opt () {
 
 component_build_mbedtls_config_file () {
     msg "build: make with MBEDTLS_CONFIG_FILE" # ~40s
-    # Use the full config so as to catch a maximum of places where
-    # the check of MBEDTLS_CONFIG_FILE might be missing.
-    scripts/config.py full
-    sed 's!"check_config.h"!"mbedtls/check_config.h"!' <"$CONFIG_H" >full_config.h
+    scripts/config.py -w full_config.h full
     echo '#error "MBEDTLS_CONFIG_FILE is not working"' >"$CONFIG_H"
     make CFLAGS="-I '$PWD' -DMBEDTLS_CONFIG_FILE='\"full_config.h\"'"
-    rm -f full_config.h
+    # Make sure this feature is enabled. We'll disable it in the next phase.
+    programs/test/query_compile_time_config MBEDTLS_NIST_KW_C
+    make clean
+
+    msg "build: make with MBEDTLS_CONFIG_FILE + MBEDTLS_USER_CONFIG_FILE"
+    # In the user config, disable one feature (for simplicity, pick a feature
+    # that nothing else depends on).
+    echo '#undef MBEDTLS_NIST_KW_C' >user_config.h
+    make CFLAGS="-I '$PWD' -DMBEDTLS_CONFIG_FILE='\"full_config.h\"' -DMBEDTLS_USER_CONFIG_FILE='\"user_config.h\"'"
+    not programs/test/query_compile_time_config MBEDTLS_NIST_KW_C
+
+    rm -f user_config.h full_config.h
+}
+
+component_build_psa_config_file () {
+    msg "build: make with MBEDTLS_PSA_CRYPTO_CONFIG_FILE" # ~40s
+    scripts/config.py set MBEDTLS_PSA_CRYPTO_CONFIG
+    cp "$CRYPTO_CONFIG_H" psa_test_config.h
+    echo '#error "MBEDTLS_PSA_CRYPTO_CONFIG_FILE is not working"' >"$CRYPTO_CONFIG_H"
+    make CFLAGS="-I '$PWD' -DMBEDTLS_PSA_CRYPTO_CONFIG_FILE='\"psa_test_config.h\"'"
+    # Make sure this feature is enabled. We'll disable it in the next phase.
+    programs/test/query_compile_time_config MBEDTLS_CMAC_C
+    make clean
+
+    msg "build: make with MBEDTLS_PSA_CRYPTO_CONFIG_FILE + MBEDTLS_PSA_CRYPTO_USER_CONFIG_FILE" # ~40s
+    # In the user config, disable one feature, which will reflect on the
+    # mbedtls configuration so we can query it with query_compile_time_config.
+    echo '#undef PSA_WANT_ALG_CMAC' >psa_user_config.h
+    scripts/config.py unset MBEDTLS_CMAC_C
+    make CFLAGS="-I '$PWD' -DMBEDTLS_PSA_CRYPTO_CONFIG_FILE='\"psa_test_config.h\"' -DMBEDTLS_PSA_CRYPTO_USER_CONFIG_FILE='\"psa_user_config.h\"'"
+    not programs/test/query_compile_time_config MBEDTLS_CMAC_C
+
+    rm -f psa_test_config.h psa_user_config.h
 }
 
 component_test_m32_o0 () {
@@ -2769,25 +2803,25 @@ component_test_no_strings () {
 }
 
 component_build_arm_none_eabi_gcc () {
-    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -O1" # ~ 10s
+    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -O1, baremetal+debug" # ~ 10s
     scripts/config.py baremetal
     make CC="${ARM_NONE_EABI_GCC_PREFIX}gcc" AR="${ARM_NONE_EABI_GCC_PREFIX}ar" LD="${ARM_NONE_EABI_GCC_PREFIX}ld" CFLAGS='-std=c99 -Werror -Wall -Wextra -O1' lib
 
-    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -O1"
+    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -O1, baremetal+debug"
     ${ARM_NONE_EABI_GCC_PREFIX}size library/*.o
 }
 
 component_build_arm_linux_gnueabi_gcc_arm5vte () {
-    msg "build: ${ARM_LINUX_GNUEABI_GCC_PREFIX}gcc -march=arm5vte" # ~ 10s
+    msg "build: ${ARM_LINUX_GNUEABI_GCC_PREFIX}gcc -march=arm5vte, baremetal+debug" # ~ 10s
     scripts/config.py baremetal
     # Build for a target platform that's close to what Debian uses
     # for its "armel" distribution (https://wiki.debian.org/ArmEabiPort).
-    # See https://github.com/ARMmbed/mbedtls/pull/2169 and comments.
+    # See https://github.com/Mbed-TLS/mbedtls/pull/2169 and comments.
     # Build everything including programs, see for example
-    # https://github.com/ARMmbed/mbedtls/pull/3449#issuecomment-675313720
+    # https://github.com/Mbed-TLS/mbedtls/pull/3449#issuecomment-675313720
     make CC="${ARM_LINUX_GNUEABI_GCC_PREFIX}gcc" AR="${ARM_LINUX_GNUEABI_GCC_PREFIX}ar" CFLAGS='-Werror -Wall -Wextra -march=armv5te -O1' LDFLAGS='-march=armv5te'
 
-    msg "size: ${ARM_LINUX_GNUEABI_GCC_PREFIX}gcc -march=armv5te -O1"
+    msg "size: ${ARM_LINUX_GNUEABI_GCC_PREFIX}gcc -march=armv5te -O1, baremetal+debug"
     ${ARM_LINUX_GNUEABI_GCC_PREFIX}size library/*.o
 }
 support_build_arm_linux_gnueabi_gcc_arm5vte () {
@@ -2795,23 +2829,23 @@ support_build_arm_linux_gnueabi_gcc_arm5vte () {
 }
 
 component_build_arm_none_eabi_gcc_arm5vte () {
-    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -march=arm5vte" # ~ 10s
+    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -march=arm5vte, baremetal+debug" # ~ 10s
     scripts/config.py baremetal
     # This is an imperfect substitute for
     # component_build_arm_linux_gnueabi_gcc_arm5vte
     # in case the gcc-arm-linux-gnueabi toolchain is not available
     make CC="${ARM_NONE_EABI_GCC_PREFIX}gcc" AR="${ARM_NONE_EABI_GCC_PREFIX}ar" CFLAGS='-std=c99 -Werror -Wall -Wextra -march=armv5te -O1' LDFLAGS='-march=armv5te' SHELL='sh -x' lib
 
-    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -march=armv5te -O1"
+    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -march=armv5te -O1, baremetal+debug"
     ${ARM_NONE_EABI_GCC_PREFIX}size library/*.o
 }
 
 component_build_arm_none_eabi_gcc_m0plus () {
-    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -mthumb -mcpu=cortex-m0plus" # ~ 10s
-    scripts/config.py baremetal
+    msg "build: ${ARM_NONE_EABI_GCC_PREFIX}gcc -mthumb -mcpu=cortex-m0plus, baremetal_size" # ~ 10s
+    scripts/config.py baremetal_size
     make CC="${ARM_NONE_EABI_GCC_PREFIX}gcc" AR="${ARM_NONE_EABI_GCC_PREFIX}ar" LD="${ARM_NONE_EABI_GCC_PREFIX}ld" CFLAGS='-std=c99 -Werror -Wall -Wextra -mthumb -mcpu=cortex-m0plus -Os' lib
 
-    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -mthumb -mcpu=cortex-m0plus -Os"
+    msg "size: ${ARM_NONE_EABI_GCC_PREFIX}gcc -mthumb -mcpu=cortex-m0plus -Os, baremetal_size"
     ${ARM_NONE_EABI_GCC_PREFIX}size library/*.o
 }
 
@@ -2985,26 +3019,25 @@ component_test_cmake_out_of_source () {
     # "No such file or directory", which would indicate that some required
     # file is missing (ssl-opt.sh tolerates the absence of some files so
     # may exit with status 0 but emit errors).
-    ./tests/ssl-opt.sh -f 'Fallback SCSV: beginning of list' 2>ssl-opt.err
+    ./tests/ssl-opt.sh -f 'Fallback SCSV: beginning of list' >ssl-opt.out 2>ssl-opt.err
+    grep PASS ssl-opt.out
     cat ssl-opt.err >&2
     # If ssl-opt.err is non-empty, record an error and keep going.
     [ ! -s ssl-opt.err ]
-    rm ssl-opt.err
+    rm ssl-opt.out ssl-opt.err
     cd "$MBEDTLS_ROOT_DIR"
     rm -rf "$OUT_OF_SOURCE_DIR"
 }
 
 component_test_cmake_as_subdirectory () {
     msg "build: cmake 'as-subdirectory' build"
-    MBEDTLS_ROOT_DIR="$PWD"
-
     cd programs/test/cmake_subproject
     cmake .
     make
     ./cmake_subproject
-
-    cd "$MBEDTLS_ROOT_DIR"
-    unset MBEDTLS_ROOT_DIR
+}
+support_test_cmake_as_subdirectory () {
+    support_test_cmake_out_of_source
 }
 
 component_test_zeroize () {
@@ -3033,8 +3066,6 @@ component_test_zeroize () {
             make clean
         done
     done
-
-    unset gdb_disable_aslr
 }
 
 component_test_psa_compliance () {

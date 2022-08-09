@@ -616,7 +616,7 @@ int bl_send_remove_if(struct bl_hw *bl_hw, uint8_t inst_nbr)
     return bl_send_msg(bl_hw, remove_if_req_param, 1, MM_REMOVE_IF_CFM, NULL);
 }
 
-int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid, const uint8_t *mac)
+int bl_send_scanu_req(struct bl_hw *bl_hw, struct bl_send_scanu_para *scanu_para)
 {
     struct scanu_start_req *req;
     int i, index;
@@ -633,30 +633,30 @@ int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_
     }
 
     /* Set parameters */
-    //FIXME should we use vif_index_sta when NO sta is added or just use 0?
-    req->vif_idx = bl_hw->vif_index_sta;
-    if (0 == channel_num) {
+    // Always use idx 0, because vif_idx in vif_entry could be 0, leading to probe_rep tx fail
+    req->vif_idx = 0;
+    if (0 == scanu_para->channel_num) {
         req->chan_cnt = channel_num_default;
     } else {
-        req->chan_cnt = channel_num;
+        req->chan_cnt = scanu_para->channel_num;
     }
 
     req->ssid_cnt = 1;
-    if (ssid != NULL && ssid->length) {
-        req->ssid[0].length = ssid->length;
-        memcpy(req->ssid[0].array, ssid->array, req->ssid[0].length);
+    if (scanu_para->ssid != NULL && scanu_para->ssid->length) {
+        req->ssid[0].length = scanu_para->ssid->length;
+        memcpy(req->ssid[0].array, scanu_para->ssid->array, req->ssid[0].length);
     } else {
         req->ssid[0].length = 0;
+        //if specfied ssid, ignore user setting passive mode
+        if (req->ssid_cnt == 0 || scanu_para->scan_mode == SCAN_PASSIVE) 
+        {
+            chan_flags |= SCAN_PASSIVE_BIT;
+        }
     }
-    memcpy((uint8_t *)&(req->bssid), (uint8_t *)bssid, ETH_ALEN);
-    memcpy(&(req->mac), mac, ETH_ALEN);
+    memcpy((uint8_t *)&(req->bssid), (uint8_t *)scanu_para->bssid, ETH_ALEN);
+    memcpy(&(req->mac), scanu_para->mac, ETH_ALEN);
     req->no_cck = true;//FIXME params? talk with firmware guys
 
-
-    if (req->ssid_cnt == 0) 
-    {
-        chan_flags |= SCAN_PASSIVE_BIT;
-    }
 #if 0
     for (i = 0; i < req->ssid_cnt; i++) {
         int j;
@@ -671,7 +671,7 @@ int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_
     req->add_ies = 0;
 
     for (i = 0; i < req->chan_cnt; i++) {
-        index = (channel_num_default == req->chan_cnt) ? i : (channels[i] - 1);
+        index = (channel_num_default == req->chan_cnt) ? i : (scanu_para->channels[i] - 1);
         chan = &(channels_default[index]);
 
         req->chan[i].band = chan->band;
@@ -679,6 +679,8 @@ int bl_send_scanu_req(struct bl_hw *bl_hw, uint16_t *channels, uint16_t channel_
         req->chan[i].flags = chan_flags | passive_scan_flag(chan->flags);
         req->chan[i].tx_power = chan->max_reg_power;
     }
+
+    req->duration_scan = scanu_para->duration_scan;
 
     /* Send the SCANU_START_REQ message to LMAC FW */
     return bl_send_msg(bl_hw, req, 0, 0, NULL);

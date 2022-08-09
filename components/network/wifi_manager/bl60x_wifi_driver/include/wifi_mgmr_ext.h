@@ -77,7 +77,11 @@ struct ap_connect_adv {
 
     /* MISC flags */
     /* XXX following flag values and connection flags defined in mac.h should be identical */
+#define WIFI_CONNECT_STOP_SCAN_ALL_CHANNEL_IF_TARGET_AP_FOUND     (1 << 6)
+#define WIFI_CONNECT_PCI_EN                                       (1 << 7)
 #define WIFI_CONNECT_STOP_SCAN_CURRENT_CHANNEL_IF_TARGET_AP_FOUND (1 << 8)
+#define WIFI_CONNECT_PMF_CAPABLE                                  (1 << 9)
+#define WIFI_CONNECT_PMF_REQUIRED                                 (1 << 10)
     uint32_t flags;
 };
 
@@ -245,6 +249,7 @@ int wifi_mgmr_ap_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask);
 int wifi_mgmr_ap_stop(wifi_interface_t *interface);
 int wifi_mgmr_ap_start(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel);
 int wifi_mgmr_ap_start_adv(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, uint8_t use_dhcp);
+int wifi_mgmr_ap_start_atcmd(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, int max_sta_supported);
 int wifi_mgmr_ap_sta_cnt_get(uint8_t *sta_cnt);
 int wifi_mgmr_ap_sta_info_get(struct wifi_sta_basic_info *sta_info, uint8_t idx);
 int wifi_mgmr_ap_sta_delete(uint8_t sta_idx);
@@ -268,7 +273,7 @@ int wifi_mgmr_channel_set(int channel, int use_40Mhz);
 int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num);
 int wifi_mgmr_scan_filter_hidden_ssid(int filter);
 int wifi_mgmr_scan(void *data, scan_complete_cb_t cb);
-int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid);
+int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid, uint8_t scan_mode, uint32_t duration_scan);
 int wifi_mgmr_cfg_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, uint32_t length, uint32_t *buf);
 int wifi_mgmr_scan_complete_callback();
 int wifi_mgmr_cli_scanlist(void);

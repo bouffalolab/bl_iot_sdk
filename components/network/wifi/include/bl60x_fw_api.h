@@ -439,6 +439,7 @@ typedef enum wifi_fw_event_id
 #define WLAN_FW_DISCONNECT_BY_USER_WITH_DEAUTH                   19
 #define WLAN_FW_DISCONNECT_BY_USER_NO_DEAUTH                     20
 #define WLAN_FW_DISCONNECT_BY_FW_PS_TX_NULLFRAME_FAILURE         21
+#define WLAN_FW_TRAFFIC_LOSS                                     22
 
 
 /*--------------------------------------------------------------------*/

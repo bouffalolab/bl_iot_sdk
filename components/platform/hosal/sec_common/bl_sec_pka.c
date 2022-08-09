@@ -40,6 +40,8 @@ int bl_sec_pka_init(void)
 {
 #if defined(BL616) || defined BL808
     GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_MCU_MUXPLL_160M);
+#elif defined(BL702L)
+    GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_SRC_HCLK);
 #else
     GLB_Set_PKA_CLK_Sel(GLB_PKA_CLK_HCLK);
 #endif

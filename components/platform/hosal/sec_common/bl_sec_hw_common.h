@@ -39,6 +39,9 @@
 #elif defined BL702
 #include <bl702_glb.h>
 #include <bl702_sec_eng.h>
+#elif defined BL702L
+#include <bl702l_glb.h>
+#include <bl702l_sec_eng.h>
 #elif defined BL808
 #include <bl808_glb.h>
 #include <bl808_sec_eng.h>

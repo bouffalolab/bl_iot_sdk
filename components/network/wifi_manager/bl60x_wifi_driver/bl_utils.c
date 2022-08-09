@@ -406,6 +406,9 @@ int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int ms
 #if defined(CFG_CHIP_BL808)
     h = _handle_frame_from_stack_with_mempool(swdesc, msdu_offset, pkt);
     zerocopy = false;
+#elif defined(CFG_CHIP_BL606P)
+    h = _handle_frame_from_stack_with_mempool(swdesc, msdu_offset, pkt);
+    zerocopy = false;
 #else
     h = _handle_frame_from_stack_with_zerocopy(swdesc, msdu_offset, pkt);
     zerocopy = true;

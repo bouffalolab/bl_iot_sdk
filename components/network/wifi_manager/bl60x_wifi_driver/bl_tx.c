@@ -49,7 +49,7 @@ static struct bl_hw *bl_hw_static = &wifi_hw;
 #define ARRAY_LEN(a) (sizeof(a) / sizeof((a)[0]))
 #endif
 
-#if defined(CFG_CHIP_BL808)
+#if defined(CFG_CHIP_BL808) || defined(CFG_CHIP_BL606P)
 void bl_tx_push(struct bl_hw *bl_hw, struct bl_txhdr *txhdr)
 {
     volatile struct hostdesc *host;

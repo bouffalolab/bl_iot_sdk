@@ -39,7 +39,7 @@
 #include <blog.h>
 
 #define USER_UNUSED(a) ((void)(a))
-#define GPIO_MAX_NUM        37
+#define GPIO_MAX_NUM        31
 #define GPIO_MAX_NUM_STR    "max_num"
 #define BL_FDT32_TO_U8(addr, byte_offset)   ((uint8_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))
 #define BL_FDT32_TO_U16(addr, byte_offset)  ((uint16_t)fdt32_to_cpu(*(uint32_t *)((uint8_t *)addr + byte_offset)))

@@ -445,7 +445,6 @@ int bl_pm_capacity_set(enum PM_LEVEL level)
             capacity |= NODE_CAP_BIT_MAC_DOZE;
             capacity |= NODE_CAP_BIT_RF_ONOFF;
             capacity |= NODE_CAP_BIT_WLAN_BLE_ABORT;
-            capacity |= NODE_CAP_BIT_FORCE_SLEEP;
         }
         break;
 

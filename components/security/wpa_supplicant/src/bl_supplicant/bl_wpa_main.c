@@ -281,6 +281,7 @@ static const struct wpa_funcs wpa_cb = {
 #ifdef CONFIG_WPA3_SAE
     .wpa3_build_sae_msg = wpa3_build_sae_msg,
     .wpa3_parse_sae_msg = wpa3_parse_sae_msg,
+    .wpa3_clear_sae     = bl_wpa3_free_sae_data,
 #else
     .wpa3_build_sae_msg = NULL,
     .wpa3_parse_sae_msg = NULL,

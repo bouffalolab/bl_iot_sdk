@@ -57,6 +57,6 @@ struct romapi_freertos_map
 struct romapi_freertos_map* hal_sys_romapi_get(void);
 void hal_sys_romapi_update(struct romapi_freertos_map *romapi);
 void hal_sys_capcode_update(uint8_t capin, uint8_t capout);
-
+uint8_t hal_sys_capcode_get(void);
 
 #endif

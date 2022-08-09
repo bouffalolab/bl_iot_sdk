@@ -226,10 +226,13 @@ int bl606a0_wifi_init(wifi_conf_t *conf)
     wifiMgmr.hostname[MAX_HOSTNAME_LEN_CHECK - 1] = '\0';
     bl_os_printf("     hostname: %s\r\n", wifiMgmr.hostname);
     bl_msg_update_channel_cfg(conf->country_code);
+    strncpy(wifiMgmr.country_code, conf->country_code, sizeof(wifiMgmr.country_code));
+    wifiMgmr.country_code[2] = '\0';
     bl_os_printf("-----------------------------------------------------\r\n");
     bl_wifi_clock_enable();//Enable wifi clock
     memset(&bl606a0_sta, 0, sizeof(bl606a0_sta));
     ret = bl_main_rtthread_start(&(bl606a0_sta.bl_hw));
+    wifiMgmr.channel_nums = bl_msg_get_channel_nums();
 
     return ret;
 }

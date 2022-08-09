@@ -70,6 +70,24 @@ enum
     CO_OP_IN_PROGRESS,
 };
 
+/// WiFi Mode
+typedef enum {
+    /// 802.ll b
+    WIFI_MODE_802_11B       = 0x01,
+    /// 802.11 a
+    WIFI_MODE_802_11A       = 0x02,
+    /// 802.11 g
+    WIFI_MODE_802_11G       = 0x04,
+    /// 802.11n at 2.4GHz
+    WIFI_MODE_802_11N_2_4   = 0x08,
+    /// 802.11n at 5GHz
+    WIFI_MODE_802_11N_5     = 0x10,
+    /// 802.11ac at 5GHz
+    WIFI_MODE_802_11AC_5    = 0x20,
+    /// Reserved for future use
+    WIFI_MODE_RESERVED      = 0x40,
+} WiFi_Mode_t;
+
 /// Remain on channel operation codes
 enum mm_remain_on_channel_op
 {
@@ -793,6 +811,8 @@ struct scanu_start_req
     bool no_cck;
     /// MISC flags
     uint32_t flags;
+    /// channel scan time
+    uint32_t duration_scan;
 };
 
 struct scanu_raw_send_req

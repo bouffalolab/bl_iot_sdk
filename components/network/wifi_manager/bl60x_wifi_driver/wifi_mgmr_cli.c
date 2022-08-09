@@ -42,6 +42,7 @@
 #include <utils_string.h>
 #include <utils_getopt.h>
 #include <wifi_mgmr_ext.h>
+#include <bl_defs.h>
 
 #define WIFI_AP_DATA_RATE_1Mbps      0x00
 #define WIFI_AP_DATA_RATE_2Mbps      0x01
@@ -272,7 +273,7 @@ int wifi_mgmr_cli_scanlist(void)
     bl_os_printf("****************************************************************************************************\r\n");
     for (i = 0; i < sizeof(wifiMgmr.scan_items)/sizeof(wifiMgmr.scan_items[0]); i++) {
         if (wifiMgmr.scan_items[i].is_used && (!wifi_mgmr_scan_item_is_timeout(&wifiMgmr, &wifiMgmr.scan_items[i]))) {
-            bl_os_printf("index[%02d]: channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm abs:rel %3d : %3d, auth %20s, cipher:%12s, SSID %s\r\n",
+            bl_os_printf("index[%02d]: channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm abs:rel %3d : %3d, wps %2d, mode %6s, auth %20s, cipher:%12s, SSID %s\r\n",
                     i,
                     wifiMgmr.scan_items[i].channel,
                     wifiMgmr.scan_items[i].bssid[0],
@@ -284,6 +285,8 @@ int wifi_mgmr_cli_scanlist(void)
                     wifiMgmr.scan_items[i].rssi,
                     wifiMgmr.scan_items[i].ppm_abs,
                     wifiMgmr.scan_items[i].ppm_rel,
+                    wifiMgmr.scan_items[i].wps,
+                    wifi_mgmr_mode_to_str(wifiMgmr.scan_items[i].mode),
                     wifi_mgmr_auth_to_str(wifiMgmr.scan_items[i].auth),
                     wifi_mgmr_cipher_to_str(wifiMgmr.scan_items[i].cipher),
                     wifiMgmr.scan_items[i].ssid
@@ -342,7 +345,7 @@ static void wifi_bcnint_set(char *buf, int len, int argc, char **argv)
     }
 }
 
-static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXED_CHANNELS_LIMIT], uint8_t bssid[6], const char *ssid)
+static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXED_CHANNELS_LIMIT], uint8_t bssid[6], const char *ssid, uint8_t scan_mode, uint32_t duration_scan)
 {
     int i;
     uint16_t channel_num = 0;
@@ -352,7 +355,7 @@ static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXE
         channels[i] = channel_input[i];
     }
     channel_num = channel_input_num;
-    wifi_mgmr_scan_adv(NULL, NULL, channels, channel_num, bssid, ssid);
+    wifi_mgmr_scan_adv(NULL, NULL, channels, channel_num, bssid, ssid, scan_mode, duration_scan);
 
 }
 
@@ -365,11 +368,18 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
     int bssid_set_flag = 0;
     uint8_t mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
     getopt_env_t getopt_env;
+    /* 
+     * default: active scan
+    */
+    uint8_t scan_mode = SCAN_ACTIVE;
+    /*if 0, use default scan time in fw,
+     * unit:us*/
+    uint32_t duration_scan_us = 0;
 
 
     utils_getopt_init(&getopt_env, 0);
 
-    while ((opt = utils_getopt(&getopt_env, argc, argv, "s:c:b:")) != -1) {
+    while ((opt = utils_getopt(&getopt_env, argc, argv, "s:c:b:mt:")) != -1) {
         switch (opt) {
             case 's':
             {
@@ -384,10 +394,22 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
             break;
             case 'b':
             {
-                  bssid_set_flag = 1;
-                  utils_parse_number(getopt_env.optarg, ':', mac, 6, 16);
-                  bl_os_printf("bssid: %s, mac:%02X:%02X:%02X:%02X:%02X:%02X\r\n", getopt_env.optarg,
+                bssid_set_flag = 1;
+                utils_parse_number(getopt_env.optarg, ':', mac, 6, 16);
+                bl_os_printf("bssid: %s, mac:%02X:%02X:%02X:%02X:%02X:%02X\r\n", getopt_env.optarg,
                          mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+            }
+            break;
+            case 'm':
+            {
+                scan_mode = SCAN_PASSIVE;
+                bl_os_printf("set scan mode: passive scan(%d)\r\n", scan_mode);
+            }
+            break;
+            case 't':
+            {
+                duration_scan_us = atoi(getopt_env.optarg);
+                duration_scan_us *= 1000;
             }
             break;
             default:
@@ -397,14 +419,7 @@ static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
         }
     }
 
-    if (channel_input_num || ssid || bssid_set_flag) {
-        /*channel list specified scan*/
-        _scan_channels(channel_input_num, channel_input, mac, ssid);
-        return;
-    }
-
-    /*normal scan*/
-    wifi_mgmr_scan(NULL, NULL);
+    _scan_channels(channel_input_num, channel_input, mac, ssid, scan_mode, duration_scan_us);
 }
 
 static void wifi_scan_filter_cmd(char *buf, int len, int argc, char **argv)
@@ -572,6 +587,10 @@ static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
     int quick_connect = 0;
     uint32_t flags = 0;
     open_bss_flag = 0;
+    int pci_en = 0;
+    int scan_mode = 0;
+    uint8_t pmf_flag = WIFI_MGMR_CONNECT_PMF_CAPABLE_BIT; 
+    uint16_t itv = 0;
 
     if (2 > argc) {
         goto _ERROUT;
@@ -579,7 +598,7 @@ static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
 
     utils_getopt_init(&getopt_env, 0);
 
-    while ((opt = utils_getopt(&getopt_env, argc, argv, "c:b:q")) != -1) {
+    while ((opt = utils_getopt(&getopt_env, argc, argv, "c:b:t:qmpf:")) != -1) {
         switch (opt) {
         case 'c':
             channel_index = atoi(getopt_env.optarg);
@@ -594,6 +613,28 @@ static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
 
         case 'q':
             ++quick_connect;
+            break;
+        
+        case 't':
+            itv = atoi(getopt_env.optarg);
+            wifi_mgmr_set_listen_interval(itv);
+            bl_os_printf("set listen itv: %d\r\n", itv);
+            break;
+
+        case 'm':
+            ++scan_mode;
+            break;
+
+        case 'p':
+            ++pci_en;
+            break;
+
+        case 'f':
+            pmf_flag = atoi(getopt_env.optarg);
+            if (pmf_flag == 2) {
+                bl_os_printf("wrong pmf_flag value, value range [0/1/3]\r\n");
+                goto _ERROUT;
+            }
             break;
 
         case '?':
@@ -616,13 +657,32 @@ static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
         flags |= WIFI_CONNECT_STOP_SCAN_CURRENT_CHANNEL_IF_TARGET_AP_FOUND;
     }
 
+    if (scan_mode) {
+        flags |= WIFI_CONNECT_STOP_SCAN_ALL_CHANNEL_IF_TARGET_AP_FOUND;
+    }
+
+    if (pci_en) {
+        flags |= WIFI_CONNECT_PCI_EN;
+    }
+
+    if (pmf_flag & WIFI_MGMR_CONNECT_PMF_CAPABLE_BIT) {
+        flags |= WIFI_CONNECT_PMF_CAPABLE;
+    } else {
+        flags &= ~WIFI_CONNECT_PMF_CAPABLE;
+    }
+    if (pmf_flag & WIFI_MGMR_CONNECT_PMF_REQUIRED_BIT) {
+        flags |= WIFI_CONNECT_PMF_REQUIRED;
+    } else {
+        flags &= ~WIFI_CONNECT_PMF_REQUIRED;
+    }
+
     wifi_interface = wifi_mgmr_sta_enable();
     wifi_mgmr_sta_connect_mid(wifi_interface, argv[getopt_env.optind], open_bss_flag ? NULL : argv[getopt_env.optind+1], NULL, bssid_set_flag ? mac : NULL, 0, channel_index, 1, flags);
 
     return;
 
 _ERROUT:
-    bl_os_printf("[USAGE]: %s [-c <freq>] [-b <bssid>] [-q] <ssid> [password]\r\n", argv[0]);
+    bl_os_printf("[USAGE]: %s [-c <freq>] [-b <bssid>] [-q] [-p] [-f <pmf_flag>] [-t <listen_itv>] [-m] <ssid> [password]\r\n", argv[0]);
     return;
 }
 
@@ -834,6 +894,7 @@ static void cmd_wifi_ap_start(char *buf, int len, int argc, char **argv)
     uint8_t hidden_ssid = 0;
     char ssid_name[32];
     int channel;
+    int max_sta_supported;
     wifi_interface_t wifi_interface;
 
     memset(mac, 0, sizeof(mac));
@@ -848,14 +909,25 @@ static void cmd_wifi_ap_start(char *buf, int len, int argc, char **argv)
         wifi_mgmr_ap_start(wifi_interface, ssid_name, hidden_ssid, NULL, 1);
     } else {
         /*hardcode password*/
-        if (3 == argc) {
+        if (4 == argc) {
             hidden_ssid = 1;
         }
+
         channel = atoi(argv[1]);
-        if (channel <=0 || channel > 11) {
+        if (channel <= 0 || channel > 11) {
             return;
         }
-        wifi_mgmr_ap_start(wifi_interface, ssid_name, hidden_ssid, "12345678", channel);
+
+        if (NULL == argv[2]) {
+            max_sta_supported = -1;
+        } else {
+            max_sta_supported = atoi(argv[2]);
+            if (max_sta_supported > NX_REMOTE_STA_MAX) {
+                max_sta_supported = NX_REMOTE_STA_MAX;
+            }
+        }
+
+        wifi_mgmr_ap_start_atcmd(wifi_interface, ssid_name, hidden_ssid, "12345678", channel, max_sta_supported);
     }
 }
 
@@ -1117,7 +1189,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_sta_denoise_disable", "wifi denoise", wifi_denoise_disable_cmd},
         { "wifi_sniffer_on", "wifi sniffer mode on", wifi_sniffer_on_cmd},
         { "wifi_sniffer_off", "wifi sniffer mode off", wifi_sniffer_off_cmd},
-        { "wifi_ap_start", "start Ap mode", cmd_wifi_ap_start},
+        { "wifi_ap_start", "start Ap mode [channel] [max_sta_supported]", cmd_wifi_ap_start},
         { "wifi_ap_stop", "stop Ap mode", cmd_wifi_ap_stop},
         { "wifi_ap_conf_max_sta", "config Ap max sta", cmd_wifi_ap_conf_max_sta},
         { "wifi_dump", "dump fw statistic", cmd_wifi_dump},

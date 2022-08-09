@@ -61,7 +61,7 @@ int wifi_mgmr_api_rate_config(uint16_t config);
 int wifi_mgmr_api_conf_max_sta(uint8_t max_sta_supported);
 int wifi_mgmr_api_ifaceup(void);
 int wifi_mgmr_api_sniffer_enable(void);
-int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, uint8_t use_dhcp_server);
+int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, int8_t max_sta_supported, uint8_t use_dhcp_server);
 int wifi_mgmr_api_ap_stop(void);
 int wifi_mgmr_api_idle(void);
 int wifi_mgmr_api_channel_set(int channel, int use_40Mhz);
@@ -70,7 +70,7 @@ int wifi_mgmr_api_set_country_code(char *country_code);
 
 /*section for fw api*/
 int wifi_mgmr_api_fw_disconnect(void);
-int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *scanssid);
+int wifi_mgmr_api_fw_scan(wifi_mgmr_scan_params_t scan_params);
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_OFF           (1)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_ON            (2)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_DYNAMIC_ON    (3)
@@ -81,5 +81,5 @@ int wifi_mgmr_api_denoise_enable(void);
 int wifi_mgmr_api_denoise_disable(void);
 
 /*section for global event*/
-int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher);
+int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher, uint8_t wps, uint32_t mode);
 #endif

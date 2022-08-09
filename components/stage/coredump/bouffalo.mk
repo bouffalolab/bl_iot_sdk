@@ -2,6 +2,14 @@ ifeq ($(CONFIG_CHIP_NAME),BL602)
 CFLAGS   += -DBL602
 endif
 
+ifeq ($(CONFIG_CHIP_NAME),BL702)
+CFLAGS   += -DBL702
+endif
+
+ifeq ($(CONFIG_CHIP_NAME),BL702L)
+CFLAGS   += -DBL702L
+endif
+
 ifeq ($(CONFIG_CHIP_NAME),BL808)
 CFLAGS   += -DBL808
 endif

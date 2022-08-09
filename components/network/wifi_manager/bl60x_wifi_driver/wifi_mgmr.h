@@ -42,6 +42,8 @@
 #define WIFI_MGMR_MQ_MSG_COUNT (1)
 
 #define MAC_ADDR_LIST(m) (m)[0], (m)[1], (m)[2], (m)[3], (m)[4], (m)[5]
+#define WIFI_MGMR_CONNECT_PMF_CAPABLE_BIT       (1 << 0)
+#define WIFI_MGMR_CONNECT_PMF_REQUIRED_BIT      (1 << 1)
 
 /**
  ****************************************************************************************
@@ -167,6 +169,7 @@ typedef struct wifi_mgmr_ap_msg {
     char psk_tail[1];
     uint8_t use_dhcp_server;
     uint32_t psk_len;
+    int8_t max_sta_supported;
 } wifi_mgmr_ap_msg_t;
 
 #pragma pack(pop)
@@ -205,6 +208,7 @@ typedef struct
 } wifi_mgmr_cipher_t;
 
 typedef struct wifi_mgmr_scan_item {
+    uint32_t mode;
     uint32_t timestamp_lastseen;
     uint16_t ssid_len;
     uint8_t channel;
@@ -217,6 +221,7 @@ typedef struct wifi_mgmr_scan_item {
     uint8_t auth;
     uint8_t cipher;
     uint8_t is_used;
+    uint8_t wps;
 } wifi_mgmr_scan_item_t;
 
 struct wlan_netif {
@@ -245,6 +250,8 @@ typedef struct wifi_mgmr_scan_params {
     uint16_t channel_num;
     uint16_t channels[MAX_FIXED_CHANNELS_LIMIT];
     struct mac_ssid ssid;
+    uint8_t scan_mode;
+    uint32_t duration_scan;  
 } wifi_mgmr_scan_params_t;
 
 typedef struct wifi_mgmr_connect_ind_stat_info {
@@ -337,6 +344,7 @@ int wifi_mgmr_ap_sta_info_get_internal(wifi_mgmr_sta_basic_info_t *sta_info_inte
 int wifi_mgmr_ap_sta_delete_internal(uint8_t sta_idx);
 int wifi_mgmr_scan_complete_notify();
 extern wifi_mgmr_t wifiMgmr;
+char *wifi_mgmr_mode_to_str(uint32_t mode);
 char *wifi_mgmr_auth_to_str(uint8_t auth);
 char *wifi_mgmr_cipher_to_str(uint8_t cipher);
 int wifi_mgmr_api_fw_tsen_reload(void);

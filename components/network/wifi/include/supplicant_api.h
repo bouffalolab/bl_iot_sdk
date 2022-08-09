@@ -214,6 +214,7 @@ struct wpa_funcs {
     /* int (*wpa_michael_mic_failure)(uint16_t is_unicast); */
     uint8_t *(*wpa3_build_sae_msg)(uint8_t *bssid, uint8_t *mac, uint8_t *passphrase, uint32_t sae_msg_type, size_t *sae_msg_len);
     int (*wpa3_parse_sae_msg)(uint8_t *buf, size_t len, uint32_t type, uint16_t status);
+    void (*wpa3_clear_sae)(void);
 };
 
 struct wps_scan_ie {

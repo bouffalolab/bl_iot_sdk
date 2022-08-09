@@ -197,7 +197,6 @@ int wifi_mgmr_psk_cal(char *password, char *ssid, int ssid_len, char *output)
 int wifi_mgmr_drv_init(wifi_conf_t *conf)
 {
     bl606a0_wifi_init(conf);
-    wifi_mgmr_api_set_country_code(conf->country_code);
     wifi_mgmr_init();
     wifi_mgmr_api_ifaceup();
     return 0;
@@ -573,13 +572,19 @@ int wifi_mgmr_ap_ip_get(uint32_t *ip, uint32_t *gw, uint32_t *mask)
 //TODO this API is still NOT completed, more features need to be implemented
 int wifi_mgmr_ap_start(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel)
 {
-    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, 1);
+    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, -1, 1);
     return 0;
 }
 
 int wifi_mgmr_ap_start_adv(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, uint8_t use_dhcp)
 {
-    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, use_dhcp);
+    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, -1, use_dhcp);
+    return 0;
+}
+
+int wifi_mgmr_ap_start_atcmd(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, int max_sta_supported)
+{
+    wifi_mgmr_api_ap_start(ssid, passwd, channel, hidden_ssid, max_sta_supported, 1);
     return 0;
 }
 
@@ -754,24 +759,53 @@ int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num)
 
 int wifi_mgmr_scan(void *data, scan_complete_cb_t cb)
 {
+    wifi_mgmr_scan_params_t scan_params;
+
     scan_cb = cb;
     scan_data = data;
 
-    wifi_mgmr_api_fw_scan(NULL, 0, (uint8_t *)&mac_addr_bcst, NULL);
+    scan_params.channel_num = 0;
+    memcpy(scan_params.bssid, (uint8_t *)&mac_addr_bcst, sizeof(struct mac_addr));
+    scan_params.ssid.length = 0;
+    scan_params.scan_mode = SCAN_ACTIVE;
+    /*if 0, use default scan time in fw,
+     * unit:us*/
+    scan_params.duration_scan = 0;
+
+    wifi_mgmr_api_fw_scan(scan_params);
 
     return 0;
 }
 
-int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid)
+int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid, uint8_t scan_mode, uint32_t duration_scan)
 {
+    wifi_mgmr_scan_params_t scan_params;
+
     scan_cb = cb;
     scan_data = data;
 
-    if (0 != channel_num && NULL == channels) {
+    scan_params.channel_num = channel_num;
+    scan_params.scan_mode = scan_mode;
+    scan_params.duration_scan = duration_scan;
+    memcpy(scan_params.bssid, bssid, ETH_ALEN);
+    if (scan_params.channel_num) {
+        memcpy(scan_params.channels, channels, sizeof(scan_params.channels[0]) * scan_params.channel_num);
+    }
+
+    if (ssid != NULL) {
+        scan_params.ssid.length = strlen(ssid);
+        scan_params.ssid.length = (scan_params.ssid.length > MAC_SSID_LEN) ? MAC_SSID_LEN : scan_params.ssid.length;
+        memcpy(scan_params.ssid.array, ssid, scan_params.ssid.length);
+        scan_params.ssid.array_tail[0] = '\0';
+    } else {
+        scan_params.ssid.length = 0;
+    }
+
+    if (0 != scan_params.channel_num && NULL == scan_params.channels) {
         return -1;
     }
 
-    wifi_mgmr_api_fw_scan(channels, channel_num, bssid, ssid);
+    wifi_mgmr_api_fw_scan(scan_params);
     return 0;
 }
 

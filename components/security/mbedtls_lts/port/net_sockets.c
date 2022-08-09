@@ -116,7 +116,9 @@ static int wsa_init_done = 0;
 
 #include <stdio.h>
 
+#if defined(MBEDTLS_HAVE_TIME)
 #include <time.h>
+#endif
 
 #include <stdint.h>
 

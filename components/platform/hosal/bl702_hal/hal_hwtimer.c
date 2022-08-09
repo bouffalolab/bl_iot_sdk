@@ -187,6 +187,7 @@ int hal_hwtimer_delete(hw_timer_t *pstnode)
 
     if (ret == 0) {
         utils_dlist_del(&(node->dlist_item));
+        vPortFree(node);
     }
    
     TIMER_IntMask(HW_TIMER_CHANNEL, TIMER_INT_COMP_0, UNMASK);

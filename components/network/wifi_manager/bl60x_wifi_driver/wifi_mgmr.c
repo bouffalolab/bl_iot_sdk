@@ -97,6 +97,21 @@ static int _features_is_set(uint32_t bit)
     return (wifiMgmr.features & bit) ? 1 : 0;
 }
 
+char *wifi_mgmr_mode_to_str(uint32_t mode)
+{
+    switch (mode)
+    {
+    case (WIFI_MODE_802_11B):
+        return "B";
+    case (WIFI_MODE_802_11B | WIFI_MODE_802_11G):
+        return "BG";
+    case (WIFI_MODE_802_11B | WIFI_MODE_802_11G | WIFI_MODE_802_11N_2_4):
+        return "BGN";
+    default:
+        return "Unknown";
+    }
+}
+
 char *wifi_mgmr_auth_to_str(uint8_t auth)
 {
     switch (auth) {
@@ -237,6 +252,8 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
                     wifiMgmr.scan_items[i].timestamp_lastseen = counter;
                     wifiMgmr.scan_items[i].auth = scan->auth;
                     wifiMgmr.scan_items[i].cipher = scan->cipher;
+                    wifiMgmr.scan_items[i].wps = scan->wps;
+                    wifiMgmr.scan_items[i].mode = scan->mode;
                 }
                 break;
             }
@@ -258,6 +275,8 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
             wifiMgmr.scan_items[i].timestamp_lastseen = counter;
             wifiMgmr.scan_items[i].auth = scan->auth;
             wifiMgmr.scan_items[i].cipher = scan->cipher;
+            wifiMgmr.scan_items[i].wps = scan->wps;
+            wifiMgmr.scan_items[i].mode = scan->mode;
             wifiMgmr.scan_items[i].is_used = 1;
         }
     }
@@ -342,6 +361,8 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     wifi_mgmr_scan_params_t *ch_req;
     struct mac_ssid *ssid = NULL;
     struct mac_addr bssid;
+    uint8_t scan_mode;
+    uint32_t duration_scan;
 
     msg = event->data;
 
@@ -364,6 +385,8 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
     channel_num = ch_req->channel_num;
     ssid = &(ch_req->ssid);
     memcpy((uint8_t *)&bssid, ch_req->bssid, ETH_ALEN);
+    scan_mode = ch_req->scan_mode;
+    duration_scan = ch_req->duration_scan;
 #if 0
     if (channel_num) {
         bl_os_printf("%s len:%d \r\n",__func__, channel_num);
@@ -386,11 +409,11 @@ static bool stateGlobalGuard_fw_scan(void *ch, struct event *event)
 
     if (channel_num) {
         bl_os_printf("------>>>>>> Scan CMD fixed channels_num:%u\r\n", channel_num);
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, ch_req->channels, channel_num, &bssid, ssid);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, ch_req->channels, channel_num, &bssid, ssid, scan_mode, duration_scan);
     } else {
         /*normal scan command*/
         bl_os_printf("------>>>>>> Scan CMD\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, &bssid, ssid);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, &bssid, ssid, scan_mode, duration_scan);
     }
 
     return false;
@@ -504,6 +527,11 @@ static bool stateGlobalGuard_AP(void *ev, struct event *event )
 void dhcpd_start(struct netif *netif);
     if (ap->use_dhcp_server) {
         netifapi_netif_common(&(wifiMgmr.wlan_ap.netif), dhcpd_start, NULL);
+    }
+
+    if (ap->max_sta_supported >= 0) {
+        bl_os_printf(DEBUG_HEADER "Conf max sta supported %d;\r\n", ap->max_sta_supported);
+        bl_main_conf_max_sta(ap->max_sta_supported);
     }
 
     bl_os_printf(DEBUG_HEADER "start AP with ssid %s;\r\n", ap->ssid);
@@ -1076,7 +1104,7 @@ static void stateConnectedIPYes_enter( void *stateData, struct event *event )
     aos_post_event(EV_WIFI, CODE_WIFI_ON_GOT_IP, 0);
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
         bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL, 0, 0);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
 }
@@ -1235,7 +1263,7 @@ void helper_record_dump();
 
     if (_pending_task_is_set(WIFI_MGMR_PENDING_TASK_SCAN_BIT)) {
         bl_os_printf(DEBUG_HEADER "Pending Scan Sent\r\n");
-        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL);
+        bl_main_scan(&wifiMgmr.wlan_sta.netif, NULL, 0, (struct mac_addr *)&mac_addr_bcst, NULL, 0, 0);
         _pending_task_clr_safely(WIFI_MGMR_PENDING_TASK_SCAN_BIT);
     }
 }
@@ -1283,10 +1311,17 @@ int wifi_mgmr_pending_task_set(uint32_t bits)
 int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg, int use_block)
 {
     int ret;
+    uint8_t limit = 50;
 
     while (0 == wifiMgmr.ready) {
-        bl_os_printf("Wait Wi-Fi Mgmr Start up...\r\n");
+        bl_os_printf("Waiting Wi-Fi Mgmr Start up...\r\n");
         bl_os_msleep(20);
+
+        if (0 == (limit--))
+        {
+            bl_os_printf("Wi-Fi Mgmr NOT Start up! Start it first!\r\n");
+            return -1;
+        }
     }
     ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, msg->len, BL_OS_WAITING_FOREVER, 0) :
                       bl_os_queue_send(wifiMgmr.mq, msg, msg->len);

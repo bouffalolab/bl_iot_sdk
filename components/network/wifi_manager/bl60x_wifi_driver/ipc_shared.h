@@ -172,6 +172,10 @@ struct txdesc_host
     uint32_t eth_packet[1600/4];
 #endif
 
+#if defined(CFG_CHIP_BL606P)
+    uint32_t eth_packet[1600/4];
+#endif
+
     /// API of the embedded part
     struct hostdesc host;
 

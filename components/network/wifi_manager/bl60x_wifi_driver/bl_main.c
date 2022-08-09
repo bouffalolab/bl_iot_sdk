@@ -469,13 +469,25 @@ int bl_main_cfg_task_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t
     return bl_send_cfg_task_req(&wifi_hw, ops, task, element, type, arg1, arg2);
 }
 
-int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid)
+int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid, uint8_t scan_mode, uint32_t duration_scan)
 {
+    struct bl_send_scanu_para scanu_para;
+
+    scanu_para.channels = fixed_channels;
+    scanu_para.channel_num = channel_num;
+    scanu_para.bssid = bssid;
+    scanu_para.ssid = ssid;
+    scanu_para.mac = netif->hwaddr;
+    scanu_para.scan_mode = scan_mode;
+    scanu_para.duration_scan = duration_scan;
+
     if (0 == channel_num) {
-        bl_send_scanu_req(&wifi_hw, NULL, 0, bssid, ssid, netif->hwaddr);
+        scanu_para.channels = NULL;
+        scanu_para.channel_num = 0;
+        bl_send_scanu_req(&wifi_hw, &scanu_para);
     } else {
         if (bl_get_fixed_channels_is_valid(fixed_channels, channel_num)) {
-            bl_send_scanu_req(&wifi_hw, fixed_channels, channel_num, bssid, ssid, netif->hwaddr);
+            bl_send_scanu_req(&wifi_hw, &scanu_para);
         } else {
             bl_os_printf("---->unvalid channel");
         }

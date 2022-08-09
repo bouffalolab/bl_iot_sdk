@@ -108,6 +108,20 @@ typedef enum {
     LMAC154_TX_STATUS_HW_ERROR    = 3,
 }lmac154_tx_status_t;
 
+typedef enum {
+    LMAC154_RX_ACCEPT_CRC_ERR            = 0x00000001, // able to receive packets that CRC check error
+    LMAC154_RX_ACCEPT_FRAME_TYPE_RVSD    = 0x00000002, // able to receive packets that the value of frame type filed is reserved in 802.15.4 spec 
+    LMAC154_RX_ACCEPT_FRAME_VER_RVSD     = 0x00000004, // able to receive packets that the value of frame version filed is reserved in 802.15.4 spec 
+    LMAC154_RX_ACCEPT_DST_ADDR_M_RVSD    = 0x00000008, // able to receive packets that the value of dest address mode filed is reserved in 802.15.4 spec 
+    LMAC154_RX_ACCEPT_SRC_ADDR_M_RVSD    = 0x00000010, // able to receive packets that the value of src address mode filed is reserved in 802.15.4 spec 
+    LMAC154_RX_ACCEPT_DST_PANID_MISMATCH = 0x00000020, // able to receive packets that the value of dest PANID does not match with local device
+    LMAC154_RX_ACCEPT_DST_ADDR_MISMATCH  = 0x00000040, // able to receive packets that the value of dest address does not match with local device
+    LMAC154_RX_ACCEPT_SRC_PANID_MISMATCH = 0x00000080, // able to receive packets that the value of src PANID does not match with local device
+
+    LMAC154_RX_ACCEPT_NONE               = 0x00000000, // not able to receive all packets above
+    LMAC154_RX_ACCEPT_ALL                = 0x000000ff, // able to receive all packets above 
+}lmac154_rx_accept_policy_t;
+
 
 /****************************************************************************//**
  * @brief  Initialize the hardware module
@@ -521,30 +535,27 @@ void lmac154_enableFrameTypeFiltering(uint8_t frame_types);
 *******************************************************************************/
 void lmac154_disableFrameTypeFiltering(void);
 
-
 /****************************************************************************//**
- * @brief  Enable crc filtering (default enabled)
- *         Will only receive frames that pass crc check
+ * @brief  set rx accept policy
+ *         
  *
- * @param  None
+ * @param policy : enum lmac154_rx_accept_policy_t
  *
  * @return None
  *
 *******************************************************************************/
-void lmac154_enableCrcFiltering(void);
-
+void lmac154_setRxAcceptPolicy(lmac154_rx_accept_policy_t policy);
 
 /****************************************************************************//**
- * @brief  Disable crc filtering (default enabled)
- *         Will receive all frames ignoring crc check
+ * @brief  get rx accept policy
+ *         
  *
- * @param  None
+ * @param None
  *
- * @return None
+ * @return lmac154_rx_accept_policy : enum lmac154_rx_accept_policy_t
  *
 *******************************************************************************/
-void lmac154_disableCrcFiltering(void);
-
+lmac154_rx_accept_policy_t lmac154_getRxAcceptPolicy(void);
 
 /****************************************************************************//**
  * @brief  Set external PA

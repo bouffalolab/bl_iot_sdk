@@ -82,6 +82,7 @@ int main( void )
 #define DFL_CA_PATH             ""
 #define DFL_CRT_FILE            ""
 #define DFL_KEY_FILE            ""
+#define DFL_KEY_OPAQUE          0
 #define DFL_KEY_PWD             ""
 #define DFL_CRT_FILE2           ""
 #define DFL_KEY_FILE2           ""
@@ -164,9 +165,6 @@ int main( void )
 
 /*
  * Size of the basic I/O buffer. Able to hold our default response.
- *
- * You will need to adapt the mbedtls_ssl_get_bytes_avail() test in ssl-opt.sh
- * if you change this value to something outside the range <= 100 or > 500
  */
 #define DFL_IO_BUF_LEN      200
 
@@ -202,6 +200,13 @@ int main( void )
 #else
 #define USAGE_IO ""
 #endif /* MBEDTLS_X509_CRT_PARSE_C */
+#if defined(MBEDTLS_USE_PSA_CRYPTO) && defined(MBEDTLS_X509_CRT_PARSE_C)
+#define USAGE_KEY_OPAQUE \
+    "    key_opaque=%%d       Handle your private keys as if they were opaque\n" \
+    "                        default: 0 (disabled)\n"
+#else
+#define USAGE_KEY_OPAQUE ""
+#endif
 
 #if defined(MBEDTLS_SSL_ASYNC_PRIVATE)
 #define USAGE_SSL_ASYNC \
@@ -310,10 +315,16 @@ int main( void )
 
 #if defined(MBEDTLS_SSL_CACHE_C)
 #define USAGE_CACHE                                             \
-    "    cache_max=%%d        default: cache default (50)\n"    \
+    "    cache_max=%%d        default: cache default (50)\n"
+#if defined(MBEDTLS_HAVE_TIME)
+#define USAGE_CACHE_TIME \
     "    cache_timeout=%%d    default: cache default (1d)\n"
 #else
+#define USAGE_CACHE_TIME ""
+#endif
+#else
 #define USAGE_CACHE ""
+#define USAGE_CACHE_TIME ""
 #endif /* MBEDTLS_SSL_CACHE_C */
 
 #if defined(SNI_OPTION)
@@ -478,6 +489,7 @@ int main( void )
     "    cert_req_ca_list=%%d default: 1 (send ca list)\n"  \
     "                        options: 1 (send ca list), 0 (don't send)\n" \
     USAGE_IO                                                \
+    USAGE_KEY_OPAQUE                                        \
     "\n"                                                    \
     USAGE_PSK                                               \
     USAGE_CA_CALLBACK                                       \
@@ -494,6 +506,7 @@ int main( void )
     USAGE_NSS_KEYLOG                                        \
     USAGE_NSS_KEYLOG_FILE                                   \
     USAGE_CACHE                                             \
+    USAGE_CACHE_TIME                                        \
     USAGE_MAX_FRAG_LEN                                      \
     USAGE_TRUNC_HMAC                                        \
     USAGE_ALPN                                              \
@@ -555,6 +568,7 @@ struct options
     const char *ca_path;        /* the path with the CA certificate(s) reside */
     const char *crt_file;       /* the file with the server certificate     */
     const char *key_file;       /* the file with the server key             */
+    int key_opaque;             /* handle private key as if it were opaque  */
     const char *key_pwd;        /* the password for the server key          */
     const char *crt_file2;      /* the file with the 2nd server certificate */
     const char *key_file2;      /* the file with the 2nd server key         */
@@ -593,7 +607,9 @@ struct options
     int tickets;                /* enable / disable session tickets         */
     int ticket_timeout;         /* session ticket lifetime                  */
     int cache_max;              /* max number of session cache entries      */
-    int cache_timeout;          /* expiration delay of session cache entries */
+#if defined(MBEDTLS_HAVE_TIME)
+    int cache_timeout;          /* expiration delay of session cache entries*/
+#endif
     char *sni;                  /* string describing sni information        */
     const char *curves;         /* list of supported elliptic curves        */
     const char *alpn_string;    /* ALPN supported protocols                 */
@@ -605,7 +621,7 @@ struct options
     int anti_replay;            /* Use anti-replay for DTLS? -1 for default */
     uint32_t hs_to_min;         /* Initial value of DTLS handshake timer    */
     uint32_t hs_to_max;         /* Max value of DTLS handshake timer        */
-    int dtls_mtu;               /* UDP Maximum tranport unit for DTLS       */
+    int dtls_mtu;               /* UDP Maximum transport unit for DTLS       */
     int dgram_packing;          /* allow/forbid datagram packing            */
     int badmac_limit;           /* Limit of records with bad MAC            */
     int eap_tls;                /* derive EAP-TLS keying material?          */
@@ -1186,6 +1202,7 @@ static void ssl_async_cancel( mbedtls_ssl_context *ssl )
 #endif /* MBEDTLS_SSL_ASYNC_PRIVATE */
 
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
+#if defined(MBEDTLS_KEY_EXCHANGE_SOME_PSK_ENABLED)
 static psa_status_t psa_setup_psk_key_slot( psa_key_id_t *slot,
                                             psa_algorithm_t alg,
                                             unsigned char *psk,
@@ -1208,6 +1225,7 @@ static psa_status_t psa_setup_psk_key_slot( psa_key_id_t *slot,
 
     return( PSA_SUCCESS );
 }
+#endif /* MBEDTLS_KEY_EXCHANGE_SOME_PSK_ENABLED */
 #endif /* MBEDTLS_USE_PSA_CRYPTO */
 
 #if defined(MBEDTLS_SSL_DTLS_CONNECTION_ID)
@@ -1302,6 +1320,10 @@ int main( int argc, char *argv[] )
     mbedtls_pk_context pkey;
     mbedtls_x509_crt srvcert2;
     mbedtls_pk_context pkey2;
+#if defined(MBEDTLS_USE_PSA_CRYPTO)
+    psa_key_id_t key_slot = 0; /* invalid key slot */
+    psa_key_id_t key_slot2 = 0; /* invalid key slot */
+#endif
     int key_cert_init = 0, key_cert_init2 = 0;
 #if defined(MBEDTLS_SSL_ASYNC_PRIVATE)
     ssl_async_key_context_t ssl_async_keys;
@@ -1472,6 +1494,7 @@ int main( int argc, char *argv[] )
     opt.ca_path             = DFL_CA_PATH;
     opt.crt_file            = DFL_CRT_FILE;
     opt.key_file            = DFL_KEY_FILE;
+    opt.key_opaque          = DFL_KEY_OPAQUE;
     opt.key_pwd             = DFL_KEY_PWD;
     opt.crt_file2           = DFL_CRT_FILE2;
     opt.key_file2           = DFL_KEY_FILE2;
@@ -1510,7 +1533,9 @@ int main( int argc, char *argv[] )
     opt.tickets             = DFL_TICKETS;
     opt.ticket_timeout      = DFL_TICKET_TIMEOUT;
     opt.cache_max           = DFL_CACHE_MAX;
+#if defined(MBEDTLS_HAVE_TIME)
     opt.cache_timeout       = DFL_CACHE_TIMEOUT;
+#endif
     opt.sni                 = DFL_SNI;
     opt.alpn_string         = DFL_ALPN_STRING;
     opt.curves              = DFL_CURVES;
@@ -1601,6 +1626,10 @@ int main( int argc, char *argv[] )
             opt.key_file = q;
         else if( strcmp( p, "key_pwd" ) == 0 )
             opt.key_pwd = q;
+#if defined(MBEDTLS_USE_PSA_CRYPTO) && defined(MBEDTLS_X509_CRT_PARSE_C)
+        else if( strcmp( p, "key_opaque" ) == 0 )
+            opt.key_opaque = atoi( q );
+#endif
         else if( strcmp( p, "crt_file2" ) == 0 )
             opt.crt_file2 = q;
         else if( strcmp( p, "key_file2" ) == 0 )
@@ -1894,12 +1923,14 @@ int main( int argc, char *argv[] )
             if( opt.cache_max < 0 )
                 goto usage;
         }
+#if defined(MBEDTLS_HAVE_TIME)
         else if( strcmp( p, "cache_timeout" ) == 0 )
         {
             opt.cache_timeout = atoi( q );
             if( opt.cache_timeout < 0 )
                 goto usage;
         }
+#endif
         else if( strcmp( p, "cookies" ) == 0 )
         {
             opt.cookies = atoi( q );
@@ -2017,10 +2048,26 @@ int main( int argc, char *argv[] )
 #if defined(MBEDTLS_DEBUG_C)
     mbedtls_debug_set_threshold( opt.debug_level );
 #endif
-    buf = mbedtls_calloc( 1, opt.buffer_size + 1 );
+
+    /* buf will alternatively contain the input read from the client and the
+     * response that's about to be sent, plus a null byte in each case. */
+    size_t buf_content_size = opt.buffer_size;
+    /* The default response contains the ciphersuite name. Leave enough
+     * room for that plus some margin. */
+    if( buf_content_size < strlen( HTTP_RESPONSE ) + 80 )
+    {
+        buf_content_size = strlen( HTTP_RESPONSE ) + 80;
+    }
+    if( opt.response_size != DFL_RESPONSE_SIZE &&
+        buf_content_size < (size_t) opt.response_size )
+    {
+        buf_content_size = opt.response_size;
+    }
+    buf = mbedtls_calloc( 1, buf_content_size + 1 );
     if( buf == NULL )
     {
-        mbedtls_printf( "Could not allocate %u bytes\n", opt.buffer_size );
+        mbedtls_printf( "Could not allocate %lu bytes\n",
+                        (unsigned long) buf_content_size + 1 );
         ret = 3;
         goto exit;
     }
@@ -2112,19 +2159,9 @@ int main( int argc, char *argv[] )
         }
 
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
+#if defined(MBEDTLS_KEY_EXCHANGE_SOME_PSK_ENABLED)
         if( opt.psk_opaque != 0 || opt.psk_list_opaque != 0 )
         {
-            /* Ensure that the chosen ciphersuite is PSK-only; we must know
-             * the ciphersuite in advance to set the correct policy for the
-             * PSK key slot. This limitation might go away in the future. */
-            if( ciphersuite_info->key_exchange != MBEDTLS_KEY_EXCHANGE_PSK ||
-                opt.min_version != MBEDTLS_SSL_MINOR_VERSION_3 )
-            {
-                mbedtls_printf( "opaque PSKs are only supported in conjunction with forcing TLS 1.2 and a PSK-only ciphersuite through the 'force_ciphersuite' option.\n" );
-                ret = 2;
-                goto usage;
-            }
-
             /* Determine KDF algorithm the opaque PSK will be used in. */
 #if defined(MBEDTLS_SHA512_C)
             if( ciphersuite_info->mac == MBEDTLS_MD_SHA384 )
@@ -2133,6 +2170,7 @@ int main( int argc, char *argv[] )
 #endif /* MBEDTLS_SHA512_C */
                 alg = PSA_ALG_TLS12_PSK_TO_MS(PSA_ALG_SHA_256);
         }
+#endif /* MBEDTLS_KEY_EXCHANGE_SOME_PSK_ENABLED */
 #endif /* MBEDTLS_USE_PSA_CRYPTO */
     }
 
@@ -2473,10 +2511,37 @@ int main( int argc, char *argv[] )
         }
         key_cert_init2 = 2;
 #endif /* MBEDTLS_ECDSA_C */
-#endif /* MBEDTLS_CERTS_C */
     }
 
-    mbedtls_printf( " ok\n" );
+#if defined(MBEDTLS_USE_PSA_CRYPTO)
+    if( opt.key_opaque != 0 )
+    {
+        if ( mbedtls_pk_get_type( &pkey ) == MBEDTLS_PK_ECKEY )
+        {
+            if( ( ret = mbedtls_pk_wrap_as_opaque( &pkey, &key_slot,
+                                                PSA_ALG_ANY_HASH ) ) != 0 )
+            {
+                mbedtls_printf( " failed\n  !  "
+                                "mbedtls_pk_wrap_as_opaque returned -0x%x\n\n", (unsigned int)  -ret );
+                goto exit;
+            }
+        }
+
+        if ( mbedtls_pk_get_type( &pkey2 ) == MBEDTLS_PK_ECKEY )
+        {
+            if( ( ret = mbedtls_pk_wrap_as_opaque( &pkey2, &key_slot2,
+                                                PSA_ALG_ANY_HASH ) ) != 0 )
+            {
+                mbedtls_printf( " failed\n  !  "
+                                "mbedtls_pk_wrap_as_opaque returned -0x%x\n\n", (unsigned int)  -ret );
+                goto exit;
+            }
+        }
+    }
+#endif /* MBEDTLS_USE_PSA_CRYPTO */
+#endif /* MBEDTLS_CERTS_C */
+
+    mbedtls_printf( " ok (key types: %s - %s)\n", mbedtls_pk_get_name( &pkey ), mbedtls_pk_get_name( &pkey2 ) );
 #endif /* MBEDTLS_X509_CRT_PARSE_C */
 
 #if defined(MBEDTLS_DHM_C) && defined(MBEDTLS_FS_IO)
@@ -2701,8 +2766,10 @@ int main( int argc, char *argv[] )
     if( opt.cache_max != -1 )
         mbedtls_ssl_cache_set_max_entries( &cache, opt.cache_max );
 
+#if defined(MBEDTLS_HAVE_TIME)
     if( opt.cache_timeout != -1 )
         mbedtls_ssl_cache_set_timeout( &cache, opt.cache_timeout );
+#endif
 
     mbedtls_ssl_conf_session_cache( &conf, &cache,
                                    mbedtls_ssl_cache_get,
@@ -3432,7 +3499,7 @@ data_exchange:
         do
         {
             int terminated = 0;
-            len = opt.buffer_size - 1;
+            len = opt.buffer_size;
             memset( buf, 0, opt.buffer_size );
             ret = mbedtls_ssl_read( &ssl, buf, len );
 
@@ -3533,7 +3600,7 @@ data_exchange:
     }
     else /* Not stream, so datagram */
     {
-        len = opt.buffer_size - 1;
+        len = opt.buffer_size;
         memset( buf, 0, opt.buffer_size );
 
         do
@@ -3635,6 +3702,8 @@ data_exchange:
     mbedtls_printf( "  > Write to client:" );
     fflush( stdout );
 
+    /* If the format of the response changes, make sure there is enough
+     * room in buf (buf_content_size calculation above). */
     len = sprintf( (char *) buf, HTTP_RESPONSE,
                    mbedtls_ssl_get_ciphersuite( &ssl ) );
 
@@ -3967,6 +4036,10 @@ exit:
     mbedtls_pk_free( &pkey );
     mbedtls_x509_crt_free( &srvcert2 );
     mbedtls_pk_free( &pkey2 );
+#if defined(MBEDTLS_USE_PSA_CRYPTO)
+    psa_destroy_key( key_slot );
+    psa_destroy_key( key_slot2 );
+#endif
 #endif
 
 #if defined(MBEDTLS_DHM_C) && defined(MBEDTLS_FS_IO)

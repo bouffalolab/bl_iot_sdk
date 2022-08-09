@@ -86,29 +86,12 @@ static void spi_basic_init(hosal_spi_dev_t *arg)
 {
     hosal_spi_dev_t *hw_arg = arg;
     SPI_CFG_Type spicfg;
-    SPI_ClockCfg_Type clockcfg;
     SPI_FifoCfg_Type fifocfg;
     SPI_ID_Type spi_id; //TODO change SPI_ID_Type
-    uint8_t clk_div;
     
     spi_id = hw_arg->port;
 
-    /* clock */
-    /*1  --->  40 Mhz
-     *2  --->  20 Mhz
-     *5  --->  8  Mhz
-     *6  --->  6.66 Mhz
-     *10 --->  4 Mhz
-     * */
-    clk_div = (uint8_t)(40000000 / hw_arg->config.freq);
-    GLB_Set_SPI_CLK(ENABLE,0);
-    clockcfg.startLen = clk_div;
-    clockcfg.stopLen = clk_div;
-    clockcfg.dataPhase0Len = clk_div;
-    clockcfg.dataPhase1Len = clk_div;
-    clockcfg.intervalLen = clk_div;
-    SPI_ClockConfig(spi_id, &clockcfg);
-
+    SPI_SetClock(spi_id,hw_arg->config.freq);
     /* spi config */
     spicfg.deglitchEnable = DISABLE;
     spicfg.continuousEnable = ENABLE;
@@ -143,8 +126,8 @@ static void spi_basic_init(hosal_spi_dev_t *arg)
     SPI_IntMask(spi_id,SPI_INT_ALL,MASK);
 
     /* fifo */
-    fifocfg.txFifoThreshold = 1;
-    fifocfg.rxFifoThreshold = 1;
+    fifocfg.txFifoThreshold = 0;
+    fifocfg.rxFifoThreshold = 0;
     if (hw_arg->config.dma_enable) {
         fifocfg.txFifoDmaEnable = ENABLE;
         fifocfg.rxFifoDmaEnable = ENABLE;
@@ -407,7 +390,6 @@ static void spi_irq_process(void *p_arg)
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     hosal_spi_dev_t *spi = (hosal_spi_dev_t *)p_arg;
     spi_priv_t *spi_priv = (spi_priv_t *)spi->priv;
-    uint8_t value;
     uint32_t tmpVal;
     uint32_t SPIx =SPI_BASE;
     hosal_spi_irq_t pfn;
@@ -453,7 +435,6 @@ static void spi_irq_process(void *p_arg)
                 }
             }
         } else {
-            value = (uint8_t)(BL_RD_REG(SPIx, SPI_FIFO_RDATA)&0xff);
             spi_priv->rx_index++;
             if (spi_priv->rx_index == spi_priv->length) {
                 /* spi callback */

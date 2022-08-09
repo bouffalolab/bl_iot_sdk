@@ -34,7 +34,7 @@
 #include "bl702_hbn.h"
 
 
-#define BL_RTC_COUNTER_TO_MS(CNT)  (((CNT) >> 5) - ((CNT) >> 11) - ((CNT) >> 12))  // ((CNT)*(1024-16-8)/32768)
+#define BL_RTC_COUNTER_TO_MS(CNT)  ((uint64_t)(CNT)*1000/32768) // ((CNT)*(1024-16-8)/32768)
 #define BL_RTC_MAX_COUNTER         (0x000000FFFFFFFFFFllu)
 #define BL_RTC_MAX_TIMESTAMP_MS    (BL_RTC_COUNTER_TO_MS(BL_RTC_MAX_COUNTER))
 

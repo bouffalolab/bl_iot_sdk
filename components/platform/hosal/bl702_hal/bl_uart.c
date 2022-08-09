@@ -89,11 +89,9 @@ static void gpio_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pi
     GLB_UART_Fun_Sel(rx_pin%8, rx_sigfun);
 }
 
-int g_uart_ready = 0;
-
 int bl_uart_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pin, uint8_t rts_pin, uint32_t baudrate)
 {
-    static uint8_t uart_clk_init = 0;
+//    static uint8_t uart_clk_init = 0;
     const uint8_t uart_div = 0;
 
     UART_CFG_Type uartCfg =
@@ -121,10 +119,10 @@ int bl_uart_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pin, ui
     };
 
     /* enable clk */
-    if (0 == uart_clk_init) {
+//    if (0 == uart_clk_init) {
         GLB_Set_UART_CLK(1, HBN_UART_CLK_FCLK, uart_div);
 //        uart_clk_init = 1;
-    }
+//    }
 
     /* gpio init */
     gpio_init(id, tx_pin, rx_pin, cts_pin, rts_pin);
@@ -149,8 +147,6 @@ int bl_uart_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pin, ui
 
     /* Enable uart */
     UART_Enable(id, UART_TXRX);
-
-    g_uart_ready = 1;
 
     return 0;
 }

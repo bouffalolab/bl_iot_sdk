@@ -6,9 +6,9 @@
 #     command but rather at the target level using the
 #     target_include_directories command. That way, it is easier to guarantee
 #     that targets are built using the proper list of include directories.
-#   + Use the PUBLIC and PRIVATE keywords to specifiy the scope of include
+#   + Use the PUBLIC and PRIVATE keywords to specify the scope of include
 #     directories. That way, a target linking to a library (using the
-#     target_link_librairies command) inherits from the library PUBLIC include
+#     target_link_libraries command) inherits from the library PUBLIC include
 #     directories and not from the PRIVATE ones.
 #   + Note: there is currently one remaining include_directories command in the
 #     CMake files. It is related to ZLIB support which is planned to be removed.
@@ -226,8 +226,8 @@ if(CMAKE_COMPILER_IS_IAR)
 endif(CMAKE_COMPILER_IS_IAR)
 
 if(CMAKE_COMPILER_IS_MSVC)
-    # Strictest warnings
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W3")
+    # Strictest warnings, UTF-8 source and execution charset
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W3 /utf-8")
 endif(CMAKE_COMPILER_IS_MSVC)
 
 if(MBEDTLS_FATAL_WARNINGS)

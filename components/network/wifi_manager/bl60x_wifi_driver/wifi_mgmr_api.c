@@ -224,7 +224,7 @@ int wifi_mgmr_api_sniffer_enable(void)
     return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_SNIFFER, (void*)0x1, (void*)0x2);
 }
 
-int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher)
+int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, uint8_t mac[], uint8_t ssid[], int len, int8_t ppm_abs, int8_t ppm_rel, uint8_t cipher, uint8_t wps, uint32_t mode)
 {
     wifi_mgmr_scan_item_t scan;
 
@@ -239,6 +239,8 @@ int wifi_mgmr_api_scan_item_beacon(uint8_t channel, int8_t rssi, uint8_t auth, u
     scan.cipher = cipher;
     scan.ppm_abs = ppm_abs;
     scan.ppm_rel = ppm_rel;
+    scan.wps = wps;
+    scan.mode = mode;
 
     return wifi_mgmr_scan_beacon_save(&scan);
 }
@@ -253,7 +255,7 @@ int wifi_mgmr_api_fw_tsen_reload(void)
     return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_APP_RELOAD_TSEN, (void*)0x1, (void*)0x2);
 }
 
-int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *scanssid)
+int wifi_mgmr_api_fw_scan(wifi_mgmr_scan_params_t scan_params)
 {
     wifi_mgmr_msg_t *msg;
     wifi_mgmr_scan_params_t *ch_req;
@@ -264,17 +266,18 @@ int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_
     msg = (wifi_mgmr_msg_t*)buffer;
 
     ch_req = (wifi_mgmr_scan_params_t*)msg->data;
-    ch_req->channel_num = channel_num;
-    memcpy(ch_req->bssid, bssid, ETH_ALEN);
+    ch_req->channel_num = scan_params.channel_num;
+    ch_req->scan_mode = scan_params.scan_mode;
+    ch_req->duration_scan = scan_params.duration_scan;
+    memcpy(ch_req->bssid, scan_params.bssid, ETH_ALEN);
     ssid = &(ch_req->ssid);
-    if (channel_num) {
-        memcpy(ch_req->channels, channels, sizeof(ch_req->channels[0]) * channel_num);
+    if (scan_params.channel_num) {
+        memcpy(ch_req->channels, scan_params.channels, sizeof(scan_params.channels[0]) * scan_params.channel_num);
     }
 
-    if (scanssid != NULL) {
-        ssid->length = strlen(scanssid);
-        ssid->length = (ssid->length > MAC_SSID_LEN) ? MAC_SSID_LEN : ssid->length;
-        memcpy(ssid->array, scanssid, ch_req->ssid.length);
+    if (scan_params.ssid.length != 0) {
+        ssid->length = scan_params.ssid.length;
+        memcpy(ssid->array, scan_params.ssid.array, scan_params.ssid.length);
         ssid->array_tail[0] = '\0';
     }
 
@@ -283,7 +286,7 @@ int wifi_mgmr_api_fw_scan(uint16_t *channels, uint16_t channel_num, const uint8_
         WIFI_MGMR_EVENT_FW_SCAN,
         (void*)0x1,
         (void*)0x2,
-        sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_params_t) + sizeof(ch_req->channels[0]) * channel_num
+        sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_scan_params_t) + sizeof(ch_req->channels[0]) * ch_req->channel_num
     );
 
 }
@@ -293,7 +296,7 @@ int wifi_mgmr_api_fw_powersaving(int mode)
     return wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_POWERSAVING, (void*)mode, (void*)0x2);
 }
 
-int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, uint8_t use_dhcp_server)
+int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, int8_t max_sta_supported, uint8_t use_dhcp_server)
 {
     wifi_mgmr_msg_t *msg;
     wifi_mgmr_ap_msg_t *ap;
@@ -322,6 +325,7 @@ int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden
     ap->channel = channel;
     ap->hidden_ssid = hidden_ssid ? 1 : 0;
     ap->use_dhcp_server = use_dhcp_server ? 1 : 0;
+    ap->max_sta_supported = max_sta_supported;
 
     return wifi_mgmr_api_common(
         msg,

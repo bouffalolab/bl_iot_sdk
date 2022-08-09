@@ -36,7 +36,6 @@ void hal_pds_init(void)
     bl_pds_init();
     
 #if 0  /* RTC is started by bl_rtc_init() in bl_rtc.c */
-    HBN_Clear_RTC_Counter();
     HBN_Enable_RTC_Counter();
 #endif
 }
@@ -64,10 +63,10 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     extern volatile uint64_t * const pullMachineTimerCompareRegister;
     extern void vPortSetupTimerInterrupt(void);
     
-    mtimerClkCfg = *(volatile uint32_t *)0x40000090;  // store mtimer clock
+    mtimerClkCfg = BL_RD_REG(GLB_BASE, GLB_CPU_CLK_CFG);  // store mtimer clock setting
     
     *pullMachineTimerCompareRegister = -1;  // avoid mtimer interrupt pending
-    *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 0;
+    *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 0;  // disable mtimer interrrupt
     
     do
     {
@@ -81,17 +80,20 @@ uint32_t hal_pds_enter_with_time_compensation(uint32_t pdsLevel, uint32_t pdsSle
     
     actualSleepDuration_ms = (uint32_t)bl_rtc_get_delta_time_ms(rtcRefCnt);
     
-    mtimerClkCycles = actualSleepDuration_ms * 4000;  // 4 clock cycles per us
+    mtimerClkCycles = actualSleepDuration_ms * 1000 * 4;
     ulCurrentTimeLow += mtimerClkCycles;
     if(ulCurrentTimeLow < mtimerClkCycles){
         ulCurrentTimeHigh++;
     }
     
+    BL_WR_REG(GLB_BASE, GLB_CPU_CLK_CFG, mtimerClkCfg);  // restore mtimer clock setting
+    
     *pullMachineTimerCompareRegister = -1;
+    *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 0;
+    
+    *pulTimeLow = 0;
     *pulTimeHigh = ulCurrentTimeHigh;
     *pulTimeLow = ulCurrentTimeLow;
-    
-    *(volatile uint32_t *)0x40000090 = mtimerClkCfg;
     
     vPortSetupTimerInterrupt();
     *(volatile uint8_t *)configCLIC_TIMER_ENABLE_ADDRESS = 1;

@@ -138,7 +138,9 @@ void my_debug( void *ctx, int level,
                const char *file, int line,
                const char *str );
 
+#if defined(MBEDTLS_HAVE_TIME)
 mbedtls_time_t dummy_constant_time( mbedtls_time_t* time );
+#endif
 
 #if defined(MBEDTLS_USE_PSA_CRYPTO)
 /* If MBEDTLS_TEST_USE_PSA_CRYPTO_RNG is defined, the SSL test programs will use
@@ -243,7 +245,7 @@ int ca_callback( void *data, mbedtls_x509_crt const *child,
 
 /*
  * Test recv/send functions that make sure each try returns
- * WANT_READ/WANT_WRITE at least once before sucesseding
+ * WANT_READ/WANT_WRITE at least once before succeeding
  */
 int delayed_recv( void *ctx, unsigned char *buf, size_t len );
 int delayed_send( void *ctx, const unsigned char *buf, size_t len );

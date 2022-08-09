@@ -88,6 +88,7 @@ static const struct reason_code sm_reason_list[] = {
     {WLAN_FW_DISCONNECT_BY_USER_WITH_DEAUTH, "user disconnect and send deauth"},
     {WLAN_FW_DISCONNECT_BY_USER_NO_DEAUTH, "user disconnect but no send deauth"},
     {WLAN_FW_DISCONNECT_BY_FW_PS_TX_NULLFRAME_FAILURE, "fw disconnect(tx nullframe failures)"},
+    {WLAN_FW_TRAFFIC_LOSS, "fw disconnect(traffic loss)"},
 };
 
 static const struct reason_code apm_reason_list[] = {
@@ -423,6 +424,34 @@ static void _rx_handle_beacon(struct scanu_result_ind *ind, struct ieee80211_mgm
 
     find_ie_ssid(mgmt->u.beacon.variable, ind->length, ind_new.ssid, &ind_new.ssid_len);
     find_ie_ds(mgmt->u.beacon.variable, ind->length, &ind_new.channel);
+
+    elmt_addr = mac_vsie_find(var_part_addr, var_part_len, (const uint8_t *) "\x00\x50\xF2\x04", 4);
+    if (elmt_addr != 0)
+    {
+        /*wps is suoported*/
+        ind_new.wps = 1;
+    } else {
+        /*wps isn't supported*/
+        ind_new.wps = 0;
+    }
+
+    /* TODO: Only consider 2.4G and bgn mode 
+     * (NO 5G and a/ac/ax) / (NO g-only and n-only difference)
+     */
+    #define MAC_ELTID_HT_CAPA                45
+    #define MAC_ELTID_EXT_RATES              50
+    if (mac_ie_find(var_part_addr, var_part_len, MAC_ELTID_HT_CAPA))
+    {
+        ind_new.mode = (WIFI_MODE_802_11B | WIFI_MODE_802_11G | WIFI_MODE_802_11N_2_4);
+    }
+    else if (mac_ie_find(var_part_addr, var_part_len, MAC_ELTID_EXT_RATES))
+    {
+        ind_new.mode = (WIFI_MODE_802_11B | WIFI_MODE_802_11G);
+    }
+    else
+    {
+        ind_new.mode = (WIFI_MODE_802_11B);
+    }
 
     if (WLAN_CAPABILITY_PRIVACY & (le16_to_cpu(mgmt->u.beacon.capab_info))) {
         wifi_wpa_ie_t *parsed_wpa_ie[2] = {};
