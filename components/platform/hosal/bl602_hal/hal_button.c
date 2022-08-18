@@ -503,3 +503,35 @@ void fdt_button_module_init(const void *fdt, int button_offset)
     hal_hbn_init(pinbuf, pinbuf_size);
     vPortFree(pinbuf);
 }
+
+void hal_button_module_init(int pin, int short_press_end_ms, int long_press_end_ms, int longlong_press_ms)
+{
+    gpio_ctx_t stgpio;
+    button_ctx_t stbutton;
+
+    stgpio.arg = &stbutton;
+
+    stgpio.gpioPin = pin;
+
+    ((button_ctx_t *) (stgpio.arg))->debounce = 10;
+
+    ((button_ctx_t *) (stgpio.arg))->short_press_start_ms = 100;
+
+    ((button_ctx_t *) (stgpio.arg))->short_press_end_ms = short_press_end_ms;
+
+    ((button_ctx_t *) (stgpio.arg))->short_kevent = 2;
+
+    ((button_ctx_t *) (stgpio.arg))->long_press_start_ms = 1000;
+
+    ((button_ctx_t *) (stgpio.arg))->long_press_end_ms = long_press_end_ms;
+
+    ((button_ctx_t *) (stgpio.arg))->long_kevent = 3;
+
+    ((button_ctx_t *) (stgpio.arg))->longlong_press_ms = longlong_press_ms;
+
+    ((button_ctx_t *) (stgpio.arg))->longlong_kevent = 4;
+
+    ((button_ctx_t *) (stgpio.arg))->trig_level = 1;
+
+    hal_button_register_handler_with_dts(&stgpio);
+}

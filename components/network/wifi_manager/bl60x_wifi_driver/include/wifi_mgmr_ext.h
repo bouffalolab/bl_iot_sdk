@@ -31,6 +31,11 @@
 #define __WIFI_MGMR_EXT_H__
 #include <lwip/netif.h>
 #include <wifi_hosal.h>
+#include <bl60x_fw_api.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 enum ap_info_type {
     /* The current AP information is advisory. When the AP fails to connect
@@ -292,4 +297,10 @@ int wifi_mgmr_pm_ops_register(void);
 int wifi_mgmr_fw_affair_ops(void);
 int wifi_mgmr_bcnind_auth_to_ext(int auth);
 int wifi_mgmr_bcnind_cipher_to_ext(int cipher);
+struct sm_connect_tlv_desc* wifi_mgmr_diagnose_tlv_get_ele(void);
+void wifi_mgmr_diagnose_tlv_free_ele(struct sm_connect_tlv_desc* ele);
+
+#if defined(__cplusplus)
+}
+#endif
 #endif

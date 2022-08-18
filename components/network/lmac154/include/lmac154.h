@@ -736,6 +736,13 @@ void lmac154_setAckWaitTime(uint16_t time_us);
 *******************************************************************************/
 void lmac154_setBE(uint8_t max_be, uint8_t min_be);
 
+/****************************************************************************//**
+ * @brief  Get the Symbol counter of RX End event
+ *
+ * @return symbol counter of rx end event
+ *
+*******************************************************************************/
+uint32_t lmac154_getRxEndSymb(void);
 
 /****************************************************************************//**
  * @brief  Run AES CCM

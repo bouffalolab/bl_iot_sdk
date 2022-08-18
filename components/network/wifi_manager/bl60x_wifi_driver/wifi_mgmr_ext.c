@@ -213,7 +213,7 @@ wifi_interface_t wifi_mgmr_sta_enable(void)
     static int done = 0;
 
     if (1 == done) {
-        bl_os_printf("----- BUG FIXME? NOT do STA enable again\r\n");
+        bl_os_printf("----- STA has already been enable\r\n");
         return &(wifiMgmr.wlan_sta);
     }
     done = 1;
@@ -1012,4 +1012,69 @@ int wifi_mgmr_bcnind_cipher_to_ext(int cipher)
         break;
     }
     return ret;
+}
+
+void wifi_mgmr_diagnose_tlv_free(struct sm_tlv_list* list)
+{
+    /* Cant use co_list, free it on our own */
+    if (!list || !list->first)
+        return;
+
+    struct sm_tlv_list_hdr *next = list->first;
+    struct sm_tlv_list_hdr *current = NULL;
+    while (next) {
+        current = next;
+        next = next->next;
+        /* XXX NO container_of here and next is the head, so just free! */
+        bl_os_free(current);
+    }
+}
+
+struct sm_connect_tlv_desc* wifi_mgmr_diagnose_tlv_get_ele(void)
+{
+    static struct sm_tlv_list list = {NULL, NULL};
+    static struct sm_tlv_list_hdr *next = NULL;
+    struct sm_tlv_list_hdr *current = NULL;
+
+    bl_os_mutex_lock(wifiMgmr.wifi_mgmr_stat_info.diagnose_get_lock);
+    if (!list.first)
+    {
+        bl_os_mutex_lock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+        list = wifiMgmr.wifi_mgmr_stat_info.connect_diagnose;
+        wifiMgmr.wifi_mgmr_stat_info.connect_diagnose.first = NULL;
+        wifiMgmr.wifi_mgmr_stat_info.connect_diagnose.last = NULL;
+        bl_os_mutex_unlock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+
+        current = list.first;
+        next = (list.first) ? list.first->next : NULL;
+
+        bl_os_mutex_unlock(wifiMgmr.wifi_mgmr_stat_info.diagnose_get_lock);
+        return (struct sm_connect_tlv_desc *)(current);
+    }
+
+    /* Get current */
+    current = next;
+    if (next)
+    {
+        next = next->next;
+    }
+    /* Reset list when we arrive the end */
+    if (!current)
+    {    
+        list.first = NULL;
+        list.last = NULL;
+    }
+
+    bl_os_mutex_unlock(wifiMgmr.wifi_mgmr_stat_info.diagnose_get_lock);
+    return (struct sm_connect_tlv_desc *)(current);
+}
+
+void wifi_mgmr_diagnose_tlv_free_ele(struct sm_connect_tlv_desc *ele)
+{
+    if (!ele)
+    {
+        return;
+    }
+
+    bl_os_free(ele);
 }

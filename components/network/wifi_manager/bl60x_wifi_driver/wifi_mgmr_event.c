@@ -38,10 +38,21 @@
 #include "wifi_mgmr_event.h"
 #include <wifi_hosal.h>
 
+void wifi_mgmr_diagnose_tlv_free(struct sm_tlv_list* list);
 static void cb_connect_ind(void *env, struct wifi_event_sm_connect_ind *ind)
 {
+    struct sm_tlv_list last_unused = {NULL, NULL};
+
     wifiMgmr.wifi_mgmr_stat_info.status_code = ind->status_code;
     wifiMgmr.wifi_mgmr_stat_info.reason_code = ind->reason_code;
+    bl_os_mutex_lock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+    last_unused = wifiMgmr.wifi_mgmr_stat_info.connect_diagnose;
+    wifiMgmr.wifi_mgmr_stat_info.connect_diagnose = ind->connect_diagnose;
+    bl_os_mutex_unlock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+    if (last_unused.first)
+    {
+        wifi_mgmr_diagnose_tlv_free(&last_unused);
+    }
     wifi_mgmr_set_connect_stat_info(ind, WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_CONNECTION);
     wifi_mgmr_api_common_msg(
             (ind->status_code ? WIFI_MGMR_EVENT_FW_IND_DISCONNECT : WIFI_MGMR_EVENT_FW_IND_CONNECTED),
@@ -50,10 +61,20 @@ static void cb_connect_ind(void *env, struct wifi_event_sm_connect_ind *ind)
 
 static void cb_disconnect_ind(void *env, struct wifi_event_sm_disconnect_ind *ind)
 {
+    struct sm_tlv_list last_unused = {NULL, NULL};
+
     bl_os_printf("sending disconnect\r\n");
     wifiMgmr.wifi_mgmr_stat_info.type_ind = WIFI_MGMR_CONNECT_IND_STAT_INFO_TYPE_IND_DISCONNECTION;
     wifiMgmr.wifi_mgmr_stat_info.status_code = ind->status_code;
     wifiMgmr.wifi_mgmr_stat_info.reason_code = ind->reason_code;
+    bl_os_mutex_lock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+    last_unused = wifiMgmr.wifi_mgmr_stat_info.connect_diagnose;
+    wifiMgmr.wifi_mgmr_stat_info.connect_diagnose = ind->connect_diagnose;
+    bl_os_mutex_unlock(wifiMgmr.wifi_mgmr_stat_info.diagnose_lock);
+    if (last_unused.first)
+    {
+        wifi_mgmr_diagnose_tlv_free(&last_unused);
+    }
     wifi_mgmr_api_common_msg(WIFI_MGMR_EVENT_FW_IND_DISCONNECT, (void*)0x1, (void*)0x2);
 
     wifi_hosal_pm_post_event(WLAN_PM_EVENT_CONTROL, WLAN_CODE_PM_NOTIFY_STOP, NULL);

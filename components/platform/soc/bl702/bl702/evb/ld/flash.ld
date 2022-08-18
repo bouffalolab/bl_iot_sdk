@@ -4,11 +4,14 @@ ENTRY( bl702_start )
 
 __EM_SIZE = DEFINED(ble_controller_init) ? 8K : 0K;
 __CACHE_SIZE = DEFINED(__CACHE_SIZE) ? __CACHE_SIZE : 4K;
+__stack_size = DEFINED(__stack_size) ? __stack_size : 2K;
+
 
 MEMORY
 {
   flash  (rxai!w) : ORIGIN = 0x23000000, LENGTH = (2M)
-  tcm_ocram (wxa) : ORIGIN = 0x42010000 + __CACHE_SIZE, LENGTH = (64K - __CACHE_SIZE + 64K - __EM_SIZE)
+  tcm_ocram (wxa) : ORIGIN = 0x42010000 + __CACHE_SIZE, LENGTH = (64K - __CACHE_SIZE + 64K - __EM_SIZE - __stack_size)
+  sys_stack (wxa) : ORIGIN = ORIGIN(tcm_ocram) + LENGTH(tcm_ocram), LENGTH = __stack_size
   hbnram    (wxa) : ORIGIN = 0x40010000, LENGTH = (4K)
 }
 
@@ -222,14 +225,13 @@ SECTIONS
   PROVIDE( _heap2_start = 0 );
   PROVIDE( _heap2_size = 0 );
 
-  .stack ORIGIN(tcm_ocram) + LENGTH(tcm_ocram) - __stack_size (NOLOAD) :
+  .stack (NOLOAD) :
   {
     PROVIDE ( _sp_base = . );
     . = . + __stack_size;
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
-  } >tcm_ocram
-
+  } > sys_stack
 
   /* camera driver */
   PROVIDE( _ld_bl_driver_camera_start = _bl_driver_camera_start );

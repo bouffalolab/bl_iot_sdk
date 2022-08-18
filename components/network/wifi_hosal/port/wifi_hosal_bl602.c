@@ -31,6 +31,10 @@ extern "C" {
 #include "bl_pds.h"
 #include "bl_efuse.h"
 
+#ifdef BL602_MATTER_SUPPORT
+#include <hosal_adc.c>
+#endif
+
 /****************************************************************************
  * Definition
  ****************************************************************************/

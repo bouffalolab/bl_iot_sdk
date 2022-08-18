@@ -27,6 +27,9 @@ endif
 
 ## These include paths would be exported to project level
 COMPONENT_ADD_INCLUDEDIRS += sec_common
+COMPONENT_PRIV_INCLUDEDIRS := adapter
+COMPONENT_SRCDIRS := adapter
+COMPONENT_SRCS := adapter/hosal_adpt_iotsdk.c
 
 HAL_DRV_HAS_CONFIG := 0
 

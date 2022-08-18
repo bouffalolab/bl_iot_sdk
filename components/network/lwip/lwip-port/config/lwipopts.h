@@ -17,8 +17,13 @@
 
 #define LWIP_MDNS_RESPONDER     1
 #define LWIP_IGMP               1
-//#define LWIP_AUTOIP             1
-////#define LWIP_IPV6_MLD           1
+
+#ifdef BL602_MATTER_SUPPORT
+#define LWIP_AUTOIP             1
+#define LWIP_IPV6_MLD           1
+#define LWIP_ND6_RDNSS_MAX_DNS_SERVERS  1
+#endif
+
 #define LWIP_NUM_NETIF_CLIENT_DATA      1
 
 #define LWIP_ALTCP                      1
@@ -104,7 +109,7 @@ a lot of data that needs to be copied, this should be set high. */
 #elif defined(CFG_CHIP_BL606P)
 #define PBUF_POOL_SIZE          200
 #else
-#ifdef CFG_ETHERNET_ENABLE
+#if defined(CFG_ETHERNET_ENABLE) || defined(BL602_MATTER_SUPPORT)
 #define PBUF_POOL_SIZE          12
 #else
 #define PBUF_POOL_SIZE          0
@@ -117,6 +122,8 @@ a lot of data that needs to be copied, this should be set high. */
 #define PBUF_POOL_BUFSIZE       1600
 #elif defined(CFG_CHIP_BL606P)
 #define PBUF_POOL_BUFSIZE       1600
+#elif defined(BL602_MATTER_SUPPORT)
+#define PBUF_POOL_BUFSIZE       (1280 + 150)
 #else
 #define PBUF_POOL_BUFSIZE       760
 #endif /* CFG_ETHERNET_ENABLE */
@@ -362,6 +369,11 @@ a lot of data that needs to be copied, this should be set high. */
 
 #define LWIP_RAW                        1
 
+#ifdef BL602_MATTER_SUPPORT
+#define LWIP_IPV6                       1
+#define LWIP_IPV6_DHCP6                 1
+#endif
+
 /*
    ---------------------------------
    ---------- MISC. options ----------
@@ -372,7 +384,10 @@ a lot of data that needs to be copied, this should be set high. */
  * local TCP/UDP pcb (default==0). This can prevent creating predictable port
  * numbers after booting a device.
  */
+#ifndef BL602_MATTER_SUPPORT
 extern int bl_rand();
+#endif
+
 #define LWIP_RANDOMIZE_INITIAL_LOCAL_PORTS 1
 #define LWIP_RAND() ((u32_t)bl_rand())
 

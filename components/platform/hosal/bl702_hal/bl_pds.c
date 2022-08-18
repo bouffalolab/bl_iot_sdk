@@ -1376,6 +1376,7 @@ static void ATTR_PDS_SECTION bl_pds_fastboot_entry(void)
     
     // Wait until XTAL32M is ready for use
     while(!BL_IS_REG_BIT_SET(BL_RD_REG(AON_BASE, AON_TSEN), AON_XTAL_RDY));
+    RomDriver_BL702_Delay_MS(1);
     
     // Select XTAL32M as root clock
     RomDriver_HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_XTAL);
@@ -1571,7 +1572,7 @@ static void ATTR_NOINLINE ATTR_PDS_SECTION bl_pds_post_process_1(uint32_t pdsLev
     if(pdsLevel < 4){
         // Select DLL or XTAL32M
         AON_Power_On_XTAL();
-        //BL702_Delay_MS(1);  // actually xtal may be not ready when AON_XTAL_RDY becomes 1
+        BL702_Delay_MS(1);  // actually xtal may be not ready when AON_XTAL_RDY becomes 1
         GLB_Power_On_DLL(GLB_DLL_XTAL_32M);
         if(clkCfg.pll_clk >= 2){
             HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_DLL);

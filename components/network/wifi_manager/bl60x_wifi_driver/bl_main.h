@@ -56,6 +56,7 @@ int bl_main_if_remove(uint8_t vif_index);
 int bl_main_if_add(int is_sta, struct netif *netif, uint8_t *vif_index);
 int bl_main_monitor(void);
 int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq, const uint32_t flags);
+int bl_main_connect_abort(uint8_t *status);
 int bl_main_apm_start(char *ssid, char *password, int channel, uint8_t vif_index, uint8_t hidden_ssid, uint16_t bcn_int);
 int bl_main_apm_stop(uint8_t vif_index);
 int bl_main_apm_sta_cnt_get(uint8_t *sta_cnt);
@@ -90,6 +91,8 @@ struct wifi_event_sm_connect_ind
     uint8_t width;
     uint32_t center_freq1;
     uint32_t center_freq2;
+    /// Pointer to the structure used for the diagnose module
+    struct sm_tlv_list connect_diagnose;
 };
 
 struct wifi_event_sm_disconnect_ind
@@ -102,6 +105,8 @@ struct wifi_event_sm_disconnect_ind
     uint8_t vif_idx;
     /// FT over DS is ongoing
     int ft_over_ds;
+    /// Pointer to the structure used for the diagnose module
+    struct sm_tlv_list connect_diagnose;
 };
 
 typedef struct

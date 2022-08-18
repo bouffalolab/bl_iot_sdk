@@ -156,6 +156,14 @@ void __attribute__((weak)) vAssertCalled(void)
     abort();
 }
 
+#ifdef BL602_MATTER_SUPPORT
+void setup_heap(void)
+{
+    // Invoked during system boot via start.S
+    vPortDefineHeapRegions(xHeapRegions);
+}
+#endif
+
 #ifdef SYS_VFS_UART_ENABLE
 static int get_dts_addr(const char *name, uint32_t *start, uint32_t *off)
 {
@@ -316,7 +324,9 @@ void bfl_main()
 
     _dump_boot_info();
 
+#ifndef BL602_MATTER_SUPPORT
     vPortDefineHeapRegions(xHeapRegions);
+#endif
 
     system_early_init();
 

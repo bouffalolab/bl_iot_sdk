@@ -9,6 +9,7 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
 #include <event_type_code.h>
 
 #ifndef AOS_DOXYGEN_MODE

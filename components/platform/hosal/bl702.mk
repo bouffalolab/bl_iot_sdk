@@ -4,7 +4,7 @@
 COMPONENT_ADD_INCLUDEDIRS += bl702_hal
 
 ## not be exported to project level
-COMPONENT_PRIV_INCLUDEDIRS :=
+COMPONENT_PRIV_INCLUDEDIRS +=
 
 ## This component's src
 COMPONENT_SRCS := bl702_hal/bl_uart.c \
@@ -52,6 +52,7 @@ COMPONENT_SRCS := bl702_hal/bl_uart.c \
                   bl702_hal/hal_tcal.c \
                   bl702_hal/hal_button.c \
                   sec_common/bl_sec_pka.c \
+                  sec_common/bl_sec_aes.c \
 
 ifeq ($(CONFIG_USE_CAMERA),1)
 COMPONENT_SRCS += bl702_hal/bl_cam.c
@@ -61,7 +62,7 @@ ifeq ($(CONFIG_USE_PSRAM),1)
 COMPONENT_SRCS +=  bl702_hal/bl_psram.c
 endif
 
-COMPONENT_SRCDIRS := bl702_hal sec_common
+COMPONENT_SRCDIRS += bl702_hal sec_common
 
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 COMPONENT_OBJS := $(patsubst %.cpp,%.o, $(COMPONENT_OBJS))

@@ -131,7 +131,8 @@ void vApplicationSleep(TickType_t xExpectedIdleTime_ms)
            #if (DEBUG_PRINT)
            reduceSleepTime = 130;
            #else
-           reduceSleepTime = 35;
+           //reduceSleepTime = 35;
+           reduceSleepTime = 75;  // there is 1ms delay after xtal power on after pds wakeup
            #endif
         }
         else

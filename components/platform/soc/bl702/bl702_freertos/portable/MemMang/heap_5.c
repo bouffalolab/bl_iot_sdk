@@ -140,7 +140,8 @@ size_t xUserSize = xWantedSize;
 	/* The heap must be initialised before the first call to
 	prvPortMalloc(). */
 	configASSERT( pxEnd );
-#if defined(CFG_ZIGBEE_ENABLE)
+//#if defined(CFG_ZIGBEE_ENABLE)
+#if 1//support pvPortMalloc inside interrupt
 	if( !xPortIsInsideInterrupt() )
 	{
 		vTaskEnterCritical();
@@ -259,7 +260,8 @@ size_t xUserSize = xWantedSize;
 
 		traceMALLOC( pvReturn, xWantedSize );
 	}
-#if defined(CFG_ZIGBEE_ENABLE)
+//#if defined(CFG_ZIGBEE_ENABLE)
+#if 1//support pvPortMalloc inside interrupt
 	if( !xPortIsInsideInterrupt() )
 	{
 		vTaskExitCritical();
@@ -305,7 +307,8 @@ void *pvPortRealloc(void *pv, size_t xWantedSize)
     void *pvReturn = NULL;
     uint8_t *puc = (uint8_t *)pv;
 
-#if defined(CFG_ZIGBEE_ENABLE)
+//#if defined(CFG_ZIGBEE_ENABLE)
+#if 1//support pvPortRealloc inside interrupt
 	if( !xPortIsInsideInterrupt() )
 	{
 		vTaskEnterCritical();
@@ -366,7 +369,8 @@ void *pvPortRealloc(void *pv, size_t xWantedSize)
             pvReturn = NULL;
         }
     }
-#if defined(CFG_ZIGBEE_ENABLE)
+//#if defined(CFG_ZIGBEE_ENABLE)
+#if 1//support pvPortRealloc inside interrupt
 	if( !xPortIsInsideInterrupt() )
 	{
 		vTaskExitCritical();
@@ -402,7 +406,8 @@ BlockLink_t *pxLink;
 				/* The block is being returned to the heap - it is no longer
 				allocated. */
 				pxLink->xBlockSize &= ~xBlockAllocatedBit;
-			#if defined(CFG_ZIGBEE_ENABLE)
+			//#if defined(CFG_ZIGBEE_ENABLE)
+			#if 1//support vPortFree inside interrupt
 				if( !xPortIsInsideInterrupt() )
 				{
 					vTaskEnterCritical();
@@ -416,7 +421,8 @@ BlockLink_t *pxLink;
 					traceFREE( pv, pxLink->xBlockSize );
 					prvInsertBlockIntoFreeList( ( ( BlockLink_t * ) pxLink ) );
 				}
-			#if defined(CFG_ZIGBEE_ENABLE)
+			//#if defined(CFG_ZIGBEE_ENABLE)
+			#if 1//support vPortFree inside interrupt
 				if( !xPortIsInsideInterrupt() )
 				{
 					vTaskExitCritical();

@@ -37,13 +37,20 @@
 #include "bl_os_private.h"
 
 #define WIFI_MGMR_SCAN_ITEMS_MAX (50)
-#define WIFI_MGMR_PROFILES_MAX (1)
+#define WIFI_MGMR_PROFILES_MAX (2)
 #define WIFI_MGMR_MQ_MSG_SIZE (128 + 64 + 32)
+
+#ifdef BL602_MATTER_SUPPORT
+#define WIFI_MGMR_MQ_MSG_COUNT (6)
+#else
 #define WIFI_MGMR_MQ_MSG_COUNT (1)
+#endif
 
 #define MAC_ADDR_LIST(m) (m)[0], (m)[1], (m)[2], (m)[3], (m)[4], (m)[5]
 #define WIFI_MGMR_CONNECT_PMF_CAPABLE_BIT       (1 << 0)
 #define WIFI_MGMR_CONNECT_PMF_REQUIRED_BIT      (1 << 1)
+
+#define WIFI_MGMR_STA_DISCONNECT_DELAY          (1000) //ms 
 
 /**
  ****************************************************************************************
@@ -266,6 +273,10 @@ typedef struct wifi_mgmr_connect_ind_stat_info {
     uint8_t bssid[6];
     uint8_t type_ind;
     uint8_t chan_band;
+    BL_Mutex_t diagnose_lock;
+    BL_Mutex_t diagnose_get_lock;
+    /// Pointer to the structure used for the diagnose module
+    struct sm_tlv_list connect_diagnose;
 } wifi_mgmr_connect_ind_stat_info_t;
 
 typedef struct wifi_mgmr_sta_basic_info {
@@ -312,9 +323,11 @@ typedef struct wifi_mgmr {
 #define WIFI_MGMR_PENDING_TASK_SCAN_BIT      (1 << 0)
 #define WIFI_MGMR_PENDING_TASK_IP_UPDATE_BIT (1 << 1)
 #define WIFI_MGMR_PENDING_TASK_IP_GOT_BIT    (1 << 2)
+#define WIFI_MGMR_PENDING_TASK_CONNECT_BIT   (1 << 3)
             unsigned int scan       :   1;
             unsigned int ip_update  :   1;
             unsigned int ip_got     :   1;
+            unsigned int connect    :   1;
         } bits;
     } pending_task;
     /*Feature Bits*/
@@ -328,7 +341,11 @@ typedef struct wifi_mgmr {
 #define MAX_HOSTNAME_LEN_CHECK 32
     char hostname[MAX_HOSTNAME_LEN_CHECK];
     void *dns_server;
+#ifdef DEBUG_CONNECT_ABORT
+    unsigned long connect_time;
+#endif
 } wifi_mgmr_t;
+
 
 /// Constant value corresponding to the Broadcast MAC address
 extern const struct mac_addr mac_addr_bcst;

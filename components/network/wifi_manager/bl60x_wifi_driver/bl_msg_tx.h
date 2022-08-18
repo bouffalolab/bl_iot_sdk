@@ -61,6 +61,7 @@ int bl_send_remove_if(struct bl_hw *bl_hw, uint8_t inst_nbr);
 int bl_send_scanu_req(struct bl_hw *bl_hw, struct bl_send_scanu_para *scanu_para);
 int bl_send_scanu_raw_send(struct bl_hw *bl_hw, uint8_t *pkt, int len);
 int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm);
+int bl_send_sm_connect_abort_req(struct bl_hw *bl_hw, struct sm_connect_abort_cfm *cfm);
 int bl_send_sm_disconnect_req(struct bl_hw *bl_hw);
 int bl_send_mm_powersaving_req(struct bl_hw *bl_hw, int mode);
 int bl_send_mm_denoise_req(struct bl_hw *bl_hw, int mode);

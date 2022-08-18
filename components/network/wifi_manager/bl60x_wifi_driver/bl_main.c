@@ -495,6 +495,14 @@ int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel
     return 0;
 }
 
+int bl_main_connect_abort(uint8_t *status)
+{
+    struct sm_connect_abort_cfm connect_abort_cfm = {};
+    bl_send_sm_connect_abort_req(&wifi_hw, &connect_abort_cfm);
+    *status = connect_abort_cfm.status;
+    return 0;
+}
+
 static int cfg80211_init(struct bl_hw *bl_hw)
 {
     int ret = 0;

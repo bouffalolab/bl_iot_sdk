@@ -337,6 +337,7 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
 {
     static char *ssid;
     static char *password;
+    struct sm_connect_tlv_desc* ele = NULL;
 
     switch (event->code) {
         case CODE_WIFI_ON_INIT_DONE:
@@ -373,6 +374,19 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
                 aos_now_ms(),
                 wifi_mgmr_status_code_str(event->value)
             );
+#if 0
+            /* Get every ele in diagnose tlv data */
+            while ((ele = wifi_mgmr_diagnose_tlv_get_ele()))
+            {
+                printf("[APP] [EVT] diagnose tlv data %lld, id: %d, len: %d, data: %p\r\n", aos_now_ms(), 
+                    ele->id, ele->len, ele->data);
+
+                /* MUST free diagnose tlv data ele */
+                wifi_mgmr_diagnose_tlv_free_ele(ele);
+            }
+
+            printf("[SYS] Memory left is %d Bytes\r\n", xPortGetFreeHeapSize());
+#endif
         }
         break;
         case CODE_WIFI_ON_CONNECTING:
@@ -387,6 +401,19 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data)
         break;
         case CODE_WIFI_ON_CONNECTED:
         {
+#if 0
+            /* Get every ele in diagnose tlv data */
+            while ((ele = wifi_mgmr_diagnose_tlv_get_ele()))
+            {
+                printf("[APP] [EVT] diagnose tlv data %lld, id: %d, len: %d, data: %p\r\n", aos_now_ms(), 
+                    ele->id, ele->len, ele->data);
+
+                /* MUST free diagnose tlv data */
+                wifi_mgmr_diagnose_tlv_free_ele(ele);
+            }
+
+            printf("[SYS] Memory left is %d Bytes\r\n", xPortGetFreeHeapSize());
+#endif
             printf("[APP] [EVT] connected %lld\r\n", aos_now_ms());
         }
         break;

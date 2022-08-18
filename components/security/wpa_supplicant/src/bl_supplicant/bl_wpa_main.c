@@ -274,6 +274,7 @@ static const struct wpa_funcs wpa_cb = {
     .wpa_ap_deinit           = hostap_deinit,
 
     .wpa_parse_wpa_ie        = wpa_parse_wpa_ie_wrapper,
+    .wpa_reg_diag_tlv_cb     = wpa_reg_diag_tlv_cb,
 #ifdef CONFIG_MIC_FAILURE_COUNTERMEASURE
     .wpa_michael_mic_failure = wpa_michael_mic_failure,
 #endif

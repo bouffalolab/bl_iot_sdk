@@ -511,7 +511,7 @@ static void wifi_disconnect_cmd(char *buf, int len, int argc, char **argv)
 {
     wifi_mgmr_sta_disconnect();
     /*XXX Must make sure sta is already disconnect, otherwise sta disable won't work*/
-    bl_os_msleep(1000);
+    bl_os_msleep(WIFI_MGMR_STA_DISCONNECT_DELAY);
     wifi_mgmr_sta_disable(NULL);
 }
 
@@ -676,6 +676,11 @@ static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
         flags &= ~WIFI_CONNECT_PMF_REQUIRED;
     }
 
+
+#ifdef DEBUG_CONNECT_ABORT
+    wifiMgmr.connect_time = (unsigned long)bl_os_get_time_ms();
+    bl_os_printf("cli: execute wifi_sta_connect, up time is %.1fs\r\n", wifiMgmr.connect_time/1000.0);
+#endif
     wifi_interface = wifi_mgmr_sta_enable();
     wifi_mgmr_sta_connect_mid(wifi_interface, argv[getopt_env.optind], open_bss_flag ? NULL : argv[getopt_env.optind+1], NULL, bssid_set_flag ? mac : NULL, 0, channel_index, 1, flags);
 

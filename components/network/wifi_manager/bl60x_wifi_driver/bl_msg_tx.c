@@ -825,6 +825,22 @@ int bl_send_sm_disconnect_req(struct bl_hw *bl_hw)
     return bl_send_msg(bl_hw, req, 1, SM_DISCONNECT_CFM, NULL);
 }
 
+int bl_send_sm_connect_abort_req(struct bl_hw *bl_hw, struct sm_connect_abort_cfm *cfm)
+{
+    struct sm_connect_abort_req *req;
+
+    RWNX_DBG(RWNX_FN_ENTRY_STR);
+
+    req = bl_msg_zalloc(SM_CONNECT_ABORT_REQ, TASK_SM, DRV_TASK_ID, sizeof(struct sm_connect_abort_req));
+    if (!req) {
+        return -ENOMEM;
+    }
+    /* Set parameters for the SM_CONNECT_ABORT_REQ message */
+    req->vif_idx = bl_hw->vif_index_sta;
+
+    return bl_send_msg(bl_hw, req, 1, SM_CONNECT_ABORT_CFM, cfm);
+}
+
 int bl_send_mm_powersaving_req(struct bl_hw *bl_hw, int mode)
 {
     struct mm_set_ps_mode_req *req;

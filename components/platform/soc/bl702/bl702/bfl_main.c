@@ -207,6 +207,9 @@ static void aos_loop_proc(void *pvParameters)
 #elif defined (CFG_ZIGBEE_DONGLE_EN)
     extern void zb_dongle_init(void);
     zb_dongle_init();
+#elif defined (CFG_OPENTHREAD_EN)
+    extern void ot_cli_init(void);
+    ot_cli_init();
 #endif
 
     xTaskCreate(app_main_entry,

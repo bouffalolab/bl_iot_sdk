@@ -37,6 +37,7 @@ extern "C" {
 /* Evaluates to 0 if cond is true-ish; compile error otherwise */
 #define ZERO_OR_COMPILE_ERROR(cond) ((int) sizeof(char[1 - 2 * !(cond)]) - 1)
 
+#ifndef BL602_MATTER_SUPPORT
 /* Evaluates to 0 if array is an array; compile error if not array (e.g.
  * pointer)
  */
@@ -44,6 +45,9 @@ extern "C" {
 	ZERO_OR_COMPILE_ERROR( \
 		!__builtin_types_compatible_p(__typeof__(array), \
 					      __typeof__(&(array)[0])))
+#else
+#define IS_ARRAY(array) (0)
+#endif
 
 /* Evaluates to number of elements in an array; compile error if not
  * an array (e.g. pointer)

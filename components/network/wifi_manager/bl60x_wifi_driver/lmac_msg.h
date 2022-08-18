@@ -40,6 +40,7 @@
 // for MAC related elements (mac_addr, mac_ssid...)
 #include "lmac_types.h"
 #include <bl60x_fw_api.h>
+#include <wifi_mgmr_ext.h>
 #include "lmac_mac.h"
 #define MAX_PSK_PASS_PHRASE_LEN 64
 
@@ -102,22 +103,6 @@ enum mm_remain_on_channel_op
 
 /// The two following definitions are needed for message structure consistency
 /// Structure of a list element header
-struct co_list_hdr
-{
-    struct co_list_hdr *next;
-};
-
-/// Structure of a list
-struct co_list
-{
-    /// pointer to first element of the list
-    struct co_list_hdr *first;
-    /// pointer to the last element
-    struct co_list_hdr *last;
-    /// number of element in the list
-    u32_l cnt;
-};
-
 /// Message structure.
 struct lmac_msg
 {
@@ -1141,6 +1126,8 @@ struct sm_connect_ind
 
     /// EDCA parameters
     u32_l ac_param[AC_MAX];
+    /// Pointer to the structure used for the diagnose module
+    struct sm_tlv_list connect_diagnose;
 };
 
 /// Structure containing the parameters of the @ref SM_DISCONNECT_REQ message.
@@ -1169,6 +1156,25 @@ struct sm_disconnect_ind
     u8_l vif_idx;
     /// FT over DS is ongoing
     bool_l ft_over_ds;
+    /// Pointer to the structure used for the diagnose module
+    struct sm_tlv_list connect_diagnose;
+};
+
+/// Structure containing the parameters of the @ref SM_CONNECT_ABORT_REQ message.
+struct sm_connect_abort_req
+{
+    /// Index of the VIF.
+    uint8_t vif_idx;
+};
+
+/// Structure containing the parameters of the @ref SM_CONNECT_ABORT_CFM message.
+struct sm_connect_abort_cfm
+{
+    /// Status. If 0, it means that the disconnection procedure will be aborted and that
+    /// a subsequent @ref SM_DISCONNECT_IND message will be forwarded once the procedure is
+    /// completed.
+    /// If 1, it means that the scan procdure will be aborted.
+    uint8_t status;
 };
 
 struct

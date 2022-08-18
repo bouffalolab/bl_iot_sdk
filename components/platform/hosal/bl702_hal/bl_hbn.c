@@ -540,6 +540,7 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
     
     // Wait until XTAL32M is ready for use
     while(!BL_IS_REG_BIT_SET(BL_RD_REG(AON_BASE, AON_TSEN), AON_XTAL_RDY));
+    RomDriver_BL702_Delay_MS(1);
     
     // Select XTAL32M as root clock
     RomDriver_HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_XTAL);

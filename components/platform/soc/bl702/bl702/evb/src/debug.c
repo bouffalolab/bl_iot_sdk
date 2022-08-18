@@ -1,12 +1,12 @@
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <limits.h>
 
 //#define CHAR_BIT	8
 //FIXME no ugly declare
-extern int bl_uart_data_send(uint8_t id, uint8_t data);
 extern int usb_cdc_is_port_open(void);
 extern int usb_cdc_data_send(const uint8_t *data, uint32_t len);
 extern int UART_SendData(uint8_t uartId, uint8_t *data, uint32_t len);
@@ -176,7 +176,7 @@ format_int(char *q, size_t n, uintmax_t val, unsigned int flags,
 #include <math.h>
 #define CVTBUFSIZE 80
 
-static char *cvt(double arg, int ndigits, int *decpt, int *sign, char *buf, int eflag)
+char *cvt(double arg, int ndigits, int *decpt, int *sign, char *buf, int eflag)
 {
   int r2;
   double fi, fj;
@@ -265,15 +265,13 @@ char *fcvtbuf(double arg, int ndigits, int *decpt, int *sign, char *buf)
   return cvt(arg, ndigits, decpt, sign, buf, 0);
 }
 
-static void ee_bufcpy(char *d, char *s, int count); 
- 
 void ee_bufcpy(char *pd, char *ps, int count) {
 	char *pe=ps+count;
 	while (ps!=pe)
 		*pd++=*ps++;
 }
 
-static void parse_float(double value, char *buffer, char fmt, int precision)
+void parse_float(double value, char *buffer, char fmt, int precision)
 {
   int decpt, sign, exp, pos;
   char *digits = NULL;
@@ -376,7 +374,7 @@ static void parse_float(double value, char *buffer, char fmt, int precision)
   *buffer = '\0';
 }
 
-static void decimal_point(char *buffer)
+void decimal_point(char *buffer)
 {
   while (*buffer)
   {
@@ -403,7 +401,7 @@ static void decimal_point(char *buffer)
   }
 }
 
-static void cropzeros(char *buffer)
+void cropzeros(char *buffer)
 {
   char *stop;
 
@@ -812,105 +810,64 @@ int vsprintf(char *buffer, const char *format, va_list ap)
 	return vsnprintf(buffer, ~(size_t) 0, format, ap);
 }
 
-static char string[512];
-void vprint(const char *fmt, va_list argp)
-{
-    char *str;
-    int ch;
+extern volatile bool sys_log_all_enable;
 
-    str = string;
-    if (0 < vsprintf(string, fmt, argp)) {
-#if defined(CFG_USB_CDC_ENABLE) && !defined(DISABLE_PRINT)
+void debug_print(uint8_t *data, uint32_t len)
+{
+#if !defined(DISABLE_PRINT)
+    if (sys_log_all_enable) {
+#if defined(CFG_USB_CDC_ENABLE)
         if(usb_cdc_is_port_open()){
-            usb_cdc_data_send((const uint8_t *)str, strlen(str));
+            usb_cdc_data_send(data, len);
             return;
         }
 #endif
 
-#if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
-        UART_SendData(0, (uint8_t *)str, strlen(str));
-        return;
+        UART_SendData(0, data, len);
+    }
 #endif
+}
 
-        while ('\0' != (ch = *(str++))) {
+#if 0
+static char string[512];
+void vprint(const char *fmt, va_list argp)
+{
 #if !defined(DISABLE_PRINT)
-            bl_uart_data_send(0, ch);
-#endif
+    if (sys_log_all_enable) {
+        if (0 < vsprintf(string, fmt, argp)) {
+            debug_print((uint8_t *)string, strlen(string));
         }
     }
+#endif
 }
+#else
+extern void vprint(const char *fmt, va_list argp);
+#endif
 
 int bl_putchar(int c)
 {
-#if defined(CFG_USB_CDC_ENABLE) && !defined(DISABLE_PRINT)
     uint8_t data = c;
-    if(usb_cdc_is_port_open()){
-        usb_cdc_data_send(&data, 1);
-        return 0;
-    }
-#endif
 
-#if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
-    uint8_t data = c;
-    UART_SendData(0, &data, 1);
-    return 0;
-#endif
-
-#if !defined(DISABLE_PRINT)
-    bl_uart_data_send(0, c);
-#endif
+    debug_print(&data, 1);
 
     return 0;
 }
 
 int putchar(int c)
 {
-#if defined(CFG_USB_CDC_ENABLE) && !defined(DISABLE_PRINT)
     uint8_t data = c;
-    if(usb_cdc_is_port_open()){
-        usb_cdc_data_send(&data, 1);
-        return 0;
-    }
-#endif
 
-#if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
-    uint8_t data = c;
-    UART_SendData(0, &data, 1);
+    debug_print(&data, 1);
+
     return 0;
-#endif
-
-#if !defined(DISABLE_PRINT)
-	bl_uart_data_send(0, c);
-#endif
-
-	return 0;
 }
 
 int puts(const char *s)
 {
-    int counter = 0;
-    char c;
+    int counter = strlen(s);
 
-#if defined(CFG_USB_CDC_ENABLE) && !defined(DISABLE_PRINT)
-    if(usb_cdc_is_port_open()){
-        counter = strlen(s);
-        usb_cdc_data_send((const uint8_t *)s, counter);
-        return counter;
-    }
-#endif
+    debug_print((uint8_t *)s, counter);
 
-#if defined(CFG_BSP_STARTUP_ENABLE) && !defined(DISABLE_PRINT)
-    counter = strlen(s);
-    UART_SendData(0, (uint8_t *)s, counter);
-    return counter;
-#endif
-
-    while ('\0' != (c = *(s++))) {
-#if !defined(DISABLE_PRINT)
-        bl_uart_data_send(0, c);
-#endif
-        counter++;
-    }
     return counter;
 }
 
@@ -918,10 +875,14 @@ int printf(const char *fmt, ...)
 {
 #if !defined(DISABLE_PRINT)
     va_list argp;
-    va_start(argp, fmt);
-    vprint(fmt, argp);
-    va_end(argp);
+
+    if (sys_log_all_enable) {
+        va_start(argp, fmt);
+        vprint(fmt, argp);
+        va_end(argp);
+    }
 #endif
+
     return 0;
 }
 

@@ -172,6 +172,15 @@ typedef enum {
     SEC_PROTO_WAPI,
 } sec_proto_t;
 
+typedef enum {
+    EAPOL_FRAME_4_1,
+    EAPOL_FRAME_4_2,
+    EAPOL_FRAME_4_3,
+    EAPOL_FRAME_4_4,
+    EAPOL_FRAME_2_1,
+    EAPOL_FRAME_2_2,
+} eapol_frame_id_t;
+
 typedef struct {
     uint8_t vif_idx;
     uint8_t sta_idx;
@@ -210,6 +219,7 @@ struct wpa_funcs {
     bool (*wpa_ap_remove)(void *sm);
     bool (*wpa_ap_rx_eapol)(void *hapd_data, void *sm, uint8_t *data, size_t data_len);
     int (*wpa_parse_wpa_ie)(const uint8_t *wpa_ie, size_t wpa_ie_len, wifi_wpa_ie_t *data);
+    void (*wpa_reg_diag_tlv_cb)(void *tlv_pack_cb);
     // XXX MIC failure countermeasure disabled for now
     /* int (*wpa_michael_mic_failure)(uint16_t is_unicast); */
     uint8_t *(*wpa3_build_sae_msg)(uint8_t *bssid, uint8_t *mac, uint8_t *passphrase, uint32_t sae_msg_type, size_t *sae_msg_len);

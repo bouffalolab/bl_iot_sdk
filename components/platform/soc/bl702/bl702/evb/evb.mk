@@ -16,6 +16,8 @@ COMPONENT_SRCS1 := evb/src/boot/$(toolchains)/entry.S \
 				  evb/src/vsscanf.c \
 				  evb/src/strntoumax.c
 
+COMPONENT_SRCS1 += evb/src/vprint.c
+
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS1))
 COMPONENT_OBJS := $(patsubst %.S,%.o, $(COMPONENT_OBJS))
 COMPONENT_SRCS := $(COMPONENT_SRCS1)
@@ -59,10 +61,6 @@ endif
 
 ifeq ($(CONFIG_USB_CDC),1)
 CPPFLAGS += -DCFG_USB_CDC_ENABLE
-endif
-
-ifeq ($(CONFIG_BL702_USE_BSP_STARTUP),1)
-CPPFLAGS += -DCFG_BSP_STARTUP_ENABLE
 endif
 
 ifeq ($(CONFIG_ZIGBEE), 1)

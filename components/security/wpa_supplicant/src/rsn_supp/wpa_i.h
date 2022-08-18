@@ -17,6 +17,8 @@
 
 #include <bl_supplicant/bl_wifi_driver.h>
 
+typedef void (*WPA_TLV_PACK_CB)(eapol_frame_id_t id, void *data, uint16_t len);
+
 struct install_key {
 #ifdef CONFIG_MIC_FAILURE_COUNTERMEASURE
     int mic_errors_seen; /* Michael MIC errors with the current PTK */
@@ -104,6 +106,7 @@ struct wpa_sm {
     uint8_t vif_idx;
     uint8_t sta_idx;
     bl_wifi_timer_t fourway_hs_timer;
+    WPA_TLV_PACK_CB tlv_pack_cb;
 };
 
 /**
@@ -188,5 +191,6 @@ void wpa_deauthenticate(uint8_t sta_idx, u8 reason_code);
 void wpa_neg_complete(uint8_t sta_idx);
 void wpa_set_4way_handshake_timer(void);
 void wpa_clear_4way_handshake_timer(void);
+void wpa_reg_diag_tlv_cb(void* tlv_pack_cb);
 
 #endif /* WPA_I_H */
