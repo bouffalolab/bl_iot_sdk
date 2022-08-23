@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <errno.h>
+#include <sys/errno.h>
 #include <zephyr.h>
 #include <bluetooth.h>
 #include <conn.h>

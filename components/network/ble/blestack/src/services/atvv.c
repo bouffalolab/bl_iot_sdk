@@ -8,7 +8,7 @@ DESCRIPTION
 
 ****************************************************************************/
 
-#include <errno.h>
+#include <sys/errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

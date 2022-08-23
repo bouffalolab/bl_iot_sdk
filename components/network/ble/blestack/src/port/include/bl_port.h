@@ -3,7 +3,7 @@
 #if defined(BL_MCU_SDK)
 #include "misc.h"
 #endif
-#include "config.h"
+#include "port/include/config.h"
 #include <misc/dlist.h>
 #include <assert.h>
 #include <stddef.h>

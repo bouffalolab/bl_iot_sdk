@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <stdbool.h>
 #include <atomic.h>
 #include <misc/byteorder.h>
@@ -35,7 +35,7 @@
 #include "att_internal.h"
 #include "gatt_internal.h"
 #if defined(BFLB_BLE)
-#include "config.h"
+#include "port/include/config.h"
 
 extern struct k_sem g_poll_sem;
 #endif

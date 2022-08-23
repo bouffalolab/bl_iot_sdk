@@ -596,6 +596,7 @@
 #define BFLB_DISABLE_BT
 #define BFLB_FIXED_IRK 0
 #define BFLB_DYNAMIC_ALLOC_MEM
+#define BFLB_BT_LINK_KEYS_STORE
 #if defined(CFG_BLE_PDS) && defined(BL702) && defined(BFLB_BLE) && defined(BFLB_DYNAMIC_ALLOC_MEM)
 #define BFLB_STATIC_ALLOC_MEM   1
 #else

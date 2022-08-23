@@ -13,7 +13,7 @@
 #include <zephyr/types.h>
 #include <stddef.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <zephyr.h>
 
 #include "settings.h"

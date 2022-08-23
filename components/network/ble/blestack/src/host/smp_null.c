@@ -10,7 +10,7 @@
  */
 
 #include <zephyr.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <atomic.h>
 #include <misc/util.h>
 

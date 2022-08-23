@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <atomic.h>
 #include <byteorder.h>
 #include <util.h>
@@ -758,6 +758,10 @@ static void l2cap_br_conn_req(struct bt_l2cap_br *l2cap, uint8_t ident,
 	if (result != BT_L2CAP_BR_SUCCESS) {
 		/* Disconnect link when security rules were violated */
 		if (result == BT_L2CAP_BR_ERR_SEC_BLOCK) {
+			if(conn->type == BT_CONN_TYPE_BR){
+				extern void bt_keys_link_key_clear_addr(const bt_addr_t *addr);
+				bt_keys_link_key_clear_addr(&conn->br.dst);
+			}
 			bt_conn_disconnect(conn, BT_HCI_ERR_AUTH_FAIL);
 		}
 
@@ -1161,6 +1165,24 @@ int bt_l2cap_br_chan_disconnect(struct bt_l2cap_chan *chan)
 	return 0;
 }
 
+static int l2cap_br_echo_req(struct bt_l2cap_br *l2cap, uint8_t ident,
+			     struct net_buf *buf)
+{
+	struct bt_conn *conn = l2cap->chan.chan.conn;
+	struct net_buf *rsp_buf;
+	struct bt_l2cap_sig_hdr *hdr_info;
+
+	rsp_buf = bt_l2cap_create_pdu(&br_sig_pool, 0);
+
+	hdr_info = net_buf_add(rsp_buf, sizeof(*hdr_info));
+	hdr_info->code = BT_L2CAP_ECHO_RSP;
+	hdr_info->ident = ident;
+
+	bt_l2cap_send(conn, BT_L2CAP_CID_BR_SIG, rsp_buf);
+	return 0;
+}
+
+
 static void l2cap_br_disconn_rsp(struct bt_l2cap_br *l2cap, uint8_t ident,
 				 struct net_buf *buf)
 {
@@ -1386,6 +1408,9 @@ static int l2cap_br_recv(struct bt_l2cap_chan *chan, struct net_buf *buf)
 	case BT_L2CAP_CONN_RSP:
 		l2cap_br_conn_rsp(l2cap, hdr->ident, buf);
 		break;
+	case BT_L2CAP_ECHO_REQ:
+		l2cap_br_echo_req(l2cap, hdr->ident, buf);
+		break;
 	default:
 		BT_WARN("Unknown/Unsupported L2CAP PDU code 0x%02x", hdr->code);
 		l2cap_br_send_reject(chan->conn, hdr->ident,
@@ -1515,7 +1540,7 @@ void bt_l2cap_br_recv(struct bt_conn *conn, struct net_buf *buf)
 static int l2cap_br_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
 {
 	int i;
-	static const struct bt_l2cap_chan_ops ops = {
+	static struct bt_l2cap_chan_ops ops = {
 		.connected = l2cap_br_connected,
 		.disconnected = l2cap_br_disconnected,
 		.recv = l2cap_br_recv,

@@ -14,7 +14,7 @@
 
 #include <zephyr.h>
 #include <log.h>
-#include "errno.h"
+#include <sys/errno.h>
 
 struct k_thread work_q_thread;
 #if !defined(BFLB_BLE)
@@ -74,7 +74,7 @@ int k_work_q_start(void)
 
 int k_work_init(struct k_work *work, k_work_handler_t handler)
 {
-    ASSERT(work, "work is NULL");
+    BT_ASSERT(work);
 
 	atomic_clear(work->flags);
     work->handler = handler;
@@ -109,7 +109,7 @@ static void work_timeout(void *timer)
 
 void k_delayed_work_init(struct k_delayed_work *work, k_work_handler_t handler)
 {
-    ASSERT(work, "delay work is NULL");
+    BT_ASSERT(work);
     /* Added by bouffalolab */
     k_work_init(&work->work, handler);
     k_timer_init(&work->timer, work_timeout, work);

@@ -12,7 +12,7 @@
 
 #include <zephyr.h>
 #include <stddef.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <string.h>
 #include <atomic.h>
 #include <misc/util.h>

@@ -10,7 +10,7 @@
 #include <string.h>
 #include "atomic.h"
 
-#include "errno.h"
+#include <sys/errno.h>
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>

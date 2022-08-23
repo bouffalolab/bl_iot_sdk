@@ -7,7 +7,7 @@
  */
 
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <misc/byteorder.h>
 #include <misc/printk.h>
 

@@ -19,7 +19,7 @@
 #else
 #include "partition.h"
 #include "hal_flash.h"
-#include "errno.h"
+#include <sys/errno.h>
 #include "bl702_glb.h"
 #include "mbedtls/sha256.h"
 #endif

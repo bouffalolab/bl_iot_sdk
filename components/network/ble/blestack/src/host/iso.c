@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <byteorder.h>
-#include <errno.h>
+#include <sys/errno.h>
 
 #include <hci_host.h>
 #include <bluetooth.h>

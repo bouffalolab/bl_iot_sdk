@@ -10,7 +10,7 @@ NOTES
 #ifndef _BLE_TP_SVC_H_
 #define _BLE_TP_SVC_H_
 
-#include "config.h"
+#include "port/include/config.h"
 
 //07af27a5-9c22-11ea-9afe-02fcdc4e7412
 #define BT_UUID_SVC_BLE_TP              BT_UUID_DECLARE_128(BT_UUID_128_ENCODE(0x07af27a5, 0x9c22, 0x11ea, 0x9afe, 0x02fcdc4e7412))

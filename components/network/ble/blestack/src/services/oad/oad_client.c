@@ -11,7 +11,7 @@
  *
  ****************************************************************************************
  */
-#include "config.h"
+#include "port/include/config.h"
 #include "cli.h"
 #include "oad_client.h"
 #include "log.h"

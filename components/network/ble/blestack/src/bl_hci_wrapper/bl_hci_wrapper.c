@@ -15,7 +15,7 @@
 #include "hci_host.h"
 #include "bl_hci_wrapper.h"
 #include "hci_driver.h"
-#include "errno.h"
+#include <sys/errno.h>
 #include "byteorder.h"
 #include "hci_onchip.h"
 

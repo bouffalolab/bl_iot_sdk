@@ -119,6 +119,9 @@ struct bt_l2cap_disconn_rsp {
 	u16_t scid;
 } __packed;
 
+#define BT_L2CAP_ECHO_REQ		0x08
+#define BT_L2CAP_ECHO_RSP		0x09
+
 #define BT_L2CAP_INFO_FEAT_MASK		0x0002
 #define BT_L2CAP_INFO_FIXED_CHAN	0x0003
 

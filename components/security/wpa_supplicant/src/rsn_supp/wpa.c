@@ -1571,8 +1571,6 @@ void wpa_supplicant_process_1_of_2(struct wpa_sm *sm,
 
     wpa_sm_set_state(WPA_GROUP_HANDSHAKE);
 
-    wpa_neg_complete(sm->sta_idx);
-
     if (ret)
         goto failed;
 

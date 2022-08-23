@@ -121,3 +121,4 @@ void bt_keys_link_key_clear_addr(const bt_addr_t *addr);
 /* It updates the aging counter and saves it to flash if configuration option */
 /* BT_KEYS_SAVE_AGING_COUNTER_ON_PAIRING is enabled */
 void bt_keys_update_usage(u8_t id, const bt_addr_le_t *addr);
+void bt_keys_link_key_store(struct bt_keys_link_key *link_key);

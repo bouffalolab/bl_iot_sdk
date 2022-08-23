@@ -31,10 +31,185 @@ static uint32_t aging_counter_val;
 static struct bt_keys_link_key *last_keys_updated;
 #endif /* CONFIG_BT_KEYS_OVERWRITE_OLDEST */
 
+#if defined(BFLB_BT_LINK_KEYS_STORE)
+#define LINK_KEY "link_key"
+#define MAX_LINK_KEY_NUMBER 	8
+#define LINK_KEY_TAG	0xa5a6
+
+static int bt_key_set(const char *key, void *value, int len, int sync)
+{
+	int ret = 0;
+
+	#if defined(CONFIG_BT_SETTINGS)
+	ret = bt_settings_set_bin(key,value,len);
+	#endif
+
+	return ret;
+}
+
+static int bt_key_get(const char *key, void *buffer, int *buffer_len)
+{
+	int ret = 0;
+
+	#if defined(CONFIG_BT_SETTINGS)
+	ret = bt_settings_get_bin(key,buffer,*buffer_len,NULL);
+	#endif
+
+	return ret;
+}
+
+static int bt_key_del(const char *key)
+{
+	int ret = 0;
+
+	#if defined(CONFIG_BT_SETTINGS)
+	ret = settings_delete(key);
+	#endif
+
+	return ret;
+}
+
+struct linkkey_ops {
+	int (*key_get)(const char *key, void *buffer, int *buffer_len);
+	int (*key_set)(const char *key, void *value, int len, int sync);
+	int (*key_del)(const char *key);
+};
+
+struct bt_link_keys {
+	struct bt_keys_link_key link_key[MAX_LINK_KEY_NUMBER];
+	bool used[MAX_LINK_KEY_NUMBER];
+	uint8_t last_key_idx;
+	uint8_t key_idx;
+	uint16_t tag;
+};
+
+typedef struct bt_keys_list_t{
+	struct bt_link_keys keys;
+	struct linkkey_ops *ops;
+}bt_keys_list;
+
+static bt_keys_list key_list;
+
+int bt_keys_init(void)
+{
+	static struct linkkey_ops ops = {
+		.key_get = bt_key_get,
+		.key_set = bt_key_set,
+		.key_del = bt_key_del,
+	};
+	struct bt_link_keys keys = {0};
+	int len = sizeof(struct bt_link_keys);
+
+	memset(&key_list.keys,0,sizeof(struct bt_link_keys));
+	for(int i=0;i<MAX_LINK_KEY_NUMBER;i++){
+		memset(&key_list.keys.link_key[i],0,MAX_LINK_KEY_NUMBER);
+		memset(&key_list.keys.used[i],0,MAX_LINK_KEY_NUMBER);
+	}
+
+	key_list.keys.tag = LINK_KEY_TAG;
+	key_list.ops = &ops;
+
+	if(key_list.ops && key_list.ops->key_get){
+		int ret = key_list.ops->key_get(LINK_KEY,&keys,&len);
+		if(ret){
+			BT_ERR("Failed to get key");
+			return -1;
+		}
+	}
+
+	if(keys.tag == LINK_KEY_TAG){
+		memcpy(&key_list.keys,&keys,sizeof(struct bt_link_keys));
+	}
+
+	return 0;
+}
+
+static int bt_keys_link_key_set(const struct bt_keys_link_key *key)
+{
+	uint8_t exist = 0;
+	int ret = 0;
+
+	for(int i=0;i<sizeof(key_list.keys.link_key);i++){
+		if(!memcmp(&key_list.keys.link_key[i],key,sizeof(*key))){
+			exist = 1;
+			break;
+		}
+	}
+
+	if(!exist){
+		BT_ERR("Key not exist\r\n");
+		return -1;
+	}
+
+	if(key_list.ops && key_list.ops->key_set){
+		key_list.keys.tag = LINK_KEY_TAG;
+		ret = key_list.ops->key_set(LINK_KEY,&key_list.keys,sizeof(struct bt_link_keys),1);
+	}
+
+	return ret;
+}
+
+static struct bt_keys_link_key* bt_keys_link_key_get(const bt_addr_t *addr)
+{
+	struct bt_keys_link_key *link_key;
+	bt_addr_t *bd_addr = NULL;
+	int len = sizeof(struct bt_link_keys);
+	int ret = 0;
+
+	for(int i=0; i<MAX_LINK_KEY_NUMBER;i++){
+		bd_addr = &key_list.keys.link_key[i].addr;
+		if(!bt_addr_cmp(bd_addr,addr)){
+			key_list.keys.used[i] = 1;
+			link_key = &key_list.keys.link_key[i];
+			goto last;
+		}
+	}
+
+	for(int i=0; i<MAX_LINK_KEY_NUMBER;i++){
+		if(!key_list.keys.used[i]){
+			key_list.keys.used[i] = 1;
+			link_key = &key_list.keys.link_key[i];
+			goto last;
+		}
+	}
+
+	if(key_list.keys.key_idx >= MAX_LINK_KEY_NUMBER){
+		key_list.keys.key_idx = 0;
+	}
+
+	link_key = &key_list.keys.link_key[key_list.keys.key_idx];
+	key_list.keys.key_idx++;
+
+last:
+	bt_addr_copy(&link_key->addr, addr);
+	return link_key;
+}
+
+static int bt_keys_link_key_del(const struct bt_keys_link_key *key)
+{
+	for(int i=0;i<MAX_LINK_KEY_NUMBER;i++){
+		if(!memcmp(key,&key_list.keys.link_key[i],sizeof(struct bt_keys_link_key))){
+			memset(&key_list.keys.link_key[i],0,sizeof(struct bt_keys_link_key));
+			key_list.keys.used[i] = 0;
+			if(key_list.ops && key_list.ops->key_set){
+				key_list.keys.tag = LINK_KEY_TAG;
+				key_list.ops->key_set(LINK_KEY,&key_list.keys,sizeof(struct bt_link_keys),1);
+			}
+		}
+	}
+
+	return 0;
+}
+
+#endif
 struct bt_keys_link_key *bt_keys_find_link_key(const bt_addr_t *addr)
 {
-	struct bt_keys_link_key *key;
-	int i;
+	#if defined(BFLB_BT_LINK_KEYS_STORE)
+	return bt_keys_link_key_get(addr);
+	#else
+
+	struct bt_keys_link_key *key = NULL;
+	int i,len = sizeof(struct bt_keys_link_key);
 
 	BT_DBG("%s", bt_addr_str(addr));
 
@@ -47,6 +222,7 @@ struct bt_keys_link_key *bt_keys_find_link_key(const bt_addr_t *addr)
 	}
 
 	return NULL;
+	#endif
 }
 
 struct bt_keys_link_key *bt_keys_get_link_key(const bt_addr_t *addr)
@@ -59,31 +235,8 @@ struct bt_keys_link_key *bt_keys_get_link_key(const bt_addr_t *addr)
 	}
 
 	key = bt_keys_find_link_key(BT_ADDR_ANY);
-#if 0//IS_ENABLED(CONFIG_BT_KEYS_OVERWRITE_OLDEST) //MBHJ
-	if (!key) {
-		int i;
-
-		key = &key_pool[0];
-		for (i = 1; i < ARRAY_SIZE(key_pool); i++) {
-			struct bt_keys_link_key *current = &key_pool[i];
-
-			if (current->aging_counter < key->aging_counter) {
-				key = current;
-			}
-		}
-
-		if (key) {
-			bt_keys_link_key_clear(key);
-		}
-	}
-#endif
-
 	if (key) {
 		bt_addr_copy(&key->addr, addr);
-#if 0 //IS_ENABLED(CONFIG_BT_KEYS_OVERWRITE_OLDEST) //MBHJ
-		key->aging_counter = ++aging_counter_val;
-		last_keys_updated = key;
-#endif
 		BT_DBG("created %p for %s", key, bt_addr_str(addr));
 		return key;
 	}
@@ -95,18 +248,11 @@ struct bt_keys_link_key *bt_keys_get_link_key(const bt_addr_t *addr)
 
 void bt_keys_link_key_clear(struct bt_keys_link_key *link_key)
 {
-	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
-		char key[BT_SETTINGS_KEY_MAX];
-		bt_addr_le_t le_addr;
-
-		le_addr.type = BT_ADDR_LE_PUBLIC;
-		bt_addr_copy(&le_addr.a, &link_key->addr);
-		bt_settings_encode_key(key, sizeof(key), "link_key",
-				       &le_addr, NULL);
-		settings_delete(key);
-	}
 
 	BT_DBG("%s", bt_addr_str(&link_key->addr));
+	#if defined(BFLB_BT_LINK_KEYS_STORE)
+	bt_keys_link_key_del(link_key);
+	#endif
 	(void)memset(link_key, 0, sizeof(*link_key));
 }
 
@@ -120,6 +266,12 @@ void bt_keys_link_key_clear_addr(const bt_addr_t *addr)
 			key = &key_pool[i];
 			bt_keys_link_key_clear(key);
 		}
+		#if defined(BFLB_BT_LINK_KEYS_STORE)
+		for (i = 0; i < ARRAY_SIZE(key_list.keys.link_key); i++){
+			key = &key_list.keys.link_key[i];
+			bt_keys_link_key_clear(key);
+		}
+		#endif
 		return;
 	}
 
@@ -131,26 +283,11 @@ void bt_keys_link_key_clear_addr(const bt_addr_t *addr)
 
 void bt_keys_link_key_store(struct bt_keys_link_key *link_key)
 {
-#if 0 //MBHJ
-	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
-		int err;
-		char key[BT_SETTINGS_KEY_MAX];
-		bt_addr_le_t le_addr;
-
-		le_addr.type = BT_ADDR_LE_PUBLIC;
-		bt_addr_copy(&le_addr.a, &link_key->addr);
-		bt_settings_encode_key(key, sizeof(key), "link_key",
-				       &le_addr, NULL);
-
-		err = settings_save_one(key, link_key->storage_start,
-					BT_KEYS_LINK_KEY_STORAGE_LEN);
-		if (err) {
-			BT_ERR("Failed to svae link key (err %d)", err);
-		}
-	}
-#endif
+	#if defined(BFLB_BT_LINK_KEYS_STORE)
+	bt_keys_link_key_set(link_key);
+	#endif
 }
-
+#if !defined(BFLB_BLE)
 #if defined(CONFIG_BT_SETTINGS)
 
 static int link_key_set(const char *name, size_t len_rd,
@@ -238,4 +375,5 @@ void bt_keys_link_key_update_usage(const bt_addr_t *addr)
 	}
 }
 
+#endif
 #endif

@@ -10,7 +10,7 @@
 #include <zephyr.h>
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <atomic.h>
 #include <misc/util.h>
 #include <misc/slist.h>
@@ -51,7 +51,9 @@
 #elif defined(BL702)
 #include "bl702_hbn.h"
 #elif defined(BL606P) || defined(BL616)
+#if defined(CFG_SLEEP)
 #include "bl606p_hbn.h"
+#endif /* CFG_SLEEP */
 #elif defined(BL808)//no bl808_hbn.h currently, comment it out temporarily
 #include "bl808_hbn.h"
 #endif
@@ -2461,6 +2463,11 @@ static void conn_complete(struct net_buf *buf)
 
 	if (evt->status) {
 		conn->err = evt->status;
+		if(conn->err==BT_HCI_ERR_AUTH_FAIL){
+			if(conn->type == BT_CONN_TYPE_BR){
+				bt_keys_link_key_clear_addr(&conn->br.dst);
+			}
+		}
 		bt_conn_set_state(conn, BT_CONN_DISCONNECTED);
 		bt_conn_unref(conn);
 		return;
@@ -2582,6 +2589,12 @@ static void link_key_notify(struct net_buf *buf)
 			     sizeof(conn->br.link_key->val));
 		break;
 	}
+
+	#if defined(BFLB_BT_LINK_KEYS_STORE)
+	if(conn->br.link_key){
+		bt_keys_link_key_store(conn->br.link_key);
+	}
+	#endif
 
 	bt_conn_unref(conn);
 }
@@ -5831,6 +5844,12 @@ static int bt_init(void)
 	}
 
 	bt_finalize_init();
+	#if defined(CONFIG_BT_BREDR)
+	#if defined(BFLB_BT_LINK_KEYS_STORE)
+	extern int bt_keys_init(void);
+	bt_keys_init();
+	#endif
+	#endif
 	return 0;
 }
 
@@ -6260,7 +6279,8 @@ int bt_set_name(const char *name)
 	}
 
 	#if defined(CONFIG_BT_BREDR)
-	bt_br_write_local_name(name);
+    if(atomic_test_bit(bt_dev.flags, BT_DEV_READY))
+	    bt_br_write_local_name(name);
 	#endif
 
 	return 0;

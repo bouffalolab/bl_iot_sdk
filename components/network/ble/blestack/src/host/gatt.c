@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <atomic.h>
@@ -30,7 +30,7 @@
 #include <gatt.h>
 #include <hci_driver.h>
 #if defined(BFLB_BLE)
-#include "config.h"
+#include "port/include/config.h"
 #include <util.h>
 #endif
 

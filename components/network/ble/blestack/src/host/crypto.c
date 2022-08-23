@@ -6,7 +6,7 @@
  */
 
 #include <string.h>
-#include <errno.h>
+#include <sys/errno.h>
 
 #include <zephyr.h>
 #include <misc/byteorder.h>

@@ -5,7 +5,7 @@
 #include "hci_driver.h"
 #include "byteorder.h"
 #include "log.h"
-#include "errno.h"
+#include <sys/errno.h>
 
 struct blhast_le_adv_data{
     u8_t ad[31];
