@@ -110,7 +110,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define PBUF_POOL_SIZE          200
 #else
 #if defined(CFG_ETHERNET_ENABLE) || defined(BL602_MATTER_SUPPORT)
-#define PBUF_POOL_SIZE          12
+#define PBUF_POOL_SIZE          16
 #else
 #define PBUF_POOL_SIZE          0
 #endif
