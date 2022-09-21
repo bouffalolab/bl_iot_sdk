@@ -2745,6 +2745,10 @@
 #define LWIP_HOOK_FILENAME "path/to/my/lwip_hooks.h"
 #endif
 
+#ifdef CONFIG_LWIP_HOOK_ND6_GET_GW_DEFAULT
+#define LWIP_HOOK_FILENAME "lwip_default_hooks.h"
+#endif
+
 /**
  * LWIP_HOOK_TCP_ISN:
  * Hook for generation of the Initial Sequence Number (ISN) for a new TCP

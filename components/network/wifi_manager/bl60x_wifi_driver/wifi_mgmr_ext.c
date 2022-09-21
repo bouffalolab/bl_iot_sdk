@@ -6,8 +6,9 @@
 #include <ethernetif.h>
 #include <bl_wifi.h>
 #include <utils_hex.h>
-// #include <semphr.h>
-// #include <aos/kernel.h>
+#include <semphr.h>
+#include <aos/kernel.h>
+#include <aos/yloop.h>
 
 #include <bl_os_private.h>
 #include "bl_main.h"
@@ -97,6 +98,20 @@ static int mac_is_unvalid(uint8_t mac[6])
     return 0;
 }
 
+#ifdef CONFIG_ENABLE_IPV6_ADDR_CALLBACK
+static void netif_nd6_callback(struct netif *netif, uint8_t ip_index)
+{
+    aos_post_event(EV_WIFI, CODE_WIFI_ON_GOT_IP6, 0);
+}
+
+void nd6_set_cb(struct netif *netif, void (*cb)(struct netif *netif, u8_t ip_index))
+{
+  if (netif != NULL) {
+      netif->ipv6_addr_cb = cb;
+  }
+}
+#endif
+
 static void wifi_eth_sta_enable(struct netif *netif, uint8_t mac[6])
 {
     ip4_addr_t ipaddr;
@@ -145,6 +160,11 @@ static void wifi_eth_sta_enable(struct netif *netif, uint8_t mac[6])
     * your ethernet netif interface. The following code illustrates it's use.*/
 
     netifapi_netif_add(netif, &ipaddr, &netmask, &gw, NULL, &bl606a0_wifi_netif_init, &tcpip_input);
+
+#ifdef CONFIG_ENABLE_IPV6_ADDR_CALLBACK
+    nd6_set_cb(netif, netif_nd6_callback);
+#endif
+
     netif->name[0] = 's';
     netif->name[1] = 't';
     netif->flags |=  NETIF_FLAG_LINK_UP | NETIF_FLAG_IGMP;
