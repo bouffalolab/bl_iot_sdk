@@ -205,7 +205,17 @@ static int bt_keys_link_key_del(const struct bt_keys_link_key *key)
 struct bt_keys_link_key *bt_keys_find_link_key(const bt_addr_t *addr)
 {
 	#if defined(BFLB_BT_LINK_KEYS_STORE)
-	return bt_keys_link_key_get(addr);
+    struct bt_keys_link_key *link_key;
+    bt_addr_t *bd_addr = NULL;
+    
+    for(int i=0; i<MAX_LINK_KEY_NUMBER;i++){
+        bd_addr = &key_list.keys.link_key[i].addr;
+        if(key_list.keys.used[i] && !bt_addr_cmp(bd_addr,addr)){
+            link_key = &key_list.keys.link_key[i];
+            return link_key;
+        }
+    }
+    return NULL;
 	#else
 
 	struct bt_keys_link_key *key = NULL;
@@ -229,12 +239,12 @@ struct bt_keys_link_key *bt_keys_get_link_key(const bt_addr_t *addr)
 {
 	struct bt_keys_link_key *key;
 
-	key = bt_keys_find_link_key(addr);
+	key = bt_keys_link_key_get(addr);
 	if (key) {
 		return key;
 	}
 
-	key = bt_keys_find_link_key(BT_ADDR_ANY);
+	key = bt_keys_link_key_get(BT_ADDR_ANY);
 	if (key) {
 		bt_addr_copy(&key->addr, addr);
 		BT_DBG("created %p for %s", key, bt_addr_str(addr));

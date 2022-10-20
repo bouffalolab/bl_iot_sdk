@@ -62,6 +62,7 @@ COMPONENT_SRCS += bl602_hal/bl_uart.c \
                   bl602_hal/hosal_ota.c \
                   bl602_hal/hosal_timer.c \
                   bl602_hal/hosal_efuse.c \
+                  sec_common/bl_sec_common.c \
                   sec_common/bl_sec_sha.c \
                   sec_common/bl_sec_pka.c \
                   sec_common/bl_sec_aes.c \

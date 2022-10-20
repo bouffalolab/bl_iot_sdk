@@ -10,13 +10,12 @@ COMPONENT_PRIV_INCLUDEDIRS :=
 COMPONENT_SRCS := bl_sys_ota.c \
 			      bl_sys_ota_cli.c \
 
-
-
-
 COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
 COMPONENT_SRCDIRS := .
 
-
 ##
 #CPPFLAGS +=
+ifneq ($(CONFIG_CLI_CMD_ENABLE),0)
+CPPFLAGS += -DCONFIG_CLI_CMD_ENABLE
+endif

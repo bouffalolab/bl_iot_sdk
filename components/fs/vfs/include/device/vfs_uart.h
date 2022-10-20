@@ -26,6 +26,7 @@ extern "C" {
 #define IOCTL_UART_IOC_HWFC_GET                  13 /* get hwfc */
 #define IOCTL_UART_IOC_DATABITS_SET              14 /* set data bits */
 #define IOCTL_UART_IOC_DATABITS_GET              15 /* set data bits */
+#define IOCTL_UART_IOC_WAITENDBYTE_MODE          16 /* last byte timeout */
 
 #define UART_READ_CFG_BLOCK   1
 #define UART_READ_CFG_NOBLOCK 2

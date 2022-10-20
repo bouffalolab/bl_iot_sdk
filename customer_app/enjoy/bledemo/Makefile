@@ -42,7 +42,7 @@ COMPONENTS_BLE     := $(COMPONENTS_BLECONTROLLER) blestack
 endif
 
 INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std newlibc wifi wifi_manager wpa_supplicant bl_os_adapter wifi_hosal hosal mbedtls_lts blcrypto_suite lwip lwip_dhcpd vfs yloop utils cli aws-iot httpc netutils blog blog_testc blsync_ble cjson
-INCLUDE_COMPONENTS += easyflash4
+INCLUDE_COMPONENTS += easyflash4 rfparam_adapter_tmp
 INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
 INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
 INCLUDE_COMPONENTS += $(COMPONENTS_VFS)

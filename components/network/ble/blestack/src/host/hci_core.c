@@ -2230,7 +2230,7 @@ static int reject_conn(const bt_addr_t *bdaddr, u8_t reason)
 	return 0;
 }
 
-static int accept_sco_conn(const bt_addr_t *bdaddr, struct bt_conn *sco_conn)
+static int accept_sco_conn(const bt_addr_t *bdaddr, struct bt_conn *sco_conn, uint8_t link_type)
 {
 	struct bt_hci_cp_accept_sync_conn_req *cp;
 	struct net_buf *buf;
@@ -2248,7 +2248,11 @@ static int accept_sco_conn(const bt_addr_t *bdaddr, struct bt_conn *sco_conn)
 	cp->tx_bandwidth = 0x00001f40;
 	cp->rx_bandwidth = 0x00001f40;
 	cp->max_latency = 0x0007;
-	cp->retrans_effort = 0x01;
+    if(link_type == BT_HCI_SCO)
+	    cp->retrans_effort = 0;
+    else
+        cp->retrans_effort = 1;
+    
 	cp->content_format = BT_VOICE_CVSD_16BIT;
 #if defined CONFIG_BT_HFP
 	if (!hfp_codec_msbc) {
@@ -2299,7 +2303,7 @@ static void bt_esco_conn_req(struct bt_hci_evt_conn_request *evt)
 		return;
 	}
 
-	if (accept_sco_conn(&evt->bdaddr, sco_conn)) {
+	if (accept_sco_conn(&evt->bdaddr, sco_conn, evt->link_type)) {
 		BT_ERR("Error accepting connection from %s",
 		       bt_addr_str(&evt->bdaddr));
 		reject_conn(&evt->bdaddr, BT_HCI_ERR_UNSPECIFIED);
@@ -4538,7 +4542,8 @@ static void process_events(struct k_poll_event *ev, int count)
 
 
 #if (BFLB_BT_CO_THREAD)
-static void bt_co_thread(void *p1, void *p2, void *p3)
+//static void bt_co_thread(void *p1, void *p2, void *p3)
+static void bt_co_thread(void *p1)
 {
 	static struct k_poll_event events[EV_COUNT] = {
         
@@ -6176,7 +6181,10 @@ int bt_disable_action(void)
 }
 
 int bt_disable(void)
-{   
+{  
+    if (!atomic_test_bit(bt_dev.flags, BT_DEV_ENABLE))
+        return -EALREADY;
+        
     if(
         #if defined(CONFIG_BT_CONN)
         le_check_valid_conn() ||

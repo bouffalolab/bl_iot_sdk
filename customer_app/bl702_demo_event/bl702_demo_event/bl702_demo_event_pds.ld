@@ -109,6 +109,7 @@ SECTIONS
     /* tcm code that should be retentive after hbn wakeup */
     *libbl702_std.a:bl702_romapi.o(.tcm_code.* .sclock_rlt_code.*)
     *libbl702_std.a:bl702_glb.o(.tcm_code.* .sclock_rlt_code.*)
+    *libbl702_std.a:bl702_aon.o(.tcm_code.* .sclock_rlt_code.*)
     PROVIDE ( _hbn_restore_tcm_run_end = . );
 
     /* data that should be retentive after hbn wakeup */
@@ -135,7 +136,7 @@ SECTIONS
     /* PDS backup address */
     . = ALIGN(4);
     PROVIDE ( __ld_pds_bak_addr = . );
-    . = . + 256;
+    . = . + 116;
   } >hbnram
 
   .rsvd (NOLOAD) :
@@ -165,6 +166,7 @@ SECTIONS
     *(.tcm_const.*)
     *(.sclock_rlt_code.*)
     *(.sclock_rlt_const.*)
+
     *(.tcm_data)
     *(.data.uart_stdio)
     *libblestack.a:ble_cli_cmds.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
@@ -237,7 +239,7 @@ SECTIONS
   PROVIDE( _heap_size = ORIGIN(ocram_1) + LENGTH(ocram_1) - _heap_start );
 
   PROVIDE( _heap2_start = ORIGIN(ocram_3) );
-  PROVIDE( _heap2_size = LENGTH(ocram_3));
+  PROVIDE( _heap2_size = LENGTH(ocram_3) );
 
   .stack ORIGIN(ocram_2) + LENGTH(ocram_2) - __stack_size (NOLOAD) :
   {

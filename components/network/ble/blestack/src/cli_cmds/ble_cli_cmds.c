@@ -9,6 +9,7 @@
 #include "bl_port.h"
 #include "ble_cli_cmds.h"
 #include "ble_lib_api.h"
+#include "l2cap_internal.h"
 #if defined(CONFIG_BLE_MULTI_ADV)
 #include "multi_adv.h"
 #endif
@@ -73,6 +74,15 @@ static void blecli_connect(char *pcWriteBuffer, int xWriteBufferLen, int argc, c
 static void blecli_disconnect(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 static void blecli_select_conn(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 static void blecli_conn_update(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blecli_send_l2cap_conn_param_update_req(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+#if defined(CONFIG_BT_L2CAP_DYNAMIC_CHANNEL)
+static void blecli_l2cap_send_test_data(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void blecli_l2cap_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+#endif
+#if(BFLB_BLE_ENABLE_TEST_PSM)
+static void blecli_register_test_psm(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+static void blecli_connect_test_psm(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+#endif
 static void blecli_read_rssi(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 static void blecli_unpair(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
 #endif
@@ -183,6 +193,19 @@ const struct cli_command btStackCmdSet[] STATIC_CLI_CMD_ATTRIBUTE = {
     [Conn Interval Max,0x0006-0C80,e.g.0030]\r\n\
     [Conn Latency,0x0000-01f3,e.g.0004]\r\n\
     [Supervision Timeout,0x000A-0C80,e.g.0010]\r\n", blecli_conn_update},
+    {"ble_send_l2cap_conn_param_update_req", "ble l2cap conn parameters update\r\n\
+    Parameter [Conn Interval Min,0x0006-0C80,e.g.0030]\r\n\
+    [Conn Interval Max,0x0006-0C80,e.g.0030]\r\n\
+    [Conn Latency,0x0000-01f3,e.g.0004]\r\n\
+    [Supervision Timeout,0x000A-0C80,e.g.0010]\r\n", blecli_send_l2cap_conn_param_update_req}, 
+    #if defined(CONFIG_BT_L2CAP_DYNAMIC_CHANNEL)
+    {"ble_l2cap_send_test_data", "ble send l2cap data\r\nParameter [channel id]\r\n", blecli_l2cap_send_test_data}, 
+    {"ble_l2cap_disconnect", "ble send l2cap data\r\nParameter [channel id]\r\n", blecli_l2cap_disconnect},
+    #endif
+    #if(BFLB_BLE_ENABLE_TEST_PSM)
+    {"ble_register_test_psm", "register ble test psm\r\nParameter [psm,security level]\r\n", blecli_register_test_psm},
+    {"ble_connect_test_psm", "connect ble test psm\r\nParameter [psm]\r\n", blecli_connect_test_psm},
+    #endif
     {"ble_read_rssi", "ble read rssi\r\nParameter [Null]\r\n", blecli_read_rssi},
  #if defined(CONFIG_BT_SMP)
     {"ble_security", "Start security\r\n\
@@ -1029,6 +1052,131 @@ static void blecli_conn_update(char *pcWriteBuffer, int xWriteBufferLen, int arg
 	}
 }
 
+static void blecli_send_l2cap_conn_param_update_req(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+	struct bt_le_conn_param param;
+	int err;
+
+    if(argc != 5){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+    get_uint16_from_string(&argv[1], &param.interval_min);
+    get_uint16_from_string(&argv[2], &param.interval_max);
+    get_uint16_from_string(&argv[3], &param.latency);
+    get_uint16_from_string(&argv[4], &param.timeout);	
+    err = bt_l2cap_update_conn_param(default_conn, &param);
+
+	if (err) {
+		vOutputString("Fail to send l2cap conn param update request (err %d)\r\n", err);
+	} else {
+		vOutputString("conn update initiated\r\n");
+	}
+}
+
+#if defined(CONFIG_BT_L2CAP_DYNAMIC_CHANNEL)
+static void blecli_l2cap_send_test_data(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t test_data[10] = {0x01, 0x02, 0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a};
+    uint8_t large_test_data[30];
+    uint16_t cid;
+    bool isLarge;
+    struct bt_l2cap_chan *chan;
+
+    if(argc != 3){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+     
+    get_uint16_from_string(&argv[1], &cid);
+    get_uint8_from_string(&argv[2], &isLarge);
+
+    extern int bt_l2cap_send_data(struct bt_conn *conn, uint16_t cid, uint8_t *data, uint8_t len);
+    if(isLarge)
+    {
+        for(int i = 0; i < sizeof(large_test_data); i++)
+            large_test_data[i] = i; 
+        err = bt_l2cap_send_data(default_conn, cid, large_test_data, sizeof(large_test_data));
+    }
+    else
+        err = bt_l2cap_send_data(default_conn, cid, test_data, sizeof(test_data));
+
+    if(err)
+        printf("Fail to send l2cap test data with error (%d)\r\n", err);
+    else
+        printf("Send l2cap test data successfully\r\n");
+}
+
+
+static void blecli_l2cap_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint16_t tx_cid;
+
+    if(argc != 1){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+    
+    get_uint16_from_string(&argv[1], &tx_cid);
+
+    err = bt_l2cap_disconnect(default_conn, tx_cid);
+
+    if(err)
+        printf("Fail to send l2cap disconnect request with error (%d)\r\n", err);
+    else
+        printf("Send l2cap disconnect request successfully\r\n");
+}
+#endif
+
+#if(BFLB_BLE_ENABLE_TEST_PSM)
+static void blecli_register_test_psm(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    int err = 0;
+    uint16_t psm;
+    uint8_t sec_level;
+
+    if(argc != 3){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+    get_uint16_from_string(&argv[1], &psm);
+    get_uint8_from_string(&argv[2], &sec_level);
+    
+    extern int bt_register_test_psm(uint16_t psm, uint8_t sec_level);
+    bt_register_test_psm(psm, sec_level);
+
+    if (err) {
+        vOutputString("Fail to register test psm(err %d)\r\n", err);
+    } else {
+        vOutputString("Register test psm successfully\r\n");
+    }
+}
+
+static void blecli_connect_test_psm(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    int err = 0;
+    uint16_t psm;
+    
+    if(argc != 2){
+        vOutputString("Number of Parameters is not correct\r\n");
+        return;
+    }
+
+    get_uint16_from_string(&argv[1], &psm);
+    
+    extern int bt_connect_test_psm(struct bt_conn *conn, uint16_t psm);
+    bt_connect_test_psm(default_conn, psm);
+
+    if (err) {
+        vOutputString("Fail to connect using test psm(err %d)\r\n", err);
+    } else {
+        vOutputString("connection using test psm initiated\r\n");
+    }
+}
+#endif
+
 static void blecli_read_rssi(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
 {
     int8_t rssi;
@@ -1710,7 +1858,7 @@ static void blecli_disable(char *pcWriteBuffer, int xWriteBufferLen, int argc, c
 
     err = bt_disable();
     if(err){
-        vOutputString("Fail to disable bt, there is existed scan/adv/conn event \r\n");
+        vOutputString("err =%d,fail to disable bt\r\n",err);
     }else{
         vOutputString("Disable bt successfully\r\n");
     }

@@ -870,7 +870,7 @@ static void le_conn_req(struct bt_l2cap *l2cap, u8_t ident,
 	/* Check if connection has minimum required security level */
     #if defined(CONFIG_BT_SMP)
 	if (conn->sec_level < server->sec_level) {
-		rsp->result = sys_cpu_to_le16(BT_L2CAP_LE_ERR_AUTHENTICATION);
+		rsp->result = sys_cpu_to_le16(BT_L2CAP_LE_ERR_ENCRYPTION);
 		goto rsp;
 	}
     #endif
@@ -1951,5 +1951,48 @@ int bt_l2cap_chan_send(struct bt_l2cap_chan *chan, struct net_buf *buf)
 	}
 
 	return err;
+}
+
+
+extern struct bt_l2cap_chan *bt_l2cap_br_lookup_tx_cid(struct bt_conn *conn, uint16_t cid);
+int bt_l2cap_send_data(struct bt_conn *conn, uint16_t tx_cid, uint8_t *data, uint8_t len)
+{
+     struct net_buf *buf = bt_l2cap_create_pdu(NULL, 0);
+     uint8_t *data_ptr;
+     struct bt_l2cap_chan *chan = NULL;
+
+     if(conn->type == BT_CONN_TYPE_BR) {
+         chan = bt_l2cap_br_lookup_tx_cid(conn, tx_cid);
+     }else if(conn->type == BT_CONN_TYPE_LE){
+         chan = bt_l2cap_le_lookup_tx_cid(conn, tx_cid);
+     }
+     if(!chan)
+        return -EINVAL;
+
+     data_ptr =  net_buf_add(buf, len);
+     if(!data_ptr)
+         return -ENOBUFS;    
+     
+     memcpy(data_ptr, data, len);
+
+     bt_l2cap_chan_send(chan, buf);
+
+     return 0;
+}
+
+int bt_l2cap_disconnect(struct bt_conn *conn, uint16_t tx_cid)
+{
+     struct bt_l2cap_chan *chan = NULL;
+
+     if(conn->type == BT_CONN_TYPE_BR) {
+         chan = bt_l2cap_br_lookup_tx_cid(conn, tx_cid);
+     }else if(conn->type == BT_CONN_TYPE_LE){
+         chan = bt_l2cap_le_lookup_tx_cid(conn, tx_cid);
+     }
+    
+     if(!chan)
+        return -EINVAL;
+    
+    return bt_l2cap_chan_disconnect(chan);
 }
 #endif /* CONFIG_BT_L2CAP_DYNAMIC_CHANNEL */

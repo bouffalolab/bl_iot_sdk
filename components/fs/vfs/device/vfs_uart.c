@@ -282,7 +282,7 @@ out:
 
 int uart_ioctl_cmd_waimode(vfs_uart_dev_t *uart_dev, int cmd, unsigned long arg)
 {
-    int ret = 0;
+    int ret = 0, once_ret = 0;
     TickType_t timeout, last_time, remain_time;
     uint32_t nbytes;
     uart_ioc_waitread_t *waitr_arg = (uart_ioc_waitread_t *)arg;
@@ -297,10 +297,11 @@ int uart_ioctl_cmd_waimode(vfs_uart_dev_t *uart_dev, int cmd, unsigned long arg)
 
     while (1) {
         last_time = xTaskGetTickCount();
-        ret += xStreamBufferReceive(uart_dev->rx_ringbuf_handle,
+        once_ret = xStreamBufferReceive(uart_dev->rx_ringbuf_handle,
                                     (uint8_t*)waitr_arg->buf + ret,
                                     nbytes - ret,
                                     timeout);
+        ret += once_ret;
         if ((ret == nbytes) || (timeout == 0)) {
             break;
         }
@@ -308,6 +309,19 @@ int uart_ioctl_cmd_waimode(vfs_uart_dev_t *uart_dev, int cmd, unsigned long arg)
             remain_time = xTaskGetTickCount() - last_time;
             if (remain_time < timeout) {
                 timeout -= remain_time;
+                continue;
+            }
+        }
+        if (IOCTL_UART_IOC_WAITENDBYTE_MODE == cmd) {
+            if (ret == 0) {
+                timeout = portMAX_DELAY;
+                continue;
+            } else if (once_ret == 0) {
+                /*rcv some data and no data rcv timeout again exit*/
+                break;
+            } else {
+                /*no time out and rcv some data timeout reset*/
+                timeout = pdMS_TO_TICKS(waitr_arg->timeout);
                 continue;
             }
         }
@@ -338,6 +352,7 @@ int vfs_uart_ioctl(file_t *fp, int cmd, unsigned long arg)
     switch(cmd) {
         case IOCTL_UART_IOC_WAITRD_MODE:
         case IOCTL_UART_IOC_WAITRDFULL_MODE:
+        case IOCTL_UART_IOC_WAITENDBYTE_MODE:
         {
             ret = uart_ioctl_cmd_waimode(uart_dev, cmd, arg);
         }

@@ -109,6 +109,7 @@ SECTIONS
     /* tcm code that should be retentive after hbn wakeup */
     *libbl702_std.a:bl702_romapi.o(.tcm_code.* .sclock_rlt_code.*)
     *libbl702_std.a:bl702_glb.o(.tcm_code.* .sclock_rlt_code.*)
+    *libbl702_std.a:bl702_aon.o(.tcm_code.* .sclock_rlt_code.*)
     PROVIDE ( _hbn_restore_tcm_run_end = . );
 
     /* data that should be retentive after hbn wakeup */
@@ -121,6 +122,7 @@ SECTIONS
     *libhosal.a:bl_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
     *libhosal.a:hosal_uart.o(.sdata.* .srodata.* .sbss.* .bss.* COMMON)
     PROVIDE ( _hbn_restore_data_run_end = . );
+
     *(.hbn_code.*)
     *(.hbn_data)
     *(.retention)
@@ -134,7 +136,7 @@ SECTIONS
     /* PDS backup address */
     . = ALIGN(4);
     PROVIDE ( __ld_pds_bak_addr = . );
-    . = . + 256;
+    . = . + 116;
   } >hbnram
 
   .rsvd (NOLOAD) :
@@ -219,19 +221,19 @@ SECTIONS
 
   . = ALIGN(8);
   PROVIDE( _heap_start = . );
-  PROVIDE( _heap_size = ADDR(.stack) - _heap_start );
+  PROVIDE( _heap_size = ORIGIN(tcm_ocram) + LENGTH(tcm_ocram) - _heap_start );
 
   PROVIDE( _heap2_start = 0 );
   PROVIDE( _heap2_size = 0 );
 
-  .psram   (NOLOAD) :
+  .psram (NOLOAD) :
   {
     *(.wifi_ram*)
     . = ALIGN(16);
   } > psram
 
   . = ALIGN(8);
-  PROVIDE( _heap3_start = .);
+  PROVIDE( _heap3_start = . );
   PROVIDE( _heap3_size = ORIGIN(psram) + LENGTH(psram) - _heap3_start );
 
   .stack (NOLOAD) :
@@ -241,6 +243,7 @@ SECTIONS
     PROVIDE( _sp_main = . );
     __freertos_irq_stack_top = .;
   } > sys_stack
+
 
   /* camera driver */
   PROVIDE( _ld_bl_driver_camera_start = _bl_driver_camera_start );
@@ -261,7 +264,7 @@ SECTIONS
   /* ram information */
   PROVIDE( _ld_ram_size0 = LENGTH(flash) );
   PROVIDE( _ld_ram_addr0 = ORIGIN(flash) );
-  PROVIDE( _ld_ram_size1 = LENGTH(tcm_ocram) - SIZEOF(.stack) );
+  PROVIDE( _ld_ram_size1 = LENGTH(tcm_ocram) );
   PROVIDE( _ld_ram_addr1 = ORIGIN(tcm_ocram) );
   PROVIDE( _ld_ram_size2 = LENGTH(hbnram) );
   PROVIDE( _ld_ram_addr2 = ORIGIN(hbnram) );

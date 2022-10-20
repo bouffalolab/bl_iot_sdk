@@ -9,10 +9,11 @@
 #include <byteorder.h>
 #include <bluetooth.h>
 #include <hci_host.h>
-#include <hci_core.h>
 #include <conn.h>
 #include <conn_internal.h>
+#include <hci_core.h>
 #include <l2cap.h>
+#include <l2cap_internal.h>
 #if CONFIG_BT_A2DP
 #include <a2dp.h>
 #endif
@@ -22,13 +23,15 @@
 #if CONFIG_BT_AVRCP
 #include <rfcomm.h>
 #endif
+#if CONFIG_BT_HFP
+#include <hfp_hf.h>
+#endif
+
 #include "cli.h"
 
 #if PCM_PRINTF
 #include "oi_codec_sbc.h"
 #endif
-
-
 
 static void bredr_connected(struct bt_conn *conn, u8_t err);
 static void bredr_disconnected(struct bt_conn *conn, u8_t reason);
@@ -77,9 +80,20 @@ static void bredr_connectable(char *p_write_buffer, int write_buffer_len, int ar
 static void bredr_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 static void bredr_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 static void bredr_remote_name(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void bredr_l2cap_send_test_data(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void bredr_l2cap_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void bredr_l2cap_echo_req(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void bredr_security(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv);
+
+#if BR_EDR_PTS_TEST
+static void bredr_sdp_client_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+#endif
 
 #if CONFIG_BT_A2DP
 static void a2dp_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+#if BR_EDR_PTS_TEST
+static void avdtp_set_conf_reject(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+#endif
 #endif
 
 #if CONFIG_BT_AVRCP
@@ -93,6 +107,14 @@ static void avrcp_get_play_status(char *p_write_buffer, int write_buffer_len, in
 #if CONFIG_BT_HFP
 static void hfp_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 static void sco_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_answer(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_terminate_call(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_outgoint_call(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_outgoint_call_with_mem_loc(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_outgoint_call_last_number_dialed(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_disable_nrec(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_voice_recognition(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
+static void hfp_voice_req_phone_num(char *p_write_buffer, int write_buffer_len, int argc, char **argv);
 #endif
 
 const struct cli_command bredr_cmd_set[] STATIC_CLI_CMD_ATTRIBUTE = {
@@ -107,9 +129,19 @@ const struct cli_command bredr_cmd_set[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"bredr_connect", "", bredr_connect},
     {"bredr_disconnect", "", bredr_disconnect},
     {"bredr_remote_name", "", bredr_remote_name},
-
+    {"bredr_l2cap_send_test_data", "", bredr_l2cap_send_test_data},
+    {"bredr_l2cap_disconnect_req", "", bredr_l2cap_disconnect},
+    {"bredr_l2cap_echo_req", "", bredr_l2cap_echo_req},
+    {"bredr_security", "", bredr_security},
+    #if BR_EDR_PTS_TEST
+    {"bredr_sdp_client_connect", "", bredr_sdp_client_connect},
+    #endif
+        
     #if CONFIG_BT_A2DP
     {"a2dp_connect", "", a2dp_connect},
+    #if BR_EDR_PTS_TEST
+    {"avdtp_set_conf_reject", "", avdtp_set_conf_reject},
+    #endif
     #endif
 
     #if CONFIG_BT_AVRCP
@@ -123,6 +155,14 @@ const struct cli_command bredr_cmd_set[] STATIC_CLI_CMD_ATTRIBUTE = {
     #if CONFIG_BT_HFP
     {"hfp_connect", "", hfp_connect},
     {"sco_connect", "", sco_connect},
+    {"hfp_answer", "", hfp_answer},
+    {"hfp_terminate_call", "", hfp_terminate_call},
+    {"hfp_outgoing_call", "", hfp_outgoint_call},
+    {"hfp_outgoint_call_with_mem_loc", "", hfp_outgoint_call_with_mem_loc},
+    {"hfp_outgoint_call_last_number_dialed", "", hfp_outgoint_call_last_number_dialed},
+    {"hfp_disable_nrec", "", hfp_disable_nrec},
+    {"hfp_voice_recognition", "", hfp_voice_recognition},
+    {"hfp_voice_req_phone_num", "", hfp_voice_req_phone_num},    
     #endif
 };
 
@@ -371,7 +411,6 @@ void remote_name(const char *name)
 
 static void bredr_remote_name(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
 {
-    struct bt_conn *conn;
     u8_t  addr_val[6];
     bt_addr_t peer_addr;
     char addr_str[18];
@@ -389,6 +428,81 @@ static void bredr_remote_name(char *p_write_buffer, int write_buffer_len, int ar
         printf("remote name request fail.\n");
     }
 }
+
+static void bredr_l2cap_send_test_data(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t test_data[10]={0x01, 0x02, 0x3,0x04,0x05,0x06,0x07,0x08,0x09,0xa0};
+    uint16_t cid;
+
+    get_uint16_from_string(&argv[1], &cid);
+
+    extern int bt_l2cap_send_data(struct bt_conn *conn, uint16_t tx_cid, uint8_t *data, uint8_t len);
+    err = bt_l2cap_send_data(default_conn, cid, test_data, 10);
+
+    if(err)
+        printf("Fail to send l2cap test data with error (%d)\r\n", err);
+    else
+        printf("Send l2cap test data successfully\r\n");
+}
+
+static void bredr_l2cap_disconnect(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint16_t tx_cid;
+    
+    get_uint16_from_string(&argv[1], &tx_cid);
+
+    err = bt_l2cap_disconnect(default_conn, tx_cid);
+
+    if(err)
+        printf("Fail to send l2cap disconnect request with error (%d)\r\n", err);
+    else
+        printf("Send l2cap disconnect request successfully\r\n");
+}
+
+static void bredr_l2cap_echo_req(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+
+    err = bt_l2cap_br_echo_req(default_conn);
+
+    if(err)
+        printf("Fail to send l2cap echo request with error (%d)\r\n", err);
+    else
+        printf("Send l2cap echo request successfully\r\n");
+}
+
+static void bredr_security(char *pcWriteBuffer, int xWriteBufferLen, int argc, char **argv)
+{
+    int err;
+    u8_t sec_level = BT_SECURITY_L2;
+
+    if(!default_conn){
+        printf("Not connected\r\n");
+        return;
+    }
+
+    if(argc == 2)
+        get_uint8_from_string(&argv[1], &sec_level);
+    
+    err = bt_conn_set_security(default_conn, sec_level);
+
+    if(err){
+        printf("Failed to start security, (err %d) \r\n", err);
+    }else{
+        printf("Start security successfully\r\n");
+    }
+}
+
+
+#if BR_EDR_PTS_TEST
+extern int bt_sdp_client_connect(struct bt_conn *conn);
+static void bredr_sdp_client_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    bt_sdp_client_connect(default_conn);    
+}
+#endif
 
 #if CONFIG_BT_A2DP
 static void a2dp_chain(struct bt_conn *conn, uint8_t state)
@@ -429,6 +543,18 @@ static void a2dp_connect(char *p_write_buffer, int write_buffer_len, int argc, c
         printf("a2dp connect fail. \n");
     }
 }
+
+#if BR_EDR_PTS_TEST
+extern uint8_t reject_set_conf_pts;
+extern uint8_t reject_error_code;
+static void avdtp_set_conf_reject(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    get_uint8_from_string(&argv[1], &reject_set_conf_pts);
+    get_uint8_from_string(&argv[2], &reject_error_code);
+}
+
+#endif
+
 #endif
 
 #if CONFIG_BT_AVRCP
@@ -563,6 +689,7 @@ static void avrcp_get_play_status(char *p_write_buffer, int write_buffer_len, in
 #endif
 
 #if CONFIG_BT_HFP
+#if 0
 static void rfcomm_recv(struct bt_rfcomm_dlc *dlci, struct net_buf *buf)
 {
 	printf("hfp incoming data dlc %p len %u \n", dlci, buf->len);
@@ -588,7 +715,7 @@ static struct bt_rfcomm_dlc rfcomm_dlc = {
 	.ops = &rfcomm_ops,
 	.mtu = 30,
 };
-
+#endif
 static void hfp_connect(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
 {
     int err;
@@ -598,7 +725,7 @@ static void hfp_connect(char *p_write_buffer, int write_buffer_len, int argc, ch
         return;
     }
 
-    err = bt_rfcomm_dlc_connect(default_conn, &rfcomm_dlc, 0x01);
+    err = bt_hfp_hf_initiate_connect(default_conn);
     if (err) {
         printf("hfp connect fail.\n");
     } else {
@@ -632,6 +759,154 @@ static void sco_connect(char *p_write_buffer, int write_buffer_len, int argc, ch
     }
 }
 
+static void hfp_answer(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_ATA, NULL);
+    if(err)
+        printf("Fail to send answer AT command with err:%d\r\n", err);
+    else
+        printf("send answer AT command successfully\r\n");
+        
+}
+
+static void hfp_terminate_call(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_AT_CHUP, NULL);
+    if(err)
+        printf("Fail to send terminate call AT command with err:%d\r\n", err);
+    else
+        printf("send terminate call AT command successfully\r\n");
+        
+}
+
+static void hfp_outgoint_call(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_AT_DDD, "D1234567;");
+    if(err)
+        printf("Fail to send outgoing call AT command with err:%d\r\n", err);
+    else
+        printf("send outgoing call AT command successfully\r\n");
+        
+}
+
+static void hfp_outgoint_call_with_mem_loc(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t phone_mem_loc = 0;
+    char str[5] = "D>";
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    get_uint8_from_string(&argv[1], &phone_mem_loc);
+    sprintf(str, ">%d;", phone_mem_loc);
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_AT_DDD, str);
+    
+    if(err)
+        printf("Fail to send outgoing call with memory location AT command with err:%d\r\n", err);
+    else
+        printf("send outgoing call with memory location AT command successfully\r\n");
+        
+}
+
+static void hfp_outgoint_call_last_number_dialed(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t phone_mem_loc = 0;
+    char *str = "+BLDN";
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_AT_DDD, str);
+    
+    if(err)
+        printf("Fail to send outgoing call to the last number dialed AT command with err:%d\r\n", err);
+    else
+        printf("send outgoing call to the last number dialed  AT command successfully\r\n");
+        
+}
+
+static void hfp_disable_nrec(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd(default_conn, BT_HFP_HF_AT_NREC, NULL);
+    if(err)
+        printf("Fail to send disable nrec AT command with err:%d\r\n", err);
+    else
+        printf("send disable nrec AT command successfully\r\n");
+        
+}
+
+static void hfp_voice_recognition(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t enable = 0;
+
+    get_uint8_from_string(&argv[1], &enable);
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd_arg(default_conn, BT_HFP_HF_AT_BVRA, enable);
+    if(err)
+        printf("Fail to send voice recognition AT command with err:%d\r\n", err);
+    else
+        printf("send voice recognition AT command successfully\r\n");
+}
+
+static void hfp_voice_req_phone_num(char *p_write_buffer, int write_buffer_len, int argc, char **argv)
+{
+    int err = 0;
+    uint8_t enable = 0;
+
+    get_uint8_from_string(&argv[1], &enable);
+    
+    if(!default_conn){
+            printf("Not connected.\n");
+            return;
+    }
+
+    err = bt_hfp_hf_send_cmd_arg(default_conn, BT_HFP_HF_AT_BINP, enable);
+    if(err)
+        printf("Fail to send reqeust phone number to the AG AT command with err:%d\r\n", err);
+    else
+        printf("send reqeust phone number to the AG AT command successfully\r\n");
+}
+
 #endif
 
 int bredr_cli_register(void)
@@ -641,5 +916,4 @@ int bredr_cli_register(void)
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
     //aos_cli_register_commands(bredr_cmd_set, sizeof(bredr_cmd_set)/sizeof(bredr_cmd_set[0]));
     return 0;
-}
-		       
+}	       

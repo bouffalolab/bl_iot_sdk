@@ -3009,6 +3009,10 @@ lwip_getsockopt_impl(int s, int level, int optname, void *optval, socklen_t *opt
           *(int *)optval = udp_is_flag_set(sock->conn->pcb.udp, UDP_FLAGS_NOCHKSUM) ? 1 : 0;
           break;
 #endif /* LWIP_UDP*/
+        case SO_CONNINFO:
+          LWIP_SOCKOPT_CHECK_OPTLEN_CONN(sock, *optlen, void *);
+          *(void **)optval = sock->conn;
+          break;
         default:
           LWIP_DEBUGF(SOCKETS_DEBUG, ("lwip_getsockopt(%d, SOL_SOCKET, UNIMPL: optname=0x%x, ..)\n",
                                       s, optname));

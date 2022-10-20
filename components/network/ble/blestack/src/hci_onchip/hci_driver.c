@@ -287,6 +287,7 @@ static inline struct net_buf *process_hbuf(struct radio_pdu_node_rx *n)
 #endif
 
 #if defined(BFLB_BLE)
+#if (!BFLB_BT_CO_THREAD)
 static void recv_thread(void *p1)
 {
     UNUSED(p1);
@@ -363,6 +364,7 @@ static void recv_thread(void *p1)
 #endif
 	}
 }
+#endif
 #endif
 
 #if !defined(BFLB_BLE)

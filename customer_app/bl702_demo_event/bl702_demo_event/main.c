@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include <FreeRTOS.h>
 #include <task.h>
 #include <timers.h>
@@ -21,6 +50,7 @@
 #include <bl_uart.h>
 #include <bl_gpio.h>
 #include <bl_flash.h>
+#include <bl_hbn.h>
 #include <bl_timer.h>
 #include <bl_wdt.h>
 #include <hal_boot2.h>
@@ -102,10 +132,6 @@
 #include "bl_psram.h"
 #endif /* CFG_USE_PSRAM */
 
-#include "bl_flash.h"
-#if defined(CFG_ZIGBEE_HBN)
-#include "bl_hbn.h"
-#endif
 
 #define PDS_WAKEUP_GPIO 17
 #define HBN_WAKEUP_GPIO 9
@@ -677,18 +703,36 @@ void _dump_lib_info(void)
 }
 
 #if defined(CFG_ZIGBEE_HBN)
-extern uint32_t storedRtcTimeMs;
+void hbn_wakeup_pin_interrupt(void *arg)
+{
+    gpio_ctx_t *pstnode = (gpio_ctx_t *)arg;
+    uint64_t time = bl_rtc_get_delta_time_ms(bl_hbn_get_wakeup_time());
+    
+    printf("GPIO%d released, total press time: %llu ms\r\n", pstnode->gpioPin, time);
+}
 #endif
+
 static void system_init(void)
 {
     bl_rtc_init();
 
-#if defined(CFG_ZIGBEE_ENABLE)
+#if defined(CFG_ZIGBEE_HBN)
+    if(bl_sys_rstinfo_get() == BL_RST_SOFTWARE && bl_hbn_get_wakeup_source() == HBN_WAKEUP_BY_GPIO){
+        uint8_t wkpin = __builtin_ctz(bl_hbn_get_wakeup_gpio());
+        printf("HBN wakeup by GPIO%d\r\n", wkpin);
+        bl_gpio_enable_input(wkpin, 0, 0);
+        if(bl_gpio_input_get_value(wkpin) == 1){
+            printf("GPIO%d already released\r\n", wkpin);
+        }else{
+            hal_gpio_register_handler(hbn_wakeup_pin_interrupt, wkpin, GLB_GPIO_INT_CONTROL_ASYNC, GLB_GPIO_INT_TRIG_POS_PULSE, NULL);
+        }
+    }
+#endif
+
 #if defined(CFG_ZIGBEE_HBN)
     extern void zb_hbn_init(void);
     zb_hbn_init();
-#endif//CFG_ZIGBEE_HBN  
-#endif//CFG_ZIGBEE_ENABLE
+#endif
 
     //hal_pds_init();
 #if defined(CFG_ZIGBEE_PDS)

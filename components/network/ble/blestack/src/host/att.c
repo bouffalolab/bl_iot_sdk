@@ -2340,6 +2340,85 @@ static int bt_att_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
 	return -ENOMEM;
 }
 
+#if(BFLB_BLE_ENABLE_TEST_PSM)
+static void bt_test_connected(struct bt_l2cap_chan *chan)
+{
+    printf("bt_test_connected\r\n");    
+}
+
+static void bt_test_disconnected(struct bt_l2cap_chan *chan)
+{
+    printf("bt_test_disconnected\r\n");
+}
+
+static int bt_test_recv(struct bt_l2cap_chan *chan, struct net_buf *buf)
+{
+    printf("len=%d",buf->len);
+    return 0;
+}
+
+static struct bt_l2cap_chan_ops test_ops = {
+	.connected = bt_test_connected,
+	.disconnected = bt_test_disconnected,
+	.recv = bt_test_recv,
+	};
+
+static struct bt_l2cap_le_chan test_chan = {
+    .chan.ops = &test_ops,
+};
+
+static int bt_test_accept(struct bt_conn *conn, struct bt_l2cap_chan **chan)
+{
+	//return bt_att_accept(conn, chan);
+	*chan = &test_chan.chan;
+    return 0;
+}
+
+int bt_connect_test_psm(struct bt_conn *conn, uint16_t psm)
+{
+	int err;
+
+	if (!conn) {
+		BT_WARN("Invalid Connection");
+		return -ENOTCONN;
+	} else if (test_chan.chan.conn) {
+		BT_INFO("Channel already in use");
+		return -ENOEXEC;
+	}
+
+	BT_INFO("Connecting L2CAP Connection Oriented Channel .........");
+	err = bt_l2cap_chan_connect(conn, &test_chan.chan, psm);
+
+	if (err < 0) {
+		BT_WARN("Unable to connect to psm %u (err %u)",
+				psm, err);
+	} else {
+		BT_INFO("L2CAP connection pending");
+	}
+
+	return err;
+}
+
+int bt_register_test_psm(uint16_t psm, uint8_t sec_level)
+{
+    int err;
+	static struct bt_l2cap_server test_server;
+
+	BT_DBG("");
+
+    test_server.psm = psm;
+    test_server.sec_level = sec_level;
+    test_server.accept = bt_test_accept;
+
+	err = bt_l2cap_server_register(&test_server);
+	if (err < 0) {
+		BT_ERR("EATT Server registration failed %d", err);
+	}
+
+    return err;
+}
+#endif
+
 BT_L2CAP_CHANNEL_DEFINE(att_fixed_chan, BT_L2CAP_CID_ATT, bt_att_accept);
 
 void bt_att_init(void)
@@ -2438,6 +2517,17 @@ int bt_att_req_send(struct bt_conn *conn, struct bt_att_req *req)
 	}
 
 	return att_send_req(att, req);
+}
+
+struct bt_att_req *bt_att_get_att_req(struct bt_conn *conn)
+{
+    struct bt_att *att;
+
+    att = att_chan_get(conn);
+    if(att)
+        return att->req;
+    else
+        return NULL;
 }
 
 void bt_att_req_cancel(struct bt_conn *conn, struct bt_att_req *req)

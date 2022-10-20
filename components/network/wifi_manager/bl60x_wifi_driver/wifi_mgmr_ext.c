@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include <string.h>
 #include <bl60x_fw_api.h>
 #include <lwip/tcpip.h>
@@ -311,6 +340,13 @@ int wifi_mgmr_sta_ip_unset(void)
 
 int wifi_mgmr_sta_connect_ext(wifi_interface_t *wifi_interface, char *ssid, char *passphr, const ap_connect_adv_t *conn_adv_param)
 {
+    int ssid_len = ssid ? strlen(ssid) : 0;
+    int passphr_len = passphr ? strlen(passphr) : 0;
+
+    if (!ssid || ssid_len > 32 || (passphr && ((passphr_len < 8 && passphr_len != 5) || passphr_len > 63))) {
+        return -1;
+    }
+
     wifi_mgmr_sta_ssid_set(ssid);
     wifi_mgmr_sta_passphr_set(passphr);
 
@@ -344,6 +380,27 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
 int wifi_mgmr_sta_disconnect(void)
 {
     wifi_mgmr_api_disconnect();
+    return 0;
+}
+
+int wifi_sta_ip4_addr_get(uint32_t *addr, uint32_t *mask, uint32_t *gw, uint32_t *dns)
+{
+    struct netif *ni = &wifiMgmr.wlan_sta.netif;
+
+    if (addr) {
+        *addr = netif_ip4_addr(ni)->addr;
+    }
+    if (mask) {
+        *mask = netif_ip4_netmask(ni)->addr;
+    }
+    if (gw) {
+        *gw = netif_ip4_gw(ni)->addr;
+    }
+    if (dns) {
+        const ip_addr_t *ip;
+        ip = dns_getserver(0);
+        *dns = ip_addr_get_ip4_u32(ip);
+    }
     return 0;
 }
 
@@ -424,15 +481,15 @@ void wifi_mgmr_sta_connect_ind_stat_get(wifi_mgmr_sta_connect_ind_stat_info_t *w
 
     wifi_mgmr_ind_stat->status_code = wifiMgmr.wifi_mgmr_stat_info.status_code;
     wifi_mgmr_ind_stat->chan_band = wifiMgmr.wifi_mgmr_stat_info.chan_band;
-    wifi_mgmr_ind_stat->chan_freq = wifiMgmr.wifi_mgmr_stat_info.chan_freq;
+    wifi_mgmr_ind_stat->chan_id = phy_freq_to_channel(wifiMgmr.wifi_mgmr_stat_info.chan_band, wifiMgmr.wifi_mgmr_stat_info.chan_freq);
     wifi_mgmr_ind_stat->type_ind = wifiMgmr.wifi_mgmr_stat_info.type_ind;
 
     bl_os_printf("wifi mgmr ind status code = %d\r\n",  wifi_mgmr_ind_stat->status_code);
-    bl_os_printf("ssid: %s, passphr: %s, band: %d, freq: %d, type_ind: %d\r\n",
+    bl_os_printf("ssid: %s, passphr: %s, band: %d, chan_id: %d, type_ind: %d\r\n",
             wifi_mgmr_ind_stat->ssid,
             wifi_mgmr_ind_stat->passphr,
             wifi_mgmr_ind_stat->chan_band,
-            wifi_mgmr_ind_stat->chan_freq,
+            wifi_mgmr_ind_stat->chan_id,
             wifi_mgmr_ind_stat->type_ind);
     bl_os_printf("bssid: %02x%02x%02x%02x%02x%02x\r\n",
                 wifi_mgmr_ind_stat->bssid[0],
@@ -750,18 +807,24 @@ int wifi_mgmr_all_ap_scan(wifi_mgmr_ap_item_t **ap_ary, uint32_t *num)
 
 int wifi_mgmr_scan(void *data, scan_complete_cb_t cb)
 {
-    wifi_mgmr_scan_params_t scan_params;
+    wifi_mgmr_scan_params_t *scan_params = NULL;
+
+    scan_params = (wifi_mgmr_scan_params_t *)bl_os_zalloc(sizeof(wifi_mgmr_scan_params_t));
+    if (!scan_params) {
+        bl_os_printf("%s malloc scan_params failed!\r\n", __FUNCTION__);
+        return -1;
+    }
 
     scan_cb = cb;
     scan_data = data;
 
-    scan_params.channel_num = 0;
-    memcpy(scan_params.bssid, (uint8_t *)&mac_addr_bcst, sizeof(struct mac_addr));
-    scan_params.ssid.length = 0;
-    scan_params.scan_mode = SCAN_ACTIVE;
+    scan_params->channel_num = 0;
+    memcpy(scan_params->bssid, (uint8_t *)&mac_addr_bcst, sizeof(struct mac_addr));
+    scan_params->ssid.length = 0;
+    scan_params->scan_mode = SCAN_ACTIVE;
     /*if 0, use default scan time in fw,
      * unit:us*/
-    scan_params.duration_scan = 0;
+    scan_params->duration_scan = 0;
 
     wifi_mgmr_api_fw_scan(scan_params);
 
@@ -770,30 +833,42 @@ int wifi_mgmr_scan(void *data, scan_complete_cb_t cb)
 
 int wifi_mgmr_scan_adv(void *data, scan_complete_cb_t cb, uint16_t *channels, uint16_t channel_num, const uint8_t bssid[6], const char *ssid, uint8_t scan_mode, uint32_t duration_scan)
 {
-    wifi_mgmr_scan_params_t scan_params;
+    wifi_mgmr_scan_params_t* scan_params = NULL;
+
+    if (0 != channel_num && NULL == channels) {
+        bl_os_printf("%s channels is NULL while has channel_num!\r\n", __FUNCTION__);
+        return -1;
+    }
+
+    if (channel_num > MAX_FIXED_CHANNELS_LIMIT) {
+        bl_os_printf("%s exceed max channel number!\r\n", __FUNCTION__);
+        return -1;
+    }
+
+    scan_params = (wifi_mgmr_scan_params_t *)bl_os_zalloc(sizeof(wifi_mgmr_scan_params_t) + sizeof(uint16_t)*channel_num);
+    if (!scan_params) {
+        bl_os_printf("%s malloc scan_params failed!\r\n", __FUNCTION__);
+        return -1;
+    }
 
     scan_cb = cb;
     scan_data = data;
 
-    scan_params.channel_num = channel_num;
-    scan_params.scan_mode = scan_mode;
-    scan_params.duration_scan = duration_scan;
-    memcpy(scan_params.bssid, bssid, ETH_ALEN);
-    if (scan_params.channel_num) {
-        memcpy(scan_params.channels, channels, sizeof(scan_params.channels[0]) * scan_params.channel_num);
+    scan_params->scan_mode = scan_mode;
+    scan_params->duration_scan = duration_scan;
+    memcpy(scan_params->bssid, bssid, ETH_ALEN);
+    scan_params->channel_num = channel_num;
+    if (channel_num) {
+        memcpy(scan_params->channels, channels, sizeof(uint16_t) * channel_num);
     }
 
     if (ssid != NULL) {
-        scan_params.ssid.length = strlen(ssid);
-        scan_params.ssid.length = (scan_params.ssid.length > MAC_SSID_LEN) ? MAC_SSID_LEN : scan_params.ssid.length;
-        memcpy(scan_params.ssid.array, ssid, scan_params.ssid.length);
-        scan_params.ssid.array_tail[0] = '\0';
+        scan_params->ssid.length = strlen(ssid);
+        scan_params->ssid.length = (scan_params->ssid.length > MAC_SSID_LEN) ? MAC_SSID_LEN : scan_params->ssid.length;
+        memcpy(scan_params->ssid.array, ssid, scan_params->ssid.length);
+        scan_params->ssid.array_tail[0] = '\0';
     } else {
-        scan_params.ssid.length = 0;
-    }
-
-    if (0 != scan_params.channel_num && NULL == scan_params.channels) {
-        return -1;
+        scan_params->ssid.length = 0;
     }
 
     wifi_mgmr_api_fw_scan(scan_params);

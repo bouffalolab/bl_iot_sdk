@@ -625,7 +625,9 @@ happens, which cause memory leak issue.*/
 #define BFLB_BLE_PATCH_FREE_ALLOCATED_BUFFER_IN_OS
 /*To avoid duplicated pubkey callback.*/
 #define BFLB_BLE_PATCH_AVOID_DUPLI_PUBKEY_CB
+#if defined(CONFIG_BT_GATT_DYNAMIC_DB)
 #define BFLB_BLE_DYNAMIC_SERVICE
+#endif
 /*The flag @conn_ref is not clean up after disconnect*/
 //#define BFLB_BLE_PATCH_CLEAN_UP_CONNECT_REF
 #if !defined(CONFIG_AUTO_PTS)
@@ -659,5 +661,6 @@ BT_SMP_DIST_ENC_KEY bit is not cleared while remote ENC_KEY is received.*/
 #define BFLB_BLE_DISCOVER_ONGOING
 #endif
 
-
+#define BR_EDR_PTS_TEST 0
+#define BFLB_BLE_ENABLE_TEST_PSM 0
 #endif /* BLE_CONFIG_H */

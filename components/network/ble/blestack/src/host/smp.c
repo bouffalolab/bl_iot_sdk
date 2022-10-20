@@ -252,6 +252,9 @@ struct bt_smp_br {
 	/* Encryption Key Size used for connection */
 	u8_t 			enc_key_size;
 
+    /* Local auth req */
+    u8_t            local_auth_req;
+
 	/* Delayed work for timeout handling */
 	struct k_delayed_work 	work;
 };
@@ -1381,6 +1384,10 @@ static u8_t smp_br_pairing_req(struct bt_smp_br *smp, struct net_buf *buf)
 	rsp = net_buf_add(rsp_buf, sizeof(*rsp));
 
 	rsp->auth_req = 0x00;
+    if ((rsp->auth_req & BT_SMP_AUTH_CT2) &&
+	    (req->auth_req & BT_SMP_AUTH_CT2)) {
+		atomic_set_bit(smp->flags, SMP_FLAG_CT2);
+	}
 	rsp->io_capability = 0x00;
 	rsp->oob_flag = 0x00;
 	rsp->max_key_size = max_key_size;
@@ -1436,11 +1443,13 @@ static u8_t smp_br_pairing_rsp(struct bt_smp_br *smp, struct net_buf *buf)
 		return BT_SMP_ERR_ENC_KEY_SIZE;
 	}
 
+    if ((rsp->auth_req & BT_SMP_AUTH_CT2) &&
+	    (smp->local_auth_req & BT_SMP_AUTH_CT2)) {
+		atomic_set_bit(smp->flags, SMP_FLAG_CT2);
+	}
+        
 	smp->local_dist &= rsp->init_key_dist;
 	smp->remote_dist &= rsp->resp_key_dist;
-
-	smp->local_dist &= SEND_KEYS_SC;
-	smp->remote_dist &= RECV_KEYS_SC;
 
 	/* slave distributes its keys first */
 
@@ -1816,6 +1825,7 @@ int bt_smp_br_send_pairing_req(struct bt_conn *conn)
 	 */
 
 	req->auth_req = 0x00;
+	smp->local_auth_req = req->auth_req;
 	req->io_capability = 0x00;
 	req->oob_flag = 0x00;
 	req->max_key_size = max_key_size;
@@ -5561,7 +5571,7 @@ static bool le_sc_supported(void)
 
 BT_L2CAP_CHANNEL_DEFINE(smp_fixed_chan, BT_L2CAP_CID_SMP, bt_smp_accept);
 #if defined(CONFIG_BT_BREDR)
-BT_L2CAP_CHANNEL_DEFINE(smp_br_fixed_chan, BT_L2CAP_CID_BR_SMP,
+BT_L2CAP_BR_CHANNEL_DEFINE(smp_br_fixed_chan, BT_L2CAP_CID_BR_SMP,
 			bt_smp_br_accept);
 #endif /* CONFIG_BT_BREDR */
 

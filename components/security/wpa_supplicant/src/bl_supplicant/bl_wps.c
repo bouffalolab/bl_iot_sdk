@@ -48,6 +48,11 @@ int wps_credential_save(u8 idx, u8 *ssid, u8 ssid_len, char *key, u8 key_len)
         return -1;
     }
 
+    // Drop credential that does not match negotiation AP
+    if (!(ssid_len == sm->ssid_neg_len && !memcmp(ssid, sm->ssid_neg, ssid_len))) {
+        return 0;
+    }
+
     memset(sm->ssid[idx], 0x00, sizeof(sm->ssid[idx]));
     memcpy(sm->ssid[idx], ssid, ssid_len);
     sm->ssid_len[idx] = ssid_len;
@@ -55,7 +60,8 @@ int wps_credential_save(u8 idx, u8 *ssid, u8 ssid_len, char *key, u8 key_len)
     memcpy(sm->key[idx], key, key_len);
     sm->key_len[idx] = key_len;
 
-    sm->ap_cred_cnt++;
+    // We only save the last matched credential
+    sm->ap_cred_cnt = 1;
 
     return 0;
 }

@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #ifndef __WIFI_MGMR_H__
 #define __WIFI_MGMR_H__
 #include <stdint.h>
@@ -9,13 +38,7 @@
 
 #define WIFI_MGMR_SCAN_ITEMS_MAX (50)
 #define WIFI_MGMR_PROFILES_MAX (2)
-#define WIFI_MGMR_MQ_MSG_SIZE (128 + 64 + 32)
-
-#ifdef BL602_MATTER_SUPPORT
-#define WIFI_MGMR_MQ_MSG_COUNT (6)
-#else
-#define WIFI_MGMR_MQ_MSG_COUNT (1)
-#endif
+#define WIFI_MGMR_MQ_MSG_COUNT (10)
 
 #define MAC_ADDR_LIST(m) (m)[0], (m)[1], (m)[2], (m)[3], (m)[4], (m)[5]
 #define WIFI_MGMR_CONNECT_PMF_CAPABLE_BIT       (1 << 0)
@@ -94,12 +117,12 @@ typedef enum WIFI_MGMR_CONNECTION_STATUS {
 #pragma pack(push, 1)
 typedef struct wifi_mgmr_msg {
     WIFI_MGMR_EVENT_T ev;
-    void *data1;
-    void *data2;
-    uint32_t len;
-    uint8_t data[0];
+    void *data1; // ONLY for stack
+    void *data2; // ONLY for stack
+    void *data;  // ONLY for heap
 } wifi_mgmr_msg_t;
 
+#define MAX_LENGTH_LIMIT        (32)
 typedef struct wifi_mgmr_cfg_element_msg {
     uint32_t ops;
     uint32_t task;
@@ -200,6 +223,7 @@ typedef struct wifi_mgmr_scan_item {
     uint8_t cipher;
     uint8_t is_used;
     uint8_t wps;
+    uint8_t group_cipher;
 } wifi_mgmr_scan_item_t;
 
 struct wlan_netif {
@@ -225,11 +249,11 @@ struct wlan_netif {
 #define MAX_FIXED_CHANNELS_LIMIT (14)
 typedef struct wifi_mgmr_scan_params {
     uint8_t bssid[6];
-    uint16_t channel_num;
-    uint16_t channels[MAX_FIXED_CHANNELS_LIMIT];
     struct mac_ssid ssid;
     uint8_t scan_mode;
     uint32_t duration_scan;  
+    uint16_t channel_num;
+    uint16_t channels[];
 } wifi_mgmr_scan_params_t;
 
 typedef struct wifi_mgmr_connect_ind_stat_info {
@@ -275,7 +299,7 @@ typedef struct wifi_mgmr {
     BL_Mutex_t scan_items_lock;
     wifi_mgmr_scan_item_t scan_items[WIFI_MGMR_SCAN_ITEMS_MAX];
     BL_MessageQueue_t mq;
-    uint8_t mq_pool[WIFI_MGMR_MQ_MSG_SIZE*WIFI_MGMR_MQ_MSG_COUNT];
+    // uint8_t mq_pool[sizeof(wifi_mgmr_msg_t)*WIFI_MGMR_MQ_MSG_COUNT];
     struct stateMachine m;
     BL_Timer_t timer;
     wifi_mgmr_connect_ind_stat_info_t wifi_mgmr_stat_info;

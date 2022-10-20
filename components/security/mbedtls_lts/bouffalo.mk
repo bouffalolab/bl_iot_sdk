@@ -135,6 +135,9 @@ endif
 ifeq ($(CONFIG_MBEDTLS_SHA256_USE_HW),1)
 COMPONENT_SRCS += port/hw_acc/sha256_alt.c
 endif
+ifeq ($(CONFIG_MBEDTLS_SHA512_USE_HW),1)
+COMPONENT_SRCS += port/hw_acc/sha512_alt.c
+endif
 
 # AES HW
 ifeq ($(CONFIG_MBEDTLS_AES_USE_HW),1)

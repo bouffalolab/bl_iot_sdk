@@ -53,9 +53,7 @@ static u16_t s_nextthread = 0;
 //  Creates an empty mailbox.
 err_t sys_mbox_new(sys_mbox_t *mbox, int size)
 {
-	(void ) size;
-	
-	*mbox = xQueueCreate( TCPIP_MBOX_SIZE, sizeof( void * ) );
+	*mbox = xQueueCreate( size, sizeof( void * ) );
 
 #if SYS_STATS
       ++lwip_stats.sys.mbox.used;

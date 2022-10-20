@@ -4840,7 +4840,7 @@ int bt_gatts_add_char(const struct bt_gatt_attr *char_attr,uint32_t val_prop)
 {
     struct bt_gatt_chrc char_dec_val;
     struct bt_gatt_attr char_dec;
-    struct bt_uuid *char_uuid = NULL;
+    const struct bt_uuid *char_uuid = NULL;
     struct bt_gatt_attr char_val;
     struct bt_gatt_service *last;
     struct customer_svc_list *last_list;
@@ -4873,7 +4873,7 @@ int bt_gatts_add_char(const struct bt_gatt_attr *char_attr,uint32_t val_prop)
     char_dec.user_data = (struct bt_gatt_chrc *)k_malloc(sizeof(struct bt_gatt_chrc));
 
     if(!char_dec.user_data){
-        k_free(char_uuid);
+        k_free((void *)char_uuid);
         return -ENOBUFS;
     }
     memcpy(char_dec.user_data, &char_dec_val, sizeof(struct bt_gatt_chrc));
@@ -4899,7 +4899,7 @@ int bt_gatts_add_char(const struct bt_gatt_attr *char_attr,uint32_t val_prop)
 
 int bt_gatts_add_desc(const struct bt_gatt_attr *desp_attr)
 {
-    struct bt_uuid *desc_uuid = NULL;
+    const struct bt_uuid *desc_uuid = NULL;
     struct _bt_gatt_ccc *ccc = NULL;
     struct bt_gatt_attr desc_attr;
     struct bt_gatt_service *last;
@@ -4929,7 +4929,7 @@ int bt_gatts_add_desc(const struct bt_gatt_attr *desp_attr)
     if(!bt_uuid_cmp(desc_uuid, BT_UUID_GATT_CCC)){
         ccc = (struct _bt_gatt_ccc *)k_malloc(sizeof(struct _bt_gatt_ccc));
         if(!ccc){
-            k_free(desc_uuid);
+            k_free((void *)desc_uuid);
             return -ENOBUFS;
         }
         memset(ccc,0,sizeof(struct _bt_gatt_ccc));
@@ -5075,7 +5075,7 @@ int bt_gatts_get_service_char(uint16_t svc_id,struct char_info *info,uint16_t ch
 }
 
 
-static int attr_is_descptor(struct bt_gatt_attr *desp_attr)
+static int attr_is_descptor(const struct bt_gatt_attr *desp_attr)
 {
     struct add_gatts_attr *tmp_attr;
     int ret = -1;
@@ -5147,7 +5147,7 @@ static int bt_gatts_get_service_desp(struct bt_gatt_service *svc,
 
 last:
     if(svc){
-       struct bt_gatt_attr * a = find_attr(phdl);
+       const struct bt_gatt_attr * a = find_attr(phdl);
        num_desp = svc->attrs + svc->attr_count - a - 2;
        for(int id=0;id<desp_num;id++){
            if(phdl==info[id].char_idx){

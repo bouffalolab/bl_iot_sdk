@@ -29,6 +29,7 @@ NOTES
 
 static void ble_tp_connected(struct bt_conn *conn, u8_t err);
 static void ble_tp_disconnected(struct bt_conn *conn, u8_t reason);
+static int bl_tp_send_indicate(struct bt_conn *conn, const struct bt_gatt_attr *attr, const void *data, u16_t len);
 
 struct bt_conn *ble_tp_conn;
 struct bt_gatt_exchange_params exchg_mtu;
@@ -169,20 +170,11 @@ NAME
 void indicate_rsp(struct bt_conn *conn, const struct bt_gatt_attr *attr,	u8_t err)
 {
     BT_INFO("receive confirm, err:%d", err);
-}
-
-static int bl_tp_send_indicate(struct bt_conn *conn, const struct bt_gatt_attr *attr,
-				                    const void *data, u16_t len)
-{
-    //indicate paramete must be allocated statically
-    static struct bt_gatt_indicate_params ind_params;
-    ind_params.attr = attr;
-    ind_params.data = data;
-    ind_params.len = len;
-    ind_params.func = indicate_rsp;
-    ind_params.uuid = NULL;
-
-    return bt_gatt_indicate(conn, &ind_params);
+    struct bt_gatt_indicate_params *ind_params = bt_att_get_att_req(conn);
+    if(ind_params)
+    {
+        k_free(ind_params);
+    }
 }
 
 /*************************************************************************
@@ -299,6 +291,24 @@ static struct bt_gatt_attr attrs[]= {
 	BT_GATT_CCC(ble_tp_not_ccc_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE)
 
 };
+
+static int bl_tp_send_indicate(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+				                    const void *data, u16_t len)
+{
+    //indicate paramete must be allocated statically
+    struct bt_gatt_indicate_params *ind_params = k_malloc(sizeof(struct bt_gatt_indicate_params));
+    ind_params->attr = attr;
+    ind_params->data = data;
+    ind_params->len = len;
+    ind_params->func = indicate_rsp;
+    ind_params->uuid = NULL;
+    /*it is possible to indicate by UUID by setting it on the
+      parameters, when using this method the attribute given is used as the
+      start range when looking up for possible matches.In this case,set uuid as follows.*/
+    //ind_params->uuid = attrs[6].uuid;
+
+    return bt_gatt_indicate(conn, ind_params);
+}
 
 /*************************************************************************
 NAME    

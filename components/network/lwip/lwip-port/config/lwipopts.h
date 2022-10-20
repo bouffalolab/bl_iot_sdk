@@ -108,9 +108,11 @@ a lot of data that needs to be copied, this should be set high. */
 #define PBUF_POOL_SIZE          200
 #elif defined(CFG_CHIP_BL606P)
 #define PBUF_POOL_SIZE          200
-#else
-#if defined(CFG_ETHERNET_ENABLE) || defined(BL602_MATTER_SUPPORT)
+#elif defined(BL602_MATTER_SUPPORT)
 #define PBUF_POOL_SIZE          16
+#else
+#if defined(CFG_ETHERNET_ENABLE)
+#define PBUF_POOL_SIZE          12
 #else
 #define PBUF_POOL_SIZE          0
 #endif
@@ -337,9 +339,9 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCPIP_THREAD_STACKSIZE          4000
 #endif /* CFG_ETHERNET_ENABLE */
 #define TCPIP_MBOX_SIZE                 50
-#define DEFAULT_UDP_RECVMBOX_SIZE       2000
-#define DEFAULT_TCP_RECVMBOX_SIZE       2000
-#define DEFAULT_ACCEPTMBOX_SIZE         2000
+#define DEFAULT_UDP_RECVMBOX_SIZE       50
+#define DEFAULT_TCP_RECVMBOX_SIZE       50
+#define DEFAULT_ACCEPTMBOX_SIZE         50
 #define DEFAULT_THREAD_STACKSIZE        500
 #define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2) 
 

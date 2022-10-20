@@ -219,6 +219,7 @@ struct ifreq {
 #define SO_CONTIMEO     0x1009 /* Unimplemented: connect timeout */
 #define SO_NO_CHECK     0x100a /* don't create UDP checksum */
 #define SO_BINDTODEVICE 0x100b /* bind to device */
+#define SO_CONNINFO     0x100e /* RWNX Specific: Read Only, get pointer on connection info */
 
 /*
  * Structure used for manipulating linger option.

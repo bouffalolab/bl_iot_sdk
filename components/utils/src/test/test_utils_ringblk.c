@@ -1,11 +1,31 @@
 /*
- * Copyright (c) 2006-2021, RT-Thread Development Team
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
- * SPDX-License-Identifier: Apache-2.0
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
  *
- * Change Logs:
- * Date           Author       Notes
- * 2018-08-31     armink       the first version
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <stdint.h>
@@ -18,7 +38,9 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
+#ifdef CONFIG_CLI_CMD_ENABLE
 #include <cli.h>
+#endif
 #include "utils_ringblk.h"
 
 #ifdef UTILS_RINGBLK_TEST
@@ -346,10 +368,13 @@ static void cmd_ringblk_through_test(char *buf, int len, int argc, char **argv)
 
   xTaskCreate(get_thread, "rbb_get", 1024, rbb, 10, NULL);
 }
+
+#ifdef CONFIG_CLI_CMD_ENABLE
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
   {"rbb_static_test", "ringblk static test", cmd_ringblk_test},
   {"rbb_through_test", "ringblk dynamic test", cmd_ringblk_through_test},
 };
+#endif
 
 int utils_rbb_cli_init(void)
 {

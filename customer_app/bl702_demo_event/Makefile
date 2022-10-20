@@ -46,7 +46,7 @@ else
 		INCLUDE_COMPONENTS += $(addprefix $(ZBSTACK_LIB_PREFIX), $(CONFIG_ZBSTACK_LIB))
 	endif
 endif
-INCLUDE_COMPONENTS += zbcli
+INCLUDE_COMPONENTS += zbcli ecdsa macphy154
 endif
 
 ifeq ($(CONFIG_BT),1)

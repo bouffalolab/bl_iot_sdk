@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include <stdio.h>
 #include <string.h>
 #include <cli.h>
@@ -244,7 +273,7 @@ int wifi_mgmr_cli_scanlist(void)
     bl_os_printf("****************************************************************************************************\r\n");
     for (i = 0; i < sizeof(wifiMgmr.scan_items)/sizeof(wifiMgmr.scan_items[0]); i++) {
         if (wifiMgmr.scan_items[i].is_used && (!wifi_mgmr_scan_item_is_timeout(&wifiMgmr, &wifiMgmr.scan_items[i]))) {
-            bl_os_printf("index[%02d]: channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm abs:rel %3d : %3d, wps %2d, mode %6s, auth %20s, cipher:%12s, SSID %s\r\n",
+            bl_os_printf("index[%02d]: channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm abs:rel %3d : %3d, wps %2d, mode %6s, auth %20s, cipher:%12s, group_cipher:%12s, SSID %s\r\n",
                     i,
                     wifiMgmr.scan_items[i].channel,
                     wifiMgmr.scan_items[i].bssid[0],
@@ -260,6 +289,7 @@ int wifi_mgmr_cli_scanlist(void)
                     wifi_mgmr_mode_to_str(wifiMgmr.scan_items[i].mode),
                     wifi_mgmr_auth_to_str(wifiMgmr.scan_items[i].auth),
                     wifi_mgmr_cipher_to_str(wifiMgmr.scan_items[i].cipher),
+                    wifi_mgmr_cipher_to_str(wifiMgmr.scan_items[i].group_cipher),
                     wifiMgmr.scan_items[i].ssid
             );
         } else {
@@ -868,7 +898,7 @@ static void cmd_wifi_ap_start(char *buf, int len, int argc, char **argv)
 {
     uint8_t mac[6];
     uint8_t hidden_ssid = 0;
-    char ssid_name[32];
+    char ssid_name[33];
     int channel;
     int max_sta_supported;
     wifi_interface_t wifi_interface;

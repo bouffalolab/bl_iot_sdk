@@ -1,10 +1,31 @@
-/**
- ****************************************************************************************
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
  *
- * @file wifi_mgmr.c
- * Copyright (C) Bouffalo Lab 2016-2018
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
  *
- ****************************************************************************************
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <stdint.h>
@@ -179,7 +200,7 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
     uint32_t lastseen_found = 0;
 
 #ifdef DEBUG_SCAN_BEACON
-    bl_os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm %d:%d, auth %s, cipher:%s \t, SSID %s\r\n",
+    bl_os_printf(DEBUG_HEADER "channel %02u, bssid %02X:%02X:%02X:%02X:%02X:%02X, rssi %3d, ppm %d:%d, auth %s, cipher:%s, group_cipher:%s \t, SSID %s\r\n",
             scan->channel,
             MAC_ADDR_LIST(scan->bssid),
             scan->rssi,
@@ -187,6 +208,7 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
             scan->ppm_rel,
             wifi_mgmr_auth_to_str(scan->auth),
             wifi_mgmr_cipher_to_str(scan->cipher),
+            wifi_mgmr_cipher_to_str(scan->group_cipher),
             scan->ssid
     );
 #endif
@@ -239,6 +261,7 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
                     wifiMgmr.scan_items[i].cipher = scan->cipher;
                     wifiMgmr.scan_items[i].wps = scan->wps;
                     wifiMgmr.scan_items[i].mode = scan->mode;
+                    wifiMgmr.scan_items[i].group_cipher = scan->group_cipher;
                 }
                 break;
             }
@@ -262,6 +285,7 @@ int wifi_mgmr_scan_beacon_save( wifi_mgmr_scan_item_t *scan )
             wifiMgmr.scan_items[i].cipher = scan->cipher;
             wifiMgmr.scan_items[i].wps = scan->wps;
             wifiMgmr.scan_items[i].mode = scan->mode;
+            wifiMgmr.scan_items[i].group_cipher = scan->group_cipher;
             wifiMgmr.scan_items[i].is_used = 1;
         }
     }
@@ -428,6 +452,20 @@ static void stateAction( void *oldStateData, struct event *event,
             (char*)oldStateData,
             (char*)newStateData
     );
+}
+
+
+static bool stateSnifferGuard_idle(void *ev, struct event *event )
+{
+    wifi_mgmr_msg_t *msg;
+
+    msg = event->data;
+    if (ev != (void*)msg->ev) {
+        return false;
+    }
+
+    bl_main_monitor_disable();
+    return true;
 }
 
 /*function for state sniffer*/
@@ -750,7 +788,7 @@ const static struct state stateSniffer = {
    .entryState = NULL,
    .transitions = (struct transition[])
    {
-      {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_IDLE, &stateGuard, &stateAction, &stateIdle},
+      {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_IDLE, &stateSnifferGuard_idle, &stateAction, &stateIdle},
       /*Will NOT transfer state*/
       {EVENT_TYPE_FW,  (void*)WIFI_MGMR_EVENT_FW_CHANNEL_SET, &stateSnifferGuard_ChannelSet, &stateAction, &stateIdle},
    },
@@ -1418,10 +1456,10 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg, int use_block)
             return -1;
         }
     }
-    ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, msg->len, BL_OS_WAITING_FOREVER, 0) :
-                      bl_os_queue_send(wifiMgmr.mq, msg, msg->len);
+    ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, sizeof(wifi_mgmr_msg_t), BL_OS_WAITING_FOREVER, 0) :
+                      bl_os_queue_send(wifiMgmr.mq, msg, sizeof(wifi_mgmr_msg_t));
     if (ret) {
-        bl_os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
+        bl_os_printf("Failed when send msg 0x%p, ev :%d\r\n", msg, msg->ev);
         return -1;
     }
     return 0;
@@ -1456,7 +1494,6 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
         msg->ev = WIFI_MGMR_EVENT_GLB_IP_UPDATE;
         msg->data1 = (void*)0x01;
         msg->data2 = (void*)0x02;
-        msg->len = sizeof (wifi_mgmr_msg_t);
         return WIFI_MGMR_PENDING_TASK_IP_UPDATE_BIT;
     }
 
@@ -1465,7 +1502,6 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
         msg->ev = WIFI_MGMR_EVENT_APP_IP_GOT;
         msg->data1 = (void*)0x01;
         msg->data2 = (void*)0x02;
-        msg->len = sizeof (wifi_mgmr_msg_t);
         return WIFI_MGMR_PENDING_TASK_IP_GOT_BIT;
     }
 
@@ -1475,12 +1511,10 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
 void wifi_mgmr_start(void)
 {
     struct event ev;
-    uint8_t buffer[WIFI_MGMR_MQ_MSG_SIZE + 8];
-    wifi_mgmr_msg_t *msg;
+    wifi_mgmr_msg_t msg;
 
-    msg = (wifi_mgmr_msg_t*)(buffer + 1);
     ev.type = EVENT_TYPE_APP;
-    ev.data = msg;
+    ev.data = &msg;
     stateM_init(&(wifiMgmr.m), &stateIfaceDown, &stateError);
 
     wifiMgmr.scan_items_lock = bl_os_mutex_create();
@@ -1506,19 +1540,23 @@ void wifi_mgmr_start(void)
 
     /*Run the event handler loop*/
     while (1) {
-        if (0 == bl_os_queue_recv(wifiMgmr.mq, msg, WIFI_MGMR_MQ_MSG_SIZE, BL_OS_WAITING_FOREVER)) {
+        if (0 == bl_os_queue_recv(wifiMgmr.mq, &msg, sizeof(wifi_mgmr_msg_t), BL_OS_WAITING_FOREVER)) {
 
 handle_msg:
-            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
-                (msg->ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
-            if (msg->ev == WIFI_MGMR_EVENT_APP_RELOAD_TSEN) {
+            ev.type = msg.ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
+                (msg.ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
+            if (msg.ev == WIFI_MGMR_EVENT_APP_RELOAD_TSEN) {
                 __run_reload_tsen();
             } else {
                 stateM_handleEvent(&(wifiMgmr.m), &ev);
             }
 
-            if (handle_pending_task(msg)) {
+            if (handle_pending_task(&msg)) {
                 goto handle_msg;
+            }
+
+            if (msg.data) {
+                bl_os_free(msg.data);
             }
         }
     }
@@ -1539,7 +1577,7 @@ int wifi_mgmr_init(void)
 {
     int ret;
 
-    wifiMgmr.mq = bl_os_queue_create(sizeof(wifiMgmr.mq_pool) / WIFI_MGMR_MQ_MSG_SIZE, WIFI_MGMR_MQ_MSG_SIZE);
+    wifiMgmr.mq = bl_os_queue_create(WIFI_MGMR_MQ_MSG_COUNT, sizeof(wifi_mgmr_msg_t));
     assert((ret = (NULL != wifiMgmr.mq)));
 
     wifiMgmr.ready = 1;//TODO check ret

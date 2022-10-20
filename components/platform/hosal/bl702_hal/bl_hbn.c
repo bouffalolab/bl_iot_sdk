@@ -1,6 +1,36 @@
+/*
+ * Copyright (c) 2016-2022 Bouffalolab.
+ *
+ * This file is part of
+ *     *** Bouffalolab Software Dev Kit ***
+ *      (see www.bouffalolab.com).
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of Bouffalo Lab nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include <bl_hbn.h>
 #include <bl_irq.h>
 #include <bl_flash.h>
+#include <bl_rtc.h>
 #include <hosal_uart.h>
 #include <utils_log.h>
 
@@ -24,6 +54,7 @@ typedef __PACKED_STRUCT
 
 #define FAST_BOOT_TEST             0
 #define TEST_GPIO                  22
+#define OPEN_JTAG                  0
 
 
 /* ACOMP Pin List */
@@ -55,10 +86,13 @@ ATTR_HBN_NOINIT_SECTION static uint32_t flashImageOffset;
 ATTR_HBN_NOINIT_SECTION static SF_Ctrl_Cfg_Type sfCtrlCfg;
 
 /* HBN Wakeup Pin Configuration */
-ATTR_HBN_DATA_SECTION static uint8_t hbnWakeupPin = 0;
+ATTR_HBN_NOINIT_SECTION static uint8_t hbnWakeupPin;
 
 /* HBN IRQ Status, will get from hbn register after wakeup */
-ATTR_HBN_DATA_SECTION static uint32_t hbnIrqStatus = 0;
+ATTR_HBN_NOINIT_SECTION static uint32_t hbnIrqStatus;
+
+/* HBN Wakeup Time, will get in rtc cycles after wakeup */
+ATTR_HBN_NOINIT_SECTION static uint64_t hbnWakeupTime;
 
 
 static void bl_hbn_set_sf_ctrl(SPI_Flash_Cfg_Type *pFlashCfg)
@@ -356,7 +390,7 @@ static void ATTR_NOINLINE ATTR_HBN_CODE_SECTION bl_hbn_set_gpio_high_z(void)
     
     // Set all gpio pads in High-Z state (GPIO0 - GPIO31)
     for(pin = 0; pin <= 31; pin++){
-#if 0
+#if OPEN_JTAG
         if(pin == 0 || pin == 1 || pin == 2 || pin == 9){
             continue;
         }
@@ -427,6 +461,23 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
     
     hbnIrqStatus = BL_RD_REG(HBN_BASE, HBN_IRQ_STAT);
     
+#if 1
+    if(hbnIrqStatus & 0x01){
+        *(uint32_t *)0x40000110 = 0x0B020B03;
+        *(uint32_t *)0x40000188 = 0x00000200;
+        *(uint32_t *)0x40000190 = 0x00000200;
+        RomDriver_BL702_Delay_US(500);
+        *(uint32_t *)0x40000190 = 0x00000000;
+        *(uint32_t *)0x40000188 = 0x00000000;
+        *(uint32_t *)0x40000110 = 0x0B030B03;
+        RomDriver_BL702_Delay_US(500);
+        hbnIrqStatus &= ~((*(volatile uint32_t *)0x40000180 >> 9) & 0x01);
+#if OPEN_JTAG
+        *(uint32_t *)0x40000110 = 0x0E020B03;
+#endif
+    }
+#endif
+    
 #if !defined(CFG_HBN_OPTIMIZE)
     // Configure clock (must use rom driver, since tcm code is lost and flash is power down)
     RomDriver_GLB_Set_System_CLK(clkCfg.xtal_type, clkCfg.pll_clk);
@@ -469,6 +520,9 @@ static void ATTR_HBN_CODE_SECTION bl_hbn_fastboot_entry(void)
     RomDriver_BL702_Delay_US(1);
     *pOut &= ~(1<<pos);
 #endif
+    
+    // Get wakeup time in rtc cycles
+    hbnWakeupTime = bl_rtc_get_counter();
     
     // Switch stack pointer
     __asm__ __volatile__(
@@ -630,6 +684,11 @@ int bl_hbn_get_wakeup_source(void)
 uint32_t bl_hbn_get_wakeup_gpio(void)
 {
     return (hbnIrqStatus & 0x1F) << 9;
+}
+
+uint64_t bl_hbn_get_wakeup_time(void)
+{
+    return hbnWakeupTime;
 }
 
 __attribute__((weak)) void bl_hbn_fastboot_done_callback(void)
