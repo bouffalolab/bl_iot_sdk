@@ -356,6 +356,19 @@ static inline struct pbuf *_handle_frame_from_stack_with_zerocopy(void *swdesc, 
 #define MAC_FMT "%02X%02X%02X%02X%02X%02X"
 #define MAC_LIST(arr) (arr)[0], (arr)[1], (arr)[2], (arr)[3], (arr)[4], (arr)[5]
 
+static int tcpip_src_addr_cmp(struct ethhdr *hdr, uint8_t addr[])
+{
+    int i;
+
+    for (i = 0; i < 6; i++) {
+        if ((uint8_t)(hdr->h_source[i]) != (uint8_t)(addr[i])) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int msdu_offset, struct wifi_pkt *pkt, uint8_t extra_status)
 {
     struct hw_rxhdr *hw_rxhdr = (struct hw_rxhdr*)hwhdr;
@@ -440,7 +453,8 @@ int tcpip_stack_input(void *swdesc, uint8_t status, void *hwhdr, unsigned int ms
             }
         }
 #endif
-        if (bl_vif->dev && ERR_OK == bl_vif->dev->input(h, bl_vif->dev)) {
+        struct ethhdr *hdr = (struct ethhdr *)(skb_payload);
+        if (bl_vif->dev && tcpip_src_addr_cmp(hdr, (bl_vif->dev)->hwaddr) && ERR_OK == bl_vif->dev->input(h, bl_vif->dev)) {
             //TCP/IP stack will take care of pbuf h
         } else {
             //No none need pbuf h anymore, so free it now
