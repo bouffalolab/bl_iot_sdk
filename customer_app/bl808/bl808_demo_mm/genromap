@@ -1,0 +1,5 @@
+#!/bin/sh
+make CONFIG_CHIP_NAME=BL808 CPU_ID=D0 -j
+mkdir -p romfs
+cp build_out/bl808_demo_mm.bin romfs/c906.bin
+exit $?
