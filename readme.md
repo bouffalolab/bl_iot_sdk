@@ -78,3 +78,49 @@
 2. Use the type-c usb connect tag ota to PC and run camera on PC you can get image from sensor
 
      ![2022-12-19_16-08](tools/picture/2022-12-19_16-08.png)
+
+##  Wifi Demo
+
+1. Use bl808_demo_evnet 
+
+    ```shell
+        # Compile bl808_demo_event firmware
+        cd ~/bl808/bl_iot_sdk/customer_app/bl808/bl808_demo_event
+
+        ./genromap
+    ```
+    - NOTE:this demo no need use c906 firmware
+
+2. Download firmware use flash tool please follow refer to the above [Flash Guide](#flash-guide)
+
+3. Open serial port and config baud rate`2000000` next press reset button you can get next info
+
+     ![bl808_demo_evnet_log](tools/picture/bl808_demo_evnet_log.png)
+
+4. Input `stack_wifi`serial port terminal to start wifi stack and get next info is OK 
+
+     ![input_stack_wifi](tools/picture/input_stack_wifi.png)
+
+     ![wifi_init_done](tools/picture/wifi_init_done.png)
+
+5. Input `wifi_sta_connect <ssid> <key>` to connect AP
+
+     ![connect_ap](tools/picture/connect_ap.png)
+
+6. If connected successfully you can get ip info
+
+     ![get_ip](tools/picture/get_ip.png)
+
+7. Start iperf server on PC eg. Linux 
+    
+    ```shell
+        iperf -s -i 1
+    ```
+    
+     ![iperf_server](tools/picture/iperf_server.png)
+
+8. Input `ipc <yourserver-ip>` on serial port terminal start tcp tx iperf
+
+     ![ipc_successfully](tools/picture/ipc_successfully.png)
+
+     ![ipc_server](tools/picture/ipc_server.png)
