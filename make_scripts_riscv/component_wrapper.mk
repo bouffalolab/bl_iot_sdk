@@ -234,9 +234,21 @@ ifndef COMPONENT_OWNBUILDTARGET
 .PHONY: build
 build: $(COMPONENT_LIBRARY)
 
+ifneq (, $(filter $(COMPONENT_NAME), $(PRINTF_DISABLE_COMPONENTS)))
+AR_OBJ_PRE_HOOK:=bash -c "for i in $(COMPONENT_OBJS); do if [[ ! \$$i =~ .*/debug.o ]]; then $(OBJCOPY) --redefine-sym printf=no_printf --redefine-sym puts=no_puts \$$i \$$i; fi done"
+else
+AR_OBJ_PRE_HOOK:=true
+endif
+ifneq (, $(filter $(COMPONENT_NAME), $(VERSION_ENABLED_COMPONENTS)))
+AR_OBJ_PRE1_HOOK:=(echo -n "\#include \"stdint.h\"\n struct blverinf {uint8_t anti_rollback; uint8_t x; uint8_t y; uint8_t z; char *name; char *build_time; char *commit_id; uint32_t rsvd0; uint32_t rsvd1;};  __attribute__((section(\".blverinf\"))) const struct blverinf $(COMPONENT_NAME)_version = {.name = \"$(COMPONENT_NAME)\", .commit_id = \"" && git -C $(dir $(COMPONENT_MAKEFILE)) describe --always --tags |tr -d '\n' && echo "\"};")  | $(CC) $(CFLAGS) $(CPPFLAGS) $(addprefix -I ,$(COMPONENT_INCLUDES)) -x c -c -o component_version.obj -
+else
+AR_OBJ_PRE1_HOOK:=true
+endif
 # Build the archive. We remove the archive first, otherwise ar will get confused if we update
 # an archive when multiple filenames have the same name (src1/test.o and src2/test.o)
 $(COMPONENT_LIBRARY): $(COMPONENT_OBJS)
+	$(AR_OBJ_PRE_HOOK)
+	$(AR_OBJ_PRE1_HOOK)
 	$(summary) AR $(patsubst $(PWD)/%,%,$(CURDIR))/$@
 	rm -f $@
 	$(AR) cru $@ $^

@@ -22,7 +22,11 @@ COMPONENT_ADD_INCLUDEDIRS += ./
 COMPONENT_PRIV_INCLUDEDIRS :=
 
 ## This component's src
-COMPONENT_SRCS := ./syscalls.c ./assert.c
+COMPONENT_SRCS := ./syscalls.c ./assert.c 
+
+ifeq ("$(CONFIG_CHIP_NAME)", "BL616")
+COMPONENT_SRCS += ./debug.c ./sscanf.c ./vsscanf.c
+endif
 
 ifeq ("$(CPU_ID)", "D0")
 COMPONENT_SRCS += ./memcpy.c

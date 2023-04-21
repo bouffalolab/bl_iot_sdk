@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -47,6 +47,9 @@
 static bl_SEC_Eng_SHA_Link_Config_Type working_link_cfg __attribute__((section(".wifi_ram")));
 #elif defined BL616
 // Nothing
+#elif defined BL702
+static bl_SEC_Eng_SHA_Link_Config_Type working_link_cfg __attribute__((section(".sha_ocram")));
+#elif defined BL702L
 #else
 #error "No support for this chip"
 #endif
@@ -78,7 +81,7 @@ int bl_sha_mutex_give()
     return 0;
 }
 
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
 static bool is_tcm_addr(void *addr)
 {
     uintptr_t addr_masked = (uintptr_t)addr & 0x0FFFFFFFUL;
@@ -136,7 +139,7 @@ int bl_sha_init(bl_sha_ctx_t *ctx, const bl_sha_type_t type)
     lc->shaIntSet = 1;
     lc->shaIntClr = 1;
     bl_SEC_Eng_SHA_Link_Config_Type *link_cfg = &ctx->link_cfg;
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
     if (is_tcm_addr(ctx)) {
         link_cfg = &working_link_cfg;
     }
@@ -165,7 +168,7 @@ int bl_sha_clone(bl_sha_ctx_t *dst, const bl_sha_ctx_t *src)
     dst->ctx.shaBuf = dst->tmp;
     dst->ctx.shaPadding = dst->pad;
     dst->ctx.linkAddr = (uint32_t)&dst->link_cfg;
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
     if (is_tcm_addr(dst)) {
         dst->ctx.linkAddr = (uint32_t)&working_link_cfg;
     }
@@ -175,7 +178,7 @@ int bl_sha_clone(bl_sha_ctx_t *dst, const bl_sha_ctx_t *src)
 
 int bl_sha_update(bl_sha_ctx_t *ctx, const uint8_t *input, uint32_t len)
 {
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
     if (is_tcm_addr(ctx)) {
         ARCH_MemCpy_Fast(&working_link_cfg, &ctx->link_cfg, sizeof(working_link_cfg));
     }
@@ -189,7 +192,7 @@ int bl_sha_update(bl_sha_ctx_t *ctx, const uint8_t *input, uint32_t len)
     }
 #endif
     Sec_Eng_SHA256_Link_Update((SEC_Eng_SHA256_Link_Ctx *)&ctx->ctx, BL_SHA_ID, input, len);
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
     if (is_tcm_addr(ctx)) {
         ARCH_MemCpy_Fast(&ctx->link_cfg, &working_link_cfg, sizeof(working_link_cfg));
     }
@@ -199,7 +202,7 @@ int bl_sha_update(bl_sha_ctx_t *ctx, const uint8_t *input, uint32_t len)
 
 int bl_sha_finish(bl_sha_ctx_t *ctx, uint8_t *hash)
 {
-#ifdef BL602
+#if defined (BL602) || defined (BL702)
     if (is_tcm_addr(ctx)) {
         ARCH_MemCpy_Fast(&working_link_cfg, &ctx->link_cfg, sizeof(working_link_cfg));
     }

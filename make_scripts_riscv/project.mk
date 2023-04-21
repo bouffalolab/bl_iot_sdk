@@ -483,7 +483,7 @@ ifeq ($(CONFIG_ZIGBEE), 1)
 else ifeq ($(CONFIG_CPP_ENABLE), 1)
 	$(CXX) -o $@ $(LDFLAGS) -Wl,-Map=$(APP_MAP)
 else
-	$(CC) $(LDFLAGS) -o $@ -Wl,-Map=$(APP_MAP) $(shell find build_out/ -name bugkiller_*.o)
+	$(CC) $(LDFLAGS) -o $@ -Wl,-Map=$(APP_MAP) $(shell find build_out/ -name component_version.obj) $(shell find build_out/ -name bugkiller_*.o)
 endif
 
 all_binaries: $(APP_BIN)

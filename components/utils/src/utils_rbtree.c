@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -363,17 +363,20 @@ int rb_tree_remove_with_cb (struct rb_tree *self, void *value, rb_tree_node_f no
                             s->red = 1;
                             q->red = 1;
                         } else {
-                            int dir2 = g->link[1] == p;
-                            if (rb_node_is_red(s->link[last])) {
-                                g->link[dir2] = rb_node_rotate2(p, last);
-                            } else if (rb_node_is_red(s->link[!last])) {
-                                g->link[dir2] = rb_node_rotate(p, last);
+                            // Converity: Explicit null dereferenced
+                            if(g) {
+                                int dir2 = g->link[1] == p;
+                                if (rb_node_is_red(s->link[last])) {
+                                    g->link[dir2] = rb_node_rotate2(p, last);
+                                } else if (rb_node_is_red(s->link[!last])) {
+                                    g->link[dir2] = rb_node_rotate(p, last);
+                                }
+
+                                // Ensure correct coloring
+                                q->red = g->link[dir2]->red = 1;
+                                g->link[dir2]->link[0]->red = 0;
+                                g->link[dir2]->link[1]->red = 0;
                             }
-                            
-                            // Ensure correct coloring
-                            q->red = g->link[dir2]->red = 1;
-                            g->link[dir2]->link[0]->red = 0;
-                            g->link[dir2]->link[1]->red = 0;
                         }
                     }
                 }

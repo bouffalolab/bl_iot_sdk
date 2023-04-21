@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -170,39 +170,22 @@ void bl_sys_reset_system(void)
 
 int bl_sys_em_config(void)
 {
-#if 0
     extern uint8_t __LD_CONFIG_EM_SEL;
     volatile uint32_t em_size;
 
     em_size = (uint32_t)&__LD_CONFIG_EM_SEL;
 
-    switch (em_size) {
-        case 0 * 1024:
-        {
-            GLB_Set_EM_Sel(GLB_EM_0KB);
-        }
-        break;
-        case 8 * 1024:
-        {
-            GLB_Set_EM_Sel(GLB_EM_8KB);
-        }
-        break;
-        case 16 * 1024:
-        {
-            GLB_Set_EM_Sel(GLB_EM_16KB);
-        }
-        break;
-        default:
-        {
-            /*nothing here*/
-        }
+    if (em_size == 0) {
+        GLB_Set_EM_Sel(GLB_WRAM160KB_EM0KB);
+    } else if (em_size == 32*1024) {
+        GLB_Set_EM_Sel(GLB_WRAM128KB_EM32KB);
+    } else if (em_size == 64*1024) {
+        GLB_Set_EM_Sel(GLB_WRAM96KB_EM64KB);
+    } else {
+        GLB_Set_EM_Sel(GLB_WRAM96KB_EM64KB);
     }
 
     return 0;
-#else
-    puts("WARN: bl_sys_em_config is NOT implemented\r\n");
-    return 0;
-#endif
 }
 
 int bl_sys_early_init(void)
@@ -227,8 +210,8 @@ int bl_sys_early_init(void)
 int bl_sys_init(void)
 {
     bl_sys_em_config();
-    bl_sys_rstinfo_get();
-    bl_sys_rstinfo_init();
+    //bl_sys_rstinfo_get();
+    //bl_sys_rstinfo_init();
     return 0;
 }
 
@@ -318,8 +301,5 @@ void bl_sys_lowlevel_init(void)
     bl_flash_init();
     hal_boot2_init();
     hal_board_cfg(0);
-#ifndef NO_BLE_CONFIG
-    GLB_Set_EM_Sel(GLB_WRAM96KB_EM64KB);
-#endif
 }
 

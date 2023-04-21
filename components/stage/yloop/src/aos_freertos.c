@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -211,7 +211,9 @@ void aos_mutex_free(aos_mutex_t *mutex)
 int aos_mutex_lock(aos_mutex_t *mutex, unsigned int ms)
 {
     if (mutex) {
-        xSemaphoreTake(mutex->hdl, ms == AOS_WAIT_FOREVER ? portMAX_DELAY : ms2tick(ms));
+        /* Converity: Unchecked return value (as is done elsewhere) */
+        int ret = xSemaphoreTake(mutex->hdl, ms == AOS_WAIT_FOREVER ? portMAX_DELAY : ms2tick(ms));
+        (void)ret;
     }
     return 0;
 }

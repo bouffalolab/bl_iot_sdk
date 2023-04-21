@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -109,6 +109,8 @@ aos_loop_t aos_loop_init(void)
     ctx = pvPortMalloc(sizeof(*g_main_ctx));
     if (ctx) {
         memset(ctx, 0, sizeof(*g_main_ctx));
+    } else {
+        return NULL;
     }
     if (!g_main_ctx) {
         g_main_ctx = ctx;

@@ -110,8 +110,8 @@ icmp6_input(struct pbuf *p, struct netif *inp)
       return;
     }
   }
-#endif /* CHECKSUM_CHECK_ICMP6 */
 
+#endif /* CHECKSUM_CHECK_ICMP6 */
   switch (icmp6hdr->type) {
   case ICMP6_TYPE_NA: /* Neighbor advertisement */
   case ICMP6_TYPE_NS: /* Neighbor solicitation */

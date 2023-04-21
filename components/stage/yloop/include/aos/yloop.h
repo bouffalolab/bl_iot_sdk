@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -83,6 +83,7 @@ extern "C" {
 #define  CODE_WIFI_ON_EMERGENCY_MAC     23
 #define  CODE_WIFI_ON_EXIT_PS           24
 #define  CODE_WIFI_ON_GOT_IP6           25
+#define  CODE_WIFI_ON_SET_PS_DONE       26
 
 /* Network Event */
 #define EV_NETWORK EV_WIFI

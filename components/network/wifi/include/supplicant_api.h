@@ -165,6 +165,7 @@ typedef struct {
     char passphrase[64 + 1];
     bool pmf_required;
     uint8_t mgmt_group_cipher; // should always be WPA_CIPHER_AES_128_CMAC if PMFR=1
+    uint8_t quick_conn;
 } wifi_connect_parm_t;
 
 typedef struct {

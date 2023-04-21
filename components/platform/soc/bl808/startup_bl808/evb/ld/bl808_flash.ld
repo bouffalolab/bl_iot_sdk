@@ -17,16 +17,17 @@ INPUT(-lgcc)
 /* configure the entry point */
 ENTRY(risc_e906_start)
 
-StackSize = 0x0400; /*  1KB */
+StackSize = 0x1000; /*  4KB */
 BOOT2_PT_ADDR = 0x22057C00;
 BOOT2_FLASHCFG_ADDR = 0x22057c18;
+__EM_SIZE = DEFINED(btble_controller_init) ? 64K : 0K;
 
 MEMORY
 {
     flash    (rxai!w) : ORIGIN = 0x58000000, LENGTH = 4M
     xram_memory (!rx) : ORIGIN = 0x22020000, LENGTH = 16K 
     ram_memory  (!rx) : ORIGIN = 0x22024000, LENGTH = 48K
-    ram_wifi    (!rx) : ORIGIN = 0x22030000, LENGTH = 96K 
+    ram_wifi    (!rx) : ORIGIN = 0x22030000, LENGTH = 160k - __EM_SIZE
     ram_psram  (!rx)  : ORIGIN = 0x50000000, LENGTH = 1M
     bugkill   (rxai!w) : ORIGIN = 0xD0000000, LENGTH = 16M
 }
@@ -156,7 +157,7 @@ SECTIONS
         
         . = ALIGN(4);
         __tcm_code_end__ = .;
-    } > ram_psram AT > flash
+    } > ram_memory AT > flash
 
     .dtcm_region : 
     {
@@ -167,15 +168,12 @@ SECTIONS
         
         . = ALIGN(4);
         __tcm_data_end__ = .;
-    } > ram_psram AT > flash
+    } > ram_memory AT > flash
 
     .stack_dummy (NOLOAD):
     {
 	PROVIDE ( _sp_base = . );
         . = ALIGN(64);
-        __stack_protect_start = .;
-        . = . + 256;
-        __stack_protect_end = .;
         . = . + StackSize;
         . = ALIGN(64);
 	PROVIDE( _sp_main = . );
@@ -347,4 +345,6 @@ SECTIONS
 
     PROVIDE( _ld_bl_static_cfg_entry_start = _bl_static_fw_cfg_entry_start );
     PROVIDE( _ld_bl_static_cfg_entry_end   = _bl_static_fw_cfg_entry_end );
+
+    PROVIDE(__LD_CONFIG_EM_SEL = __EM_SIZE);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -60,9 +60,9 @@ typedef enum {
 /**
  * @brief Error type definition
  */
-typedef enum 
+typedef enum
 {
-  HAL_SUCCESS  = 0, 
+  HAL_SUCCESS  = 0,
   HAL_ERROR   = 1,
 } HAL_Err_Type;
 
@@ -70,7 +70,7 @@ typedef HAL_Err_Type (*HALpPtTable_Flash_Erase)(uint32_t startaddr,uint32_t enda
 typedef HAL_Err_Type (*HALpPtTable_Flash_Write)(uint32_t addr,uint8_t *data, uint32_t len);
 typedef HAL_Err_Type (*HALpPtTable_Flash_Read) (uint32_t addr,uint8_t *data, uint32_t len);
 
-void hal_boot2_set_ptable_opt(HALpPtTable_Flash_Erase erase, HALpPtTable_Flash_Write write);
+void hal_boot2_set_ptable_opt(HALpPtTable_Flash_Erase erase, HALpPtTable_Flash_Write write, HALpPtTable_Flash_Read read);
 int hal_boot2_partition_bus_addr_active(const char *name, uint32_t *addr, uint32_t *size);
 int hal_boot2_partition_bus_addr_inactive(const char *name, uint32_t *addr, uint32_t *size);
 int hal_boot2_partition_bus_addr(const char *name, uint32_t *addr0, uint32_t *addr1, uint32_t *size0, uint32_t *size1, int *active);

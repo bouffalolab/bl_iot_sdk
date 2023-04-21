@@ -84,3 +84,7 @@ endif
 ifeq ($(CONFIG_MMIP_ENABLE),1)
 CFLAGS += -DCONFIG_MMIP
 endif
+
+ifeq ($(CONFIG_BT_ENABLE),1)
+CFLAGS += -DCONFIG_SYS_BT_ENABLE
+endif

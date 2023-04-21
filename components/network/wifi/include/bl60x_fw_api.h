@@ -388,6 +388,10 @@ typedef enum wifi_fw_event_id
     SM_CONNECT_ABORT_CFM,
     /// Timeout message for requiring a SA Query Response from AP
     SM_SA_QUERY_TIMEOUT_IND,
+    /// Indicates add AP info
+    SM_STA_ADD_IND,
+    /// Request for send pending auth or assoc
+    SM_CONNECT_AUTH_ASSOC_REQ,
     /// MAX number of messages
     SM_MAX,
 } ke_msg_id_t;
@@ -490,10 +494,16 @@ enum task_mm_cfg {
     TASK_MM_CFG_KEEP_ALIVE_STATUS_ENABLED,
     TASK_MM_CFG_KEEP_ALIVE_TIME_LAST_RECEIVED,
     TASK_MM_CFG_KEEP_ALIVE_PACKET_COUNTER,
+    TASK_MM_CFG_ACCEPT_ALL_BEACON_FOR_STA,
+    TASK_MM_CFG_ACCEPT_ALL_BEACON_FOR_AP,
+    TASK_MM_CFG_BEACON_TIMEOUT,
+    TASK_MM_CFG_PSM_TBTT_PRE,
+    TASK_MM_CFG_PS_TX_TIMEOUT,
 };
 
 enum task_sm_cfg {
     TASK_SM_CFG_AUTH_ASSOC_RETRY_LIMIT,
+    TASK_SM_CFG_RECONNECT_TRIGGER_FLAG
 };
 
 enum task_scan_cfg {

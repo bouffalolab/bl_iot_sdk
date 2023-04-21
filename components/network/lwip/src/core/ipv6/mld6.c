@@ -66,6 +66,10 @@
 #include "lwip/netif.h"
 #include "lwip/memp.h"
 #include "lwip/stats.h"
+#ifdef CFG_OTBR_TEST
+#include "lwip/inet.h"
+#include "lwip/sockets.h"
+#endif /* CFG_OTBR_TEST */
 
 #include <string.h>
 
@@ -484,6 +488,48 @@ mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr)
   /* Group not found */
   return ERR_VAL;
 }
+
+#ifdef CFG_OTBR_TEST
+/**
+ * @ingroup mld6
+ * Leave a group on a network interface.
+ *
+ * @param netif the network interface which should leave the group.
+ * @param groupaddr the ipv6 address of the group to leave (possibly, but not
+ *                  necessarily zoned)
+ * @return ERR_OK if group was left on the netif, an err_t otherwise
+ */
+char*
+mld6_group_info(struct netif *netif)
+{
+  int cnt = 0;
+  char* addrstr;
+
+  struct mld_group *group = netif_mld6_data(netif);
+
+  while (group != NULL) {
+    group = group->next;
+    cnt++;
+  }
+  addrstr = malloc(cnt * (INET6_ADDRSTRLEN+1));
+  if(addrstr == NULL)
+    return NULL;
+  memset(addrstr, 0, cnt * (INET6_ADDRSTRLEN+1));
+
+  group = netif_mld6_data(netif);
+  while (group != NULL) {
+    inet_ntop(AF_INET6, &group->group_address,
+            &addrstr[strlen(addrstr)], INET6_ADDRSTRLEN);
+    addrstr[strlen(addrstr)] = ',';
+    group = group->next;
+  }
+  if(strlen(addrstr) == 0){
+    free(addrstr);
+    return NULL;
+  }
+  return addrstr;
+}
+#endif /* CFG_OTBR_TEST */
 
 
 /**

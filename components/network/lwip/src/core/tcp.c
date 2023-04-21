@@ -1200,7 +1200,7 @@ tcp_slowtmr(void)
   ++tcp_timer_ctr;
 
 tcp_slowtmr_start:
-  LWIP_DEBUGF(TCP_DEBUG, ("tcp_slowtmr: ticks %d\n", tcp_ticks));
+  LWIP_DEBUGF(TCP_DEBUG, ("tcp_slowtmr: ticks %ld\n", tcp_ticks));
   /* Steps through all of the active PCBs. */
   prev = NULL;
   pcb = tcp_active_pcbs;
@@ -1270,8 +1270,8 @@ tcp_slowtmr_start:
 
         if (pcb->unacked != NULL && (tcp_ticks - pcb->rtime) >= pcb->rto) {
           /* Time for a retransmission. */
-          LWIP_DEBUGF(TCP_RTO_DEBUG, ("tcp_slowtmr: rtime %"U32_F
-                                      " pcb->rto %"U32_F"\n",
+          LWIP_DEBUGF(TCP_RTO_DEBUG, ("tcp_slowtmr: rtime %ld"
+                                      " pcb->rto %d\n",
                                       tcp_ticks - pcb->rtime, pcb->rto));
           /* If prepare phase fails but we have unsent data but no unacked data,
              still execute the backoff calculations below, as this means we somehow
@@ -1282,12 +1282,17 @@ tcp_slowtmr_start:
             if (pcb->state != SYN_SENT) {
               u8_t backoff_idx = LWIP_MIN(pcb->nrtx, sizeof(tcp_backoff) - 1);
               int calc_rto = ((pcb->sa >> 3) + pcb->sv) << tcp_backoff[backoff_idx];
+            #ifdef BL_TCP_OPTIMIZE
+              pcb->rto = 1;
+            #else
               pcb->rto = (s16_t)LWIP_MIN(calc_rto, 0x7FFF);
+            #endif
             }
 
             /* Reset the retransmission timer. */
             pcb->rtime = tcp_ticks;
 
+            #ifndef BL_TCP_OPTIMIZE
             /* Reduce congestion window and ssthresh. */
             eff_wnd = LWIP_MIN(pcb->cwnd, pcb->snd_wnd);
             pcb->ssthresh = eff_wnd >> 1;
@@ -1298,6 +1303,7 @@ tcp_slowtmr_start:
             LWIP_DEBUGF(TCP_CWND_DEBUG, ("tcp_slowtmr: cwnd %"TCPWNDSIZE_F
                                          " ssthresh %"TCPWNDSIZE_F"\n",
                                          pcb->cwnd, pcb->ssthresh));
+            #endif
             pcb->bytes_acked = 0;
 
             /* The following needs to be called AFTER cwnd is set to one

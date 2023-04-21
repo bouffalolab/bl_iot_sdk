@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -483,6 +483,13 @@ static int get_input(char *inbuf, unsigned int *bp, char *buffer_cb, int count)
 
     /*return data from buffer_cb or get data from cli_getchar*/
     while (1 == (buffer_cb ? ((pos < count) ? (c = buffer_cb[pos], pos++, 1) : 0) : (cli_getchar(&c)))) {
+        if (*bp >= INBUF_SIZE) {
+            aos_cli_printf("Error: input buffer overflow\r\n");
+            aos_cli_printf(PROMPT);
+            *bp = 0;
+            return 0;
+        }
+
         if (c == RET_CHAR || c == END_CHAR) { /* end of input line */
             inbuf[*bp] = '\0';
             *bp        = 0;
@@ -616,12 +623,6 @@ static int get_input(char *inbuf, unsigned int *bp, char *buffer_cb, int count)
         }
 
         (*bp)++;
-        if (*bp >= INBUF_SIZE) {
-            aos_cli_printf("Error: input buffer overflow\r\n");
-            aos_cli_printf(PROMPT);
-            *bp = 0;
-            return 0;
-        }
     }
 
     return 0;
@@ -782,9 +783,9 @@ static void version_cmd(char *buf, int len, int argc, char **argv)
         for (i = 0; i < num; i++) {
             aos_cli_printf("    [%d]%6s %6u Kbytes @ %p\r\n",
                 i,
-                &(desc[i]),
+                (const char *)desc[i],
                 size[i] >> 10,
-                addr[i]
+                (void *)addr[i]
             );
         }
     }

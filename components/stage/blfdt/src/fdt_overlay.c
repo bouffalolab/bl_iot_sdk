@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -590,6 +590,8 @@ static int overlay_apply_node(void *fdt, int target,
 
         prop = fdt_getprop_by_offset(fdto, property, &name,
                          &prop_len);
+        if (!prop)
+            return -FDT_ERR_INTERNAL;
         if (prop_len == -FDT_ERR_NOTFOUND)
             return -FDT_ERR_INTERNAL;
         if (prop_len < 0)

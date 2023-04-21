@@ -1042,9 +1042,11 @@ netif_found:
 options_done:
 
   /* send to upper layers */
+  pbuf_add_header_force(p, hlen_tot);
   LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: \n"));
   ip6_debug_print(p);
   LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: p->len %"U16_F" p->tot_len %"U16_F"\n", p->len, p->tot_len));
+  pbuf_remove_header(p, hlen_tot);
 
   ip_data.current_ip_header_tot_len = hlen_tot;
   
@@ -1454,33 +1456,33 @@ ip6_debug_print(struct pbuf *p)
 
   LWIP_DEBUGF(IP6_DEBUG, ("IPv6 header:\n"));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("| %2"U16_F" |  %3"U16_F"  |      %7"U32_F"     | (ver, class, flow)\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("| %2ld |  %3ld  |      %7ld     | (ver, class, flow)\n",
                     IP6H_V(ip6hdr),
                     IP6H_TC(ip6hdr),
                     IP6H_FL(ip6hdr)));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|     %5"U16_F"     |  %3"U16_F"  |  %3"U16_F"  | (plen, nexth, hopl)\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("|     %5x     |  %3x  |  %3x  | (plen, nexth, hopl)\n",
                     IP6H_PLEN(ip6hdr),
                     IP6H_NEXTH(ip6hdr),
                     IP6H_HOPLIM(ip6hdr)));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" | (src)\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4x |  %4x |  %4x |  %4x | (src)\n",
                     IP6_ADDR_BLOCK1(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK2(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK3(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK4(&(ip6hdr->src))));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4x |  %4x |  %4x |  %4x |\n",
                     IP6_ADDR_BLOCK5(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK6(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK7(&(ip6hdr->src)),
                     IP6_ADDR_BLOCK8(&(ip6hdr->src))));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" | (dest)\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4x |  %4x |  %4x |  %4x | (dest)\n",
                     IP6_ADDR_BLOCK1(&(ip6hdr->dest)),
                     IP6_ADDR_BLOCK2(&(ip6hdr->dest)),
                     IP6_ADDR_BLOCK3(&(ip6hdr->dest)),
                     IP6_ADDR_BLOCK4(&(ip6hdr->dest))));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |\n",
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4x |  %4x |  %4x |  %4x |\n",
                     IP6_ADDR_BLOCK5(&(ip6hdr->dest)),
                     IP6_ADDR_BLOCK6(&(ip6hdr->dest)),
                     IP6_ADDR_BLOCK7(&(ip6hdr->dest)),

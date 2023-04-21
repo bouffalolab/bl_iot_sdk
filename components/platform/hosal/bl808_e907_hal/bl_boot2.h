@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -27,9 +27,8 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-#ifndef __BL606_PARTITION_H__
-#define __BL606_PARTITION_H__
+#ifndef __BL808_BL606P_PARTITION_H__
+#define __BL808_BL606P_PARTITION_H__
 
 #include <stdint.h>
 
@@ -44,7 +43,7 @@
 #error "Use CHIP BL808/BL606P for this module"
 #endif
 
-/** @addtogroup  BL606_Common_Driver
+/** @addtogroup  BL808/BL606_Common_Driver
  *  @{
  */
 
@@ -60,68 +59,83 @@
  *  @brief Partition table error type definition
  */
 typedef enum {
-    PT_ERROR_SUCCESS,                       /*!< Partition table error type:success */
-    PT_ERROR_TABLE_NOT_VALID,               /*!< Partition table error type:entry not found */
-    PT_ERROR_ENTRY_NOT_FOUND,               /*!< Partition table error type:entry not found */
-    PT_ERROR_ENTRY_UPDATE_FAIL,             /*!< Partition table error type:entry update fail */
-    PT_ERROR_CRC32,                         /*!< Partition table error type:crc32 error */
-    PT_ERROR_PARAMETER,                     /*!< Partition table error type:input parameter error */
-    PT_ERROR_FALSH_READ,                    /*!< Partition table error type:flash read error */
-    PT_ERROR_FALSH_WRITE,                   /*!< Partition table error type:flash write error */
-    PT_ERROR_FALSH_ERASE,                   /*!< Partition table error type:flash erase error */
-}PtTable_Error_Type;
+    PT_ERROR_SUCCESS,           /*!< Partition table error type:success */
+    PT_ERROR_TABLE_NOT_VALID,   /*!< Partition table error type:table not found */
+    PT_ERROR_ENTRY_NOT_FOUND,   /*!< Partition table error type:entry not found */
+    PT_ERROR_ENTRY_UPDATE_FAIL, /*!< Partition table error type:entry update fail */
+    PT_ERROR_CRC32,             /*!< Partition table error type:crc32 error */
+    PT_ERROR_PARAMETER,         /*!< Partition table error type:input parameter error */
+    PT_ERROR_FALSH_READ,        /*!< Partition table error type:flash read error */
+    PT_ERROR_FALSH_WRITE,       /*!< Partition table error type:flash write error */
+    PT_ERROR_FALSH_ERASE,       /*!< Partition table error type:flash erase error */
+} pt_table_error_type;
 
 /**
  *  @brief Partition id type definition
  */
 typedef enum {
-    PT_TABLE_ID_0,                          /*!< Partition table ID 0 */
-    PT_TABLE_ID_1,                          /*!< Partition table ID 1 */
-    PT_TABLE_ID_INVALID,                    /*!< Partition table ID invalid */
-}PtTable_ID_Type;
+    PT_TABLE_ID_0,       /*!< Partition table ID 0 */
+    PT_TABLE_ID_1,       /*!< Partition table ID 1 */
+    PT_TABLE_ID_INVALID, /*!< Partition table ID invalid */
+} pt_table_id_type;
 
 /**
  *  @brief Partition id type definition
  */
 typedef enum {
-    PT_ENTRY_FW_CPU0,                       /*!< Partition entry type:CPU0 firmware */
-    PT_ENTRY_FW_CPU1,                       /*!< Partition entry type:CPU1 firmware */
-    PT_ENTRY_MAX=16,                        /*!< Partition entry type:Max */
-}PtTable_Entry_Type;
+    PT_ENTRY_FW_CPU0,  /*!< Partition entry type:CPU0 firmware */
+    PT_ENTRY_FW_CPU1,  /*!< Partition entry type:CPU1 firmware */
+    PT_ENTRY_MAX = 16, /*!< Partition entry type:Max */
+} pt_table_entry_type;
 
 /**
  *  @brief Partition table config definition
  */
-typedef struct {
-    uint32_t magicCode;                     /*!< Partition table magic code */
-    uint16_t version;                       /*!< Partition table verdion */
-    uint16_t entryCnt;                      /*!< Partition table entry count */
-    uint32_t age;                           /*!< Partition table age */
-    uint32_t crc32;                         /*!< Partition table CRC32 value */
-}PtTable_Config;
+typedef struct
+{
+    uint32_t magicCode; /*!< Partition table magic code */
+    uint16_t version;   /*!< Partition table verdion */
+    uint16_t entryCnt;  /*!< Partition table entry count */
+    uint32_t age;       /*!< Partition table age */
+    uint32_t crc32;     /*!< Partition table CRC32 value */
+} pt_table_config;
 
 /**
  *  @brief Partition table entry config definition
  */
-typedef struct {
-    uint8_t type;                           /*!< Partition entry type */
-    uint8_t device;                         /*!< Partition entry device */
-    uint8_t activeIndex;                    /*!< Partition entry active index */
-    uint8_t name[9];                        /*!< Partition entry name */
-    uint32_t Address[2];                    /*!< Partition entry start address */
-    uint32_t maxLen[2];                     /*!< Partition entry max length */
-    uint32_t len;                           /*!< Partition entry length */
-    uint32_t age;                           /*!< Partition entry age */
-}PtTable_Entry_Config;
+typedef struct
+{
+    uint8_t type;              /*!< Partition entry type */
+    uint8_t device;            /*!< Partition entry device */
+    uint8_t active_index;      /*!< Partition entry active index */
+    uint8_t name[9];           /*!< Partition entry name */
+    uint32_t start_address[2]; /*!< Partition entry start address */
+    uint32_t max_len[2];       /*!< Partition entry max length */
+    uint32_t len;              /*!< Partition entry length */
+    uint32_t age;              /*!< Partition entry age */
+} pt_table_entry_config;
 
 /**
  *  @brief Partition table stuff config definition
  */
-typedef struct {
-    PtTable_Config ptTable;                 /*!< Partition table */
-    PtTable_Entry_Config ptEntries[PT_ENTRY_MAX];    /*!< Partition entries */
-    uint32_t crc32;                         /*!< Partition entries crc32 */
-}PtTable_Stuff_Config;
+typedef struct
+{
+    pt_table_config pt_table;                       /*!< Partition table */
+    pt_table_entry_config pt_entries[PT_ENTRY_MAX]; /*!< Partition entries */
+    uint32_t crc32;                                 /*!< Partition entries crc32 */
+} pt_table_stuff_config;
+
+/**
+ *  @brief Partition table iap param definition
+ */
+typedef struct
+{
+    uint32_t iap_start_addr;
+    uint32_t iap_write_addr;
+    uint32_t iap_img_len;
+    uint8_t inactive_index;
+    uint8_t inactive_table_index;
+} pt_table_iap_param_type;
 
 /*@} end of group PARTITION_Public_Types */
 
@@ -129,69 +143,68 @@ typedef struct {
  *  @{
  */
 
-/** @defgroup  PTTABLE_ERROR_TYPE
+/** @defgroup  pt_table_error_type
  *  @{
  */
-#define IS_PTTABLE_ERROR_TYPE(type)                      (((type) == PT_ERROR_SUCCESS) || \
-                                                          ((type) == PT_ERROR_TABLE_NOT_VALID) || \
-                                                          ((type) == PT_ERROR_ENTRY_NOT_FOUND) || \
-                                                          ((type) == PT_ERROR_ENTRY_UPDATE_FAIL) || \
-                                                          ((type) == PT_ERROR_CRC32) || \
-                                                          ((type) == PT_ERROR_PARAMETER) || \
-                                                          ((type) == PT_ERROR_FALSH_READ) || \
-                                                          ((type) == PT_ERROR_FALSH_WRITE) || \
-                                                          ((type) == PT_ERROR_FALSH_ERASE))
+#define IS_PTTABLE_ERROR_TYPE(type) (((type) == PT_ERROR_SUCCESS) ||           \
+                                     ((type) == PT_ERROR_TABLE_NOT_VALID) ||   \
+                                     ((type) == PT_ERROR_ENTRY_NOT_FOUND) ||   \
+                                     ((type) == PT_ERROR_ENTRY_UPDATE_FAIL) || \
+                                     ((type) == PT_ERROR_CRC32) ||             \
+                                     ((type) == PT_ERROR_PARAMETER) ||         \
+                                     ((type) == PT_ERROR_FALSH_READ) ||        \
+                                     ((type) == PT_ERROR_FALSH_WRITE) ||       \
+                                     ((type) == PT_ERROR_FALSH_ERASE))
 
-/** @defgroup  PTTABLE_ID_TYPE
+/** @defgroup  pt_table_id_type
  *  @{
  */
-#define IS_PTTABLE_ID_TYPE(type)                         (((type) == PT_TABLE_ID_0) || \
-                                                          ((type) == PT_TABLE_ID_1) || \
-                                                          ((type) == PT_TABLE_ID_INVALID))
+#define IS_PTTABLE_ID_TYPE(type) (((type) == PT_TABLE_ID_0) || \
+                                  ((type) == PT_TABLE_ID_1) || \
+                                  ((type) == PT_TABLE_ID_INVALID))
 
-/** @defgroup  PTTABLE_ENTRY_TYPE
+/** @defgroup  pt_table_entry_type
  *  @{
  */
-#define IS_PTTABLE_ENTRY_TYPE(type)                      (((type) == PT_ENTRY_FW_CPU0) || \
-                                                          ((type) == PT_ENTRY_FW_CPU1) || \
-                                                          ((type) == PT_ENTRY_MAX))
+#define IS_PTTABLE_ENTRY_TYPE(type) (((type) == PT_ENTRY_FW_CPU0) || \
+                                     ((type) == PT_ENTRY_FW_CPU1) || \
+                                     ((type) == PT_ENTRY_MAX))
 
 /*@} end of group PARTITION_Public_Constants */
-
 /** @defgroup  PARTITION_Public_Macros
  *  @{
  */
 #define BFLB_PT_TABLE0_ADDRESS                               0xE000
 #define BFLB_PT_TABLE1_ADDRESS                               0xF000
 #define BFLB_PT_MAGIC_CODE                                   0x54504642
-typedef BL_Err_Type (*pPtTable_Flash_Erase)(uint32_t startaddr,uint32_t endaddr);
-typedef BL_Err_Type (*pPtTable_Flash_Write)(uint32_t addr,uint8_t *data, uint32_t len);
-typedef BL_Err_Type (*pPtTable_Flash_Read)(uint32_t addr,uint8_t *data, uint32_t len);
+typedef BL_Err_Type (*p_pt_table_flash_erase)(uint32_t startaddr, uint32_t endaddr);
+typedef BL_Err_Type (*p_pt_table_flash_write)(uint32_t addr, uint8_t *data, uint32_t len);
+typedef BL_Err_Type (*p_pt_table_flash_read)(uint32_t addr, uint8_t *data, uint32_t len);
 
 /*@} end of group PARTITION_Public_Macros */
 
 /** @defgroup  PARTITION_Public_Functions
  *  @{
  */
-void PtTable_Set_Flash_Operation(pPtTable_Flash_Erase erase,pPtTable_Flash_Write write);
-PtTable_ID_Type PtTable_Get_Active_Partition(const SPI_Flash_Cfg_Type *pFlashCfg,
-                                             PtTable_Stuff_Config ptStuff[2]);
-PtTable_Error_Type PtTable_Get_Active_Entries(PtTable_Stuff_Config *ptStuff,
-PtTable_Entry_Type type,
-                                              PtTable_Entry_Config *ptEntry);
-PtTable_Error_Type PtTable_Update_Entry(const SPI_Flash_Cfg_Type *pFlashCfg,
-PtTable_ID_Type targetTableID,
-                                        PtTable_Stuff_Config *ptStuff,
-PtTable_Entry_Config *ptEntry);
-PtTable_Error_Type PtTable_Create(const SPI_Flash_Cfg_Type *pFlashCfg,PtTable_ID_Type ptID);
-PtTable_Error_Type PtTable_Get_Active_Entries_By_Name(PtTable_Stuff_Config *ptStuff,                                                             
-                                                    uint8_t *name,                                                     
-                                                    PtTable_Entry_Config *ptEntry);
-
+void pt_table_set_flash_operation(p_pt_table_flash_erase erase, p_pt_table_flash_write write, p_pt_table_flash_read read);
+pt_table_id_type pt_table_get_active_partition_need_lock(pt_table_stuff_config ptStuff[2]);
+pt_table_error_type pt_table_get_active_entries_by_id(pt_table_stuff_config *pt_stuff,
+                                                      pt_table_entry_type type,
+                                                      pt_table_entry_config *pt_entry);
+pt_table_error_type pt_table_get_active_entries_by_name(pt_table_stuff_config *pt_stuff,
+                                                        uint8_t *name,
+                                                        pt_table_entry_config *pt_entry);
+pt_table_error_type pt_table_update_entry(pt_table_id_type target_table_id,
+                                          pt_table_stuff_config *pt_stuff,
+                                          pt_table_entry_config *pt_entry);
+pt_table_error_type pt_table_create(pt_table_id_type pt_id);
+pt_table_error_type pt_table_dump(void);
+pt_table_error_type pt_table_get_iap_para(pt_table_iap_param_type *para);
+pt_table_error_type pt_table_set_iap_para(pt_table_iap_param_type *para);
 /*@} end of group PARTITION_Public_Functions */
 
 /*@} end of group PARTITION */
 
-/*@} end of group BL606_Common_Driver */
+/*@} end of group BL808_BL606P_Common_Driver */
 
-#endif /* __BL606_PARTITION_H__ */
+#endif /* __BL808_BL606P_PARTITION_H__ */

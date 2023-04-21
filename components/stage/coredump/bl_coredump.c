@@ -117,6 +117,8 @@ static const dump_handler_t dump_handler_list[DUMP_TYPE_MAX] = {
     dump_csr,
 };
 
+extern uint8_t __LD_CONFIG_EM_SEL;
+
 /* Define default ram dump list */
 static const struct mem_hdr {
   uintptr_t addr;
@@ -144,26 +146,32 @@ static const struct mem_hdr {
     {(uintptr_t)0x4000A420, (unsigned int)0x98, DUMP_BASE64_WORD, "pwm_reg"},
     {(uintptr_t)0x4000E404, (unsigned int)0x04, DUMP_BASE64_WORD, "PDS_reg"},
     {(uintptr_t)0x4000F030, (unsigned int)0x04, DUMP_BASE64_WORD, "HBN_reg"},
+    {(uintptr_t)0x28008000, (unsigned int)&__LD_CONFIG_EM_SEL, DUMP_BASE64_WORD, "EM_REG"},
 #elif BL702
     {(uintptr_t)&_ld_ram_addr1, (unsigned int)&_ld_ram_size1, DUMP_BASE64_BYTE, "tcm_ocram"},
     {(uintptr_t)&_ld_ram_addr2, (unsigned int)&_ld_ram_size2, DUMP_BASE64_BYTE, "hbnram"},
     {(uintptr_t)&_ld_ram_addr3, (unsigned int)&_ld_ram_size3, DUMP_BASE64_BYTE, "stack"},
+    {(uintptr_t)0x28008000, (unsigned int)&__LD_CONFIG_EM_SEL, DUMP_BASE64_WORD, "EM_REG"},
 #elif BL702L
     {(uintptr_t)&_ld_ram_addr1, (unsigned int)&_ld_ram_size1, DUMP_BASE64_BYTE, "tcm_ocram"},
     {(uintptr_t)&_ld_ram_addr2, (unsigned int)&_ld_ram_size2, DUMP_BASE64_BYTE, "hbnram"},
     {(uintptr_t)&_ld_ram_addr3, (unsigned int)&_ld_ram_size3, DUMP_BASE64_BYTE, "stack"},
+    {(uintptr_t)0x28008000, (unsigned int)&__LD_CONFIG_EM_SEL, DUMP_BASE64_WORD, "EM_REG"},
 #elif BL808
     {(uintptr_t)&_ld_ram_addr1, (unsigned int)&_ld_ram_size1, DUMP_BASE64_BYTE, "ram_psram"},
     {(uintptr_t)&_ld_ram_addr2, (unsigned int)&_ld_ram_size2, DUMP_BASE64_BYTE, "ram_wifi"},
     {(uintptr_t)&_ld_ram_addr3, (unsigned int)&_ld_ram_size3, DUMP_BASE64_BYTE, "ram_memory"},
     {(uintptr_t)&_ld_ram_addr4, (unsigned int)&_ld_ram_size4, DUMP_BASE64_BYTE, "xram_memory"},
+    {(uintptr_t)0x28010000, (unsigned int)&__LD_CONFIG_EM_SEL, DUMP_BASE64_WORD, "EM_REG"},
 #elif WB03
     {(uintptr_t)&_ld_ram_addr1, (unsigned int)&_ld_ram_size1, DUMP_BASE64_BYTE, "ram_tcm"},
     {(uintptr_t)&_ld_ram_addr2, (unsigned int)&_ld_ram_size2, DUMP_BASE64_BYTE, "ram_wifi"},
 #elif BL616
-    //{(uintptr_t)0xf0004000, (unsigned int)12, DUMP_CSR, "dump riscv csr"},
+    {(uintptr_t)0xf0004000, (unsigned int)12, DUMP_CSR, "dump riscv csr"},
     {(uintptr_t)&_ld_ram_addr1, (unsigned int)&_ld_ram_size1, DUMP_BASE64_BYTE, "ram_tcm"},
     {(uintptr_t)&_ld_ram_addr2, (unsigned int)&_ld_ram_size2, DUMP_BASE64_BYTE, "ram_wifi"},
+    {(uintptr_t)&_ld_ram_addr3, (unsigned int)&_ld_ram_size3, DUMP_BASE64_BYTE, "ram_code"},
+    {(uintptr_t)0x28010000, (unsigned int)&__LD_CONFIG_EM_SEL, DUMP_BASE64_WORD, "EM_REG"},
 #endif
 };
 
@@ -507,6 +515,20 @@ static void bl_coredump_print(uintptr_t addr, uint32_t len, const char *desc, en
   cd_putchar(COREDUMP_BLOCK_CLOSE_STR, sizeof(COREDUMP_BLOCK_CLOSE_STR));
 }
 
+#ifndef BL_COREDUMP_PRINT_SEG_N_K
+#define BL_COREDUMP_PRINT_SEG_N_K 32
+#endif
+static void bl_coredump_print_n_k(uintptr_t addr, uint32_t len, const char *desc, enum dump_type type)
+{
+    uint32_t printed_len;
+    int seg;
+
+    for(seg = 0; seg * BL_COREDUMP_PRINT_SEG_N_K * 1024 < len; seg++) {
+        printed_len = seg*BL_COREDUMP_PRINT_SEG_N_K*1024;
+        bl_coredump_print(addr + printed_len, len - printed_len >= BL_COREDUMP_PRINT_SEG_N_K*1024 ? BL_COREDUMP_PRINT_SEG_N_K*1024: len - printed_len, desc, type);
+    }
+}
+
 /**
  * Coredump initialize.
  *
@@ -535,7 +557,7 @@ void bl_coredump_parse(const uint8_t *buf, unsigned int len) {
         } else {
           length = 0x1000;
         }
-        bl_coredump_print(addr, length, NULL, DUMP_BASE64_WORD);
+        bl_coredump_print_n_k(addr, length, NULL, DUMP_BASE64_WORD);
       }
     } while (0);
     return;
@@ -543,7 +565,7 @@ void bl_coredump_parse(const uint8_t *buf, unsigned int len) {
   case 'd':
     do {
       for (i = 0; i < (sizeof(mem_hdr) / sizeof(mem_hdr[0])); i++) {
-        bl_coredump_print(mem_hdr[i].addr, mem_hdr[i].length, mem_hdr[i].desc, mem_hdr[i].type);
+        bl_coredump_print_n_k(mem_hdr[i].addr, mem_hdr[i].length, mem_hdr[i].desc, mem_hdr[i].type);
       }
     } while (0);
     return;
@@ -568,7 +590,10 @@ void bl_coredump_run() {
 
   /* Dump all pre-defined memory region by default */
   for (cmd_pos = 0; cmd_pos < (sizeof(mem_hdr) / sizeof(mem_hdr[0])); cmd_pos++) {
-    bl_coredump_print(mem_hdr[cmd_pos].addr, mem_hdr[cmd_pos].length, mem_hdr[cmd_pos].desc, mem_hdr[cmd_pos].type);
+    if (mem_hdr[cmd_pos].length == 0) {
+      continue;
+    }
+    bl_coredump_print_n_k(mem_hdr[cmd_pos].addr, mem_hdr[cmd_pos].length, mem_hdr[cmd_pos].desc, mem_hdr[cmd_pos].type);
   }
 
   while (1) {

@@ -1960,7 +1960,11 @@ mdns_send_probe(struct netif* netif, const ip_addr_t *destination)
 
   /* Add unicast questions with rtype ANY for all our desired records */
   mdns_build_host_domain(&domain, mdns);
+#ifdef CFG_OTBR_ENABLE
+    res = mdns_add_question(&pkt, &domain, DNS_RRTYPE_ANY, DNS_RRCLASS_IN, 0);
+#else
   res = mdns_add_question(&pkt, &domain, DNS_RRTYPE_ANY, DNS_RRCLASS_IN, 1);
+#endif
   if (res != ERR_OK) {
     goto cleanup;
   }
@@ -1971,7 +1975,11 @@ mdns_send_probe(struct netif* netif, const ip_addr_t *destination)
       continue;
     }
     mdns_build_service_domain(&domain, service, 1);
+#ifdef CFG_OTBR_ENABLE
+    res = mdns_add_question(&pkt, &domain, DNS_RRTYPE_ANY, DNS_RRCLASS_IN, 0);
+#else
     res = mdns_add_question(&pkt, &domain, DNS_RRTYPE_ANY, DNS_RRCLASS_IN, 1);
+#endif
     if (res != ERR_OK) {
       goto cleanup;
     }
@@ -2085,12 +2093,12 @@ mdns_resp_add_netif(struct netif *netif, const char *hostname, u32_t dns_ttl)
   }
 #endif
 #if LWIP_IPV6
+
   res = mld6_joingroup_netif(netif, ip_2_ip6(&v6group));
   if (res != ERR_OK) {
     goto cleanup;
   }
 #endif
-
   mdns_resp_restart(netif);
 
   return ERR_OK;

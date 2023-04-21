@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -102,7 +102,7 @@ int bl_mtd_open(const char *name, bl_mtd_handle_t *handle, unsigned int flags)
         return -1;
     }
     memset(handle_prv, 0, sizeof(struct bl_mtd_handle_priv));
-    strncpy(handle_prv->name, name, sizeof(handle_prv->name));
+    memcpy(handle_prv->name, name, sizeof(handle_prv->name));
 
     if (flags & BL_MTD_OPEN_FLAG_BACKUP) {
         /* open backup mtd partition*/

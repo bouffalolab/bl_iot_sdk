@@ -20,6 +20,7 @@ COMPONENT_SRCS := bl808_e907_hal/bl_uart.c \
 	bl808_e907_hal/bl_sys.c 	\
 	bl808_e907_hal/bl_pm.c 	\
 	bl808_e907_hal/bl_boot2.c 	\
+	bl808_e907_hal/bl_wdt.c 	\
 	bl808_e907_hal/hal_boot2.c 	\
 	bl808_e907_hal/hal_board.c 	\
 	bl808_e907_hal/hal_sys.c	\
@@ -30,6 +31,7 @@ COMPONENT_SRCS := bl808_e907_hal/bl_uart.c \
 	bl808_e907_hal/hosal_spi.c	\
 	bl808_e907_hal/hosal_dma.c      \
 	bl808_e907_hal/hosal_adc.c      \
+	bl808_e907_hal/hosal_ota.c      \
 	bl808_e907_hal/bl_ipc.c	\
 	bl808_e907_hal/bl_audio.c \
 	bl808_e907_hal/bl_sdh.c \

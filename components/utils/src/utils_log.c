@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -37,17 +37,30 @@
 extern "C" {
 #endif
 
+#if defined(BL602)
+#define ONE_LINE_MAX_NUM        (16)/* for print_buf log length */
+#else
 #define ONE_LINE_MAX_NUM        (50)/* for print_buf log length */
+#endif
 #define MODULE_LOG_LOCK_LOCK    /* reserved */
 #define MODULE_LOG_LOCK_UNLOCK  /* reserved */
-static char log_buf[512];
+
+#if defined(BL602)
+#define LOGBUF_SIZE      (128)
+#elif defined(BL702) || defined(BL702L)
+#define LOGBUF_SIZE      (512)
+#else
+#define LOGBUF_SIZE      (512)
+static char log_buf[LOGBUF_SIZE];
+#endif
+
 int log_buf_out(const char *file, int line, const void *inbuf, int len, LOG_BUF_OUT_DATA_TYPE_T type)
 {
     char *buf = (char *)inbuf;
     char *pbuffer = NULL;
 
-#if defined(BL702) || defined(BL702L)
-    pbuffer = (char *)pvPortMalloc(sizeof(log_buf));
+#if defined(BL602) || defined(BL702) || defined(BL702L)
+    pbuffer = (char *)pvPortMalloc(LOGBUF_SIZE);
     if(pbuffer == NULL){
         return -1;
     }
@@ -59,7 +72,7 @@ int log_buf_out(const char *file, int line, const void *inbuf, int len, LOG_BUF_
 
     MODULE_LOG_LOCK_LOCK;
 
-    tmp = (sizeof(log_buf))/3;/* 数组最大长度 */
+    tmp = (LOGBUF_SIZE)/3;/* 数组最大长度 */
     if ((ONE_LINE_MAX_NUM > tmp) || (len < 1))
     {
         MODULE_LOG_LOCK_UNLOCK;
@@ -152,7 +165,7 @@ int log_buf_out(const char *file, int line, const void *inbuf, int len, LOG_BUF_
 
     MODULE_LOG_LOCK_UNLOCK;
 
-#if defined(BL702) || defined(BL702L)
+#if defined(BL602) || defined(BL702) || defined(BL702L)
     vPortFree(pbuffer);
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2023 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -32,26 +32,21 @@
 
 #include "time_statics.h"
 
+#if defined (TICKLESS_RECORD)
 uint64_t g_ts_record[TS_MAX][5] = {0};
+#endif
 
-#ifdef TICKLESS_DEBUG
+#if defined (TICKLESS_RECORD)
 #define DUMP_RECORD_ITEM(x) printf( "[TSR]: %s:%lld,%lld,%lld,%lld,%lld \r\n", #x, g_ts_record[x][0], g_ts_record[x][1], g_ts_record[x][2], g_ts_record[x][3], g_ts_record[x][4])
 #else
 #define DUMP_RECORD_ITEM(x)
 #endif
 
 void time_static_record_dump(void) {
-  /* TODO: dump record info */
-  DUMP_RECORD_ITEM(TS_WANT_TO_SLEEP);
-  DUMP_RECORD_ITEM(TS_ALLOW_SLEEP_WIFI);
-  DUMP_RECORD_ITEM(TS_ALLOW_SLEEP_WIFI_DONE);
-  DUMP_RECORD_ITEM(TS_ALLOW_SLEEP_BL_LP);
-  DUMP_RECORD_ITEM(TS_WAKEUP_APP_START);
-  DUMP_RECORD_ITEM(TS_WAKEUP_APP_DONE);
-  DUMP_RECORD_ITEM(TS_WAKEUP_EXIT_TICKLESS);
-  DUMP_RECORD_ITEM(TS_WAKEUP_RF_DONE);
-#ifdef TICKLESS_DEBUG
-  printf("                                                      ");
-#endif
+#define _X(x) DUMP_RECORD_ITEM(x);
+  TS_STUBS
+#undef _X
+#ifdef TICKLESS_RECORD
   memset(g_ts_record, 0, sizeof(g_ts_record));
+#endif
 }
