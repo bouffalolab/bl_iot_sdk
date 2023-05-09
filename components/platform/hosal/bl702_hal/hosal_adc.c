@@ -378,6 +378,10 @@ int hosal_adc_init(hosal_adc_dev_t *adc)
             blog_error("illegal freq. for mode0, freq 100HZ ~ 1250HZ \r\n");
             return -1;
         }
+
+        /* init gpio */
+        GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &pin, 1);
+
         /* init freq */
         adc_freq_init(adc->config.mode, freq);
         adc_init(adc);
