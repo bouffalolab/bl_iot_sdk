@@ -337,7 +337,7 @@ static void adc_init(hosal_adc_dev_t *adc)
 
     adccfg.v18Sel=ADC_V18_SEL_1P82V;
     adccfg.v11Sel=ADC_V11_SEL_1P1V;
-    adccfg.clkDiv=ADC_CLK_DIV_20;
+    adccfg.clkDiv=ADC_CLK_DIV_32;
     adccfg.resWidth=ADC_DATA_WIDTH_16_WITH_256_AVERAGE;
 
     /* one shot mode */
