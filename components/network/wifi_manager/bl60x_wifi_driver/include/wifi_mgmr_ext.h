@@ -37,6 +37,22 @@
 extern "C" {
 #endif
 
+#define WIFI_EVENT_BEACON_IND_AUTH_OPEN            0
+#define WIFI_EVENT_BEACON_IND_AUTH_WEP             1
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_PSK         2
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK        3
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_WPA2_PSK    4
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_ENT         5
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA3_SAE        6
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK_WPA3_SAE 7
+#define WIFI_EVENT_BEACON_IND_AUTH_UNKNOWN      0xff
+
+#define WIFI_EVENT_BEACON_IND_CIPHER_NONE           0
+#define WIFI_EVENT_BEACON_IND_CIPHER_WEP            1
+#define WIFI_EVENT_BEACON_IND_CIPHER_AES            2
+#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP           3
+#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP_AES       4
+
 enum ap_info_type {
     /* The current AP information is advisory. When the AP fails to connect
     * through its specified parameters, the information is no longer used
@@ -287,6 +303,7 @@ int wifi_mgmr_scan_complete_callback();
 int wifi_mgmr_cli_scanlist(void);
 int wifi_mgmr_cli_init(void);
 int wifi_mgmr_scan_ap(char *ssid, wifi_mgmr_ap_item_t *item);
+uint32_t wifi_mgmr_sta_scanlist_nums_get();
 int wifi_mgmr_scan_ap_all(wifi_mgmr_ap_item_t *env, uint32_t *param1, scan_item_cb_t cb);
 int wifi_mgmr_raw_80211_send(uint8_t *pkt, int len);
 int wifi_mgmr_set_country_code(char *country_code);

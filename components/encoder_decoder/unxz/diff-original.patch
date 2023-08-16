@@ -1,0 +1,91 @@
+diff --git a/components/encoder_decoder/unxz/linux/lib/xz/xz_dec_stream.c b/components/encoder_decoder/unxz/linux/lib/xz/xz_dec_stream.c
+index f69581b74..79295ac3d 100644
+--- a/components/encoder_decoder/unxz/linux/lib/xz/xz_dec_stream.c
++++ b/components/encoder_decoder/unxz/linux/lib/xz/xz_dec_stream.c
+@@ -605,6 +605,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 				return ret;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_BLOCK_START:
+ 			/* We need one byte of input to continue. */
+@@ -630,6 +631,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_BLOCK_HEADER;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_BLOCK_HEADER:
+ 			if (!fill_temp(s, b))
+@@ -642,6 +644,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_BLOCK_UNCOMPRESS;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_BLOCK_UNCOMPRESS:
+ 			ret = dec_block(s, b);
+@@ -651,6 +654,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_BLOCK_PADDING;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_BLOCK_PADDING:
+ 			/*
+@@ -673,6 +677,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_BLOCK_CHECK;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_BLOCK_CHECK:
+ 			if (s->check_type == XZ_CHECK_CRC32) {
+@@ -702,6 +707,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_INDEX_PADDING;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_INDEX_PADDING:
+ 			while ((s->index.size + (b->in_pos - s->in_start))
+@@ -726,6 +732,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_INDEX_CRC32;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_INDEX_CRC32:
+ 			ret = crc_validate(s, b, 32);
+@@ -736,6 +743,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
+ 			s->sequence = SEQ_STREAM_FOOTER;
+ 
+ 		/* Fall through */
++        __attribute__ ((fallthrough));
+ 
+ 		case SEQ_STREAM_FOOTER:
+ 			if (!fill_temp(s, b))
+diff --git a/components/encoder_decoder/unxz/userspace/xz_config.h b/components/encoder_decoder/unxz/userspace/xz_config.h
+index eb9dac1a4..78d7a76de 100644
+--- a/components/encoder_decoder/unxz/userspace/xz_config.h
++++ b/components/encoder_decoder/unxz/userspace/xz_config.h
+@@ -39,10 +39,18 @@ typedef unsigned char bool;
+ 
+ #include "xz.h"
+ 
++#if 0
+ #define kmalloc(size, flags) malloc(size)
+ #define kfree(ptr) free(ptr)
+ #define vmalloc(size) malloc(size)
+ #define vfree(ptr) free(ptr)
++#else
++#include <FreeRTOS.h>
++#define kmalloc(size, flags) pvPortMalloc(size)
++#define kfree(ptr) vPortFree(ptr)
++#define vmalloc(size) pvPortMalloc(size)
++#define vfree(ptr) vPortFree(ptr)
++#endif
+ 
+ #define memeq(a, b, size) (memcmp(a, b, size) == 0)
+ #define memzero(buf, size) memset(buf, 0, size)

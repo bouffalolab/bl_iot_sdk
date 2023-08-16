@@ -1,0 +1,95 @@
+/dts-v1/;
+/ {
+	model = "T-HEAD c906 simple soc";
+	compatible = "thead,c910_simple_soc";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	memory@0 {
+		device_type = "memory";
+		reg = <0x0 0x50200000 0x0 0x03e00000>;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		timebase-frequency = <1000000>;
+		cpu@0 {
+			device_type = "cpu";
+			reg = <0>;
+			status = "okay";
+			compatible = "riscv";
+			riscv,isa = "rv64imafdcvsu";
+			mmu-type = "riscv,sv39";
+			cpu0_intc: interrupt-controller {
+				#interrupt-cells = <1>;
+				compatible = "riscv,cpu-intc";
+				interrupt-controller;
+			};
+		};
+	};
+
+	soc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		compatible = "simple-bus";
+		ranges;
+
+		intc: interrupt-controller@e0000000 {
+			#interrupt-cells = <1>;
+			compatible = "riscv,plic0";
+			interrupt-controller;
+			interrupts-extended = <&cpu0_intc 0xffffffff &cpu0_intc 9>;
+			reg = <0x0 0xe0000000 0x0 0x04000000>;
+			reg-names = "control";
+			riscv,max-priority = <7>;
+			riscv,ndev = <64>;
+		};
+
+		mm_xclk: mm-clock {
+			compatible = "fixed-clock";
+			clock-frequency = <40000000>;
+			clock-output-names = "mm_xclk";
+			#clock-cells = <0>;
+		};
+
+		pmu: pmu {
+			interrupt-parent = <&cpu0_intc>;
+			interrupts = <17>;
+			compatible = "thead,c900_pmu";
+		};
+
+		serial@30002000 {
+			compatible = "bflb-uart,uart0";
+			reg = <0x0 0x30002000 0x0 0x1000>;
+			interrupt-parent = <&intc>;
+			interrupts = <20>;
+			clocks = <&mm_xclk>;
+			clock-frequency = <40000000>;
+			clock-names = "baudclk";
+			status = "okay";
+		};
+
+		usb@20072000 {
+			compatible = "faraday,fotg210";
+			reg = <0x0 0x20072000 0x0 0x1000>;
+			interrupt-parent = <&intc>;
+			/* WL System All Interrupt #81 */
+			interrupts = <81>;
+		};
+
+		ipc {
+			compatible = "bflb-ipc";
+			interrupt-parent = <&intc>;
+			/* IPC #54 */
+			interrupts = <54>;
+		};
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,2000000 loglevel=8 earlyprintk earlycon=sbi root=/dev/ram0 initrd=0x52200000";
+		linux,initrd-start = <0x0 0x52200000>;
+		linux,initrd-end = <0x0 0x52941784>;
+		stdout-path = "/soc/serial@30002000:2000000";
+	};
+};

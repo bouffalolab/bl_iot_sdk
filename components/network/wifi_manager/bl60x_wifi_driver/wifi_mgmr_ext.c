@@ -945,6 +945,21 @@ int wifi_mgmr_scan_ap(char *ssid, wifi_mgmr_ap_item_t *item)
     return 0;
 }
 
+uint32_t wifi_mgmr_sta_scanlist_nums_get()
+{
+    uint32_t i, cnt = 0;
+    wifi_mgmr_scan_item_t *scan;
+
+    for (i = 0; i < sizeof(wifiMgmr.scan_items) / sizeof(wifiMgmr.scan_items[0]); i++) {
+        scan = &wifiMgmr.scan_items[i];
+        if (scan->is_used && (!wifi_mgmr_scan_item_is_timeout(&wifiMgmr, &(wifiMgmr.scan_items[i])))) {
+            cnt++;
+        }
+    }
+
+    return cnt;
+}
+
 int wifi_mgmr_scan_ap_all(wifi_mgmr_ap_item_t *env, uint32_t *param1, scan_item_cb_t cb)
 {
     int i;

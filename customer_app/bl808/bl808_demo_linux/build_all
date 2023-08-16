@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+echo '-------------------- Building D0 firmware --------------------'
+rm -rf build_out
+./build_d0 || exit 1
+echo '-------------------- Copy to romfs/c906.bin --------------------'
+cp build_out/bl808_demo_linux.bin romfs/c906.bin || exit 1
+
+echo '-------------------- Building M0 firmware --------------------'
+rm -rf build_out
+./build_m0
