@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -56,9 +56,7 @@ static uint32_t user_clz(uint32_t priorities)
 struct romapi_freertos_map* hal_sys_romapi_get(void)
 {
     extern uint8_t __global_pointer_head$;
-    //uint32_t *gp_data_start = (uint32_t*)(&__global_pointer_head$);
-    volatile uint32_t gp_head = (uint32_t)(&__global_pointer_head$);
-    uint32_t *gp_data_start = (uint32_t *)gp_head;
+    uint32_t *gp_data_start = (uint32_t*)(&__global_pointer_head$);
     struct romapi_freertos_map* romapi_freertos;
 
     puts("  Configuring Version 1.0 ROM API...\r\n");

@@ -4,18 +4,19 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BLUETOOTH_DEBUG_CORE)
 
-#include <log.h>
+#include <bt_log.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include "atomic.h"
 
-#include <sys/errno.h>
+#include <bt_errno.h>
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
 #include <timers.h>
 #include <stdlib.h>
+#include <net/buf.h>
 
 #if defined(BL_MCU_SDK)
 #define TRNG_LOOP_COUNTER   (17)
@@ -28,11 +29,15 @@ extern int bl_rand();
 
  int  ble_rand()
 {
+    #if defined(CFG_IOT_SDK) || defined(BL_MCU_SDK)
     #if defined(CONFIG_HW_SEC_ENG_DISABLE)
     return random();
-    #else
+    #else /* CONFIG_HW_SEC_ENG_DISABLE */
     return bl_rand();
-    #endif
+    #endif /* CONFIG_HW_SEC_ENG_DISABLE */
+    #else /* CFG_IOT_SDK BL_MCU_SDK */
+    return random();
+    #endif /* CFG_IOT_SDK BL_MCU_SDK */
 }
 
 
@@ -72,7 +77,7 @@ void k_queue_insert(struct k_queue *queue, void *prev, void *data)
 {
     BaseType_t ret;
     (void) ret;
-    
+
     ret = xQueueSend(queue->hdl, &data, portMAX_DELAY);
     BT_ASSERT(ret == pdPASS);
 }
@@ -85,7 +90,7 @@ void k_queue_append(struct k_queue *queue, void *data)
 void k_queue_insert_from_isr(struct k_queue *queue, void *prev, void *data)
 {
     BaseType_t xHigherPriorityTaskWoken;
-    
+
     xQueueSendFromISR(queue->hdl, &data, &xHigherPriorityTaskWoken);
     if(xHigherPriorityTaskWoken == pdTRUE)
     {
@@ -105,7 +110,7 @@ void k_queue_free(struct k_queue *queue)
         BT_ERR("Queue is NULL\n");
         return;
     }
-    
+
     vQueueDelete(queue->hdl);
     queue->hdl = NULL;
     return;
@@ -181,7 +186,7 @@ int k_sem_take(struct k_sem *sem, uint32_t timeout)
         t = BL_NO_WAIT;
     }
 
-    if(NULL == sem){
+    if(NULL == sem || NULL == sem->sem.hdl){
         return -1;
     }
 
@@ -194,7 +199,7 @@ int k_sem_give(struct k_sem *sem)
     BaseType_t ret;
     (void) ret;
     
-    if (NULL == sem) {
+    if (NULL == sem || NULL == sem->sem.hdl) {
         BT_ERR("sem is NULL\n");
         return -EINVAL;
     }
@@ -217,6 +222,11 @@ int k_sem_delete(struct k_sem *sem)
 
 unsigned int k_sem_count_get(struct k_sem *sem)
 {
+    if (NULL == sem || NULL == sem->sem.hdl) {
+        BT_ERR("sem is NULL\n");
+        return 0;
+    }
+    
     return uxQueueMessagesWaiting(sem->sem.hdl);
 }
 
@@ -249,7 +259,7 @@ int k_thread_create(struct k_thread *new_thread, const char *name,
 {
     stack_size /= sizeof(StackType_t);
     xTaskCreate(entry, name, stack_size, NULL, prio, (void *)(&new_thread->task));
-    
+
     return new_thread->task? 0 : -1;
 }
 
@@ -260,7 +270,7 @@ void k_thread_delete(struct k_thread *thread)
         BT_ERR("task is NULL\n");
         return;
     }
-    
+
     vTaskDelete((void *)(thread->task));
     thread->task = 0;
     return;
@@ -317,7 +327,7 @@ void k_timer_init(k_timer_t *timer, k_timer_handler_t handle, void *args)
     timer->handler = handle;
     timer->args = args;
 	/* Set args as timer id */
-    timer->timer.hdl = xTimerCreate("Timer", pdMS_TO_TICKS(1000), 0, args, (TimerCallbackFunction_t)(timer->handler)); 
+    timer->timer.hdl = xTimerCreate("Timer", pdMS_TO_TICKS(1000), 0, args, (TimerCallbackFunction_t)(timer->handler));
     BT_ASSERT(timer->timer.hdl != NULL);
 }
 
@@ -330,7 +340,7 @@ void k_timer_start(k_timer_t *timer, uint32_t timeout)
 {
     BaseType_t ret;
     (void) ret;
-    
+
     BT_ASSERT(timer != NULL);
     timer->timeout = timeout;
     timer->start_ms = k_now_ms();
@@ -347,7 +357,7 @@ void k_timer_reset(k_timer_t *timer)
 
     (void) ret;
     BT_ASSERT(timer != NULL);
-  
+
     ret = xTimerReset(timer->timer.hdl, 0);
     BT_ASSERT(ret == pdPASS);
 }
@@ -358,7 +368,7 @@ void k_timer_stop(k_timer_t *timer)
 
     (void) ret;
     BT_ASSERT(timer != NULL);
-  
+
     ret = xTimerStop(timer->timer.hdl, 0);
     BT_ASSERT(ret == pdPASS);
 }
@@ -367,16 +377,30 @@ void k_timer_delete(k_timer_t *timer)
 {
     BaseType_t ret;
     (void) ret;
-    
+
     BT_ASSERT(timer != NULL);
-    
+
     ret = xTimerDelete(timer->timer.hdl, 0);
     BT_ASSERT(ret == pdPASS);
 }
 
+bool k_timer_is_active(k_timer_t *timer)
+{
+    BaseType_t ret;
+    (void) ret;
+
+    BT_ASSERT(timer != NULL);
+
+    ret = xTimerIsTimerActive(timer->timer.hdl);
+    if(ret == pdPASS)
+        return true;
+    else
+        return false;
+}
+
 long long k_now_ms(void)
 {
-    return (long long)(xTaskGetTickCount() * 1000)/configTICK_RATE_HZ;   
+    return (long long)xTaskGetTickCount() * 1000 / configTICK_RATE_HZ;
 }
 
 void k_get_random_byte_array(uint8_t *buf, size_t len)
@@ -390,18 +414,24 @@ void k_get_random_byte_array(uint8_t *buf, size_t len)
 
 void *k_malloc(size_t size)
 {
-#if defined(CFG_USE_PSRAM)
-    return pvPortMallocPsram(size);
-#else
-    return pvPortMalloc(size);
-#endif /* CFG_USE_PSRAM */
+    return malloc(size);
 }
 
 void k_free(void *buf)
 {
-#if defined(CFG_USE_PSRAM)
-    return vPortFreePsram(buf);
-#else
-    return vPortFree(buf);
-#endif
+    return free(buf);
+}
+
+void bt_assert(void)
+{
+    BT_ERR("%s, ra = 0x%lx\r\n", __func__, (uint32_t)__builtin_return_address(0));
+    #if defined(CFG_IOT_SDK) || defined(BL_MCU_SDK)
+    extern void user_vAssertCalled(void);
+    user_vAssertCalled();
+    #else /* CFG_IOT_SDK BL_MCU_SDK */
+    #if defined (CONFIG_BL_SDK)
+    vAssertCalled();
+    #endif
+
+    #endif /* CFG_IOT_SDK BL_MCU_SDK */
 }

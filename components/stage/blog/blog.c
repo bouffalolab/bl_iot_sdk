@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -30,10 +30,7 @@
 
 #include <stdio.h>
 #include <string.h>
-
-#ifdef CONFIG_CLI_CMD_ENABLE
 #include <cli.h>
-#endif
 
 #include "blog_type.h"
 #include "blog_cfg.h"
@@ -357,7 +354,6 @@ void blog_init(void)
     blog_set_poweron_softlevel();
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "blogset", "blog pri set level", cmd_blog_set_level},
     { "blogdump", "blog info dump", cmd_blog_info_dump},
@@ -365,5 +361,4 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "blogtest", "blog test", cmd_blog_test},
 #endif
 };
-#endif
 

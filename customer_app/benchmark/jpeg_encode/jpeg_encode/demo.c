@@ -50,7 +50,7 @@ static void jpec_test_cmd(char *buf, int len, int argc, char **argv)
             jpec_enc_t *e = jpec_enc_new(data, w, h);
             const uint8_t *jpeg = jpec_enc_run(e, &length);
 
-            printf("Encoder done (%d bytes), time: %d us\r\n", length, (bl_timer_now_us() - start_us));
+            printf("Encoder done (%d bytes), time: %ld us\r\n", length, (bl_timer_now_us() - start_us));
             jpec_enc_del(e);
             free(data);
         }

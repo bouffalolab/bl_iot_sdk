@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>空中升级（OTA） &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>空中升级（OTA） &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="&lt;no title&gt;" href="../index.html"/>
         <link rel="next" title="常见问题汇总" href="../../Other/index_faq.html"/>
         <link rel="prev" title="&lt;no title&gt;" href="../index.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -185,120 +190,120 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ota">
-<h1>空中升级（OTA）<a class="headerlink" href="#ota" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>OTA流程概览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="ota">
+<h1>空中升级（OTA）<a class="headerlink" href="#ota" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>OTA流程概览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">OTA</span></code> 升级机制可以让设备在固件正常运行时根据接收数据（如通过 <code class="docutils literal notranslate"><span class="pre">Wi-Fi</span></code> ）进行自我更新。</p>
 <p>目前 <code class="docutils literal notranslate"><span class="pre">OTA</span></code> 采用A/B区pingpong设计，OTA文件有两种类型，压缩和非压缩，其中压缩算法采用xz压缩算法，压缩率约为50%-60%。OTA之前需要check一下分区表的 <code class="docutils literal notranslate"><span class="pre">FW</span></code> 分区的size0和size1是否满足OTA需求。</p>
 <p>一般正常烧录时，烧录工具会将编译生成的bin烧录在 <code class="docutils literal notranslate"><span class="pre">FW</span></code> 分区起始地址为address0长度为size0的分区里， <code class="docutils literal notranslate"><span class="pre">OTA</span></code> 接收流程完成后会将OTA文件写在起始地址为address1长度为size1的分区里，然后重启并更新软件，其OTA流程如下：</p>
 <p><img alt="image5" src="../../../_images/image63.png" /></p>
 <p>其开机启动流程如下：</p>
 <p><img alt="image0" src="../../../_images/image139.png" /></p>
-</div>
-<div class="section" id="id2">
-<h2>OTA文件的组成<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>OTA文件的组成<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">OTA</span></code> 文件是由Dev Cube烧录工具生成的，按照如下配置，点击Creat&amp;Download按钮即可在 <code class="docutils literal notranslate"><span class="pre">flash_tool/chips/bl602/ota</span></code> 目录下生成多种 <code class="docutils literal notranslate"><span class="pre">OTA</span></code> 文件。</p>
 <p><img alt="image1" src="../../../_images/image234.png" /></p>
 <p>同样，还可以使用命令来生成OTA文件，进入 <code class="docutils literal notranslate"><span class="pre">tools/flash_tool</span></code> 目录，执行 ./bflb_iot_tool --chipname=bl602 --firmware=../../customer_app/bl602_demo_event/build_out/bl602_demo_event.bin --ota=./ota/ --build 命令，会在ota目录下生成 <code class="docutils literal notranslate"><span class="pre">bl602_demo_event.bin</span></code> 对应的ota文件。</p>
 <p><img alt="image4" src="../../../_images/image510.png" /></p>
 <p>我们也可以指定分区表文件和dts文件，具体请参考 <a class="reference external" href="../../../get-started/Developer_Environment_BL602/bflb_iot_tool_guide/bflb_iot_tool_guide.html">bflb_iot_tool使用方法</a></p>
 <p>下表是生成的 <code class="docutils literal notranslate"><span class="pre">OTA</span></code> 文件说明：</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="30%" />
-<col width="58%" />
-<col width="12%" />
+<col style="width: 30%" />
+<col style="width: 58%" />
+<col style="width: 12%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">OTA文件</th>
-<th class="head">说明</th>
-<th class="head">类型</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>OTA文件</p></th>
+<th class="head"><p>说明</p></th>
+<th class="head"><p>类型</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>FW_OTA.bin</td>
-<td>在编译生成的bin的头部追加4K
-bytes的Boot2 Head</td>
-<td>非压缩</td>
+<tbody>
+<tr class="row-even"><td><p>FW_OTA.bin</p></td>
+<td><p>在编译生成的bin的头部追加4K
+bytes的Boot2 Head</p></td>
+<td><p>非压缩</p></td>
 </tr>
-<tr class="row-odd"><td>FW_OTA.bin.hash</td>
-<td>在FW_OTA.bin尾部追加对其计算的32
-bytes的Hash值（sha256）</td>
-<td>非压缩</td>
+<tr class="row-odd"><td><p>FW_OTA.bin.hash</p></td>
+<td><p>在FW_OTA.bin尾部追加对其计算的32
+bytes的Hash值（sha256）</p></td>
+<td><p>非压缩</p></td>
 </tr>
-<tr class="row-even"><td>FW_OTA.bin.ota</td>
-<td>在FW_OTA.bin的头部追加512 bytes的OTA
-Head</td>
-<td>非压缩</td>
+<tr class="row-even"><td><p>FW_OTA.bin.ota</p></td>
+<td><p>在FW_OTA.bin的头部追加512 bytes的OTA
+Head</p></td>
+<td><p>非压缩</p></td>
 </tr>
-<tr class="row-odd"><td>FW_OTA.bin.xz</td>
-<td>对FW_OTA.bin进行xz压缩</td>
-<td>压缩</td>
+<tr class="row-odd"><td><p>FW_OTA.bin.xz</p></td>
+<td><p>对FW_OTA.bin进行xz压缩</p></td>
+<td><p>压缩</p></td>
 </tr>
-<tr class="row-even"><td>FW_OTA.bin.xz.hash</td>
-<td>在FW_OTA.bin.xz尾部追加对其计算的32
-bytes的Hash值（sha256）</td>
-<td>压缩</td>
+<tr class="row-even"><td><p>FW_OTA.bin.xz.hash</p></td>
+<td><p>在FW_OTA.bin.xz尾部追加对其计算的32
+bytes的Hash值（sha256）</p></td>
+<td><p>压缩</p></td>
 </tr>
-<tr class="row-odd"><td>FW_OTA.bin.xz.ota</td>
-<td>在FW_OTA.bin.xz头部追加512
-bytes的OTA Head</td>
-<td>压缩</td>
+<tr class="row-odd"><td><p>FW_OTA.bin.xz.ota</p></td>
+<td><p>在FW_OTA.bin.xz头部追加512
+bytes的OTA Head</p></td>
+<td><p>压缩</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="ota-head">
-<h2>OTA Head格式简介<a class="headerlink" href="#ota-head" title="永久链接至标题"></a></h2>
+</section>
+<section id="ota-head">
+<h2>OTA Head格式简介<a class="headerlink" href="#ota-head" title="此标题的永久链接"></a></h2>
 <p>OTA Head结构体在<code class="docutils literal notranslate"><span class="pre">components/sys/blota/bl_sys_ota_cli.c</span></code>中</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="56%" />
-<col width="44%" />
+<col style="width: 56%" />
+<col style="width: 44%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">结构体成员</th>
-<th class="head">说明</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>结构体成员</p></th>
+<th class="head"><p>说明</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>uint8_t header[16]</td>
-<td>OTA header</td>
+<tbody>
+<tr class="row-even"><td><p>uint8_t header[16]</p></td>
+<td><p>OTA header</p></td>
 </tr>
-<tr class="row-odd"><td>uint8_t type[4]</td>
-<td>OTA文件类型，RAW/XZ</td>
+<tr class="row-odd"><td><p>uint8_t type[4]</p></td>
+<td><p>OTA文件类型，RAW/XZ</p></td>
 </tr>
-<tr class="row-even"><td>uint32_t len</td>
-<td>OTA文件内容的长度</td>
+<tr class="row-even"><td><p>uint32_t len</p></td>
+<td><p>OTA文件内容的长度</p></td>
 </tr>
-<tr class="row-odd"><td>uint8_t pad0[8]</td>
-<td>保证内存对齐</td>
+<tr class="row-odd"><td><p>uint8_t pad0[8]</p></td>
+<td><p>保证内存对齐</p></td>
 </tr>
-<tr class="row-even"><td>uint8_t ver_hardware[16]</td>
-<td>硬件版本信息</td>
+<tr class="row-even"><td><p>uint8_t ver_hardware[16]</p></td>
+<td><p>硬件版本信息</p></td>
 </tr>
-<tr class="row-odd"><td>uint8_t ver_software[16]</td>
-<td>软件版本信息</td>
+<tr class="row-odd"><td><p>uint8_t ver_software[16]</p></td>
+<td><p>软件版本信息</p></td>
 </tr>
-<tr class="row-even"><td>uint8_t sha256[32]</td>
-<td>32 bytes的Hash值</td>
+<tr class="row-even"><td><p>uint8_t sha256[32]</p></td>
+<td><p>32 bytes的Hash值</p></td>
 </tr>
 </tbody>
 </table>
 <p><img alt="image2" src="../../../_images/image326.png" /></p>
 <p>OTA过程中会打印相关的信息，如：</p>
 <p><img alt="image3" src="../../../_images/image422.png" /></p>
-</div>
-<div class="section" id="id3">
-<h2>OTA升级操作<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>OTA升级操作<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>在pc上使用nc命令监听端口3333，命令：cat FW_OTA.bin.xz.ota | nc -l 3333</li>
-<li>编译下载bl602_demo_event工程，上电后输入stack_wifi命令，然后用wifi_sta_connect命令连接ap（与电脑连接同一ap），最后输入ota_tcp &lt;电脑IP&gt;</li>
-<li>下载完成后，设备会重新启动进入新的固件。</li>
+<li><p>在pc上使用nc命令监听端口3333，命令：cat FW_OTA.bin.xz.ota | nc -l 3333</p></li>
+<li><p>编译下载bl602_demo_event工程，上电后输入stack_wifi命令，然后用wifi_sta_connect命令连接ap（与电脑连接同一ap），最后输入ota_tcp &lt;电脑IP&gt;</p></li>
+<li><p>下载完成后，设备会重新启动进入新的固件。</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -341,17 +346,18 @@ bytes的OTA Head</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

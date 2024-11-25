@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -99,8 +99,8 @@ typedef enum {
  * @brief UART stop bits
  */
 typedef enum {
-    HOSAL_STOP_BITS_1 = 1,
-    HOSAL_STOP_BITS_2 = 3
+    HOSAL_STOP_BITS_1,
+    HOSAL_STOP_BITS_2
 } hosal_uart_stop_bits_t;
 
 /**
@@ -108,8 +108,8 @@ typedef enum {
  */
 typedef enum {
     HOSAL_FLOW_CONTROL_DISABLED,
-    HOSAL_FLOW_CONTROL_RTS,
     HOSAL_FLOW_CONTROL_CTS,
+    HOSAL_FLOW_CONTROL_RTS,
     HOSAL_FLOW_CONTROL_CTS_RTS
 } hosal_uart_flow_control_t;
 

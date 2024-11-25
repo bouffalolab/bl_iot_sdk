@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -36,22 +36,6 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-#define WIFI_EVENT_BEACON_IND_AUTH_OPEN            0
-#define WIFI_EVENT_BEACON_IND_AUTH_WEP             1
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA_PSK         2
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK        3
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA_WPA2_PSK    4
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA_ENT         5
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA3_SAE        6
-#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK_WPA3_SAE 7
-#define WIFI_EVENT_BEACON_IND_AUTH_UNKNOWN      0xff
-
-#define WIFI_EVENT_BEACON_IND_CIPHER_NONE           0
-#define WIFI_EVENT_BEACON_IND_CIPHER_WEP            1
-#define WIFI_EVENT_BEACON_IND_CIPHER_AES            2
-#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP           3
-#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP_AES       4
 
 enum ap_info_type {
     /* The current AP information is advisory. When the AP fails to connect
@@ -103,6 +87,7 @@ struct ap_connect_adv {
 #define WIFI_CONNECT_STOP_SCAN_CURRENT_CHANNEL_IF_TARGET_AP_FOUND (1 << 8)
 #define WIFI_CONNECT_PMF_CAPABLE                                  (1 << 9)
 #define WIFI_CONNECT_PMF_REQUIRED                                 (1 << 10)
+#define WIFI_CONNECT_DEFAULT                                      (1 << 31)
     uint32_t flags;
 };
 
@@ -110,8 +95,6 @@ typedef struct ap_connect_adv ap_connect_adv_t;
 
 struct bl_rx_info {
     int8_t rssi;
-    uint8_t leg_rate;
-    uint8_t format_mod;
 };
 typedef struct bl_rx_info bl_rx_info_t;
 
@@ -274,6 +257,7 @@ int wifi_mgmr_ap_stop(wifi_interface_t *interface);
 int wifi_mgmr_ap_start(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel);
 int wifi_mgmr_ap_start_adv(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, uint8_t use_dhcp);
 int wifi_mgmr_ap_start_atcmd(wifi_interface_t *interface, char *ssid, int hidden_ssid, char *passwd, int channel, int max_sta_supported);
+int wifi_mgmr_ap_chan_switch(wifi_interface_t *interface, int channel, uint8_t cs_count);
 int wifi_mgmr_ap_sta_cnt_get(uint8_t *sta_cnt);
 int wifi_mgmr_ap_sta_info_get(struct wifi_sta_basic_info *sta_info, uint8_t idx);
 int wifi_mgmr_ap_sta_delete(uint8_t sta_idx);
@@ -303,7 +287,6 @@ int wifi_mgmr_scan_complete_callback();
 int wifi_mgmr_cli_scanlist(void);
 int wifi_mgmr_cli_init(void);
 int wifi_mgmr_scan_ap(char *ssid, wifi_mgmr_ap_item_t *item);
-uint32_t wifi_mgmr_sta_scanlist_nums_get();
 int wifi_mgmr_scan_ap_all(wifi_mgmr_ap_item_t *env, uint32_t *param1, scan_item_cb_t cb);
 int wifi_mgmr_raw_80211_send(uint8_t *pkt, int len);
 int wifi_mgmr_set_country_code(char *country_code);

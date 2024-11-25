@@ -6,7 +6,7 @@ include $(COMPONENT_PATH)/../ble_common.mk
 COMPONENT_ADD_INCLUDEDIRS    += src \
                                 src/include  \
                                 src/mesh_cli_cmds  \
-								src/mem_slab \
+                                src/mem_slab					
 
 ifeq ($(CONFIG_BT_MESH_MODEL), 0)
 COMPONENT_ADD_INCLUDEDIRS    += src/mesh_models/include  \
@@ -31,9 +31,12 @@ COMPONENT_SRCS   := src/access.c \
 					src/proxy.c \
 					src/settings.c \
 					src/transport.c \
-					src/mesh_cli_cmds/mesh_cli_cmds.c \
 					src/local_operation.c \
 					src/mem_slab/slab.c
+
+ifeq ($(CONFIG_BT_MESH_CLI),1)
+COMPONENT_SRCS += src/mesh_cli_cmds/mesh_cli_cmds.c
+endif
 
 ifeq ($(CONFIG_BT_MESH_FRIEND),1)
 COMPONENT_SRCS   += src/friend.c
@@ -60,6 +63,20 @@ ifeq ($(CONFIG_BT_MESH_MODEL_GEN_SRV),1)
 COMPONENT_SRCS   += src/mesh_models/server/common_srv.c \
                     src/mesh_models/server/gen_srv.c 
 endif
+endif
+
+ifeq ($(CONFIG_BT_MESH_OTA_TARGET),1)
+COMPONENT_SRCS   += src/blob_srv.c \
+                    src/blob_io_flash.c \
+                    src/dfu_srv.c \
+                    src/dfu_metadata.c
+endif
+
+ifeq ($(CONFIG_BT_MESH_V1d1),1)
+COMPONENT_SRCS   += src/cfg.c \
+					src/priv_beacon_srv.c \
+					src/priv_beacon_cli.c \
+					src/msg.c
 endif
 
 COMPONENT_OBJS   := $(patsubst %.c,%.o, $(COMPONENT_SRCS))

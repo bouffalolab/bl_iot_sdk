@@ -271,13 +271,6 @@ nd6_process_autoconfig_prefix(struct netif *netif,
 
   /* Assign the new address to the interface. */
   ip_addr_copy_from_ip6(netif->ip6_addr[free_idx], ip6addr);
-  #ifdef CONFIG_ENABLE_IPV6_ADDR_CALLBACK
-  if (netif->ipv6_addr_cb != NULL)
-  {
-    netif->ipv6_addr_cb(netif, free_idx);
-  }
-  #endif
-
   netif_ip6_addr_set_valid_life(netif, free_idx, valid_life);
   netif_ip6_addr_set_pref_life(netif, free_idx, pref_life);
   netif_ip6_addr_set_state(netif, free_idx, IP6_ADDR_TENTATIVE);

@@ -1,5 +1,7 @@
 /* ecc.h - ECDH helpers */
 
+#include <zephyr/types.h>
+
 /*
  * Copyright (c) 2016 Intel Corporation
  *

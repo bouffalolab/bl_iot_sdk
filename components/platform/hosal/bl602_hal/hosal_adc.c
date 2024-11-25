@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -337,7 +337,7 @@ static void adc_init(hosal_adc_dev_t *adc)
 
     adccfg.v18Sel=ADC_V18_SEL_1P82V;
     adccfg.v11Sel=ADC_V11_SEL_1P1V;
-    adccfg.clkDiv=ADC_CLK_DIV_32;
+    adccfg.clkDiv=ADC_CLK_DIV_20;
     adccfg.resWidth=ADC_DATA_WIDTH_16_WITH_256_AVERAGE;
 
     /* one shot mode */
@@ -527,9 +527,6 @@ int hosal_adc_init(hosal_adc_dev_t *adc)
         pstctx->tsen_offset = offset;
         ADC_Stop();
 #endif
-        /* init gpio */
-        GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &pin, 1);
-
         /* init freq */
         adc_freq_init(adc->config.mode, freq);
         adc_init(adc);

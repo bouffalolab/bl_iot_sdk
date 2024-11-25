@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -29,8 +29,6 @@
  */
 #pragma once
 
-#include <stdbool.h>
-
 #ifdef BL602
 #include <bl602_glb.h>
 #include <bl602_sec_eng.h>
@@ -52,6 +50,3 @@
 #else
 #warn "Chip not ported"
 #endif
-
-bool bl_sec_is_cache_addr(const void *addr);
-void *bl_sec_get_no_cache_addr(const void *addr);

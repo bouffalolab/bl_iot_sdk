@@ -100,7 +100,7 @@ void *hostap_init(wifi_ap_parm_t *parm)
 
     memcpy(hapd->conf->ssid.ssid, ssid->ssid, ssid->len);
     hapd->conf->ssid.ssid_len = ssid->len;
-    hapd->conf->ssid.wpa_passphrase = (char *)os_zalloc(65);
+    hapd->conf->ssid.wpa_passphrase = (char *)os_zalloc(64);
     if (hapd->conf->ssid.wpa_passphrase == NULL) {
         os_free(auth_conf);
         os_free(hapd->conf);

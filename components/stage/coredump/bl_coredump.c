@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -32,7 +32,8 @@
 #include <stdio.h>
 #include <FreeRTOS.h>
 #include <task.h>
-#include <hosal_uart.h>
+#include <cli.h>
+#include <hal/soc/uart.h>
 #include <utils_base64.h>
 #include <utils_crc.h>
 #include <utils_hex.h>

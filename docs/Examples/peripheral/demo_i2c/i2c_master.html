@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>i2c_master &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>i2c_master &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="i2c_master_mem" href="i2c_master_mem.html"/>
         <link rel="prev" title="FLASH_BUSADDR" href="../demo_flash/flash_busaddr.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,31 +212,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="i2c-master">
-<span id="i2c-master-index"></span><h1>i2c_master<a class="headerlink" href="#i2c-master" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="i2c-master">
+<span id="i2c-master-index"></span><h1>i2c_master<a class="headerlink" href="#i2c-master" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍使用i2c作为master模式的使用方法。(从设备没有memory addrs)</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li>将板子与电脑用USB电源线连接，USB电源线默认连接UART0；</li>
-<li>将板子和EEPROM连接，其中板子的gpio4连接从设备的scl引脚，gpio3连接从设备的sda引脚，VCC和GND也对应连接；</li>
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_i2c</span></code> 工程并下载工程，编译命令： <code class="docutils literal notranslate"><span class="pre">genromap</span> <span class="pre">&lt;chip</span> <span class="pre">name&gt;</span></code>，&lt;chip name&gt;可选择 <code class="docutils literal notranslate"><span class="pre">BL602</span></code> , <code class="docutils literal notranslate"><span class="pre">BL702</span></code>；</li>
-<li>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）;</li>
-<li>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_i2c_mater</span></code> ，表示启动 <code class="docutils literal notranslate"><span class="pre">i2c_master</span></code> 的demo。</li>
+<li><p>将板子与电脑用USB电源线连接，USB电源线默认连接UART0；</p></li>
+<li><p>将板子和EEPROM连接，其中板子的gpio4连接从设备的scl引脚，gpio3连接从设备的sda引脚，VCC和GND也对应连接；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_i2c</span></code> 工程并下载工程，编译命令： <code class="docutils literal notranslate"><span class="pre">genromap</span> <span class="pre">&lt;chip</span> <span class="pre">name&gt;</span></code>，&lt;chip name&gt;可选择 <code class="docutils literal notranslate"><span class="pre">BL602</span></code> , <code class="docutils literal notranslate"><span class="pre">BL702</span></code>；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）;</p></li>
+<li><p>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_i2c_mater</span></code> ，表示启动 <code class="docutils literal notranslate"><span class="pre">i2c_master</span></code> 的demo。</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_init</span></code> 初始化i2c主设备。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_init</span></code> 初始化i2c主设备。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_i2c_dev_t</span> <span class="n">i2c0</span><span class="p">;</span>
 
@@ -244,7 +249,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_master_send</span></code> 接口对i2c从设备写数据。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_master_send</span></code> 接口对i2c从设备写数据。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">hosal_i2c_master_send</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i2c0</span><span class="p">,</span> <span class="n">CK_IIC_SLAVE_ADDR</span><span class="p">,</span> <span class="n">i2c_data_txbuf</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
 <span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
@@ -256,7 +261,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_master_recv</span></code> 接口从i2c从设备接收数据。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_master_recv</span></code> 接口从i2c从设备接收数据。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">hosal_i2c_master_recv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i2c0</span><span class="p">,</span> <span class="n">CK_IIC_SLAVE_ADDR</span><span class="p">,</span> <span class="n">i2c_data_rxbuf</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
@@ -267,7 +272,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_finalize</span></code> 接口关闭i2c主设备。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_i2c_finalize</span></code> 接口关闭i2c主设备。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">hosal_i2c_finalize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i2c0</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
@@ -276,8 +281,8 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -320,17 +325,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

@@ -23,7 +23,12 @@ extern "C" {
 #include <zephyr/types.h>
 #if defined(BFLB_BLE)
 #include <stddef.h>
+#include <util_macro.h>
+#if defined(CFG_IOT_SDK) || defined(BL_MCU_SDK)
 #include "utils_string.h"
+#else/* CFG_IOT_SDK BL_MCU_SDK */
+#include "utils_getopt.h" //For BOUFFALO_SDK
+#endif/* FG_IOT_SDK BL_MCU_SDK*/
 #endif
 
 /* Helper to pass a int as a pointer or vice-versa.
@@ -70,6 +75,47 @@ extern "C" {
 	(((unsigned long)(x) + ((unsigned long)align - 1)) & \
 	 ~((unsigned long)align - 1))
 #define ROUND_DOWN(x, align) ((unsigned long)(x) & ~((unsigned long)align - 1))
+
+/** @brief Value of @p x rounded up to the next word boundary. */
+#define WB_UP(x) ROUND_UP(x, sizeof(void *))
+
+/** @brief Value of @p x rounded down to the previous word boundary. */
+#define WB_DN(x) ROUND_DOWN(x, sizeof(void *))
+
+/**
+ * @brief Divide and round up.
+ *
+ * Example:
+ * @code{.c}
+ * DIV_ROUND_UP(1, 2); // 1
+ * DIV_ROUND_UP(3, 2); // 2
+ * @endcode
+ *
+ * @param n Numerator.
+ * @param d Denominator.
+ *
+ * @return The result of @p n / @p d, rounded up.
+ */
+#define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
+
+/**
+ * @brief Divide and round to the nearest integer.
+ *
+ * Example:
+ * @code{.c}
+ * DIV_ROUND_CLOSEST(5, 2); // 3
+ * DIV_ROUND_CLOSEST(5, -2); // -3
+ * DIV_ROUND_CLOSEST(5, 3); // 2
+ * @endcode
+ *
+ * @param n Numerator.
+ * @param d Denominator.
+ *
+ * @return The result of @p n / @p d, rounded to the nearest integer.
+ */
+#define DIV_ROUND_CLOSEST(n, d)	\
+	((((n) < 0) ^ ((d) < 0)) ? ((n) - ((d) / 2)) / (d) : \
+	((n) + ((d) / 2)) / (d))
 
 #define ceiling_fraction(numerator, divider) \
 	(((numerator) + ((divider) - 1)) / (divider))

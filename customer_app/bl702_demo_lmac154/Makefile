@@ -28,7 +28,7 @@ INCLUDE_COMPONENTS += bl702_usb_cdc
 endif
 
 ifeq ($(CONFIG_BT),1)
-INCLUDE_COMPONENTS += blecontroller_702_std blestack
+INCLUDE_COMPONENTS += blecontroller_702_m1s1 blestack
 endif
 
 

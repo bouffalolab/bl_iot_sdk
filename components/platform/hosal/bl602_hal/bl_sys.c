@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -118,10 +118,20 @@ void bl_sys_mfg_config(void)
     *(volatile uint32_t*)(MFG_CONFIG_REG) = mfg.word;
 }
 
+void BL602_Delay_MS(uint32_t cnt);
 int bl_sys_reset_por(void)
 {
     bl_sys_rstinfo_set(BL_RST_SOFTWARE);
+
+    volatile uint32_t *p = (volatile uint32_t *)0x40000010;
+
     __disable_irq();
+
+    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_DMA);
+    *p = (1 << 4) | (1 << 8);
+    BL602_Delay_MS(1);
+    *p = 0;
+
     GLB_SW_POR_Reset();
     while (1) {
         /*empty dead loop*/
@@ -132,7 +142,14 @@ int bl_sys_reset_por(void)
 
 void bl_sys_reset_system(void)
 {
+    volatile uint32_t *p = (volatile uint32_t *)0x40000010;
     __disable_irq();
+
+    GLB_AHB_Slave1_Reset(BL_AHB_SLAVE1_DMA);
+    *p = (1 << 4) | (1 << 8);
+    BL602_Delay_MS(1);
+    *p = 0;
+
     GLB_SW_System_Reset();
     while (1) {
         /*empty dead loop*/

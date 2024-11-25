@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -32,9 +32,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <FreeRTOS.h>
-#ifdef CONFIG_CLI_CMD_ENABLE
 #include <cli.h>
-#endif
 #include "utils_base64.h"
 #include <utils_log.h>
 
@@ -67,9 +65,7 @@ static void cmd_encode(char *buf, int len, int argc, char **argv)
                 char *addr = outbuf;
                 for (i = 0; i < output_len; i++)
                 {
-                #ifdef CONFIG_CLI_CMD_ENABLE
                     aos_cli_printf("%c", *(char *)addr);
-                #endif
                     addr += 1;
                 }
             }
@@ -92,11 +88,9 @@ static void cmd_encode(char *buf, int len, int argc, char **argv)
 
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "encode_base64", "base64 encode", cmd_encode},
 };
-#endif
 
 int base64_cli_init(void)
 {
@@ -106,4 +100,5 @@ int base64_cli_init(void)
     //return aos_cli_register_commands(cmds_user, sizeof(cmds_user) / sizeof(cmds_user[0]));
     return 0;
 }
+
 #endif

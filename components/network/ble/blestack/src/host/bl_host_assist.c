@@ -1,11 +1,15 @@
+#if defined(BL702) || defined(BL602)
 #include "ble_lib_api.h"
+#else
+#include "btble_lib_api.h"
+#endif
 #include "bluetooth.h"
 #include "conn.h"
 #include "hci_core.h"
 #include "hci_driver.h"
 #include "byteorder.h"
-#include "log.h"
-#include <sys/errno.h>
+#include "bt_log.h"
+#include <bt_errno.h>
 
 struct blhast_le_adv_data{
     u8_t ad[31];
@@ -223,7 +227,7 @@ static int blhast_br_reset(void)
 	}
 
 	name_cp = net_buf_add(buf, sizeof(*name_cp));
-	strncpy((char *)name_cp->local_name, CONFIG_BT_DEVICE_NAME,
+	strlcpy((char *)name_cp->local_name, CONFIG_BT_DEVICE_NAME,
 		sizeof(name_cp->local_name));
 
 	err = bt_hci_cmd_send_sync(BT_HCI_OP_WRITE_LOCAL_NAME, buf, NULL);
@@ -360,8 +364,12 @@ static void blhast_host_state_restore(void)
 
 void blhast_bt_reset(void)
 {
+    #if defined(BL602) || defined(BL702)
     ble_controller_reset();
-	blhast_host_state_restore();
+    #else
+    btble_controller_reset();
+    #endif
+    blhast_host_state_restore();
 }
 
 void blhast_init(void)

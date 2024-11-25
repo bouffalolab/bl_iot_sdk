@@ -11,14 +11,14 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_MESH_DEBUG_CDB)
 #define LOG_MODULE_NAME bt_mesh_cdb
-#include "log.h"
+#include "bt_log.h"
 
 #include "mesh.h"
 #include "net.h"
 #include "mesh_settings.h"
 
 #include "include/cdb.h"
-#include "errno.h"
+#include "bt_errno.h"
 
 
 struct bt_mesh_cdb bt_mesh_cdb = {

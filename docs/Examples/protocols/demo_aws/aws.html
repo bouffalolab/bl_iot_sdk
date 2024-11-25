@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>aws &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>aws &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,44 +171,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="aws">
-<span id="aws-index"></span><h1>aws<a class="headerlink" href="#aws" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="aws">
+<span id="aws-index"></span><h1>aws<a class="headerlink" href="#aws" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍如何使用aws。</p>
-</div>
-<div class="section" id="id2">
-<h2>使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul>
-<li><p class="first">在 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_ble_pds/bl602_demo_ble_pds/aws_iot_main.c</span></code> 文件的头部有相关证书及配置，此处的配置只限于本示例演示使用（同时只能一处使用），用户需要根据实际情况修改文件开头的宏定义，下图是配置的一部分</p>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_ble_pds/bl602_demo_ble_pds/aws_iot_main.c</span></code> 文件的头部有相关证书及配置，此处的配置只限于本示例演示使用（同时只能一处使用），用户需要根据实际情况修改文件开头的宏定义，下图是配置的一部分</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image128.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">编译 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_event</span></code> 工程并下载工程；</p>
-</li>
-<li><p class="first">在终端输入开启wifi的命令： <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> ，输入连接wifi的命令： <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;key&gt;</span></code> ，并确认wifi连接成功（如输入：wifi_sta_connect bl_test_005 12345678）；</p>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/bl602_demo_event</span></code> 工程并下载工程；</p></li>
+<li><p>在终端输入开启wifi的命令： <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> ，输入连接wifi的命令： <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;key&gt;</span></code> ，并确认wifi连接成功（如输入：wifi_sta_connect bl_test_005 12345678）；</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image224.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image317.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">在终端输入 <code class="docutils literal notranslate"><span class="pre">aws</span></code> 不断打印如下图所示log即表明连接成功。</p>
+<li><p>在终端输入 <code class="docutils literal notranslate"><span class="pre">aws</span></code> 不断打印如下图所示log即表明连接成功。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image416.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -237,17 +241,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

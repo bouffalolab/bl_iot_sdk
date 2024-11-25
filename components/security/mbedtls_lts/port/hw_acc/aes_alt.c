@@ -1,11 +1,11 @@
 /*
  *  Description: AES hardware acceleration
- *  Copyright (C) Bouffalo Lab 2016-2022
+ *  Copyright (C) Bouffalo Lab 2016-2023
  *  SPDX-License-Identifier: Apache-2.0
  *  File Name:   aes_alt.c
  *  Author:      Chien Wong(qwang@bouffalolab.com)
  *  Start Date:  Jun 13, 2022
- *  Last Update: Jun 13, 2022
+ *  Last Update: Jan 9, 2023
  */
 
 /*
@@ -50,14 +50,7 @@
 #include "mbedtls/aesni.h"
 #endif
 
-#if defined(MBEDTLS_SELF_TEST)
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
-#include <stdio.h>
-#define mbedtls_printf printf
-#endif /* MBEDTLS_PLATFORM_C */
-#endif /* MBEDTLS_SELF_TEST */
 
 /* Parameter validation macros based on platform_util.h */
 #define AES_VALIDATE_RET( cond )    \
@@ -446,7 +439,7 @@ int mbedtls_aes_crypt_xts( mbedtls_aes_xts_context *ctx,
         {
             /* We are on the last block in a decrypt operation that has
              * leftover bytes, so we need to use the next tweak for this block,
-             * and this tweak for the lefover bytes. Save the current tweak for
+             * and this tweak for the leftover bytes. Save the current tweak for
              * the leftovers and then update the current tweak for use on this,
              * the last full block. */
             memcpy( prev_tweak, tweak, sizeof( tweak ) );

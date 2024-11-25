@@ -22,8 +22,12 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_MESH_DEBUG_PROV)
 #define LOG_MODULE_NAME bt_mesh_pb_adv
-#include "log.h"
-#include "errno.h"
+#include "bt_log.h"
+#include "bt_errno.h"
+#if defined(CONFIG_AUTO_PTS)
+#include "testing.h"
+#endif
+
 
 #define GPCF(gpc)           (gpc & 0x03)
 #define GPC_START(last_seg) (((last_seg) << 2) | 0x00)
@@ -33,6 +37,7 @@
 
 #define START_PAYLOAD_MAX 20
 #define CONT_PAYLOAD_MAX  23
+#define RX_BUFFER_MAX     65
 
 #define START_LAST_SEG(gpc) (gpc >> 2)
 #define CONT_SEG_INDEX(gpc) (gpc >> 2)
@@ -42,7 +47,8 @@
 #define LINK_ACK        0x01
 #define LINK_CLOSE      0x02
 
-#define XACT_SEG_DATA(_seg) (&link.rx.buf->data[20 + ((_seg - 1) * 23)])
+#define XACT_SEG_OFFSET(_seg) (20 + ((_seg - 1) * 23))
+#define XACT_SEG_DATA(_seg) (&link.rx.buf->data[XACT_SEG_OFFSET(_seg)])
 #define XACT_SEG_RECV(_seg) (link.rx.seg &= ~(1 << (_seg)))
 
 #define XACT_ID_MAX  0x7f
@@ -120,7 +126,7 @@ struct prov_rx {
 	u8_t gpc;
 };
 
-NET_BUF_SIMPLE_DEFINE_STATIC(rx_buf, 65);
+NET_BUF_SIMPLE_DEFINE_STATIC(rx_buf, RX_BUFFER_MAX);
 
 static struct pb_adv link = { .rx = { .buf = &rx_buf } };
 
@@ -146,7 +152,7 @@ static struct bt_mesh_send_cb buf_sent_cb = {
 	.end = buf_sent,
 };
 
-static u8_t last_seg(u8_t len)
+static u8_t last_seg(u16_t len)
 {
 	if (len <= START_PAYLOAD_MAX) {
 		return 0;
@@ -220,7 +226,7 @@ static void close_link(enum prov_bearer_link_status reason)
 	const struct prov_bearer_cb *cb = link.cb;
 	void *cb_data = link.cb_data;
 
-#if defined(CONFIG_BT_MESH_PTS)
+#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
 	/* Added by bouffalo for MESH/PVNR/PBADV/BV-01-C PTS */
 	u8_t sts = PROV_BEARER_LINK_STATUS_FAIL;
 	bearer_ctl_send(LINK_CLOSE, &sts, 1, false);
@@ -375,6 +381,11 @@ static void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
 		return;
 	}
 
+	if (XACT_SEG_OFFSET(seg) + buf->len > RX_BUFFER_MAX) {
+		BT_WARN("Rx buffer overflow. Malformed generic prov frame?");
+		return;
+	}
+
 	memcpy(XACT_SEG_DATA(seg), buf->data, buf->len);
 	XACT_SEG_RECV(seg);
 
@@ -470,6 +481,13 @@ static void gen_prov_start(struct prov_rx *rx, struct net_buf_simple *buf)
 		return;
 	}
 
+	if (START_LAST_SEG(rx->gpc) != last_seg(link.rx.buf->len)) {
+		BT_ERR("Invalid SegN (%u, calculated %u)", START_LAST_SEG(rx->gpc),
+		       last_seg(link.rx.buf->len));
+		prov_failed(PROV_ERR_NVAL_FMT);
+		return;
+	}
+
 	prov_clear_tx();
 
 	link.rx.last_seg = START_LAST_SEG(rx->gpc);
@@ -523,11 +541,11 @@ static void gen_prov_ctl(struct prov_rx *rx, struct net_buf_simple *buf)
 	default:
 		BT_ERR("Unknown bearer opcode: 0x%02x", BEARER_CTL(rx->gpc));
 
-		#if defined(CONFIG_BT_TESTING)
-		/* if (IS_ENABLED(CONFIG_BT_TESTING)) */{
+		#if defined(CONFIG_AUTO_PTS)
+		/* if (IS_ENABLED(CONFIG_AUTO_PTS)) */{
 			bt_test_mesh_prov_invalid_bearer(BEARER_CTL(rx->gpc));
 		}
-		#endif /* CONFIG_BT_TESTING */
+		#endif /* CONFIG_AUTO_PTS */
 
 		return;
 	}
@@ -829,7 +847,7 @@ void bt_mesh_pb_adv_recv(struct net_buf_simple *buf)
 		return;
 	}
 
-	BT_DBG("link_id 0x%08x xact_id 0x%x", rx.link_id, rx.xact_id);
+	BT_DBG("link_id 0x%08lx xact_id 0x%x", rx.link_id, rx.xact_id);
 
 	gen_prov_recv(&rx, buf);
 }

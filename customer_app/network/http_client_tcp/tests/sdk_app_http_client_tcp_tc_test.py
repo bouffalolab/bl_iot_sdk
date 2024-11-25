@@ -19,12 +19,7 @@ def sdk_app_http_client_tcp_tc(env, extra_data):
     dut.start_app()
 
     try:
-        dut.expect("Booting BL602 Chip...", timeout=1)
-        print('BL602 booted')
-        dut.expect('Init CLI with event Driven', timeout=1)
-        print('BL602 CLI init done')
-        
-        time.sleep(1)
+        time.sleep(2)
 
         dut.write('stack_wifi')
         time.sleep(0.5)

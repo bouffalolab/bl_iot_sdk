@@ -2505,13 +2505,15 @@ static void fourway_hs_timeout_handler_(void *arg)
     bl_wifi_auth_done_internal(sm->sta_idx, WLAN_REASON_4WAY_HANDSHAKE_TIMEOUT);
 }
 
-void wpa_set_4way_handshake_timer(void)
+void wpa_set_4way_handshake_timer(u8 quick_conn)
 {
     struct wpa_sm *sm = &gWpaSm;
 
     bl_wifi_timer_disarm(&sm->fourway_hs_timer);
     bl_wifi_timer_setfn(&sm->fourway_hs_timer, fourway_hs_timeout_handler_, NULL);
-    bl_wifi_timer_arm(&sm->fourway_hs_timer, WPA_SUPPLICANT_4WAY_HANDSHAKE_TIMEOUT_MS, 0);
+    bl_wifi_timer_arm(&sm->fourway_hs_timer, (quick_conn) ? 
+                      WPA_SUPPLICANT_QUICKCONN_4WAY_HANDSHAKE_TIMEOUT_MS :
+                      WPA_SUPPLICANT_4WAY_HANDSHAKE_TIMEOUT_MS, 0);
 }
 
 void wpa_clear_4way_handshake_timer(void)

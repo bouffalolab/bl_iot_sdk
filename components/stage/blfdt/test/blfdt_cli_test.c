@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -34,14 +34,14 @@
 #include <task.h>
 #include <queue.h>
 #include <timers.h>
-#ifdef CONFIG_CLI_CMD_ENABLE
+#include <aos/kernel.h>
+#include <aos/yloop.h>
 #include <cli.h>
-#endif
 
 #include <utils_log.h>
 #include <utils_fec.h>
 
-static void blfdt(char *buf, int len, int argc, char **argv)
+void blfdt(char *buf, int len, int argc, char **argv)
 {
     int tc_fdt_wifi(void);
     int tc_blfdtdump(void);
@@ -50,12 +50,10 @@ static void blfdt(char *buf, int len, int argc, char **argv)
     tc_blfdtdump();
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "blfdt", "blfdt", blfdt}
 };
-#endif
 
 int blfdt_cli_init(void)
 {

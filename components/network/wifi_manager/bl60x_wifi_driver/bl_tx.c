@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -145,6 +145,8 @@ void bl_tx_try_flush()
 int bl_txdatacfm(void *pthis, void *host_id)
 {
 #define RETRY_LIMIT_REACHED_BIT (1 << 16)
+#define DESC_DONE_SW_TX_BIT     (1 << 30)
+#define DESC_DONE_TX_BIT        (1 << 31)
     struct pbuf *p = (struct pbuf*)host_id;
     struct bl_txhdr *txhdr;
     union bl_hw_txstatus bl_txst;
@@ -158,7 +160,8 @@ int bl_txdatacfm(void *pthis, void *host_id)
     if (bl_txst.value == 0) {
         return -1;
     }
-    if (bl_txst.value & RETRY_LIMIT_REACHED_BIT) {
+    if ((bl_txst.value & RETRY_LIMIT_REACHED_BIT) ||
+        ((bl_txst.value & (DESC_DONE_SW_TX_BIT | DESC_DONE_TX_BIT)) == DESC_DONE_SW_TX_BIT)) {
 #if 0
         bl_os_printf("TX STATUS %08lX", bl_txst.value);
         bl_os_printf(" Retry reached %p:%lu:%lu", txhdr, txhdr_pos_r, txhdr_pos_w);

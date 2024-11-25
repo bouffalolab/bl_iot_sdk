@@ -1,7 +1,6 @@
 #include <stdio.h>
-#ifdef CONFIG_CLI_CMD_ENABLE
+
 #include <cli.h>
-#endif
 #include <easyflash.h>
 #include <blog.h>
 
@@ -92,7 +91,6 @@ kvbin_exit:
     ef_del_env(def_name);
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "psm_set", "psm set", psm_set_cmd },
@@ -101,7 +99,6 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "psm_erase", "psm dump", psm_erase_cmd },
         { "psm_test", "psm test", psm_test_cmd },
 };
-#endif
 
 int easyflash_cli_init(void)
 {

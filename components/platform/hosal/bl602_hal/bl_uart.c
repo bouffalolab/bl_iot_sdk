@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -92,11 +92,11 @@ static void gpio_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pi
 int bl_uart_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pin, uint8_t rts_pin, uint32_t baudrate)
 {
     static uint8_t uart_clk_init = 0;
-    const uint8_t uart_div = 3;
+    const uint8_t uart_div = 7;
 
     UART_CFG_Type uartCfg =
     {
-        160*1000*1000,                                        /* UART clock */
+        20*1000*1000,                                        /* UART clock */
         115200,                                              /* UART Baudrate */
         UART_DATABITS_8,                                     /* UART data bits length */
         UART_STOPBITS_1,                                     /* UART data stop bits length */
@@ -129,11 +129,19 @@ int bl_uart_init(uint8_t id, uint8_t tx_pin, uint8_t rx_pin, uint8_t cts_pin, ui
     /* Disable all interrupt */
     UART_IntMask(id, UART_INT_ALL, MASK);
 
+    if (baudrate <= 9600) {
+        uartCfg.rxDeglitch = ENABLE;
+    }
+
     /* Disable uart before config */
     UART_Disable(id, UART_TXRX);
 
     /* UART init */
     UART_Init(id, &uartCfg);
+    /* UART deglitch */
+    if (baudrate <= 9600) {
+        UART_SetDeglitchCount(id, 0xF);
+    }
 
     /* Enable tx free run mode */
     UART_TxFreeRun(id, ENABLE);
@@ -230,7 +238,7 @@ void bl_uart_setconfig(uint8_t id, uint32_t baudrate, UART_Parity_Type parity)
 {
     UART_CFG_Type UartCfg =
     {
-        40*1000*1000,                                       /* UART clock */
+        20*1000*1000,                                       /* UART clock */
         115200,                                              /* UART Baudrate */
         UART_DATABITS_8,                                     /* UART data bits length */
         UART_STOPBITS_1,                                     /* UART data stop bits length */
@@ -244,10 +252,18 @@ void bl_uart_setconfig(uint8_t id, uint32_t baudrate, UART_Parity_Type parity)
     UartCfg.baudRate = baudrate;
     UartCfg.parity = parity;             //UART_PARITY_NONE
 
+    if (baudrate <= 9600) {
+        UartCfg.rxDeglitch = ENABLE;
+    }
+
     /* Disable uart before config */
     UART_Disable(id, UART_TXRX);
     /* UART init */
     UART_Init(id, &UartCfg);
+    /* UART deglitch */
+    if (baudrate <= 9600) {
+        UART_SetDeglitchCount(id, 0xF);
+    }
     /* Enable tx free run mode */
     UART_TxFreeRun(id, ENABLE);
     /* Enable uart */

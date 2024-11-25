@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GPIO &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>GPIO &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="DAC" href="../demo_dac/dac.html"/>
         <link rel="prev" title="Peripherals" href="../index.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,48 +212,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="gpio">
-<span id="gpio-index"></span><h1>GPIO<a class="headerlink" href="#gpio" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="gpio">
+<span id="gpio-index"></span><h1>GPIO<a class="headerlink" href="#gpio" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍gpio的使用方法。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li>插入将板子的USB电源线；</li>
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_gpio</span></code> 工程( <code class="docutils literal notranslate"><span class="pre">./genromap</span> <span class="pre">BL602</span></code> 编译602平台, <code class="docutils literal notranslate"><span class="pre">./genromap</span> <span class="pre">BL702</span></code> 编译702版本）并下载工程；</li>
-<li>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</li>
-<li>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_led_on</span></code> ，可以看到板子上led被点亮。</li>
+<li><p>插入将板子的USB电源线；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_gpio</span></code> 工程( <code class="docutils literal notranslate"><span class="pre">./genromap</span> <span class="pre">BL602</span></code> 编译602平台, <code class="docutils literal notranslate"><span class="pre">./genromap</span> <span class="pre">BL702</span></code> 编译702版本）并下载工程；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</p></li>
+<li><p>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_led_on</span></code> ，可以看到板子上led被点亮。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/img11.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_led_off</span></code> led灯灭。</li>
+<li><p>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_led_off</span></code> led灯灭。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/img21.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_irq_test</span></code>,将demo中用于中断测试的pin3和pin4接GND，会产生下降沿中断。</li>
+<li><p>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_irq_test</span></code>,将demo中用于中断测试的pin3和pin4接GND，会产生下降沿中断。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/img3.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_irq1_mask</span></code>,此时pin1下降沿中断不会触发，pin2下降沿触发正常。</li>
+<li><p>串口输入 <code class="docutils literal notranslate"><span class="pre">demo_gpio_irq1_mask</span></code>,此时pin1下降沿中断不会触发，pin2下降沿触发正常。</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>示例代码</li>
+<li><p>示例代码</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
 <span class="c1">#include &lt;hosal_gpio.h&gt;</span>
@@ -272,7 +277,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_dev_t</span></code> 定义一个gpio设备，port对应pin脚，调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_init</span></code> 初始化gpio,调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_output_set(&amp;gp1,</span> <span class="pre">1)</span></code> 使相应pin脚输出高电平, <code class="docutils literal notranslate"><span class="pre">hosal_gpio_output_set(&amp;gp1,</span> <span class="pre">0)</span></code> 输出低电平。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_dev_t</span></code> 定义一个gpio设备，port对应pin脚，调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_init</span></code> 初始化gpio,调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_output_set(&amp;gp1,</span> <span class="pre">1)</span></code> 使相应pin脚输出高电平, <code class="docutils literal notranslate"><span class="pre">hosal_gpio_output_set(&amp;gp1,</span> <span class="pre">0)</span></code> 输出低电平。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">static</span> <span class="n">hosal_gpio_dev_t</span> <span class="n">key1</span><span class="p">;</span>
  <span class="n">static</span> <span class="n">hosal_gpio_dev_t</span> <span class="n">key2</span><span class="p">;</span>
@@ -316,14 +321,14 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_irq_set(&amp;key1,</span> <span class="pre">HOSAL_IRQ_TRIG_NEG_PULSE,</span> <span class="pre">key1_irq,</span> <span class="pre">&amp;arg1)</span></code> 注册下降沿中断函数 <code class="docutils literal notranslate"><span class="pre">key1_irq</span></code> ,传入参数 <code class="docutils literal notranslate"><span class="pre">arg1</span></code> 。</li>
-<li>不再使用该gpio可调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_finalize</span></code> 释放相应内存。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_irq_set(&amp;key1,</span> <span class="pre">HOSAL_IRQ_TRIG_NEG_PULSE,</span> <span class="pre">key1_irq,</span> <span class="pre">&amp;arg1)</span></code> 注册下降沿中断函数 <code class="docutils literal notranslate"><span class="pre">key1_irq</span></code> ,传入参数 <code class="docutils literal notranslate"><span class="pre">arg1</span></code> 。</p></li>
+<li><p>不再使用该gpio可调用 <code class="docutils literal notranslate"><span class="pre">hosal_gpio_finalize</span></code> 释放相应内存。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_gpio_finalize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">gp1</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -366,17 +371,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

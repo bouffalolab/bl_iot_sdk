@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Freedom Studio &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>Freedom Studio &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,145 +171,146 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="freedom-studio">
-<h1>Freedom Studio<a class="headerlink" href="#freedom-studio" title="永久链接至标题"></a></h1>
+  <section id="freedom-studio">
+<h1>Freedom Studio<a class="headerlink" href="#freedom-studio" title="此标题的永久链接"></a></h1>
 <p>本文档介绍Freedom Studio的使用。下载地址<code class="docutils literal notranslate"><span class="pre">https://github.com/sifive/freedom-studio/releases</span></code>，版本为 <code class="docutils literal notranslate"><span class="pre">FreedomStudio-2019-08-2</span></code> ；Freedom Studio使用需要先安装JDK环境。</p>
-<div class="section" id="jdk">
-<h2>安装JDK环境<a class="headerlink" href="#jdk" title="永久链接至标题"></a></h2>
+<section id="jdk">
+<h2>安装JDK环境<a class="headerlink" href="#jdk" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>JDK下载地址<code class="docutils literal notranslate"><span class="pre">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</span></code>,JDK安装，如图所示；</li>
+<li><p>JDK下载地址<code class="docutils literal notranslate"><span class="pre">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</span></code>,JDK安装，如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image292.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image302.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image3110.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image329.png" />
-</div>
-</div>
-<div class="section" id="id1">
-<h2>导入工程<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="id1">
+<h2>导入工程<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>首先启动 <code class="docutils literal notranslate"><span class="pre">Freedom</span> <span class="pre">Studio</span></code> ，打开工具栏上的<code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">import</span></code>，选择<code class="docutils literal notranslate"><span class="pre">General</span></code>菜单下的<code class="docutils literal notranslate"><span class="pre">Existing</span> <span class="pre">Projects</span> <span class="pre">into</span> <span class="pre">Workspace</span></code>选项导入工程。</li>
+<li><p>首先启动 <code class="docutils literal notranslate"><span class="pre">Freedom</span> <span class="pre">Studio</span></code> ，打开工具栏上的<code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">import</span></code>，选择<code class="docutils literal notranslate"><span class="pre">General</span></code>菜单下的<code class="docutils literal notranslate"><span class="pre">Existing</span> <span class="pre">Projects</span> <span class="pre">into</span> <span class="pre">Workspace</span></code>选项导入工程。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image011.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image021.png" />
-</div>
-</div>
-<div class="section" id="launch">
-<h2>配置工程launch文件<a class="headerlink" href="#launch" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="launch">
+<h2>配置工程launch文件<a class="headerlink" href="#launch" title="此标题的永久链接"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>在工程中选择Debug Configurations，如果导入工程中有如下bl_iot_sdk_debug_freedom_studio_win_bl702等配置，那么该章节可以略过；</li>
+<li><p>在工程中选择Debug Configurations，如果导入工程中有如下bl_iot_sdk_debug_freedom_studio_win_bl702等配置，那么该章节可以略过；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image282.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>如果导入工程中未发现launch文件，此时需要配置一个launch文件用来Debug；本例以配置bl_iot_sdk_debug_freedom_studio_win_bl702为例；在工程中选择Debug Configurations，如图所示；</li>
+<li><p>如果导入工程中未发现launch文件，此时需要配置一个launch文件用来Debug；本例以配置bl_iot_sdk_debug_freedom_studio_win_bl702为例；在工程中选择Debug Configurations，如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image162.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>双击SiFive GDB OpenOCD Debugging，此时会出现一个新的 launch配置文件，选择该新的配置文件；如图所示；</li>
+<li><p>双击SiFive GDB OpenOCD Debugging，此时会出现一个新的 launch配置文件，选择该新的配置文件；如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image172.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Main选项中添加需要Debug工程的elf文件，如果没有此文件，需要编译生成；如图所示；</li>
+<li><p>Main选项中添加需要Debug工程的elf文件，如果没有此文件，需要编译生成；如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image182.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Target DTS 选项默认，如图所示：</li>
+<li><p>Target DTS 选项默认，如图所示：</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image192.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Debugger选项中设置如下，其中if_bflb_link.cfg、tgt_702_xip.cfg、702.init文件，默认在工程的debug目录下；</li>
+<li><p>Debugger选项中设置如下，其中if_bflb_link.cfg、tgt_702_xip.cfg、702.init文件，默认在工程的debug目录下；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image202.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image2110.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Startup选项设置如下：Pre-run/Restart reset：Debug中点击Reset按钮，设备会自动复位；如图所示；</li>
+<li><p>Startup选项设置如下：Pre-run/Restart reset：Debug中点击Reset按钮，设备会自动复位；如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image2210.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Set breakpoint at:设备启动后，程序停在bl702_main函数；如图所示；</li>
+<li><p>Set breakpoint at:设备启动后，程序停在bl702_main函数；如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image239.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Config选项中配置如下：Target Achitecture:选择riscv:rv32；如图所示；</li>
+<li><p>Config选项中配置如下：Target Achitecture:选择riscv:rv32；如图所示；</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image242.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Source选项默认配置，如下：</li>
+<li><p>Source选项默认配置，如下：</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image252.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>Common选项配置，如下：</li>
+<li><p>Common选项配置，如下：</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image262.png" />
-</div>
+</figure>
 </div></blockquote>
-</div>
-<div class="section" id="debug">
-<h2>Debug<a class="headerlink" href="#debug" title="永久链接至标题"></a></h2>
+</section>
+<section id="debug">
+<h2>Debug<a class="headerlink" href="#debug" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>需要将Sipeed RV-Debugger Plus调试板子通过JTAG 连接上设备，调试板与设备通过USB连上电脑, 如图所示：</li>
+<li><p>需要将Sipeed RV-Debugger Plus调试板子通过JTAG 连接上设备，调试板与设备通过USB连上电脑, 如图所示：</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../../_images/image352.png"><img alt="" src="../../../_images/image352.png" style="width: 4.5in;" /></a>
-</div>
+</figure>
 <ul class="simple">
-<li>在 <code class="docutils literal notranslate"><span class="pre">Freedom</span> <span class="pre">Studio</span></code> 中选择 <code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">Configurations</span></code> 选项;
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">Freedom</span> <span class="pre">Studio</span></code> 中选择 <code class="docutils literal notranslate"><span class="pre">Debug</span> <span class="pre">Configurations</span></code> 选项;
 选择 <code class="docutils literal notranslate"><span class="pre">bl_iot_sdk_debug_freedom_studio_win_bl702</span></code> 配置，设备会复位重新运行;
-选择 <code class="docutils literal notranslate"><span class="pre">bl_iot_sdk_debug_freedom_studio_win_attach_bl702</span></code> 配置,表示直接连上设备并不会复位设备,点击相应的Debug按钮进行debug</li>
+选择 <code class="docutils literal notranslate"><span class="pre">bl_iot_sdk_debug_freedom_studio_win_attach_bl702</span></code> 配置,表示直接连上设备并不会复位设备,点击相应的Debug按钮进行debug</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image1111.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image09.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>如果选择 <code class="docutils literal notranslate"><span class="pre">bl_iot_sdk_debug_freedom_studio_win_bl702</span></code> 配置,可以看到程序停在 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">bl702_main()</span></code> 主函数处，此时可以点击下图中的3个按钮。其含义分别为<ul>
-<li>第一个Step Into（F5） 单步执行，遇到子函数就进入并且继续单步执行；</li>
-<li>第二个Step Over （F6）在单步执行时，在函数内遇到子函数时不会进入子函数内单步执行，而是将子函数整个执行完在停止，也就是把子函数整个作为一步；</li>
-<li>第三个Step Return（F7）在单步执行到子函数内时，用Step Return就可以执行完子函数余下部分，并返回上一层函数。</li>
+<li><p>如果选择 <code class="docutils literal notranslate"><span class="pre">bl_iot_sdk_debug_freedom_studio_win_bl702</span></code> 配置,可以看到程序停在 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">bl702_main()</span></code> 主函数处，此时可以点击下图中的3个按钮。其含义分别为</p>
+<ul>
+<li><p>第一个Step Into（F5） 单步执行，遇到子函数就进入并且继续单步执行；</p></li>
+<li><p>第二个Step Over （F6）在单步执行时，在函数内遇到子函数时不会进入子函数内单步执行，而是将子函数整个执行完在停止，也就是把子函数整个作为一步；</p></li>
+<li><p>第三个Step Return（F7）在单步执行到子函数内时，用Step Return就可以执行完子函数余下部分，并返回上一层函数。</p></li>
 </ul>
 </li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image051.png" />
-</div>
-</div>
-</div>
+</figure>
+</section>
+</section>
 
 
            </div>
@@ -338,17 +344,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

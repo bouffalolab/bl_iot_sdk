@@ -8,7 +8,7 @@ DESCRIPTION
 
 ****************************************************************************/
 
-#include <sys/errno.h>
+#include <bt_errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -20,7 +20,7 @@ DESCRIPTION
 #include "uuid.h"
 
 #include "atvv.h"
-#include "log.h"
+#include "bt_log.h"
 
 #define AUDIO_TRANSFER_TIMEOUT K_SECONDS(30)
 struct k_delayed_work audio_timeout_work;

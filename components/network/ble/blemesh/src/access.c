@@ -7,7 +7,7 @@
  */
 
 #include <zephyr.h>
-#include <errno.h>
+#include <bt_errno.h>
 #include <util.h> /* Modified by bouffalo */
 #include <byteorder.h> /* Modified by bouffalo */
 
@@ -17,7 +17,7 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_MESH_DEBUG_ACCESS)
 #define LOG_MODULE_NAME bt_mesh_access
-#include "log.h" /* Modified by bouffalo */
+#include "bt_log.h" /* Modified by bouffalo */
 
 #include "mesh.h"
 #include "adv.h"
@@ -26,9 +26,11 @@
 #include "transport.h"
 #include "access.h"
 #include "foundation.h"
+#include "include/cfg.h"
 
 static const struct bt_mesh_comp *dev_comp;
 static u16_t dev_primary_addr;
+static void (*msg_cb)(uint32_t opcode, struct bt_mesh_msg_ctx *ctx, struct net_buf_simple *buf);
 
 void bt_mesh_model_foreach(void (*func)(struct bt_mesh_model *mod,
 					struct bt_mesh_elem *elem,
@@ -103,7 +105,7 @@ static s32_t next_period(struct bt_mesh_model *mod)
 
 	elapsed = k_uptime_get_32() - pub->period_start;
 
-	BT_DBG("Publishing took %ums", elapsed);
+	BT_DBG("Publishing took %lums", elapsed);
 
 	if (elapsed >= period) {
 		BT_WARN("Publication sending took longer than the period");
@@ -128,7 +130,7 @@ static void publish_sent(int err, void *user_data)
 	}
 
 	if (delay) {
-		BT_DBG("Publishing next time in %dms", delay);
+		BT_DBG("Publishing next time in %ldms", delay);
 		k_delayed_work_submit(&mod->pub->timer, K_MSEC(delay));
 	}
 }
@@ -206,7 +208,7 @@ static void mod_publish(struct k_work *work)
 	BT_DBG("");
 
 	period_ms = bt_mesh_model_pub_period_get(pub->mod);
-	BT_DBG("period %u ms", period_ms);
+	BT_DBG("period %lu ms", period_ms);
 
 	if (pub->count) {
 		err = publish_retransmit(pub->mod);
@@ -461,6 +463,29 @@ struct bt_mesh_elem *bt_mesh_elem_find(u16_t addr)
 	return NULL;
 }
 
+bool bt_mesh_has_addr(uint16_t addr)
+{
+	uint16_t index;
+
+	if (BT_MESH_ADDR_IS_UNICAST(addr)) {
+		return bt_mesh_elem_find(addr) != NULL;
+	}
+
+	if (IS_ENABLED(CONFIG_BT_MESH_ACCESS_LAYER_MSG) && msg_cb) {
+		return true;
+	}
+
+	for (index = 0; index < dev_comp->elem_count; index++) {
+		struct bt_mesh_elem *elem = &dev_comp->elem[index];
+
+		if (bt_mesh_elem_find_group(elem, addr)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 u8_t bt_mesh_elem_count(void)
 {
 	return dev_comp->elem_count;
@@ -480,6 +505,13 @@ static bool model_has_key(struct bt_mesh_model *mod, u16_t key)
 
 	return false;
 }
+
+#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
+bool bt_mesh_model_has_key(struct bt_mesh_model *mod, u16_t key)
+{
+	return model_has_key(mod, key);
+}
+#endif /* CONFIG_AUTO_PTS */
 
 static bool model_has_dst(struct bt_mesh_model *mod, u16_t dst)
 {
@@ -576,17 +608,25 @@ void bt_mesh_model_recv(struct bt_mesh_net_rx *rx, struct net_buf_simple *buf)
 	u32_t opcode;
 	u8_t count;
 	int i;
-
+	#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
+	BT_WARN("app_idx 0x%04x src 0x%04x dst 0x%04x", rx->ctx.app_idx,
+			rx->ctx.addr, rx->ctx.recv_dst);
+	BT_WARN("len %u: %s", buf->len, bt_hex(buf->data, buf->len));
+	#else
 	BT_DBG("app_idx 0x%04x src 0x%04x dst 0x%04x", rx->ctx.app_idx,
-	       rx->ctx.addr, rx->ctx.recv_dst);
+			rx->ctx.addr, rx->ctx.recv_dst);
 	BT_DBG("len %u: %s", buf->len, bt_hex(buf->data, buf->len));
+	#endif /* CONFIG_AUTO_PTS */
 
 	if (get_opcode(buf, &opcode) < 0) {
 		BT_WARN("Unable to decode OpCode");
 		return;
 	}
-
-	BT_DBG("OpCode 0x%08x", opcode);
+	#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
+	BT_WARN("OpCode 0x%08lx", opcode);
+	#else
+	BT_DBG("OpCode 0x%08lx", opcode);
+	#endif /* CONFIG_AUTO_PTS */
 
 	for (i = 0; i < dev_comp->elem_count; i++) {
 		struct bt_mesh_elem *elem = &dev_comp->elem[i];
@@ -606,7 +646,7 @@ void bt_mesh_model_recv(struct bt_mesh_net_rx *rx, struct net_buf_simple *buf)
 
 		op = find_op(models, count, opcode, &model);
 		if (!op) {
-			BT_DBG("No OpCode 0x%08x for elem %d", opcode, i);
+			BT_DBG("No OpCode 0x%08lx for elem %d", opcode, i);
 			continue;
 		}
 
@@ -618,8 +658,11 @@ void bt_mesh_model_recv(struct bt_mesh_net_rx *rx, struct net_buf_simple *buf)
 			continue;
 		}
 
-		if (buf->len < op->min_len) {
-			BT_ERR("Too short message for OpCode 0x%08x", opcode);
+		if ((op->min_len >= 0) && (buf->len < (size_t)op->min_len)) {
+			BT_ERR("Too short message for OpCode 0x%08lx %d", opcode, op->min_len);
+			continue;
+		} else if ((op->min_len < 0) && (buf->len != (size_t)(-op->min_len))) {
+			BT_ERR("Invalid message size for OpCode 0x%08lx %d", opcode, op->min_len);
 			continue;
 		}
 
@@ -668,9 +711,15 @@ static int model_send(struct bt_mesh_model *model,
 		      struct net_buf_simple *msg,
 		      const struct bt_mesh_send_cb *cb, void *cb_data)
 {
+	#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
+	BT_WARN("net_idx 0x%04x app_idx 0x%04x dst 0x%04x", tx->ctx->net_idx,
+			tx->ctx->app_idx, tx->ctx->addr);
+	BT_WARN("len %u: %s", msg->len, bt_hex(msg->data, msg->len));
+	#else
 	BT_DBG("net_idx 0x%04x app_idx 0x%04x dst 0x%04x", tx->ctx->net_idx,
-	       tx->ctx->app_idx, tx->ctx->addr);
+			tx->ctx->app_idx, tx->ctx->addr);
 	BT_DBG("len %u: %s", msg->len, bt_hex(msg->data, msg->len));
+	#endif
 
 	if (!bt_mesh_is_provisioned()) {
 		BT_ERR("Local node is not yet provisioned");

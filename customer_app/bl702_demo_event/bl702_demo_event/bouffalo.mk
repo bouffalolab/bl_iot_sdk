@@ -20,6 +20,10 @@ ifeq ($(CONFIG_PDS_CPU_PWROFF),1)
 LINKER_SCRIPTS := bl702_demo_event_pds.ld
 endif
 
+ifeq ($(CONFIG_SIMPLE_MASTER),1)
+LINKER_SCRIPTS := bl702_demo_event_simple_master.ld
+endif
+
 COMPONENT_ADD_LDFLAGS += -L $(PROJECT_PATH)/$(notdir $(PROJECT_PATH)) $(addprefix -T ,$(LINKER_SCRIPTS))
 ##
 COMPONENT_ADD_LINKER_DEPS := $(addprefix ,$(LINKER_SCRIPTS))

@@ -1,6 +1,6 @@
 
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -1330,6 +1330,19 @@ struct apm_sta_del_cfm
     u8_l vif_idx;
     /// Index of the sta in AP mode
     u8_l sta_idx;
+};
+
+/// Structure containing the parameters of the @ref APM_CHAN_SWITCH_REQ message.
+struct apm_chan_switch_req
+{
+    /// Index of the AP VIF
+    u8_l vif_idx;
+    /// Mode
+    u8_l mode;
+    /// Control channel to which we have to switch
+    struct scan_chan_tag chan;
+    /// CSA count
+    u8_l cs_count;
 };
 
 /// Structure containing the parameters of the @ref APM_STA_ADD_IND message.

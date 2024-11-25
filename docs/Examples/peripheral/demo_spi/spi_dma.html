@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SPI &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>SPI &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="UART_DMA" href="../demo_uart/uart_dma.html"/>
         <link rel="prev" title="rtc DEC格式" href="../demo_rtc/rtc_DEC.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,42 +212,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="spi">
-<span id="spi-index"></span><h1>SPI<a class="headerlink" href="#spi" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="spi">
+<span id="spi-index"></span><h1>SPI<a class="headerlink" href="#spi" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍spi的使用方法。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li>插入将板子的USB电源线；</li>
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_spi</span></code> 工程并下载工程；</li>
-<li>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</li>
-<li>可以用一个开发板环回发送接收，demo中miso和mosi分别为pin0,pin1,将pin0和pin1连接起来，代表自己发给自己</li>
-<li>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_master</span></code> ，会打印发送和接收的数据，可以看到发送和接收一一对应。</li>
+<li><p>插入将板子的USB电源线；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_spi</span></code> 工程并下载工程；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</p></li>
+<li><p>可以用一个开发板环回发送接收，demo中miso和mosi分别为pin0,pin1,将pin0和pin1连接起来，代表自己发给自己</p></li>
+<li><p>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_master</span></code> ，会打印发送和接收的数据，可以看到发送和接收一一对应。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image124.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>也可以用两个开发板，一个作主机一个作从机，都下载该工程，在从机串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_slave</span></code> 或 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_slave</span></code> 启动从机，在主机串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_master</span></code> 或  <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_master</span></code> 启动主机，注意从机需要先启动才能正确接收数据。</li>
+<li><p>也可以用两个开发板，一个作主机一个作从机，都下载该工程，在从机串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_slave</span></code> 或 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_slave</span></code> 启动从机，在主机串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_dma_master</span></code> 或  <code class="docutils literal notranslate"><span class="pre">demo_hosal_spi_master</span></code> 启动主机，注意从机需要先启动才能正确接收数据。</p></li>
 </ul>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image219.png" />
-</div>
+</figure>
 </div></blockquote>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>示例代码</li>
+<li><p>示例代码</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">主机端</span><span class="p">(</span><span class="n">dma模式和中断模式仅仅是dma_enable设置不同</span><span class="p">)</span> <span class="o">*/</span>
 <span class="c1">#include &lt;stdio.h&gt;</span>
@@ -389,7 +394,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_dev_t</span></code> 定义一个spi设备，设置相关属性，调用 <code class="docutils literal notranslate"><span class="pre">hosal_spi_init</span></code> 初始化spi。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_dev_t</span></code> 定义一个spi设备，设置相关属性，调用 <code class="docutils literal notranslate"><span class="pre">hosal_spi_init</span></code> 初始化spi。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_spi_dev_t</span> <span class="n">spi</span><span class="p">;</span>
 <span class="n">spi</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -416,31 +421,31 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_irq_callback_set</span></code> 设置传输完成回调函数。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_irq_callback_set</span></code> 设置传输完成回调函数。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_spi_irq_callback_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spi</span><span class="p">,</span> <span class="n">spi_dma_master_cb</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">spi</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_set_cs</span></code> 来设置主机的cs引脚</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_set_cs</span></code> 来设置主机的cs引脚</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_spi_set_cs</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_send_recv</span></code> 同时发送接收数据，同时也提供 <code class="docutils literal notranslate"><span class="pre">hosal_spi_send</span></code> ，<code class="docutils literal notranslate"><span class="pre">hosal_spi_recv</span></code> 来只发或者只接收数据。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_send_recv</span></code> 同时发送接收数据，同时也提供 <code class="docutils literal notranslate"><span class="pre">hosal_spi_send</span></code> ，<code class="docutils literal notranslate"><span class="pre">hosal_spi_recv</span></code> 来只发或者只接收数据。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_spi_send_recv</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spi</span><span class="p">,</span> <span class="p">(</span><span class="n">uint8_t</span> <span class="o">*</span><span class="p">)</span><span class="n">send_data</span><span class="p">,</span> <span class="p">(</span><span class="n">uint8_t</span> <span class="o">*</span><span class="p">)</span><span class="n">recv_data</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_finalize</span></code> 结束spi的使用</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_spi_finalize</span></code> 结束spi的使用</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_spi_finalize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spi</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -483,17 +488,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

@@ -51,7 +51,7 @@
 #elif defined(CFG_CHIP_BL606P)
 #define LWIP_TCPIP_CORE_LOCKING_INPUT   1
 #else
-#define LWIP_TCPIP_CORE_LOCKING_INPUT   0
+#define LWIP_TCPIP_CORE_LOCKING_INPUT   1
 #endif
 
 /* ---------- Memory options ---------- */
@@ -69,7 +69,7 @@ a lot of data that needs to be copied, this should be set high. */
 #elif defined(CFG_SDIOWIFI)
 #define MEM_SIZE                (24*1024)
 #else
-#define MEM_SIZE                (8*1024)
+#define MEM_SIZE                (16*1024)
 #endif
 
 
@@ -108,10 +108,8 @@ a lot of data that needs to be copied, this should be set high. */
 #define PBUF_POOL_SIZE          200
 #elif defined(CFG_CHIP_BL606P)
 #define PBUF_POOL_SIZE          200
-#elif defined(BL602_MATTER_SUPPORT)
-#define PBUF_POOL_SIZE          16
 #else
-#if defined(CFG_ETHERNET_ENABLE)
+#if defined(CFG_ETHERNET_ENABLE) || defined(BL602_MATTER_SUPPORT)
 #define PBUF_POOL_SIZE          12
 #else
 #define PBUF_POOL_SIZE          0
@@ -140,9 +138,12 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_QUEUE_OOSEQ         1
 
 /* TCP Maximum segment size. */
+#if defined(CFG_LESS_RAM)
 #define TCP_MSS                 (1500 - 40)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 //#define TCP_MSS                 (1500 - 80)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
-//#define TCP_MSS                 (800 - 40 - 80 + 8)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+#else
+#define TCP_MSS                 (800 - 40 - 80 + 8)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+#endif
 
 
 /* TCP sender buffer space (bytes). */
@@ -154,7 +155,7 @@ a lot of data that needs to be copied, this should be set high. */
 #ifdef CFG_ETHERNET_ENABLE
 #define TCP_SND_BUF             (11*TCP_MSS)
 #else
-#define TCP_SND_BUF             (3*TCP_MSS)
+#define TCP_SND_BUF             (6*TCP_MSS)
 #endif
 #endif
 
@@ -181,7 +182,7 @@ a lot of data that needs to be copied, this should be set high. */
 #ifdef CFG_ETHERNET_ENABLE
 #define TCP_WND                 (6*TCP_MSS)
 #else
-#define TCP_WND                 (3*TCP_MSS)
+#define TCP_WND                 (6*TCP_MSS)
 #endif
 #endif
 
@@ -339,9 +340,9 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCPIP_THREAD_STACKSIZE          4000
 #endif /* CFG_ETHERNET_ENABLE */
 #define TCPIP_MBOX_SIZE                 50
-#define DEFAULT_UDP_RECVMBOX_SIZE       50
-#define DEFAULT_TCP_RECVMBOX_SIZE       50
-#define DEFAULT_ACCEPTMBOX_SIZE         50
+#define DEFAULT_UDP_RECVMBOX_SIZE       2000
+#define DEFAULT_TCP_RECVMBOX_SIZE       2000
+#define DEFAULT_ACCEPTMBOX_SIZE         2000
 #define DEFAULT_THREAD_STACKSIZE        500
 #define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2) 
 
@@ -351,7 +352,7 @@ a lot of data that needs to be copied, this should be set high. */
 #elif defined(CFG_CHIP_BL606P)
 #define LWIP_TCPIP_CORE_LOCKING         1
 #else
-#define LWIP_TCPIP_CORE_LOCKING         0
+#define LWIP_TCPIP_CORE_LOCKING         1
 #endif
 #define LWIP_SOCKET_SET_ERRNO           1
 #define SO_REUSE                        1
@@ -364,7 +365,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define LWIP_DNS                        1
 #define LWIP_DNS_SECURE                 0
 
-#define MEMP_MEM_MALLOC                 0
+#define MEMP_MEM_MALLOC                 1
 #define LWIP_SUPPORT_CUSTOM_PBUF        1
 
 #define PBUF_LINK_ENCAPSULATION_HLEN    128u

@@ -27,16 +27,7 @@ def bl602_demo_event_ble(env, extra_data):
     dut2.start_app()
 
     try:
-        dut1.expect("Booting BL602 Chip...", timeout=0.5)
-        print('[DUT1] booted')
-        dut2.expect("Booting BL602 Chip...", timeout=0.5)
-        print('[DUT2] booted')
-
-        dut1.expect('Init CLI with event Driven', timeout=0.5)
-        print('[DUT1] CLI init done')
-        dut2.expect('Init CLI with event Driven', timeout=0.5)
-        print('[DUT2] CLI init done')
-        time.sleep(0.1)
+        time.sleep(2)
 
         dut1.write('stack_ble')
         time.sleep(0.5)

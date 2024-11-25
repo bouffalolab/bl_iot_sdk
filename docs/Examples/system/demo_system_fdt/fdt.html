@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>FDT &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>FDT &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,24 +171,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="fdt">
-<span id="fdt-index"></span><h1>FDT<a class="headerlink" href="#fdt" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="fdt">
+<span id="fdt-index"></span><h1>FDT<a class="headerlink" href="#fdt" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍如何从fdt文件中获取相关的配置。</p>
-</div>
-<div class="section" id="id2">
-<h2>使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/sdk_app_fdt</span></code> 工程并下载对应的bin文件；</li>
-<li>使用 <code class="docutils literal notranslate"><span class="pre">fdt</span></code> 命令将fdt文件中的wifi配置解析出来，并且打印出整个文件内容。</li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/sdk_app_fdt</span></code> 工程并下载对应的bin文件；</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">fdt</span></code> 命令将fdt文件中的wifi配置解析出来，并且打印出整个文件内容。</p></li>
 </ul>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>本实例为了方便测试，将dts文件转换成数组的形式存放，转换命令 <code class="docutils literal notranslate"><span class="pre">xxd</span> <span class="pre">-i</span> <span class="pre">demo.dts</span> <span class="pre">&gt;</span> <span class="pre">demo.c</span></code>。</p>
 <ul class="simple">
-<li>以wifi为例，通过 <code class="docutils literal notranslate"><span class="pre">wifi</span></code> 这个根节点获取其 <code class="docutils literal notranslate"><span class="pre">offset</span></code></li>
+<li><p>以wifi为例，通过 <code class="docutils literal notranslate"><span class="pre">wifi</span></code> 这个根节点获取其 <code class="docutils literal notranslate"><span class="pre">offset</span></code></p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wifi_offset = fdt_subnode_offset(fdt, 0, &quot;wifi&quot;);
 if (!(wifi_offset &gt; 0)) {
@@ -192,13 +197,13 @@ if (!(wifi_offset &gt; 0)) {
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过获取的 <code class="docutils literal notranslate"><span class="pre">wifi_offset</span></code> 获取子节点的 <code class="docutils literal notranslate"><span class="pre">offset</span></code></li>
+<li><p>通过获取的 <code class="docutils literal notranslate"><span class="pre">wifi_offset</span></code> 获取子节点的 <code class="docutils literal notranslate"><span class="pre">offset</span></code></p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">offset1</span> <span class="o">=</span> <span class="n">fdt_subnode_offset</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">wifi_offset</span><span class="p">,</span> <span class="s2">&quot;ap&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过获取的 <code class="docutils literal notranslate"><span class="pre">offset1</span></code> 获取相关的属性信息</li>
+<li><p>通过获取的 <code class="docutils literal notranslate"><span class="pre">offset1</span></code> 获取相关的属性信息</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>// wifi-&gt;ap-&gt;ssid = string
 countindex = fdt_stringlist_count(fdt, offset1, &quot;ssid&quot;);
@@ -237,7 +242,7 @@ if (countindex &gt; 0) {
 </pre></div>
 </div>
 <ul class="simple">
-<li>dump文件信息</li>
+<li><p>dump文件信息</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blfdtdump</span><span class="p">(</span><span class="n">tc_wifi_dtb</span><span class="p">,</span> <span class="n">TC_WIFI_DTB_LEN</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
@@ -245,12 +250,12 @@ if (countindex &gt; 0) {
 <p>其中 <code class="docutils literal notranslate"><span class="pre">tc_wifi_dtb</span></code> 为数组的基地址， <code class="docutils literal notranslate"><span class="pre">TC_WIFI_DTB_LEN</span></code> 为数组的大小。</p>
 <p>下图为dump下来的部分信息，与源文件对应信息一致。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image137.png" />
-</div>
+</figure>
 </div></blockquote>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -284,17 +289,18 @@ if (countindex &gt; 0) {
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

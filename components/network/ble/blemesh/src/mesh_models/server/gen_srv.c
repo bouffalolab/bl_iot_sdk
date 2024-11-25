@@ -2,7 +2,7 @@
 #include <net/buf.h>
 #include "mesh_model_opcode.h"
 #include "gen_srv.h"
-#include "log.h"
+#include "bt_log.h"
 
 bt_mesh_model_gen_cb gen_cb;
 

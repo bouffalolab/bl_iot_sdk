@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -29,9 +29,7 @@
  */
 #include <utils_bitmap_window.h>
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 #include <cli.h>
-#endif
 #include <stdio.h>
 
 static void cmd_bitmap_window_test(char *buf, int len, int argc, char **argv)
@@ -89,11 +87,9 @@ static void cmd_bitmap_window_test(char *buf, int len, int argc, char **argv)
 
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
   {"utils_bitmap_widow_test", "bitmap window test", cmd_bitmap_window_test},
 };
-#endif
 
 int utils_bitmap_window_cli_init(void)
 {

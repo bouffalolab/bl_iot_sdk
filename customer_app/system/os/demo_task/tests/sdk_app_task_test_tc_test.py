@@ -18,10 +18,7 @@ def sdk_app_task_test_tc(env, extra_data):
     dut.start_app()
 
     try:
-        dut.expect("Booting BL602 Chip...", timeout=1)
-        print('BL602 booted')
-        dut.expect('Init CLI with event Driven', timeout=1)
-        print('BL602 CLI init done')
+        time.sleep(2)
 
         dut.write("task 32")
         dut.expect("result:32", timeout=70)

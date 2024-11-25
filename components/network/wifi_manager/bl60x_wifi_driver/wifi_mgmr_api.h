@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -41,6 +41,8 @@
  ****************************************************************************************
  */
 
+#define WIFI_MGMR_AP_CHAN_SWITCH_COUNT_DEFAULT 10
+
 typedef struct
 {
     uint8_t wep40 : 1;
@@ -63,6 +65,7 @@ int wifi_mgmr_api_ifaceup(void);
 int wifi_mgmr_api_sniffer_enable(void);
 int wifi_mgmr_api_ap_start(char *ssid, char *passwd, int channel, uint8_t hidden_ssid, int8_t max_sta_supported, uint8_t use_dhcp_server);
 int wifi_mgmr_api_ap_stop(void);
+int wifi_mgmr_api_chan_switch(int channel, uint8_t cs_count);
 int wifi_mgmr_api_idle(void);
 int wifi_mgmr_api_channel_set(int channel, int use_40Mhz);
 int wifi_mgmr_api_raw_send(uint8_t *pkt, int len);
@@ -70,7 +73,7 @@ int wifi_mgmr_api_set_country_code(char *country_code);
 
 /*section for fw api*/
 int wifi_mgmr_api_fw_disconnect(void);
-int wifi_mgmr_api_fw_scan(wifi_mgmr_scan_params_t *scan_params);
+int wifi_mgmr_api_fw_scan(wifi_mgmr_scan_params_t scan_params);
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_OFF           (1)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_ON            (2)
 #define WIFI_MGMR_API_FW_POWERSAVING_MODE_DYNAMIC_ON    (3)

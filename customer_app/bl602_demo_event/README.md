@@ -9,6 +9,7 @@
 # Ble编译脚本说明
 genblecontroller: build Wi-Fi and ble controller. Using uart hci cmd to communicate with ble controller. 
 genblehogp:       build Wi-Fi and BLE. BLE as slave, and enable HOGP service.
+genblem1s1:       build Wi-Fi and BLE. 1 BLE connection is supported, BL602 can be master or slave in this connection.
 genblem0s1:       build Wi-Fi and BLE. 1 BLE connection is supported, BL602 can only be slave in this connection.
 genblem0s1s:      build Wi-Fi and BLE. based on genblem0s1, add BLE scan feature.
 genblemesh:       build Wi-Fi and BLE mesh. mesh application without mesh model code.

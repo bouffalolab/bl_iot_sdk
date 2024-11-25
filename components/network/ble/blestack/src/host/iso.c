@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <byteorder.h>
-#include <sys/errno.h>
+#include <bt_errno.h>
 
 #include <hci_host.h>
 #include <bluetooth.h>
@@ -21,7 +21,7 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_AUDIO_DEBUG_ISO)
 #define LOG_MODULE_NAME bt_iso
-#include "log.h"
+#include "bt_log.h"
 
 #if !defined(BFLB_DYNAMIC_ALLOC_MEM)
 NET_BUF_POOL_FIXED_DEFINE(iso_tx_pool, CONFIG_BT_ISO_TX_BUF_COUNT,
@@ -80,7 +80,11 @@ void hci_iso(struct net_buf *buf)
 
 	BT_DBG("buf %p", buf);
 
-	BT_ASSERT(buf->len >= sizeof(*hdr));
+	if (buf->len < sizeof(*hdr)) {
+		BT_ERR("Invalid HCI ISO packet size (%u)", buf->len);
+		net_buf_unref(buf);
+		return;
+	}
 
 	hdr = net_buf_pull_mem(buf, sizeof(*hdr));
 	len = sys_le16_to_cpu(hdr->len);

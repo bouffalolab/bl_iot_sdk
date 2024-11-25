@@ -25,7 +25,7 @@
 #endif
 #include "hci_driver.h"
 #include "ble_lib_api.h"
-#include "log.h"
+#include "bt_log.h"
 #if defined(CONFIG_BLE_TP_SERVER)
 #include "ble_tp_svc.h"
 #endif

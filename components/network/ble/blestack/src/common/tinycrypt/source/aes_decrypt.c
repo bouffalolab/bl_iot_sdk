@@ -30,7 +30,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <aes.h>
+#include <tinycrypt/include/tinycrypt/aes.h>
 #include <constants.h>
 #include <utils.h>
 

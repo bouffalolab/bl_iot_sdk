@@ -8,14 +8,7 @@
 
 #include <string.h>
 
-#if defined(MBEDTLS_SELF_TEST)
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
-#include <stdio.h>
-#define mbedtls_printf printf
-#endif /* MBEDTLS_PLATFORM_C */
-#endif /* MBEDTLS_SELF_TEST */
 
 #define SHA1_VALIDATE_RET(cond)                             \
     MBEDTLS_INTERNAL_VALIDATE_RET( cond, MBEDTLS_ERR_SHA1_BAD_INPUT_DATA )
@@ -60,6 +53,20 @@ int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx )
 void mbedtls_sha1_starts( mbedtls_sha1_context *ctx )
 {
     mbedtls_sha1_starts_ret( ctx );
+}
+#endif
+
+int mbedtls_internal_sha1_process( mbedtls_sha1_context *ctx,
+                                   const unsigned char data[64] )
+{
+    return mbedtls_sha1_update_ret( ctx, data, 64 );
+}
+
+#if !defined(MBEDTLS_DEPRECATED_REMOVED)
+void mbedtls_sha1_process( mbedtls_sha1_context *ctx,
+                           const unsigned char data[64] )
+{
+    mbedtls_internal_sha1_process( ctx, data );
 }
 #endif
 

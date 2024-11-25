@@ -5,13 +5,13 @@
 #include <zephyr.h>
 #include <util.h>
 
-//#include <net/buf.h>
+#include <conn.h>
 #include <bluetooth.h>
 #include <hci_core.h>
 
 #include "multi_adv.h"
 #include "work_q.h"
-#include "log.h"
+#include "bt_log.h"
 
 static struct multi_adv_instant g_multi_adv_list[MAX_MULTI_ADV_INSTANT];
 static struct multi_adv_scheduler g_multi_adv_scheduler;

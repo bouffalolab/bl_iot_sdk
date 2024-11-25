@@ -12,7 +12,7 @@
 #include <zephyr.h>
 #include <buf.h>
 #include "monitor.h"
-#include "log.h"
+#include "bt_log.h"
 
 void bt_monitor_send(uint16_t opcode, const void *data, size_t len)
 {

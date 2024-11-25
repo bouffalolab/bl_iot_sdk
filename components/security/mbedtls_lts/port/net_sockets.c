@@ -39,11 +39,7 @@
 #endif
 #endif
 
-#if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"
-#else
-#include <stdlib.h>
-#endif
 
 #include "mbedtls/net_sockets.h"
 #include "mbedtls/error.h"

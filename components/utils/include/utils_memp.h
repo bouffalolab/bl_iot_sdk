@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -47,7 +47,6 @@ typedef struct pool {
 }utils_memp_pool_t;
 
 int utils_memp_init(utils_memp_pool_t **pool, uint16_t node_size, uint16_t pool_cap, uint8_t align_req);
-int utils_memp_init_alloced(utils_memp_pool_t *pool, uint16_t node_size, uint16_t pool_cap, uint8_t align_req);
 int utils_memp_deinit(utils_memp_pool_t *pool);
 void *utils_memp_malloc(utils_memp_pool_t *pool);
 int utils_memp_free(utils_memp_pool_t *pool, void *node);

@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>rtc BCD格式 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>rtc BCD格式 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="rtc DEC格式" href="rtc_DEC.html"/>
         <link rel="prev" title="RNG" href="../demo_rng/rng.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,34 +212,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="rtc-bcd">
-<span id="rtc-bcd-index"></span><h1>rtc BCD格式<a class="headerlink" href="#rtc-bcd" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="rtc-bcd">
+<span id="rtc-bcd-index"></span><h1>rtc BCD格式<a class="headerlink" href="#rtc-bcd" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍rtc BCD格式的使用方法。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li>插入将板子的USB电源线；</li>
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_rtc</span></code> 工程并下载工程；</li>
-<li>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</li>
-<li>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_rtc_BCD</span></code> ，启动rtc BCD的demo。</li>
-<li>此时串口会先打印设置的rtc时间，然后等待10s，会打印当前的时间，应为设置的时间加上10s</li>
+<li><p>插入将板子的USB电源线；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_rtc</span></code> 工程并下载工程；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</p></li>
+<li><p>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_rtc_BCD</span></code> ，启动rtc BCD的demo。</p></li>
+<li><p>此时串口会先打印设置的rtc时间，然后等待10s，会打印当前的时间，应为设置的时间加上10s</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image218.png" />
-</div>
+</figure>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>示例代码</li>
+<li><p>示例代码</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
 <span class="c1">#include &lt;cli.h&gt;</span>
@@ -293,7 +298,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_dev_t</span></code> 定义一个rtc设备，并设置port，格式设置为BCD格式。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_dev_t</span></code> 定义一个rtc设备，并设置port，格式设置为BCD格式。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="n">hosal_rtc_dev_t</span> <span class="n">rtc</span><span class="p">;</span>
@@ -302,7 +307,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>调用 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_init</span></code> 初始化rtc。</li>
+<li><p>调用 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_init</span></code> 初始化rtc。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">hosal_rtc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rtc</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
@@ -311,7 +316,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_set_time</span></code> 来设置rtc时间，此时按照BCD格式设置。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_set_time</span></code> 来设置rtc时间，此时按照BCD格式设置。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 <span class="n">hosal_rtc_time_t</span> <span class="n">time1</span><span class="p">;</span>
@@ -328,7 +333,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_get_time</span></code> 接口来获取rtc时间, 注意获取到的时间也是BCD格式的</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_get_time</span></code> 接口来获取rtc时间, 注意获取到的时间也是BCD格式的</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_rtc_time_t</span> <span class="n">time2</span><span class="p">;</span>
 <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">time</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">hosal_rtc_time_t</span><span class="p">));</span>
@@ -346,13 +351,13 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_finalize</span></code> 结束此rtc的使用</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_rtc_finalize</span></code> 结束此rtc的使用</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_rtc_finalize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rtc</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -395,17 +400,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

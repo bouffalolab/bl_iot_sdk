@@ -384,6 +384,7 @@ static inline int __deprecated bt_conn_security(struct bt_conn *conn,
  *  @return Encryption key size.
  */
 u8_t bt_conn_enc_key_size(struct bt_conn *conn);
+struct bt_conn *bt_conn_get(u8_t id);
 
 enum bt_security_err {
 	/** Security procedure successful. */
@@ -502,6 +503,11 @@ struct bt_conn_cb {
 	 *  @param rx_phy Receive phy.
 	 */
 	void (*le_phy_updated)(struct bt_conn *conn, u8_t tx_phy, u8_t rx_phy);
+
+#if defined(CONFIG_USER_DATA_LEN_UPDATE)
+	void (*le_datalen_updated)(struct bt_conn *conn, u16_t tx_octets, u16_t tx_time,u16_t rx_octets,u16_t rx_time);
+#endif
+
 #if defined(CONFIG_BT_SMP)
 	/** @brief Remote Identity Address has been resolved.
 	 *
@@ -556,6 +562,8 @@ void bt_clear_smpflag(smp_test_id id);
  *  @param cb Callback struct.
  */
 void bt_conn_cb_register(struct bt_conn_cb *cb);
+void bt_conn_cb_unregister(struct bt_conn_cb *cb);
+void bt_conn_cb_clear(void);
 
 /** Enable/disable bonding.
  *
@@ -934,6 +942,35 @@ struct bt_br_conn_param {
 struct bt_conn *bt_conn_create_br(const bt_addr_t *peer,
 				  const struct bt_br_conn_param *param);
 
+#if defined(BFLB_BLE)
+#if defined(CONFIG_BT_BREDR)
+struct esco_para {
+	u32_t  tx_bandwidth;
+	u32_t  rx_bandwidth;
+	u16_t  max_latency;
+	u16_t  content_format;
+	u8_t   retrans_effort;
+	u16_t  pkt_type;
+};
+
+#define ESCO_PARAM(tx,rx,latency,format,retrans,type) \
+	(&(struct esco_para) { \
+		.tx_bandwidth = (tx), \
+		.rx_bandwidth = (rx), \
+		.max_latency = (latency), \
+		.content_format = (format), \
+		.retrans_effort = (retrans), \
+		.pkt_type = (type), \
+	})
+
+#define SCO_PARAM_D0 ESCO_PARAM(8000,8000,0xffff,BT_VOICE_CVSD_16BIT,0,HCI_PKT_TYPE_HV1)
+#define SCO_PARAM_D1 ESCO_PARAM(8000,8000,0xffff,BT_VOICE_CVSD_16BIT,0,HCI_PKT_TYPE_HV3)
+
+#define ESCO_PARAM_S1 ESCO_PARAM(8000,8000,7,BT_VOICE_CVSD_16BIT,1,HCI_PKT_TYPE_ESCO_EV3)
+#define ESCO_PARAM_S2 ESCO_PARAM(8000,8000,7,BT_VOICE_CVSD_16BIT,1,HCI_PKT_TYPE_ESCO_2EV3)
+#define ESCO_PARAM_S3 ESCO_PARAM(8000,8000,10,BT_VOICE_CVSD_16BIT,1,HCI_PKT_TYPE_ESCO_2EV3)
+#define ESCO_PARAM_S4 ESCO_PARAM(8000,8000,12,BT_VOICE_CVSD_16BIT,2,HCI_PKT_TYPE_ESCO_2EV3)
+
 /** @brief Initiate an SCO connection to a remote device.
  *
  *  Allows initiate new SCO link to remote peer using its address.
@@ -943,7 +980,51 @@ struct bt_conn *bt_conn_create_br(const bt_addr_t *peer,
  *
  *  @return Valid connection object on success or NULL otherwise.
  */
-struct bt_conn *bt_conn_create_sco(const bt_addr_t *peer);
+struct bt_conn *bt_conn_create_sco(const bt_addr_t *peer,const struct esco_para *para);
+
+#endif
+#if defined (BFLB_BLE_GAP_SET_PERIPHERAL_PREF_PARAMS)
+/** @brief Set peripheral preferred connection parameters
+ *
+ * @param  param the preferred connection parameters to be set.
+ *
+ * @return 0 in case of success or negative value in case of error.
+ */
+int bt_conn_set_peripheral_pref_params(struct bt_le_conn_param *param);
+
+/** @brief Get peripheral preferred connection parameters
+ *
+ * @param param this API will assign peripheral preferred connection parameters.
+ *
+ * @return 0 in case of success or negative value in case of error.
+ */
+int bt_conn_get_peripheral_pref_params(struct bt_le_conn_param *param);
+
+#if defined (BFLB_BLE_ENABLE_OR_DISABLE_SLAVE_PREF_CONN_PARAM_UDPATE)
+/** @brief Enable or disable peripheral preferred connection parameters udpate
+ *
+ * @param conn Connection object.
+ * @param enable true:enable,false:disable
+ *
+ * @return 0 in case of success or negative value in case of error.
+ */
+int bt_conn_enable_peripheral_pref_param_update(struct bt_conn *conn, bool enable);
+#endif
+#endif
+
+#if defined(BFLB_BLE_SUPPORT_CUSTOMIZED_SCAN_PARAMERS_IN_GENERAL_CONN_ESTABLISH)
+/** @brief Set scan interval and scan window in scanning procedure of ble general conection establishement.
+ *
+ * @param scan_interval scan interval.
+ * @param scan_window  scan window.
+ *
+ * @return 0 in case of success or negative value in case of error.
+ * In ble general conection establishement,the default scan interval is 30ms and the default scan window is 30 ms in scanning procedure.
+ * Appllication layer shall call this API before bt_conn_create_le.
+ */
+int bt_conn_set_scan_parameters_in_general_conn_establish(u16_t scan_interval, u16_t scan_window);
+#endif //BFLB_BLE_SUPPORT_CUSTOMIZED_SCAN_PARAMERS_IN_GENERAL_CONN_ESTABLISH
+#endif
 
 #ifdef __cplusplus
 }

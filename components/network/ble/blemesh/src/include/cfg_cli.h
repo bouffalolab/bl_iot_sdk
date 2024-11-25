@@ -467,6 +467,10 @@ int bt_mesh_cfg_mod_app_get_vnd(u16_t net_idx, u16_t addr, u16_t elem_addr,
 struct bt_mesh_cfg_mod_pub {
 	/** Publication destination address. */
 	u16_t  addr;
+#if defined(CONFIG_BT_MESH_PTS) || defined(CONFIG_AUTO_PTS)
+    /** Virtual address UUID, or NULL if this is not a virtual address. */
+    const uint8_t *uuid;
+#endif /* CONFIG_AUTO_PTS */
 	/** Application index to publish with. */
 	u16_t  app_idx;
 	/** Friendship credential flag. */

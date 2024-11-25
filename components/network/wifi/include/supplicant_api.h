@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -194,6 +194,7 @@ typedef struct {
     char passphrase[64 + 1];
     bool pmf_required;
     uint8_t mgmt_group_cipher; // should always be WPA_CIPHER_AES_128_CMAC if PMFR=1
+    uint8_t quick_conn;
 } wifi_connect_parm_t;
 
 typedef struct {
@@ -202,7 +203,7 @@ typedef struct {
     struct wifi_ssid ssid;
     wifi_auth_mode_t auth_mode;
     wifi_cipher_type_t pairwise_cipher;
-    char passphrase[64 + 1];
+    char passphrase[64];
 } wifi_ap_parm_t;
 
 struct wpa_funcs {

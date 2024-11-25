@@ -60,7 +60,7 @@ void cmd_fastlz(char *buf, int len, int argc, char **argv)
     if (memcmp(buf2, filebuf.buf, filebuf.bufsize)) {
         printf("final comparision of failed \r\n");
     } else {
-        printf("\r\n %s test OK!\r\n");
+        printf("\r\n test OK!\r\n");
     }
 
 }

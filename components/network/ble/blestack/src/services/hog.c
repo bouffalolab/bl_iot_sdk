@@ -11,7 +11,7 @@
 #include <zephyr/types.h>
 #include <stddef.h>
 #include <string.h>
-#include <sys/errno.h>
+#include <bt_errno.h>
 #include <byteorder.h>
 #include <zephyr.h>
 
@@ -20,7 +20,7 @@
 #include <uuid.h>
 #include <gatt.h>
 #include "hog.h"
-#include "log.h"
+#include "bt_log.h"
 
 enum {
 	HIDS_REMOTE_WAKE = BIT(0),

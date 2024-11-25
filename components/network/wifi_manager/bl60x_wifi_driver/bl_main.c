@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -241,15 +241,6 @@ int bl_main_monitor()
     return 0;
 }
 
-int bl_main_monitor_disable()
-{
-    struct mm_monitor_cfm cfm;
-
-    memset(&cfm, 0, sizeof(cfm));
-    bl_send_monitor_disable(&wifi_hw, &cfm);
-    return 0;
-}
-
 int bl_main_phy_up()
 {
     int error = 0;
@@ -471,6 +462,11 @@ int bl_main_apm_remove_all_sta()
 int bl_main_conf_max_sta(uint8_t max_sta_supported)
 {
     return bl_send_apm_conf_max_sta_req(&wifi_hw, max_sta_supported);
+}
+
+int bl_main_apm_chan_switch(uint8_t vif_index, int channel, uint8_t cs_cnt)
+{
+    return bl_send_apm_chan_switch_req(&wifi_hw, vif_index, channel, cs_cnt);
 }
 
 int bl_main_cfg_task_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, void *arg1, void *arg2)

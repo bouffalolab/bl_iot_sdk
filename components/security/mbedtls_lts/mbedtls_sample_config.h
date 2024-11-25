@@ -110,7 +110,7 @@
 #define MBEDTLS_DHM_C
 #define MBEDTLS_SHA1_C
 #define MBEDTLS_SHA256_C
-/* #define MBEDTLS_SHA512_C */
+#define MBEDTLS_SHA512_C
 
 #define MBEDTLS_SSL_COOKIE_C
 #define MBEDTLS_SSL_CLI_C

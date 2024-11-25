@@ -119,8 +119,6 @@ int hostapd_mac_comp_empty(const void *a)
 
 static int hostapd_derive_psk(struct hostapd_ssid *ssid)
 {
-    u8 phrase_len = strlen(ssid->wpa_passphrase);
-
     ssid->wpa_psk = (struct hostapd_wpa_psk *)os_zalloc(sizeof(struct hostapd_wpa_psk));
     if (ssid->wpa_psk == NULL) {
     	wpa_printf(MSG_ERROR, "Unable to alloc space for PSK");
@@ -129,14 +127,11 @@ static int hostapd_derive_psk(struct hostapd_ssid *ssid)
     wpa_hexdump_ascii(MSG_DEBUG, "SSID",
               (u8 *) ssid->ssid, ssid->ssid_len);
     wpa_hexdump_ascii_key(MSG_DEBUG, "PSK (ASCII passphrase)",
-              (u8 *) ssid->wpa_passphrase, phrase_len);
-    if (phrase_len < 64) {
-        pbkdf2_sha1(ssid->wpa_passphrase,
-                (char *)ssid->ssid, ssid->ssid_len,
-                4096, ssid->wpa_psk->psk, PMK_LEN);
-    } else {
-        hexstr2bin(ssid->wpa_passphrase, ssid->wpa_psk->psk, 32);
-    }
+                  (u8 *) ssid->wpa_passphrase,
+                  strlen(ssid->wpa_passphrase));
+    pbkdf2_sha1(ssid->wpa_passphrase,
+            (char *)ssid->ssid, ssid->ssid_len,
+            4096, ssid->wpa_psk->psk, PMK_LEN);
     wpa_hexdump_key(MSG_DEBUG, "PSK (from passphrase)",
             ssid->wpa_psk->psk, PMK_LEN);
     return 0;

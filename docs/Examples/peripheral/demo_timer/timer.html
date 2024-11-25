@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>timer &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>timer &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="Protocols" href="../../protocols/index.html"/>
         <link rel="prev" title="WDG" href="../demo_wdg/wdg.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,44 +212,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="timer">
-<span id="timer-index"></span><h1>timer<a class="headerlink" href="#timer" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="timer">
+<span id="timer-index"></span><h1>timer<a class="headerlink" href="#timer" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍timer的使用方法。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul>
-<li><p class="first">给板子插上USB电源线，USB电源线默认连接UART0；</p>
-</li>
-<li><p class="first">编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_timer</span></code> 工程并下载工程；</p>
-</li>
-<li><p class="first">打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</p>
-</li>
-<li><p class="first">串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_timer_start</span></code> ，启动timer的demo程序，demo中定时100us反转gpio3的电平。</p>
+<li><p>给板子插上USB电源线，USB电源线默认连接UART0；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_timer</span></code> 工程并下载工程；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart消息）。</p></li>
+<li><p>串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_timer_start</span></code> ，启动timer的demo程序，demo中定时100us反转gpio3的电平。</p>
 <blockquote>
-<div><div class="figure align-center">
+<div><figure class="align-center">
 <img alt="../../../_images/image125.png" src="../../../_images/image125.png" />
-</div>
-<div class="figure align-center">
+</figure>
+<figure class="align-center">
 <img alt="../../../_images/image220.png" src="../../../_images/image220.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_timer_stop</span></code> 停掉timer。</p>
-</li>
+<li><p>串口中输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_timer_stop</span></code> 停掉timer。</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>示例代码</li>
+<li><p>示例代码</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
 <span class="c1">#include &lt;cli.h&gt;</span>
@@ -285,7 +286,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_pwm_timer_t</span></code> 定义一个timer的设备，需要设置timer的port(通道0或1）对应timer0和timer1，设定timer的定时时间，定时模式，回调函数。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_pwm_timer_t</span></code> 定义一个timer的设备，需要设置timer的port(通道0或1）对应timer0和timer1，设定timer的定时时间，定时模式，回调函数。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_timer_dev_t</span> <span class="n">timer</span><span class="p">;</span>
 <span class="n">timer</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -296,25 +297,25 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_timer_init</span></code> 初始化timer。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_timer_init</span></code> 初始化timer。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_timer_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_timer_start</span></code> 开始输出timer计时。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_timer_start</span></code> 开始输出timer计时。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_timer_start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>调用 <code class="docutils literal notranslate"><span class="pre">hosal_timer_stop</span></code> 来停止timer。</li>
+<li><p>调用 <code class="docutils literal notranslate"><span class="pre">hosal_timer_stop</span></code> 来停止timer。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_timer_stop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -357,17 +358,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

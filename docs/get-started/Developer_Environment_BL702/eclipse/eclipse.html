@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Eclipse &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>Eclipse &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,60 +171,61 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="eclipse">
-<h1>Eclipse<a class="headerlink" href="#eclipse" title="永久链接至标题"></a></h1>
+  <section id="eclipse">
+<h1>Eclipse<a class="headerlink" href="#eclipse" title="此标题的永久链接"></a></h1>
 <p>本文档介绍Eclipse的使用。</p>
-<div class="section" id="id1">
-<h2>导入工程<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<section id="id1">
+<h2>导入工程<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>首先启动 <code class="docutils literal notranslate"><span class="pre">eclipse</span></code> ，打开工具栏上的<code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">import</span></code>，选择<code class="docutils literal notranslate"><span class="pre">General</span></code>菜单下的<code class="docutils literal notranslate"><span class="pre">Existing</span> <span class="pre">Projects</span> <span class="pre">into</span> <span class="pre">Workspace</span></code>选项导入工程。</li>
+<li><p>首先启动 <code class="docutils literal notranslate"><span class="pre">eclipse</span></code> ，打开工具栏上的<code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">import</span></code>，选择<code class="docutils literal notranslate"><span class="pre">General</span></code>菜单下的<code class="docutils literal notranslate"><span class="pre">Existing</span> <span class="pre">Projects</span> <span class="pre">into</span> <span class="pre">Workspace</span></code>选项导入工程。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image01.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image02.png" />
-</div>
-</div>
-<div class="section" id="debug">
-<h2>Debug<a class="headerlink" href="#debug" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="debug">
+<h2>Debug<a class="headerlink" href="#debug" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>首先让板子跑起来，确认eclipse左上方的工具栏配置如下图1所示，然后点击第一个红色框框起来的图标<code class="docutils literal notranslate"><span class="pre">debug</span></code>按钮，eclipse会先编译工程，完成后eclipse下方的 <code class="docutils literal notranslate"><span class="pre">Console</span></code> 窗口可以看到如下图2所示log。</li>
+<li><p>首先让板子跑起来，确认eclipse左上方的工具栏配置如下图1所示，然后点击第一个红色框框起来的图标<code class="docutils literal notranslate"><span class="pre">debug</span></code>按钮，eclipse会先编译工程，完成后eclipse下方的 <code class="docutils literal notranslate"><span class="pre">Console</span></code> 窗口可以看到如下图2所示log。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image03.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image04.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>使用快捷键 <code class="docutils literal notranslate"><span class="pre">F8</span></code> resume一下，可以看到程序停在 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">bl702_main()</span></code> 主函数处，此时可以点击下图中的3个按钮。其含义分别为<ul>
-<li>第一个Step Into（F5） 单步执行，遇到子函数就进入并且继续单步执行；</li>
-<li>第二个Step Over （F6）在单步执行时，在函数内遇到子函数时不会进入子函数内单步执行，而是将子函数整个执行完在停止，也就是把子函数整个作为一步；</li>
-<li>第三个Step Return（F7）在单步执行到子函数内时，用Step Return就可以执行完子函数余下部分，并返回上一层函数。</li>
+<li><p>使用快捷键 <code class="docutils literal notranslate"><span class="pre">F8</span></code> resume一下，可以看到程序停在 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">bl702_main()</span></code> 主函数处，此时可以点击下图中的3个按钮。其含义分别为</p>
+<ul>
+<li><p>第一个Step Into（F5） 单步执行，遇到子函数就进入并且继续单步执行；</p></li>
+<li><p>第二个Step Over （F6）在单步执行时，在函数内遇到子函数时不会进入子函数内单步执行，而是将子函数整个执行完在停止，也就是把子函数整个作为一步；</p></li>
+<li><p>第三个Step Return（F7）在单步执行到子函数内时，用Step Return就可以执行完子函数余下部分，并返回上一层函数。</p></li>
 </ul>
 </li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image05.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image06.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>可以在 <code class="docutils literal notranslate"><span class="pre">c代码</span></code> 窗口最左边橙色条处双击增加、删除断点。</li>
+<li><p>可以在 <code class="docutils literal notranslate"><span class="pre">c代码</span></code> 窗口最左边橙色条处双击增加、删除断点。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image08.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>还可以通过查看右边的 <code class="docutils literal notranslate"><span class="pre">Disassembly</span></code> 窗口查看对应的汇编（该窗口没有的话可以通过最上方工具栏 <code class="docutils literal notranslate"><span class="pre">Window</span> <span class="pre">&gt;</span> <span class="pre">show</span> <span class="pre">view</span> <span class="pre">&gt;</span> <span class="pre">Disassembly</span></code> 添加）。</li>
+<li><p>还可以通过查看右边的 <code class="docutils literal notranslate"><span class="pre">Disassembly</span></code> 窗口查看对应的汇编（该窗口没有的话可以通过最上方工具栏 <code class="docutils literal notranslate"><span class="pre">Window</span> <span class="pre">&gt;</span> <span class="pre">show</span> <span class="pre">view</span> <span class="pre">&gt;</span> <span class="pre">Disassembly</span></code> 添加）。</p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image07.png" />
-</div>
-</div>
-</div>
+</figure>
+</section>
+</section>
 
 
            </div>
@@ -253,17 +259,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

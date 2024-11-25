@@ -69,6 +69,8 @@ void k_queue_append_list(struct k_queue *queue, void *head, void *tail);
 void *k_queue_get(struct k_queue *queue, s32_t timeout);
 int k_queue_is_empty(struct k_queue *queue);
 int k_queue_get_cnt(struct k_queue *queue);
+void k_queue_append_from_isr(struct k_queue *queue, void *data);
+
 
 struct k_lifo {
     struct k_queue _queue;
@@ -197,6 +199,13 @@ void k_timer_stop(k_timer_t *timer);
  */
 void k_timer_delete(k_timer_t *timer);
 
+/**
+ * @brief Check if a timer is active.
+ *
+ */
+bool k_timer_is_active(k_timer_t *timer);
+
+
 /*time define*/
 #define MSEC_PER_SEC 1000
 #define K_MSEC(ms)     (ms)
@@ -274,5 +283,8 @@ long long k_now_ms(void);
 void k_get_random_byte_array(uint8_t *buf, size_t len);
 void *k_malloc(size_t size);
 void k_free(void *buf);
+
+void bt_assert(void);
+
 #endif /* BL_PORT_H */
 

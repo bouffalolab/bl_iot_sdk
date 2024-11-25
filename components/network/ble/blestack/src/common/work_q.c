@@ -13,8 +13,8 @@
 
 
 #include <zephyr.h>
-#include <log.h>
-#include <sys/errno.h>
+#include <bt_log.h>
+#include <bt_errno.h>
 
 struct k_thread work_q_thread;
 #if !defined(BFLB_BLE)
@@ -28,25 +28,10 @@ static void k_work_submit_to_queue(struct k_work_q *work_q,
 {
     if (!atomic_test_and_set_bit(work->flags, K_WORK_STATE_PENDING)) {
         k_fifo_put(&work_q->fifo, work);
-        #if (BFLB_BT_CO_THREAD)
-        extern struct k_sem g_poll_sem;
-        k_sem_give(&g_poll_sem);
-        #endif
     }
 }
 
 #if defined(BFLB_BLE)
-#if (BFLB_BT_CO_THREAD)
-void handle_work_queue(void)
-{
-    struct k_work *work;
-    work = k_fifo_get(&g_work_queue_main.fifo, K_NO_WAIT);
-    
-    if (atomic_test_and_clear_bit(work->flags, K_WORK_STATE_PENDING)) {
-        work->handler(work);
-    }  
-}
-#else
 static void work_queue_main(void *p1)
 {
     struct k_work *work;
@@ -56,7 +41,8 @@ static void work_queue_main(void *p1)
         work = k_fifo_get(&g_work_queue_main.fifo, K_FOREVER);
 
         if (atomic_test_and_clear_bit(work->flags, K_WORK_STATE_PENDING)) {
-            work->handler(work);
+            if(work->handler)
+                work->handler(work);
         }
 
         k_yield();
@@ -70,7 +56,6 @@ int k_work_q_start(void)
                            CONFIG_BT_WORK_QUEUE_STACK_SIZE,
                            work_queue_main, CONFIG_BT_WORK_QUEUE_PRIO);
 }
-#endif
 
 int k_work_init(struct k_work *work, k_work_handler_t handler)
 {
@@ -135,6 +120,11 @@ static int k_delayed_work_submit_to_queue(struct k_work_q *work_q,
         if (err < 0) {
             goto done;
         }
+    }
+
+    if(work->work.handler == NULL){
+        err = -ENOTSUP;
+        goto done;
     }
 
     if (!delay) {
@@ -230,6 +220,7 @@ int k_delayed_work_free(struct k_delayed_work *work)
     work->work_q = NULL;
     work->timer.timeout = 0;
     work->timer.start_ms = 0;
+    work->work.handler = NULL;
 
 exit:
     return err;

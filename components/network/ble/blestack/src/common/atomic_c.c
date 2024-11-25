@@ -17,7 +17,7 @@
  *
  * (originally from x86's atomic.c)
  */
-
+#include <stdint.h>
 #include <atomic.h>
 #include "bl_port.h"
 //#include <toolchain.h>

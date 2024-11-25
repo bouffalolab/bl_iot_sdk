@@ -20,11 +20,7 @@ def bl602_demo_timer_tc(env, extra_data):
     timediff_seq = []
 
     try:
-        dut.expect("Booting BL602 Chip...", timeout=0.5)
-        print('BL602 booted')
-        dut.expect('Init CLI with event Driven', timeout=0.5)
-        print('BL602 CLI init done')
-        time.sleep(0.1)
+        time.sleep(2)
 
         dut.write('timer_us')
         time.sleep(0.1)

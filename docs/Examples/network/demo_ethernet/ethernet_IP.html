@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Ethernet_IP &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>Ethernet_IP &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,59 +171,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ethernet-ip">
-<span id="ota-index"></span><h1>Ethernet_IP<a class="headerlink" href="#ethernet-ip" title="永久链接至标题"></a></h1>
+  <section id="ethernet-ip">
+<span id="ota-index"></span><h1>Ethernet_IP<a class="headerlink" href="#ethernet-ip" title="此标题的永久链接"></a></h1>
 <ul>
-<li><p class="first"><strong>第一步：编译</strong></p>
+<li><p><strong>第一步：编译</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li>进入 <code class="docutils literal notranslate"><span class="pre">customer_app/bl702_demo_event</span></code> 目录下，使用 <code class="docutils literal notranslate"><span class="pre">./geneth</span></code> 编译脚本进行编译，编译生成文件在build_out目录下, <code class="docutils literal notranslate"><span class="pre">build_out/bl702_demo_event.bin</span></code> 是烧录需要使用的文件；</li>
+<li><p>进入 <code class="docutils literal notranslate"><span class="pre">customer_app/bl702_demo_event</span></code> 目录下，使用 <code class="docutils literal notranslate"><span class="pre">./geneth</span></code> 编译脚本进行编译，编译生成文件在build_out目录下, <code class="docutils literal notranslate"><span class="pre">build_out/bl702_demo_event.bin</span></code> 是烧录需要使用的文件；</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>第二步：烧录</strong></p>
+<li><p><strong>第二步：烧录</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li>使用 <a class="reference external" href="https://dev.bouffalolab.com/download">Bouffalo Lab Dev Cube</a> 下载最新的工具并进行烧录，烧录方法可参考快速入门下载章节；</li>
+<li><p>使用 <a class="reference external" href="https://dev.bouffalolab.com/download">Bouffalo Lab Dev Cube</a> 下载最新的工具并进行烧录，烧录方法可参考快速入门下载章节；</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>第三步：运行</strong></p>
+<li><p><strong>第三步：运行</strong></p>
 <blockquote>
 <div><ul>
-<li><p class="first">在开始之前，需要把模块通过网线与路由器连接，用 USB 给模块供电，串口用来打印log。在烧录好固件之后，重启模块。</p>
+<li><p>在开始之前，需要把模块通过网线与路由器连接，用 USB 给模块供电，串口用来打印log。在烧录好固件之后，重启模块。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image115.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">模块自动启动 ethernet、开启 dhcp。获取到 IP 之后会打印出获取到的 IP 地址。</p>
+<li><p>模块自动启动 ethernet、开启 dhcp。获取到 IP 之后会打印出获取到的 IP 地址。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image213.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">接下来可以使用 ping 命令查看与路由器的网络连接状态。</p>
+<li><p>接下来可以使用 ping 命令查看与路由器的网络连接状态。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image313.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
-<li><p class="first">可以使用 help 命令查看支持的 iperf 命令。</p>
+<li><p>可以使用 help 命令查看支持的 iperf 命令。</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/image412.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
-</div>
+</section>
 
 
            </div>
@@ -252,17 +257,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

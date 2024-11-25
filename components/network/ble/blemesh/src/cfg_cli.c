@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <string.h>
-#include <errno.h>
+#include <bt_errno.h>
 #include <stdbool.h>
 #include <types.h>
 #include <util.h>
@@ -20,7 +20,7 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_MESH_DEBUG_MODEL)
 #define LOG_MODULE_NAME bt_mesh_cfg_cli
-#include "log.h"
+#include "bt_log.h"
 
 #include "net.h"
 #include "foundation.h"
@@ -77,7 +77,7 @@ static void state_status_u8(struct bt_mesh_model *model,
 	       bt_hex(buf->data, buf->len));
 
 	if (cli->op_pending != expect_status) {
-		BT_WARN("Unexpected Status (0x%08x != 0x%08x)",
+		BT_WARN("Unexpected Status (0x%08lx != 0x%08lx)",
 			cli->op_pending, expect_status);
 		return;
 	}
@@ -951,7 +951,7 @@ int bt_mesh_cfg_krp_set(u16_t net_idx, u16_t addr,
 
 	bt_mesh_model_msg_init(&msg, OP_KRP_SET);
 	net_buf_simple_add_le16(&msg, krp->NetKeyIndex);
-	net_buf_simple_add_u8(&msg, krp->Phase);
+	net_buf_simple_add_u8(&msg, krp->Transition);
 
 	err = bt_mesh_model_send(cli->model, &ctx, &msg, NULL, NULL);
 	if (err) {
@@ -1655,7 +1655,7 @@ static int mod_member_list_get(u32_t op, u32_t expect_op, u16_t net_idx,
 
 	BT_DBG("net_idx 0x%04x addr 0x%04x elem_addr 0x%04x",
 	       net_idx, addr, elem_addr);
-	BT_DBG("mod_id 0x%04x cid 0x%04x op: %x", mod_id, cid, op);
+	BT_DBG("mod_id 0x%04x cid 0x%04x op: %lx", mod_id, cid, op);
 
 	bt_mesh_model_msg_init(&msg, op);
 	net_buf_simple_add_le16(&msg, elem_addr);

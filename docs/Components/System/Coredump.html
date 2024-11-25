@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Core dump &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>Core dump &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../about.html"/>
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../index.html"/>
         <link rel="up" title="&lt;no title&gt;" href="index.html"/>
         <link rel="next" title="BL libc" href="Libc.html"/>
         <link rel="prev" title="&lt;no title&gt;" href="index.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -187,127 +192,128 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="core-dump">
-<h1>Core dump<a class="headerlink" href="#core-dump" title="永久链接至标题"></a></h1>
+  <section id="core-dump">
+<h1>Core dump<a class="headerlink" href="#core-dump" title="此标题的永久链接"></a></h1>
 <p>在系统异常时dump出指定的内存数据</p>
-<div class="section" id="id1">
-<h2>功能<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<section id="id1">
+<h2>功能<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <ol class="arabic simple">
-<li>可选配置默认dump区域，在exception时自动dump至UART，通过串口工具保存</li>
-<li>输出端口可配（用户自行适配）：</li>
+<li><p>可选配置默认dump区域，在exception时自动dump至UART，通过串口工具保存</p></li>
+<li><p>输出端口可配（用户自行适配）：</p></li>
 </ol>
 <ul class="simple">
-<li>串口</li>
-<li>flash</li>
-<li>spi</li>
+<li><p>串口</p></li>
+<li><p>flash</p></li>
+<li><p>spi</p></li>
 </ul>
 <ol class="arabic simple">
-<li>base64加密编码输出</li>
+<li><p>base64加密编码输出</p></li>
 </ol>
-</div>
-<div class="section" id="id2">
-<h2>结构<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ol class="arabic simple">
-<li>Dump Tool命令</li>
+<li><p>Dump Tool命令</p></li>
 </ol>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="17%" />
-<col width="13%" />
-<col width="19%" />
-<col width="13%" />
-<col width="19%" />
-<col width="13%" />
-<col width="8%" />
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 13%" />
+<col style="width: 8%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">type</th>
-<th class="head">header</th>
-<th class="head">operation</th>
-<th class="head">*data</th>
-<th class="head">operation</th>
-<th class="head">*data</th>
-<th class="head">stop</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>type</p></th>
+<th class="head"><p>header</p></th>
+<th class="head"><p>operation</p></th>
+<th class="head"><p>*data</p></th>
+<th class="head"><p>operation</p></th>
+<th class="head"><p>*data</p></th>
+<th class="head"><p>stop</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><strong>len</strong></td>
-<td>1</td>
-<td>1</td>
-<td>4</td>
-<td>1</td>
-<td>4</td>
-<td>1</td>
+<tbody>
+<tr class="row-even"><td><p><strong>len</strong></p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><strong>data</strong></td>
-<td>$</td>
-<td>command</td>
-<td>addr</td>
-<td>command</td>
-<td>len</td>
-<td>#</td>
+<tr class="row-odd"><td><p><strong>data</strong></p></td>
+<td><p>$</p></td>
+<td><p>command</p></td>
+<td><p>addr</p></td>
+<td><p>command</p></td>
+<td><p>len</p></td>
+<td><p>#</p></td>
 </tr>
 </tbody>
 </table>
 <p>operation支持以下命令：</p>
 <blockquote>
-<div>所有命令均为字符型</div></blockquote>
-<table border="1" class="docutils">
+<div><p>所有命令均为字符型</p>
+</div></blockquote>
+<table class="docutils align-default">
 <colgroup>
-<col width="30%" />
-<col width="70%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">command</th>
-<th class="head">info</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>command</p></th>
+<th class="head"><p>info</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>d</td>
-<td>dump默认内存区域</td>
+<tbody>
+<tr class="row-even"><td><p>d</p></td>
+<td><p>dump默认内存区域</p></td>
 </tr>
-<tr class="row-odd"><td>x</td>
-<td>指定dump地址</td>
+<tr class="row-odd"><td><p>x</p></td>
+<td><p>指定dump地址</p></td>
 </tr>
-<tr class="row-even"><td>l</td>
-<td>指定dump长度</td>
+<tr class="row-even"><td><p>l</p></td>
+<td><p>指定dump长度</p></td>
 </tr>
-<tr class="row-odd"><td>...</td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p>...</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <p><strong>注：</strong></p>
 <ul class="simple">
-<li><strong>x和l参数成对传入，先传入x，再传入l，若未提供l，默认dump长度为0x1000</strong></li>
-<li><strong>一次命令仅可包含一对``addr/len``</strong></li>
-<li><strong>若未配置默认dump区域，d命令不会响应；传入d命令时，其他指令会被忽略</strong></li>
+<li><p><strong>x和l参数成对传入，先传入x，再传入l，若未提供l，默认dump长度为0x1000</strong></p></li>
+<li><p><strong>一次命令仅可包含一对``addr/len``</strong></p></li>
+<li><p><strong>若未配置默认dump区域，d命令不会响应；传入d命令时，其他指令会被忽略</strong></p></li>
 </ul>
 <ol class="arabic simple">
-<li>dump data</li>
+<li><p>dump data</p></li>
 </ol>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="56%" />
-<col width="8%" />
-<col width="36%" />
+<col style="width: 56%" />
+<col style="width: 8%" />
+<col style="width: 36%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">header</th>
-<th class="head">data</th>
-<th class="head">crc stop</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>header</p></th>
+<th class="head"><p>data</p></th>
+<th class="head"><p>crc stop</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>------ DATA BEGIN <a class="reference external" href="mailto:addr&#37;&#52;&#48;len">addr<span>&#64;</span>len</a> ------</td>
-<td>***</td>
-<td>------ END crc ------</td>
+<tbody>
+<tr class="row-even"><td><p>------ DATA BEGIN <a class="reference external" href="mailto:addr&#37;&#52;&#48;len">addr<span>&#64;</span>len</a> ------</p></td>
+<td><p>***</p></td>
+<td><p>------ END crc ------</p></td>
 </tr>
 </tbody>
 </table>
 <p>CRC为解码后原数据的CRC，不是base64编码的CRC</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -350,17 +356,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
 
   
 

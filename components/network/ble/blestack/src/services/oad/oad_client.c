@@ -14,7 +14,7 @@
 #include "port/include/config.h"
 #include "cli.h"
 #include "oad_client.h"
-#include "log.h"
+#include "bt_log.h"
 
 /*The header is 15bytes*/
 #define TRANSPORT_FILE_SIZE     (244 - 15)

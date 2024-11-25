@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -238,7 +238,7 @@ __exit:
     if (send_buf) vPortFree(send_buf);
     if (iperf_param->host) vPortFree(iperf_param->host);
     if (iperf_param) vPortFree(iperf_param);
-    printf("iper stop\r\n");
+    printf("ipc exit..\r\n");
 }
 
 static void iperf_client_tcp_entry(const char *name)
@@ -320,8 +320,6 @@ static void iperf_client_udp(void *arg)
         goto __exit;
     }
 
-    printf("bind UDP socket successfully!\r\n");
-
     memset(&raddr, 0, sizeof(struct sockaddr_in));
     raddr.sin_family = PF_INET;
     raddr.sin_port = htons(iperf_param->port);
@@ -333,6 +331,9 @@ static void iperf_client_udp(void *arg)
     udp_header.id = 0;
     udp_header.tv_sec = 0;
     udp_header.tv_usec = 0;
+
+    // sendto(sock, send_buf, IPERF_BUFSZ_UDP, 0, (const struct sockaddr*)&raddr, sizeof(raddr));
+    // vTaskDelay(5000);
 
     tick0 = xTaskGetTickCount();
     tick1 = tick0;
@@ -391,8 +392,9 @@ __exit:
 
     if (send_buf) vPortFree(send_buf);
     if (iperf_param->host) vPortFree(iperf_param->host);
-    if (iperf_param) vPortFree(iperf_param);
-    printf("disconnected! ret %d\r\n",  ret);
+    if (iperf_param) vPortFree(iperf_param);    
+
+    printf("ipu exit..\r\n");
 }
 
 struct iperf_server_udp_ctx {
@@ -538,8 +540,6 @@ static void iperf_server_udp(void *arg)
         printf("Bind failed!\r\n");
         goto _exit;
     }
-
-    printf("bind UDP socket successfully!\r\n");
 
     memset(&context, 0, sizeof context);
     context.f_min = 8000.0;
@@ -764,7 +764,7 @@ static void ipc_test_cmd(char *buf, int len, int argc, char **argv)
 static void ips_test_cmd(char *buf, int len, int argc, char **argv)
 {
     if (1 == argc) {
-        puts(DEBUG_HEADER "[IPS] Starting iperf server on 0.0.0.0\r\n");
+        puts(DEBUG_HEADER "[IPS] Starting iperf server on " IPERF_IP_LOCAL "\r\n");
         iperf_server_entry(IPERF_IP_LOCAL);
     } else if (2 == argc) {
         iperf_server_entry(argv[1]);
@@ -790,7 +790,7 @@ static void ipu_test_cmd(char *buf, int len, int argc, char **argv)
 static void ipus_test_cmd(char *buf, int len, int argc, char **argv)
 {
     if (1 == argc) {
-        printf(DEBUG_HEADER "[IPUS] Connecting with default address 0.0.0.0\r\n");
+        printf(DEBUG_HEADER "[IPUS] Starting iperf server on " IPERF_IP_LOCAL" \r\n");
         iperf_server_udp_entry(IPERF_IP_LOCAL);
     } else if (2 == argc) {
         iperf_server_udp_entry(argv[1]);
@@ -902,7 +902,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     { "ipu", "iperf UDP client", ipu_test_cmd},
     { "ipus", "iperf UDP server", ipus_test_cmd},
     { "iperf_stop", "stop iperf", iperf_exit_cmd},
-    // { "iperf", "iperf cmd", iperf_cmd},
+    { "iperf", "iperf cmd", iperf_cmd},
 };
 
 int network_netutils_iperf_cli_register()

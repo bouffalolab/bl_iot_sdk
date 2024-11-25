@@ -10,7 +10,7 @@
  */
 
 #include <zephyr.h>
-#include <sys/errno.h>
+#include <bt_errno.h>
 #include <atomic.h>
 #include <misc/util.h>
 
@@ -20,7 +20,7 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_DEBUG_HCI_CORE)
 #define LOG_MODULE_NAME bt_smp
-#include "log.h"
+#include "bt_log.h"
 
 #include "hci_core.h"
 #include "conn_internal.h"

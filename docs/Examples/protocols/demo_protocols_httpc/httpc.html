@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Httpc client &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>Httpc client &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,40 +171,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="httpc-client">
-<span id="httpc-index"></span><h1>Httpc client<a class="headerlink" href="#httpc-client" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="httpc-client">
+<span id="httpc-index"></span><h1>Httpc client<a class="headerlink" href="#httpc-client" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍如何通过tcp的方式访问Http服务器获取数据的过程。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备和使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备和使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul>
-<li><p class="first">使用之前需要准备可用的URL以及网络。</p>
-</li>
-<li><p class="first">使用步骤：</p>
+<li><p>使用之前需要准备可用的URL以及网络。</p></li>
+<li><p>使用步骤：</p>
 <ul>
-<li><p class="first">在终端输入开启wifi的命令： <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> ，会打印下图一log（部分），然后输入连接wifi的命令： <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;key&gt;</span></code> ，并确认wifi连接成功（如输入：wifi_sta_connect bl_test_005 12345678）；</p>
-<div class="figure">
+<li><p>在终端输入开启wifi的命令： <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> ，会打印下图一log（部分），然后输入连接wifi的命令： <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;key&gt;</span></code> ，并确认wifi连接成功（如输入：wifi_sta_connect bl_test_005 12345678）；</p>
+<figure class="align-default">
 <img alt="" src="../../../_images/image132.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../../_images/image227.png" />
-</div>
+</figure>
 </li>
-<li><p class="first">使用 <code class="docutils literal notranslate"><span class="pre">httpc</span></code> 命令进行下载。</p>
-<div class="figure">
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">httpc</span></code> 命令进行下载。</p>
+<figure class="align-default">
 <img alt="" src="../../../_images/image320.png" />
-</div>
+</figure>
 </li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>主要实现过程</li>
+<li><p>主要实现过程</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">settings</span><span class="o">.</span><span class="n">use_proxy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
  <span class="n">settings</span><span class="o">.</span><span class="n">result_fn</span> <span class="o">=</span> <span class="n">cb_httpc_result</span><span class="p">;</span>
@@ -216,8 +220,8 @@
 </pre></div>
 </div>
 <p>cb_httpc_result()次回调函数会在http传输完成后调用，打印获取的消息内容长度；cb_httpc_headers_done_fn()回调函数会在接收到http headers时调用，打印headers的大小；用户可以在cb_altcp_recv_fn()回调函数中处理接收到的消息。</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -251,17 +255,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

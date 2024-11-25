@@ -6,7 +6,7 @@
  */
 
 #include <string.h>
-#include <sys/errno.h>
+#include <bt_errno.h>
 
 #include <zephyr.h>
 #include <misc/byteorder.h>
@@ -17,12 +17,12 @@
 
 #include <constants.h>
 #include <hmac_prng.h>
-#include <aes.h>
+#include <tinycrypt/include/tinycrypt/aes.h>
 #include <utils.h>
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_DEBUG_HCI_CORE)
 #define LOG_MODULE_NAME bt_crypto
-#include "log.h"
+#include "bt_log.h"
 
 #include "hci_core.h"
 

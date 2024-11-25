@@ -133,15 +133,14 @@ static unsigned char char_to_hex(char asccode)
     return ret;
 }
 
-static void _chan_str_to_hex(uint8_t *chan_band, uint16_t *chan_freq, char *chan)
+static void _chan_str_to_hex(uint8_t *chan_band, uint8_t *chan_id, char *chan)
 {
-    int i, freq_len, base=1;
-    uint8_t band;
-    uint16_t freq = 0;
+    int i, id_len, base=1;
+    uint8_t band = 0, id = 0;
     char *p, *q;
 
     /*should have the following format
-     * 2412|0
+     * 10|0
      * */
     p = strchr(chan, '|') + 1;
     if (NULL == p) {
@@ -150,14 +149,14 @@ static void _chan_str_to_hex(uint8_t *chan_band, uint16_t *chan_freq, char *chan
     band = char_to_hex(p[0]);
     (*chan_band) = band;
 
-    freq_len = strlen(chan) - strlen(p) - 1;
+    id_len = strlen(chan) - strlen(p) - 1;
     q = chan;
-    q[freq_len] = '\0';
-    for (i=0; i< freq_len; i++) {
-       freq = freq + char_to_hex(q[freq_len-1-i]) * base;
+    q[id_len] = '\0';
+    for (i=0; i< id_len; i++) {
+       id = id + char_to_hex(q[id_len-1-i]) * base;
        base = base * 10;
     }
-    (*chan_freq) = freq;
+    (*chan_id) = id;
 }
 
 static void bssid_str_to_mac(uint8_t *hex, char *bssid, int len)
@@ -189,7 +188,7 @@ static void _connect_wifi()
     char val_buf[66];
     uint8_t mac[6];
     uint8_t band = 0;
-    uint16_t freq = 0;
+    uint8_t chan_id = 0;
 
     wifi_interface = wifi_mgmr_sta_enable();
     printf("[APP] [WIFI] [T] %lld\r\n"
@@ -239,7 +238,7 @@ static void _connect_wifi()
     if (val_buf[0]) {
         strncpy(chan, val_buf, sizeof(chan) - 1);
         printf("connect wifi channel = %s\r\n", chan);
-        _chan_str_to_hex(&band, &freq, chan);
+        _chan_str_to_hex(&band, &chan_id, chan);
     }
     memset(val_buf, 0, sizeof(val_buf));
     if (val_buf[0]) {
@@ -263,7 +262,7 @@ static void _connect_wifi()
            "[APP]    pmk %s\r\n"
            "[APP]    bssid %s\r\n"
            "[APP]    channel band %d\r\n"
-           "[APP]    channel freq %d\r\n",
+           "[APP]    channel id %d\r\n",
            aos_now_ms(),
            ssid,
            strlen(ssid),
@@ -272,10 +271,10 @@ static void _connect_wifi()
            pmk,
            bssid,
            band,
-           freq
+           chan_id
     );
     //wifi_mgmr_sta_connect(wifi_interface, ssid, pmk, NULL);
-    wifi_mgmr_sta_connect(wifi_interface, ssid, password, pmk, mac, band, freq);
+    wifi_mgmr_sta_connect(wifi_interface, ssid, password, pmk, mac, band, chan_id);
 }
 
 static void wifi_sta_connect(char *ssid, char *password)

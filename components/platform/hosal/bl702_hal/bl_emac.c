@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -127,7 +127,7 @@ int emac_phy_write(uint16_t phyReg, uint16_t regValue)
 
 uint16_t bl_eth_smi_read(uint32_t num)
 {
-    uint16_t regval = 0;
+    uint32_t regval = 0;
 
     if (0 != emac_phy_read(num, &regval)) {
         log_info("read error.\r\n");

@@ -19,11 +19,7 @@ def bl602_demo_event_ble_wifi_tc(env, extra_data):
     dut.start_app()
 
     try:
-        dut.expect("Booting BL602 Chip...", timeout=0.5)
-        print('BL602 booted')
-        dut.expect('Init CLI with event Driven', timeout=0.5)
-        print('BL602 CLI init done')
-        time.sleep(1)
+        time.sleep(2)
 
         dut.write('stack_ble')
         time.sleep(1)

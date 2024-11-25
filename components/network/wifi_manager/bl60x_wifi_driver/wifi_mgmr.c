@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -454,20 +454,6 @@ static void stateAction( void *oldStateData, struct event *event,
     );
 }
 
-
-static bool stateSnifferGuard_idle(void *ev, struct event *event )
-{
-    wifi_mgmr_msg_t *msg;
-
-    msg = event->data;
-    if (ev != (void*)msg->ev) {
-        return false;
-    }
-
-    bl_main_monitor_disable();
-    return true;
-}
-
 /*function for state sniffer*/
 static bool stateSnifferGuard_ChannelSet( void *ch, struct event *event )
 {
@@ -602,6 +588,24 @@ err_t dhcp_server_stop(struct netif *netif);
     netifapi_netif_remove(&(wifiMgmr.wlan_ap.netif));
     wifiMgmr.inf_ap_enabled = 0;
     aos_post_event(EV_WIFI, CODE_WIFI_ON_AP_STOPPED, 0);
+
+    return false;
+}
+
+static bool stateGlobalGuard_ap_chan_switch(void *ev, struct event *event)
+{
+    wifi_mgmr_msg_t *msg;
+
+    msg = event->data;
+    if (ev != (void *)msg->ev) {
+        return false;
+    }
+
+    if (!wifiMgmr.inf_ap_enabled) {
+        return false;
+    }
+
+    bl_main_apm_chan_switch(wifiMgmr.wlan_ap.vif_index, (int)(intptr_t)msg->data1, (uint8_t)(uintptr_t)msg->data2);
 
     return false;
 }
@@ -768,6 +772,7 @@ const static struct state stateGlobal = {
       {EVENT_TYPE_GLB, (void*)WIFI_MGMR_EVENT_GLB_ENABLE_AUTORECONNECT, &stateGlobalGuard_enable_autoreconnect, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_AP_START, &stateGlobalGuard_AP, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_AP_STOP, &stateGlobalGuard_stop, &stateGlobalAction, &stateIdle},
+      {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_AP_CHAN_SWITCH, &stateGlobalGuard_ap_chan_switch, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_CONF_MAX_STA, &stateGlobalGuard_conf_max_sta, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_DENOISE, &stateGlobalGuard_denoise, &stateGlobalAction, &stateIdle},
       {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_CONNECT, &stateGlobalGuard_connect, &stateGlobalAction_connect, &stateConnecting},
@@ -788,7 +793,7 @@ const static struct state stateSniffer = {
    .entryState = NULL,
    .transitions = (struct transition[])
    {
-      {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_IDLE, &stateSnifferGuard_idle, &stateAction, &stateIdle},
+      {EVENT_TYPE_APP, (void*)WIFI_MGMR_EVENT_APP_IDLE, &stateGuard, &stateAction, &stateIdle},
       /*Will NOT transfer state*/
       {EVENT_TYPE_FW,  (void*)WIFI_MGMR_EVENT_FW_CHANNEL_SET, &stateSnifferGuard_ChannelSet, &stateAction, &stateIdle},
    },
@@ -1456,10 +1461,10 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg, int use_block)
             return -1;
         }
     }
-    ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, sizeof(wifi_mgmr_msg_t), BL_OS_WAITING_FOREVER, 0) :
-                      bl_os_queue_send(wifiMgmr.mq, msg, sizeof(wifi_mgmr_msg_t));
+    ret = use_block ? bl_os_queue_send_wait(wifiMgmr.mq, msg, msg->len, BL_OS_WAITING_FOREVER, 0) :
+                      bl_os_queue_send(wifiMgmr.mq, msg, msg->len);
     if (ret) {
-        bl_os_printf("Failed when send msg 0x%p, ev :%d\r\n", msg, msg->ev);
+        bl_os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
         return -1;
     }
     return 0;
@@ -1494,6 +1499,7 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
         msg->ev = WIFI_MGMR_EVENT_GLB_IP_UPDATE;
         msg->data1 = (void*)0x01;
         msg->data2 = (void*)0x02;
+        msg->len = sizeof (wifi_mgmr_msg_t);
         return WIFI_MGMR_PENDING_TASK_IP_UPDATE_BIT;
     }
 
@@ -1502,6 +1508,7 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
         msg->ev = WIFI_MGMR_EVENT_APP_IP_GOT;
         msg->data1 = (void*)0x01;
         msg->data2 = (void*)0x02;
+        msg->len = sizeof (wifi_mgmr_msg_t);
         return WIFI_MGMR_PENDING_TASK_IP_GOT_BIT;
     }
 
@@ -1511,10 +1518,12 @@ static uint32_t handle_pending_task(wifi_mgmr_msg_t *msg)
 void wifi_mgmr_start(void)
 {
     struct event ev;
-    wifi_mgmr_msg_t msg;
+    uint8_t buffer[WIFI_MGMR_MQ_MSG_SIZE + 8];
+    wifi_mgmr_msg_t *msg;
 
+    msg = (wifi_mgmr_msg_t*)(buffer + 1);
     ev.type = EVENT_TYPE_APP;
-    ev.data = &msg;
+    ev.data = msg;
     stateM_init(&(wifiMgmr.m), &stateIfaceDown, &stateError);
 
     wifiMgmr.scan_items_lock = bl_os_mutex_create();
@@ -1540,23 +1549,19 @@ void wifi_mgmr_start(void)
 
     /*Run the event handler loop*/
     while (1) {
-        if (0 == bl_os_queue_recv(wifiMgmr.mq, &msg, sizeof(wifi_mgmr_msg_t), BL_OS_WAITING_FOREVER)) {
+        if (0 == bl_os_queue_recv(wifiMgmr.mq, msg, WIFI_MGMR_MQ_MSG_SIZE, BL_OS_WAITING_FOREVER)) {
 
 handle_msg:
-            ev.type = msg.ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
-                (msg.ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
-            if (msg.ev == WIFI_MGMR_EVENT_APP_RELOAD_TSEN) {
+            ev.type = msg->ev < WIFI_MGMR_EVENT_MAXAPP_MINIFW ? EVENT_TYPE_APP :
+                (msg->ev < WIFI_MGMR_EVENT_MAXFW_MINI_GLOBAL ? EVENT_TYPE_FW : EVENT_TYPE_GLB);
+            if (msg->ev == WIFI_MGMR_EVENT_APP_RELOAD_TSEN) {
                 __run_reload_tsen();
             } else {
                 stateM_handleEvent(&(wifiMgmr.m), &ev);
             }
 
-            if (handle_pending_task(&msg)) {
+            if (handle_pending_task(msg)) {
                 goto handle_msg;
-            }
-
-            if (msg.data) {
-                bl_os_free(msg.data);
             }
         }
     }
@@ -1577,7 +1582,7 @@ int wifi_mgmr_init(void)
 {
     int ret;
 
-    wifiMgmr.mq = bl_os_queue_create(WIFI_MGMR_MQ_MSG_COUNT, sizeof(wifi_mgmr_msg_t));
+    wifiMgmr.mq = bl_os_queue_create(sizeof(wifiMgmr.mq_pool) / WIFI_MGMR_MQ_MSG_SIZE, WIFI_MGMR_MQ_MSG_SIZE);
     assert((ret = (NULL != wifiMgmr.mq)));
 
     wifiMgmr.ready = 1;//TODO check ret

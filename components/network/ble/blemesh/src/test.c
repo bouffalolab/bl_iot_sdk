@@ -7,12 +7,12 @@
  */
 
 #include <string.h>
-#include <errno.h>
+#include <bt_errno.h>
 
 #include <bluetooth/mesh.h>
 
 #define LOG_MODULE_NAME bt_mesh_test
-#include "log.h"
+#include "bt_log.h"
 
 #include "mesh.h"
 #include "test.h"

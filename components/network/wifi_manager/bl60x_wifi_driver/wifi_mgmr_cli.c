@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -360,6 +360,20 @@ static void _scan_channels(int channel_input_num, uint8_t channel_input[MAX_FIXE
 
 }
 
+static int channel_cvt_validate(const char *chan)
+{
+    int ch;
+    if (!chan) {
+        return -1;
+    }
+
+    ch = atoi(chan);
+    if (ch <= 0 || ch > 11) {
+        return -1;
+    }
+    return ch;
+}
+
 static void wifi_scan_cmd(char *buf, int len, int argc, char **argv)
 {
     int opt;
@@ -521,7 +535,7 @@ static void wifi_sta_ip_set_cmd(char *buf, int len, int argc, char **argv)
     /* sample input
      *
      * cmd_ip_set 192.168.1.212 255.255.255.0 192.168.1.1 114.114.114.114 114.114.114.114
-     * 
+     *
      * */
     uint32_t ip, mask, gw, dns1, dns2;
     char addr_str[20];
@@ -575,8 +589,10 @@ static void wifi_sta_ip_unset_cmd(char *buf, int len, int argc, char **argv)
     wifi_mgmr_sta_ip_unset();
 }
 
+long long aos_now_ms(void);
 static void wifi_connect_cmd(char *buf, int len, int argc, char **argv)
 {
+    printf("wifi_connect_cmd %lld\r\n", aos_now_ms());
     wifi_interface_t wifi_interface;
 
     getopt_env_t getopt_env;
@@ -848,9 +864,7 @@ static void wifi_power_saving_set(char *buf, int len, int argc, char **argv)
     ms = atoi(argv[1]);
     bl_os_printf("Setting wifi ps acitve to %d\r\n", ms);
 
-    if (ms > 0) {
-        wifi_mgmr_set_wifi_active_time(ms);
-    }
+    wifi_mgmr_set_wifi_active_time(ms);
 }
 
 static void sniffer_cb(void *env, uint8_t *pkt, int len, struct bl_rx_info *info)
@@ -898,7 +912,7 @@ static void cmd_wifi_ap_start(char *buf, int len, int argc, char **argv)
 {
     uint8_t mac[6];
     uint8_t hidden_ssid = 0;
-    char ssid_name[33];
+    char ssid_name[32];
     int channel;
     int max_sta_supported;
     wifi_interface_t wifi_interface;
@@ -918,9 +932,7 @@ static void cmd_wifi_ap_start(char *buf, int len, int argc, char **argv)
         if (4 == argc) {
             hidden_ssid = 1;
         }
-
-        channel = atoi(argv[1]);
-        if (channel <= 0 || channel > 11) {
+        if ((channel = channel_cvt_validate(argv[1])) < 0) {
             return;
         }
 
@@ -941,6 +953,28 @@ static void cmd_wifi_ap_stop(char *buf, int len, int argc, char **argv)
 {
     wifi_mgmr_ap_stop(NULL);
     bl_os_printf("--->>> cmd_wifi_ap_stop\r\n");
+}
+
+static void cmd_wifi_ap_chan_switch(char *buf, int len, int argc, char **argv)
+{
+    const size_t min_args = 2;
+    uint8_t cs_count = 0; // 0: default
+    int ch;
+
+    if (argc < min_args) {
+        bl_os_printf("Usage: %s chan [cs_count]\r\n", *argv);
+        return;
+    }
+
+    if ((ch = channel_cvt_validate(argv[1])) < 0) {
+        bl_os_printf("invalid channel\r\n");
+        return;
+    }
+    if (argc > min_args) {
+        cs_count = atoi(argv[2]);
+    }
+
+    wifi_mgmr_ap_chan_switch(NULL, ch, cs_count);
 }
 
 static void cmd_wifi_ap_conf_max_sta(char *buf, int len, int argc, char **argv)
@@ -1197,6 +1231,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_sniffer_off", "wifi sniffer mode off", wifi_sniffer_off_cmd},
         { "wifi_ap_start", "start Ap mode [channel] [max_sta_supported]", cmd_wifi_ap_start},
         { "wifi_ap_stop", "stop Ap mode", cmd_wifi_ap_stop},
+        { "wifi_ap_chan_switch", "switch AP channel", cmd_wifi_ap_chan_switch },
         { "wifi_ap_conf_max_sta", "config Ap max sta", cmd_wifi_ap_conf_max_sta},
         { "wifi_dump", "dump fw statistic", cmd_wifi_dump},
         { "wifi_cfg", "wifi cfg cmd", cmd_wifi_cfg},
@@ -1211,13 +1246,13 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         { "wifi_edca_dump", "dump EDCA data", wifi_edca_dump_cmd},
         { "wifi_state", "get wifi_state", cmd_wifi_state_get},
         { "wifi_update_power", "Power table test command", cmd_wifi_power_table_update},
-};                                                                                   
+};
 
 int wifi_mgmr_cli_init(void)
 {
     // static command(s) do NOT need to call aos_cli_register_command(s) to register.
     // However, calling aos_cli_register_command(s) here is OK but is of no effect as cmds_user are included in cmds list.
     // XXX NOTE: Calling this *empty* function is necessary to make cmds_user in this file to be kept in the final link.
-    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));          
+    //return aos_cli_register_commands(cmds_user, sizeof(cmds_user)/sizeof(cmds_user[0]));
     return 0;
 }

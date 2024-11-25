@@ -34,7 +34,7 @@ COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 COMPONENT_SRCDIRS := bl60x_wifi_driver
 
 ifeq ($(CONFIG_CHIP_NAME),BL602)
-CPPFLAGS += -DCFG_TXDESC="2"
+CPPFLAGS += -DCFG_TXDESC="4"
 endif
 
 ifeq ($(CONFIG_CHIP_NAME),BL808)

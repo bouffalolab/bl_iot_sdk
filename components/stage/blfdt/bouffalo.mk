@@ -17,9 +17,6 @@ COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
 
 COMPONENT_SRCDIRS := src test
 
+
 ##
 #CPPFLAGS +=
-
-ifneq ($(CONFIG_CLI_CMD_ENABLE), 0)
-CPPFLAGS += -DCONFIG_CLI_CMD_ENABLE
-endif

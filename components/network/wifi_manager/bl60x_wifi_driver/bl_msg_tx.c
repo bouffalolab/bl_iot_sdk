@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -261,7 +261,6 @@ inline uint8_t phy_freq_to_channel(uint8_t band, uint16_t freq)
             else
                 channel = (freq - 2407) / 5;
         }
-#if 0
         //5 GHz
         else if (band == PHY_BAND_5G)
         {
@@ -271,7 +270,6 @@ inline uint8_t phy_freq_to_channel(uint8_t band, uint16_t freq)
 
             channel = (freq - 5000) / 5;
         }
-#endif
     } while (0);
 
     return (channel);
@@ -399,21 +397,6 @@ int bl_send_monitor_enable(struct bl_hw *bl_hw, struct mm_monitor_cfm *cfm)
         return -ENOMEM;
 
     req->enable = 1;
-
-    return bl_send_msg(bl_hw, req, 1, MM_MONITOR_CFM, cfm);
-}
-
-int bl_send_monitor_disable(struct bl_hw *bl_hw, struct mm_monitor_cfm *cfm)
-{
-    struct mm_monitor_req *req;
-
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
-
-    req = bl_msg_zalloc(MM_MONITOR_REQ, TASK_MM, DRV_TASK_ID, sizeof(struct mm_monitor_req));
-    if (!req)
-        return -ENOMEM;
-
-    req->enable = 0;
 
     return bl_send_msg(bl_hw, req, 1, MM_MONITOR_CFM, cfm);
 }
@@ -1088,6 +1071,26 @@ int bl_send_apm_conf_max_sta_req(struct bl_hw *bl_hw, uint8_t max_sta_supported)
 
     /* Send the APM_STOP_REQ message to LMAC FW */
     return bl_send_msg(bl_hw, req, 1, APM_CONF_MAX_STA_CFM, NULL);
+}
+
+int bl_send_apm_chan_switch_req(struct bl_hw *bl_hw, uint8_t vif_index, int channel, uint8_t cs_count)
+{
+    struct apm_chan_switch_req *req;
+
+    req = bl_msg_zalloc(APM_CHAN_SWITCH_REQ, TASK_APM, DRV_TASK_ID, sizeof(struct apm_chan_switch_req));
+    if (!req) {
+        return -ENOMEM;
+    }
+
+    req->vif_idx = vif_index;
+    req->mode = 0;
+    req->chan.band = NL80211_BAND_2GHZ;
+    req->chan.freq = phy_channel_to_freq(req->chan.band, channel);
+    req->chan.flags = 0;
+    req->chan.tx_power = 0;
+    req->cs_count = cs_count;
+
+    return bl_send_msg(bl_hw, req, 1, APM_CHAN_SWITCH_CFM, NULL);
 }
 
 int bl_send_cfg_task_req(struct bl_hw *bl_hw, uint32_t ops, uint32_t task, uint32_t element, uint32_t type, void *arg1, void *arg2)

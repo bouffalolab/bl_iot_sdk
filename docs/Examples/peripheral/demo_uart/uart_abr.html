@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UART_ABR &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>UART_ABR &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/>
         <link rel="up" title="Peripherals" href="../index.html"/>
         <link rel="next" title="WDG" href="../demo_wdg/wdg.html"/>
         <link rel="prev" title="UART_INT" href="uart_int.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -207,35 +212,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="uart-abr">
-<span id="uart-abr-index"></span><h1>UART_ABR<a class="headerlink" href="#uart-abr" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>总览<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="uart-abr">
+<span id="uart-abr-index"></span><h1>UART_ABR<a class="headerlink" href="#uart-abr" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>总览<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本示例主要介绍通过UART1自动时别波特率(注意cli将不能使用)。</p>
-</div>
-<div class="section" id="id2">
-<h2>准备及使用步骤<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>准备及使用步骤<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>使用步骤：</li>
+<li><p>使用步骤：</p></li>
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li>插入将板子的USB电源线，USB电源线默认连接UART0；</li>
-<li>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_uart</span></code> 工程并下载工程，编译命令： <code class="docutils literal notranslate"><span class="pre">genromap</span> <span class="pre">&lt;chip</span> <span class="pre">name&gt;</span></code>，&lt;chip name&gt;可选择 <code class="docutils literal notranslate"><span class="pre">BL602</span></code> , <code class="docutils literal notranslate"><span class="pre">BL702</span></code>；</li>
-<li>将模组作为uart1功能的两个gpio（BL602是gpio3和gpio4，BL702是gpio5和gpio10）分别连接外接串口的tx，rx；</li>
-<li>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart0消息，log口）；</li>
-<li>在log串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_uart_abr</span></code> ，表示启动 UART_ABR的demo；</li>
-<li>打开另外一个连接uart1串口的终端，设置任意波特率（如115200）发送16进制 <code class="docutils literal notranslate"><span class="pre">0x55</span></code> ，log口能够打印识别的波特率信息，并且在uart1串口终端可以接收到 <code class="docutils literal notranslate"><span class="pre">OK</span></code> ，表示说明演示成功。</li>
+<li><p>插入将板子的USB电源线，USB电源线默认连接UART0；</p></li>
+<li><p>编译 <code class="docutils literal notranslate"><span class="pre">customer_app/periperal/demo_uart</span></code> 工程并下载工程，编译命令： <code class="docutils literal notranslate"><span class="pre">genromap</span> <span class="pre">&lt;chip</span> <span class="pre">name&gt;</span></code>，&lt;chip name&gt;可选择 <code class="docutils literal notranslate"><span class="pre">BL602</span></code> , <code class="docutils literal notranslate"><span class="pre">BL702</span></code>；</p></li>
+<li><p>将模组作为uart1功能的两个gpio（BL602是gpio3和gpio4，BL702是gpio5和gpio10）分别连接外接串口的tx，rx；</p></li>
+<li><p>打开一个串口终端窗口（波特率为2000000，用于接收和发送uart0消息，log口）；</p></li>
+<li><p>在log串口终端输入 <code class="docutils literal notranslate"><span class="pre">demo_hosal_uart_abr</span></code> ，表示启动 UART_ABR的demo；</p></li>
+<li><p>打开另外一个连接uart1串口的终端，设置任意波特率（如115200）发送16进制 <code class="docutils literal notranslate"><span class="pre">0x55</span></code> ，log口能够打印识别的波特率信息，并且在uart1串口终端可以接收到 <code class="docutils literal notranslate"><span class="pre">OK</span></code> ，表示说明演示成功。</p></li>
 </ul>
 </div></blockquote>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image415.png" />
-</div>
-</div>
-<div class="section" id="id3">
-<h2>应用实例<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="id3">
+<h2>应用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">HOSAL_UART_DEV_DECL</span></code> 接口定义一个uart_dev的uart设备</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">HOSAL_UART_DEV_DECL</span></code> 接口定义一个uart_dev的uart设备</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span>
  <span class="o">*</span>  <span class="n">Define</span> <span class="n">a</span> <span class="n">UART</span> <span class="n">device</span><span class="p">,</span>
@@ -251,27 +256,27 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_abr_get</span></code> 接口获取串口波特率。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_abr_get</span></code> 接口获取串口波特率。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Uart</span> <span class="n">get</span> <span class="n">baudrate</span> <span class="o">*/</span>
 <span class="n">hosal_uart_abr_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">uart_dev_abr</span><span class="p">,</span> <span class="n">HOSAL_UART_AUTOBAUD_0X55</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_init</span></code> 接口初始化硬件uart_dev设备。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_init</span></code> 接口初始化硬件uart_dev设备。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Uart</span> <span class="n">init</span> <span class="n">device</span> <span class="o">*/</span>
 <span class="n">hosal_uart_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">uart_dev</span><span class="p">);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_send</span></code> 接口以及 <code class="docutils literal notranslate"><span class="pre">hosal_uart_receive</span></code> 接口来收发UART数据。</li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">hosal_uart_send</span></code> 接口以及 <code class="docutils literal notranslate"><span class="pre">hosal_uart_receive</span></code> 接口来收发UART数据。</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosal_uart_send</span><span class="p">(</span><span class="o">&amp;</span><span class="n">uart_dev_abr</span><span class="p">,</span> <span class="n">wData</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -314,17 +319,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

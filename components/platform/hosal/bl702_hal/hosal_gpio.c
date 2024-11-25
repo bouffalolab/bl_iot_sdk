@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -135,7 +135,7 @@ static void gpio_interrupt_entry(hosal_gpio_ctx_t *pstnode)
 
 int hosal_gpio_irq_set(hosal_gpio_dev_t *gpio, hosal_gpio_irq_trigger_t trigger_type, hosal_gpio_irq_handler_t handler, void *arg)
 {
-    if (NULL == gpio || gpio->port > GLB_GPIO_PIN_MAX || trigger_type > 3) {
+    if (NULL == gpio || gpio->port > GLB_GPIO_PIN_MAX || trigger_type > 3 || trigger_type < 0) {
         printf("hosal irq register paraments is not correct! \r\n");
     }
     hosal_gpio_ctx_t *node = NULL;

@@ -19,7 +19,6 @@
 #define OT_ALARM_TIMER_ID                       0
 
 TimerHandle_t otAlarm_timerHandle = NULL;
-uint32_t      otAlarm_offset = 0;
 
 static void otPlatALarm_msTimerCallback( TimerHandle_t xTimer ) 
 {
@@ -29,13 +28,6 @@ static void otPlatALarm_msTimerCallback( TimerHandle_t xTimer )
 void ot_alarmInit(void) 
 {
     otAlarm_timerHandle = xTimerCreate("ot_timer", 1, pdFALSE, (void *)otAlarm_timerHandle, otPlatALarm_msTimerCallback);
-
-    OT_ENTER_CRITICAL();
-    bl_timer_restore_time(bl_timer_now_us64());
-    otAlarm_offset = (uint32_t)bl_timer_now_us64() - bl_timer_get_current_time();
-    OT_EXIT_CRITICAL();
-
-    printf ("ot_alarmInit = %lu\r\n", otAlarm_offset);
 }
 
 void otPlatAlarmMilliStartAt(otInstance *aInstance, uint32_t aT0, uint32_t aDt)
@@ -85,16 +77,12 @@ void otPlatAlarmMicroStartAt(otInstance *aInstance, uint32_t aT0, uint32_t aDt)
 {
     OT_ENTER_CRITICAL();
 
-    uint32_t now = bl_timer_now_us64();
+    uint32_t now = bl_timer_get_current_time();
     if (aDt > OT_ALARM_TIMER_MARGIN &&  now - aT0 < aDt - OT_ALARM_TIMER_MARGIN) {
+        bl_timer_start(OT_ALARM_TIMER_ID, aT0 + aDt, otAlarm_microTimerCallback);
+        OT_EXIT_CRITICAL();
 
-        bl_timer_start(OT_ALARM_TIMER_ID, aT0 + aDt - otAlarm_offset, otAlarm_microTimerCallback);
-        if (bl_timer_get_remaining_time(OT_ALARM_TIMER_ID) <= aDt) {
-            OT_EXIT_CRITICAL();
-            return;
-        }
-
-        bl_timer_stop(OT_ALARM_TIMER_ID);
+        return;
     }
 
     OT_EXIT_CRITICAL();
@@ -109,7 +97,7 @@ void otPlatAlarmMicroStop(otInstance *aInstance)
 
 uint32_t otPlatAlarmMicroGetNow(void)
 {
-   return bl_timer_now_us64();
+   return bl_timer_get_current_time();
 }
 
 void ot_alarmTask(ot_system_event_t sevent) 

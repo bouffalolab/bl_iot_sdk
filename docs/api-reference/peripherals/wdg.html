@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>WDG &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>WDG &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../about.html"/>
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../index.html"/>
         <link rel="up" title="外设 API" href="index.html"/>
         <link rel="next" title="GPIO" href="gpio.html"/>
         <link rel="prev" title="timer" href="timer.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -199,132 +204,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="wdg">
-<h1>WDG<a class="headerlink" href="#wdg" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="wdg">
+<h1>WDG<a class="headerlink" href="#wdg" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>看门狗（Watchdog），又叫看门狗计时器（Watchdog timer），是一种硬件的计时设备，当系统的主程序发生某些错误时，导致未及时清除看门狗计时器的计时值，这时看门狗计时器就会对系统发出复位信号，使系统从悬停状态恢复到正常运作状态</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
-<p class="last">wdg更多资料请参考 <a class="reference external" href="https://dev.bouffalolab.com/media/doc/602/open/reference_manual/zh/html/content/TIMER.html">BL602参考手册</a> 。</p>
+<p class="admonition-title">备注</p>
+<p>wdg更多资料请参考 <a class="reference external" href="https://dev.bouffalolab.com/media/doc/602/open/reference_manual/zh/html/content/TIMER.html">BL602参考手册</a> 。</p>
 </div>
-</div>
-<div class="section" id="id2">
-<h2>应用实例<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>应用实例<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>串口实例： <code class="docutils literal notranslate"><span class="pre">customer_app/peripheral/demo_wdg</span></code> 。</p>
-</div>
-<div class="section" id="api">
-<h2>API参考<a class="headerlink" href="#api" title="永久链接至标题"></a></h2>
-<div class="section" id="header-file">
-<h3>Header File<a class="headerlink" href="#header-file" title="永久链接至标题"></a></h3>
-<ul class="simple">
-<li><span class="xref std std-doc">components/platform/hosal/include/hosal_wdg.h</span></li>
-</ul>
-</div>
-<div class="section" id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="永久链接至标题"></a></h3>
-<dl class="function">
-<dt id="_CPPv414hosal_wdg_initP15hosal_wdg_dev_t">
-<span id="_CPPv314hosal_wdg_initP15hosal_wdg_dev_t"></span><span id="_CPPv214hosal_wdg_initP15hosal_wdg_dev_t"></span><span id="hosal_wdg_init__hosal_wdg_dev_tP"></span><span class="target" id="group__hosal__wdg_1gafac737fde4d9be687469da813a13b862"></span>int <code class="descname">hosal_wdg_init</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv415hosal_wdg_dev_t" title="hosal_wdg_dev_t">hosal_wdg_dev_t</a> *<em>wdg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414hosal_wdg_initP15hosal_wdg_dev_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>This function will initialize the on board CPU hardware watch dog. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd><ul class="simple">
-<li>0 : success</li>
-<li>other: fail </li>
-</ul>
-</dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">wdg</span></code>: the watch dog device</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv416hosal_wdg_reloadP15hosal_wdg_dev_t">
-<span id="_CPPv316hosal_wdg_reloadP15hosal_wdg_dev_t"></span><span id="_CPPv216hosal_wdg_reloadP15hosal_wdg_dev_t"></span><span id="hosal_wdg_reload__hosal_wdg_dev_tP"></span><span class="target" id="group__hosal__wdg_1ga17ad77781f12340d8f1110cbea0c7f0f"></span>void <code class="descname">hosal_wdg_reload</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv415hosal_wdg_dev_t" title="hosal_wdg_dev_t">hosal_wdg_dev_t</a> *<em>wdg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416hosal_wdg_reloadP15hosal_wdg_dev_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>Reload watchdog counter. </p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">wdg</span></code>: the watch dog device </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv418hosal_wdg_finalizeP15hosal_wdg_dev_t">
-<span id="_CPPv318hosal_wdg_finalizeP15hosal_wdg_dev_t"></span><span id="_CPPv218hosal_wdg_finalizeP15hosal_wdg_dev_t"></span><span id="hosal_wdg_finalize__hosal_wdg_dev_tP"></span><span class="target" id="group__hosal__wdg_1gab2ccbe0301a3222666fa232b5a819ce5"></span>int <code class="descname">hosal_wdg_finalize</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv415hosal_wdg_dev_t" title="hosal_wdg_dev_t">hosal_wdg_dev_t</a> *<em>wdg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418hosal_wdg_finalizeP15hosal_wdg_dev_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>This function performs any platform-specific cleanup needed for hardware watch dog. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd><ul class="simple">
-<li>0 : success</li>
-<li>other: fail </li>
-</ul>
-</dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">wdg</span></code>: the watch dog device</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-</div>
-<div class="section" id="structures">
-<h3>Structures<a class="headerlink" href="#structures" title="永久链接至标题"></a></h3>
-<dl class="class">
-<dt id="_CPPv418hosal_wdg_config_t">
-<span id="_CPPv318hosal_wdg_config_t"></span><span id="_CPPv218hosal_wdg_config_t"></span><span id="hosal_wdg_config_t"></span><span class="target" id="structhosal__wdg__config__t"></span><em class="property">struct </em><code class="descname">hosal_wdg_config_t</code><a class="headerlink" href="#_CPPv418hosal_wdg_config_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>wdg config struct </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Members</p>
-<dl class="member">
-<dt id="_CPPv4N18hosal_wdg_config_t7timeoutE">
-<span id="_CPPv3N18hosal_wdg_config_t7timeoutE"></span><span id="_CPPv2N18hosal_wdg_config_t7timeoutE"></span><span id="hosal_wdg_config_t::timeout__uint32_t"></span><span class="target" id="structhosal__wdg__config__t_1a9220359c417ff6c3ef1108405c66ffd8"></span>uint32_t <code class="descname">timeout</code><a class="headerlink" href="#_CPPv4N18hosal_wdg_config_t7timeoutE" title="永久链接至目标"></a><br /></dt>
-<dd><p>Watchdag timeout in ms </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
-<dl class="class">
-<dt id="_CPPv415hosal_wdg_dev_t">
-<span id="_CPPv315hosal_wdg_dev_t"></span><span id="_CPPv215hosal_wdg_dev_t"></span><span id="hosal_wdg_dev_t"></span><span class="target" id="structhosal__wdg__dev__t"></span><em class="property">struct </em><code class="descname">hosal_wdg_dev_t</code><a class="headerlink" href="#_CPPv415hosal_wdg_dev_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>wdg dev struct </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Members</p>
-<dl class="member">
-<dt id="_CPPv4N15hosal_wdg_dev_t4portE">
-<span id="_CPPv3N15hosal_wdg_dev_t4portE"></span><span id="_CPPv2N15hosal_wdg_dev_t4portE"></span><span id="hosal_wdg_dev_t::port__uint8_t"></span><span class="target" id="structhosal__wdg__dev__t_1a904396dd43d542ca8b1fcc6ca97db74b"></span>uint8_t <code class="descname">port</code><a class="headerlink" href="#_CPPv4N15hosal_wdg_dev_t4portE" title="永久链接至目标"></a><br /></dt>
-<dd><p>wdg port </p>
-</dd></dl>
-
-<dl class="member">
-<dt id="_CPPv4N15hosal_wdg_dev_t6configE">
-<span id="_CPPv3N15hosal_wdg_dev_t6configE"></span><span id="_CPPv2N15hosal_wdg_dev_t6configE"></span><span id="hosal_wdg_dev_t::config__hosal_wdg_config_t"></span><span class="target" id="structhosal__wdg__dev__t_1ad6f0a6c7141a2bda651d4cd2634175d6"></span><a class="reference internal" href="#_CPPv418hosal_wdg_config_t" title="hosal_wdg_config_t">hosal_wdg_config_t</a> <code class="descname">config</code><a class="headerlink" href="#_CPPv4N15hosal_wdg_dev_t6configE" title="永久链接至目标"></a><br /></dt>
-<dd><p>wdg config </p>
-</dd></dl>
-
-<dl class="member">
-<dt id="_CPPv4N15hosal_wdg_dev_t4privE">
-<span id="_CPPv3N15hosal_wdg_dev_t4privE"></span><span id="_CPPv2N15hosal_wdg_dev_t4privE"></span><span id="hosal_wdg_dev_t::priv__voidP"></span><span class="target" id="structhosal__wdg__dev__t_1a9d97a401a64d381340bdc841d277c0e2"></span>void *<code class="descname">priv</code><a class="headerlink" href="#_CPPv4N15hosal_wdg_dev_t4privE" title="永久链接至目标"></a><br /></dt>
-<dd><p>priv data </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
-</div>
-</div>
-</div>
+</section>
+<section id="api">
+<h2>API参考<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+</section>
+</section>
 
 
            </div>
@@ -367,17 +264,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
 
   
 

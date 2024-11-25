@@ -8,7 +8,7 @@
 
 #include <zephyr.h>
 #include <string.h>
-#include <errno.h>
+#include <bt_errno.h>
 #include <stdbool.h>
 #include <types.h>
 #include <util.h>
@@ -20,11 +20,11 @@
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_MESH_DEBUG_MODEL)
 #define LOG_MODULE_NAME bt_mesh_health_cli
-#include "log.h"
+#include "bt_log.h"
 
 #include "net.h"
 #include "foundation.h"
-#include "errno.h"
+#include "bt_errno.h"
 
 static s32_t msg_timeout = K_SECONDS(2);
 

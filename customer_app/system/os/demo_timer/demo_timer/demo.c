@@ -146,7 +146,7 @@ void cmd_timer_delete(char *buf, int len, int argc, char **argv)
     if (ret == 0) {
         printf("delete timer success \r\n");
     } else {
-        printf("not find node\r\n", id);
+        printf("not find node: %d\r\n", id);
     }
  
     return;

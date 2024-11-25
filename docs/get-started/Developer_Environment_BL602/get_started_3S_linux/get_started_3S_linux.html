@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>快速入门 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>快速入门 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,150 +171,149 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="id1">
-<h1>快速入门<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+  <section id="id1">
+<h1>快速入门<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <p>本文档旨在指导用户搭建 BL602 (BL602-IoT-DVK-3S)硬件开发的linux软件环境，通过一个简单的示例展示如何编译、下载固件至 BL602 开发板等步骤。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
-<p class="last">BL-HWC-G1模组linux环境搭建请参考 <a class="reference external" href="../../index_602.html">BL-HWC-G1模组linux环境搭建</a></p>
+<p class="admonition-title">备注</p>
+<p>BL-HWC-G1模组linux环境搭建请参考 <a class="reference external" href="../../index_602.html">BL-HWC-G1模组linux环境搭建</a></p>
 </div>
-<div class="section" id="id2">
-<h2>概述<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+<section id="id2">
+<h2>概述<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>BL602 是一款Wi-Fi + BLE组合的芯片组，用于低功耗和高性能应用开发。无线子系统包含2.4G无线电，Wi-Fi 802.11b/g/n和BLE 5.0 基带/MAC设计。微控制器子系统包含一个低功耗的32位RISC-V CPU，高速缓存和存储器。电源管理单元控制低功耗模式。此外，还支持各种安全性能。</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-1.png" />
-</div>
-</div>
-<div class="section" id="id3">
-<h2>准备工作<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="id3">
+<h2>准备工作<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>硬件：</p>
 <ul class="simple">
-<li>一款 <strong>BL602</strong> 开发板</li>
-<li><strong>USB 数据线</strong> （usb转type-c）</li>
-<li>电脑（<a class="reference external" href="../get_started_3S_windows/get_started_3S_windows.html">windows环境搭建</a> ）</li>
+<li><p>一款 <strong>BL602</strong> 开发板</p></li>
+<li><p><strong>USB 数据线</strong> （usb转type-c）</p></li>
+<li><p>电脑（<a class="reference external" href="../get_started_3S_windows/get_started_3S_windows.html">windows环境搭建</a> ）</p></li>
 </ul>
-</div>
-<div class="section" id="id4">
-<h2>开发板简介<a class="headerlink" href="#id4" title="永久链接至标题"></a></h2>
+</section>
+<section id="id4">
+<h2>开发板简介<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p>开发板实物图如下所示：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/HW_loT_DVK_3S.png" />
-</div>
-</div>
-<div class="section" id="get-started-step-by-step">
-<span id="id5"></span><h2>详细安装步骤<a class="headerlink" href="#get-started-step-by-step" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="get-started-step-by-step">
+<span id="id5"></span><h2>详细安装步骤<a class="headerlink" href="#get-started-step-by-step" title="此标题的永久链接"></a></h2>
 <p>请根据下方详细步骤，完成安装过程。</p>
-<div class="section" id="id6">
-<h3>设置开发环境<a class="headerlink" href="#id6" title="永久链接至标题"></a></h3>
+<section id="id6">
+<h3>设置开发环境<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
 <ul class="simple">
-<li><a class="reference internal" href="../../index_602.html#get-started-get-prerequisites"><span class="std std-ref">第一步：安装准备</span></a></li>
-<li><a class="reference internal" href="../../index_602.html#get-started-get-code"><span class="std std-ref">第二步：获取软件</span></a></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-get-prerequisites"><span class="std std-ref">第一步：安装准备</span></a></p></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-get-code"><span class="std std-ref">第二步：获取软件</span></a></p></li>
 </ul>
-</div>
-<div class="section" id="id7">
-<h3>开始您的第一个工程<a class="headerlink" href="#id7" title="永久链接至标题"></a></h3>
+</section>
+<section id="id7">
+<h3>开始您的第一个工程<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
 <ul class="simple">
-<li><a class="reference internal" href="../../index_602.html#get-started-connect"><span class="std std-ref">第三步：连接设备</span></a></li>
-<li><a class="reference internal" href="../../index_602.html#get-started-build"><span class="std std-ref">第四步：编译工程</span></a></li>
-<li><a class="reference internal" href="../../index_602.html#get-started-flash"><span class="std std-ref">第五步：烧录到设备</span></a></li>
-<li><a class="reference internal" href="../../index_602.html#get-started-build-monitor"><span class="std std-ref">第六步：监视器</span></a></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-connect"><span class="std std-ref">第三步：连接设备</span></a></p></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-build"><span class="std std-ref">第四步：编译工程</span></a></p></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-flash"><span class="std std-ref">第五步：烧录到设备</span></a></p></li>
+<li><p><a class="reference internal" href="../../index_602.html#get-started-build-monitor"><span class="std std-ref">第六步：监视器</span></a></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-started-get-prerequisites">
-<span id="id8"></span><h2>第一步：安装准备<a class="headerlink" href="#get-started-get-prerequisites" title="永久链接至标题"></a></h2>
+</section>
+</section>
+<section id="get-started-get-prerequisites">
+<span id="id8"></span><h2>第一步：安装准备<a class="headerlink" href="#get-started-get-prerequisites" title="此标题的永久链接"></a></h2>
 <p>在正式开始创建工程前，请先完成工具的安装，具体步骤见下：</p>
 <ul class="simple">
-<li>打开终端，安装make，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">make</span></code></li>
-<li>安装git工具，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">git</span></code></li>
-<li>安装串口工具此处选用的<code class="docutils literal notranslate"><span class="pre">Gtkterm</span></code>
-可以执行命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gtkterm</span></code></li>
+<li><p>打开终端，安装make，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">make</span></code></p></li>
+<li><p>安装git工具，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">git</span></code></p></li>
+<li><p>安装串口工具此处选用的<code class="docutils literal notranslate"><span class="pre">Gtkterm</span></code>
+可以执行命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gtkterm</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="get-started-get-code">
-<span id="id9"></span><h2>第二步：获取软件<a class="headerlink" href="#get-started-get-code" title="永久链接至标题"></a></h2>
+</section>
+<section id="get-started-get-code">
+<span id="id9"></span><h2>第二步：获取软件<a class="headerlink" href="#get-started-get-code" title="此标题的永久链接"></a></h2>
 <p>获取 BL-IOT 的本地副本：打开终端，切换到您要保存代码的工作目录，使用 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:bouffalolab/bl_iot_sdk.git</span></code> 命令克隆远程仓库。</p>
-</div>
-<div class="section" id="get-started-connect">
-<span id="id10"></span><h2>第三步：连接设备<a class="headerlink" href="#get-started-connect" title="永久链接至标题"></a></h2>
+</section>
+<section id="get-started-connect">
+<span id="id10"></span><h2>第三步：连接设备<a class="headerlink" href="#get-started-connect" title="此标题的永久链接"></a></h2>
 <p>现在，请将您的 BL602 开发板连接到 PC，使用命令： <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/dev/tty*</span></code> 查看开发板使用的串口。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
-<p class="last">请记住串口名，您会在下面的步骤中用到。</p>
+<p class="admonition-title">备注</p>
+<p>请记住串口名，您会在下面的步骤中用到。</p>
 </div>
-</div>
-<div class="section" id="get-started-build">
-<span id="id11"></span><h2>第四步：编译工程<a class="headerlink" href="#get-started-build" title="永久链接至标题"></a></h2>
+</section>
+<section id="get-started-build">
+<span id="id11"></span><h2>第四步：编译工程<a class="headerlink" href="#get-started-build" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>进入需要编译的工程目录，如进入bl602_demo_event工程，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>，进行编译，命令<code class="docutils literal notranslate"><span class="pre">./genromap</span></code></li>
-<li>查看编译生成的build_out文件夹，命令：<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">build_out</span></code></li>
+<li><p>进入需要编译的工程目录，如进入bl602_demo_event工程，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>，进行编译，命令<code class="docutils literal notranslate"><span class="pre">./genromap</span></code></p></li>
+<li><p>查看编译生成的build_out文件夹，命令：<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">build_out</span></code></p></li>
 </ul>
 <p>如果一切正常，编译完成后将生成 <code class="docutils literal notranslate"><span class="pre">bl602_demo_event.bin</span></code> 文件。</p>
-</div>
-<div class="section" id="get-started-flash">
-<span id="id12"></span><h2>第五步：烧录到设备<a class="headerlink" href="#get-started-flash" title="永久链接至标题"></a></h2>
+</section>
+<section id="get-started-flash">
+<span id="id12"></span><h2>第五步：烧录到设备<a class="headerlink" href="#get-started-flash" title="此标题的永久链接"></a></h2>
 <p><strong>软件烧录</strong></p>
 <ul>
-<li><p class="first">进入<code class="docutils literal notranslate"><span class="pre">/bl_iot_sdk/tools/flash_tool</span></code>目录下，双击名为 <code class="docutils literal notranslate"><span class="pre">BLDevCube</span></code> 的可执行文件。</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">chip</span> <span class="pre">type</span></code>选择BL602/604。</p>
-<div class="figure">
+<li><p>进入<code class="docutils literal notranslate"><span class="pre">/bl_iot_sdk/tools/flash_tool</span></code>目录下，双击名为 <code class="docutils literal notranslate"><span class="pre">BLDevCube</span></code> 的可执行文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chip</span> <span class="pre">type</span></code>选择BL602/604。</p>
+<figure class="align-default">
 <img alt="" src="../../../_images/index-5.1.png" />
-</div>
+</figure>
 </li>
-<li><p class="first">打开后界面，进行参数配置，点击<code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">&amp;</span> <span class="pre">Download</span></code>:参考如下图：</p>
-<div class="figure">
+<li><p>打开后界面，进行参数配置，点击<code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">&amp;</span> <span class="pre">Download</span></code>:参考如下图：</p>
+<figure class="align-default">
 <img alt="" src="../../../_images/index-5.2.png" />
-</div>
+</figure>
 </li>
-<li><p class="first">出现如下图所示表明下载成功:</p>
+<li><p>出现如下图所示表明下载成功:</p>
 <blockquote>
-<div><div class="figure">
+<div><figure class="align-default">
 <img alt="" src="../../../_images/index-5.4.png" />
-</div>
+</figure>
 </div></blockquote>
 </li>
 </ul>
 <p>如果一切顺利，烧录完成后，手动复位开发板，应用程序 &quot;bl602_demo_event&quot; 开始运行。</p>
 <p><strong>命令行烧录 (仅支持Linux)</strong></p>
 <ul>
-<li><p class="first">进入需要烧录的工程目录，如进入bl602_demo_event工程，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>, 执行烧录命令 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">flash_only</span></code>,出现如下图所示表明下载成功。</p>
-<div class="figure">
+<li><p>进入需要烧录的工程目录，如进入bl602_demo_event工程，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>, 执行烧录命令 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">flash_only</span></code>,出现如下图所示表明下载成功。</p>
+<figure class="align-default">
 <img alt="" src="../../../_images/index-5.5.png" />
-</div>
+</figure>
 </li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
-<p class="last">利用tools/flash_tool/目录下的bflb_iot_tool工具，我们也可以自定义烧录命令，详情请参考 <a class="reference external" href="../bflb_iot_tool_guide/bflb_iot_tool_guide.html">bflb_iot_tool使用方法</a></p>
+<p class="admonition-title">备注</p>
+<p>利用tools/flash_tool/目录下的bflb_iot_tool工具，我们也可以自定义烧录命令，详情请参考 <a class="reference external" href="../bflb_iot_tool_guide/bflb_iot_tool_guide.html">bflb_iot_tool使用方法</a></p>
 </div>
-</div>
-<div class="section" id="get-started-build-monitor">
-<span id="id13"></span><h2>第六步：监视器<a class="headerlink" href="#get-started-build-monitor" title="永久链接至标题"></a></h2>
+</section>
+<section id="get-started-build-monitor">
+<span id="id13"></span><h2>第六步：监视器<a class="headerlink" href="#get-started-build-monitor" title="此标题的永久链接"></a></h2>
 <p>下载完成后，执行命令‘sudo gtkterm’，打开串口终端软件Gtkterm，显示如下图：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-6.3.png" />
-</div>
+</figure>
 <p>选择 <cite>配置（C）下的Port</cite>，如下图：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-6.4.png" />
-</div>
+</figure>
 <p>配置如下，其中 <cite>/dev/ttyUSB1</cite> 可能需要根据上面查看的串口号修改：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-6.5.png" />
-</div>
+</figure>
 <p>上面配置完成后，要使用F7和F8来控制uart的控制信号线，保证DTR为黑，RTS为灰色,如下图所示：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-6.6.png" />
-</div>
+</figure>
 <p>连接上后，执行reboot，然后向上查找串口打印记录，便可以查看到相关logo，大致如下：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/index-6.7.png" />
-</div>
+</figure>
 <p><strong>恭喜，您已完成BL602的入门学习！</strong>
 现在，您可以尝试使用 <a class="reference external" href="../eclipse_linux/eclipse_linux.html">Eclipse</a> 或 <a class="reference external" href="../freedom_linux/freedom_linux.html">Freedom studio</a> 进行debug。</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -343,17 +347,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

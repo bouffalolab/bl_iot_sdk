@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>RNG &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>RNG &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../about.html"/>
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../index.html"/>
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../index.html"/>
         <link rel="up" title="外设 API" href="index.html"/>
         <link rel="next" title="RTC" href="rtc.html"/>
         <link rel="prev" title="PWM" href="pwm.html"/> 
@@ -74,7 +79,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -199,65 +204,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="rng">
-<h1>RNG<a class="headerlink" href="#rng" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="rng">
+<h1>RNG<a class="headerlink" href="#rng" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>随机数生成器(Random number generation),可以生成指定长度的随机数。</p>
-</div>
-<div class="section" id="id2">
-<h2>应用实例<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>应用实例<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>串口实例： <code class="docutils literal notranslate"><span class="pre">customer_app/peripheral/demo_rng</span></code> 。</p>
-</div>
-<div class="section" id="api">
-<h2>API参考<a class="headerlink" href="#api" title="永久链接至标题"></a></h2>
-<div class="section" id="header-file">
-<h3>Header File<a class="headerlink" href="#header-file" title="永久链接至标题"></a></h3>
-<ul class="simple">
-<li><span class="xref std std-doc">components/platform/hosal/include/hosal_rng.h</span></li>
-</ul>
-</div>
-<div class="section" id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="永久链接至标题"></a></h3>
-<dl class="function">
-<dt id="_CPPv414hosal_rng_initv">
-<span id="_CPPv314hosal_rng_initv"></span><span id="_CPPv214hosal_rng_initv"></span><span id="hosal_rng_init__void"></span><span class="target" id="group__hosal__rng_1gaf58347517178f9b9c1b9b2d968bca316"></span>int <code class="descname">hosal_rng_init</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414hosal_rng_initv" title="永久链接至目标"></a><br /></dt>
-<dd><p>init rng </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd><ul class="simple">
-<li>0 : success</li>
-<li>other: fail </li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv421hosal_random_num_readPv8uint32_t">
-<span id="_CPPv321hosal_random_num_readPv8uint32_t"></span><span id="_CPPv221hosal_random_num_readPv8uint32_t"></span><span id="hosal_random_num_read__voidP.uint32_t"></span><span class="target" id="group__hosal__rng_1ga9fc15b44489a1b4ff2b87b76dd2c12ae"></span>int <code class="descname">hosal_random_num_read</code><span class="sig-paren">(</span>void *<em>buf</em>, uint32_t <em>bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421hosal_random_num_readPv8uint32_t" title="永久链接至目标"></a><br /></dt>
-<dd><p>Fill in a memory buffer with random data. </p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd><ul class="simple">
-<li>0 : success</li>
-<li>other: fail </li>
-</ul>
-</dd>
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Point to a valid memory buffer, this function will fill in this memory with random numbers after executed </li>
-<li><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Length of the memory buffer (bytes)</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-</div>
-</div>
-</div>
+</section>
+<section id="api">
+<h2>API参考<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
+</section>
+</section>
 
 
            </div>
@@ -300,17 +260,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
 
   
 

@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BL602 SDK Starter Guide &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>BL602 SDK Starter Guide &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../about.html"/>
         <link rel="index" title="索引"
               href="../../genindex.html"/>
         <link rel="search" title="搜索" href="../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,86 +171,85 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="bl602-sdk-starter-guide">
-<h1>BL602 SDK Starter Guide<a class="headerlink" href="#bl602-sdk-starter-guide" title="永久链接至标题"></a></h1>
+  <section id="bl602-sdk-starter-guide">
+<h1>BL602 SDK Starter Guide<a class="headerlink" href="#bl602-sdk-starter-guide" title="此标题的永久链接"></a></h1>
 <p>本文档旨在指导用户搭建 BL602 硬件开发的软件环境。</p>
-<div class="section" id="id1">
-<h2>编译环境的建立及代码的获取<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<section id="id1">
+<h2>编译环境的建立及代码的获取<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>打开终端，安装make，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">make</span></code></li>
+<li><p>打开终端，安装make，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">make</span></code></p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image140.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../_images/image235.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>安装串口工具此处选用的<code class="docutils literal notranslate"><span class="pre">Gtkterm</span></code>
-可以执行命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gtkterm</span></code></li>
-<li>安装解压软件，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">unzip</span></code></li>
+<li><p>安装串口工具此处选用的<code class="docutils literal notranslate"><span class="pre">Gtkterm</span></code>
+可以执行命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gtkterm</span></code></p></li>
+<li><p>安装解压软件，命令：<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">unzip</span></code></p></li>
 </ul>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image327.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>进入SDK文件所在的目录后开始解压，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">work</span></code>、<code class="docutils literal notranslate"><span class="pre">unzip</span> <span class="pre">bl_iot_sdk.zip</span></code></li>
+<li><p>进入SDK文件所在的目录后开始解压，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">work</span></code>、<code class="docutils literal notranslate"><span class="pre">unzip</span> <span class="pre">bl_iot_sdk.zip</span></code></p></li>
 </ul>
 <p><strong>注意</strong>：<code class="docutils literal notranslate"><span class="pre">cd</span></code>之后的文件名为SDK所在的目录名（如本例中，SDK源文件放在<code class="docutils literal notranslate"><span class="pre">work</span></code>文件夹下）根据实际情况修改；<code class="docutils literal notranslate"><span class="pre">unzip</span></code>之后文件名需要根据实际拿到的SDK文件名作出相应的修改</p>
 <ul class="simple">
-<li>检查源代码解压之后的根目录状态，先用<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">bl_iot_sdk</span></code>命令进入源文件目录，再用<code class="docutils literal notranslate"><span class="pre">ls</span></code>命令检查目录状态</li>
+<li><p>检查源代码解压之后的根目录状态，先用<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">bl_iot_sdk</span></code>命令进入源文件目录，再用<code class="docutils literal notranslate"><span class="pre">ls</span></code>命令检查目录状态</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h2>硬件连接<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>硬件连接<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>模块的相关引脚连接如下图所示，其中图一是模块的正面图，其标号1处用跳线帽短接，标号2处将左边两根排针短接，标号3处将上面的两根排针短接；图二是模块的背面图，将 <code class="docutils literal notranslate"><span class="pre">IO8</span></code> 和 <code class="docutils literal notranslate"><span class="pre">LOW</span></code> 两根排针短接。</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image1110.png" />
-</div>
-<div class="figure">
+</figure>
+<figure class="align-default">
 <img alt="" src="../../_images/image1210.png" />
-</div>
-</div>
-<div class="section" id="id3">
-<h2>代码的编译和烧录<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+</figure>
+</section>
+<section id="id3">
+<h2>代码的编译和烧录<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul>
-<li><p class="first">进入需要编译的工程目录，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>，进行编译，命令<code class="docutils literal notranslate"><span class="pre">./genromap</span></code></p>
-<div class="figure">
+<li><p>进入需要编译的工程目录，命令：<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">customer_app/bl602_demo_event</span></code>，进行编译，命令<code class="docutils literal notranslate"><span class="pre">./genromap</span></code></p>
+<figure class="align-default">
 <img alt="" src="../../_images/image423.png" />
-</div>
+</figure>
 </li>
-<li><p class="first">查看编译生成的build_out文件夹，命令：<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">build_out</span></code></p>
-<div class="figure">
+<li><p>查看编译生成的build_out文件夹，命令：<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">build_out</span></code></p>
+<figure class="align-default">
 <img alt="" src="../../_images/image511.png" />
-</div>
+</figure>
 </li>
 </ul>
-</div>
-<div class="section" id="bin">
-<h2>bin文件下载<a class="headerlink" href="#bin" title="永久链接至标题"></a></h2>
+</section>
+<section id="bin">
+<h2>bin文件下载<a class="headerlink" href="#bin" title="此标题的永久链接"></a></h2>
 <ul>
-<li><p class="first">进入<code class="docutils literal notranslate"><span class="pre">/bl_iot_sdk/tools/flash_tool</span></code>目录下，双击名为 <code class="docutils literal notranslate"><span class="pre">BLDevCube</span></code> 的可执行文件。</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">chip</span> <span class="pre">type</span></code>选择BL602/604，打开后界面参数参考下图配置：</p>
-<div class="figure">
+<li><p>进入<code class="docutils literal notranslate"><span class="pre">/bl_iot_sdk/tools/flash_tool</span></code>目录下，双击名为 <code class="docutils literal notranslate"><span class="pre">BLDevCube</span></code> 的可执行文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chip</span> <span class="pre">type</span></code>选择BL602/604，打开后界面参数参考下图配置：</p>
+<figure class="align-default">
 <img alt="" src="../../_images/image72.png" />
-</div>
+</figure>
 <p>点击<code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">&amp;</span> <span class="pre">Download</span></code>，出现如下图所示表明下载成功：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image82.png" />
-</div>
+</figure>
 </li>
 </ul>
 <p>下载完成后，打开串口终端Gtkterm，配置如下：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image92.png" />
-</div>
+</figure>
 <p>保证终端右下角的<code class="docutils literal notranslate"><span class="pre">DTR</span></code>是黑色状态， <code class="docutils literal notranslate"><span class="pre">RTS</span></code> 为灰色状态， <code class="docutils literal notranslate"><span class="pre">DTR</span></code> 可以通过快捷键 <code class="docutils literal notranslate"><span class="pre">F7</span></code> 控制， <code class="docutils literal notranslate"><span class="pre">RTS</span></code> 可以通过快捷键 <code class="docutils literal notranslate"><span class="pre">F8</span></code> 控制，最终配置如下图所示。</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../_images/image102.png" />
-</div>
-</div>
-</div>
+</figure>
+</section>
+</section>
 
 
            </div>
@@ -279,17 +283,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../_static/language_data.js"></script>
 
   
 

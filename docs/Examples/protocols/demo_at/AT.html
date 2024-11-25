@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>简介 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>简介 &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,125 +171,129 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="id1">
-<h1>简介<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+  <section id="id1">
+<h1>简介<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <p>本文主要介绍博流 AT指令集以及使用方法。指令集包含：基础 AT 指令、Wi-Fi 功能 AT 指令、TCP/IP ⼯具箱 AT 指令、BLE 相关 AT 指令。</p>
-<table border="1" class="docutils" id="id7">
-<caption><span class="caption-text">指令类型</span><a class="headerlink" href="#id7" title="永久链接至表格"></a></caption>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">指令类型</span><a class="headerlink" href="#id7" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="17%" />
-<col width="22%" />
-<col width="61%" />
+<col style="width: 17%" />
+<col style="width: 22%" />
+<col style="width: 61%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>类型</td>
-<td>格式</td>
-<td>描述</td>
+<tbody>
+<tr class="row-odd"><td><p>类型</p></td>
+<td><p>格式</p></td>
+<td><p>描述</p></td>
 </tr>
-<tr class="row-even"><td>查询指令</td>
-<td>AT+&lt;x&gt;?</td>
-<td>该指令用于返回当前参数的值</td>
+<tr class="row-even"><td><p>查询指令</p></td>
+<td><p>AT+&lt;x&gt;?</p></td>
+<td><p>该指令用于返回当前参数的值</p></td>
 </tr>
-<tr class="row-odd"><td>设置指令</td>
-<td>AT+&lt;x&gt;=&lt;···&gt;</td>
-<td>该指令用于设置用户自定义的参数</td>
+<tr class="row-odd"><td><p>设置指令</p></td>
+<td><p>AT+&lt;x&gt;=&lt;···&gt;</p></td>
+<td><p>该指令用于设置用户自定义的参数</p></td>
 </tr>
-<tr class="row-even"><td>执行指令</td>
-<td>AT+&lt;x&gt;</td>
-<td>该指令用于执行模块内部变参数不可变的功能</td>
+<tr class="row-even"><td><p>执行指令</p></td>
+<td><p>AT+&lt;x&gt;</p></td>
+<td><p>该指令用于执行模块内部变参数不可变的功能</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="at">
-<h1>基础AT指令<a class="headerlink" href="#at" title="永久链接至标题"></a></h1>
-<div class="section" id="id2">
-<h2>基础AT指令总览<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
-<table border="1" class="docutils" id="id8">
-<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id8" title="永久链接至表格"></a></caption>
+</section>
+<section id="at">
+<h1>基础AT指令<a class="headerlink" href="#at" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>基础AT指令总览<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id8" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="34%" />
-<col width="66%" />
+<col style="width: 34%" />
+<col style="width: 66%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>指令</td>
-<td>描述</td>
+<tbody>
+<tr class="row-odd"><td><p>指令</p></td>
+<td><p>描述</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-uart">AT+UART</a></td>
-<td>设置 UART 配置</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-uart">AT+UART</a></p></td>
+<td><p>设置 UART 配置</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-gmr">AT+GMR</a></td>
-<td>查看版本信息</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-gmr">AT+GMR</a></p></td>
+<td><p>查看版本信息</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-s-help">AT+S.HELP</a></td>
-<td>查看AT帮助信息</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-s-help">AT+S.HELP</a></p></td>
+<td><p>查看AT帮助信息</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-rst">AT+RST</a></td>
-<td>重启模块</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-rst">AT+RST</a></p></td>
+<td><p>重启模块</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-restore">AT+RESTORE</a></td>
-<td>恢复出厂设置</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-restore">AT+RESTORE</a></p></td>
+<td><p>恢复出厂设置</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-gslp">AT+GSLP</a></td>
-<td>进入 Deep-sleep 模式</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-gslp">AT+GSLP</a></p></td>
+<td><p>进入 Deep-sleep 模式</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="id3">
-<h2>基础AT指令描述<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
-<div class="section" id="at-uart">
-<h3>AT+UART<a class="headerlink" href="#at-uart" title="永久链接至标题"></a></h3>
+</section>
+<section id="id3">
+<h2>基础AT指令描述<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="at-uart">
+<h3>AT+UART<a class="headerlink" href="#at-uart" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="7%" />
-<col width="47%" />
-<col width="46%" />
+<col style="width: 7%" />
+<col style="width: 47%" />
+<col style="width: 46%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">查询指令</p>
-<p class="last">AT+UART?</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>查询指令</p>
+<p>AT+UART?</p>
 </td>
-<td rowspan="2"><p class="first">设置指令</p>
-<p class="last">AT+UART=&lt;baudrate&gt;,&lt;databits&gt;,&lt;stopbits&gt;,&lt;parity&gt;,&lt;flow control&gt;</p>
-</td>
-</tr>
-<tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="2">响应</td>
-<td colspan="2" rowspan="2"><p class="first">+UART_CUR:&lt;baudrate&gt;,&lt;databits&gt;,&lt;stopbits&gt;,&lt;parity&gt;,&lt;flow control&gt; | OK</p>
-<p class="last">OK                                                                 |</p>
+<td rowspan="2"><p>设置指令</p>
+<p>AT+UART=&lt;baudrate&gt;,&lt;databits&gt;,&lt;stopbits&gt;,&lt;parity&gt;,&lt;flow control&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="19">参数说明</td>
-<td colspan="2" rowspan="19"><ul class="first last simple">
-<li>&lt;baudrate&gt;: UART 波特率</li>
-<li>&lt;databits&gt;: 数据位<ul>
-<li>5: 5-bit 数据位</li>
-<li>6: 6-bit 数据位</li>
-<li>7: 7-bit 数据位</li>
-<li>8: 8-bit 数据位</li>
+<tr class="row-odd"><td rowspan="2"><p>响应</p></td>
+<td colspan="2" rowspan="2"><p>+UART_CUR:&lt;baudrate&gt;,&lt;databits&gt;,&lt;stopbits&gt;,&lt;parity&gt;,&lt;flow control&gt; | OK</p>
+<p>OK                                                                 |</p>
+</td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td rowspan="19"><p>参数说明</p></td>
+<td colspan="2" rowspan="19"><ul class="simple">
+<li><p>&lt;baudrate&gt;: UART 波特率</p></li>
+<li><p>&lt;databits&gt;: 数据位</p>
+<ul>
+<li><p>5: 5-bit 数据位</p></li>
+<li><p>6: 6-bit 数据位</p></li>
+<li><p>7: 7-bit 数据位</p></li>
+<li><p>8: 8-bit 数据位</p></li>
 </ul>
 </li>
-<li>&lt;stopbits&gt;: 停止位<ul>
-<li>1: 1-bit 停⽌位</li>
-<li>2: 1.5-bit 停⽌位</li>
-<li>3: 2-bit 停⽌位</li>
+<li><p>&lt;stopbits&gt;: 停止位</p>
+<ul>
+<li><p>1: 1-bit 停⽌位</p></li>
+<li><p>2: 1.5-bit 停⽌位</p></li>
+<li><p>3: 2-bit 停⽌位</p></li>
 </ul>
 </li>
-<li>&lt;parity&gt;: 校验位<ul>
-<li>0: None</li>
-<li>1: Odd</li>
-<li>2: Even</li>
+<li><p>&lt;parity&gt;: 校验位</p>
+<ul>
+<li><p>0: None</p></li>
+<li><p>1: Odd</p></li>
+<li><p>2: Even</p></li>
 </ul>
 </li>
-<li>&lt;flow control&gt;: 流控<ul>
-<li>0: 不使能流控</li>
-<li>1: 使能 RTS</li>
-<li>2: 使能 CTS</li>
-<li>3: 同时使能 RTS 和 CTS</li>
+<li><p>&lt;flow control&gt;: 流控</p>
+<ul>
+<li><p>0: 不使能流控</p></li>
+<li><p>1: 使能 RTS</p></li>
+<li><p>2: 使能 CTS</p></li>
+<li><p>3: 同时使能 RTS 和 CTS</p></li>
 </ul>
 </li>
 </ul>
@@ -311,171 +320,171 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-gmr">
-<h3>AT+GMR<a class="headerlink" href="#at-gmr" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-gmr">
+<h3>AT+GMR<a class="headerlink" href="#at-gmr" title="此标题的永久链接"></a></h3>
 <blockquote>
 <div></div></blockquote>
-</div>
-<div class="section" id="at-rst">
-<h3>AT+RST<a class="headerlink" href="#at-rst" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-rst">
+<h3>AT+RST<a class="headerlink" href="#at-rst" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="61%" />
-<col width="39%" />
+<col style="width: 61%" />
+<col style="width: 39%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>执行指令</td>
-<td>AT+RST</td>
+<tbody>
+<tr class="row-odd"><td><p>执行指令</p></td>
+<td><p>AT+RST</p></td>
 </tr>
-<tr class="row-even"><td>响应</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-restore">
-<h3>AT+RESTORE<a class="headerlink" href="#at-restore" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-restore">
+<h3>AT+RESTORE<a class="headerlink" href="#at-restore" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="61%" />
-<col width="39%" />
+<col style="width: 61%" />
+<col style="width: 39%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>执行指令</td>
-<td>AT+RESTORE</td>
+<tbody>
+<tr class="row-odd"><td><p>执行指令</p></td>
+<td><p>AT+RESTORE</p></td>
 </tr>
-<tr class="row-even"><td>响应</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-s-help">
-<h3>AT+S.HELP<a class="headerlink" href="#at-s-help" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-s-help">
+<h3>AT+S.HELP<a class="headerlink" href="#at-s-help" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="61%" />
-<col width="39%" />
+<col style="width: 61%" />
+<col style="width: 39%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>执行指令</td>
-<td>AT+S.HELP</td>
+<tbody>
+<tr class="row-odd"><td><p>执行指令</p></td>
+<td><p>AT+S.HELP</p></td>
 </tr>
-<tr class="row-even"><td>响应</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-gslp">
-<h3>AT+GSLP<a class="headerlink" href="#at-gslp" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-gslp">
+<h3>AT+GSLP<a class="headerlink" href="#at-gslp" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="11%" />
-<col width="89%" />
+<col style="width: 11%" />
+<col style="width: 89%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">设置指令：</p>
-<p class="last">AT+GSLP=&lt;time&gt;</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>设置指令：</p>
+<p>AT+GSLP=&lt;time&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">&lt;time&gt;</p>
-<p class="last">OK</p>
+<tr class="row-odd"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>&lt;time&gt;</p>
+<p>OK</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>参数说明</td>
-<td><ul class="first last simple">
-<li>&lt;time&gt;: 设置 BL602 的睡眠时长，单位：秒。 BL602 会在休眠设定时长后唤醒</li>
+<tr class="row-odd"><td><p>参数说明</p></td>
+<td><ul class="simple">
+<li><p>&lt;time&gt;: 设置 BL602 的睡眠时长，单位：秒。 BL602 会在休眠设定时长后唤醒</p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-</div>
-</div>
-<div class="section" id="wi-fi-at">
-<h1>Wi-Fi 功能 AT 指令<a class="headerlink" href="#wi-fi-at" title="永久链接至标题"></a></h1>
-<table border="1" class="docutils" id="id9">
-<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id9" title="永久链接至表格"></a></caption>
+</section>
+</section>
+</section>
+<section id="wi-fi-at">
+<h1>Wi-Fi 功能 AT 指令<a class="headerlink" href="#wi-fi-at" title="此标题的永久链接"></a></h1>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id9" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="30%" />
-<col width="70%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>指令</td>
-<td>描述</td>
+<tbody>
+<tr class="row-odd"><td><p>指令</p></td>
+<td><p>描述</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-cwmode">AT+CWMODE</a></td>
-<td>设置 Wi-Fi 模式 (STA/AP/STA+AP)</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-cwmode">AT+CWMODE</a></p></td>
+<td><p>设置 Wi-Fi 模式 (STA/AP/STA+AP)</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-cwlap">AT+CWLAP</a></td>
-<td>扫描附近AP</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-cwlap">AT+CWLAP</a></p></td>
+<td><p>扫描附近AP</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-cwjap">AT+CWJAP</a></td>
-<td>连接AP</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-cwjap">AT+CWJAP</a></p></td>
+<td><p>连接AP</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-cwqap">AT+CWQAP</a></td>
-<td>断开AP</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-cwqap">AT+CWQAP</a></p></td>
+<td><p>断开AP</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-cwautoconn">AT+CWAUTOCONN</a></td>
-<td>设置自动重连</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-cwautoconn">AT+CWAUTOCONN</a></p></td>
+<td><p>设置自动重连</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-softap">AT+SOFTAP</a></td>
-<td>开启AP</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-softap">AT+SOFTAP</a></p></td>
+<td><p>开启AP</p></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="id4">
-<h2>基础AT指令描述<a class="headerlink" href="#id4" title="永久链接至标题"></a></h2>
-<div class="section" id="at-cwmode">
-<h3>AT+CWMODE<a class="headerlink" href="#at-cwmode" title="永久链接至标题"></a></h3>
+<section id="id4">
+<h2>基础AT指令描述<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="at-cwmode">
+<h3>AT+CWMODE<a class="headerlink" href="#at-cwmode" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="9%" />
-<col width="27%" />
-<col width="64%" />
+<col style="width: 9%" />
+<col style="width: 27%" />
+<col style="width: 64%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+CWMODE?</p>
-<p class="last">功能：查询BL602 Wi-Fi 模式</p>
+<p>功能：查询BL602 Wi-Fi 模式</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+CWMODE=&lt;mode&gt;</p>
-<p class="last">功能：设置BL602 Wi-Fi 模式</p>
+<p>功能：设置BL602 Wi-Fi 模式</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td>响应</td>
-<td>+CWMODE:&lt;mode&gt;</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>+CWMODE:&lt;mode&gt;</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5">参数说明</td>
-<td colspan="2" rowspan="5"><ul class="first last">
-<li><p class="first">&lt;mode&gt;:</p>
+<tr class="row-odd"><td rowspan="5"><p>参数说明</p></td>
+<td colspan="2" rowspan="5"><ul>
+<li><p>&lt;mode&gt;:</p>
 <blockquote>
 <div><ul class="simple">
-<li>0: 无 Wi-Fi 模式，并且关闭 Wi-Fi RF</li>
-<li>1: Station 模式</li>
-<li>2: SoftAP 模式</li>
-<li>3: SoftAP+Station 模式</li>
+<li><p>0: 无 Wi-Fi 模式，并且关闭 Wi-Fi RF</p></li>
+<li><p>1: Station 模式</p></li>
+<li><p>2: SoftAP 模式</p></li>
+<li><p>3: SoftAP+Station 模式</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -489,75 +498,75 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cwlap">
-<h3>AT+CWLAP<a class="headerlink" href="#at-cwlap" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cwlap">
+<h3>AT+CWLAP<a class="headerlink" href="#at-cwlap" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="9%" />
-<col width="91%" />
+<col style="width: 9%" />
+<col style="width: 91%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+CWLAP</p>
-<p class="last">功能：扫描附近的AP热点。</p>
+<p>功能：扫描附近的AP热点。</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="3">响应</td>
-<td rowspan="3"><p class="first">+CWLAP:</p>
+<tr class="row-even"><td rowspan="3"><p>响应</p></td>
+<td rowspan="3"><p>+CWLAP:</p>
 <p>&lt;ap list&gt;...</p>
-<p class="last">OK</p>
+<p>OK</p>
 </td>
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>响应说明</td>
-<td><ul class="first last simple">
-<li>&lt;序号&gt;,&lt;SSID&gt;,&lt;BSSID&gt;,&lt;信道&gt;,&lt;信号强度&gt;,&lt;加密方式&gt;</li>
+<tr class="row-odd"><td><p>响应说明</p></td>
+<td><ul class="simple">
+<li><p>&lt;序号&gt;,&lt;SSID&gt;,&lt;BSSID&gt;,&lt;信道&gt;,&lt;信号强度&gt;,&lt;加密方式&gt;</p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cwautoconn">
-<h3>AT+CWAUTOCONN<a class="headerlink" href="#at-cwautoconn" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cwautoconn">
+<h3>AT+CWAUTOCONN<a class="headerlink" href="#at-cwautoconn" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="9%" />
-<col width="28%" />
-<col width="62%" />
+<col style="width: 9%" />
+<col style="width: 28%" />
+<col style="width: 62%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+CWAUTOCONN?</p>
-<p class="last">功能：查询BL602 Wi-Fi 自动重连</p>
+<p>功能：查询BL602 Wi-Fi 自动重连</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+CWAUTOCONN=&lt;auto_connect&gt;</p>
-<p class="last">功能：设置BL602 Wi-Fi 自动重连</p>
+<p>功能：设置BL602 Wi-Fi 自动重连</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td>响应</td>
-<td>+CWAUTOCONN:&lt;mode&gt;</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>+CWAUTOCONN:&lt;mode&gt;</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3">参数说明</td>
-<td colspan="2" rowspan="3"><ul class="first last">
-<li><p class="first">&lt;auto_connect&gt;:</p>
+<tr class="row-odd"><td rowspan="3"><p>参数说明</p></td>
+<td colspan="2" rowspan="3"><ul>
+<li><p>&lt;auto_connect&gt;:</p>
 <blockquote>
 <div><ul class="simple">
-<li>0: 当WiFi模式变成Station或SoftAP+Station时，不连接WiFi</li>
-<li>1: 当WiFi模式变成Station或SoftAP+Station(默认配置)时，连接WiFi</li>
+<li><p>0: 当WiFi模式变成Station或SoftAP+Station时，不连接WiFi</p></li>
+<li><p>1: 当WiFi模式变成Station或SoftAP+Station(默认配置)时，连接WiFi</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -569,48 +578,49 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cwjap">
-<h3>AT+CWJAP<a class="headerlink" href="#at-cwjap" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cwjap">
+<h3>AT+CWJAP<a class="headerlink" href="#at-cwjap" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="5%" />
-<col width="47%" />
-<col width="48%" />
+<col style="width: 5%" />
+<col style="width: 47%" />
+<col style="width: 48%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+CWJAP?</p>
-<p class="last">功能：查询 BL602 Station 已连接的 AP 信息。</p>
+<p>功能：查询 BL602 Station 已连接的 AP 信息。</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+CWJAP=&lt;ssid&gt;,&lt;pwd&gt;</p>
-<p class="last">功能：设置 BL602 Station 需连接的 AP。</p>
+<p>功能：设置 BL602 Station 需连接的 AP。</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">+CWJAP:&lt;ssid&gt;,&lt;ip&gt;</p>
-<p class="last">OK</p>
+<tr class="row-even"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>+CWJAP:&lt;ssid&gt;,&lt;ip&gt;</p>
+<p>OK</p>
 </td>
-<td rowspan="2"><p class="first">OK</p>
-<p class="last">+EVT:0:wifi connected</p>
+<td rowspan="2"><p>OK</p>
+<p>+EVT:0:wifi connected</p>
 </td>
 </tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="3">参数说明</td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;ssid&gt;: 字符串串参数，AP 的 SSID</li>
-<li>&lt;ip&gt;: 当前获取到的ip地址</li>
+<tr class="row-even"><td rowspan="3"><p>参数说明</p></td>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;ssid&gt;: 字符串串参数，AP 的 SSID</p></li>
+<li><p>&lt;ip&gt;: 当前获取到的ip地址</p></li>
 </ul>
 </td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;ssid&gt;: 目标 AP 的 SSID</li>
-<li>&lt;pwd&gt;: 目标 AP 的 密码<ul>
-<li>若SSID或密码包含任何特殊字符，例如&quot;或者，则需要转义</li>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;ssid&gt;: 目标 AP 的 SSID</p></li>
+<li><p>&lt;pwd&gt;: 目标 AP 的 密码</p>
+<ul>
+<li><p>若SSID或密码包含任何特殊字符，例如&quot;或者，则需要转义</p></li>
 </ul>
 </li>
 </ul>
@@ -621,68 +631,69 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cwqap">
-<h3>AT+CWQAP<a class="headerlink" href="#at-cwqap" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cwqap">
+<h3>AT+CWQAP<a class="headerlink" href="#at-cwqap" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="11%" />
-<col width="89%" />
+<col style="width: 11%" />
+<col style="width: 89%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">设置指令：</p>
-<p class="last">AT+CWQAP=&lt;link id&gt;</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>设置指令：</p>
+<p>AT+CWQAP=&lt;link id&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>响应</td>
-<td>OK</td>
+<tr class="row-odd"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-softap">
-<h3>AT+SOFTAP<a class="headerlink" href="#at-softap" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-softap">
+<h3>AT+SOFTAP<a class="headerlink" href="#at-softap" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="5%" />
-<col width="47%" />
-<col width="48%" />
+<col style="width: 5%" />
+<col style="width: 47%" />
+<col style="width: 48%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+SOFTAP?</p>
-<p class="last">功能：查看开启的AP热点信息。</p>
+<p>功能：查看开启的AP热点信息。</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+SOFTAP=&lt;ssid&gt;,[pwd]</p>
-<p class="last">功能：开启一个AP热点。</p>
+<p>功能：开启一个AP热点。</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">+SOFTAP:&lt;ip&gt;,&lt;bssid&gt;</p>
-<p class="last">OK</p>
+<tr class="row-even"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>+SOFTAP:&lt;ip&gt;,&lt;bssid&gt;</p>
+<p>OK</p>
 </td>
-<td rowspan="2">OK</td>
+<td rowspan="2"><p>OK</p></td>
 </tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="3">参数说明</td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;ip&gt;: 开启的AP热点的IP地址</li>
-<li>&lt;bssid&gt;: 当前开启的AP热点的MAC地址</li>
+<tr class="row-even"><td rowspan="3"><p>参数说明</p></td>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;ip&gt;: 开启的AP热点的IP地址</p></li>
+<li><p>&lt;bssid&gt;: 当前开启的AP热点的MAC地址</p></li>
 </ul>
 </td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;ssid&gt;: 设置AP 的 SSID</li>
-<li>[pwd]: 设置 AP 的 密码，若没有此参数，则该AP为开放式AP<ul>
-<li>若SSID或密码包含任何特殊字符，例如&quot;或者，则需要转义</li>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;ssid&gt;: 设置AP 的 SSID</p></li>
+<li><p>[pwd]: 设置 AP 的 密码，若没有此参数，则该AP为开放式AP</p>
+<ul>
+<li><p>若SSID或密码包含任何特殊字符，例如&quot;或者，则需要转义</p></li>
 </ul>
 </li>
 </ul>
@@ -693,137 +704,136 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-</div>
-</div>
-<div class="section" id="tcp-ip-at">
-<h1>TCP/IP 相关 AT 指令<a class="headerlink" href="#tcp-ip-at" title="永久链接至标题"></a></h1>
-<table border="1" class="docutils" id="id10">
-<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id10" title="永久链接至表格"></a></caption>
+</section>
+</section>
+</section>
+<section id="tcp-ip-at">
+<h1>TCP/IP 相关 AT 指令<a class="headerlink" href="#tcp-ip-at" title="此标题的永久链接"></a></h1>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id10" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col style="width: 29%" />
+<col style="width: 71%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>指令</td>
-<td>描述</td>
+<tbody>
+<tr class="row-odd"><td><p>指令</p></td>
+<td><p>描述</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-cipstart">AT+CIPSTART</a></td>
-<td>建立 TCP 连接，UDP 传输</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-cipstart">AT+CIPSTART</a></p></td>
+<td><p>建立 TCP 连接，UDP 传输</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-cipclose">AT+CIPCLOSE</a></td>
-<td>关闭 TCP 连接，UDP 传输</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-cipclose">AT+CIPCLOSE</a></p></td>
+<td><p>关闭 TCP 连接，UDP 传输</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-cipserver">AT+CIPSERVER</a></td>
-<td>删除或创建TCP服务器</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-cipserver">AT+CIPSERVER</a></p></td>
+<td><p>删除或创建TCP服务器</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-cipsend">AT+CIPSEND</a></td>
-<td>发送TCP/IP数据</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-cipsend">AT+CIPSEND</a></p></td>
+<td><p>发送TCP/IP数据</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ipd">+IPD</a></td>
-<td>收到TCP/IP数据</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ipd">+IPD</a></p></td>
+<td><p>收到TCP/IP数据</p></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="id5">
-<h2>基础AT指令描述<a class="headerlink" href="#id5" title="永久链接至标题"></a></h2>
-<div class="section" id="at-cipstart">
-<h3>AT+CIPSTART<a class="headerlink" href="#at-cipstart" title="永久链接至标题"></a></h3>
-<table border="1" class="docutils" id="id11">
-<caption><span class="caption-text">建立 TCP/UDP 连接</span><a class="headerlink" href="#id11" title="永久链接至表格"></a></caption>
+<section id="id5">
+<h2>基础AT指令描述<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<section id="at-cipstart">
+<h3>AT+CIPSTART<a class="headerlink" href="#at-cipstart" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">建立 TCP/UDP 连接</span><a class="headerlink" href="#id11" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="7%" />
-<col width="93%" />
+<col style="width: 7%" />
+<col style="width: 93%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>设置指令</td>
-<td>AT+CIPSTART=&lt;link id&gt;,&lt;type&gt;,&lt;remote IP&gt;,&lt;remote port&gt;</td>
+<tbody>
+<tr class="row-odd"><td><p>设置指令</p></td>
+<td><p>AT+CIPSTART=&lt;link id&gt;,&lt;type&gt;,&lt;remote IP&gt;,&lt;remote port&gt;</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">OK</p>
-<p class="last">或者已经建立TCP连接,响应:ALREADY CONNECTTED ERROR</p>
+<tr class="row-even"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>OK</p>
+<p>或者已经建立TCP连接,响应:ALREADY CONNECTTED ERROR</p>
 </td>
 </tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="4">参数说明</td>
-<td rowspan="4"><ul class="first last simple">
-<li>&lt;link id&gt;: 需要设置的连接ID</li>
-<li>&lt;type&gt;: 字符串串参数，连接类型，&quot;TCP&quot;，&quot;UDP&quot;</li>
-<li>&lt;remote IP&gt;: 字符串串参数，远端 IP 地址</li>
-<li>&lt;remote port&gt;: 远端端口号</li>
+<tr class="row-even"><td rowspan="4"><p>参数说明</p></td>
+<td rowspan="4"><ul class="simple">
+<li><p>&lt;link id&gt;: 需要设置的连接ID</p></li>
+<li><p>&lt;type&gt;: 字符串串参数，连接类型，&quot;TCP&quot;，&quot;UDP&quot;</p></li>
+<li><p>&lt;remote IP&gt;: 字符串串参数，远端 IP 地址</p></li>
+<li><p>&lt;remote port&gt;: 远端端口号</p></li>
 </ul>
 </td>
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2">示例</td>
-<td rowspan="2"><p class="first">AT+CIPSTART=0,TCP,192.168.101,8000</p>
-<p class="last">AT+CIPSTART=1,UDP,192.168.101,5000</p>
+<tr class="row-even"><td rowspan="2"><p>示例</p></td>
+<td rowspan="2"><p>AT+CIPSTART=0,TCP,192.168.101,8000</p>
+<p>AT+CIPSTART=1,UDP,192.168.101,5000</p>
 </td>
 </tr>
 <tr class="row-odd"></tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="at-cipclose">
-<h3>AT+CIPCLOSE<a class="headerlink" href="#at-cipclose" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cipclose">
+<h3>AT+CIPCLOSE<a class="headerlink" href="#at-cipclose" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col style="width: 13%" />
+<col style="width: 87%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">设置指令：</p>
-<p class="last">AT+CIPCLOSE=&lt;link id&gt;</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>设置指令：</p>
+<p>AT+CIPCLOSE=&lt;link id&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>响应</td>
-<td>OK</td>
+<tr class="row-odd"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-even"><td>参数说明</td>
-<td><ul class="first last simple">
-<li>&lt;link id&gt;: 需要关闭的ID</li>
+<tr class="row-even"><td><p>参数说明</p></td>
+<td><ul class="simple">
+<li><p>&lt;link id&gt;: 需要关闭的ID</p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cipserver">
-<h3>AT+CIPSERVER<a class="headerlink" href="#at-cipserver" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cipserver">
+<h3>AT+CIPSERVER<a class="headerlink" href="#at-cipserver" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col style="width: 13%" />
+<col style="width: 87%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">设置指令：</p>
-<p class="last">AT+CIPSERVER=&lt;mode&gt;[,&lt;port&gt;]</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>设置指令：</p>
+<p>AT+CIPSERVER=&lt;mode&gt;[,&lt;port&gt;]</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>响应</td>
-<td>OK</td>
+<tr class="row-odd"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-even"><td rowspan="5">参数说明</td>
-<td rowspan="5"><ul class="first last">
-<li><p class="first">&lt;mode&gt;:</p>
+<tr class="row-even"><td rowspan="5"><p>参数说明</p></td>
+<td rowspan="5"><ul>
+<li><p>&lt;mode&gt;:</p>
 <blockquote>
 <div><ul class="simple">
-<li>0: 关闭服务器器</li>
-<li>1: 建立服务器器</li>
+<li><p>0: 关闭服务器器</p></li>
+<li><p>1: 建立服务器器</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first">&lt;port&gt;: 端口号，默认为 333</p>
-</li>
+<li><p>&lt;port&gt;: 端口号，默认为 333</p></li>
 </ul>
 </td>
 </tr>
@@ -831,10 +841,11 @@
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="3">示例</td>
-<td rowspan="3"><p class="first">// 建立 TCP 服务器器</p>
-<blockquote class="last">
-<div>AT+CIPSERVER=1,80</div></blockquote>
+<tr class="row-odd"><td rowspan="3"><p>示例</p></td>
+<td rowspan="3"><p>// 建立 TCP 服务器器</p>
+<blockquote>
+<div><p>AT+CIPSERVER=1,80</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="row-even"></tr>
@@ -842,38 +853,39 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-cipsend">
-<h3>AT+CIPSEND<a class="headerlink" href="#at-cipsend" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-cipsend">
+<h3>AT+CIPSEND<a class="headerlink" href="#at-cipsend" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col style="width: 13%" />
+<col style="width: 87%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="2">指令</td>
-<td rowspan="2"><p class="first">设置指令：</p>
-<p class="last">AT+CIPSEND=&lt;link id&gt;,&lt;data len&gt;</p>
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>指令</p></td>
+<td rowspan="2"><p>设置指令：</p>
+<p>AT+CIPSEND=&lt;link id&gt;,&lt;data len&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>响应</td>
-<td>OK</td>
+<tr class="row-odd"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3">参数说明</td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;link id&gt;:    连接ID</li>
-<li>&lt;data len&gt;: 需要传输的数据长度（单位：byte）</li>
+<tr class="row-even"><td rowspan="3"><p>参数说明</p></td>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;link id&gt;:    连接ID</p></li>
+<li><p>&lt;data len&gt;: 需要传输的数据长度（单位：byte）</p></li>
 </ul>
 </td>
 </tr>
 <tr class="row-odd"></tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td rowspan="3">示例</td>
-<td rowspan="3"><p class="first">AT+CIPSEND=0,20</p>
-<blockquote class="last">
-<div>表示即将向id为0的连接发送20字节的数据</div></blockquote>
+<tr class="row-odd"><td rowspan="3"><p>示例</p></td>
+<td rowspan="3"><p>AT+CIPSEND=0,20</p>
+<blockquote>
+<div><p>表示即将向id为0的连接发送20字节的数据</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="row-even"></tr>
@@ -881,29 +893,29 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="ipd">
-<h3>+IPD<a class="headerlink" href="#ipd" title="永久链接至标题"></a></h3>
+</section>
+<section id="ipd">
+<h3>+IPD<a class="headerlink" href="#ipd" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col style="width: 13%" />
+<col style="width: 87%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">说明</td>
-<td rowspan="3"><p class="first">+IPD为收到TCP/UDP对端连接数据时的响应</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>说明</p></td>
+<td rowspan="3"><p>+IPD为收到TCP/UDP对端连接数据时的响应</p>
 <p>+IPD:&lt;link id&gt;,&lt;data len&gt;</p>
-<p class="last">&lt;data&gt;</p>
+<p>&lt;data&gt;</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="3">参数说明</td>
-<td rowspan="3"><ul class="first last simple">
-<li>&lt;link id&gt;:发送数据的ID</li>
-<li>&lt;data len&gt;:即将接收的数据长度（单位：byte）</li>
-<li>&lt;data&gt;:接收数据</li>
+<tr class="row-even"><td rowspan="3"><p>参数说明</p></td>
+<td rowspan="3"><ul class="simple">
+<li><p>&lt;link id&gt;:发送数据的ID</p></li>
+<li><p>&lt;data len&gt;:即将接收的数据长度（单位：byte）</p></li>
+<li><p>&lt;data&gt;:接收数据</p></li>
 </ul>
 </td>
 </tr>
@@ -912,73 +924,74 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-</div>
-</div>
-<div class="section" id="ble-at">
-<h1>BLE 相关 AT 指令<a class="headerlink" href="#ble-at" title="永久链接至标题"></a></h1>
-<table border="1" class="docutils" id="id12">
-<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id12" title="永久链接至表格"></a></caption>
+</section>
+</section>
+</section>
+<section id="ble-at">
+<h1>BLE 相关 AT 指令<a class="headerlink" href="#ble-at" title="此标题的永久链接"></a></h1>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">指令列表</span><a class="headerlink" href="#id12" title="此表格的永久链接"></a></caption>
 <colgroup>
-<col width="30%" />
-<col width="70%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>指令</td>
-<td>描述</td>
+<tbody>
+<tr class="row-odd"><td><p>指令</p></td>
+<td><p>描述</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-bledatalen">AT+BLEDATALEN</a></td>
-<td>设置 BLE 数据包⻓度</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-bledatalen">AT+BLEDATALEN</a></p></td>
+<td><p>设置 BLE 数据包⻓度</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#at-blename">AT+BLENAME</a></td>
-<td>设置 BLE 设备名称</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at-blename">AT+BLENAME</a></p></td>
+<td><p>设置 BLE 设备名称</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#at-bleaddr">AT+BLEADDR</a></td>
-<td>设置 BLE 设备地址</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#at-bleaddr">AT+BLEADDR</a></p></td>
+<td><p>设置 BLE 设备地址</p></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="id6">
-<h2>基础AT指令描述<a class="headerlink" href="#id6" title="永久链接至标题"></a></h2>
-<div class="section" id="at-bledatalen">
-<h3>AT+BLEDATALEN<a class="headerlink" href="#at-bledatalen" title="永久链接至标题"></a></h3>
+<section id="id6">
+<h2>基础AT指令描述<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="at-bledatalen">
+<h3>AT+BLEDATALEN<a class="headerlink" href="#at-bledatalen" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col style="width: 13%" />
+<col style="width: 87%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">设置指令：</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>设置指令：</p>
 <p>AT+BLEDATALEN=&lt;conn_index&gt;,&lt;pkt_data_len&gt;</p>
-<p class="last">功能：设置 BLE 数据包⻓度。</p>
+<p>功能：设置 BLE 数据包⻓度。</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td>响应</td>
-<td>OK</td>
+<tr class="row-even"><td><p>响应</p></td>
+<td><p>OK</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2">参数说明</td>
-<td rowspan="2"><ul class="first last simple">
-<li>&lt;conn_index&gt;: BLE 连接号, 范围 [0~2].</li>
-<li>&lt;pkt_data_len&gt;: 数据包长度，取值范围: 0x001b ~ 0x00fb</li>
+<tr class="row-odd"><td rowspan="2"><p>参数说明</p></td>
+<td rowspan="2"><ul class="simple">
+<li><p>&lt;conn_index&gt;: BLE 连接号, 范围 [0~2].</p></li>
+<li><p>&lt;pkt_data_len&gt;: 数据包长度，取值范围: 0x001b ~ 0x00fb</p></li>
 </ul>
 </td>
 </tr>
 <tr class="row-even"></tr>
-<tr class="row-odd"><td>注意</td>
-<td><ul class="first last simple">
-<li>需要先建立 BLE 连接，才能设置数据包长度</li>
+<tr class="row-odd"><td><p>注意</p></td>
+<td><ul class="simple">
+<li><p>需要先建立 BLE 连接，才能设置数据包长度</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-even"><td rowspan="3">示例</td>
-<td rowspan="3"><p class="first">AT+BLEINIT=1   // 初始化为 client</p>
-<blockquote class="last">
+<tr class="row-even"><td rowspan="3"><p>示例</p></td>
+<td rowspan="3"><p>AT+BLEINIT=1   // 初始化为 client</p>
+<blockquote>
 <div><blockquote>
-<div>AT+BLECONN=0,&quot;24:0a:c4:09:34:23&quot;</div></blockquote>
+<div><p>AT+BLECONN=0,&quot;24:0a:c4:09:34:23&quot;</p>
+</div></blockquote>
 <p>AT+BLEDATALEN=0,30</p>
 </div></blockquote>
 </td>
@@ -988,82 +1001,82 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-blename">
-<h3>AT+BLENAME<a class="headerlink" href="#at-blename" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-blename">
+<h3>AT+BLENAME<a class="headerlink" href="#at-blename" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="13%" />
-<col width="37%" />
-<col width="51%" />
+<col style="width: 13%" />
+<col style="width: 37%" />
+<col style="width: 51%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+BLENAME?</p>
-<p class="last">功能：查询 BLE 设备名称。</p>
+<p>功能：查询 BLE 设备名称。</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+BLENAME=&lt;device_name&gt;</p>
-<p class="last">功能：设置 BLE 设备名称，最大长度为32</p>
+<p>功能：设置 BLE 设备名称，最大长度为32</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">+BLENAME:&lt;device_name&gt;</p>
-<p class="last">OK</p>
+<tr class="row-even"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>+BLENAME:&lt;device_name&gt;</p>
+<p>OK</p>
 </td>
-<td rowspan="2">OK</td>
+<td rowspan="2"><p>OK</p></td>
 </tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td>参数说明</td>
-<td colspan="2"><ul class="first last simple">
-<li>&lt;device_name&gt;: BLE 设备名称</li>
+<tr class="row-even"><td><p>参数说明</p></td>
+<td colspan="2"><ul class="simple">
+<li><p>&lt;device_name&gt;: BLE 设备名称</p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
-</div>
-<div class="section" id="at-bleaddr">
-<h3>AT+BLEADDR<a class="headerlink" href="#at-bleaddr" title="永久链接至标题"></a></h3>
+</section>
+<section id="at-bleaddr">
+<h3>AT+BLEADDR<a class="headerlink" href="#at-bleaddr" title="此标题的永久链接"></a></h3>
 <blockquote>
-<div><table border="1" class="docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="11%" />
-<col width="46%" />
-<col width="43%" />
+<col style="width: 11%" />
+<col style="width: 46%" />
+<col style="width: 43%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td rowspan="3">指令</td>
-<td rowspan="3"><p class="first">查询指令</p>
+<tbody>
+<tr class="row-odd"><td rowspan="3"><p>指令</p></td>
+<td rowspan="3"><p>查询指令</p>
 <p>AT+BLEADDR?</p>
-<p class="last">功能：查询 BLE 设备的 public address。</p>
+<p>功能：查询 BLE 设备的 public address。</p>
 </td>
-<td rowspan="3"><p class="first">设置指令</p>
+<td rowspan="3"><p>设置指令</p>
 <p>AT+BLEADDR=&lt;addr_type&gt;[,&lt;random_addr&gt;]</p>
-<p class="last">功能：设置 BLE 设备的地址。</p>
+<p>功能：设置 BLE 设备的地址。</p>
 </td>
 </tr>
 <tr class="row-even"></tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="2">响应</td>
-<td rowspan="2"><p class="first">+BLEADDR:&lt;BLE_public_addr&gt;</p>
-<p class="last">OK</p>
+<tr class="row-even"><td rowspan="2"><p>响应</p></td>
+<td rowspan="2"><p>+BLEADDR:&lt;BLE_public_addr&gt;</p>
+<p>OK</p>
 </td>
-<td rowspan="2">OK</td>
+<td rowspan="2"><p>OK</p></td>
 </tr>
 <tr class="row-odd"></tr>
-<tr class="row-even"><td rowspan="3">参数说明</td>
-<td colspan="2" rowspan="3"><ul class="first last">
-<li><p class="first">&lt;addr_type&gt;:</p>
+<tr class="row-even"><td rowspan="3"><p>参数说明</p></td>
+<td colspan="2" rowspan="3"><ul>
+<li><p>&lt;addr_type&gt;:</p>
 <blockquote>
 <div><ul class="simple">
-<li>0: public address</li>
-<li>1: random address</li>
+<li><p>0: public address</p></li>
+<li><p>1: random address</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -1075,9 +1088,9 @@
 </tbody>
 </table>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
@@ -1111,17 +1124,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

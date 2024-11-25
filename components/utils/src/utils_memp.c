@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -33,6 +33,7 @@
 
 #define UTILS_MEMP_ALLOCED_NODE_PATTERN 0XA5
 #define MEM_ALIGN(addr, align) (((addr) + (align) -1) & ~((align)-1))
+
 
 int utils_memp_init(utils_memp_pool_t **pool, uint16_t node_size, uint16_t pool_cap, uint8_t align_req)
 {
@@ -74,43 +75,6 @@ int utils_memp_init(utils_memp_pool_t **pool, uint16_t node_size, uint16_t pool_
     npool->mem = pool_mem;
     npool->last_node = npool->mem;
     *pool = npool;
-
-    return 0;
-}
-
-int utils_memp_init_alloced(utils_memp_pool_t *pool, uint16_t node_size, uint16_t pool_cap, uint8_t align_req)
-{
-    utils_memp_pool_t *npool = pool;
-    struct utils_memp_node *node;
-    struct utils_memp_node *pool_mem;
-    size_t size;
-    uint16_t padded_node_size;
-    uint16_t i;
-
-    align_req = MEM_ALIGN(align_req, sizeof(void *));
-    padded_node_size = MEM_ALIGN(node_size + sizeof(struct utils_memp_node), align_req);
-
-    size = sizeof(utils_memp_pool_t);
-    size = MEM_ALIGN(size, align_req);
-    size += padded_node_size * pool_cap;
-
-    node = (struct utils_memp_node *)((uint8_t *)npool + (size - padded_node_size * pool_cap));
-    npool->first_node = node;
-    npool->node_size = node_size;
-    npool->pool_cap = pool_cap;
-    npool->pool_size = 0;
-    npool->align_req = align_req;
-    npool->padded_node_size = padded_node_size;
-    npool->mem = NULL;
-    pool_mem = npool->mem;
-
-    for(i = 0; i < pool_cap; ++i) {
-        node->next = pool_mem;
-        pool_mem = node;
-        node = (struct utils_memp_node *)((uint8_t *)node + padded_node_size);
-    }
-    npool->mem = pool_mem;
-    npool->last_node = npool->mem;
 
     return 0;
 }

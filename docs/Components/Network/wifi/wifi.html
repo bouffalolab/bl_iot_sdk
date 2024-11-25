@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>WiFi &mdash; BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档</title>
+  <title>WiFi &mdash; BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档</title>
   
 
   
@@ -28,18 +29,22 @@
   
 
   
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
   
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
   
 
   
-        <link rel="author" title="关于这些文档"
+        <link rel="author" title="关于此文档"
               href="../../../about.html"/>
         <link rel="index" title="索引"
               href="../../../genindex.html"/>
         <link rel="search" title="搜索" href="../../../search.html"/>
-    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee 文档" href="../../../index.html"/> 
+    <link rel="top" title="BL IoT SDK release_bl_iot_sdk_1.6.40-40-gfb91fe21a 文档" href="../../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -71,7 +76,7 @@
             
             
               <div class="version">
-                release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee
+                release_bl_iot_sdk_1.6.40-40-gfb91fe21a
               </div>
             
           
@@ -166,34 +171,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="wifi">
-<span id="wifi-index"></span><h1>WiFi<a class="headerlink" href="#wifi" title="永久链接至标题"></a></h1>
-<div class="section" id="id1">
-<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+  <section id="wifi">
+<span id="wifi-index"></span><h1>WiFi<a class="headerlink" href="#wifi" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>本文档介绍BL_IoT SDK的WiFi联网功能。主要包括</p>
 <ul class="simple">
-<li>基站模式（即 STA 模式或 Wi-Fi 客户端模式），此时 BL_IoT 连接到接入点 (AP)。</li>
-<li>AP 模式（即 Soft-AP 模式或接入点模式），此时基站连接到 BL_IoT。</li>
-<li>AP-STA 共存模式（BL_IoT 既是接入点，同时又作为基站连接到另外一个接入点）。</li>
-<li>上述模式的各种安全模式（WPA、WPA2 及 WEP（AP模式不支持））。</li>
-<li>扫描接入点（包括主动扫描及被动扫描）。</li>
-<li>使用混杂模式监控 IEEE802.11 Wi-Fi 数据包。</li>
+<li><p>基站模式（即 STA 模式或 Wi-Fi 客户端模式），此时 BL_IoT 连接到接入点 (AP)。</p></li>
+<li><p>AP 模式（即 Soft-AP 模式或接入点模式），此时基站连接到 BL_IoT。</p></li>
+<li><p>AP-STA 共存模式（BL_IoT 既是接入点，同时又作为基站连接到另外一个接入点）。</p></li>
+<li><p>上述模式的各种安全模式（WPA、WPA2 及 WEP（AP模式不支持））。</p></li>
+<li><p>扫描接入点（包括主动扫描及被动扫描）。</p></li>
+<li><p>使用混杂模式监控 IEEE802.11 Wi-Fi 数据包。</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h2>应用实例<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+</section>
+<section id="id2">
+<h2>应用实例<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>BL_IoT的实例 <code class="docutils literal notranslate"><span class="pre">bl602_demo_wifi</span></code> 目录下包含了一个应用程序，该demo介绍了如何使用BL_IoT模组连接到AP等一系列wifi操作。该实例实现的主要思路如下：</p>
-<div class="figure">
+<figure class="align-default">
 <img alt="" src="../../../_images/image11.png" />
-</div>
+</figure>
 <ul class="simple">
-<li>在主函数 <code class="docutils literal notranslate"><span class="pre">bfl_main()</span></code> 中创建一个 <code class="docutils literal notranslate"><span class="pre">aos_loop_proc()</span></code> 线程，在此线程中调用 <code class="docutils literal notranslate"><span class="pre">aos_register_event_filter()</span></code> 接口注册一个 <code class="docutils literal notranslate"><span class="pre">EV_WIFI</span></code> 事件的监听函数 <code class="docutils literal notranslate"><span class="pre">event_cb_wifi_event()</span></code> ；</li>
-<li>首先用户在终端中输入 <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> 命令后，在 <code class="docutils literal notranslate"><span class="pre">cmd_stack_wifi()</span></code> 函数中创建一个 <code class="docutils literal notranslate"><span class="pre">wifi_main()</span></code> 的线程，接着调用 <code class="docutils literal notranslate"><span class="pre">aos_post_event()</span></code> 接口发布 <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_INIT_DONE</span></code> 事件后， <code class="docutils literal notranslate"><span class="pre">event_cb_wifi_event()</span></code> 会被调用，并进入case <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_INIT_DONE</span></code> 分支从而调用 <code class="docutils literal notranslate"><span class="pre">wifi_mgmr_start_background()</span></code> 开启WiFi Manager，同时发布 <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_MGMR_DONE</span></code> 事件，进入case <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_MGMR_DONE</span></code> 分支调用 <code class="docutils literal notranslate"><span class="pre">_connect_wifi()</span></code> 函数，此函数先判断easyflash中是否设置了可连接的ssid，如果设置了则会自动进行wifi连接，没有设置则需手动输命令设置；</li>
-<li>如用户在终端中输入 <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span></code> 命令，会调用相应的api实现。如需实现wifi相关的其他功能可通过调用对应api来实现。</li>
+<li><p>在主函数 <code class="docutils literal notranslate"><span class="pre">bfl_main()</span></code> 中创建一个 <code class="docutils literal notranslate"><span class="pre">aos_loop_proc()</span></code> 线程，在此线程中调用 <code class="docutils literal notranslate"><span class="pre">aos_register_event_filter()</span></code> 接口注册一个 <code class="docutils literal notranslate"><span class="pre">EV_WIFI</span></code> 事件的监听函数 <code class="docutils literal notranslate"><span class="pre">event_cb_wifi_event()</span></code> ；</p></li>
+<li><p>首先用户在终端中输入 <code class="docutils literal notranslate"><span class="pre">stack_wifi</span></code> 命令后，在 <code class="docutils literal notranslate"><span class="pre">cmd_stack_wifi()</span></code> 函数中创建一个 <code class="docutils literal notranslate"><span class="pre">wifi_main()</span></code> 的线程，接着调用 <code class="docutils literal notranslate"><span class="pre">aos_post_event()</span></code> 接口发布 <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_INIT_DONE</span></code> 事件后， <code class="docutils literal notranslate"><span class="pre">event_cb_wifi_event()</span></code> 会被调用，并进入case <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_INIT_DONE</span></code> 分支从而调用 <code class="docutils literal notranslate"><span class="pre">wifi_mgmr_start_background()</span></code> 开启WiFi Manager，同时发布 <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_MGMR_DONE</span></code> 事件，进入case <code class="docutils literal notranslate"><span class="pre">CODE_WIFI_ON_MGMR_DONE</span></code> 分支调用 <code class="docutils literal notranslate"><span class="pre">_connect_wifi()</span></code> 函数，此函数先判断easyflash中是否设置了可连接的ssid，如果设置了则会自动进行wifi连接，没有设置则需手动输命令设置；</p></li>
+<li><p>如用户在终端中输入 <code class="docutils literal notranslate"><span class="pre">wifi_sta_connect</span></code> 命令，会调用相应的api实现。如需实现wifi相关的其他功能可通过调用对应api来实现。</p></li>
 </ul>
-</div>
-<div class="section" id="reason-codes">
-<h2>Reason Codes<a class="headerlink" href="#reason-codes" title="永久链接至标题"></a></h2>
+</section>
+<section id="reason-codes">
+<h2>Reason Codes<a class="headerlink" href="#reason-codes" title="此标题的永久链接"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">WLAN_FW_SUCCESSFUL</span></code></p>
 <p>WiFi连接成功</p>
 <p><code class="docutils literal notranslate"><span class="pre">WLAN_FW_TX_AUTH_FRAME_ALLOCATE_FAIILURE</span></code></p>
@@ -228,15 +233,15 @@
 <p>加入sta模式失败</p>
 <p><code class="docutils literal notranslate"><span class="pre">WLAN_FW_BEACON_LOSS</span></code></p>
 <p>信标丢失</p>
-</div>
-<div class="section" id="api">
-<h2>API参考<a class="headerlink" href="#api" title="永久链接至标题"></a></h2>
+</section>
+<section id="api">
+<h2>API参考<a class="headerlink" href="#api" title="此标题的永久链接"></a></h2>
 <ul class="simple">
-<li>头文件</li>
+<li><p>头文件</p></li>
 </ul>
 <p><a class="reference external" href="../../../../components/bl602/bl602_wifidrv/bl60x_wifi_driver/include/wifi_mgmr_ext.h">wifi_mgmr_ext.h</a></p>
 <ul class="simple">
-<li>API介绍</li>
+<li><p>API介绍</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">wifi_mgmr_start_background(wifi_conf_t</span> <span class="pre">*conf)</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
@@ -464,8 +469,8 @@
 */
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -499,17 +504,18 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'release_bl_iot_sdk_1.6.39-238-gf5ba0a7ee',
+            VERSION:'release_bl_iot_sdk_1.6.40-40-gfb91fe21a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+      <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/language_data.js"></script>
 
   
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -55,7 +55,6 @@ int bl_main_rate_config(uint8_t sta_idx, uint16_t fixed_rate_cfg);
 int bl_main_if_remove(uint8_t vif_index);
 int bl_main_if_add(int is_sta, struct netif *netif, uint8_t *vif_index);
 int bl_main_monitor(void);
-int bl_main_monitor_disable(void);
 int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq, const uint32_t flags);
 int bl_main_connect_abort(uint8_t *status);
 int bl_main_apm_start(char *ssid, char *password, int channel, uint8_t vif_index, uint8_t hidden_ssid, uint16_t bcn_int);
@@ -65,6 +64,7 @@ int bl_main_apm_sta_info_get(struct wifi_apm_sta_info *apm_sta_info, uint8_t idx
 int bl_main_apm_sta_delete(uint8_t sta_idx);
 int bl_main_apm_remove_all_sta();
 int bl_main_conf_max_sta(uint8_t max_sta_supported);
+int bl_main_apm_chan_switch(uint8_t vif_index, int channel, uint8_t cs_cnt);
 int bl_main_cfg_task_req(uint32_t ops, uint32_t task, uint32_t element, uint32_t type, void *arg1, void *arg2);
 int bl_main_scan(struct netif *netif, uint16_t *fixed_channels, uint16_t channel_num, struct mac_addr *bssid, struct mac_ssid *ssid, uint8_t scan_mode, uint32_t duration_scan);
 int bl_main_raw_send(uint8_t *pkt , int len);
@@ -131,6 +131,22 @@ typedef struct
     uint8_t   ccmp       : 1;
     uint8_t   rsvd       : 4;
 } wifi_cipher_t;
+
+#define WIFI_EVENT_BEACON_IND_AUTH_OPEN            0
+#define WIFI_EVENT_BEACON_IND_AUTH_WEP             1
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_PSK         2
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK        3
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_WPA2_PSK    4
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA_ENT         5
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA3_SAE        6
+#define WIFI_EVENT_BEACON_IND_AUTH_WPA2_PSK_WPA3_SAE 7
+#define WIFI_EVENT_BEACON_IND_AUTH_UNKNOWN      0xff
+
+#define WIFI_EVENT_BEACON_IND_CIPHER_NONE           0
+#define WIFI_EVENT_BEACON_IND_CIPHER_WEP            1
+#define WIFI_EVENT_BEACON_IND_CIPHER_AES            2
+#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP           3
+#define WIFI_EVENT_BEACON_IND_CIPHER_TKIP_AES       4
 
 struct wifi_event_beacon_ind
 {

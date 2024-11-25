@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -40,9 +40,7 @@
 #include <lwip/sockets.h>
 #include <lwip/netdb.h>
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 #include <cli.h>
-#endif
 #include <hal_boot2.h>
 #include <hal_sys.h>
 #include <hosal_ota.h>
@@ -670,7 +668,6 @@ static void ota_dump_cmd(char *buf, int len, int argc, char **argv)
     hal_boot2_dump();
 }
 
-#ifdef CONFIG_CLI_CMD_ENABLE
 // STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 static const struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ota_tcp_api", "OTA from TCP server port 3333", ota_tcp_api_cmd},
@@ -678,7 +675,6 @@ static const struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"ota_tcp_server", "start OTA TCP server port 3333", ota_tcp_server},
     {"ota_dump", "dump partitions for ota related", ota_dump_cmd},
 };
-#endif
 
 int bl_sys_ota_cli_init(void)
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 Bouffalolab.
+ * Copyright (c) 2016-2024 Bouffalolab.
  *
  * This file is part of
  *     *** Bouffalolab Software Dev Kit ***
@@ -269,10 +269,6 @@ static int ping_init(void *arg)
 
     return 0;
 }
-
-#ifdef BL616
-extern int bl_rand();
-#endif
 
 struct ping_var *ping_api_init(u16_t interval, u16_t size, u32_t count, u16_t timeout, ip_addr_t *dest)
 {

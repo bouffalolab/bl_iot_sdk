@@ -25,7 +25,7 @@
 #include <../include/bluetooth/crypto.h>
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_DEBUG_HCI_CORE)
-#include "log.h"
+#include "bt_log.h"
 
 #include "hci_ecc.h"
 #ifdef CONFIG_BT_HCI_RAW

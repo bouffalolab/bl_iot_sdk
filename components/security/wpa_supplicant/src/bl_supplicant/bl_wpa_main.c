@@ -209,7 +209,7 @@ void wpa_sta_connect(wifi_connect_parm_t *parm)
     wpa_sm_set_state(WPA_AUTHENTICATING);
 
     wpa_set_parm_at_connect(parm);
-    wpa_set_4way_handshake_timer();
+    wpa_set_4way_handshake_timer(parm->quick_conn);
 }
 
 int wpa_parse_wpa_ie_wrapper(const uint8_t *wpa_ie, size_t wpa_ie_len, wifi_wpa_ie_t *data)

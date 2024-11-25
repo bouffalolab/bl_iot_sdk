@@ -12,7 +12,7 @@
 
 #include <zephyr.h>
 #include <stddef.h>
-#include <sys/errno.h>
+#include <bt_errno.h>
 #include <string.h>
 #include <atomic.h>
 #include <misc/util.h>
@@ -20,14 +20,14 @@
 #include <misc/stack.h>
 
 #include <constants.h>
-#include <aes.h>
+#include <tinycrypt/include/tinycrypt/aes.h>
 #include <utils.h>
 #include <cmac_mode.h>
 #include <../include/bluetooth/crypto.h>
 
 #define BT_DBG_ENABLED IS_ENABLED(CONFIG_BT_DEBUG_RPA)
 #define LOG_MODULE_NAME bt_rpa
-#include "log.h"
+#include "bt_log.h"
 
 #if defined(CONFIG_BT_CTLR_PRIVACY) || defined(CONFIG_BT_PRIVACY) || defined(CONFIG_BT_SMP)
 static int ah(const u8_t irk[16], const u8_t r[3], u8_t out[3])
