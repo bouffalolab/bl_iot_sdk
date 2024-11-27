@@ -1,0 +1,35 @@
+Bouffalolab Iot Command Tool
+============
+
+--chipname：mandatory, name of chip
+--interface：1.uart, 2.jlink, 3.cklink, 4.openocd, default is uart
+--port：serial port
+--baudrate：baudrate of serial port, default is 115200
+--xtal：xtal of board
+--firmware：mandatory, firmware binary file
+--dts：device tree file
+--pt：partition table of flash, default is located in chips/chipname/partition
+--boot2：boot2 binary file as bootloader, default is located in chips/chipname/builtin_imgs/boot2_isp_xxxxx
+--mfg：optional, mfg binary file, only use when do RF test   
+--romfs：optional, romfs dir 
+--build：build image only
+--single：single file download
+--addr：address to write, default is 0
+--config：eflash loader configuration file
+--ota：dir of ota file
+--key：aes encrypt key
+--iv：aes encrypt iv
+--pk：ecc sign public key as file
+--sk: ecc sign private key as file
+--pk_str：ecc sign public key as string
+--sk_str: ecc sign private key as string
+--outdir：images output directory
+--log：enable logging
+--auto_efuse_verify：enable auto efuse verify 
+
+
+EXAMPLE:
+bflb_iot_tool.exe --chipname=bl702 --port=COM28 --baudrate=2000000 --firmware="helloworld_bl702.bin" --dts="bl_factory_params_IoTKitA_None.dts"
+
+bflb_iot_tool.exe --chipname=bl602 --port=COM20 --baudrate=2000000 --firmware=whole_flash_data.bin --efuse=efusedata.bin --single --auto_efuse_verify
+
