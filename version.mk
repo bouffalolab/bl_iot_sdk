@@ -1,12 +1,12 @@
 EXTRA_CPPFLAGS  ?=
 ifeq ("$(CONFIG_CHIP_NAME)", "BL602")
-EXTRA_CPPFLAGS  += -D BL_SDK_VER=\"release_bl_iot_sdk_1.6.40-40-gfb91fe21a-dirty\"
+EXTRA_CPPFLAGS  += -D BL_SDK_VER=\"release_bl_iot_sdk_1.6.40-41-g9890ac3e7-dirty\"
 EXTRA_CPPFLAGS  += -D BL_SDK_PHY_VER=\"24fc0eb\"
 EXTRA_CPPFLAGS  += -D BL_SDK_RF_VER=\"f6ed2e9\"
 EXTRA_CPPFLAGS  += -D BL_SDK_STDDRV_VER=\"a67b266\"
 endif
 ifeq ("$(CONFIG_CHIP_NAME)", "BL702")
-EXTRA_CPPFLAGS  += -D BL_SDK_VER=\"release_bl_iot_sdk_1.6.40-40-gfb91fe21a-dirty\"
+EXTRA_CPPFLAGS  += -D BL_SDK_VER=\"release_bl_iot_sdk_1.6.40-41-g9890ac3e7-dirty\"
 EXTRA_CPPFLAGS  += -D BL_SDK_STDDRV_VER=\"dff9318\"
 EXTRA_CPPFLAGS  += -D BL_SDK_STDCOM_VER=\"9fe1995\"
 EXTRA_CPPFLAGS  += -D BL_SDK_RF_VER=\"b5662bc\"
